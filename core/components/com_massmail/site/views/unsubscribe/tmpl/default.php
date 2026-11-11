@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{done: mixed, email: mixed, mailing: mixed, token: mixed, valid: mixed} $this
+ */
 ?>
 <section class="main section">
     <div class="section-inner">

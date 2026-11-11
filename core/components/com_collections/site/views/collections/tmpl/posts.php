@@ -14,6 +14,18 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     collections: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $base  = 'index.php?option=' . $this->option;
 $mode  = Request::getWord('mode', 'grid');
 

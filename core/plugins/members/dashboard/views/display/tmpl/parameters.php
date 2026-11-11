@@ -16,6 +16,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{admin: mixed, fields: mixed, module: mixed, params: mixed} $this
+ */
+
 // check to make sure we have some member dashboard params
 $count = 0;
 foreach ($this->fields as $field) {

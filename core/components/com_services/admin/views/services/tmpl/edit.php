@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed} $this
+ */
+
 $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
 $text = ($this->row->id ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));

@@ -14,6 +14,21 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     emp: mixed,
+ *     employer: mixed,
+ *     services: mixed,
+ *     subscription: mixed,
+ *     title: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>

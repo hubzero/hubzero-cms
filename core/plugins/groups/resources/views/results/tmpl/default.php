@@ -13,6 +13,25 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     access: mixed,
+ *     active: mixed,
+ *     authorized: mixed,
+ *     cats: mixed,
+ *     group: mixed,
+ *     limit: mixed,
+ *     limitstart: mixed,
+ *     option: mixed,
+ *     results: mixed,
+ *     sort: mixed,
+ *     sortdir: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('resources.css', 'com_resources')

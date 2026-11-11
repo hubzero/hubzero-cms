@@ -16,6 +16,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     filters: mixed,
+ *     hasRoles: mixed,
+ *     member: mixed,
+ *     results: mixed,
+ *     roles: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $base = $this->member->link() . '&active=courses';
 
 $this->css();

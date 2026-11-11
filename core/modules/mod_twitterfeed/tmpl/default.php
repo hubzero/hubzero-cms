@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 // Get tweet count
 $count = $this->params->get('tweetcount', 5);
 if (!is_numeric($count) || $count > 20 || $count < 1) {

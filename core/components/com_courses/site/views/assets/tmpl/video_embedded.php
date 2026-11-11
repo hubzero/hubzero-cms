@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{asset: mixed} $this
+ */
+
 if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $this->asset->content, $matches)) {
     if (stristr($matches[2], 'youtube')) {
         $url = $matches[2];

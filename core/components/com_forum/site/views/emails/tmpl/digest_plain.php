@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{posts: mixed} $this
+ */
+
 $groups = count($this->posts);
 $posts  = 0;
 

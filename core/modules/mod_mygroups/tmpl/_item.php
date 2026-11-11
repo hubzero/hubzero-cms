@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Mygroups\Mygroups $this
+ */
 ?>
 <li class="group<?php echo $group->published == 2 ? ' archived' : ''; ?>">
     <?php

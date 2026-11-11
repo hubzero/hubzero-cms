@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, scope_id: mixed} $this
+ */
+
 Html::behavior('core');
 
 // Load asset if applicable

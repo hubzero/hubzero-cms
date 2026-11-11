@@ -14,6 +14,12 @@ use Hubzero\Facades\Component;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{accessgroups: mixed, filters: mixed, rows: mixed} $this
+ */
+
 Html::addIncludePath(Component::path('com_members') . '/admin/helpers/html');
 Html::behavior('tooltip');
 

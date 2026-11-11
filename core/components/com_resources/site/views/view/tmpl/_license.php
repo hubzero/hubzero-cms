@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{license: mixed} $this
+ */
+
 $name = $this->license->name;
 if (empty($name)) {
 } elseif (substr($name, 0, 6) != 'custom') {

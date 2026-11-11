@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $newAppUrl = Route::url('index.php?option=com_developer&controller=applications&task=new');
 ?>
 

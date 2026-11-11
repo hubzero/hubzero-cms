@@ -12,6 +12,12 @@ use Components\System\Helpers\Html\System;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{info: mixed} $this
+ */
 ?>
 <fieldset class="adminform">
     <legend><?php echo Lang::txt('COM_SYSTEM_INFO_SYSTEM_INFORMATION'); ?></legend>

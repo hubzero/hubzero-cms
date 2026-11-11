@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{meta: mixed, row: mixed} $this
+ */
+
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));

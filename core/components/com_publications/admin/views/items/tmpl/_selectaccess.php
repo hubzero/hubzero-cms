@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{as: mixed, value: mixed} $this
+ */
+
 $as = explode(',', $this->as);
 $html  = '<select name="access">' . "\n";
 for ($i = 0, $n = count($as); $i < $n; $i++) {

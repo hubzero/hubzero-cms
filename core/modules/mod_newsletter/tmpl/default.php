@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{mailinglist: mixed, subscription: mixed, subscriptionId: mixed} $this
+ */
+
 $token = Session::getFormToken();
 
 if (is_object($this->mailinglist)) : ?>

@@ -15,6 +15,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     option: mixed,
+ *     project: mixed,
+ *     pub: mixed,
+ *     selected_version: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 // Get publication properties
 $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
     $this->pub->category()->alias,

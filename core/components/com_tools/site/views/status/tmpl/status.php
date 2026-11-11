@@ -11,6 +11,20 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     absent_displays: mixed,
+ *     broken_displays: mixed,
+ *     lastsession: mixed,
+ *     ready_displays: mixed,
+ *     sessions: mixed,
+ *     title: mixed,
+ *     used_displays: mixed,
+ * } $this
+ */
+
 $this
      ->css('status.css')
      ->js('status.js');

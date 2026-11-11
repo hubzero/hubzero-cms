@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 $this->css('template.css');
 ?>
 <div class="mod-languages<?php echo $moduleclass_sfx; ?>">

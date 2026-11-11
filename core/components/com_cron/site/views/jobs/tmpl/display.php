@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{no_html: mixed, output: mixed} $this
+ */
+
 if (!$this->no_html) {
     ?>
 <header id="content-header">

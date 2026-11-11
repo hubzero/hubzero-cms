@@ -12,6 +12,31 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connect: mixed,
+ *     connections: mixed,
+ *     database: mixed,
+ *     fileparams: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     oparams: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     publishing: mixed,
+ *     rSync: mixed,
+ *     repo: mixed,
+ *     services: mixed,
+ *     sharing: mixed,
+ *     subdir: mixed,
+ *     sync: mixed,
+ *     title: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('uploader')

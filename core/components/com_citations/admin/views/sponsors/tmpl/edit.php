@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{sponsor: mixed} $this
+ */
+
 $canDo = \Components\Citations\Helpers\Permissions::getActions('sponsor');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));

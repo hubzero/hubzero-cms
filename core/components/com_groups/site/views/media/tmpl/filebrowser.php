@@ -15,6 +15,19 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     activeFolder: mixed,
+ *     authorized: mixed,
+ *     folderList: mixed,
+ *     folderTree: mixed,
+ *     group: mixed,
+ *     notifications: mixed,
+ * } $this
+ */
+
 Html::behavior('modal');
 
 // push scripts and styles

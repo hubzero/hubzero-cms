@@ -13,6 +13,19 @@ use Plugins\Groups\Usage\Usage as plgGroupsUsage;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     end: mixed,
+ *     group: mixed,
+ *     pages: mixed,
+ *     pid: mixed,
+ *     start: mixed,
+ * } $this
+ */
+
 // get group logger to get created log entry
 $logger     = \Components\Groups\Models\Log\Archive::getInstance();
 

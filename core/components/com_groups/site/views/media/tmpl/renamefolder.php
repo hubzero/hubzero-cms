@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{folder: mixed, group: mixed} $this
+ */
+
 //get path info
 $info = pathinfo($this->folder);
 ?>

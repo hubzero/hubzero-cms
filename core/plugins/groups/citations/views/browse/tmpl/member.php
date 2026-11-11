@@ -11,6 +11,24 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     citationTemplate: mixed,
+ *     citations: mixed,
+ *     citations_label_class: mixed,
+ *     coins: mixed,
+ *     config: mixed,
+ *     database: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     label: mixed,
+ *     openurl: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 if (count($this->citations) > 0) :
     $this
          ->css('citations.css')

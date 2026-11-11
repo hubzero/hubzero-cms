@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{ajax: mixed, editor: mixed, publication: mixed} $this
+ */
+
 $url = Route::url($this->publication->link('edit'));
 
 ?>

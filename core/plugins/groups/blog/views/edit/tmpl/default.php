@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{entry: mixed, group: mixed, option: mixed, task: mixed} $this
+ */
+
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00') {
     $this->entry->set('publish_down', '');
 }

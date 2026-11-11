@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
 $hubname = Config::get('sitename');
 ?>
 

@@ -12,6 +12,19 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     created: mixed,
+ *     id: mixed,
+ *     sinfo: mixed,
+ *     slidebar: mixed,
+ *     upath: mixed,
+ *     versionid: mixed,
+ * } $this
+ */
+
 $upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : []);
 $versionid = (isset($this->versionid) ? $this->versionid : 0);

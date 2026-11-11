@@ -12,6 +12,12 @@ use Hubzero\Facades\Html;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed} $this
+ */
 ?>
 <div id="project-wrap">
     <section class="main section">

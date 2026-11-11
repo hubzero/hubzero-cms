@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{filters: mixed, quotes: mixed} $this
+ */
+
 $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
 
 ?>

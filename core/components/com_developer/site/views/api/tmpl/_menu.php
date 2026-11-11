@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, documentation: mixed} $this
+ */
+
 $base = 'index.php?option=' . $this->option
     . '&controller=' . $this->controller;
 $done = [];

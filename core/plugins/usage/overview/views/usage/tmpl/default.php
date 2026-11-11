@@ -13,6 +13,12 @@ use Plugins\Usage\Overview\Overview as plgUsageOverview;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{datetime: mixed, element: mixed, message: mixed, period: mixed} $this
+ */
+
 //Html::behavior('chart');
 //Html::behavior('chart', 'resize');
 

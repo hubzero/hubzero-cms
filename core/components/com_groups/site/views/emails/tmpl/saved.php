@@ -15,6 +15,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{before: mixed, group: mixed, user: mixed} $this
+ */
+
 // build urls
 $base      = rtrim(str_replace('administrator', '', Request::base()), '/');
 $groupLink = $base . '/groups/' . $this->group->get('cn');

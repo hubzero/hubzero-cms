@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{announcement: mixed, authorized: mixed, group: mixed, showClose: mixed} $this
+ */
+
 // Default to unpublished
 $class = 'unpublished';
 

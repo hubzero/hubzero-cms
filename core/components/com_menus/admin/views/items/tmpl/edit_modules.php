@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{modules: mixed} $this
+ */
+
 Html::behavior('framework', true);
 ?>
     <label for="showmods"><?php echo Lang::txt('COM_MENUS_ITEM_FIELD_HIDE_UNASSIGNED'); ?></label>

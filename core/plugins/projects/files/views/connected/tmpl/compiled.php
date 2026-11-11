@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{handler: mixed} $this
+ */
 ?>
 
 <?php if ($this->getErrors()) : ?>

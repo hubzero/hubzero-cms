@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $canDo = \Components\Oaipmh\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'oaipmh');

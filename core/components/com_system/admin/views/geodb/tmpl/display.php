@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 Toolbar::title(Lang::txt('COM_SYSTEM_GEO_CONFIGURATION'), 'config');
 Toolbar::preferences($this->option, '550');
 

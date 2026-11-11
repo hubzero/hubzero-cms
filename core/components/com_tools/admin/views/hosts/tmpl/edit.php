@@ -14,6 +14,18 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     hosttypes: mixed,
+ *     row: mixed,
+ *     statusCounts: mixed,
+ *     toolCounts: mixed,
+ *     zones: mixed,
+ * } $this
+ */
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOSTS') . ': ' . $text, 'tools.png');

@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{events: mixed} $this
+ */
+
 if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } else { ?>

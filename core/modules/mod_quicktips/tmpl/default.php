@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{rows: mixed} $this
+ */
+
 if ($this->rows) { ?>
     <div class="<?php echo $this->params->get('moduleclass_sfx'); ?>">
         <?php foreach ($this->rows as $row) { ?>

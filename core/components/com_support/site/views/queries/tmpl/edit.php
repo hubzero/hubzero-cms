@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{conditions: mixed, row: mixed} $this
+ */
+
 $tmpl = Request::getString('tmpl', '');
 $no_html = Request::getInt('no_html', 0);
 

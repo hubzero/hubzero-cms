@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{notifications: mixed, productEula: mixed, productInfo: mixed} $this
+ */
+
 $this->css();
 
 // Get the name of the product downloaded

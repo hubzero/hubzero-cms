@@ -8,6 +8,12 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{user: mixed} $this
+ */
+
 if ($this->user->get('guest')) :
     // The user is not logged in.
     echo $this->loadTemplate('login');

@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{limit: mixed, moduleclass: mixed, rows: mixed, total: mixed} $this
+ */
+
 if ($this->getError()) {
     echo '<p class="error">' . $this->getError() . '</p>' . "\n";
 } else {

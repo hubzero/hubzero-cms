@@ -18,6 +18,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     defaultQuota: mixed,
+ *     filters: mixed,
+ *     limit: mixed,
+ *     rows: mixed,
+ *     start: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this->css();
 
 Toolbar::title(Lang::txt('Projects'), 'projects');

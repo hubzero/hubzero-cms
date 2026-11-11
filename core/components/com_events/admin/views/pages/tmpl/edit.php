@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{event: mixed, page: mixed} $this
+ */
+
 $text = ($this->task == 'edit' ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW'));
 
 Toolbar::title(Lang::txt('COM_EVENTS_PAGE') . ': ' . $text, 'event');

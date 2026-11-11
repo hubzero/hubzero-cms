@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, ogId: mixed, optionGroup: mixed, rows: mixed, total: mixed} $this
+ */
+
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Options', 'storefront');

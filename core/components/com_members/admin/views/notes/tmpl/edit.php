@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed} $this
+ */
+
 $checkedOut = !($this->row->get('checked_out') == 0 || $this->row->get('checked_out') == User::get('id'));
 $canDo = \Components\Members\Helpers\Admin::getActions();
 

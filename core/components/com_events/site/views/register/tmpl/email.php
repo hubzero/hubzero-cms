@@ -11,6 +11,24 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     arrival: mixed,
+ *     departure: mixed,
+ *     dietary: mixed,
+ *     dinner: mixed,
+ *     disability: mixed,
+ *     eventEnd: mixed,
+ *     eventStart: mixed,
+ *     eventTitle: mixed,
+ *     params: mixed,
+ *     race: mixed,
+ *     register: mixed,
+ * } $this
+ */
+
 $message = Lang::txt('EVENTS_REGISTRATION_CONFIRMATION') . "\n\n";
 
 $message .= "----------------------------------------\n";

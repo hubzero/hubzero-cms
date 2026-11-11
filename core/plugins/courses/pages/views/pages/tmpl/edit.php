@@ -12,6 +12,20 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     controller: mixed,
+ *     course: mixed,
+ *     model: mixed,
+ *     notifications: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     pages: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js('jquery.fileuploader', 'system')

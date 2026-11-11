@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{base: mixed, title: mixed} $this
+ */
+
 $this
      ->css('form.css')
      ->css('tablesorter.themes.blue.css', 'system')
@@ -23,9 +29,9 @@ $this
 </header>
 
 <section class="main section">
-    <?php if ($this->errors) : ?>
+    <?php if ($this->getErrors()) : ?>
         <ul class="errors">
-        <?php foreach ($this->errors as $error) : ?>
+        <?php foreach ($this->getErrors() as $error) : ?>
             <li><?php echo $error; ?></li>
         <?php endforeach; ?>
         </ul>

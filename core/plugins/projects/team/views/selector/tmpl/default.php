@@ -15,6 +15,22 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     authors: mixed,
+ *     block: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     props: mixed,
+ *     publication: mixed,
+ *     step: mixed,
+ *     team: mixed,
+ * } $this
+ */
+
 $selected = [];
 if (count($this->authors) > 0) {
     foreach ($this->authors as $sel) {

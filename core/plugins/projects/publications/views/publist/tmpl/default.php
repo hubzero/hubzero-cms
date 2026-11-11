@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{items: mixed} $this
+ */
+
 if (count($this->items) > 0) { ?>
 <div class="public-list-header">
     <h3><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?></h3>

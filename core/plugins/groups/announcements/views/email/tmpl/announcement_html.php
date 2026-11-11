@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{announcement: mixed} $this
+ */
+
 // get the group
 $group = \Hubzero\User\Group::getInstance($this->announcement->get('scope_id'));
 $groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');

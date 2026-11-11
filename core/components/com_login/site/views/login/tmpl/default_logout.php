@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed, pageclass_sfx: mixed, params: mixed} $this
+ */
+
 $showDescBlock = ($this->params->get('logoutdescription_show') == 1
     && str_replace(' ', '', $this->params->get('logout_description')) != '')
     || $this->params->get('logout_image') != '';

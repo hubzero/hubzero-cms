@@ -8,6 +8,12 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{lines: mixed, supported: mixed} $this
+ */
 ?>
 <ol class="resources results">
     <?php

@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{id: mixed, rows: mixed} $this
+ */
+
 $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.edit', $this->option));
 ?>
 <div id="hosts">

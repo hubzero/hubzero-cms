@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{options: mixed, poll: mixed} $this
+ */
 ?>
 <form action="">
     <fieldset>

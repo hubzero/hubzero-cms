@@ -15,6 +15,21 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     archive: mixed,
+ *     authorized: mixed,
+ *     canpost: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     option: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
 $this

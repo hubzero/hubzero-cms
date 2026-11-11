@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{authenticator: mixed, display_name: mixed, sitename: mixed} $this
+ */
+
 $this->css('login.css');
 $msgShared = Lang::txt(
     'If you would like to end all %s account shared sessions as well, you may do so now.',

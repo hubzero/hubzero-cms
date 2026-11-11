@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, edit: mixed, filters: mixed, forum: mixed, sections: mixed} $this
+ */
+
 $this
      ->css()
      ->js();

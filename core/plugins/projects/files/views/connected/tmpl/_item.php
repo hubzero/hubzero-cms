@@ -16,6 +16,18 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connection: mixed,
+ *     handlerBase: mixed,
+ *     item: mixed,
+ *     model: mixed,
+ *     subdir: mixed,
+ * } $this
+ */
+
 $item = $this->item;
 $itemIsFile = $item->isFile();
 $itemName = $item->getName();

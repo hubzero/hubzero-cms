@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{lastInsert: mixed, mechanism: mixed, queueStats: mixed, status: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('Solr Search: Overview'));
 Toolbar::custom(
     'optimize',

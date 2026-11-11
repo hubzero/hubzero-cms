@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{asset: mixed, i: mixed, no_html: mixed} $this
+ */
 ?>
         <p class="item-asset">
             <span class="asset-handle"></span>

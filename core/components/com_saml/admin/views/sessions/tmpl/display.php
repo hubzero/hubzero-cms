@@ -15,6 +15,17 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     filters: mixed,
+ *     rows: mixed,
+ *     sessionTableIsAuthoritative: mixed,
+ *     sps: mixed,
+ * } $this
+ */
+
 Toolbar::title(Lang::txt('COM_SAML') . ': ' . Lang::txt('COM_SAML_SESSIONS'), 'saml');
 if (User::authorise('core.delete', $this->option)) {
     Toolbar::custom('deleteexpired', 'expired', '', 'COM_SAML_DELETE_EXPIRED', false);

@@ -12,6 +12,19 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     resource: mixed,
+ *     status: mixed,
+ *     step: mixed,
+ *     title: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
 $html = '';
 
 // Get parameters

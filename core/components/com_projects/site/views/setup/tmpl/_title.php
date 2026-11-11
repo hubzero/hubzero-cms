@@ -13,6 +13,12 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed, title: mixed} $this
+ */
+
 $title = $this->model->get('title')
     ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->escape($this->model->get('title'))
     : $this->title;

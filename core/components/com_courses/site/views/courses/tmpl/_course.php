@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{count: mixed, course: mixed} $this
+ */
+
 switch ($this->count) {
     case 0:
         $cls = 'span4';

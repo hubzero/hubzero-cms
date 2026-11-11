@@ -12,6 +12,12 @@ use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{cls: mixed, members: mixed} $this
+ */
 ?>
 
 <ul class="team-listing cf <?php echo (isset($this->cls)) ? $this->cls : ''; ?>">

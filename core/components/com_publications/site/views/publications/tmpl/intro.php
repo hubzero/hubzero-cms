@@ -13,6 +13,18 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     best: mixed,
+ *     config: mixed,
+ *     contributable: mixed,
+ *     results: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('introduction.css', 'system')
      ->css()

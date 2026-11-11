@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{canDo: mixed, form: mixed, item: mixed, title: mixed} $this
+ */
+
 Request::setVar('hidemainmenu', 1);
 
 Html::behavior('tooltip');

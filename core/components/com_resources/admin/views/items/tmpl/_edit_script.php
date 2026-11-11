@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{rconfig: mixed} $this
+ */
+
 $path = trim($this->rconfig->get('uploadpath'), DS);
 $root = substr(PATH_APP, strlen(PATH_ROOT));
 if (substr($path, 0, strlen($root)) != $root) {

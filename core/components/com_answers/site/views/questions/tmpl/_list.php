@@ -9,6 +9,22 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     base: mixed,
+ *     cls: mixed,
+ *     comments: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     item_id: mixed,
+ *     parent: mixed,
+ *     question: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
 $threadId = (isset($this->thread) ? $this->thread : 't')
     . (isset($this->parent) ? $this->parent : '0');
 ?>
@@ -19,7 +35,7 @@ $threadId = (isset($this->thread) ? $this->thread : 't')
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
     }
 
-        $this->depth++;
+        $depth = $this->depth + 1;
 
     foreach ($this->comments as $comment) {
         $comment->set('qid', $this->question->get('id'));
@@ -30,7 +46,7 @@ $threadId = (isset($this->thread) ? $this->thread : 't')
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('config', $this->config)
-             ->set('depth', $this->depth)
+             ->set('depth', $depth)
              ->set('question', $this->question)
              ->set('cls', $cls)
              ->set('base', $this->base)

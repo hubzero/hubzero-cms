@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{entry: mixed} $this
+ */
 ?>
 <li class="collections-entry">
     <p class="title">

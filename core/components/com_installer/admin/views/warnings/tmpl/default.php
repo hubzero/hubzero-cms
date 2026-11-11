@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{messages: mixed} $this
+ */
+
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');

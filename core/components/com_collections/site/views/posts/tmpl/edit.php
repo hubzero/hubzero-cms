@@ -14,6 +14,18 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     collection: mixed,
+ *     collections: mixed,
+ *     counts: mixed,
+ *     entry: mixed,
+ *     no_html: mixed,
+ * } $this
+ */
+
 if (!$this->no_html) {
     $this
          ->css()

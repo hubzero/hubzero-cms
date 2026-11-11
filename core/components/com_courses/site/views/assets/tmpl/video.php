@@ -18,6 +18,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{asset: mixed, course: mixed, model: mixed} $this
+ */
+
 // Set the path
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 

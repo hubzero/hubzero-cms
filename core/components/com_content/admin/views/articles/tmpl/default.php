@@ -16,6 +16,18 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authors: mixed,
+ *     f_levels: mixed,
+ *     filters: mixed,
+ *     items: mixed,
+ *     pagination: mixed,
+ * } $this
+ */
+
 $canAdmin = User::authorise('core.admin', 'com_content');
 $canCreate = User::authorise('core.create', 'com_content');
 $canEdit = User::authorise('core.edit', 'com_content');

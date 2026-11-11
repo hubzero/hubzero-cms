@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{license: mixed, pub: mixed, selections: mixed, step: mixed} $this
+ */
+
 // Get block properties
 $complete = $this->pub->curation('blocks', $this->step, 'complete');
 $props    = $this->pub->curation('blocks', $this->step, 'props');

@@ -15,6 +15,19 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     banking: mixed,
+ *     funds: mixed,
+ *     infolink: mixed,
+ *     title: mixed,
+ *     wish: mixed,
+ *     wishlist: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();

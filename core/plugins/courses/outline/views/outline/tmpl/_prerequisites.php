@@ -12,6 +12,18 @@ use Hubzero\Facades\App;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     includeForm: mixed,
+ *     items: mixed,
+ *     scope: mixed,
+ *     scope_id: mixed,
+ *     section_id: mixed,
+ * } $this
+ */
+
 $db = App::get('db');
 
 $this->css('prerequisites');

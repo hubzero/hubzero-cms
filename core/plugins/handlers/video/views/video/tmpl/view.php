@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{file: mixed} $this
+ */
+
 $this->css('video.css');
 
 $source = with(new \Hubzero\Content\Moderator($this->file->getAbsolutePath()))->getUrl();

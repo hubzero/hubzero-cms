@@ -14,6 +14,18 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     error: mixed,
+ *     history: mixed,
+ *     limit: mixed,
+ *     moduleclass: mixed,
+ *     summary: mixed,
+ * } $this
+ */
+
 if ($this->error) {
     echo '<p class="error">' . Lang::txt('MOD_MYPOINTS_MISSING_TABLE') . '</p>' . "\n";
 } else {

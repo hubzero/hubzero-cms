@@ -14,6 +14,18 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     citations_require_attention: mixed,
+ *     citations_require_no_attention: mixed,
+ *     group: mixed,
+ *     messages: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();

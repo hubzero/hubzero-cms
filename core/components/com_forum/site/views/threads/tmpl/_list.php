@@ -42,7 +42,7 @@ if ($hasComments) :
     if (!isset($this->search)) {
         $this->search = '';
     }
-    $this->depth++;
+    $depth = $this->depth + 1;
     ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
     <?php foreach ($this->comments as $comment) : ?>
@@ -58,7 +58,7 @@ if ($hasComments) :
          ->set('likes', $this->likes)
          ->set('thread', $this->thread)
          ->set('config', $this->config)
-         ->set('depth', $this->depth)
+         ->set('depth', $depth)
          ->set('cls', $cls)
          ->set('filters', $this->filters)
          ->set('category', $this->category)

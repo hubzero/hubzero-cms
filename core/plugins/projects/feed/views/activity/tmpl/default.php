@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     activities: mixed,
+ *     filters: mixed,
+ *     limit: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 if (count($this->activities) > 0) { ?>
     <div class="activity-items" id="activity-feed">
         <?php

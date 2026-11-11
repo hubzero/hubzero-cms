@@ -14,6 +14,24 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     item: mixed,
+ *     move: mixed,
+ *     option: mixed,
+ *     pid: mixed,
+ *     project: mixed,
+ *     role: mixed,
+ *     row: mixed,
+ *     type: mixed,
+ *     url: mixed,
+ *     vid: mixed,
+ * } $this
+ */
+
 $default_title = ($this->type == 'file') ? basename($this->item) : $this->item;
 
 $name    = \Components\Projects\Helpers\Html::shortenFileName(basename($this->item), 70);

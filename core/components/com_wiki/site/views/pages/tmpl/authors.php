@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{page: mixed} $this
+ */
+
 if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0)) {
     $author = $this->escape(stripslashes($this->page->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
 

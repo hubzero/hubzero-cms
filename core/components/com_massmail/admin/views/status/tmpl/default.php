@@ -9,6 +9,38 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     dailyVolume: mixed,
+ *     heldMailings: mixed,
+ *     hourly: mixed,
+ *     hourlyRemaining: mixed,
+ *     hourlyVolume: mixed,
+ *     lastHourVolume: mixed,
+ *     lastSent: mixed,
+ *     messagesFailed: mixed,
+ *     messagesPending: mixed,
+ *     messagesSent: mixed,
+ *     mmDaily: mixed,
+ *     mmHourly: mixed,
+ *     mmLastHour: mixed,
+ *     ourLastHour: mixed,
+ *     perRun: mixed,
+ *     pfConfig: mixed,
+ *     pfRunning: mixed,
+ *     q30: mixed,
+ *     qHourly: mixed,
+ *     qLastHour: mixed,
+ *     qPeak30d: mixed,
+ *     qPeak48h: mixed,
+ *     qPeakLastHour: mixed,
+ *     queueSize: mixed,
+ *     ticksPerHour: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Massmail\Admin\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_MASSMAIL') . ': ' . Lang::txt('COM_MASSMAIL_DASHBOARD'), 'massmail');

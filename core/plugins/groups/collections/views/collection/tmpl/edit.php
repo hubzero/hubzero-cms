@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     entry: mixed,
+ *     group: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     task: mixed,
+ * } $this
+ */
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 if (!$this->entry->exists()) {

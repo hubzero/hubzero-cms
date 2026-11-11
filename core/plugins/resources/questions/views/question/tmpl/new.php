@@ -14,6 +14,19 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     banking: mixed,
+ *     funds: mixed,
+ *     option: mixed,
+ *     resource: mixed,
+ *     row: mixed,
+ *     tag: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 <h3 class="section-header">

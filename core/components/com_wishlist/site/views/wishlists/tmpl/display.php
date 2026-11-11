@@ -14,6 +14,19 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     filters: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ *     wishes: mixed,
+ *     wishlist: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('vote.css')

@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{hooks: mixed} $this
+ */
+
 $canDo = Components\Groups\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('COM_GROUPS_IMPORTHOOK_TITLE_HOOKS'), 'import');

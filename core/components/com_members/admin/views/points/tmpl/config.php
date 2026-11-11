@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{params: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': Manage Points', 'user.png');
 Toolbar::save('saveconfig', 'Save Configuration');
 Toolbar::cancel();

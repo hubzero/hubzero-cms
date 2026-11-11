@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{files: mixed, model: mixed} $this
+ */
+
 $hasFiles = $this->files && count($this->files) > 0;
 $filesUrl = Route::url($this->model->link('files'));
 $headingText = $hasFiles

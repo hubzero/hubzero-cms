@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed} $this
+ */
+
 $this->css('offering');
 ?>
 <header id="content-header"<?php echo $this->course->get('logo') ? ' class="with-identity"' : ''; ?>>

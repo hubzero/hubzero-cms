@@ -12,6 +12,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     default_picture: mixed,
+ *     file: mixed,
+ *     file_path: mixed,
+ *     id: mixed,
+ *     path: mixed,
+ *     webpath: mixed,
+ * } $this
+ */
+
 $this
     ->css()
     ->js('media.js');

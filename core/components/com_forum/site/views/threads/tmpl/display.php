@@ -14,6 +14,18 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     category: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     likes: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();

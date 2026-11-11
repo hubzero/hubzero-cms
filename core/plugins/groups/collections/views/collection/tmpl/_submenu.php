@@ -12,6 +12,22 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     collections: mixed,
+ *     followers: mixed,
+ *     following: mixed,
+ *     group: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     posts: mixed,
+ * } $this
+ */
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
     <nav>

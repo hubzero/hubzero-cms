@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{activities: mixed, project: mixed, subject: mixed} $this
+ */
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $sef  = Route::url($this->project->link());
 $link = rtrim($base, '/') . '/' . trim($sef, '/');

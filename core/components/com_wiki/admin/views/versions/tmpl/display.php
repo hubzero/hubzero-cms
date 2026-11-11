@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, page: mixed, rows: mixed} $this
+ */
+
 $canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
 $toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS');

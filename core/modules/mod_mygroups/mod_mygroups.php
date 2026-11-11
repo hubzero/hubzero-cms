@@ -18,10 +18,10 @@ use Hubzero\Facades\User;
  */
 class Mygroups extends Module
 {
-    protected $allgroups;
-    protected $limit;
-    protected $moduleclass;
-    protected $recentgroups;
+    public $allgroups;
+    public $limit;
+    public $moduleclass;
+    public $recentgroups;
 
     /**
      * Get groups for a user

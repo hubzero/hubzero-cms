@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     collection_id: mixed,
+ *     groupboards: mixed,
+ *     item_id: mixed,
+ *     myboards: mixed,
+ *     no_html: mixed,
+ *     post_id: mixed,
+ * } $this
+ */
+
 if ($this->collection_id) {
     $task = Request::getString('board', 0) . '/collect';
 }

@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{archive: mixed, config: mixed, filters: mixed, member: mixed, search: mixed} $this
+ */
+
 $base = $this->member->link() . '&active=blog';
 
 $first = $this->archive

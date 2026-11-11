@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{line: mixed, supported: mixed} $this
+ */
+
 $params = $this->line->params;
 
 switch ($this->line->access) {

@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 Toolbar::title(Lang::txt('COM_SAML') . ': ' . Lang::txt('COM_SAML_IMPORT_METADATA'), 'saml');
 Toolbar::custom('processImport', 'forward', '', 'COM_SAML_IMPORT_PARSE', false);
 Toolbar::cancel();

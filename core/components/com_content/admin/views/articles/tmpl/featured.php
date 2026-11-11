@@ -17,6 +17,12 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, pagination: mixed} $this
+ */
+
 $canDo = \Components\Content\Admin\Helpers\Permissions::getActions($this->filters['category_id']);
 
 Toolbar::title(Lang::txt('COM_CONTENT_FEATURED_TITLE'), 'featured');

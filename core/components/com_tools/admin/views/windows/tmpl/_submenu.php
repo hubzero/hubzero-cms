@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $task = strtolower(Request::getCmd('task', ''));
 $baseUrl = Route::url(
     'index.php?option=' . $this->option

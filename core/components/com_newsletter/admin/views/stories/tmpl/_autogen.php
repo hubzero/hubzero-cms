@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{enabledSources: mixed, id: mixed, layouts: mixed, type: mixed} $this
+ */
+
 $canDo = Components\Newsletter\Helpers\Permissions::getActions('story');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));

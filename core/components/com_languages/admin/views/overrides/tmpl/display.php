@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, languages: mixed, pagination: mixed} $this
+ */
+
 $canDo = Components\Languages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_TITLE'), 'langmanager');

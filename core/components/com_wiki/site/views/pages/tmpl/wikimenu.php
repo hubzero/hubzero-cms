@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{page: mixed} $this
+ */
+
 use Components\Wiki\Helpers\Parser;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;

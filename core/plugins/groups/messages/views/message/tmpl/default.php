@@ -14,6 +14,18 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     group: mixed,
+ *     no_html: mixed,
+ *     option: mixed,
+ *     xmessage: mixed,
+ * } $this
+ */
+
 if (substr($this->xmessage->type, -8) == '_message') {
     $u = User::getInstance($this->xmessage->created_by);
     $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">'

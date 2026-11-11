@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{hubName: mixed, identifier: mixed, title: mixed} $this
+ */
+
 $this
      ->css('register')
      ->js('register');

@@ -2,6 +2,12 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{customAnswers: mixed, customFields: mixed} $this
+ */
+
     $this->js('customfields');
     $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
     $formInfo = ['control' => 'customfields'];

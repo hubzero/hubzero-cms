@@ -14,6 +14,12 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{history: mixed, pub: mixed, title: mixed} $this
+ */
+
 //push the stylesheet to the view
 \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
 \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');

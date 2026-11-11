@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed, notifications: mixed, plugins: mixed} $this
+ */
+
 //get no_html request var
 $no_html = Request::getInt('no_html', 0);
 $tmpl    = Request::getWord('tmpl', false);

@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{baseURL: mixed, sitename: mixed, user: mixed} $this
+ */
+
 ?>
     <!-- Start Header -->
     <table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">

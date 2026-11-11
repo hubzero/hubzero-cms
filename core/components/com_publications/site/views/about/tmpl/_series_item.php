@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{series: mixed} $this
+ */
+
 $series = $this->series;
 $abstract = $series->abstract;
 $publicationId = $series->publication_id;

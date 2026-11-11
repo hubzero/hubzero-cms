@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{collections: mixed, groupboards: mixed, item: mixed, myboards: mixed} $this
+ */
+
 $url = urldecode(Request::path());
 $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 ?>

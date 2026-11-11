@@ -8,6 +8,12 @@
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{configs: mixed, handler: mixed} $this
+ */
 ?>
 <div class="handlertype-<?php echo $this->handler->get('_name'); ?>">
     <h3><?php echo $this->escape($this->configs->label); ?></h3>

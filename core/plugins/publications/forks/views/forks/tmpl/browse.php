@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{forks: mixed, publication: mixed} $this
+ */
+
 $this->css();
 ?>
     <?php /*if ($v = $this->publication->version->get('forked_from')) { ?>

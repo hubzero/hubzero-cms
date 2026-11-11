@@ -8,6 +8,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{subs: mixed, userId: mixed} $this
+ */
+
 $subs = $this->subs;
 $userId = $this->userId;
 ?>

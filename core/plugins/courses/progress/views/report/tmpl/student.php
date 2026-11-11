@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{base: mixed, course: mixed, member: mixed} $this
+ */
+
 $this->course->offering()->gradebook()->refresh($this->member->get('id'));
 $grades   = $this->course->offering()->gradebook()->grades(null, $this->member->get('id'));
 $progress = $this->course->offering()->gradebook()->progress($this->member->get('id'));

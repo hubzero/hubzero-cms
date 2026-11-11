@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{note: mixed, option: mixed, page: mixed, project: mixed} $this
+ */
+
 // Sort notes to display hierarchy by scope
 $notes = [];
 $order = [];

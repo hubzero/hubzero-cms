@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{import: mixed} $this
+ */
+
 if ($this->import->get('id')) { ?>
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELDSET_MAPPING'); ?></span></legend>

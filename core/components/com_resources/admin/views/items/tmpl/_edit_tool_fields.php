@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed} $this
+ */
 ?>
 <div class="input-wrap">
     <p class="warning"><?php echo Lang::txt('COM_RESOURCES_WARNING_TOOLS_USE_PIPELINE'); ?></p>

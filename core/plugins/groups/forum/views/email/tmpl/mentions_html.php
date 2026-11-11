@@ -3,6 +3,19 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     comment: mixed,
+ *     commentNoTags: mixed,
+ *     groupAlias: mixed,
+ *     groupTitle: mixed,
+ *     postAuthor: mixed,
+ *     postLink: mixed,
+ * } $this
+ */
+
 $comment = $this->comment;
 $commentNoTags = $this->commentNoTags;
 

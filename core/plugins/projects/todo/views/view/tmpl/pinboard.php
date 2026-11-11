@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     filters: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     title: mixed,
+ *     todo: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 $this
      ->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system')

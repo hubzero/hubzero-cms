@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{section: mixed} $this
+ */
+
 $tmpl = Request::getString('tmpl', '');
 
 if ($tmpl != 'component') {

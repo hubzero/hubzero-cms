@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, manifest: mixed, parent: mixed, resource: mixed} $this
+ */
+
 $this
      ->css('video.css')
      ->js('video.js')

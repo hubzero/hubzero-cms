@@ -12,6 +12,20 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     key: mixed,
+ *     lat: mixed,
+ *     long: mixed,
+ *     option: mixed,
+ *     task: mixed,
+ *     type: mixed,
+ *     zoom: mixed,
+ * } $this
+ */
+
 $dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type
 . '&no_html=1&data=markers');
 $dataurl = str_replace('&amp;', '&', $dataurl);

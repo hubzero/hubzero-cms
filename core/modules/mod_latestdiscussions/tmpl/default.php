@@ -12,6 +12,18 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     categories: mixed,
+ *     charlimit: mixed,
+ *     limit: mixed,
+ *     posts: mixed,
+ *     threads: mixed,
+ * } $this
+ */
+
 $c = 0;
 ?>
 <div class="latest_discussions_module <?php echo $this->params->get('moduleclass_sfx'); ?>">

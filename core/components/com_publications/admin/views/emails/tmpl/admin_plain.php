@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{message: mixed, model: mixed, project: mixed, subject: mixed} $this
+ */
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $link = $base . '/projects/' . $this->model->project()->get('alias') . '/publications/' . $this->model->get('id');
 $pubLink = $base . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number');

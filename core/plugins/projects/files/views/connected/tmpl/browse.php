@@ -14,6 +14,21 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connection: mixed,
+ *     fileparams: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     sortby: mixed,
+ *     sortdir: mixed,
+ *     subdir: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('uploader')

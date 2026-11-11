@@ -12,6 +12,18 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     banking: mixed,
+ *     infolink: mixed,
+ *     option: mixed,
+ *     publication: mixed,
+ *     review: mixed,
+ * } $this
+ */
+
 $review = new Plugins\Publications\Reviews\Models\Review($this->review);
 
 if ($review->exists()) {

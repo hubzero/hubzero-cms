@@ -14,6 +14,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     category: mixed,
+ *     delimiter: mixed,
+ *     group: mixed,
+ *     post: mixed,
+ *     section: mixed,
+ *     thread: mixed,
+ *     unsubscribe: mixed,
+ * } $this
+ */
+
 $base = rtrim(Request::base(), '/');
 $sef  = Route::url($this->thread->link());
 $link = $base . '/' . trim($sef, '/');

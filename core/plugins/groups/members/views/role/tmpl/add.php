@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{available_permissions: mixed, group: mixed, option: mixed, role: mixed} $this
+ */
 ?>
 
 <?php if ($this->getError()) { ?>

@@ -15,6 +15,20 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     base: mixed,
+ *     cls: mixed,
+ *     comment: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     item_id: mixed,
+ *     question: mixed,
+ * } $this
+ */
+
 $cls = isset($this->cls) ? $this->cls : 'odd';
 if ($this->question->get('created_by') == $this->comment->get('created_by')) {
     $cls .= ' author';

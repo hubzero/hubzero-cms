@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{info: mixed, row: mixed} $this
+ */
+
 ?>
 <li>
     <span class="pub-thumb"><img width="40" height="40" src="<?= Route::url($this->row->link('thumb')) ?>"

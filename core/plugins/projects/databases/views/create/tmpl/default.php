@@ -32,6 +32,21 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     db_id: mixed,
+ *     desc: mixed,
+ *     dir: mixed,
+ *     file: mixed,
+ *     files: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this->css();
 
 // Check for errors

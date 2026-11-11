@@ -9,6 +9,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     fileparams: mixed,
+ *     item: mixed,
+ *     model: mixed,
+ *     params: mixed,
+ *     publishing: mixed,
+ *     repo: mixed,
+ *     subdir: mixed,
+ * } $this
+ */
+
 
 use Components\Tools\Models\Orm\Handler;
 use Hubzero\Facades\Lang;

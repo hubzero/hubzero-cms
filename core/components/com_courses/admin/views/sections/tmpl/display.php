@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed, filters: mixed, offering: mixed, rows: mixed, total: mixed} $this
+ */
+
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SECTIONS'), 'courses');

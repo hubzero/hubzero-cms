@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{base: mixed, recvEmailOptionID: mixed, recvEmailOptionValue: mixed} $this
+ */
+
 $base = $this->base;
 ?>
 

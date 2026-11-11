@@ -11,6 +11,12 @@ use Hubzero\Facades\Date;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{products: mixed, skus: mixed} $this
+ */
+
 $productsCount = 0;
 if (!empty($this->products)) {
     $productsCount = count($this->products);

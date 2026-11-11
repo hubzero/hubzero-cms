@@ -17,6 +17,19 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     expiration_supported: mixed,
+ *     expirations: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');

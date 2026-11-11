@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed} $this
+ */
+
 $canDo = Components\Tags\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_TAGS'), 'tags');

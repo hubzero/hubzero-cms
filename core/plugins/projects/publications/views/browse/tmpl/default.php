@@ -12,6 +12,23 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     dirsize: mixed,
+ *     filters: mixed,
+ *     new_pubs: mixed,
+ *     option: mixed,
+ *     project: mixed,
+ *     pub: mixed,
+ *     quota: mixed,
+ *     rows: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 // Sorting and paging
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend = '&sortdir=' . urlencode($sortbyDir);

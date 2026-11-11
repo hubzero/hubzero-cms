@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{profile: mixed} $this
+ */
 ?>
 <fieldset class="adminform">
     <legend><span><?php echo Lang::txt('COM_MEMBERS_HOSTS'); ?></span></legend>

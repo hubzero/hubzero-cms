@@ -13,6 +13,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     featuredgroups: mixed,
+ *     interestinggroups: mixed,
+ *     mygroups: mixed,
+ *     notifications: mixed,
+ *     populargroups: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('introduction.css', 'system')
      ->css()

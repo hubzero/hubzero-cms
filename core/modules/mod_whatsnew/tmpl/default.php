@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Whatsnew\Whatsnew $this
+ */
+
 // Output HTML
 $html  = '<div class="' . $this->module->module . '"' . ($this->cssId ? ' id="' . $this->cssId . '"' : '') . '>' . "\n";
 

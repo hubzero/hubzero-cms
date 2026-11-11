@@ -13,6 +13,20 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     ajax: mixed,
+ *     amt: mixed,
+ *     du: mixed,
+ *     msgs: mixed,
+ *     percent: mixed,
+ *     total: mixed,
+ *     writelink: mixed,
+ * } $this
+ */
+
 $html = '';
 if (!$this->ajax) {
     $html .= '<dl id="diskusage" data-base="' . rtrim(Request::base(true), '/') . '">' . "\n";

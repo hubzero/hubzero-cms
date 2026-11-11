@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{components: mixed, member: mixed, notimethods: mixed, settings: mixed} $this
+ */
+
 Lang::load('plg_members_messages', PATH_CORE . '/plugins/members/messages');
 
 $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.edit', $this->option));

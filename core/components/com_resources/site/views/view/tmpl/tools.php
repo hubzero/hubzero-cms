@@ -16,6 +16,21 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     cats: mixed,
+ *     curtool: mixed,
+ *     model: mixed,
+ *     revision: mixed,
+ *     sections: mixed,
+ *     tab: mixed,
+ *     tconfig: mixed,
+ *     thistool: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();

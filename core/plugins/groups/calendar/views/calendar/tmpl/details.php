@@ -14,6 +14,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     calendar: mixed,
+ *     event: mixed,
+ *     group: mixed,
+ *     option: mixed,
+ *     registrants: mixed,
+ *     user: mixed,
+ * } $this
+ */
+
 $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
 $params = new \Hubzero\Config\Registry($this->event->get('params'));

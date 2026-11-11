@@ -16,6 +16,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     categories: mixed,
+ *     firstversion: mixed,
+ *     group: mixed,
+ *     page: mixed,
+ *     pageTemplates: mixed,
+ *     pages: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
 // define base links
 $base = Route::url(
     'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn,

@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{cssClass: mixed, cssId: mixed, rows: mixed, style: mixed} $this
+ */
 ?>
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
         echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>

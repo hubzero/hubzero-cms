@@ -10,6 +10,12 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{id: mixed} $this
+ */
+
 $base = rtrim(Request::base(true), '/');
 ?>
 <div class="col span-half">

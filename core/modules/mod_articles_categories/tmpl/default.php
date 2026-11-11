@@ -7,6 +7,12 @@
  */
 
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <ul class="categories-module<?php echo $moduleclass_sfx; ?>">
     <?php require $this->getLayoutPath($params->get('layout', 'default') . '_items'); ?>

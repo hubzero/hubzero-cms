@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{clusters: mixed, resource: mixed, stats: mixed, url: mixed} $this
+ */
 ?>
 <p class="usage">
     <?php if ($this->resource->type == 7) : ?>

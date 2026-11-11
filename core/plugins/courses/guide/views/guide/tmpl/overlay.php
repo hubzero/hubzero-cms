@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, offering: mixed, plugin: mixed} $this
+ */
+
 $plugins = Event::trigger('courses.onCourse', [
     $this->course,
     $this->offering,

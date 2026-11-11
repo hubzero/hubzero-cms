@@ -15,6 +15,18 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     filters: mixed,
+ *     managers_count: mixed,
+ *     project: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $group = $this->project->groupOwner();
 
 $members = [];

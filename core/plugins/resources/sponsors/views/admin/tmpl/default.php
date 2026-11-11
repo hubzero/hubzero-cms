@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{controller: mixed, filters: mixed, option: mixed, rows: mixed} $this
+ */
+
 Toolbar::addNew();
 Toolbar::deleteList();
 

@@ -10,6 +10,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed, offering: mixed, section: mixed, sections: mixed} $this
+ */
 ?>
     <div class="btn-group-wrap">
         <div class="btn-group dropdown">

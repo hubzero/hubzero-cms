@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{items: mixed, model: mixed} $this
+ */
 ?>
 <?php
 $todoUrl = Route::url($this->model->link('todo'));

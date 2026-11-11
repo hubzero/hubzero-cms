@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, mailings: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGS'), 'mailing');
 Toolbar::spacer();
 Toolbar::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');

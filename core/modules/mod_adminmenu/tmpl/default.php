@@ -8,6 +8,12 @@
 
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Adminmenu\Adminmenu $this
+ */
+
 require $this->getLayoutPath($enabled ? 'default_enabled' : 'default_disabled');
 
 $menu->renderMenu('menu', $enabled ? '' : 'disabled');

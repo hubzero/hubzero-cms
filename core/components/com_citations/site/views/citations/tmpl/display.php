@@ -12,6 +12,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     allow_bulk_import: mixed,
+ *     allow_import: mixed,
+ *     isAdmin: mixed,
+ *     title: mixed,
+ *     typestats: mixed,
+ *     yearlystats: mixed,
+ * } $this
+ */
+
 $this
      ->css('introduction.css', 'system')
      ->css('usage.css', 'com_usage')

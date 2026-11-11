@@ -11,6 +11,24 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     inStock: mixed,
+ *     meta: mixed,
+ *     notifications: mixed,
+ *     options: mixed,
+ *     pId: mixed,
+ *     price: mixed,
+ *     product: mixed,
+ *     productAvailable: mixed,
+ *     qtyDropDown: mixed,
+ *     statusMessage: mixed,
+ * } $this
+ */
+
 ?>
 <header id="content-header">
     <h2><?php echo $this->escape($this->product->pName); ?></h2>

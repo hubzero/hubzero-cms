@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{feed: mixed} $this
+ */
 ?>
 <div class="youtubefeed<?php echo $this->params->get('moduleclass_sfx'); ?>">
 <?php

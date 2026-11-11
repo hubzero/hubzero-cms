@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{post: mixed} $this
+ */
+
 $content = \Hubzero\Utility\Str::truncate(strip_tags($this->post->get('comment')), 200);
 ?>
 <li class="forum-entry">

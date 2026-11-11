@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{model: mixed, option: mixed} $this
+ */
+
 $this->css();
 
 if ($this->model->isTool()) {

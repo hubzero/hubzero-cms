@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{filters: mixed, todo: mixed, uid: mixed} $this
+ */
+
 $url = 'index.php?option=com_members&id=' . $this->uid . '&active=todo';
 
 $sortAppend = '';

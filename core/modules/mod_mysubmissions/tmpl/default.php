@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{rows: mixed, steps: mixed} $this
+ */
+
 if (User::isGuest()) { ?>
     <p class="warning">
         <?php

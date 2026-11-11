@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{title: mixed} $this
+ */
 ?>
 <header id="content-header" class="full">
     <h2><?php echo $this->title; ?></h2>

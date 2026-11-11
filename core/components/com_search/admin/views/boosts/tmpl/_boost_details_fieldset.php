@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{boost: mixed, disableType: mixed, typeOptions: mixed} $this
+ */
+
 $boost = $this->boost;
 $disableType = isset($this->disableType) ? $this->disableType : false;
 $typeOptions = $this->typeOptions;

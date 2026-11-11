@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, documentation: mixed, tokens: mixed} $this
+ */
+
 $siteUrl = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
 $host = (string) parse_url($siteUrl, PHP_URL_HOST);
 list($base) = explode('.', $host);

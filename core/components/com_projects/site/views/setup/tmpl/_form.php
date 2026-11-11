@@ -11,6 +11,12 @@ use Hubzero\Facades\Html;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed, section: mixed, step: mixed} $this
+ */
+
 ?>
 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 <input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />

@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form_action: mixed, oauth_token: mixed} $this
+ */
+
 ?>
 
 <form action="<?= isset($this->form_action) ? $this->escape($this->form_action) : '' ?>" id="oauth_form" method="post">

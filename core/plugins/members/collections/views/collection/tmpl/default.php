@@ -18,6 +18,26 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     collection: mixed,
+ *     collections: mixed,
+ *     filters: mixed,
+ *     followers: mixed,
+ *     following: mixed,
+ *     member: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     posts: mixed,
+ *     rows: mixed,
+ *     task: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $base = $this->member->link() . '&active=' . $this->name;
 
 if (!$this->collection->get('layout')) {

@@ -16,6 +16,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{member: mixed, no_html: mixed, option: mixed, tos: mixed} $this
+ */
+
 //is the autocompleter disabled
 $disabled = ($this->tos) ? true : false;
 

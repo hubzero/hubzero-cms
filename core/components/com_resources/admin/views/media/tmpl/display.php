@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{dirPath: mixed, listdir: mixed, path: mixed, subdir: mixed} $this
+ */
+
 if ($this->getError()) {
     echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }

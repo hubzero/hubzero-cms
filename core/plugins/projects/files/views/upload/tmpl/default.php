@@ -12,6 +12,24 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     postLimit: mixed,
+ *     repo: mixed,
+ *     sizelimit: mixed,
+ *     subdir: mixed,
+ *     title: mixed,
+ *     unused: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 if (!$this->ajax) {
     $this->css('uploader');
 }

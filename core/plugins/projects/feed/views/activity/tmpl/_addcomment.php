@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{activity: mixed, model: mixed, option: mixed} $this
+ */
+
 // Add Comment
 if ($this->model->access('content')) { ?>
 <div class="commentform addcomment hidden" id="commentform_<?php echo $this->activity->log->get('id'); ?>">

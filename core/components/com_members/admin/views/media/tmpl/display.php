@@ -15,6 +15,12 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{profile: mixed} $this
+ */
+
 $this->css('
 hr {
 	margin: 0;

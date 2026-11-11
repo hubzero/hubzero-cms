@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{tags: mixed} $this
+ */
+
 $exclude = explode(',', $this->params->get('exclude', ''));
 $exclude = array_map('trim', $exclude);
 

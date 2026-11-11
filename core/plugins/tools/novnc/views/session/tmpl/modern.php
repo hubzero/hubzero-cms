@@ -22,6 +22,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{app: mixed, clipboard: mixed, output: mixed, readOnly: mixed} $this
+ */
+
 $this->js('jquery.editable.min.js', 'system');
 
 // Shared recovery overlay: registers assets and emits #novnc-reconnect-config

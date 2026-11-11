@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{rows: mixed} $this
+ */
+
 $encodeCSVField = function ($string) {
     if (strpos($string, ',') !== false || strpos($string, '"') !== false || strpos($string, "\n") !== false) {
         $string = '"' . str_replace('"', '""', $string) . '"';

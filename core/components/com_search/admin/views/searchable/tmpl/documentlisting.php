@@ -15,6 +15,18 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     blacklist: mixed,
+ *     documents: mixed,
+ *     facet: mixed,
+ *     filter: mixed,
+ *     pagination: mixed,
+ * } $this
+ */
+
 Toolbar::title(Lang::txt('Solr Search Indexed Documents'));
 Toolbar::back();
 Toolbar::preferences($this->option, '550');

@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{book: mixed, page: mixed, sub: mixed} $this
+ */
+
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_RECENT_CHANGES'),
     $this->page->link(),

@@ -13,6 +13,12 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{action: mixed, id: mixed, isEnabled: mixed} $this
+ */
+
 $id = $this->id;
 $action = $this->action;
 $isEnabled = $this->isEnabled;

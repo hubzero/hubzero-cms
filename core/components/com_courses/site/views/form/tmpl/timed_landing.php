@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{base: mixed, dep: mixed, pdf: mixed, resp: mixed} $this
+ */
 ?>
 <p>
     You have <strong><?php echo Form::timeDiff($realLimit * 60); ?></strong> to complete this form.

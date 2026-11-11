@@ -34,6 +34,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed} $this
+ */
 ?>
 <div class="width-100">
     <fieldset class="adminform">

@@ -13,6 +13,32 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     childTermsString: mixed,
+ *     facetCounts: mixed,
+ *     facets: mixed,
+ *     filters: mixed,
+ *     maxlat: mixed,
+ *     maxlon: mixed,
+ *     minlat: mixed,
+ *     minlon: mixed,
+ *     pagination: mixed,
+ *     results: mixed,
+ *     searchComponent: mixed,
+ *     section: mixed,
+ *     spellSuggestions: mixed,
+ *     tagSearchEnabled: mixed,
+ *     tags: mixed,
+ *     terms: mixed,
+ *     total: mixed,
+ *     type: mixed,
+ *     viewOverrides: mixed,
+ * } $this
+ */
+
 $this
     ->css('search-enhanced')
     ->css('jquery.datetimepicker.css', 'system');

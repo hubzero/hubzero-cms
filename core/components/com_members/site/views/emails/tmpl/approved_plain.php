@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{sitename: mixed, user: mixed} $this
+ */
 ?>
 
 <?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED'); ?>: <?php echo $this->user->get('registerDate'); ?> UTC

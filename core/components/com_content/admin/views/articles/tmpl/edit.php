@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed, item: mixed} $this
+ */
+
 $canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $this->item->get('id'));
 
 // Load the tooltip behavior.

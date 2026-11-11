@@ -14,6 +14,12 @@ use Hubzero\Facades\Module;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{admin: mixed, module: mixed} $this
+ */
+
 // create user params registry
 $params = new \Hubzero\Config\Registry($this->module->params);
 

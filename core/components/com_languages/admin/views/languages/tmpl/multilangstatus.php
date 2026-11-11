@@ -12,6 +12,20 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     contentlangs: mixed,
+ *     homepages: mixed,
+ *     homes: mixed,
+ *     language_filter: mixed,
+ *     site_langs: mixed,
+ *     statuses: mixed,
+ *     switchers: mixed,
+ * } $this
+ */
+
 $notice_homes     = $this->homes == 2 || $this->homes == 1 && ($this->language_filter || $this->switchers != 0);
 $notice_disabled  = !$this->language_filter && ($this->homes > 1 || $this->switchers != 0);
 $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_filter);

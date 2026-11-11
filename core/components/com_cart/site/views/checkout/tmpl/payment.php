@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{transaction: mixed} $this
+ */
+
 /*$this->css()
      ->js('spin.min.js')
      ->js('autosubmit.js');*/

@@ -16,6 +16,19 @@ use Hubzero\Facades\Component;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     canDo: mixed,
+ *     f_levels: mixed,
+ *     filters: mixed,
+ *     items: mixed,
+ *     ordering: mixed,
+ *     pagination: mixed,
+ * } $this
+ */
+
 //$canAdmin = User::authorise('core.admin', 'com_categories');
 //$canCreate = User::authorise('core.create', 'com_categories');
 //$canEdit = User::authorise('core.edit', 'com_categories');

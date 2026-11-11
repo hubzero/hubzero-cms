@@ -18,6 +18,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{groups: mixed, isnew: mixed, licenses: mixed, model: mixed} $this
+ */
+
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 

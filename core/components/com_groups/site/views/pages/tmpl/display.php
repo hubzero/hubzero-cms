@@ -11,6 +11,18 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     categories: mixed,
+ *     config: mixed,
+ *     group: mixed,
+ *     pages: mixed,
+ *     search: mixed,
+ * } $this
+ */
 ?>
 <ul class="toolbar toolbar-pages">
     <li class="new">

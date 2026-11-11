@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{selected: mixed, team: mixed} $this
+ */
+
 if (count($this->team) > 0) {
     ?>
     <ul class="team-selector" id="team-selector">

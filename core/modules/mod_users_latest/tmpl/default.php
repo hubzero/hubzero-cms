@@ -8,6 +8,12 @@
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <?php if (!empty($names)) : ?>
     <ul class="latestusers<?php echo $moduleclass_sfx; ?>">

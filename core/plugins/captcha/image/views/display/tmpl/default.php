@@ -13,6 +13,12 @@ use Hubzero\Facades\Request;
 // @phpcs:disable PSR1.Files.SideEffects
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{total: mixed} $this
+ */
+
 $current = Request::current();
 
 $append = '?';

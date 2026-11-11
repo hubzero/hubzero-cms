@@ -14,6 +14,12 @@ use Hubzero\Facades\Session;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{file: mixed, id: mixed, path: mixed, type: mixed} $this
+ */
 ?>
 <div id="media">
     <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>

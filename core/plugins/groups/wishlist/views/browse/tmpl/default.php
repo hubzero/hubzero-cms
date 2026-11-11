@@ -15,6 +15,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     items: mixed,
+ *     rows: mixed,
+ *     wishlist: mixed,
+ * } $this
+ */
+
 $this->css();
 
 $title = ($this->admin) ? Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');

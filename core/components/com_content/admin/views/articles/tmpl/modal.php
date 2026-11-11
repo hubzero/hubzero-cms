@@ -18,6 +18,12 @@ use Hubzero\Facades\Session;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, pagination: mixed} $this
+ */
+
 if (App::isSite()) {
     Session::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }

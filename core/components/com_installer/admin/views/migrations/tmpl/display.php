@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{breadcrumb: mixed, filters: mixed, rows: mixed, total: mixed} $this
+ */
+
 $canDo = Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_MIGRATIONS'));

@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed} $this
+ */
+
 $published = $this->filters['published'];
 ?>
 <fieldset class="batch">

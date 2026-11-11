@@ -16,6 +16,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{address: mixed, addressId: mixed, member: mixed} $this
+ */
+
 $this
     ->css()
     ->js();

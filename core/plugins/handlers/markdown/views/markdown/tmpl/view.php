@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{rendered: mixed} $this
+ */
 ?>
 <div class="file-preview markdown">
     <?php if ($this->getError()) : ?>

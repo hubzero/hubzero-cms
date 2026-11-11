@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed, user: mixed} $this
+ */
+
 $sef = Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id);
 
 $message  = Lang::txt('EVENTS_CAL_LANG_ACT_MODIFIED_BY', $this->user->get('name'), $this->user->get('username'));

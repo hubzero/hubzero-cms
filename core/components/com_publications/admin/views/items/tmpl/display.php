@@ -16,6 +16,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     categories: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     model: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Publications\Helpers\Permissions::getActions('item');
 
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'publications');

@@ -13,6 +13,12 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{folders: mixed, show: mixed} $this
+ */
+
 if ($this->getError()) { ?>
     <li class="error">Error: <?php echo $this->getError(); ?></li>
 <?php }

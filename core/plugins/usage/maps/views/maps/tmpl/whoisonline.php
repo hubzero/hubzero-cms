@@ -10,6 +10,12 @@ use Hubzero\Facades\Document;
 use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{key: mixed, lat: mixed, long: mixed, mappath: mixed, zoom: mixed} $this
+ */
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo Document::getDirection(); ?>" lang="<?php echo Document::getLanguage(); ?>" class="no-js">

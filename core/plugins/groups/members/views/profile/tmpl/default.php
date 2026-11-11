@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     fields: mixed,
+ *     group: mixed,
+ *     membership_control: mixed,
+ *     params: mixed,
+ *     profile: mixed,
+ * } $this
+ */
+
 $this->css('profile.css');
 
 

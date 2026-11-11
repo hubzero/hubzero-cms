@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{content: mixed, msg: mixed, pid: mixed, project: mixed, title: mixed} $this
+ */
+
 $this
      ->css()
      ->css('jquery.fancybox.css', 'system')

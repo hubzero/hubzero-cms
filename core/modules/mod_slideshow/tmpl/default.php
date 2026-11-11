@@ -8,6 +8,12 @@
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{height: mixed, noflash_file: mixed, noflash_link: mixed, width: mixed} $this
+ */
 ?>
 <div id="xflash-container">
     <!-- Image slideshow -->

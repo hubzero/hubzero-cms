@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{client: mixed, id: mixed, template: mixed, tp: mixed, url: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER'), 'thememanager');
 Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false);
 

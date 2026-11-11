@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{email: mixed, list: mixed} $this
+ */
+
 //set title
 $text = ($this->task == 'editEmail' ? Lang::txt('Edit') : Lang::txt('New'));
 

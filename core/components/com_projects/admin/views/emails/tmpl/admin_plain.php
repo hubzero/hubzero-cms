@@ -13,6 +13,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{message: mixed, project: mixed, subject: mixed} $this
+ */
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $projectUrl = $base . '/projects/' . $this->project->get('alias');
 

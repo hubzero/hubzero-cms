@@ -18,6 +18,22 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     closedTickets: mixed,
+ *     closedmonths: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     first: mixed,
+ *     groups: mixed,
+ *     opened: mixed,
+ *     openedmonths: mixed,
+ *     users: mixed,
+ * } $this
+ */
+
 $toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS');
 Toolbar::title($toolbarTitle, 'support');
 

@@ -14,6 +14,12 @@ use Hubzero\Utility\Str;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{rows1: mixed, rows2: mixed} $this
+ */
+
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
     <?php if ($this->params->get('button_show_add', 1)) { ?>

@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{first_vote: mixed, last_vote: mixed, poll: mixed, votes: mixed} $this
+ */
+
 $votes = 0;
 ?>
 <div class="section-inner hz-layout-with-aside">

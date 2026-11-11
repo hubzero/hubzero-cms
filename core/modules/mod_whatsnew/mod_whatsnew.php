@@ -22,16 +22,16 @@ use Hubzero\Facades\User;
  */
 class Whatsnew extends Module
 {
-    protected $area;
-    protected $cssId;
-    protected $feed;
-    protected $feedlink;
-    protected $period;
-    protected $rows;
-    protected $rows2;
+    public $area;
+    public $cssId;
+    public $feed;
+    public $feedlink;
+    public $period;
+    public $rows;
+    public $rows2;
     protected $searchareas;
-    protected $tagged;
-    protected $tags;
+    public $tagged;
+    public $tags;
 
     /**
      * Get the categories for What's New

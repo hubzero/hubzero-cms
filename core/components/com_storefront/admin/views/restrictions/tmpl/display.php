@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed, sId: mixed, sku: mixed, total: mixed} $this
+ */
+
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 

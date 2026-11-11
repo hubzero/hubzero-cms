@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{cell: mixed, parser: mixed} $this
+ */
+
 $cell = $this->cell;
 
 // nbformat multiline_string fields are a list of lines OR a single string

@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <a href="<?php echo $link; ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
     <?php echo Html::asset('icon', 'feed'); ?>

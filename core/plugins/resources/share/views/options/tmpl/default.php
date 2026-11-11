@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{_params: mixed, option: mixed, resource: mixed} $this
+ */
+
 $this
      ->css()
      ->js();

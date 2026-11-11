@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed} $this
+ */
+
 $canDo = \Components\Answers\Helpers\Permissions::getActions('question');
 
 $text = ($this->task == 'edit'

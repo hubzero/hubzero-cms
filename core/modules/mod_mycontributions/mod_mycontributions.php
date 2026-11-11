@@ -17,14 +17,14 @@ use Hubzero\Facades\User;
  */
 class Mycontributions extends Module
 {
-    protected $contributions;
-    protected $limit_other;
-    protected $limit_tools;
-    protected $show_questions;
-    protected $show_tickets;
-    protected $show_tools;
-    protected $show_wishes;
-    protected $tools;
+    public $contributions;
+    public $limit_other;
+    public $limit_tools;
+    public $show_questions;
+    public $show_tickets;
+    public $show_tools;
+    public $show_wishes;
+    public $tools;
 
     /**
      * Get a list of contributions

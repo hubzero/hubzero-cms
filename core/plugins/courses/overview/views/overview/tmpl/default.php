@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, option: mixed} $this
+ */
+
 $field = strtolower(Request::getWord('field', ''));
 $task  = strtolower(Request::getWord('task', ''));
 

@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{classes: mixed, filters: mixed, rows: mixed, total: mixed} $this
+ */
+
 // Menu
 Toolbar::title(Lang::txt('COM_TOOLS_USER_PREFS'), 'user.png');
 Toolbar::addNew();

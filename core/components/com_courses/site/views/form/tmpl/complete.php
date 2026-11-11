@@ -12,6 +12,19 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     course: mixed,
+ *     dep: mixed,
+ *     incomplete: mixed,
+ *     pdf: mixed,
+ *     resp: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('form.css')
      ->js('complete.js');

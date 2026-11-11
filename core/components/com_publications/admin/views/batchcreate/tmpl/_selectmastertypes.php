@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{mastertypes: mixed} $this
+ */
+
 $html  = '<select name="mastertypeid" id="mastertypeid">' . "\n";
 $label = Lang::txt('COM_PUBLICATIONS_SELECT_MASTER_TYPE');
 $html .= "\t" . '<option value="0" selected="selected">' . $label . '</option>';

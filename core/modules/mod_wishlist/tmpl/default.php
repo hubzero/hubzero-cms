@@ -12,6 +12,20 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     accepted: mixed,
+ *     granted: mixed,
+ *     pending: mixed,
+ *     rejected: mixed,
+ *     removed: mixed,
+ *     wishlist: mixed,
+ *     withdrawn: mixed,
+ * } $this
+ */
+
 Html::behavior('chart', 'pie');
 
 $this->css();

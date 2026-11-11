@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{isAuthor: mixed, reviews: mixed, url: mixed, url2: mixed} $this
+ */
 ?>
 
 <p class="review">

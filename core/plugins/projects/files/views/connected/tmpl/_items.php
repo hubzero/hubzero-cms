@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{config: mixed, connection: mixed, items: mixed, model: mixed, subdir: mixed} $this
+ */
+
 $handlerBase = DS . trim($this->config->get('handler_base_path', 'srv' . DS . 'projects'), DS);
 if (!strstr($handlerBase, '{')) {
     $handlerBase .= '/{project}/files/{file}';

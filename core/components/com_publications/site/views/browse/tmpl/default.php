@@ -13,6 +13,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     categories: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     pageNav: mixed,
+ *     results: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $database = App::get('db');
 
 $this

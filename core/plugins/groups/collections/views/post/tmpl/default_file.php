@@ -11,6 +11,19 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     actual: mixed,
+ *     group: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
 $item = $this->row->item();
 
 $content = $this->row->description('parsed');

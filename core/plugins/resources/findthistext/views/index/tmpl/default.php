@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{model: mixed, openurl: mixed} $this
+ */
+
 $this->css();
 
 // parse the custom fields out of the resource

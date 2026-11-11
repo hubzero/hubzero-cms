@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{banking: mixed, infolink: mixed, option: mixed, review: mixed} $this
+ */
+
 if ($this->review->get('id')) {
     $title = Lang::txt('PLG_RESOURCES_REVIEWS_EDIT_YOUR_REVIEW');
 } else {

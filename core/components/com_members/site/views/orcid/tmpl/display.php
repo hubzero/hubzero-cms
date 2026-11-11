@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, orcid_records_html: mixed} $this
+ */
+
 $fname = Request::getString('fname', '');
 $lname = Request::getString('lname', '');
 $email = Request::getString('email', '');

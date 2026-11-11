@@ -12,6 +12,20 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     file: mixed,
+ *     pid: mixed,
+ *     shot: mixed,
+ *     upath: mixed,
+ *     version: mixed,
+ *     vid: mixed,
+ *     wpath: mixed,
+ * } $this
+ */
+
 $size = getimagesize($this->upath . DS . $this->file);
 $w = ($size[0] > 600) ? $size[0] / 1.4444444 : $size[0];
 $h = ($w != $size[0]) ? $size[1] / 1.4444444 : $size[1];

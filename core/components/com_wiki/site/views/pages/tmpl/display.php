@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{page: mixed} $this
+ */
+
 if ($this->page->isStatic()) {
     echo $this->loadTemplate('static');
 } else {

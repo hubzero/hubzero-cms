@@ -12,6 +12,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{factors: mixed} $this
+ */
+
 Request::setVar('hidemainmenu', 1);
 Toolbar::title(Lang::txt('COM_LOGIN_FACTORS_VERIFICATION'));
 

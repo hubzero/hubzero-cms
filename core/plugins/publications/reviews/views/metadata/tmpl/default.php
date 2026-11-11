@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{reviews: mixed, url: mixed, url2: mixed} $this
+ */
 ?>
 <p class="review">
     <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_NUM_REVIEWS', $this->reviews); ?>

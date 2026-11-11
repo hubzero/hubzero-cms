@@ -14,6 +14,22 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     category: mixed,
+ *     config: mixed,
+ *     course: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     post: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
 $base = $this->offering->link() . '&active=discussions';
 
 $this->category->set('section_alias', $this->filters['section']);

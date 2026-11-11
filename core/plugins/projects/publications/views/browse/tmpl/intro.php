@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{pub: mixed} $this
+ */
 ?>
 
 <div id="pubintro">

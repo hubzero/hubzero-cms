@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{data: mixed, i: mixed, row: mixed} $this
+ */
+
 $i = $this->i;
 $data = $this->data;
 $row = $this->row;

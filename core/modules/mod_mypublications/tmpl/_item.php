@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 $link = $item->link('version');
 
 if ($item->get('state') == Components\Publications\Models\Orm\Version::STATE_DRAFT) :

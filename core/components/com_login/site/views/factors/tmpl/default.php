@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{factors: mixed} $this
+ */
+
 $this->css('factors.css');
 ?>
 

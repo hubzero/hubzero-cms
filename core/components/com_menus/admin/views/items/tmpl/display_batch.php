@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed} $this
+ */
+
 $options = [
     Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
     Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE')),

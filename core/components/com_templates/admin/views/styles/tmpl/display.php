@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, preview: mixed, rows: mixed} $this
+ */
+
 $canDo = \Components\Templates\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_STYLES'), 'thememanager');

@@ -11,6 +11,19 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     first_vote: mixed,
+ *     last_vote: mixed,
+ *     lists: mixed,
+ *     params: mixed,
+ *     poll: mixed,
+ *     votes: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 

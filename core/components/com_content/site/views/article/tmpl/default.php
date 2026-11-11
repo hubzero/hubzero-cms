@@ -18,6 +18,12 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{item: mixed, pageclass_sfx: mixed, params: mixed, print: mixed} $this
+ */
+
 Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 
 // Create shortcuts to some parameters.

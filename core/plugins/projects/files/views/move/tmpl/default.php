@@ -13,6 +13,22 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     items: mixed,
+ *     list: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     path: mixed,
+ *     repo: mixed,
+ *     subdir: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $f = 1;
 $i = 1;
 $skipped = 0;

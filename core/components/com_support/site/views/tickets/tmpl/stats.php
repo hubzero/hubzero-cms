@@ -16,6 +16,25 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     closedTickets: mixed,
+ *     closedmonths: mixed,
+ *     config: mixed,
+ *     end: mixed,
+ *     group: mixed,
+ *     groups: mixed,
+ *     opened: mixed,
+ *     openedmonths: mixed,
+ *     start: mixed,
+ *     title: mixed,
+ *     type: mixed,
+ *     users: mixed,
+ * } $this
+ */
+
 $this
      ->js('flot/jquery.flot.min.js', 'system')
      ->js('flot/jquery.flot.time.min.js', 'system')

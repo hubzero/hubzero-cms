@@ -12,6 +12,12 @@ use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{group: mixed, no_html: mixed, option: mixed, roles: mixed, uid: mixed} $this
+ */
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>

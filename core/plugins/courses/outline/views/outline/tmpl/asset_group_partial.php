@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{ag: mixed, base: mixed, course: mixed, unit: mixed} $this
+ */
 ?>
 
 <li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished'; ?>"

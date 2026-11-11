@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{severities: mixed, sitename: mixed} $this
+ */
 ?>
 This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?>
 support tickets.  It includes a list of tickets, highest to

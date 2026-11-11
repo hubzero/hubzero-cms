@@ -17,6 +17,19 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     canModerate: mixed,
+ *     canStar: mixed,
+ *     group: mixed,
+ *     online: mixed,
+ *     plugin: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
 $status = '';
 if (!$this->row->wasViewed()) {
     $status = 'new';

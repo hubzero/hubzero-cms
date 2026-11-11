@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $name = Request::getString('module');
 
 if ($name && !User::isGuest()) {

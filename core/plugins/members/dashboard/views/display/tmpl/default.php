@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{admin: mixed, modules: mixed, params: mixed} $this
+ */
+
 // is the dashboard customizable?
 $customizable = true;
 if ($this->params->get('allow_customization', 1) == 0) :

@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{postUrl: mixed, siteDetails: mixed, transactionDetails: mixed} $this
+ */
 ?>
 
 <?php

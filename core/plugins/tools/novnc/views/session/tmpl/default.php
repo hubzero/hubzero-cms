@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{app: mixed, output: mixed, params: mixed} $this
+ */
+
 if (!$this->app->sess) {
     echo '<p class="error"><strong>'
         . Lang::txt('PLG_TOOLS_NOVNC_ERROR')

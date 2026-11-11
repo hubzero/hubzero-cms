@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed, status: mixed, version: mixed} $this
+ */
+
 $allowupload = ($this->version == 'current' or !$this->status['published']) ? 1 : 0;
 ?>
     <div class="explaination">

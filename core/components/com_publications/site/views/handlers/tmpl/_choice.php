@@ -12,6 +12,18 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     configs: mixed,
+ *     handler: mixed,
+ *     item: mixed,
+ *     props: mixed,
+ *     publication: mixed,
+ * } $this
+ */
+
 $class = $this->item->assigned && $this->item->active ? ' assigned' : ' unassigned';
 ?>
 

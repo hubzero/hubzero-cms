@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, pagination: mixed, rows: mixed} $this
+ */
+
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Document::setTitle(Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADER_' . $this->controller));

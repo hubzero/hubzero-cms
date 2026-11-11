@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed, publicView: mixed} $this
+ */
+
 ?>
 <div id="project-header" class="project-header">
     <div class="grid">

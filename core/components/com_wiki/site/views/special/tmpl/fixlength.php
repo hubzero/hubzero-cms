@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{page: mixed} $this
+ */
+
 // This page repairs stored data as it renders (on a plain GET), so it is a
 // wiki manager's tool, not something any visitor or crawler may trigger
 if (!$this->page->access('manage')) {

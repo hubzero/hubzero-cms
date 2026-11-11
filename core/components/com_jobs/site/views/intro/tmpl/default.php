@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{admin: mixed, config: mixed, emp: mixed, msg: mixed, title: mixed} $this
+ */
+
 $loginUrl = Route::url(
     'index.php?option=' . $this->option . '&task=view',
 ) . '?action=login';

@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{offering: mixed, page: mixed, pages: mixed} $this
+ */
+
 $base = $this->offering->link() . '&active=pages';
 ?>
 <div class="pages-menu">

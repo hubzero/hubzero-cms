@@ -12,6 +12,18 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     archived: mixed,
+ *     draft: mixed,
+ *     published: mixed,
+ *     totals: mixed,
+ *     unpublished: mixed,
+ * } $this
+ */
+
 $this->css();
 
 Html::behavior('chart');

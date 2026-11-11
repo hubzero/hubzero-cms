@@ -15,6 +15,27 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     cats: mixed,
+ *     config: mixed,
+ *     contributable: mixed,
+ *     database: mixed,
+ *     lastPubRelease: mixed,
+ *     publication: mixed,
+ *     restricted: mixed,
+ *     sections: mixed,
+ *     tab: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
+// The models below take the database by reference
+$database = $this->database;
+
 $this
     ->css()
     ->css('jquery.fancybox.css', 'system')
@@ -34,7 +55,7 @@ if ($this->config->get('launcher_layout', 0)) {
          ->set('contributable', $this->contributable)
          ->set('authorized', $this->authorized)
          ->set('restricted', $this->restricted)
-         ->set('database', $this->database)
+         ->set('database', $database)
          ->set('lastPubRelease', $this->lastPubRelease)
          ->set('version', $this->version)
          ->set('sections', $this->sections)
@@ -97,7 +118,7 @@ if ($this->config->get('launcher_layout', 0)) {
                         $elements = $this->publication->_curationModel->getElements(1);
 
                         // Get attachment type model
-                        $attModel = new \Components\Publications\Models\Attachments($this->database);
+                        $attModel = new \Components\Publications\Models\Attachments($database);
 
                         if ($elements) {
                             $element = $elements[0];

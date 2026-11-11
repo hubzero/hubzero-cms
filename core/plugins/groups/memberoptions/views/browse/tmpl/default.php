@@ -13,6 +13,17 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     group: mixed,
+ *     option: mixed,
+ *     recvEmailOptionID: mixed,
+ *     recvEmailOptionValue: mixed,
+ * } $this
+ */
+
 $params = $params =  Component::params('com_groups');
 
 $forumCommentEmailNotifications = $params->get('email_forum_comments');

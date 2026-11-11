@@ -17,6 +17,28 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     config: mixed,
+ *     editpref: mixed,
+ *     edittitle: mixed,
+ *     emp: mixed,
+ *     file: mixed,
+ *     jc: mixed,
+ *     js: mixed,
+ *     jt: mixed,
+ *     member: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     path: mixed,
+ *     resume: mixed,
+ *     self: mixed,
+ *     stats: mixed,
+ * } $this
+ */
+
 $this->css('jobs', 'com_jobs');
 ?>
 

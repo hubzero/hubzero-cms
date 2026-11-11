@@ -14,6 +14,22 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     config: mixed,
+ *     course: mixed,
+ *     data: mixed,
+ *     filters: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     sections: mixed,
+ *     stats: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
 $this->js();
 
 $base = $this->offering->link() . '&active=discussions';

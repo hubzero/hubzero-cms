@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{items: mixed, model: mixed} $this
+ */
+
 if (count($this->items) > 0) {
     ?>
 <div class="public-list-header">

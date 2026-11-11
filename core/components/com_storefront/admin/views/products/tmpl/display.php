@@ -14,6 +14,20 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     ag: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     rows: mixed,
+ *     skus: mixed,
+ *     total: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Products', 'storefront');

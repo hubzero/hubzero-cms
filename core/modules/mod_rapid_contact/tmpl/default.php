@@ -12,6 +12,27 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     anti_spam_q: mixed,
+ *     button_text: mixed,
+ *     email_label: mixed,
+ *     enable_anti_spam: mixed,
+ *     error: mixed,
+ *     message_label: mixed,
+ *     mod_class_suffix: mixed,
+ *     name_label: mixed,
+ *     posted: mixed,
+ *     pre_text: mixed,
+ *     recipient: mixed,
+ *     replacement: mixed,
+ *     subject_label: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 <div class="<?php echo $this->module->module; ?>">

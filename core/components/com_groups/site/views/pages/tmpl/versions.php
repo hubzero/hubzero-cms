@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{group: mixed, page: mixed} $this
+ */
+
 $editPageUrl = 'index.php?option=com_groups&cn='
     . $this->group->get('cn')
     . '&controller=pages&task=edit&pageid='

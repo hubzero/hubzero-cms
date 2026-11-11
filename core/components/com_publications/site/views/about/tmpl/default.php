@@ -14,6 +14,15 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, database: mixed, publication: mixed} $this
+ */
+
+// The models below take the database by reference
+$database = $this->database;
+
 $webpath = $this->config->get('webpath');
 
 $authorized = $this->publication->access('view-all');
@@ -48,7 +57,7 @@ $schema = $metaElements->getSchema();
 <div class="pubabout">
 <?php
     // Show gallery images
-    $modelHandler = new \Components\Publications\Models\Handlers($this->database);
+    $modelHandler = new \Components\Publications\Models\Handlers($database);
 
     // Load image handler
 if ($handler = $modelHandler->ini('imageviewer')) {
@@ -79,7 +88,7 @@ if ($listAll) {
     $elements = array_merge($prime, $second);
 
     // Get attachment type model
-    $attModel = new \Components\Publications\Models\Attachments($this->database);
+    $attModel = new \Components\Publications\Models\Attachments($database);
 
     if ($elements) {
         $append = null;

@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
 ?>
 <div class="group-login">
     <h2><?php echo Lang::txt('COM_GROUPS_VIEW_LOGIN'); ?></h2>

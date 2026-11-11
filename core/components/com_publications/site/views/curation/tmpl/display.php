@@ -14,6 +14,23 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     database: mixed,
+ *     filters: mixed,
+ *     pageNav: mixed,
+ *     rows: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
+// The models below take the database by reference
+$database = $this->database;
+
 // Sorting and paging
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $whatsleft  = $this->total - $this->filters['start'] - $this->filters['limit'];
@@ -24,7 +41,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 // URL
 $route  = 'index.php?option=' . $this->option . '&controller=curation';
 
-$pa = new \Components\Publications\Tables\Author($this->database);
+$pa = new \Components\Publications\Tables\Author($database);
 
 $this
     ->css()

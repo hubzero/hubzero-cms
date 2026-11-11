@@ -11,6 +11,18 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     email: mixed,
+ *     hubName: mixed,
+ *     return: mixed,
+ *     show_correction_faq: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('register')
      ->js('register');

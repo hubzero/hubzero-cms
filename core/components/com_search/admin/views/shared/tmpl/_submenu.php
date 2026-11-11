@@ -13,6 +13,12 @@ use Hubzero\Facades\Submenu;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $option = $this->option;
 $receivedQuery = Request::query();
 

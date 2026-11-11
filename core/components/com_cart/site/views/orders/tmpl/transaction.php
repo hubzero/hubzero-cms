@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{transaction: mixed} $this
+ */
+
 //print_r($this->transaction); die;
 $tiTotalAmount = $this->transaction->tInfo->tiSubtotal
     + $this->transaction->tInfo->tiTax

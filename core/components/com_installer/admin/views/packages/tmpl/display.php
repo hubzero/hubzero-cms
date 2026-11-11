@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, packages: mixed, total: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_PACKAGES'));
 
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();

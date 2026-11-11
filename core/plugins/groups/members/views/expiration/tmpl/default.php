@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     current: mixed,
+ *     filter: mixed,
+ *     group: mixed,
+ *     maxDays: mixed,
+ *     option: mixed,
+ *     users: mixed,
+ * } $this
+ */
+
 $min = Date::of('now')->modify('+1 day')->format('Y-m-d');
 $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' days')->format('Y-m-d') : '';
 ?>

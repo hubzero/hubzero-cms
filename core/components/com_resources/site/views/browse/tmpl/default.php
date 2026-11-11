@@ -13,6 +13,18 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     results: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $sortbys = [];
 if ($this->config->get('show_ranking')) {
     $sortbys['ranking'] = Lang::txt('COM_RESOURCES_RANKING');

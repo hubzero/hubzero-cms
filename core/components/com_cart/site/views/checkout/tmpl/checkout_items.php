@@ -9,6 +9,17 @@
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     membershipInfo: mixed,
+ *     perks: mixed,
+ *     tiShippingDiscount: mixed,
+ *     transactionItems: mixed,
+ * } $this
+ */
+
 ?>
 
 <!--h2>Items</h2-->

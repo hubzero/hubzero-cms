@@ -8,6 +8,12 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 if (!empty($version)) :
     echo '<p class="cms-version">' . $version . '</p>';
 endif;

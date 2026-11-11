@@ -14,6 +14,24 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     citations: mixed,
+ *     citations_label_class: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     isManager: mixed,
+ *     label: mixed,
+ *     messages: mixed,
+ *     openurl: mixed,
+ *     sorts: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $this
      ->css('citations.css')
      ->js();

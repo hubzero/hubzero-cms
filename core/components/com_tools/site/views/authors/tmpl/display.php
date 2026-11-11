@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{contributors: mixed, id: mixed, roles: mixed, version: mixed} $this
+ */
+
 $this->css('component.css');
 
 if ($this->version == 'dev') {

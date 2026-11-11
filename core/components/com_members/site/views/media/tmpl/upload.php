@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{profile: mixed} $this
+ */
+
 $default = User::getInstance(0)->picture(0, false);
 
 $picture = $this->profile->picture(0, false);

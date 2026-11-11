@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed} $this
+ */
+
 $offerings = $this->course->offerings(['available' => true, 'sort' => 'publish_up']);
 if ($offerings) {
     $offering = $offerings->fetch('first');

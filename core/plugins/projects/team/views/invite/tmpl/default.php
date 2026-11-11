@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     email: mixed,
+ *     model: mixed,
+ *     name: mixed,
+ *     no_html: mixed,
+ *     option: mixed,
+ * } $this
+ */
+
 // Build url
 $route = $this->model->isProvisioned()
     ? 'index.php?option=com_publications&task=submit'

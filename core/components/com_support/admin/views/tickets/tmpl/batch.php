@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{ids: mixed, lists: mixed, tmpl: mixed} $this
+ */
+
 if (!$this->tmpl) {
     $toolbarTitle = Lang::txt('COM_SUPPORT') . ': '
         . Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('Batch Process');

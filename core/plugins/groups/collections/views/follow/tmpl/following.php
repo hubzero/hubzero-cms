@@ -14,6 +14,24 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     collections: mixed,
+ *     filters: mixed,
+ *     followers: mixed,
+ *     group: mixed,
+ *     model: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     posts: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 // Follow/unfollow POST from collections.js
 $this->js();
 

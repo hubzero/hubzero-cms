@@ -15,6 +15,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     emp: mixed,
+ *     job: mixed,
+ *     jobcat: mixed,
+ *     jobtype: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
     /* Job Posting */
     $job        = $this->job;
     $jobcat     = !empty($this->jobcat) ? $this->jobcat : 'Unspecified';

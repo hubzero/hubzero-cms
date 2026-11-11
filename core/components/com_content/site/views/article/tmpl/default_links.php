@@ -11,6 +11,12 @@ use Hubzero\Facades\Html;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{item: mixed} $this
+ */
+
 // Create shortcut
 $urls = json_decode($this->item->urls);
 

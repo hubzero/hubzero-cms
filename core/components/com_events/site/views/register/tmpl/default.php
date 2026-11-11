@@ -12,6 +12,24 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     arrival: mixed,
+ *     authorized: mixed,
+ *     day: mixed,
+ *     departure: mixed,
+ *     event: mixed,
+ *     month: mixed,
+ *     page: mixed,
+ *     pages: mixed,
+ *     register: mixed,
+ *     title: mixed,
+ *     year: mixed,
+ * } $this
+ */
+
 $params = new \Hubzero\Config\Registry($this->event->params);
 
 $this

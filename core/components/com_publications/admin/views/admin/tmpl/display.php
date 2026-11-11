@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $link = Route::url('index.php?option=' . $this->option);
 $pubsLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 $adminLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS');

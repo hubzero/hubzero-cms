@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{member: mixed, rows: mixed} $this
+ */
+
 $base = rtrim(Request::base(), '/');
 $sef  = Route::url($this->member->link());
 $link = $base . '/' . trim($sef, '/');

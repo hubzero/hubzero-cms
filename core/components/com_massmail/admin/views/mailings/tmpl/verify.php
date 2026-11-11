@@ -9,6 +9,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     disposition: mixed,
+ *     preview: mixed,
+ *     previewHtml: mixed,
+ *     previewText: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
 $row   = $this->row;
 $disp  = $this->disposition;
 $token = Session::getFormToken();

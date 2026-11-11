@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, imports: mixed} $this
+ */
+
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import');

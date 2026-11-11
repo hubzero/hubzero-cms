@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{customAnswers: mixed, customFields: mixed, group: mixed} $this
+ */
+
 $text = ($this->group->get('gidNumber') ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
 $canDo = \Components\Groups\Helpers\Permissions::getActions('group', $this->group->get('gidNumber'));

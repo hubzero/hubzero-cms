@@ -14,6 +14,25 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     categories: mixed,
+ *     day: mixed,
+ *     enddate: mixed,
+ *     fields: mixed,
+ *     month: mixed,
+ *     offset: mixed,
+ *     rows: mixed,
+ *     startdate: mixed,
+ *     title: mixed,
+ *     week: mixed,
+ *     year: mixed,
+ * } $this
+ */
+
 $this->css();
 
 $template = $this;

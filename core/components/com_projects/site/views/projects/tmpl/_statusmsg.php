@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{error: mixed, msg: mixed} $this
+ */
+
 $error = isset($this->error) && $this->error ? $this->error : $this->getError();
 
 if ($error || $this->msg) { ?>

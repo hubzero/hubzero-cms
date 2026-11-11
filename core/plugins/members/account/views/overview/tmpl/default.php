@@ -15,6 +15,24 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     change: mixed,
+ *     domains_unused: mixed,
+ *     hzalaccounts: mixed,
+ *     key: mixed,
+ *     keyError: mixed,
+ *     member: mixed,
+ *     notifications: mixed,
+ *     params: mixed,
+ *     passinfo: mixed,
+ *     passtype: mixed,
+ *     password_rules: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('providers.css', 'com_login')

@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{options: mixed, poll: mixed} $this
+ */
+
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 
 $text = ($this->poll->id ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));

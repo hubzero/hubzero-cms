@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{defaults: mixed, group: mixed, params: mixed} $this
+ */
+
 $mode      = $this->params->get('automatic_toc', '');
 $threshold = $this->params->get('toc_threshold', '');
 $crumbs    = $this->params->get('wiki_crumbs', '');

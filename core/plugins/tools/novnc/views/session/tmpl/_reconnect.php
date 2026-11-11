@@ -18,6 +18,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{app: mixed} $this
+ */
+
 $this
      ->css('./css/reconnect.css')
      ->js('./js/reconnect.js');

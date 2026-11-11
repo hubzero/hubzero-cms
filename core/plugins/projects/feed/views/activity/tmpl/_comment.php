@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     activity: mixed,
+ *     comment: mixed,
+ *     edit: mixed,
+ *     model: mixed,
+ *     online: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 $comment = $this->comment;
 $newComment = false;
 $deletable = 0;

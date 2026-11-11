@@ -13,6 +13,21 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     results: mixed,
+ *     supportedtag: mixed,
+ *     tag: mixed,
+ *     tag2: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 // Import share CSS to style share features on right side of trifold
 \Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
 

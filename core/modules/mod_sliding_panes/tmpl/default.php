@@ -8,6 +8,12 @@
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{container: mixed, content: mixed} $this
+ */
 ?>
 <div id="<?php echo $this->container; ?>">
     <div class="panes">

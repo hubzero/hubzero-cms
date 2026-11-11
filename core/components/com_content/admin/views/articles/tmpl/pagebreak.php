@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $script  = 'function insertPagebreak() {' . "\n\t";
 // Get the pagebreak title
 $script .= 'var title = document.getElementById("title").value;' . "\n\t";

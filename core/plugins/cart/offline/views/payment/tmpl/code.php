@@ -10,6 +10,12 @@ use Hubzero\Facades\Request;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{transaction: mixed} $this
+ */
 ?>
 
 <?php echo '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">'; ?>

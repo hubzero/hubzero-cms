@@ -12,6 +12,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     monthly: mixed,
+ *     msg: mixed,
+ *     publishing: mixed,
+ *     stats: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('reports')
      ->css('impact.css', 'projects', 'publications');

@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{base: mixed, dep: mixed, pdf: mixed, resp: mixed, title: mixed} $this
+ */
+
 $this->css('form.css');
 
 $pdf     = $this->pdf;

@@ -15,6 +15,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     fields: mixed,
+ *     gid: mixed,
+ *     lists: mixed,
+ *     row: mixed,
+ *     times: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->css('calendar.css')

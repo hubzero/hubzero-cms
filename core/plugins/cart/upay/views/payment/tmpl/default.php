@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View $this
+ */
 ?>
 <form action="<?php echo $this->get('url'); ?>" method="post">
     <input type="hidden" name="paymentProvider" value="upay">

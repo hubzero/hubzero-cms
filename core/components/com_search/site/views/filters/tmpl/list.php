@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{facetCounts: mixed, filter: mixed, selectedOptions: mixed} $this
+ */
 ?>
 <fieldset class="search-filters">
 <legend><?php echo $this->escape($this->filter->label); ?></legend>

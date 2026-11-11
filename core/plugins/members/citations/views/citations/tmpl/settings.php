@@ -14,11 +14,27 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     citations_show_badges: mixed,
+ *     citations_show_tags: mixed,
+ *     coins_only: mixed,
+ *     currentFormat: mixed,
+ *     customFormat: mixed,
+ *     formats: mixed,
+ *     include_coins: mixed,
+ *     member: mixed,
+ *     templateKeys: mixed,
+ * } $this
+ */
+
 $this
     ->css()
     ->js();
 
-$base = Route::url($this->member->link() . '&active=' . $this->viewName);
+$base = Route::url($this->member->link() . '&active=' . $this->getName());
 ?>
 
 <div id="browsebox" class="frm">

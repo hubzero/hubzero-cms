@@ -7,6 +7,12 @@
  */
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed} $this
+ */
 ?>
     <div class="input-wrap">
         <?php echo $this->form->getLabel('metadesc'); ?>

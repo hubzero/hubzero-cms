@@ -8,6 +8,22 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connectionId: mixed,
+ *     handlerBase: mixed,
+ *     item: mixed,
+ *     itemIsFile: mixed,
+ *     itemName: mixed,
+ *     itemPath: mixed,
+ *     model: mixed,
+ *     subdirPath: mixed,
+ *     urlEncodedItemPath: mixed,
+ * } $this
+ */
+
 $connectionId = $this->connectionId;
 $item = $this->item;
 $itemName = $this->itemName;

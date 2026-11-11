@@ -13,6 +13,20 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     category: mixed,
+ *     config: mixed,
+ *     forum: mixed,
+ *     group: mixed,
+ *     option: mixed,
+ *     post: mixed,
+ *     section: mixed,
+ * } $this
+ */
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
 $this->category->set('section_alias', $this->section->get('alias'));

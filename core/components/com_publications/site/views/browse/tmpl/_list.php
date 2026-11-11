@@ -11,6 +11,12 @@ use Hubzero\Facades\App;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, filters: mixed, results: mixed} $this
+ */
+
 $database = App::get('db');
 
 switch ($this->filters['sortby']) :

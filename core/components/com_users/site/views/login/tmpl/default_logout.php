@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed, pageclass_sfx: mixed, params: mixed} $this
+ */
+
 // If the user is already logged in, redirect to the return or profile page.
 if (!User::isGuest()) {
     $return = base64_decode(Request::getString('return', ''));

@@ -13,6 +13,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     lastPubRelease: mixed,
+ *     launcherLayout: mixed,
+ *     params: mixed,
+ *     publication: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 // Launcher layout metadata (big icons)
 if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->publication->state == 1) {
     echo '<ul class="metaitems">';

@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{archive: mixed, category: mixed, catid: mixed, filters: mixed} $this
+ */
+
 // Category navigation. Expects: option, archive, catid (the active top-level
 // category id, 0 for all), category (the active category), filters (sort,
 // search), which the links carry along so a reader keeps their search while

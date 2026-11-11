@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{group: mixed, row: mixed, sitename: mixed, user: mixed} $this
+ */
+
 $sef = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members');
 
 $message  = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_DETAILS', $this->sitename) . "\n\n";

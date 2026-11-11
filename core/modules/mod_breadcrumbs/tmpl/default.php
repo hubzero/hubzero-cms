@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <nav class="breadcrumbs<?= $moduleclass_sfx ?> pathway<?= $moduleclass_sfx ?>"
     aria-label="<?= Lang::txt('MOD_BREADCRUMBS') ?>">

@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{categories: mixed, tags: mixed} $this
+ */
 ?>
 <div<?php echo ($this->params->get('cssId')) ? ' id="' . $this->params->get('cssId') . '"' : ''; ?>>
     <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="search">

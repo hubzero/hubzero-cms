@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{item: mixed} $this
+ */
 ?>
 <ul class="category-module<?php echo $moduleclass_sfx; ?>">
 <?php if ($grouped) : ?>

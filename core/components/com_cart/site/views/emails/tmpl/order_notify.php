@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{message: mixed} $this
+ */
 ?>
 
 <?php echo $this->message;

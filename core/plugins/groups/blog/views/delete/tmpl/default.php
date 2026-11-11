@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{authorized: mixed, entry: mixed, group: mixed, option: mixed} $this
+ */
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=blog';
 
 $this

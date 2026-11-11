@@ -17,6 +17,20 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     isnew: mixed,
+ *     licenses: mixed,
+ *     lists: mixed,
+ *     params: mixed,
+ *     pid: mixed,
+ *     rconfig: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 $text = ($this->row->id ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));

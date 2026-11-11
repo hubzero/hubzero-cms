@@ -9,6 +9,19 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     action: mixed,
+ *     class: mixed,
+ *     disabled: mixed,
+ *     href: mixed,
+ *     msg: mixed,
+ *     pop: mixed,
+ * } $this
+ */
+
 if (isset($this->disabled) && $this->disabled) { ?>
     <p id="primary-document">
         <span class="btn disabled <?php echo $this->class; ?>"><?php echo $this->msg; ?></span>

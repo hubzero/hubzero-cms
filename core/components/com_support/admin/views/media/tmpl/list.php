@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{comment: mixed, model: mixed, ticket: mixed} $this
+ */
+
 $no_html = Request::getInt('no_html', 0);
 
 $assets = $this->model->attachments('list', [

@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{i: mixed, project: mixed, row: mixed} $this
+ */
+
 $row = $this->row;
 
 // What's the publication status?

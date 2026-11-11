@@ -9,6 +9,19 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     activity: mixed,
+ *     comments: mixed,
+ *     edit: mixed,
+ *     model: mixed,
+ *     online: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 ?>
 <ul class="comments" id="comments_<?php echo $this->activity->id; ?>">
     <?php

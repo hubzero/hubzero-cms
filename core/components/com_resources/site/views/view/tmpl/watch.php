@@ -14,6 +14,18 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     content_folder: mixed,
+ *     content_url: mixed,
+ *     doc: mixed,
+ *     manifest: mixed,
+ *     resid: mixed,
+ * } $this
+ */
+
 $this
      ->css('hubpresenter.css')
      ->js('hubpresenter.js')

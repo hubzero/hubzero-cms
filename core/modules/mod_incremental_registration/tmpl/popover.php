@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\IncrementalRegistration\IncrementalRegistration $this
+ */
+
 // What the member posted, to fill the form in again. A field sent as a list
 // where one value is expected is flattened to a string.
 $posted = [];

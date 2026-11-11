@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, repositories: mixed, total: mixed} $this
+ */
+
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;

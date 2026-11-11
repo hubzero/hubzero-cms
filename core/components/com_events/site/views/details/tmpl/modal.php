@@ -13,6 +13,21 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     categories: mixed,
+ *     config: mixed,
+ *     fields: mixed,
+ *     page: mixed,
+ *     pages: mixed,
+ *     row: mixed,
+ *     tags: mixed,
+ * } $this
+ */
+
 ?>
 <div id="event" class="modal">
 <?php if ($this->row) { ?>

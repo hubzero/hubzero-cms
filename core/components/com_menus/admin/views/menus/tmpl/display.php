@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, modMenuId: mixed, modules: mixed} $this
+ */
+
 $canDo = Components\Menus\Helpers\Menus::getActions($this->filters['parent_id']);
 
 Toolbar::title(Lang::txt('COM_MENUS_VIEW_MENUS_TITLE'), 'menumgr');

@@ -12,6 +12,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{forks: mixed, publication: mixed} $this
+ */
+
 $this->css();
 
 $url = Route::url($this->publication->link() . '&v=' . $this->publication->versionAlias . '&active=forks&action=fork');

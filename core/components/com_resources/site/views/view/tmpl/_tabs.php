@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, cats: mixed, resource: mixed} $this
+ */
+
 $base = Request::get('tab_base_url', null) ? Request::get('tab_base_url') : 'index.php?option=' . $this->option;
 $base .= '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id);
 

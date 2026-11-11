@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, sections: mixed} $this
+ */
+
 foreach ($this->sections as $section) {
     if (!$section['html']) {
         continue;

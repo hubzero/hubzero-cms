@@ -9,6 +9,12 @@
 // no direct access
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 if ($params->get('backgroundimage')) {
     $this->css('
 	.custom' . $moduleclass_sfx . ' {

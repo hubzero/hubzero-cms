@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{duration: mixed, message: mixed, moduleid: mixed, uri: mixed} $this
+ */
+
 $this->css();
 $this->js();
 ?>

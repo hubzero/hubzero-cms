@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed, wishlist: mixed} $this
+ */
+
 $canDo = \Components\Wishlist\Helpers\Permissions::getActions('wish');
 
 Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_WISHES'), 'wishlist');

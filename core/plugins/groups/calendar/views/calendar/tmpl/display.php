@@ -15,6 +15,25 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     calendar: mixed,
+ *     calendars: mixed,
+ *     events: mixed,
+ *     eventsCount: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     members: mixed,
+ *     month: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     year: mixed,
+ * } $this
+ */
+
 $userLocalizer = new Plugins\Groups\Calendar\Helpers\UserLocalizer();
 $timezone = $userLocalizer->getTimezone();
 ?>

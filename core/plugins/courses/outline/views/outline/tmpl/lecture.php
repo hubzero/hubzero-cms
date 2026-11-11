@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, group: mixed, unit: mixed} $this
+ */
+
 $sparams = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 
 $units = $this->course->offering()->units();

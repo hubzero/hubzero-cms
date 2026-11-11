@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{file: mixed} $this
+ */
+
 $this->css('ipynb.css');
 $this
      ->js('highlighter/shCore.js')

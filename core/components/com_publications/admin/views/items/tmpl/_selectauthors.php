@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{authNames: mixed} $this
+ */
+
 $authIDs = [];
 $html = '';
 $i = 1;

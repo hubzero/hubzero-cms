@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, content: mixed, manifest: mixed, pub: mixed, step: mixed} $this
+ */
+
 // Get block properties
 $complete = $this->pub->curation('blocks', $this->step, 'complete');
 $props    = $this->pub->curation('blocks', $this->step, 'props');

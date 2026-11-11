@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{limit: mixed, pubstats: mixed, user: mixed} $this
+ */
+
 $dateFormat = 'M d, Y';
 
 $baseManage = 'publications/submit';

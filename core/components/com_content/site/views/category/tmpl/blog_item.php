@@ -17,6 +17,12 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{item: mixed} $this
+ */
+
 // Create a shortcut for params.
 $params = &$this->item->params;
 $images = json_decode($this->item->images);

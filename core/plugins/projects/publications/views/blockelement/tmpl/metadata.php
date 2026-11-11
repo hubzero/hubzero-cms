@@ -15,6 +15,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     collapse: mixed,
+ *     elementId: mixed,
+ *     manifest: mixed,
+ *     master: mixed,
+ *     order: mixed,
+ *     pub: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 
 // Parse data
 $data = [];

@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{activechild: mixed, no_html: mixed, resource: mixed} $this
+ */
+
 $html = '';
 
 $source = $this->activechild->basepath() . '/' . $this->activechild->path;

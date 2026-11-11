@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{group: mixed, newcount: mixed, projectcount: mixed, tab: mixed} $this
+ */
+
 $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
 ?>
 

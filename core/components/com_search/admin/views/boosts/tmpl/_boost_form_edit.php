@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{boost: mixed, typeOptions: mixed} $this
+ */
+
 $action = Route::url("index.php?option=$this->option&controller=$this->controller");
 $boost = $this->boost;
 $task = 'edit';

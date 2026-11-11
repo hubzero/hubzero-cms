@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{closed: mixed, open: mixed} $this
+ */
+
 $this->css();
 
 $total = $this->closed + $this->open;

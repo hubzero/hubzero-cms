@@ -16,6 +16,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     assetrows: mixed,
+ *     assetsCount: mixed,
+ *     course: mixed,
+ *     offering: mixed,
+ *     row: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
 $text = "Duplicate Assets For Existing Asset Groups";
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();

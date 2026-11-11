@@ -10,6 +10,18 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     message: mixed,
+ *     publication: mixed,
+ *     subject: mixed,
+ *     unsubscribeLink: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 echo $this->subject; ?>

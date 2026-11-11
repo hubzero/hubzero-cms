@@ -13,6 +13,17 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     cartInfo: mixed,
+ *     couponPerks: mixed,
+ *     membershipInfo: mixed,
+ *     notifications: mixed,
+ * } $this
+ */
+
 $this
     ->css()
     ->js();

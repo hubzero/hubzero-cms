@@ -11,6 +11,17 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     notifications: mixed,
+ *     token: mixed,
+ *     transactionInfo: mixed,
+ *     transactionItems: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 

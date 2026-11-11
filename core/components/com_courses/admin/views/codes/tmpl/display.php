@@ -15,6 +15,19 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     course: mixed,
+ *     filters: mixed,
+ *     offering: mixed,
+ *     rows: mixed,
+ *     section: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODES'), 'courses.png');

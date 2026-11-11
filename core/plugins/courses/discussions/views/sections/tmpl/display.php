@@ -12,6 +12,21 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     config: mixed,
+ *     course: mixed,
+ *     edit: mixed,
+ *     filters: mixed,
+ *     forum: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 $ct = $this->sections->count();
 
 $base = $this->offering->link() . '&active=discussions&unit=manage';

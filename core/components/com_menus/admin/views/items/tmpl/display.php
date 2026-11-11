@@ -19,6 +19,12 @@ use Components\Menus\Helpers\Html\HtmlMenus;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{f_levels: mixed, filters: mixed, ordering: mixed, rows: mixed} $this
+ */
+
 $canDo = Components\Menus\Helpers\Menus::getActions();
 
 Toolbar::title(Lang::txt('COM_MENUS_VIEW_ITEMS_TITLE'), 'menumgr');

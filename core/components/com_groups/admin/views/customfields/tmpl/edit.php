@@ -13,6 +13,12 @@ use Hubzero\Facades\Toolbar;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{fields: mixed} $this
+ */
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('Custom Fields'), 'form');
 $canDo = Components\Groups\Helpers\Permissions::getActions();
 if ($canDo->get('core.manage')) {

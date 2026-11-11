@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed, total: mixed} $this
+ */
+
 $canDo = \Components\Publications\Helpers\Permissions::getActions('type');
 
 $label = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');

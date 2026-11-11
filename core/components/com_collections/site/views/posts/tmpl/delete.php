@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{authorized: mixed, entry: mixed, group: mixed} $this
+ */
+
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&gid=' . $this->group->cn

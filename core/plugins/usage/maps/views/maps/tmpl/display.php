@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View $this
+ */
+
 $period = Request::getString('period', '1999-12');
 $xres   = Request::getString('xres', '2050');
 $yres   = Request::getString('yres', '1050');

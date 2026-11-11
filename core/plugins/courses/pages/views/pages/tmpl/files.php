@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{controller: mixed, course: mixed, offering: mixed, option: mixed, page: mixed} $this
+ */
+
 $base = $this->offering->link() . '&active=pages';
 ?>
 <div id="attachments">

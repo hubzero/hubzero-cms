@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     plugin: mixed,
+ *     results: mixed,
+ *     section: mixed,
+ *     terms: mixed,
+ *     total: mixed,
+ *     url_terms: mixed,
+ * } $this
+ */
+
 // Push some resources to the tmeplate
 $this
      ->css()

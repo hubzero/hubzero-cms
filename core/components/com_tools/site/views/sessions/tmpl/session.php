@@ -17,6 +17,23 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     app: mixed,
+ *     config: mixed,
+ *     middleware: mixed,
+ *     mygroups: mixed,
+ *     output: mixed,
+ *     rtrn: mixed,
+ *     shares: mixed,
+ *     toolname: mixed,
+ *     total: mixed,
+ *     zone: mixed,
+ * } $this
+ */
+
 HTML::behavior('core');
 
 //is this a share session thats read-only

@@ -14,6 +14,22 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     collection_id: mixed,
+ *     group: mixed,
+ *     groupboards: mixed,
+ *     item_id: mixed,
+ *     myboards: mixed,
+ *     name: mixed,
+ *     no_html: mixed,
+ *     option: mixed,
+ *     post_id: mixed,
+ * } $this
+ */
+
 //tag editor
 $task = 'post/' . $this->post_id . '/collect';
 if ($this->collection_id) {

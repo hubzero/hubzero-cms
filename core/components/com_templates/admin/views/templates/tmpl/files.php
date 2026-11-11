@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{files: mixed, template: mixed} $this
+ */
+
 $canDo = \Components\Templates\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_VIEW_TEMPLATE'), 'thememanager');

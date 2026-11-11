@@ -14,6 +14,21 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     access: mixed,
+ *     inputs: mixed,
+ *     isUser: mixed,
+ *     profile: mixed,
+ *     profile_field: mixed,
+ *     registration: mixed,
+ *     registration_field: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 if ($this->isUser) : ?>
     <div class="section-edit-container">
         <?php if ($this->registration == Components\Members\Models\Profile\Field::STATE_READONLY) : ?>

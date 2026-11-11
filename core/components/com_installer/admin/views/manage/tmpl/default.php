@@ -16,6 +16,35 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, pagination: mixed, rows: mixed} $this
+ */
+
+// The content of the tooltip that shows compatibility information
+$compatibilityInfo = function ($systemData) {
+    $systemData = json_decode((string) $systemData);
+
+    if (empty($systemData->compatibility)) {
+        return '';
+    }
+
+    $compatibility = $systemData->compatibility;
+
+    return Lang::txt(
+        'COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
+        $compatibility->installed->version,
+        implode(', ', $compatibility->installed->value),
+    )
+    . '<br />'
+    . Lang::txt(
+        'COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
+        $compatibility->available->version,
+        implode(', ', $compatibility->available->value),
+    );
+};
+
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Document::setTitle(Lang::txt('COM_INSTALLER_HEADER_' . $this->controller));
@@ -249,7 +278,7 @@ $saveOrder = $listOrder == 'ordering';
                     <td class="priority-4 center">
                         <?php echo ($item->get('version') != '') ? $item->get('version') : '&#160;'; ?>
                         <?php if ($item->get('system_data')) : ?>
-                            <?php if ($tooltip = $this->createCompatibilityInfo($item->get('system_data'))) : ?>
+                            <?php if ($tooltip = $compatibilityInfo($item->get('system_data'))) : ?>
                                 <?php
                                 $compatTitle = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_TITLE');
                                 echo Html::behavior('tooltip', $tooltip, $compatTitle);

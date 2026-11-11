@@ -10,6 +10,25 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     connections: mixed,
+ *     directory: mixed,
+ *     filterUrl: mixed,
+ *     hiddenFields: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     publication: mixed,
+ *     req: mixed,
+ *     selected: mixed,
+ *     showCons: mixed,
+ * } $this
+ */
 ?>
     <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="">
         <fieldset>

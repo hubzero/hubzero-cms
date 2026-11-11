@@ -9,6 +9,15 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{alias: mixed, config: mixed, isNew: mixed} $this
+ */
+
+// Arr::getValue() takes the array by reference
+$config = $this->config;
+
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
@@ -16,7 +25,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
 
 Toolbar::title(
-    Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY') . ': ' . Arr::getValue($this->config, 'name', ''),
+    Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY') . ': ' . Arr::getValue($config, 'name', ''),
     'packages',
 );
 
@@ -51,7 +60,7 @@ $this->js();
                         <label for="field-name"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_NAME') ?> <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
                         <input name="name" id="field-name" type="text" class="required"
-                            value="<?= $this->escape(Arr::getValue($this->config, 'name', '')) ?>"></input>
+                            value="<?= $this->escape(Arr::getValue($config, 'name', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">
@@ -68,25 +77,25 @@ $this->js();
                         <label for="field-description"><?= $labelText ?> <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
                         <input name="description" id="field-description" type="text" class="required"
-                            value="<?= $this->escape(Arr::getValue($this->config, 'description', '')) ?>"></input>
+                            value="<?= $this->escape(Arr::getValue($config, 'description', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">
                         <label for="field-url"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_URL') ?> <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
                         <input name="url" id="field-url" type="text" class="required"
-                            value="<?= $this->escape(Arr::getValue($this->config, 'url', '')) ?>"></input>
+                            value="<?= $this->escape(Arr::getValue($config, 'url', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">
                         <label for="field-type"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_TYPE') ?></label>
                         <select name="type" id="field-type">
                             <?php
-                            $selected = Arr::getValue($this->config, 'type', '') == 'github' ? 'true' : '';
+                            $selected = Arr::getValue($config, 'type', '') == 'github' ? 'true' : '';
                             ?>
                             <option value="github" selected="<?= $selected ?>">Github</option>
                             <?php
-                            $selected = Arr::getValue($this->config, 'type', '') == 'gitlab' ? 'true' : '';
+                            $selected = Arr::getValue($config, 'type', '') == 'gitlab' ? 'true' : '';
                             ?>
                             <option value="gitlab" selected="<?= $selected ?>">Gitlab</option>
                         </select>

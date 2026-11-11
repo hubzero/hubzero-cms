@@ -13,6 +13,18 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     course: mixed,
+ *     no_html: mixed,
+ *     notifications: mixed,
+ *     offering: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 if (!$this->no_html) {
     ?>
 <header id="content-header">

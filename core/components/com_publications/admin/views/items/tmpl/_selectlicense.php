@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{licenses: mixed, selected: mixed} $this
+ */
+
 $value = $this->selected ? $this->selected->id : 1;
 $html  = '<select name="license_type" id="license_type">' . "\n";
 

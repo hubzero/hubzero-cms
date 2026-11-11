@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{resource: mixed, resources: mixed, type: mixed} $this
+ */
 ?>
 <?php $addLabel = Lang::txt('PLG_RESOURCES_COLLECTIONS_ADD', $this->type->type); ?>
 <p><a class="btn primary"

@@ -14,6 +14,23 @@ use Plugins\Members\Usage\Usage as PlgMembersUsage;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     andmore_stats: mixed,
+ *     citation_count: mixed,
+ *     cluster_classes: mixed,
+ *     cluster_schools: mixed,
+ *     cluster_users: mixed,
+ *     contribution: mixed,
+ *     rank: mixed,
+ *     tool_stats: mixed,
+ *     tool_total_12: mixed,
+ *     tool_total_14: mixed,
+ * } $this
+ */
+
 $cls = 'even';
 
 $this->css('usage', 'com_usage');

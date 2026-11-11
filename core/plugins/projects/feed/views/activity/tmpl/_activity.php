@@ -15,6 +15,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     activity: mixed,
+ *     edit: mixed,
+ *     model: mixed,
+ *     online: mixed,
+ *     option: mixed,
+ *     showProject: mixed,
+ * } $this
+ */
+
 // Skip rendering if the activity log is missing
 if (!$this->activity->log || !$this->activity->log->get('id')) {
     return;

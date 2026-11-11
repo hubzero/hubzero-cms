@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{admin: mixed, emp: mixed, list: mixed, params: mixed, seeker: mixed} $this
+ */
+
 $database = App::get('db');
 
 $jt = new \Components\Jobs\Tables\Type($database);

@@ -9,6 +9,12 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{parent: mixed, skuMeta: mixed} $this
+ */
 ?>
 <fieldset class="adminform">
     <legend><span>General Software-related Options</span></legend>

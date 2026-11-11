@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 // Where to turn when the knowledge base does not answer the question. A
 // template that routes help elsewhere overrides this file alone.
 ?>

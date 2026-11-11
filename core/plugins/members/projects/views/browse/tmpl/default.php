@@ -15,6 +15,23 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     config: mixed,
+ *     filters: mixed,
+ *     invites: mixed,
+ *     newcount: mixed,
+ *     option: mixed,
+ *     owned: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ *     user: mixed,
+ *     which: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>

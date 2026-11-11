@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{link_items: mixed} $this
+ */
 ?>
 <h3><?php echo Lang::txt('COM_CONTENT_MORE_ARTICLES'); ?></h3>
 

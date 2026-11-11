@@ -18,6 +18,19 @@ use Plugins\Members\Resume\Resume as plgMembersResume;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     admin: mixed,
+ *     emp: mixed,
+ *     list: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     seeker: mixed,
+ * } $this
+ */
+
 $database = App::get('db');
 
 $jt = new \Components\Jobs\Tables\Type($database);

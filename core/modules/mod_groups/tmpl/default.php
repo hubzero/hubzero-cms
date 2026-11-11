@@ -11,6 +11,23 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     approved: mixed,
+ *     closed: mixed,
+ *     hidden: mixed,
+ *     invite: mixed,
+ *     open: mixed,
+ *     pastDay: mixed,
+ *     pending: mixed,
+ *     restricted: mixed,
+ *     type: mixed,
+ *     visible: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 <div class="<?php echo $this->module->module; ?>">

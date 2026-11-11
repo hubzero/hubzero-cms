@@ -14,6 +14,12 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{docs: mixed, listdir: mixed} $this
+ */
+
 $no_html = Request::getInt('no_html', 0);
 $base = Request::base(true);
 

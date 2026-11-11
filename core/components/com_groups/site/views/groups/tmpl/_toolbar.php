@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{classOrId: mixed, group: mixed, logoutLink: mixed} $this
+ */
+
 // get group params
 $params = new \Hubzero\Config\Registry($this->group->get('params'));
 

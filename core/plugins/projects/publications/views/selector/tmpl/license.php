@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{publication: mixed, selections: mixed, url: mixed} $this
+ */
+
 $pubParams = $this->publication->params;
 
 ?>

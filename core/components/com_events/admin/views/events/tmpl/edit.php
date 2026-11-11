@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{fields: mixed, row: mixed, tags: mixed} $this
+ */
+
 $text = ($this->task == 'edit') ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW');
 
 Toolbar::title(Lang::txt('COM_EVENTS_EVENT') . ': ' . $text, 'event.png');

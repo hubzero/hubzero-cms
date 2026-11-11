@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{accepted_files: mixed, gid: mixed, messages: mixed, title: mixed} $this
+ */
+
 $this
      ->css()
      ->js();

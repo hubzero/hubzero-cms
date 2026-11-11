@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{licenses: mixed, lists: mixed, row: mixed, time: mixed} $this
+ */
+
 $time = $this->time;
 ?>
 

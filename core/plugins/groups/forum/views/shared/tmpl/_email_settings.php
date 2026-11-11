@@ -11,6 +11,18 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     base: mixed,
+ *     categories: mixed,
+ *     config: mixed,
+ *     recvEmailOptionID: mixed,
+ *     recvEmailOptionValue: mixed,
+ * } $this
+ */
+
 $base = $this->base;
 
 if (Component::params('com_groups')->get('email_forum_comments') && $this->config->get('access-view-section')) : ?>

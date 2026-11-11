@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed} $this
+ */
+
 $course = \Components\Courses\Models\Course::getInstance($this->model->get('course_id'));
 $roles = $course->offering(0)->roles(['alias' => '!student']);
 $offerings = $course->offerings();

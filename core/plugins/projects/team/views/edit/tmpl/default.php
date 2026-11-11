@@ -16,6 +16,23 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     count_groups: mixed,
+ *     filters: mixed,
+ *     managers_count: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     setup: mixed,
+ *     task: mixed,
+ *     team: mixed,
+ *     total: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
 $this
     ->css()
     ->css('selector')

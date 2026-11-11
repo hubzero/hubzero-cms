@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{listdir: mixed} $this
+ */
+
 ?>
     <div id="attachments">
         <?php

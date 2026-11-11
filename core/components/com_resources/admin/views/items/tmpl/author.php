@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{id: mixed, name: mixed, org: mixed, role: mixed, roles: mixed} $this
+ */
 ?>
     <li id="author_<?php echo $this->id; ?>">
         <span class="handle"><?php echo Lang::txt('COM_RESOURCES_AUTHOR_DRAG'); ?></span>

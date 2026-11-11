@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Mycontributions\Mycontributions $this
+ */
+
 // Push the module CSS to the template
 $this->css();
 

@@ -12,6 +12,21 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     key: mixed,
+ *     lat: mixed,
+ *     long: mixed,
+ *     mappath: mixed,
+ *     option: mixed,
+ *     task: mixed,
+ *     type: mixed,
+ *     zoom: mixed,
+ * } $this
+ */
+
 $period = Request::getString('period', '1999-12');
 
 $date = $period;

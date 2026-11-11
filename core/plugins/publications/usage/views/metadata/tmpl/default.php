@@ -9,5 +9,11 @@
 use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{downloads: mixed, views: mixed} $this
+ */
 ?>
 <p class="usage"><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $this->views, $this->downloads); ?></p>

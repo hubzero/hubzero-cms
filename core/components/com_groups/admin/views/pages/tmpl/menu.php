@@ -14,6 +14,12 @@ use Hubzero\Facades\Submenu;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{group: mixed} $this
+ */
+
 Submenu::addEntry(
     Lang::txt('COM_GROUPS_PAGES'),
     Route::url('index.php?option=com_groups&controller=pages&gid=' . $this->group->get('cn')),

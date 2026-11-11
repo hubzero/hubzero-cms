@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{row: mixed} $this
+ */
+
 if ($this->row instanceof \Components\Collections\Models\Collection) {
     $collection = $this->row;
 } else {

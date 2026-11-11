@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed} $this
+ */
 ?>
 <li class="course-entry">
     <p class="title">

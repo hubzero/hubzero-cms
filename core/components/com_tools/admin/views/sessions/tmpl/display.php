@@ -15,6 +15,19 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     appnames: mixed,
+ *     exechosts: mixed,
+ *     filters: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ *     usernames: mixed,
+ * } $this
+ */
+
 Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_SESSIONS'), 'tools');
 Toolbar::deleteList();
 Toolbar::spacer();

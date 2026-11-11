@@ -14,6 +14,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed, model: mixed} $this
+ */
+
 // Incoming
 $d = Request::getString('d', 'inline');
 

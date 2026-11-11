@@ -14,6 +14,26 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     by: mixed,
+ *     config: mixed,
+ *     dirsize: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     pubDiskUsage: mixed,
+ *     pubQuota: mixed,
+ *     quota: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ *     totalspace: mixed,
+ *     versionTracking: mixed,
+ * } $this
+ */
+
 $this
      ->css('diskspace')
      ->js('diskspace');

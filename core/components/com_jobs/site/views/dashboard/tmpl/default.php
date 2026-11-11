@@ -13,6 +13,24 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     activejobs: mixed,
+ *     emp: mixed,
+ *     employer: mixed,
+ *     login: mixed,
+ *     masterAdmin: mixed,
+ *     myjobs: mixed,
+ *     service: mixed,
+ *     stats: mixed,
+ *     subscription: mixed,
+ *     title: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
     $allowed_ads = $this->service->maxads - $this->activejobs;
     $allowed_ads = $allowed_ads < 0 ? 0 : $allowed_ads;
 

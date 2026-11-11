@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{categories: mixed, config: mixed, group: mixed, level: mixed, pages: mixed} $this
+ */
+
 $cls    = '';
 $params = '';
 if ($this->level == 0) {

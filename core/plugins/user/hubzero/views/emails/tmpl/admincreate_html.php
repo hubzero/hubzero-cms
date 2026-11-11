@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{sitename: mixed, user: mixed} $this
+ */
+
 $css = "#account-header {
 border-collapse: collapse;
 border: 1px solid #c2e1e3;

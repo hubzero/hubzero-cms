@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{count: mixed, resource: mixed} $this
+ */
 ?>
 <p class="answer">
     <a href="<?php echo Route::url($this->resource->link() . '&active=questions'); ?>">

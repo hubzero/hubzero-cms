@@ -8,6 +8,12 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{page: mixed, revision: mixed} $this
+ */
 ?>
 <header id="content-header">
     <h2><?php echo $this->escape($this->page->get('title')); ?></h2>

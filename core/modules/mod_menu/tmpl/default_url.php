@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{parentLink: mixed, rootLink: mixed} $this
+ */
+
 $rootLink = $this->rootLink;
 $parentLink = $this->parentLink;
 

@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{children: mixed, config: mixed, id: mixed, path: mixed} $this
+ */
+
 $this
      ->css('create.css')
      ->js('create.js');

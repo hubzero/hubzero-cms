@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{option: mixed, rows: mixed} $this
+ */
+
 if ($this->rows) { ?>
     <table class="activity" id="wiki-list">
         <tbody>

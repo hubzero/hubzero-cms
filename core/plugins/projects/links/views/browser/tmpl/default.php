@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{attachments: mixed, model: mixed} $this
+ */
+
 // Build url
 $route = $this->model->isProvisioned()
     ? 'index.php?option=com_publications&task=submit'

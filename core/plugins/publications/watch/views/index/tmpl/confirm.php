@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{action: mixed, email: mixed, publication: mixed} $this
+ */
+
 $this->css();
 
 $link = Route::url($this->publication->link('version') . '&active=watch&confirm=1&action=' . $this->action);

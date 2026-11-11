@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{message: mixed, project: mixed} $this
+ */
+
 $base = rtrim(Request::base(), '/');
 $base = rtrim(str_replace('/administrator', '', $base), '/');
 

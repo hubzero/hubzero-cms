@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed} $this
+ */
+
 $canDo = \Components\Citations\Helpers\Permissions::getActions('citation');
 
 Toolbar::title(Lang::txt('CITATIONS'), 'citation');

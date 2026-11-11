@@ -11,6 +11,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{result: mixed, tagSearch: mixed, terms: mixed} $this
+ */
+
 // Nearly every indexer writes 'url' with Route::urlForClient(), whose $xhtml
 // argument defaults to true, so the stored value can already contain &amp;
 // (com_groups is the exception -- it builds root . 'groups/' . cn by hand).

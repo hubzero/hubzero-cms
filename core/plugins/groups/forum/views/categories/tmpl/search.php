@@ -13,6 +13,19 @@ use Hubzero\Utility\Str;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     categories: mixed,
+ *     filters: mixed,
+ *     forum: mixed,
+ *     group: mixed,
+ *     option: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
 $this

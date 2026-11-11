@@ -19,6 +19,27 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authors: mixed,
+ *     config: mixed,
+ *     counts: mixed,
+ *     diskusage: mixed,
+ *     last_activity: mixed,
+ *     managers: mixed,
+ *     members: mixed,
+ *     model: mixed,
+ *     params: mixed,
+ *     publishing: mixed,
+ *     reviewers: mixed,
+ *     suspended: mixed,
+ *     tags: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 // Push some styles to the template
 Html::behavior('framework');
 Html::behavior('switcher', 'submenu');

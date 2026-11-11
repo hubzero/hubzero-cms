@@ -15,6 +15,22 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     existing: mixed,
+ *     fas: mixed,
+ *     id: mixed,
+ *     next_step: mixed,
+ *     progress: mixed,
+ *     row: mixed,
+ *     step: mixed,
+ *     steps: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 if (!function_exists('stem')) {
     function stem($str)
     {

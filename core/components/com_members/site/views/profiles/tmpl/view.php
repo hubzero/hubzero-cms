@@ -18,6 +18,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     active: mixed,
+ *     cats: mixed,
+ *     config: mixed,
+ *     overwrite_content: mixed,
+ *     profile: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 $no_html = Request::getInt('no_html', 0);
 $user_messaging = (Plugin::isEnabled('members', 'messages') ? $this->config->get('user_messaging', 0) : 0);
 

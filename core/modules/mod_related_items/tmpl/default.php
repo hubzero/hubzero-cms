@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <ul class="relateditems<?php echo $moduleclass_sfx; ?>">
     <?php foreach ($list as $item) : ?>

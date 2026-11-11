@@ -13,6 +13,24 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     allow_bulk_import: mixed,
+ *     allow_import: mixed,
+ *     citations: mixed,
+ *     config: mixed,
+ *     defaultFormat: mixed,
+ *     filters: mixed,
+ *     isAdmin: mixed,
+ *     openurl: mixed,
+ *     sorts: mixed,
+ *     title: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();

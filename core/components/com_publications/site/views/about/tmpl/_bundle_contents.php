@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{contents: mixed} $this
+ */
+
 foreach ($this->contents as $element) :
     if ($element['isDirectory']) :
         $this

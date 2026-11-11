@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{options: mixed, poll: mixed} $this
+ */
+
 $this->css();
 
 $browseUrl = Route::url('index.php?option=com_poll');

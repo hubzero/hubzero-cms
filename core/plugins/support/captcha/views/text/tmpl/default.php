@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{question: mixed, total: mixed} $this
+ */
 ?>
 <label for="captcha-answer<?php echo $this->total; ?>">
     <?php echo $this->question['question']; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>

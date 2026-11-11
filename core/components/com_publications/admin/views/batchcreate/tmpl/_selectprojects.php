@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{projects: mixed} $this
+ */
+
 $html  = '<select name="projectid" id="projectid">' . "\n";
 $html .= "\t" . '<option value="0" selected="selected">' . Lang::txt('COM_PUBLICATIONS_SELECT_PROJECT') . '</option>';
 foreach ($this->projects as $project) {

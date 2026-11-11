@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{ids: mixed} $this
+ */
+
 $toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . Lang::txt('COM_WIKI_DELETE');
 Toolbar::title($toolbarTitle, 'wiki.png');
 Toolbar::cancel();

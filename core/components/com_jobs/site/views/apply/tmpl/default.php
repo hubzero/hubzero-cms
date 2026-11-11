@@ -14,6 +14,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     application: mixed,
+ *     config: mixed,
+ *     emp: mixed,
+ *     job: mixed,
+ *     seeker: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 /* Application Form */
 
 $job         = $this->job;

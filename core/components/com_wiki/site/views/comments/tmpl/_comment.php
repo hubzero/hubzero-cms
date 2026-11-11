@@ -14,6 +14,19 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     cls: mixed,
+ *     comment: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     page: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
 if ($this->page->get('created_by') == $this->comment->get('created_by')) {

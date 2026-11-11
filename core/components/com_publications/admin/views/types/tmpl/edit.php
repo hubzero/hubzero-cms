@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{cats: mixed, row: mixed} $this
+ */
+
 $this
      ->css()
      ->js('curation.js');

@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, delimiter: mixed, ticket: mixed} $this
+ */
+
 $base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator') {
     $base = rtrim(substr($base, 0, strlen($base) - 13), '/');

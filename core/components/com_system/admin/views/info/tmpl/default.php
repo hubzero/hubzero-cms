@@ -16,6 +16,12 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo');
 Toolbar::help('sysinfo');
 

@@ -15,6 +15,23 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     calendars: mixed,
+ *     event: mixed,
+ *     group: mixed,
+ *     month: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     registrationFields: mixed,
+ *     timezone: mixed,
+ *     year: mixed,
+ * } $this
+ */
+
 //include registration
 $includeRegistration = Request::getInt('includeRegistration', 0);
 

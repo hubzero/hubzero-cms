@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{parents: mixed} $this
+ */
+
 // The page's ancestors, root first (empty when page crumbs are turned off)
 if (empty($this->parents)) {
     return;

@@ -11,6 +11,23 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     action: mixed,
+ *     class: mixed,
+ *     disabled: mixed,
+ *     ftpDoc: mixed,
+ *     href: mixed,
+ *     msg: mixed,
+ *     options: mixed,
+ *     pop: mixed,
+ *     showDoc: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 if ($this->disabled) : ?>
     <p id="primary-document">
         <span class="btn disabled <?php echo $this->class; ?>"><?php echo $this->msg; ?></span>

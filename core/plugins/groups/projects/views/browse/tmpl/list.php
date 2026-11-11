@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{rows: mixed, which: mixed} $this
+ */
+
 switch ($this->which) {
     case 'group':
         $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_GROUP');

@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 $hide = Request::getInt('hidemainmenu');
 ?>
 <ul id="submenu">

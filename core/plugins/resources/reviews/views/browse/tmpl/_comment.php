@@ -14,6 +14,20 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     base: mixed,
+ *     cls: mixed,
+ *     comment: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     option: mixed,
+ *     resource: mixed,
+ * } $this
+ */
+
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
 $name = Lang::txt('JANONYMOUS');

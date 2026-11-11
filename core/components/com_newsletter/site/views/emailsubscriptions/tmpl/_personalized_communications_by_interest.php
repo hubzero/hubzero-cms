@@ -7,6 +7,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{userId: mixed} $this
+ */
 $userId = $this->userId;
 $profileLink = "/members/$userId/profile";
 $hubname = Config::get('sitename');

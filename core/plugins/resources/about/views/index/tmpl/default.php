@@ -16,6 +16,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{model: mixed, option: mixed, plugin: mixed, tags: mixed} $this
+ */
+
 $this->css();
 
 $sef = Route::url($this->model->link());

@@ -15,6 +15,21 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     cls: mixed,
+ *     comment: mixed,
+ *     depth: mixed,
+ *     obj: mixed,
+ *     obj_type: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
 if (!$this->comment->get('anonymous') && $this->obj->get('created_by') == $this->comment->get('created_by')) {

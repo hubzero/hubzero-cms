@@ -16,6 +16,18 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     config: mixed,
+ *     group: mixed,
+ *     page: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
 // group params for displaying comments/author
 // use global params if group has not set params
 $groupParams     = new \Hubzero\Config\Registry($this->group->get('params'));

@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{display_name: mixed, hzad: mixed, sitename: mixed} $this
+ */
+
 $this
     ->css('link.css')
     ->css('providers.css')

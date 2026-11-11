@@ -13,6 +13,22 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authors: mixed,
+ *     fats: mixed,
+ *     row: mixed,
+ *     status: mixed,
+ *     step: mixed,
+ *     tagfa: mixed,
+ *     tags: mixed,
+ *     title: mixed,
+ *     version: mixed,
+ * } $this
+ */
+
 $nextstep = $this->step + 1;
 $task = ($nextstep == 5) ? 'preview' : 'start';
 $dev = ($this->version == 'dev') ? 1 : 0;

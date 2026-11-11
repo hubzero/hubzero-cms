@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{html: mixed, id: mixed, lazy: mixed} $this
+ */
 ?>
 <?php
 $ytClass = 'youtube_' . $this->params->get('layout')

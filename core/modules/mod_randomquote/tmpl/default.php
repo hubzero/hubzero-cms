@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{charlimit: mixed, quote: mixed} $this
+ */
+
 $base = rtrim(Request::base(true), '/');
 
 if ($this->quote) {

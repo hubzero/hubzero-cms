@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{results: mixed, sample: mixed} $this
+ */
+
 $toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': '
     . Lang::txt('COM_SUPPORT_ABUSE_CHECK');
 Toolbar::title($toolbarTitle, 'support.png');

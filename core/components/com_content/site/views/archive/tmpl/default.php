@@ -14,6 +14,12 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filter: mixed, form: mixed, pageclass_sfx: mixed, params: mixed} $this
+ */
+
 Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 ?>
 <?php if ($this->params->get('show_page_heading')) : ?>

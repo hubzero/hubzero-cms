@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{aclgroups: mixed, group: mixed} $this
+ */
+
 $this->css();
 
 if ($this->group) :

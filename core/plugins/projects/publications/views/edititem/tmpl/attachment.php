@@ -11,6 +11,23 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     backUrl: mixed,
+ *     element: mixed,
+ *     option: mixed,
+ *     path: mixed,
+ *     project: mixed,
+ *     props: mixed,
+ *     pub: mixed,
+ *     row: mixed,
+ *     step: mixed,
+ * } $this
+ */
+
 $title       = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
 $placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 $dTitle      = null;

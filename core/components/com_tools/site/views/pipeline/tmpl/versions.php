@@ -15,6 +15,20 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     action: mixed,
+ *     admin: mixed,
+ *     error: mixed,
+ *     resource: mixed,
+ *     status: mixed,
+ *     title: mixed,
+ *     versions: mixed,
+ * } $this
+ */
+
 $this
      ->css('pipeline.css')
      ->js('pipeline.js');

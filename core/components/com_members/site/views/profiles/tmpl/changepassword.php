@@ -13,6 +13,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     change: mixed,
+ *     newpass: mixed,
+ *     newpass2: mixed,
+ *     oldpass: mixed,
+ *     password_rules: mixed,
+ *     profile: mixed,
+ *     title: mixed,
+ *     validated: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js('changepassword.js');

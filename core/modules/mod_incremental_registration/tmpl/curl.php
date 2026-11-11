@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Modules\IncrementalRegistration\IncrementalRegistration $this
+ */
 ?>
 <div id="curl">
     <a href="<?php echo Route::url('index.php?option=com_members&id=' . $uid . '&active=profile'); ?>" class="whole">

@@ -14,6 +14,19 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     actions: mixed,
+ *     assets: mixed,
+ *     components: mixed,
+ *     filters: mixed,
+ *     levels: mixed,
+ *     user: mixed,
+ * } $this
+ */
+
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 

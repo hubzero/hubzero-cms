@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{publication: mixed} $this
+ */
+
 $publication = $this->publication;
 $children    = $publication->_attachments ? $publication->_attachments[2] : false;
 $archive     = $publication->bundlePath();

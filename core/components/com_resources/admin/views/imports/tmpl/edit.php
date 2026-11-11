@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{files: mixed, groups: mixed, hooks: mixed, import: mixed, params: mixed} $this
+ */
+
 $this->css('import');
 $this->js('import');
 

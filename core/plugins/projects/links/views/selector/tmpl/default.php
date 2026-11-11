@@ -16,6 +16,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     block: mixed,
+ *     element: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     props: mixed,
+ *     publication: mixed,
+ *     step: mixed,
+ * } $this
+ */
+
 // Get block properties
 $complete = $this->publication->curation('blocks', $this->step, 'complete');
 $manifest = $this->publication->curation('blocks', $this->step, 'manifest');

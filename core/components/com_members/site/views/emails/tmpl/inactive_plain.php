@@ -8,6 +8,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{baseUrl: mixed, config: mixed, user: mixed} $this
+ */
 ?>
 
 Hello <?php echo $this->user->name; ?>,

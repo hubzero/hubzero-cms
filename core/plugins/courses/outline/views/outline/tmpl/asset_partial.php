@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{a: mixed, ag: mixed, base: mixed, course: mixed, unit: mixed} $this
+ */
+
 $href = Route::url($this->base . '&asset=' . $this->a->get('id'));
 
 if ($this->a->get('type') == 'video') {

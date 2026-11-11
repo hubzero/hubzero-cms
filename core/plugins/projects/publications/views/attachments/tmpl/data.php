@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{data: mixed} $this
+ */
+
 $data    = $this->data;
 $row     = $this->data->row;
 $title   = $row->title ? $row->title : $row->path;

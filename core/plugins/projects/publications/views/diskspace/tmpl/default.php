@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     dirsize: mixed,
+ *     option: mixed,
+ *     project: mixed,
+ *     quota: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 // Check used space against quota (percentage)
 $inuse = round((($this->dirsize / $this->quota) * 100), 1);
 if ($this->total > 0 && $inuse < 1) {

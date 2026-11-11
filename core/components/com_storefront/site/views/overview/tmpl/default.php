@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, content: mixed} $this
+ */
+
 $this->css();
 
 $customLandingPage = $this->config->get('landingPage', 0);

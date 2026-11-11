@@ -13,6 +13,12 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{gid: mixed, group: mixed, msg: mixed, project: mixed, title: mixed} $this
+ */
+
 $html  = '';
 
 $this

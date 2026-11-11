@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{option: mixed, resource: mixed, results: mixed} $this
+ */
 ?>
 <div class="container" id="recommendations">
     <h3><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>

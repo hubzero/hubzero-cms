@@ -16,6 +16,18 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     assignees: mixed,
+ *     lists: mixed,
+ *     ownerassignees: mixed,
+ *     row: mixed,
+ *     wishlist: mixed,
+ * } $this
+ */
+
 $canDo = \Components\Wishlist\Helpers\Permissions::getActions('list');
 
 $text = ($this->row->id ? Lang::txt('COM_WISHLIST_EDIT') : Lang::txt('COM_WISHLIST_NEW'));

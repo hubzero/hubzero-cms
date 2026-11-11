@@ -16,6 +16,19 @@ use Plugins\Resources\Usage\Usage as plgResourcesUsage;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     chart_path: mixed,
+ *     dthis: mixed,
+ *     organizations: mixed,
+ *     params: mixed,
+ *     period: mixed,
+ *     resource: mixed,
+ * } $this
+ */
+
 $base = rtrim(Request::base(true), '/');
 
 // Push scripts to document

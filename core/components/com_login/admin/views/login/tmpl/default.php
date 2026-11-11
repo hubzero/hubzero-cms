@@ -10,6 +10,12 @@ use Hubzero\Facades\Module;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
 ?>
 <style>
 #content.com_users .auth:before,

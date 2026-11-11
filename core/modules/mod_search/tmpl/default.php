@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
+
 $inputId = 'searchword' . (Search::$instances > 1 ? $this->module->id : '');
 $formId  = 'searchform' . (Search::$instances > 1 ? $this->module->id : '');
 ?>

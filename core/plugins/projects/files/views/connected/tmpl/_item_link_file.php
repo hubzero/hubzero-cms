@@ -14,6 +14,21 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connectionId: mixed,
+ *     handlerBase: mixed,
+ *     itemFileName: mixed,
+ *     itemMimeType: mixed,
+ *     itemName: mixed,
+ *     itemPath: mixed,
+ *     model: mixed,
+ *     subdirPath: mixed,
+ * } $this
+ */
+
 $model = $this->model;
 $handlerPath = str_replace(
     ['{project}', '{file}'],

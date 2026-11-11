@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{campaign: mixed} $this
+ */
+
 $canDo = Components\Newsletter\Helpers\Permissions::getActions('campaign');
 
 // If current record has a secret, then we are editing, otherwise we are new.

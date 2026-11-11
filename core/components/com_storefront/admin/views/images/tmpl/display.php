@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{file: mixed, id: mixed, type: mixed} $this
+ */
+
 // The plain form behind the ajax uploader on the product and collection
 // edit pages: it is what the <noscript> iframe shows, and where a non-ajax
 // upload lands to report how it went.

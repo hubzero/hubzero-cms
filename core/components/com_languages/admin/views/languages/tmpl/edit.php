@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{item: mixed} $this
+ */
+
 $isNew = empty($this->item->lang_id);
 $canDo = Components\Languages\Helpers\Utilities::getActions();
 

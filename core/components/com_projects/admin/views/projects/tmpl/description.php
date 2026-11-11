@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{fields: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_CUSTOM_DESCRIPTION'));
 if (User::authorise('core.edit', $this->option) || User::authorise('core.create', $this->option)) {
     Toolbar::apply('applyDescription');

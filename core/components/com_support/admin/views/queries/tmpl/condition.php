@@ -11,6 +11,12 @@ use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{condition: mixed, conditions: mixed, row: mixed} $this
+ */
 ?>
 <fieldset class="condition-set">
     <p class="operator">

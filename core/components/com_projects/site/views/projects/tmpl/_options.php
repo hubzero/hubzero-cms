@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed} $this
+ */
+
 $role  = Lang::txt('COM_PROJECTS_PROJECT') . ' <span>';
 if ($this->model->access('manager')) {
     $role .= Lang::txt('COM_PROJECTS_LABEL_OWNER');

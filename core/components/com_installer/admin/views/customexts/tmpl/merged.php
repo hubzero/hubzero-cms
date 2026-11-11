@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{failed: mixed, success: mixed} $this
+ */
+
 $this->css();
 
 Toolbar::title(Lang::txt('COM_INSTALLER'), 'groups.png');

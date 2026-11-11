@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{rows: mixed, user: mixed} $this
+ */
+
 Html::behavior('tooltip');
 ?>
 <div class="unotes">

@@ -16,6 +16,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     option: mixed,
+ *     project: mixed,
+ *     pub: mixed,
+ *     selected_version: mixed,
+ *     task: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 // Build our citation object
 if ($this->pub->version->get('doi')) {
     $cite = new stdClass();

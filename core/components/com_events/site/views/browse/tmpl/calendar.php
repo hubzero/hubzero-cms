@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{day: mixed, month: mixed, shownav: mixed, year: mixed} $this
+ */
+
 $database = App::get('db');
 
 $gid = User::get('gid', 0);

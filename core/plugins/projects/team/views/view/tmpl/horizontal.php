@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{team: mixed} $this
+ */
+
 ?>
 <div class="public-list-header">
     <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM'); ?></h3>

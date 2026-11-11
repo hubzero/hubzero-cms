@@ -12,6 +12,12 @@ use Hubzero\Facades\Pathway;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{breadcrumbs: mixed, pageTitle: mixed} $this
+ */
+
 $breadcrumbs = $this->breadcrumbs;
 $pageTitle = $this->pageTitle;
 

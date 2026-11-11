@@ -15,6 +15,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     option: mixed,
+ *     page: mixed,
+ *     project: mixed,
+ *     publicStamp: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 ?>
 
 <div id="abox-content">

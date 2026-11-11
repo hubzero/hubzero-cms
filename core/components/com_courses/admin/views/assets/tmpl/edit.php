@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course_id: mixed, row: mixed, scope: mixed, scope_id: mixed, tmpl: mixed} $this
+ */
+
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));

@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{cls: mixed, filters: mixed, row: mixed, txt_length: mixed} $this
+ */
+
 if ($this->getError()) { ?>
     <p class="error"><?php echo Lang::txt('MOD_FEATUREDMEMBER_MISSING_CLASS'); ?></p>
 <?php } else {

@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $componentParams = Component::params('com_search');
 $tagSearchEnabled = !!$componentParams->get('solr_tagsearch', 0);
 $tagSearchNotice = Lang::txt('COM_SEARCH_NOTICE_TAG_SEARCH');

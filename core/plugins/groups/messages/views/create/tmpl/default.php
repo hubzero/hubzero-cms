@@ -14,6 +14,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     group: mixed,
+ *     member_roles: mixed,
+ *     members: mixed,
+ *     no_html: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     users: mixed,
+ * } $this
+ */
+
 $group_statuses = [
     'all' => Lang::txt('All Group Members'),
     'managers' => Lang::txt('All Group Managers'),

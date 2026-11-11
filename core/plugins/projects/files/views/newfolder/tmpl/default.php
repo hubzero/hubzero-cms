@@ -14,6 +14,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{repo: mixed, subdir: mixed, url: mixed} $this
+ */
+
 ?>
 
 <div id="abox-content">

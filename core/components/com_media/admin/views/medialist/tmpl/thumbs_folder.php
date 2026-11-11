@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{currentFolder: mixed} $this
+ */
+
 // Get a shortened name
 $name = $this->currentFolder['name'];
 if (strlen($name) > 10) :

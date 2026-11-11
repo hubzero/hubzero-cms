@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{config: mixed, dirsize: mixed, quota: mixed, url: mixed} $this
+ */
+
 // Check used space against quota (percentage)
 $inuse = round(($this->dirsize * 100) / $this->quota);
 if ($inuse < 1) {

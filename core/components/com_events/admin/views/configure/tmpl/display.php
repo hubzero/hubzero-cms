@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_EVENTS_MANAGER') . ': ' . Lang::txt('COM_EVENTS_CONFIGURATION'), 'event');
 Toolbar::save();
 Toolbar::cancel();

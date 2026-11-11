@@ -11,6 +11,12 @@ use Hubzero\Facades\Document;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{rows: mixed} $this
+ */
+
 Document::setType('xml');
 
 // Output XML header.

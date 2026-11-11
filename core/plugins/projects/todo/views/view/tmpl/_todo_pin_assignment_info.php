@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{id: mixed, isComplete: mixed, todo: mixed} $this
+ */
+
 $id = $this->id;
 $isComplete = $this->isComplete;
 $todo = $this->todo;

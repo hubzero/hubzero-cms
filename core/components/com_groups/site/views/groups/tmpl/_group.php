@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{group: mixed} $this
+ */
+
 $group = Hubzero\User\Group::getInstance($this->group->gidNumber);
 
 //get status

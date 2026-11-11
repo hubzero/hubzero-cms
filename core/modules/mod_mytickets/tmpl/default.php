@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{moduleclass: mixed, rows1: mixed, rows2: mixed, rows3: mixed} $this
+ */
+
 // Push the module CSS to the template
 $this->css();
 ?>

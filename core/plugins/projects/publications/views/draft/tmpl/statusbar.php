@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{active: mixed, activenum: mixed, pub: mixed} $this
+ */
+
 $versionLabel   = $this->pub->get('version_label', '1.0');
 $versionAlias   = $this->pub->versionAlias();
 $status         = $this->pub->getStatusName();

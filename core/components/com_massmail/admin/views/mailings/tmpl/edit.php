@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{editable: mixed, invalid: mixed, previewHtml: mixed, row: mixed} $this
+ */
+
 use Components\Massmail\Helpers\Recipients;
 
 $canDo = \Components\Massmail\Admin\Helpers\Permissions::getActions();

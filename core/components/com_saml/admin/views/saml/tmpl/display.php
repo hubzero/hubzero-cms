@@ -15,6 +15,23 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     cert: mixed,
+ *     certFile: mixed,
+ *     certReadable: mixed,
+ *     idp: mixed,
+ *     keyFile: mixed,
+ *     keyReadable: mixed,
+ *     params: mixed,
+ *     sessionsActive: mixed,
+ *     spEnabled: mixed,
+ *     spTotal: mixed,
+ * } $this
+ */
+
 Toolbar::title(Lang::txt('COM_SAML') . ': ' . Lang::txt('COM_SAML_MENU_OVERVIEW'), 'saml');
 
 if (User::authorise('core.admin', $this->option)) {

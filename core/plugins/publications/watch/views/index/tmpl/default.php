@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{publication: mixed, watched: mixed} $this
+ */
+
 $this->css();
 ?>
 <div class="item-watch <?php echo $this->watched ? 'watching' : ''; ?>">

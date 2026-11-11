@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed} $this
+ */
 ?>
 <fieldset class="adminform">
     <legend><?php echo Lang::txt('COM_SYSTEM_INFO_CONFIGURATION_FILE'); ?></legend>

@@ -13,6 +13,20 @@ use Hubzero\Utility\Str;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     categories: mixed,
+ *     course: mixed,
+ *     filters: mixed,
+ *     forum: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 $base = $this->offering->alias() . '&active=forum';
 ?>
 <section class="main section">

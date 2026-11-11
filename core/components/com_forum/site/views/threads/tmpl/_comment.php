@@ -16,6 +16,22 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     category: mixed,
+ *     cls: mixed,
+ *     comment: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     filters: mixed,
+ *     like: mixed,
+ *     likes: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
     $this
         ->css('like.css')
         ->js('like.js');

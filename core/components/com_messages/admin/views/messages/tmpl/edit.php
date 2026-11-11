@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{item: mixed} $this
+ */
+
 // Include the HTML helpers.
 Html::addIncludePath(Component::path($this->option) . '/helpers/html');
 Html::behavior('tooltip');

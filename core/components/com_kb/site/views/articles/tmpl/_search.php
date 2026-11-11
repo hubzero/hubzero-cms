@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed} $this
+ */
+
 // The article search form. Expects: option, filters (search, sort).
 $search = isset($this->filters['search']) ? $this->filters['search'] : '';
 $sort   = isset($this->filters['sort']) ? $this->filters['sort'] : '';

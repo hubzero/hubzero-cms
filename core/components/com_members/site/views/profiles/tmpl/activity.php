@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{guests: mixed, title: mixed, users: mixed} $this
+ */
+
 $this
      ->css()
      ->css('usage.css');

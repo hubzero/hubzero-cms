@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, message: mixed, option: mixed} $this
+ */
+
 $this
      ->js('_not_enrolled.js')
      ->css('_not_enrolled.css');

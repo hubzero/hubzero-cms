@@ -14,6 +14,19 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     exceeded: mixed,
+ *     freeBytes: mixed,
+ *     output: mixed,
+ *     percentage: mixed,
+ *     softBytes: mixed,
+ *     usedBytes: mixed,
+ * } $this
+ */
+
 $this
      ->css('storage.css')
      ->js('storage.js');

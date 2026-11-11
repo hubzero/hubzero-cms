@@ -12,6 +12,18 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     more_courses: mixed,
+ *     notifications: mixed,
+ *     popularcourses: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css('introduction', 'system')
      ->css('intro.css');

@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{no_html: mixed, ticket: mixed, title: mixed} $this
+ */
 ?>
 <?php if ($this->no_html) { ?>
     <div id="report-response">

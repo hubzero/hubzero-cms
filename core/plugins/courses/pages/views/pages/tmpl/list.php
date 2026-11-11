@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{docs: mixed, listdir: mixed, offering: mixed} $this
+ */
+
 $no_html = Request::getInt('no_html', 0);
 
 $section = Request::getInt('section_id', 0);

@@ -16,6 +16,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{event: mixed, filters: mixed, rows: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png');
 Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false);
 Toolbar::deleteList('', 'remove', 'COM_EVENTS_DELETE');

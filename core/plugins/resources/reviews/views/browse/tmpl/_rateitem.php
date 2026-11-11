@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{item: mixed, option: mixed} $this
+ */
+
 $dcls = '';
 $lcls = '';
 

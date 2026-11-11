@@ -13,6 +13,19 @@ use Hubzero\Facades\Route;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     rows: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ * } $this
+ */
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
 $live_site = rtrim(Request::base(), '/');

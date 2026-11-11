@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{container: mixed, content: mixed} $this
+ */
+
 $morelink = count($this->content) > 0 ? $this->content[0]->catpath : 'announcements';
 $morelink = $this->params->get('show_viewall', '') ? $morelink : '';
 $subscribelink = $this->params->get('show_subscribe', '')

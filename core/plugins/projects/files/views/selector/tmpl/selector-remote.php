@@ -14,6 +14,19 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     allowed: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     noUl: mixed,
+ *     selected: mixed,
+ *     used: mixed,
+ * } $this
+ */
+
 $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::getInt('cid'));
 ?>
 

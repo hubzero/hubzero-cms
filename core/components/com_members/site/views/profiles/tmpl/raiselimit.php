@@ -11,6 +11,20 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authorized: mixed,
+ *     jobs_allowed: mixed,
+ *     max_meetings: mixed,
+ *     profile: mixed,
+ *     quota: mixed,
+ *     resource: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this->css();
 ?>
 <header id="content-header">

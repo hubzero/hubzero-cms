@@ -13,6 +13,19 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authors: mixed,
+ *     config: mixed,
+ *     filters: mixed,
+ *     line: mixed,
+ *     params: mixed,
+ *     thedate: mixed,
+ * } $this
+ */
+
 $cls = ['publication'];
 
 switch ($this->line->get('master_access')) :

@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{row: mixed, version: mixed} $this
+ */
 ?>
 <div class="explaination">
     <h4><?php echo Lang::txt('COM_TOOLS_AUTHORS_NO_LOGIN'); ?></h4>

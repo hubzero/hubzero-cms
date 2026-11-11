@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{course: mixed} $this
+ */
+
 $this->js('managers.js');
 
 $roles = $this->course->offering(0)->roles(['alias' => '!student']);

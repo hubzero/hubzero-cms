@@ -15,6 +15,12 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{groups: mixed, model: mixed, option: mixed} $this
+ */
+
 $team = $this->model->team($filters = ['status' => 1]);
 
 ?>

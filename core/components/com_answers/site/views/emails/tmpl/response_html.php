@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{question: mixed, row: mixed} $this
+ */
+
 if ($this->question->isOpen() && !$this->question->isReported()) {
     $status = 'open';
 } elseif ($this->question->isReported()) {

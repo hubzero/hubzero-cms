@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{dryRun: mixed, import: mixed} $this
+ */
+
 // set title
 Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script');
 

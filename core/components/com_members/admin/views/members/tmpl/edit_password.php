@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{password: mixed, password_rules: mixed, profile: mixed, validated: mixed} $this
+ */
 ?>
 <fieldset class="adminform" id="edit_password_fragment">
     <legend><span><?php echo Lang::txt('COM_MEMBERS_FIELD_PASSWORD'); ?></span></legend>

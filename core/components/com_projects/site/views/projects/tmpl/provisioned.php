@@ -13,6 +13,20 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     model: mixed,
+ *     msg: mixed,
+ *     pub: mixed,
+ *     suggested: mixed,
+ *     team: mixed,
+ *     title: mixed,
+ *     verified: mixed,
+ * } $this
+ */
+
 $route = 'index.php?option=com_publications&task=submit';
 $url   = Route::url($route . '&pid=' . $this->pub->id);
 

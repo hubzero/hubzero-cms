@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, application: mixed} $this
+ */
+
 $tabs = [
     'details' => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_DETAILS'),
     'tokens'  => Lang::txt('COM_DEVELOPER_API_APPLICATION_TAB_TOKENS'),//,

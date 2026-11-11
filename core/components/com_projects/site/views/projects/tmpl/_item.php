@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, row: mixed} $this
+ */
+
 $isReviewer = (isset($this->filters['reviewer']) && in_array($this->filters['reviewer'], ['sponsored', 'sensitive']));
 
 $src = Route::url($this->row->picture('master'));

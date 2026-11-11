@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed} $this
+ */
+
 // @TODO: check for set and valid links
 $toolPath = $this->model->get('url');
 $filePath = Request::getString('file', '');

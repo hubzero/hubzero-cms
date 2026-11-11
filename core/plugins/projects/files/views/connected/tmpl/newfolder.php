@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{connection: mixed, model: mixed, subdir: mixed, url: mixed} $this
+ */
 ?>
 <div id="abox-content">
     <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) {

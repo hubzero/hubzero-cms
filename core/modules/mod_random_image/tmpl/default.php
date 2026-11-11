@@ -10,6 +10,12 @@ use Hubzero\Facades\Html;
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module $this
+ */
 ?>
 <div class="random-image<?php echo $moduleclass_sfx; ?>">
     <?php if ($link) : ?>

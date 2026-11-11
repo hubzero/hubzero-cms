@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{controller: mixed, option: mixed, row: mixed, task: mixed} $this
+ */
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('PLG_RESOURCES') . ': ' . Lang::txt('PLG_RESOURCES_SPONSOR') . ': ' . $text, 'resources');

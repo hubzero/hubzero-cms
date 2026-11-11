@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{sp: mixed} $this
+ */
+
 Document::setTitle(Lang::txt('COM_SAML_DENIED_TITLE'));
 ?>
 <header id="content-header">

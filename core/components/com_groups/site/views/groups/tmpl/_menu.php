@@ -13,6 +13,20 @@ use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     classOrId: mixed,
+ *     group: mixed,
+ *     pages: mixed,
+ *     pluginAccess: mixed,
+ *     sections: mixed,
+ *     sectionsContent: mixed,
+ *     tab: mixed,
+ * } $this
+ */
 ?>
 
 <nav aria-label="<?php echo Lang::txt('COM_GROUPS_MENU_LABEL'); ?>">

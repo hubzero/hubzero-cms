@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed, row: mixed} $this
+ */
+
 // Get the permissions helper
 $canDo = Components\Installer\Admin\Helpers\Installer::getActions();
 

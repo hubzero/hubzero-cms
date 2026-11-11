@@ -14,6 +14,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     collection: mixed,
+ *     collections: mixed,
+ *     entry: mixed,
+ *     group: mixed,
+ *     name: mixed,
+ *     no_html: mixed,
+ *     option: mixed,
+ *     task: mixed,
+ * } $this
+ */
+
 $this->js('jquery.fileuploader.js', 'system');
 $this->js('fileupload.js');
 $this->js();

@@ -12,6 +12,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{base: mixed, categories: mixed} $this
+ */
+
 $base = $this->base;
 $preexistingSubscriptionIds = [];
 $currentUserId = User::get('id');

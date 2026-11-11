@@ -13,6 +13,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     cats: mixed,
+ *     emp: mixed,
+ *     filters: mixed,
+ *     pageNav: mixed,
+ *     seekers: mixed,
+ *     title: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
     /* Resume List */
     $seekers    = $this->seekers;
     $filters    = $this->filters;

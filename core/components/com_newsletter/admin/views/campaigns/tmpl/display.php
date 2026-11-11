@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{campaigns: mixed, filters: mixed} $this
+ */
+
 $canDo = Components\Newsletter\Helpers\Permissions::getActions('campaign');
 
 //set title

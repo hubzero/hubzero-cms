@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 // Create the copy/move options.
 $options = [
     Html::select('option', 'add', Lang::txt('COM_MEMBERS_BATCH_ADD')),

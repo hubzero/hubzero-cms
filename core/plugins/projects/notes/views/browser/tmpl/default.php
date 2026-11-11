@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{attachments: mixed, config: mixed, model: mixed, primary: mixed} $this
+ */
+
 $masterscope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 // Set project (system) group

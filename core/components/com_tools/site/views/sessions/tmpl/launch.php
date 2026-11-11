@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{app: mixed, mode: mixed, toolTitle: mixed, version: mixed} $this
+ */
+
 $this
      ->css('launch.css')
      ->js('launch.js');

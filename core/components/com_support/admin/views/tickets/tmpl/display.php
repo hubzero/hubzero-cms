@@ -18,6 +18,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{filters: mixed, folders: mixed, rows: mixed, total: mixed, watch: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS'), 'support');
 Toolbar::preferences('com_support', '550');
 Toolbar::spacer();

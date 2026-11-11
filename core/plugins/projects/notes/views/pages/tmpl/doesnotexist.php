@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{option: mixed, project: mixed} $this
+ */
+
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes';
 $pagename = Request::getString('pagename', '');
 

@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 //set title
 //Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
 ?>

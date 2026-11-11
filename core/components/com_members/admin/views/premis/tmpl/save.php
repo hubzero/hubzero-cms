@@ -12,6 +12,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{fail: mixed, ok: mixed, report: mixed} $this
+ */
+
 $canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEMBERS_PREMIS'), 'user.png');

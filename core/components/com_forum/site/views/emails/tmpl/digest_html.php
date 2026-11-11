@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{interval: mixed, posts: mixed} $this
+ */
+
 $base = rtrim(Request::root(), '/');
 
 // Accent colour for buttons/links (neutral, brand-agnostic default)

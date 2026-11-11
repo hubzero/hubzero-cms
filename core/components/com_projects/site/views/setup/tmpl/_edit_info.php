@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, data: mixed, fields: mixed, model: mixed, publishing: mixed} $this
+ */
+
 $view = $this;
 
 // The attribute that marks the current value in the form fields below

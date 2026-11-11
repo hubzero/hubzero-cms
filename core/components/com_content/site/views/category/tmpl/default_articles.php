@@ -18,6 +18,20 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     category: mixed,
+ *     filters: mixed,
+ *     item: mixed,
+ *     items: mixed,
+ *     pagination: mixed,
+ *     params: mixed,
+ *     user: mixed,
+ * } $this
+ */
+
 Html::addIncludePath(Component::path('com_content') . '/site/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('framework');

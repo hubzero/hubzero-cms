@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{form: mixed, row: mixed, sections: mixed} $this
+ */
+
 $canDo = Components\Forum\Helpers\Permissions::getActions('thread');
 
 $text  = ($this->row->get('parent') ? Lang::txt('COM_FORUM_POSTS') : Lang::txt('COM_FORUM_THREADS')) . ': ';

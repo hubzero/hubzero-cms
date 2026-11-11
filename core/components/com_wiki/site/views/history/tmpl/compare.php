@@ -12,6 +12,19 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     content: mixed,
+ *     dr: mixed,
+ *     or: mixed,
+ *     page: mixed,
+ *     parents: mixed,
+ *     sub: mixed,
+ * } $this
+ */
+
 if (!$this->sub) {
     $this->css();
 }

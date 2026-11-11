@@ -1,6 +1,12 @@
   <?php
     defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{domain: mixed, time: mixed, url: mixed} $this
+ */
+
     $url = $this->url;
     $seconds = $this->time;
     $domain = $this->domain;

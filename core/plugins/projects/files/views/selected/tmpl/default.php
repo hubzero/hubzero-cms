@@ -13,6 +13,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{extras: mixed, file: mixed, multi: mixed, skip: mixed} $this
+ */
+
 $multi = isset($this->multi) && $this->multi ? '[]' : '';
 ?>
 <li>

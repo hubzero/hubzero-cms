@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{notifications: mixed} $this
+ */
+
 if (!empty($this->notifications)) {
     echo '<div class="section notifications">';
     foreach ($this->notifications as $n) {

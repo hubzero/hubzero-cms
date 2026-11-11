@@ -14,6 +14,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{controller: mixed, option: mixed, task: mixed, total: mixed} $this
+ */
+
 $this->css();
 
 $base = Request::base();

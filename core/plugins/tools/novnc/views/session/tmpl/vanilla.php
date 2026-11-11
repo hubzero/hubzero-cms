@@ -21,6 +21,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{output: mixed, readOnly: mixed} $this
+ */
+
 // Shared recovery overlay: registers assets and emits #novnc-reconnect-config
 require __DIR__ . DIRECTORY_SEPARATOR . '_reconnect.php';
 

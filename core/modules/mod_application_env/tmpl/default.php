@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{environment: mixed} $this
+ */
+
 $this->css();
 ?>
 <div id="system-environment">

@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{data: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_ACTIVITY_TITLE'), 'activity');
 
 if (User::authorise('core.admin', $this->option)) {

@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{hook: mixed} $this
+ */
+
 // set title
 $title = ($this->hook->get('id'))
     ? Lang::txt('COM_GROUPS_IMPORTHOOK_TITLE_EDIT')

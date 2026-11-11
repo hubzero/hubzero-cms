@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{contributions: mixed, no_html: mixed} $this
+ */
+
 if (!$this->no_html) {
     // Push the module CSS to the template
     $this->css();

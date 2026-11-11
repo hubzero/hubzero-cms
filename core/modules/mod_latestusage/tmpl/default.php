@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{cls: mixed, resources: mixed, sims: mixed, tools: mixed, users: mixed} $this
+ */
 ?>
 <table <?php echo ($this->cls) ? 'class="' . $this->cls . '" ' : ''; ?>>
     <caption><?php echo Lang::txt('MOD_LATESTUSAGE_CAPTION'); ?></caption>

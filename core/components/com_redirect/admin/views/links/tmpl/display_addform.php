@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View $this
+ */
+
 $newUrlDesc = Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC');
 $commentDesc = Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC');
 ?>

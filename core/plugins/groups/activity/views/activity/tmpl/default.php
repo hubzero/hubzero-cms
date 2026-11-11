@@ -14,6 +14,20 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     canModerate: mixed,
+ *     canStar: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     plugin: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js('jquery.infinitescroll', 'com_collections')

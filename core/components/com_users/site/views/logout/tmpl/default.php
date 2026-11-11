@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{return: mixed} $this
+ */
+
 App::redirect(
     Route::url(
         'index.php?option=' . $this->option . '&task=user.logout&return=' . $this->return,

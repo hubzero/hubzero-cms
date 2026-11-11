@@ -16,6 +16,12 @@ use Components\Media\Admin\Helpers\MediaHelper;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{data: mixed} $this
+ */
+
 if ($this->data['type'] != 'folder') :
     $ext = Filesystem::extension($this->data['name']);
 

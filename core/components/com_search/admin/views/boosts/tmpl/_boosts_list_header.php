@@ -12,6 +12,12 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{sortDirection: mixed, sortField: mixed} $this
+ */
+
 $sortField = $this->sortField;
 $sortDirection = $this->sortDirection;
 ?>

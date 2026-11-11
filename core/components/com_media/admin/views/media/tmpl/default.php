@@ -18,6 +18,12 @@ use Components\Media\Admin\Helpers\MediaHelper;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{folder: mixed, folders: mixed, layout: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_MEDIA'));
 if (User::authorise('core.admin', 'com_media')) {
     Toolbar::preferences($this->option);

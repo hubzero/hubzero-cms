@@ -20,14 +20,14 @@ use Hubzero\Facades\User;
  */
 class Mytools extends Module
 {
-    protected $alltools;
+    public $alltools;
     protected $can_launch;
-    protected $fav;
-    protected $favs;
-    protected $favtools;
+    public $fav;
+    public $favs;
+    public $favtools;
     protected $launch_page;
-    protected $no_html;
-    protected $rectools;
+    public $no_html;
+    public $rectools;
     protected $rt;
     protected $supportedtag;
     protected $supportedtagusage;

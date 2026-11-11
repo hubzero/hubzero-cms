@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, filters: mixed, rows: mixed, tool: mixed, total: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_TOOLS'), 'tools');
 Toolbar::preferences('com_tools', '550');
 Toolbar::spacer();

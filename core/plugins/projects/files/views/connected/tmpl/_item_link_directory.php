@@ -12,6 +12,18 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     connectionId: mixed,
+ *     itemDisplayName: mixed,
+ *     itemName: mixed,
+ *     model: mixed,
+ *     urlEncodedItemPath: mixed,
+ * } $this
+ */
+
 $directoryBrowseUrl = Route::url(
     $this->model->link('files') . "&action=browse&connection=$this->connectionId&subdir=$this->urlEncodedItemPath",
 );

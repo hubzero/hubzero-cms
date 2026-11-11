@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{option: mixed, resource: mixed, review: mixed} $this
+ */
+
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews');
 
 $message  = Lang::txt('PLG_RESOURCES_REVIEWS_SOMEONE_POSTED_REVIEW') . "\r\n\r\n";

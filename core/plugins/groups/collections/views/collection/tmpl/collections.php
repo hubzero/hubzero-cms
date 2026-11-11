@@ -14,6 +14,24 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     filters: mixed,
+ *     followers: mixed,
+ *     following: mixed,
+ *     group: mixed,
+ *     model: mixed,
+ *     name: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     posts: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this
      ->js('jquery.masonry.js', 'com_collections')
      ->js('jquery.infinitescroll.js', 'com_collections')

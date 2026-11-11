@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{info: mixed, model: mixed, option: mixed} $this
+ */
+
 $privacy = !$this->model->isPublic()
     ? Lang::txt('COM_PROJECTS_PRIVATE')
     : Lang::txt('COM_PROJECTS_PUBLIC');

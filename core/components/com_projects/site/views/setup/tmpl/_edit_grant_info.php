@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{model: mixed} $this
+ */
+
 $approved = ($this->model->params->get('grant_status') == 1) ? 1 : 0;
 $hasGrantInfo = false;
 

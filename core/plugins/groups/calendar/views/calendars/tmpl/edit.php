@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{calendar: mixed, group: mixed, option: mixed} $this
+ */
 ?>
 
 <?php if ($this->getError()) { ?>

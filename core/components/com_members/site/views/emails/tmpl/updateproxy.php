@@ -10,6 +10,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{baseURL: mixed, sitename: mixed, xprofile: mixed} $this
+ */
 ?>
 An administrative process has updated your account on <?php echo $this->sitename; ?>!
 

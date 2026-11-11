@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{categories: mixed, params: mixed, row: mixed} $this
+ */
+
 $canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_KB_EDIT') : Lang::txt('COM_KB_NEW'));

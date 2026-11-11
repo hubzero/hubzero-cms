@@ -12,6 +12,19 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     id: mixed,
+ *     progress: mixed,
+ *     row: mixed,
+ *     step: mixed,
+ *     steps: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this->css('create.css');
 ?>
 <header id="content-header">

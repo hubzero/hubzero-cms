@@ -8,6 +8,12 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{title: mixed} $this
+ */
+
 if (isset($this->title) && !empty($this->title)) :
     echo $this->title;
 endif;

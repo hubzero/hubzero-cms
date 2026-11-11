@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{model: mixed, owner: mixed} $this
+ */
 $i = 1;
 
 ?>

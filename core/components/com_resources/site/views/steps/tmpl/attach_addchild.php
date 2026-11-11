@@ -10,6 +10,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{id: mixed} $this
+ */
+
 $baseUrl = '/resources/draft?controller=attachments&no_html=1';
 $actionUrl = $baseUrl . '&task=create&' . Session::getFormToken() . '=1';
 ?>

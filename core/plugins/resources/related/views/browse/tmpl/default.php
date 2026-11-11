@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{option: mixed, related: mixed} $this
+ */
+
 ?>
 <h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 

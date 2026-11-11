@@ -9,6 +9,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     fileparams: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     publishing: mixed,
+ *     repo: mixed,
+ *     subdir: mixed,
+ * } $this
+ */
+
 if (is_array($this->items)) {
     foreach ($this->items as $item) {
         $this

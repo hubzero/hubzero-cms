@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{children: mixed, folder: mixed, layout: mixed} $this
+ */
+
 if (!Request::getInt('no_html') && Request::getWord('format') != 'raw') {
     $this
         ->css()

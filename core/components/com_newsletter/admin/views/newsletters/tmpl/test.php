@@ -14,6 +14,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{newsletter: mixed} $this
+ */
+
 //set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter');
 

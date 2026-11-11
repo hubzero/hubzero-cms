@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{clist: mixed, filters: mixed, glist: mixed, rows: mixed, total: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event');
 Toolbar::preferences('com_events', '550');
 Toolbar::spacer();

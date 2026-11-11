@@ -10,6 +10,12 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{connections: mixed, model: mixed} $this
+ */
 ?>
 
 <ul class="file-selector" id="file-selector" data-projectid="<?php echo $this->model->get('id'); ?>">

@@ -18,6 +18,23 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     authenticators: mixed,
+ *     description: mixed,
+ *     freturn: mixed,
+ *     local: mixed,
+ *     params: mixed,
+ *     remember_me_default: mixed,
+ *     return: mixed,
+ *     returnQueryString: mixed,
+ *     site_display: mixed,
+ *     totalauths: mixed,
+ * } $this
+ */
+
 // Get and add the js and extra css to the page
 $this->css('login.css');
 $this->css('providers.css');

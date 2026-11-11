@@ -13,6 +13,24 @@ use Hubzero\Facades\User;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{
+ *     assigned: mixed,
+ *     banking: mixed,
+ *     interests: mixed,
+ *     intext: mixed,
+ *     limit_assigned: mixed,
+ *     limit_interest: mixed,
+ *     limit_mine: mixed,
+ *     openquestions: mixed,
+ *     otherquestions: mixed,
+ *     show_assigned: mixed,
+ *     show_interests: mixed,
+ * } $this
+ */
+
 // Push the module CSS to the template
 $this->css();
 ?>

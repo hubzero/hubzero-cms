@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Module\Module&object{guestCount: mixed, loggedInCount: mixed, loggedInList: mixed} $this
+ */
 ?>
 
 <div class="<?php echo $this->params->get('moduleclass_sfx', ''); ?>">
