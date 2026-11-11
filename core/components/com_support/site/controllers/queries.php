@@ -50,16 +50,19 @@ class Queries extends SiteController
     /**
      * Display a form for adding/editing a record
      *
+     * @param   Query|null  $row  The query a failed save could not store, to show again as it was entered
      * @return  void
      */
-    public function editTask()
+    public function editTask($row = null)
     {
         $lists = [];
         $lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-        $id = Request::getInt('id', 0);
+        if (!is_object($row)) {
+            $id = Request::getInt('id', 0);
 
-        $row = Query::oneOrNew($id);
+            $row = Query::oneOrNew($id);
+        }
 
         // A saved query belongs to the user who created it; user_id 0 is a
         // shared core query. saveTask already enforces this -- without it here
