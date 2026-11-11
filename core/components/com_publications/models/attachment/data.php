@@ -292,7 +292,6 @@ class Data extends Base
         }
 
         // Loop through attachments
-        $objData = null;
         foreach ($attachments as $att) {
             if ($att->type != $this->name) {
                 continue;
@@ -342,11 +341,9 @@ class Data extends Base
                 . '?v='
                 . $dbVersion;
             $pAttach->store();
-        }
 
-        // Determine accompanying files and copy them in the right location
-        // (only for the last database in the list, as this always has)
-        if ($objData) {
+            // Copy the repository files this database links to into the new version,
+            // as publishing does for each database
             $this->publishDataFiles($objData, $newConfigs);
         }
 
