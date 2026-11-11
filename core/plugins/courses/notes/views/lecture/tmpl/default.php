@@ -185,7 +185,8 @@ jQuery(document).ready(function(jQuery) {
 
             var id = $('#note-' + note.id).attr('data-id');
 
-            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y
+                + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }

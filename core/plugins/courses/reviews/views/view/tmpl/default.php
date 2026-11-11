@@ -147,7 +147,10 @@ $this->js();
                     if (
                         (string) $comment->get('item_type') !== (string) $this->obj_type
                         || (int) $comment->get('item_id') !== (int) $this->obj->get('id')
-                        || !($comment->get('created_by') == User::get('id') || $this->params->get('access-manage-comment'))
+                        || !(
+                            $comment->get('created_by') == User::get('id')
+                            || $this->params->get('access-manage-comment')
+                        )
                     ) {
                         $comment = \Components\Courses\Models\Comment::blank();
                         $edit = 0;

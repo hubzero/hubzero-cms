@@ -73,7 +73,8 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
                             echo '<input type="radio" name="prefix" value="' . urlencode($dir->getPath()) . '" />';
                             echo \Components\Projects\Models\File::drawIcon($dir->getExtension());
                             echo '<a href="' . Route::url($this->model->link('files') . '&action=browse&connection='
-                            . $this->connection->id . '&subdir=' . $dir->getPath()) . '">' . $this->escape($dir->getDisplayName())
+                            . $this->connection->id . '&subdir=' . $dir->getPath()) . '">'
+                            . $this->escape($dir->getDisplayName())
                             . '</a>'; ?>
                         </li>
                     <?php endforeach; ?>

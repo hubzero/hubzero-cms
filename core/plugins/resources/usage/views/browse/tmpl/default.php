@@ -963,7 +963,8 @@ $bars = [];
                             xaxis: { mode: "time", min: new Date('<?= $min ?>'), max: new Date('<?= $to ?>'), tickDecimals: 0,
                                 tickFormatter: function (val, axis) {
                                     var d = new Date(val);
-                                    return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                                    //d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                                    return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);
                                 }
                             },
                             yaxis: {
@@ -1007,9 +1008,13 @@ $bars = [];
                                 }
 
                                 $('#runs-overview-total').text(item.datapoint[1]);
-                                $('#runs-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+                                $('#runs-overview-date').text(
+                                    month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy
+                                );
                                 $('#users-overview-total').text(datasets[0].data[item.dataIndex][1]);
-                                $('#users-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+                                $('#users-overview-date').text(
+                                    month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy
+                                );
 
                                 updateTables(yyyy, mm);
 

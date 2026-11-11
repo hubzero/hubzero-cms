@@ -67,9 +67,14 @@ $this
                             // (or it is a comment on some other item -- commentedit= resolves any comment on the hub)
                             if (
                                 $comment->get('id')
-                                && (($comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
-                                || $comment->get('item_type') != $this->obj_type
-                                || (int) $comment->get('item_id') !== (int) $this->obj_id)
+                                && (
+                                    (
+                                        $comment->get('created_by') != User::get('id')
+                                        && !$this->params->get('access-manage-comment')
+                                    )
+                                    || $comment->get('item_type') != $this->obj_type
+                                    || (int) $comment->get('item_id') !== (int) $this->obj_id
+                                )
                             ) {
                                 // Disallow editing
                                 $comment = \Plugins\Hubzero\Comments\Models\Comment::blank();

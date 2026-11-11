@@ -163,7 +163,8 @@ $this
                                                     }
                                                     else
                                                     {
-                                                        showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+                                                        showTooltip(
+                                                            graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
                                                             graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
                                                             points[k].data[m][1], append)
                                                     }

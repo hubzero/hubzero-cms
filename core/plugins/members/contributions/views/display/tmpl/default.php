@@ -330,7 +330,8 @@ foreach ($this->results as $category) {
             //if ($totals[$k] > 5) {
             if ($this->cats[$k]['total'] > 5) {
                 $html .= ' | <a href="' . Route::url($this->member->link() . '&active=contributions&area='
-                . urlencode(strToLower($this->cats[$k]['category']))) . '">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE')
+                . urlencode(strToLower($this->cats[$k]['category']))) . '">'
+                . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE')
                 . '</a>';
             }
             $html .= '</p>' . "\n\n";
