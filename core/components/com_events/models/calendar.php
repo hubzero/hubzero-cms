@@ -326,7 +326,8 @@ class Calendar extends Model
             $allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
             $rrule        = null;
 
-            // handle end
+            // handle end (an event with neither an end nor all day has none)
+            $publish_down = null;
             if (isset($incomingEvent['DTEND'])) {
                 $end = $incomingEvent['DTEND'];
                 $publish_down = $end->toSql();

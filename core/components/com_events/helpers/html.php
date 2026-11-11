@@ -213,6 +213,7 @@ class Html
      */
     public static function buildYearSelect($year, $args)
     {
+        $yearslist = [];
         $y = date("Y");
         if ($year < $y - 2) {
             $yearslist[] = \Html::select('option', $year, $year, 'value', 'text');
@@ -552,7 +553,10 @@ class Html
      */
     public static function getUserMailtoLink($agid, $userid)
     {
-        $agenda_viewmail = _CAL_CONF_MAILVIEW;
+        // Nothing in core defines this setting any more; without it, no
+        // email address is shown.
+        $agenda_viewmail = defined('_CAL_CONF_MAILVIEW') ? _CAL_CONF_MAILVIEW : '';
+        $contactlink = '';
         if ($userid) {
             $user = User::getInstance($userid);
 

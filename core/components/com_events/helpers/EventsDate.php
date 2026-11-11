@@ -219,18 +219,10 @@ class EventsDate
         $month = intval($month);
         $year = intval($year);
         if (!$month) {
-            if (isset($this)) {
-                $month = $this->month;
-            } else {
-                $month = date("m");
-            }
+            $month = $this->month;
         }
         if (!$year) {
-            if (isset($this)) {
-                $year = $this->year;
-            } else {
-                $year = date("Y");
-            }
+            $year = $this->year;
         }
         if ($month == 2) {
             if (($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0) {
@@ -297,25 +289,13 @@ class EventsDate
     public function toDays($day = 0, $month = 0, $year = 0)
     {
         if (!$day) {
-            if (isset($this)) {
-                $day = $this->day;
-            } else {
-                $day = date("d");
-            }
+            $day = $this->day;
         }
         if (!$month) {
-            if (isset($this)) {
-                $month = $this->month;
-            } else {
-                $month = date("m");
-            }
+            $month = $this->month;
         }
         if (!$year) {
-            if (isset($this)) {
-                $year = $this->year;
-            } else {
-                $year = date("Y");
-            }
+            $year = $this->year;
         }
 
         $century = floor($year / 100);

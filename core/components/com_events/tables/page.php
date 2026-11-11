@@ -151,6 +151,10 @@ class Page extends Table
                     . " AND ordering > " . intval($this->ordering)
                     . " ORDER BY ordering LIMIT 1";
                 break;
+
+            default:
+                // Not a direction this method knows
+                return false;
         }
         $this->db->setQuery($sql);
         if ($result = $this->db->loadAssoc()) {

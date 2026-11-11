@@ -267,6 +267,10 @@ class Event extends Table
 
                 $sql .= " ORDER BY publish_up ASC";
                 break;
+
+            default:
+                // Not a period this method knows how to list
+                return [];
         }
 
         if (isset($filters['limit'])) {
