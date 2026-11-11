@@ -123,7 +123,9 @@ if ($revertAllowed && $this->pub->accepted()) {
                                     . ')</span>'
                                 : '';
                             ?>
-                            <td class="tbl-input"><span <?= $attributes ?>><?= $this->escape($this->pub->get('version_label')) ?></span> <?= $cellText ?></td>
+                            <td class="tbl-input"><span
+                                <?= $attributes ?>><?= $this->escape($this->pub->get('version_label')) ?></span>
+                                <?= $cellText ?></td>
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_NUMBER') ?>:</td>

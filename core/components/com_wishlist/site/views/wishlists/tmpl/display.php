@@ -162,7 +162,8 @@ if ($this->wishlist->get('id')) {
                                         $titleText = Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE');
                                         $linkText = Lang::txt('COM_WISHLIST_SORT_RANKING');
                                         ?>
-                                        <li><a class="icon-arrow-down sort-ranking<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                        <li><a class="icon-arrow-down sort-ranking<?= $activeClass ?>"
+                                            href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php } ?>
                                     <?php if ($this->wishlist->get('banking')) { ?>
                                         <?php
@@ -174,7 +175,8 @@ if ($this->wishlist->get('id')) {
                                         $titleText = Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE');
                                         $linkText = Lang::txt('COM_WISHLIST_SORT_BONUS');
                                         ?>
-                                        <li><a class="icon-arrow-down sort-bonus<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                        <li><a class="icon-arrow-down sort-bonus<?= $activeClass ?>"
+                                            href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php } ?>
                                     <?php
                                     $linkUrl = Route::url(
@@ -185,7 +187,8 @@ if ($this->wishlist->get('id')) {
                                     $titleText = Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE');
                                     $linkText = Lang::txt('COM_WISHLIST_SORT_FEEDBACK');
                                     ?>
-                                    <li><a class="icon-arrow-down sort-feedback<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                    <li><a class="icon-arrow-down sort-feedback<?= $activeClass ?>"
+                                        href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=submitter&tags='
@@ -195,7 +198,8 @@ if ($this->wishlist->get('id')) {
                                     $titleText = Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE');
                                     $linkText = Lang::txt('COM_WISHLIST_SORT_SUBMITTER');
                                     ?>
-                                    <li><a class="icon-arrow-down sort-submitter<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                    <li><a class="icon-arrow-down sort-submitter<?= $activeClass ?>"
+                                        href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=date&tags='

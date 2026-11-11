@@ -257,7 +257,9 @@ $this
                                                 $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN');
                                                 $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN');
                                                 ?>
-                                                <a href="<?= $assignUrl ?>" class="btn icon-assign btn-secondary fancybox" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                                <a href="<?= $assignUrl ?>"
+                                                    class="btn icon-assign btn-secondary fancybox"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a>
                                                 <?php
                                         }
                                         ?>
@@ -271,7 +273,9 @@ $this
                                                 $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW');
                                                 $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW');
                                                 ?>
-                                                <a href="<?= $linkUrl ?>" class="btn icon-next btn-secondary btn-primary" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                                <a href="<?= $linkUrl ?>"
+                                                    class="btn icon-next btn-secondary btn-primary"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a>
                                         <?php endif; ?>
                                             <?php echo $row->state == 7 ? $reviewed : ''; ?>
                                             <?php
@@ -281,7 +285,8 @@ $this
                                             $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_OVER_HISTORY');
                                             $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY');
                                             ?>
-                                            <a href="<?= $historyUrl ?>" class="btn btn-secondary icon-history fancybox" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                            <a href="<?= $historyUrl ?>" class="btn btn-secondary icon-history fancybox"
+                                                title="<?= $titleText ?>"><?= $linkText ?></a>
                                             <?php
                                             $linkUrl = Route::url(
                                                 'index.php?option=com_publications&id=' . $row->id . '&v='

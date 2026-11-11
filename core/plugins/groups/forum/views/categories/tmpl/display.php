@@ -313,7 +313,9 @@ $this
                                                     . $sortingQueryString;
                                                 $buttonText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete"><?= $buttonText ?></button>
+                                                <button type="submit" form="hz-post-action"
+                                                    formaction="<?= $actionUrl ?>"
+                                                    class="icon-delete delete"><?= $buttonText ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

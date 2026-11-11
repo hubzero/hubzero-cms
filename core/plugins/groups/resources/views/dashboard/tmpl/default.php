@@ -165,7 +165,9 @@ if ($this->results) {
                                         <?php
                                         $spanText = Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating);
                                         ?>
-                                        <td><span class="avgrating<?= $class ?>"><span><?= $spanText ?></span>&nbsp;</span> (<?= $line->times_rated ?>)</td>
+                                        <td><span
+                                            class="avgrating<?= $class ?>"><span><?= $spanText ?></span>&nbsp;</span>
+                                            (<?= $line->times_rated ?>)</td>
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>

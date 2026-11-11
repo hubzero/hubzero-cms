@@ -254,7 +254,8 @@ $sortDirSelected = function ($value) use ($view) {
                                             $titleText = Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE');
                                             $linkText = Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE');
                                             ?>
-                                            <a href="<?= $linkUrl ?>" class="icon-remove filters-x" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                            <a href="<?= $linkUrl ?>" class="icon-remove filters-x"
+                                                title="<?= $titleText ?>"><?= $linkText ?></a>
                                         </li>
                                         <?php
                                     }
@@ -273,7 +274,8 @@ $sortDirSelected = function ($value) use ($view) {
                                         $titleText = Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE');
                                         $linkText = Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE');
                                         ?>
-                                        <a href="<?= $linkUrl ?>" class="icon-remove filters-x" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                        <a href="<?= $linkUrl ?>" class="icon-remove filters-x"
+                                            title="<?= $titleText ?>"><?= $linkText ?></a>
                                     </li>
                                 <?php } ?>
                             <?php endforeach; ?>

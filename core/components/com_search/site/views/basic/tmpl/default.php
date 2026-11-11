@@ -269,7 +269,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                             . $this->url_terms,
                                     );
                                     ?>
-                                    <li><a href="<?= $linkUrl ?>"><?= $this->escape($sdef['name']) ?> <span class="item-count"><?= $sdef['count'] ?></span></a></li>
+                                    <li><a href="<?= $linkUrl ?>"><?= $this->escape($sdef['name']) ?> <span
+                                        class="item-count"><?= $sdef['count'] ?></span></a></li>
                                 <?php else : ?>
                                     <li><strong><?= $this->escape($sdef['name']) ?> <span
                                         class="item-count"><?= $sdef['count'] ?></span></strong></li>

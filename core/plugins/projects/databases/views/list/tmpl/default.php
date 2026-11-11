@@ -135,7 +135,8 @@ $this->css();
                     $linkUrl = '/' . $this->dataviewer . '/view/' . $this->model->get('alias') . ':dsl/'
                         . $r['database_name'] . '/';
                     ?>
-                    <a rel="noopener noreferrer" target="_blank" href="<?= $linkUrl ?>"><?= $this->escape($r['title']) ?></a>
+                    <a rel="noopener noreferrer" target="_blank"
+                        href="<?= $linkUrl ?>"><?= $this->escape($r['title']) ?></a>
                 <?php if ($this->model->access('content')) { ?>
                     <span class="db-update" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT') ?>"></span>
                 <?php } ?>

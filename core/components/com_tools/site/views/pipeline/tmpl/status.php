@@ -273,7 +273,8 @@ $prioritySelected = function ($value) use ($view) {
                                         <?php
                                         $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki';
                                         ?>
-                                        <li class="wiki"><a href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
+                                        <li class="wiki"><a href="<?= $linkUrl ?>"
+                                            title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
                                         <li class="sourcecode"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/browser" title="<?= Lang::txt('COM_TOOLS_SOURCE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
                                         <li class="timeline"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/timeline" title="<?= Lang::txt('COM_TOOLS_TIMELINE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
                                     <?php } else { ?>
@@ -293,7 +294,8 @@ $prioritySelected = function ($value) use ($view) {
                                                 : Lang::txt('COM_TOOLS_SITE_ADMIN')
                                         );
                                     ?>
-                                    <li class="message"><a href="javascript:void(0);" title="<?= $titleText ?>" class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
+                                    <li class="message"><a href="javascript:void(0);" title="<?= $titleText ?>"
+                                        class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
                                     <?php if ($this->status['published'] != 1 && ToolsHtml::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
                                         <li class="canceltool"><a href="javascript:void(0);"
                                             title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>"
@@ -662,7 +664,9 @@ $prioritySelected = function ($value) use ($view) {
                         <?php
                         $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki/GettingStarted';
                         ?>
-                    <li><a class="developer-wiki" href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS') ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE') ?>.</li>
+                    <li><a class="developer-wiki"
+                        href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS') ?></a>
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE') ?>.</li>
                     </ul>
                     <h2><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_WE_ARE_WAITING'); ?></h2>
                     <p><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_CREATED_LET_US_KNOW'); ?>:</p>
@@ -853,7 +857,9 @@ $prioritySelected = function ($value) use ($view) {
                                         . $this->status['toolname'],
                                 );
                                 ?>
-                                <?= Lang::txt('COM_TOOLS_PLEASE') ?> <a href="<?= $resourceUrl ?>"><?= strtolower(Lang::txt('COM_TOOLS_CREATE')) ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_PAGE_DESC') ?>.
+                                <?= Lang::txt('COM_TOOLS_PLEASE') ?> <a
+                                    href="<?= $resourceUrl ?>"><?= strtolower(Lang::txt('COM_TOOLS_CREATE')) ?></a>
+                                    <?= Lang::txt('COM_TOOLS_WHATSNEXT_PAGE_DESC') ?>.
                             </p>
                         <?php } ?>
                         </li>

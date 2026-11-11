@@ -145,7 +145,8 @@ $this->css();
                             );
                             $titleText = $item->numreplies . ' ' . Lang::txt('COM_WISHLIST_COMMENTS');
                             ?>
-                            <span class="entry-comments"><a href="<?= $wishUrl ?>" title="<?= $titleText ?>"><?= $item->numreplies ?></a></span>
+                            <span class="entry-comments"><a href="<?= $wishUrl ?>"
+                                title="<?= $titleText ?>"><?= $item->numreplies ?></a></span>
                         </span>
                     <?php } else { ?>
                         <span class="warning adjust"><?= Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED') ?></span>

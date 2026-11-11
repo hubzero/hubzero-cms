@@ -164,7 +164,9 @@ $this->js('status.js', 'com_massmail');
         <?php
         $strongText = Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED');
         ?>
-        <span><span class="dot <?= $this->pfRunning ? 'ok' : 'bad' ?>"></span><?= Lang::txt('COM_MASSMAIL_PF_SERVICE') ?>: <strong><?= $strongText ?></strong></span>
+        <span><span
+            class="dot <?= $this->pfRunning ? 'ok' : 'bad' ?>"></span><?= Lang::txt('COM_MASSMAIL_PF_SERVICE') ?>:
+            <strong><?= $strongText ?></strong></span>
         <?php
         $okClass = $this->pfConfig['configured'] ? 'ok' : 'bad';
         $strongText = Lang::txt(

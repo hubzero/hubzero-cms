@@ -608,7 +608,9 @@ $categorySelected = function ($value) use ($view) {
                                     $titleText = Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP');
                                     $linkText = Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP');
                                     ?>
-                                    <?= Lang::txt('COM_SUPPORT_COMMENT_SEVERITY') ?>: <a class="icon-help tooltips popup" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a>
+                                    <?= Lang::txt('COM_SUPPORT_COMMENT_SEVERITY') ?>: <a
+                                        class="icon-help tooltips popup" href="<?= $linkUrl ?>"
+                                        title="<?= $titleText ?>"><?= $linkText ?></a>
                                     <select name="ticket[severity]" id="ticket-field-severity" class="form-control">
                                         <?php foreach ($this->lists['severities'] as $severity) { ?>
                                             <?php

@@ -232,7 +232,8 @@ $this
                                                 false,
                                             );
                                             ?>
-                                            <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                            <a class="btn repost tooltips" href="<?= $linkUrl ?>"
+                                                title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } ?>

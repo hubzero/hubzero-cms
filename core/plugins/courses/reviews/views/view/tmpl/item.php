@@ -140,7 +140,8 @@ switch ($this->comment->get('rating')) {
                     <?php
                     $linkUrl = Request::base() . 'site/comments/' . $this->comment->get('filename');
                     ?>
-                    <p><?= Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE') ?> <a href="<?= $linkUrl ?>"><?= $this->escape($this->comment->get('filename')) ?></a></p>
+                    <p><?= Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE') ?> <a
+                        href="<?= $linkUrl ?>"><?= $this->escape($this->comment->get('filename')) ?></a></p>
                 </div>
             <?php } ?>
 

@@ -355,7 +355,8 @@ $filterStateSelected = function ($value) use ($view) {
                 ?>
                 <tr class="<?php echo "row$k" . ($row->state == 2 ? ' archived' : ''); ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td class="priority-5">
@@ -381,7 +382,8 @@ $filterStateSelected = function ($value) use ($view) {
                                     . $row->id . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
+                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -399,7 +401,8 @@ $filterStateSelected = function ($value) use ($view) {
                                     . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="state <?= $scls ?>" href="<?= $stickyUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $stickyTitle) ?>">
+                            <a class="state <?= $scls ?>" href="<?= $stickyUrl ?>"
+                                title="<?= Lang::txt('COM_FORUM_SET_TO', $stickyTitle) ?>">
                                 <span><?php echo $stickyAlt; ?></span>
                             </a>
                         <?php } else { ?>
