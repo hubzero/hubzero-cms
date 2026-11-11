@@ -29,6 +29,6 @@ class Migration20161213132518PlgSearchSolr extends Base
      **/
     public function down()
     {
-        $this->disablePluginEntry('search', 'solr');
+        $this->deletePluginEntry('search', 'solr');
     }
 }

@@ -44,7 +44,7 @@ class Migration20140131091600HubzeroComments extends Base
                 $cls = '\\Hubzero\\Item\\Comment';
 
                 foreach ($results as $r) {
-                    $record = new $cls($this->db);
+                    $record = new $cls();
 
                     if ($record instanceof \Hubzero\Database\Relational) {
                         $data = [
