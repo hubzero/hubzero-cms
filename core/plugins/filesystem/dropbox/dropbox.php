@@ -30,11 +30,11 @@ class Dropbox extends Plugin
      **/
     public static function init($params = [])
     {
-        if (isset($params['app_token'])) {
-            $accessToken = $params['app_token']->access_token;
-        } else {
+        if (!isset($params['app_token'])) {
+            // Sends the browser to Dropbox to authorise, and exits
             self::getAccessToken($params);
         }
+        $accessToken = $params['app_token']->access_token;
 
         // Create the client
         $client = new DropboxClient($accessToken);

@@ -436,6 +436,8 @@ class Tinymce extends Plugin
         $plugins = implode(',', $plugins);
         $elements = implode(',', $elements);
 
+        // An unknown mode loads no editor
+        $return = '';
         switch ($mode) {
             case 0: /* Simple mode*/
                 $load = "\t<script type=\"text/javascript\" src=\""

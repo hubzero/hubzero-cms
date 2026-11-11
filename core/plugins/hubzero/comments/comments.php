@@ -653,9 +653,7 @@ class Comments extends Plugin
                 if ($reply->reports) {
                     $description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
                 } else {
-                    $description = (is_object($p))
-                        ? $p->parse(stripslashes($reply->content))
-                        : nl2br(stripslashes($reply->content));
+                    $description = nl2br(stripslashes($reply->content));
                 }
                 $description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 

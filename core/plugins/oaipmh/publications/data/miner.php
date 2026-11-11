@@ -305,6 +305,7 @@ class Miner extends Obj implements Provider
                 }
             }
 
+            $attachments = null;
             if ($results) {
                 $attachments = [
                     '1'        => [],
@@ -347,7 +348,7 @@ class Miner extends Obj implements Provider
                     true,
                 );
 
-                if ($files != false && !empty($files)) {
+                if ($files) {
                     foreach ($files as $file) {
                         //$mimeType = mime_content_type($file);
                         $mimer = new \Hubzero\Content\Mimetypes();
