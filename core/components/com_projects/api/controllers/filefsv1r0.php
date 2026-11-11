@@ -363,10 +363,9 @@ class Filefsv1r0 extends ApiController
         $deleted  = 0;
 
         foreach ($items as $element) {
-            foreach ($element as $type => $item) {
-                // Get type and item name
-                break;
-            }
+            // Get type and item name
+            $type = array_key_first($element);
+            $item = $element[$type];
 
             // Must have a name
             if (trim($item) == '') {
@@ -445,10 +444,9 @@ class Filefsv1r0 extends ApiController
         $moved  = 0;
 
         foreach ($items as $element) {
-            foreach ($element as $type => $item) {
-                // Get type and item name
-                break;
-            }
+            // Get type and item name
+            $type = array_key_first($element);
+            $item = $element[$type];
 
             // Must have a name
             if (trim($item) == '') {
@@ -680,10 +678,9 @@ class Filefsv1r0 extends ApiController
             App::abort(404, Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
         } else {
             foreach ($items as $element) {
-                foreach ($element as $type => $item) {
-                    // Get type and item name
-                    break;
-                }
+                // Get type and item name
+                $type = array_key_first($element);
+                $item = $element[$type];
 
                 // Must have a name
                 if (trim($item) == '') {

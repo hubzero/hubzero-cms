@@ -374,10 +374,9 @@ class Filesv1r0 extends ApiController
         $deleted  = 0;
 
         foreach ($items as $element) {
-            foreach ($element as $type => $item) {
-                // Get type and item name
-                break;
-            }
+            // Get type and item name
+            $type = array_key_first($element);
+            $item = $element[$type];
 
             // Must have a name
             if (trim($item) == '') {
@@ -471,10 +470,9 @@ class Filesv1r0 extends ApiController
         $moved  = 0;
 
         foreach ($items as $element) {
-            foreach ($element as $type => $item) {
-                // Get type and item name
-                break;
-            }
+            // Get type and item name
+            $type = array_key_first($element);
+            $item = $element[$type];
 
             // Must have a name
             if (trim($item) == '') {
@@ -764,6 +762,8 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
         $result   = false;
         $flowChunkNumber = $flowTotalChunks = 0;
+        $flowFilename = '';
+        $subdir = '';
 
         // Check if request is GET and the requested chunk exists or not.
         if (Request::getMethod() === 'GET') {
@@ -814,10 +814,15 @@ class Filesv1r0 extends ApiController
                     Request::getString('flowIdentifier', '', 'POST'),
                 );
                 $subdir = Request::getString('subdir', '', 'POST');
-                if (trim($flowIdentifier) != '') {
-                    $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-                    $temp_dir .= rtrim(strtr(base64_encode($subdir), '+/', '-_'), '=') . '_' . $flowIdentifier;
+
+                // Without an identifier there is no directory to collect the chunks in
+                if (trim($flowIdentifier) == '') {
+                    header("HTTP/1.0 404 Error Uploading File");
+                    exit();
                 }
+
+                $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+                $temp_dir .= rtrim(strtr(base64_encode($subdir), '+/', '-_'), '=') . '_' . $flowIdentifier;
 
                 $flowFilename = self::chunkFilename(Request::getString('flowFilename', '', 'POST'));
                 $flowChunkNumber = (string) Request::getInt('flowChunkNumber', 0, 'POST');
