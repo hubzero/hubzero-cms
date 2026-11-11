@@ -89,7 +89,7 @@ class Arguments
      *
      * @param   string  $key      Option name to retieve value for
      * @param   mixed   $default  Default value for option
-     * @return  void
+     * @return  mixed   The option's value, else $default
      **/
     public function getOpt($key, $default = false)
     {
