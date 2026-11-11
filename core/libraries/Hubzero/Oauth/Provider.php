@@ -25,6 +25,17 @@ class Provider
     private $provider = null;
 
     /**
+     * What a handler returns when its own lookup fails
+     *
+     * The oauth extension answers such a request with a 503 and calls the
+     * code OAUTH_ERR_INTERNAL_ERROR in its C source, but exports no PHP
+     * constant of that name, unlike OAUTH_OK and the other handler results.
+     *
+     * @var  int
+     */
+    private const ERR_INTERNAL_ERROR = 503;
+
+    /**
      * Consumer data
      *
      * @var  string
@@ -305,7 +316,7 @@ class Provider
         $db = App::get('db');
 
         if (!is_object($db)) {
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         $db->setQuery(
@@ -317,7 +328,7 @@ class Provider
         $result = $db->loadObject();
 
         if ($result === false) {  // query failed
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         if (empty($result)) { // key not found
@@ -355,7 +366,7 @@ class Provider
         $db = App::get('db');
 
         if (!is_object($db)) {
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         $db->setQuery(
@@ -368,7 +379,7 @@ class Provider
         );
 
         if (($db->query() === false) && ($db->getErrorNum() != 1062)) { // duplicate row error ok (well expected anyway)
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         if ($db->getAffectedRows() < 1) { // duplicate row error throws this error instead
@@ -396,7 +407,7 @@ class Provider
         $db = App::get('db');
 
         if (!is_object($db)) {
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         $db->setQuery(
@@ -406,7 +417,7 @@ class Provider
         $result = $db->loadObject();
 
         if ($result === false) { // query failed
-            return OAUTH_ERR_INTERNAL_ERROR;
+            return self::ERR_INTERNAL_ERROR;
         }
 
         if (empty($result)) { // token not found
