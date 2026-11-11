@@ -18,6 +18,8 @@ use App;
 
 /**
  * Manage a course's manager entries
+ *
+ * @property  \Components\Courses\Models\Course  $course  The course, loaded by execute()
  */
 class Managers extends SiteController
 {

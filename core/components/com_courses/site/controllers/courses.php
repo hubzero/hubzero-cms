@@ -23,6 +23,8 @@ use Hubzero\Facades\User;
 
 /**
  * Courses controller class
+ *
+ * @property  string  $_title  The page title, built by buildTitle()
  */
 class Courses extends SiteController
 {

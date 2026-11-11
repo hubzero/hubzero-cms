@@ -23,6 +23,11 @@ use Hubzero\Facades\Document;
 
 /**
  * Courses form controller class
+ *
+ * @property  \Components\Courses\Models\Course  $course  The course, loaded by getCourseInfo()
+ * @property  int|null                          $member  The viewer's member id, found by execute()
+ * @property  string                            $base    The form pages' base link, set by execute()
+ * @property  string                            $_title  The page title, built by buildTitle()
  */
 class Form extends SiteController
 {

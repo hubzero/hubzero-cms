@@ -28,6 +28,10 @@ use Hubzero\Facades\Component;
 
 /**
  * Courses controller class for an offering
+ *
+ * @property  \Components\Courses\Models\Course  $course  The course, loaded by execute()
+ * @property  string                            $gid     The course alias from the request, read by execute()
+ * @property  string                            $_title  The page title, built by buildTitle()
  */
 class Offering extends SiteController
 {

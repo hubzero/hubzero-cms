@@ -30,6 +30,9 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Courses controller class
+ *
+ * @property  \Components\Courses\Models\Course  $course  The course, loaded by execute()
+ * @property  string                            $_title  The page title, built by buildTitle()
  */
 class Course extends SiteController
 {

@@ -20,6 +20,12 @@ use Hubzero\Facades\Route;
 
 /**
  * Model class for a course entry
+ *
+ * @property  int                     $id                  Column: the course id
+ * @property  int                     $state               Column: the publishing state
+ * @property  \Hubzero\Database\Rows  $managers            The managers, through managers()
+ * @property  string                  $base                The links' stem, cached by link()
+ * @property  string                  $_descriptionParsed  The parsed description, cached by transformDescription()
  */
 class Course extends Relational implements \Hubzero\Search\Searchable
 {

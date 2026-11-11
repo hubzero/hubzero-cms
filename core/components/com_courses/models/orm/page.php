@@ -13,6 +13,8 @@ use Hubzero\Facades\Html;
 
 /**
  * Model class for a course page
+ *
+ * @property  string  $_contentParsed  The parsed content, cached by transformContent()
  */
 class Page extends Relational
 {
