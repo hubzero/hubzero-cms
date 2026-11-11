@@ -20,6 +20,10 @@ use Hubzero\Facades\Component;
 
 /**
  * Feedback controller class for media management
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $path  Where quote pictures are kept, set by execute()
  */
 class Media extends SiteController
 {
@@ -204,7 +208,6 @@ class Media extends SiteController
 
         // Output view
         $this->view
-            ->set('title', $this->_title)
             ->set('webpath', $this->config->get('uploadpath', '/site/quotes'))
             ->set(
                 'default_picture',

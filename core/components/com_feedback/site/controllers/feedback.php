@@ -28,6 +28,10 @@ use Hubzero\Facades\Document;
 
 /**
  * Feedback controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Feedback extends SiteController
 {
