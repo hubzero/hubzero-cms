@@ -155,7 +155,7 @@ into the group directory. It is a working starting point rather than a
 finished design: a header with the group title and menu, the content, and a
 footer.
 
-<!--include: core/components/com_groups/super/default/template/index.php:1-35-->
+<!--include: core/components/com_groups/super/default/template/index.php:1-43-->
 
 Note the `no_html` check. When a request carries `no_html=1` the template
 emits only the content, which is what AJAX requests from group plugins rely

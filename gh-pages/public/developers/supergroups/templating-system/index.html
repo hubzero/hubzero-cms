@@ -389,6 +389,14 @@ $no_html = Request::getInt('no_html', 0);
 // add stylesheets and scripts
 Document::addStyleSheet($base . DS . 'assets/css/main.css');
 Document::addScript($base . DS . 'assets/js/main.js');
+
+// the page heading: the page's own title, or else the name of the tab
+$title = (isset($this-&gt;page) &amp;&amp; $this-&gt;page-&gt;get('title'))
+    ? $this-&gt;page-&gt;get('title')
+    : Lang::txt('PLG_GROUPS_' . strtoupper($this-&gt;tab));
+$title = ($title == 'PLG_GROUPS_' . strtoupper($this-&gt;tab)
+    ? ucfirst($this-&gt;tab)
+    : $title);
 ?&gt;
 
 &lt;?php if (!$no_html) : ?&gt;

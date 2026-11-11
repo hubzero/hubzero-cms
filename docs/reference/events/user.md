@@ -19,7 +19,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Password.php:374`](../../../core/libraries/Hubzero/User/Password.php#L374) with `[$this]`
+- [`core/libraries/Hubzero/User/Password.php:372`](../../../core/libraries/Hubzero/User/Password.php#L372) with `[$this]`
 
 Listeners:
 
@@ -53,9 +53,9 @@ Fired from:
 
 - [`core/components/com_groups/models/orm/group.php:550`](../../../core/components/com_groups/models/orm/group.php#L550) with `[$this]`
 - [`core/components/com_groups/models/orm/group.php:623`](../../../core/components/com_groups/models/orm/group.php#L623) with `[$this]`
-- [`core/libraries/Hubzero/User/Group.php:340`](../../../core/libraries/Hubzero/User/Group.php#L340) with `[$this]`
-- [`core/libraries/Hubzero/User/Group.php:615`](../../../core/libraries/Hubzero/User/Group.php#L615) with `[$this]`
-- [`core/libraries/Hubzero/User/Group.php:668`](../../../core/libraries/Hubzero/User/Group.php#L668) with `[$this]`
+- [`core/libraries/Hubzero/User/Group.php:338`](../../../core/libraries/Hubzero/User/Group.php#L338) with `[$this]`
+- [`core/libraries/Hubzero/User/Group.php:613`](../../../core/libraries/Hubzero/User/Group.php#L613) with `[$this]`
+- [`core/libraries/Hubzero/User/Group.php:666`](../../../core/libraries/Hubzero/User/Group.php#L666) with `[$this]`
 - [`core/libraries/Hubzero/User/Group/Membership.php:1083`](../../../core/libraries/Hubzero/User/Group/Membership.php#L1083) with `[$group]`
 
 Listeners:
@@ -66,7 +66,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Password.php:332`](../../../core/libraries/Hubzero/User/Password.php#L332) with `[$this]`
+- [`core/libraries/Hubzero/User/Password.php:330`](../../../core/libraries/Hubzero/User/Password.php#L330) with `[$this]`
 
 Listeners:
 

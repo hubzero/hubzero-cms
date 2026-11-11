@@ -156,7 +156,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_groups/models/orm/group.php:436`](../../../core/components/com_groups/models/orm/group.php#L436) with `[$this->get('gidNumber'), $userid]`
-- [`core/libraries/Hubzero/User/Group.php:611`](../../../core/libraries/Hubzero/User/Group.php#L611) with `[$this->gidNumber, $userid]`
+- [`core/libraries/Hubzero/User/Group.php:609`](../../../core/libraries/Hubzero/User/Group.php#L609) with `[$this->gidNumber, $userid]`
 
 Listeners:
 
