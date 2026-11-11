@@ -175,8 +175,8 @@ class Parents extends WikiMacro
     private function getPageByAlias($alias, $scope)
     {
         $page = \Components\Wiki\Models\Page::oneByPath(
-            ($scope ? $scope . '/' . $alias : ''),
-            $this->doman,
+            ($scope ? $scope . '/' : '') . $alias,
+            $this->domain,
             $this->domain_id,
         );
 
