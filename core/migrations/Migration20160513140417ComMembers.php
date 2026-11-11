@@ -204,7 +204,10 @@ class Migration20160513140417ComMembers extends Base
                 $ordering = 0;
                 $access   = 5;
 
-                if (isset($fields[$field])) {
+                // This tested $field as the loop above left it, the last of
+                // $moveToProfileMulti, and never the address field it reads.
+                // That is kept, so the migration does what it always has.
+                if (isset($fields['bio'])) {
                     $ordering = (int) $fields['address']['ordering'];
                     $access   = (int) $fields['address']['access'];
                 }

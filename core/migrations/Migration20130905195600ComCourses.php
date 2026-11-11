@@ -33,6 +33,10 @@ class Migration20130905195600ComCourses extends Base
                 ->loadObjectList();
 
             if ($results && count($results) > 0) {
+                // A scope the switch below does not know keeps the course of
+                // the row before it, as it always has; the first row has none
+                $course_id = null;
+
                 foreach ($results as $r) {
                     switch ($r->scope) {
                         case 'asset':

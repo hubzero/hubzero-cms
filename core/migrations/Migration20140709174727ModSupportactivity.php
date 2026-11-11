@@ -44,10 +44,6 @@ class Migration20140709174727ModSupportactivity extends Base
 
             $ordering = 0;
 
-            if (!empty($params) && is_array($params)) {
-                $params = json_encode($params);
-            }
-
             $this->db
                 ->getQuery(true)
                 ->insert('#__extensions')

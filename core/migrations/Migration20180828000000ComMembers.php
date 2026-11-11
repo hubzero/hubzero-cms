@@ -41,7 +41,7 @@ class Migration20180828000000ComMembers extends Base
             foreach ($rows as $i => $row) {
                 $dupes = explode(',', $row->duplicates);
 
-                if (empty($dupes) || count($dupes) < 2) {
+                if (count($dupes) < 2) {
                     unset($rows[$i]);
                     continue;
                 }
