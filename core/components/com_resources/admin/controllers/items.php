@@ -1727,6 +1727,7 @@ class Items extends AdminController
             $id   = $profile->get('id');
         } else {
             $name = null;
+            $org  = '';
 
             if (is_numeric($id)) {
                 $author = Author::all()
@@ -1740,7 +1741,7 @@ class Items extends AdminController
                 }
             }
 
-            if (!isset($this->view->name) || !$this->view->name) {
+            if (!$name) {
                 $org  = '';
                 $name = str_replace('_', ' ', $id);
                 $id   = Author::blank()->getUserId($name);
@@ -1768,6 +1769,7 @@ class Items extends AdminController
     public function acluserTask()
     {
         $id   = Request::getString('u', '');
+        $name = '';
 
         // Get the member's info
         if (is_numeric($id)) {
