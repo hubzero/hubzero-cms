@@ -2146,7 +2146,12 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.comment',
                 'scope_id'    => $comment->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_DELETED',
+                    $comment->get('id'),
+                    '<a href="' . Route::url($entry->link()) . '">'
+                        . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>',
+                ),
                 'details'     => array(
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),

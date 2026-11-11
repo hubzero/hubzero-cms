@@ -31,9 +31,11 @@ if (!function_exists('paginator_item_active')) {
     function paginator_item_active($item, $prefix)
     {
         if (App::isAdmin()) {
-            return '<a data-prefix="' . htmlspecialchars((string) $prefix, ENT_QUOTES, 'UTF-8') . '" data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
+            return '<a data-prefix="' . htmlspecialchars((string) $prefix, ENT_QUOTES, 'UTF-8') . '"'
+                . ' data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
         } else {
-            return '<a href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '') . 'class="pagenav">' . $item->text . '</a>';
+            return '<a href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '')
+                . 'class="pagenav">' . $item->text . '</a>';
         }
     }
 }
@@ -60,7 +62,9 @@ if (!function_exists('paginator_item_active')) {
             ?>
         </li>
         <li class="limit">
-            <label for="<?php echo htmlspecialchars((string) $this->prefix, ENT_QUOTES, 'UTF-8'); ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label>
+            <label for="<?php echo htmlspecialchars((string) $this->prefix, ENT_QUOTES, 'UTF-8'); ?>limit"><?php
+                echo Lang::txt('JGLOBAL_DISPLAY_NUM');
+            ?></label>
             <?php
 // Build the select list.
             $selected = $this->viewall ? 0 : $this->limit;
@@ -71,15 +75,27 @@ if (!function_exists('paginator_item_active')) {
                 $attr = 'class="inputbox" size="1"';
             }
 
-            echo \Hubzero\Html\Builder\Select::genericlist($limits, $this->pages->prefix . 'limit', $attr, 'value', 'text', $selected);
+            echo \Hubzero\Html\Builder\Select::genericlist(
+                $limits,
+                $this->pages->prefix . 'limit',
+                $attr,
+                'value',
+                'text',
+                $selected,
+            );
 
             if (!App::isAdmin()) {
-                echo ' <button type="submit" class="pagination-go">' . Lang::txt('JLIB_HTML_PAGINATION_GO') . '</button>';
+                echo ' <button type="submit" class="pagination-go">'
+                    . Lang::txt('JLIB_HTML_PAGINATION_GO') . '</button>';
             }
             ?>
         </li>
         <?php if (App::isAdmin()) { ?>
-            <?php if ($this->pages->start->base !== null && $this->pages->start->base !== $this->pages->previous->base) { ?>
+            <?php
+            if (
+                $this->pages->start->base !== null
+                && $this->pages->start->base !== $this->pages->previous->base
+            ) { ?>
             <li class="pagination-start start">
                     <?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
             </li>
@@ -94,7 +110,8 @@ if (!function_exists('paginator_item_active')) {
         <?php } else { ?>
         <li class="pagination-prev prev">
             <?php if ($this->pages->previous->base !== null) { ?>
-                <a href="<?php echo $this->pages->previous->link; ?>" aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_PREVIOUS_PAGE'); ?>">&lsaquo;</a>
+                <a href="<?php echo $this->pages->previous->link; ?>"
+                    aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_PREVIOUS_PAGE'); ?>">&lsaquo;</a>
             <?php } else { ?>
                 <span class="disabled" aria-hidden="true">&lsaquo;</span>
             <?php } ?>
@@ -129,7 +146,9 @@ if (!function_exists('paginator_item_active')) {
             <li class="page ellipsis" aria-hidden="true"><span>&hellip;</span></li>
             <?php
     // Show last page link
-            $lastPage = isset($this->pages->pages[$this->pages->total]) ? $this->pages->pages[$this->pages->total] : null;
+            $lastPage = isset($this->pages->pages[$this->pages->total])
+                ? $this->pages->pages[$this->pages->total]
+                : null;
             if ($lastPage && $lastPage->base !== null) { ?>
                 <li class="page"><?php echo paginator_item_active($lastPage, $this->prefix); ?></li>
             <?php } ?>
@@ -150,7 +169,8 @@ if (!function_exists('paginator_item_active')) {
         <?php } else { ?>
         <li class="pagination-next next">
             <?php if ($this->pages->next->base !== null) { ?>
-                <a href="<?php echo $this->pages->next->link; ?>" aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_NEXT_PAGE'); ?>">&rsaquo;</a>
+                <a href="<?php echo $this->pages->next->link; ?>"
+                    aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_NEXT_PAGE'); ?>">&rsaquo;</a>
             <?php } else { ?>
                 <span class="disabled" aria-hidden="true">&rsaquo;</span>
             <?php } ?>

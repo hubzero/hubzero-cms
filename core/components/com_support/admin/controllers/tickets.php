@@ -826,7 +826,19 @@ class Tickets extends AdminController
                         }
 
                         // Get the user's email address
-                        if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+                        if (
+                            !Event::trigger(
+                                'xmessage.onSendMessage',
+                                array(
+                                    'support_reply_submitted',
+                                    $subject,
+                                    $message,
+                                    $from,
+                                    array($to['id']),
+                                    $this->_option
+                                )
+                            )
+                        )
                         {
                             $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '('
                                 . $to['role'] . ')'));

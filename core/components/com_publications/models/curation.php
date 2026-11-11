@@ -189,15 +189,19 @@ class Curation extends Obj
             // Some values like published_editing should come from master manifest
             // This is important for published drafts
             if ($masterManifest) {
-                if (isset($b->params->published_editing) && isset($masterManifest->blocks->$blockId->params->published_editing)) {
+                if (
+                    isset($b->params->published_editing)
+                    && isset($masterManifest->blocks->$blockId->params->published_editing)
+                ) {
                     $b->params->published_editing = $masterManifest->blocks->$blockId->params->published_editing;
                 }
 
                 // Elements settings
                 if (!empty($b->elements) && !empty($masterManifest->blocks->$blockId->elements)) {
+                    $masterElements = $masterManifest->blocks->$blockId->elements;
                     foreach ($b->elements as $elementId => $el) {
-                        if (isset($el->params) && isset($masterManifest->blocks->$blockId->elements->$elementId->params->published_editing)) {
-                            $el->params->published_editing = $masterManifest->blocks->$blockId->elements->$elementId->params->published_editing;
+                        if (isset($el->params) && isset($masterElements->$elementId->params->published_editing)) {
+                            $el->params->published_editing = $masterElements->$elementId->params->published_editing;
                         }
                     }
                 }
@@ -827,7 +831,11 @@ class Curation extends Obj
 
             $k++;
 
-            if (($autoStatus->status > 0 && $reviewStatus->status != 0) || $reviewStatus->status == 1 || $reviewStatus->lastupdate) {
+            if (
+                ($autoStatus->status > 0 && $reviewStatus->status != 0)
+                || $reviewStatus->status == 1
+                || $reviewStatus->lastupdate
+            ) {
                 $i++;
             }
 
@@ -838,7 +846,10 @@ class Curation extends Obj
                         if (isset($element->active) && $element->active == 0) {
                             continue;
                         }
-                        if ($autoStatus->elements->$elementId->status == 0 && $reviewStatus->elements->$elementId->status == 2) {
+                        if (
+                            $autoStatus->elements->$elementId->status == 0
+                            && $reviewStatus->elements->$elementId->status == 2
+                        ) {
                             $i--;
                             $reviewStatus->status = 2;
                         }
@@ -1343,7 +1354,14 @@ class Curation extends Obj
             $status->lastupdate = $record->updated;
             $status->updated_by = $record->updated_by;
         }
-        if ($record->review_status == 3 || ($record->reviewed && $record->update && strtotime($record->updated ?? '') > strtotime($record->reviewed ?? ''))) {
+        if (
+            $record->review_status == 3
+            || (
+                $record->reviewed
+                && $record->update
+                && strtotime($record->updated ?? '') > strtotime($record->reviewed ?? '')
+            )
+        ) {
             $status->message = $record->update;
         }
 
@@ -1398,7 +1416,8 @@ class Curation extends Obj
             $by = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name);
 
             if ($status->status != 3) {
-                $status->updatenotice = Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' ' . Date::of($status->updated)->format('M d, Y @ H:i') . $by;
+                $status->updatenotice = Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
+                    . Date::of($status->updated)->format('M d, Y @ H:i') . $by;
             } else {
                 $status->updatenotice = Lang::txt('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
             }
@@ -1436,9 +1455,13 @@ class Curation extends Obj
                 if ($curatorStatus->authornotice && $curatorStatus->updated) {
                     ?>
                     <span class="dispute-notice">
-                        <span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE'); ?></a>]</span>
+                        <span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php
+                            echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE');
+                        ?></a>]</span>
                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?>
-                        <span class="dispute-text"><?php echo htmlspecialchars((string) $curatorStatus->authornotice, ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="dispute-text"><?php
+                            echo htmlspecialchars((string) $curatorStatus->authornotice, ENT_QUOTES, 'UTF-8');
+                        ?></span>
                     </span>
                     <?php
                 } else {
@@ -1447,10 +1470,16 @@ class Curation extends Obj
             }
             ?></span>
             <?php if ($viewer == 'author' && $curatorStatus->curatornotice && !$curatorStatus->updated) { ?>
-                <span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>
+                <span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php
+                    echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS');
+                ?></a>]</span>
             <?php } ?>
-            <span class="fail-notice"><?php echo $viewer == 'curator' ? Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
-            <span class="notice-text"><?php echo htmlspecialchars((string) $curatorStatus->curatornotice, ENT_QUOTES, 'UTF-8'); ?></span>
+            <span class="fail-notice"><?php echo $viewer == 'curator'
+                ? Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS')
+                : Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
+            <span class="notice-text"><?php
+                echo htmlspecialchars((string) $curatorStatus->curatornotice, ENT_QUOTES, 'UTF-8');
+            ?></span>
             <?php if ($curatorStatus->authornotice && $viewer == 'curator') { ?>
                 <span class="dispute-notice">
                     <strong><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
@@ -1474,10 +1503,14 @@ class Curation extends Obj
     {
         $status  = $reviewStatus->status;
         $updated = $reviewStatus->updated;
+        $pass    = (($status == 1) ? 'picked' : '') . ($updated ? ' updated' : '');
+        $fail    = ($status == 0 ? 'picked' : '') . ($updated ? ' updated' : '');
         ?>
         <div class="block-checker" id="<?php echo $props; ?>" rel="<?php echo $title; ?>">
-            <span class="checker-pass <?php echo ($status == 1) ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_APPROVE'); ?>"></a></span>
-            <span class="checker-fail <?php echo $status == 0 ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="#addnotice" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOT_APPROVE'); ?>"></a></span>
+            <span class="checker-pass <?php echo $pass; ?>"><a href="<?php echo $url; ?>"
+                title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_APPROVE'); ?>"></a></span>
+            <span class="checker-fail <?php echo $fail; ?>"><a href="#addnotice"
+                title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOT_APPROVE'); ?>"></a></span>
         </div>
         <?php
     }
@@ -1598,7 +1631,13 @@ class Curation extends Obj
                         : '<p>Updated sections include: </p>';
             $changelog .= '<ul>';
             foreach ($this->progress->blocks as $blockId => $block) {
-                if ($block->review && (($newStatus == 7 && $block->review->status == 0) || ($oldStatus == 7 && $block->review->lastupdate))) {
+                if (
+                    $block->review
+                    && (
+                        ($newStatus == 7 && $block->review->status == 0)
+                        || ($oldStatus == 7 && $block->review->lastupdate)
+                    )
+                ) {
                     $changelog .= '<li>';
                     $changelog .= $block->manifest->label;
                     if ($block->review->elements) {
@@ -1797,13 +1836,17 @@ class Curation extends Obj
 				<div class="col span4">
 					<ul class="bundle-info">
 						<li>' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT') . '</li>
-						<li><span class="bundle-size">' . \Hubzero\Utility\Number::formatBytes(filesize($bundle)) . '</span></li>
+						<li><span class="bundle-size">'
+                . \Hubzero\Utility\Number::formatBytes(filesize($bundle))
+                . '</span></li>
 					</ul>
 				</div>
 				<div class="col span8 omega">
 					<div class="bundle-checksum">
 						<span class="bundle-checksum-value">md5:' . md5_file($bundle) . '</span>
-						<span class="bundle-checksum-help icon-help tooltips" title="' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '</span>
+						<span class="bundle-checksum-help icon-help tooltips" title="'
+                . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '">'
+                . Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM') . '</span>
 					</div>
 				</div>
 			</div>';
@@ -2311,7 +2354,13 @@ class Curation extends Obj
                     $objPA = new Tables\Attachment($this->db);
                     if (
                         is_file($galleryPath . DS . $shot->srcfile)
-                        && !$objPA->loadElementAttachment($pub->version_id, ['path' => $shot->filename], $element->id, 'file', $element->manifest->params->role)
+                        && !$objPA->loadElementAttachment(
+                            $pub->version_id,
+                            ['path' => $shot->filename],
+                            $element->id,
+                            'file',
+                            $element->manifest->params->role,
+                        )
                     ) {
                         $objPA = new Tables\Attachment($this->db);
                         $objPA->publication_id         = $pub->id;

@@ -77,8 +77,8 @@ class Html
 
         // Get default picture
         $default = $cat == 'tools'
-                ? trim($config->get('toolpic', 'components/com_publications/site/assets/img/tool_thumb.gif'), DS)
-                : trim($config->get('defaultpic', 'components/com_publications/site/assets/img/resource_thumb.gif'), DS);
+            ? trim($config->get('toolpic', 'components/com_publications/site/assets/img/tool_thumb.gif'), DS)
+            : trim($config->get('defaultpic', 'components/com_publications/site/assets/img/resource_thumb.gif'), DS);
         if ($default == 'components/com_publications/assets/img/resource_thumb.gif') {
             $default = 'components/com_publications/site/assets/img/resource_thumb.gif';
         }
@@ -104,8 +104,13 @@ class Html
      * @param   boolean  $format
      * @return  string
      */
-    public static function showContributors($contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
-    {
+    public static function showContributors(
+        $contributors = '',
+        $showorgs = false,
+        $showaslist = false,
+        $incSubmitter = false,
+        $format = false,
+    ) {
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
@@ -192,10 +197,12 @@ class Html
                 $html .= '<a href="' . $lnk . '" rel="external">' . $title . '</a>';
             } else {
                 $html .= $title . ' ' . Lang::txt('COM_PUBLICATIONS_LICENSED_ACCORDING_TO') . ' ';
-                $html .= '<a href="' . $url . '" class="' . $class . '">' . Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS') . '</a>';
+                $html .= '<a href="' . $url . '" class="' . $class . '">'
+                    . Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS') . '</a>';
             }
         } else {
-            $html .= '<a href="' . $url . '" class="' . $class . '">' . Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS') . '</a>';
+            $html .= '<a href="' . $url . '" class="' . $class . '">'
+                . Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS') . '</a>';
         }
         $html .= '</p>';
 
@@ -227,7 +234,8 @@ class Html
                 if (key($cats[$k]) != $active) {
                     $cls .= ($h) ? $h . ' ' : '';
                 }
-                $html .= '<div class="' . $cls . 'section" id="' . key($cats[$k]) . '-section">' . $section['html'] . '</div>';
+                $html .= '<div class="' . $cls . 'section" id="' . key($cats[$k]) . '-section">'
+                    . $section['html'] . '</div>';
             }
             $k++;
         }
@@ -299,7 +307,9 @@ class Html
 
         $cconfig  = Component::params('com_citations');
 
-        $template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {VERSION}. {PUBLISHER}. doi:{DOI}";
+        $template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, "
+            . "{CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, "
+            . "{INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {VERSION}. {PUBLISHER}. doi:{DOI}";
 
         $formatter = new \Components\Citations\Helpers\Format();
         $formatter->setTemplate($template);
@@ -319,7 +329,12 @@ class Html
             $formatted = str_replace(['<b>"', '"</b>'], ['<b>', '</b>'], $formatted);
 
             if ($cite->doi && $cite->url) {
-                $formatted = str_replace('doi:' . $cite->doi, '<a href="' . htmlspecialchars((string) $cite->url, ENT_COMPAT, 'UTF-8') . '" rel="external">doi:' . htmlspecialchars((string) $cite->doi, ENT_COMPAT, 'UTF-8') . '</a>', $formatted);
+                $formatted = str_replace(
+                    'doi:' . $cite->doi,
+                    '<a href="' . htmlspecialchars((string) $cite->url, ENT_COMPAT, 'UTF-8') . '" rel="external">doi:'
+                        . htmlspecialchars((string) $cite->doi, ENT_COMPAT, 'UTF-8') . '</a>',
+                    $formatted,
+                );
             } else {
                 $formatted = str_replace('doi:', '', $formatted);
             }
@@ -327,9 +342,11 @@ class Html
             $html .= $formatted;
             if (!$pub->isDev()) {
                 $html .= "\t\t" . '<p class="details">' . "\n";
-                $html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&type=bibtex&no_html=1') . '" title="'
+                $html .= "\t\t\t" . '<a href="'
+                    . Route::url($pub->link('citation') . '&task=citation&type=bibtex&no_html=1') . '" title="'
                     . Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-                $html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&type=endnote&no_html=1') . '" title="'
+                $html .= "\t\t\t" . '<a href="'
+                    . Route::url($pub->link('citation') . '&task=citation&type=endnote&no_html=1') . '" title="'
                     . Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
                 $html .= "\t\t" . '</p>' . "\n";
             }
@@ -356,8 +373,8 @@ class Html
             // Dev version
             $class = 'devversion';
             $text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>'
-                    . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8') . '</strong> ('
-                    . Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
+                . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8')
+                . '</strong> (' . Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
             $text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_CREATED') . ' ';
             $text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . $publication->created('date') . '</span>';
         } else {
@@ -365,7 +382,9 @@ class Html
             $text .= ($publication->isCurrent())
                 ? ''
                 : '<strong>' . Lang::txt('COM_PUBLICATIONS_ARCHIVE') . '</strong> ';
-            $text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>' . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8') . '</strong>';
+            $text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>'
+                . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8')
+                . '</strong>';
 
             if ($publication->isPublished() || $publication->isEmbargoed()) {
                 $text .= ' - ';
@@ -407,7 +426,8 @@ class Html
         // Show DOI if available
         if ($publication->version->get('doi')) {
             $text .= "\t\t" . '<span class="doi">' . 'doi:' . $publication->version->get('doi');
-            $text .= ' - <span><a href="' . Route::url($publication->link() . '&active=about') . '#citethis">' . Lang::txt('cite this') . '</a></span></span>' . "\n";
+            $text .= ' - <span><a href="' . Route::url($publication->link() . '&active=about') . '#citethis">'
+                . Lang::txt('cite this') . '</a></span></span>' . "\n";
         }
 
         // Show archival status (mkAIP)
@@ -419,7 +439,9 @@ class Html
             } elseif ($publication->config('graceperiod')) {
                 $archiveDate  = $publication->futureArchivalDate();
                 if ($archiveDate) {
-                    $text .= "\t\t" . '<span class="archival-notice unarchived">' . Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
+                    $text .= "\t\t" . '<span class="archival-notice unarchived">'
+                        . Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' '
+                        . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
                 }
             }
         }
@@ -479,7 +501,9 @@ class Html
             $class = 'info';
             switch ($publication->version->get('state')) {
                 case 1:
-                    $m  = $publication->isDown() ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED') : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED');
+                    $m  = $publication->isDown()
+                        ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED')
+                        : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED');
                     $m .= ' ';
                     switch ($publication->get('access')) {
                         case 0:
@@ -497,7 +521,8 @@ class Html
                     }
 
                     if ($publication->isEmbargoed()) {
-                        $m = Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') . ' ' . Date::of($publication->published_up)->toLocal('m d, Y');
+                        $m = Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') . ' '
+                            . Date::of($publication->published_up)->toLocal('m d, Y');
                     }
 
                     $msg .= $m;
@@ -545,7 +570,8 @@ class Html
                         : 'index.php?option=com_projects&alias='
                         . $publication->project()->get('alias') . '&active=publications';
 
-                $msg .= ' <a href="' . Route::url($publication->link('editversion')) . '">' . Lang::txt('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION') . '</a>.';
+                $msg .= ' <a href="' . Route::url($publication->link('editversion')) . '">'
+                    . Lang::txt('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION') . '</a>.';
             }
         }
 
@@ -596,8 +622,11 @@ class Html
      */
     public static function showSubInfo($publication)
     {
-        $action = $publication->isPublished() ? Lang::txt('COM_PUBLICATIONS_LISTED_IN') : Lang::txt('COM_PUBLICATIONS_IN');
-        $html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url($publication->link('category')) . '">' . $publication->category()->name . '</a>';
+        $action = $publication->isPublished()
+            ? Lang::txt('COM_PUBLICATIONS_LISTED_IN')
+            : Lang::txt('COM_PUBLICATIONS_IN');
+        $html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url($publication->link('category')) . '">'
+            . $publication->category()->name . '</a>';
 
         // Publication belongs to group?
         if ($publication->groupOwner()) {
@@ -665,22 +694,38 @@ class Html
      * @param   boolean  $disabled  Is the button disable?
      * @param   string   $pop       Pop-up content
      */
-    public static function drawLauncher($icon, $pub, $url, $title, $disabled, $pop, $action = 'download', $showArchive = false)
-    {
+    public static function drawLauncher(
+        $icon,
+        $pub,
+        $url,
+        $title,
+        $disabled,
+        $pop,
+        $action = 'download',
+        $showArchive = false,
+    ) {
         if ($disabled) {
             // TBD
             echo '<p class="unavailable warning">' . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE') . '</p>';
         } else {
             $title = htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8');
-            $archiveUrl = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+            $archiveUrl = Route::url(
+                'index.php?option=com_publications&id=' . $pub->id
+                . '&task=serve&v=' . $pub->version_number . '&render=archive',
+            );
             ?>
             <div class="button-highlighter">
-                <p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" id="launch-primary"></a></p>
+                <p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>"
+                    title="<?php echo $title; ?>" id="launch-primary"></a></p>
                 <?php if ($showArchive == true) { ?>
                     <div class="launch-choices hidden" id="launch-choices">
                         <div>
-                            <p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download"><?php echo $title; ?></a></p>
-                            <p><a href="<?php echo $archiveUrl; ?>" class="archival" title="<?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></p>
+                            <p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>"
+                                class="download"><?php echo $title; ?></a></p>
+                            <p><a href="<?php echo $archiveUrl; ?>" class="archival"
+                                title="<?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php
+                                echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
+                                ?></a></p>
                         </div>
                     </div>
                 <?php } ?>
@@ -743,14 +788,17 @@ class Html
         $typetitle = self::writePubCategory($pub->category()->alias, $pub->category()->name);
         $tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
         $pubUrl    = Route::url($pub->link('editversion'));
+        $editUrl   = Route::url($pub->link('editbase'));
+        $pubTitle  = htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8');
+        $linkOpen  = $append ? '<a href="' . $pubUrl . '" >' : '';
+        $linkClose = $append ? '</a>' : '';
         ?>
         <div id="plg-header">
             <h3 class="publications c-header">
-                <a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) {
-                    echo '<a href="' . $pubUrl . '" >';
-                         } ?><?php echo htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8'); ?>"<?php if ($append) {
-           echo '</a>';
-                         } ?></span>
+                <a href="<?php echo $editUrl; ?>"
+                    title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span
+                    class="restype indlist"><?php echo $typetitle; ?></span> <span
+                    class="indlist">"<?php echo $linkOpen . $pubTitle; ?>"<?php echo $linkClose; ?></span>
                 <?php if ($append) {
                     echo $append;
                 } ?>
@@ -767,9 +815,12 @@ class Html
      */
     public static function showPubTitleProvisioned($pub, $append = '')
     {
+        $editUrl  = Route::url($pub->link('editbase'));
+        $label    = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
+        $pubTitle = htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8');
         ?>
         <h3 class="prov-header">
-            <a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8'); ?>"
+            <a href="<?php echo $editUrl; ?>"><?php echo $label; ?></a> &raquo; "<?php echo $pubTitle; ?>"
             <?php if ($append) {
                 echo $append;
             } ?>
@@ -793,8 +844,19 @@ class Html
      * @param   string   $ftpDoc    Download guide doc
      * @return  string
      */
-    public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = [], $showDoc = false, $ftpDoc = '')
-    {
+    public static function primaryButton(
+        $class,
+        $href,
+        $msg,
+        $xtra = '',
+        $title = '',
+        $action = '',
+        $disabled = false,
+        $pop = '',
+        $options = [],
+        $showDoc = false,
+        $ftpDoc = '',
+    ) {
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
@@ -1242,16 +1304,38 @@ class Html
      *
      * @return  array
      */
-    public static function getMimeTypes($pubType, $publication_id, $publication_version_id, $secret, $attachments, $fast = false)
-    {
+    public static function getMimeTypes(
+        $pubType,
+        $publication_id,
+        $publication_version_id,
+        $secret,
+        $attachments,
+        $fast = false,
+    ) {
         $mimeTypes = [];
 
         if ($pubType == 1) {
-            self::getMIMEtypesOfPrimarySupportFiles($publication_id, $publication_version_id, $secret, 1, $attachments, $mimeTypes, $fast);
+            self::getMIMEtypesOfPrimarySupportFiles(
+                $publication_id,
+                $publication_version_id,
+                $secret,
+                1,
+                $attachments,
+                $mimeTypes,
+                $fast,
+            );
         }
 
         if (is_array($attachments) && array_key_exists(2, $attachments)) {
-            self::getMIMEtypesOfPrimarySupportFiles($publication_id, $publication_version_id, $secret, 2, $attachments, $mimeTypes, $fast);
+            self::getMIMEtypesOfPrimarySupportFiles(
+                $publication_id,
+                $publication_version_id,
+                $secret,
+                2,
+                $attachments,
+                $mimeTypes,
+                $fast,
+            );
         }
 
         if (is_array($attachments) && array_key_exists(3, $attachments)) {
@@ -1271,8 +1355,15 @@ class Html
      *
      * @return  null or false
      */
-    public static function getMIMEtypesOfPrimarySupportFiles($publication_id, $publication_version_id, $secret, $role, $attachments, &$mimeTypes, $fast = false)
-    {
+    public static function getMIMEtypesOfPrimarySupportFiles(
+        $publication_id,
+        $publication_version_id,
+        $secret,
+        $role,
+        $attachments,
+        &$mimeTypes,
+        $fast = false,
+    ) {
         $path = self::buildPubPath($publication_id, $publication_version_id, '', '', 1);
         $path .= DIRECTORY_SEPARATOR . $secret;
 
@@ -1313,8 +1404,12 @@ class Html
      *
      * @return  null or false
      */
-    public static function getMIMEtypesOfGalleryFile($publication_id, $publication_version_id, &$mimeTypes, $fast = false)
-    {
+    public static function getMIMEtypesOfGalleryFile(
+        $publication_id,
+        $publication_version_id,
+        &$mimeTypes,
+        $fast = false,
+    ) {
         $path = self::buildPubPath($publication_id, $publication_version_id, '', '', 1);
         $galleryDir = $path . DIRECTORY_SEPARATOR . "gallery";
 

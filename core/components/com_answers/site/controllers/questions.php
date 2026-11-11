@@ -1042,7 +1042,12 @@ class Questions extends SiteController
                 $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
                 // Send the message
-                if (!Event::trigger('xmessage.onSendMessage', array('answers_question_deleted', $subject, $message, $from, $users, $this->_option)))
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        array('answers_question_deleted', $subject, $message, $from, $users, $this->_option)
+                    )
+                )
                 {
                     $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
                 }
