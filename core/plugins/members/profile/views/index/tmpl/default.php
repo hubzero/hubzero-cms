@@ -524,6 +524,15 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                                 $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>';
                             }
 
+                                $inputs = '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID')
+                                    . ' <input type="text" class="input-text" name="email" id="profile-email" value="'
+                                    . $this->escape($this->profile->get('email')) . '" /></label>'
+                                    . '<label class="side-by-side no-padding-right">'
+                                    . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM')
+                                    . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="'
+                                    . $this->escape($this->profile->get('email')) . '" /></label>'
+                                    . '<br class="clear" /><p class="warning no-margin-top">'
+                                    . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>';
                                 $this
                                      ->view('default', 'edit')
                                      ->set('registration_field', 'email')
@@ -533,9 +542,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                                      ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
                                      ->set('profile', $this->profile)
                                      ->set('isUser', $isUser)
-                                     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
-                                                    . '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="' . $this->escape($this->profile->get('email')) . '" /></label>'
-                                                    . '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
+                                     ->set('inputs', $inputs)
                                      ->set('access', $access)
                                      ->display();
                             ?>
