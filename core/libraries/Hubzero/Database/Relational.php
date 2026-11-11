@@ -5166,24 +5166,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     */
 
     /**
-     * Seeds the rows with any pre-fetched data
-     *
-     * @FIXME: decide whether or not to use this
-     *
-     * @param   \Hubzero\Database\Rows  $rows  The rows to seed
-     * @return  \Hubzero\Database\Rows
-     **/
-    private function seed($rows)
-    {
-        // Set our constrained (pre-fetched data) back on the rows
-        foreach ($this->data as $relationship => $data) {
-            $rows = $this->$relationship()->seedWithData($rows, $data, $relationship);
-        }
-
-        return $rows;
-    }
-
-    /**
      * Applies a where clause comparing a field to the current user id
      *
      * NOTE: whereas other 'where' clauses can be called statically due to their
