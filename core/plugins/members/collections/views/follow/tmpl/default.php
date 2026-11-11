@@ -218,7 +218,8 @@ if ($this->rows->total() > 0) {
             </div><!-- / .instructions -->
             <!-- <div class="questions">
                 <p><strong>What is the "Collect" button for?</strong></p>
-                <p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
+                <p>This is how you can add other content on the site to a collection. You can collect wiki pages,
+                    resources, and more. You can even collect other collections!<p>
             </div><!- / .post-type -->
     <?php } else { ?>
             <div class="instructions">

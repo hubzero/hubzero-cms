@@ -54,11 +54,13 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 <div id="plg-header">
     <h3 class="todo"><a href="<?php echo Route::url($url); ?>"><?php echo $this->title; ?></a>
     <?php if ($listName) {
-        ?> &raquo; <a href="<?= Route::url($url) . '/?list=' . $color ?>"><span class="indlist <?= 'pin_' . $color ?>"><?= $listName ?></span></a> <?php
+        ?> &raquo; <a href="<?= Route::url($url) . '/?list=' . $color ?>"><span
+            class="indlist <?= 'pin_' . $color ?>"><?= $listName ?></span></a> <?php
     } ?>
     <?php if ($this->row->isComplete()) {
         $linkText = ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED'));
-        ?> &raquo; <span class="indlist completedtd"><a href="<?= Route::url($url) . '/?state=1' ?>"><?= $linkText ?></a></span> <?php
+        ?> &raquo; <span class="indlist completedtd"><a
+            href="<?= Route::url($url) . '/?state=1' ?>"><?= $linkText ?></a></span> <?php
     } ?>
     &raquo; <span class="itemname"><?php echo \Hubzero\Utility\Str::truncate($this->row->get('content'), 60); ?></span>
     </h3>
@@ -142,7 +144,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                         $deletecommentUrl = Route::url($url . '&action=deletecomment') . '/?todoid='
                             . $this->row->get('id') . '&amp;cid=' . $comment->get('id');
                         $buttonText = Lang::txt('PLG_PROJECTS_TODO_DELETE');
-                        ?><button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= $buttonText ?>]</button><?php
+                        ?><button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>"
+                            class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= $buttonText ?>]</button><?php
                                              } ?></p>
                 </li>
             <?php } ?>

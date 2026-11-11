@@ -64,7 +64,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                             && $this->edit == $section->get('alias')
                             && $section->get('id')
                         ) { ?>
-                                <!-- <span id="s<?= $section->get('id') ?>"></span> [!] This seems to cause some serious display issues -->
+                                <!-- <span id="s<?= $section->get('id') ?>"></span> [!] This seems to cause some serious
+                                    display issues -->
                                 <input type="text" name="fields[title]"
                                     value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('Save'); ?>" />

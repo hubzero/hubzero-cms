@@ -97,7 +97,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
                 <?php
                 $linkUrl = Route::url($base . '&scope=' . $this->collection->get('alias') . '/collect');
                 ?>
-                <!-- <a class="repost btn tooltips" title="<?= Lang::txt('Repost :: Collect this collection') ?>" href="<?= $linkUrl ?>">
+                <!-- <a class="repost btn tooltips" title="<?= Lang::txt('Repost :: Collect this collection') ?>"
+                    href="<?= $linkUrl ?>">
                     <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                 </a> -->
             <?php } ?>

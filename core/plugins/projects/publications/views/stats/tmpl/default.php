@@ -114,7 +114,8 @@ $base = rtrim(Request::base(true), '/');
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.time.min.js"></script>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.pie.min.js"></script>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?= $base ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
+<!--[if lte IE 8]><script language="javascript" type="text/javascript"
+    src="<?= $base ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
 
     <?php
     foreach ($this->pubstats as $stat) {

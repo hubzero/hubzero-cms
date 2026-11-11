@@ -146,7 +146,9 @@ $idSelected = function ($value) use ($view) {
                                       <?php echo Lang::txt('delete'); ?>
                                 </button>
                                 <?php } ?>
-                                <!-- <input type="text" name="assets[<?= $i ?>][description]" size="35" value="<?= $this->escape(stripslashes($asset->get('description'))) ?>" placeholder="Brief description" /> -->
+                                <!-- <input type="text" name="assets[<?= $i ?>][description]" size="35"
+                                    value="<?= $this->escape(stripslashes($asset->get('description'))) ?>"
+                                    placeholder="Brief description" /> -->
                             </span>
                         </p>
                                 <?php

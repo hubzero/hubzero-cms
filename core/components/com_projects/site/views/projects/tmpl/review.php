@@ -173,7 +173,8 @@ if ($this->getError()) {
         <label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio"
             value="0" <?= ($this->model->isRejected()) ? 'checked="checked"' : '' ?>/> <?= $labelText ?></label>
         <!--
-        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?= ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')) ?></label>-->
+        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" />
+            <?= ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')) ?></label>-->
     </div>
     <hr>
     <?php } ?>

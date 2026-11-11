@@ -170,7 +170,9 @@ if (count($inst) > 0) {
                     $dataAdd = Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC');
                     $commentsText = Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC');
                     ?>
-                    <p><span class="comments" data-comments="%s comments" data-add="<?= $dataAdd ?>"><?= $commentsText ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
+                    <p><span class="comments" data-comments="%s comments"
+                        data-add="<?= $dataAdd ?>"><?= $commentsText ?></span><!--  <span class="instructor-comments">0
+                        instructor comments</span> --></p>
                 </div><!-- / .comments-toolbar -->
                 <div class="comments-frame">
 
