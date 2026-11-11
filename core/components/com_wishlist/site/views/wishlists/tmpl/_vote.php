@@ -57,27 +57,35 @@ if (!User::isGuest()) {
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
     <?php if (User::isGuest() || User::get('id') == $this->item->get('proposed_by')) { ?>
-        <span class="vote-button <?= ($this->item->get('positive') > 0) ? 'like' : 'neutral' ?><?= $cls ?>" title="<?= Lang::txt('COM_WISHLIST_VOTING_VOTE_UP') ?> :: <?= $like_title ?>"><?= $this->item->get('positive') ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_LIKE') ?></span></span>
+        <?php
+        $titleText = Lang::txt('COM_WISHLIST_VOTING_VOTE_UP') . ' :: ' . $like_title;
+        ?>
+        <span class="vote-button <?= ($this->item->get('positive') > 0) ? 'like' : 'neutral' ?><?= $cls ?>" title="<?= $titleText ?>"><?= $this->item->get('positive') ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_LIKE') ?></span></span>
     <?php } else { ?>
         <?php
         $rateitemUrl = Route::url(
             'index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=yes&page='
                 . $this->page . $filterln,
         );
+        $titleText = Lang::txt('COM_WISHLIST_VOTING_VOTE_UP') . ' :: ' . $like_title;
         ?>
-        <button type="submit" form="hz-post-action" formaction="<?= $rateitemUrl ?>" class="vote-button <?= ($this->item->get('positive') > 0) ? 'like' : 'like' ?><?= $cls ?>" title="<?= Lang::txt('COM_WISHLIST_VOTING_VOTE_UP') ?> :: <?= $like_title ?>"><?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_LIKE') ?></span></button>
+        <button type="submit" form="hz-post-action" formaction="<?= $rateitemUrl ?>" class="vote-button <?= ($this->item->get('positive') > 0) ? 'like' : 'like' ?><?= $cls ?>" title="<?= $titleText ?>"><?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_LIKE') ?></span></button>
     <?php } ?>
 </span>
 <span class="vote-dislike<?php echo $dcls; ?>">
     <?php if (User::isGuest() || User::get('id') == $this->item->get('proposed_by')) { ?>
-        <span class="vote-button <?= ($this->item->get('negative') > 0) ? 'dislike' : 'neutral' ?><?= $cls ?>" title="<?= Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN') ?> :: <?= $dislike_title ?>"><?= $this->item->get('negative') ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_DISLIKE') ?></span></span>
+        <?php
+        $titleText = Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN') . ' :: ' . $dislike_title;
+        ?>
+        <span class="vote-button <?= ($this->item->get('negative') > 0) ? 'dislike' : 'neutral' ?><?= $cls ?>" title="<?= $titleText ?>"><?= $this->item->get('negative') ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_DISLIKE') ?></span></span>
     <?php } else { ?>
         <?php
         $rateitemUrl = Route::url(
             'index.php?option=' . $this->option . '&task=rateitem&refid=' . $this->item->get('id') . '&vote=no&page='
                 . $this->page . $filterln,
         );
+        $titleText = Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN') . ' :: ' . $dislike_title;
         ?>
-        <button type="submit" form="hz-post-action" formaction="<?= $rateitemUrl ?>" class="vote-button <?= ($this->item->get('negative') > 0) ? 'dislike' : 'dislike' ?><?= $cls ?>" title="<?= Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN') ?> :: <?= $dislike_title ?>"><?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_DISLIKE') ?></span></button>
+        <button type="submit" form="hz-post-action" formaction="<?= $rateitemUrl ?>" class="vote-button <?= ($this->item->get('negative') > 0) ? 'dislike' : 'dislike' ?><?= $cls ?>" title="<?= $titleText ?>"><?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('COM_WISHLIST_VOTING_DISLIKE') ?></span></button>
     <?php } ?>
 </span>
