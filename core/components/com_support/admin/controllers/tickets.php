@@ -140,6 +140,13 @@ class Tickets extends AdminController
         }
 
         if (!$filters['show']) {
+            // Stand in for the query that is about to be looked for, in case
+            // there are no custom queries
+            $query = Query::blank();
+            $query->set('count', 0);
+            $query->set('sort', 'created');
+            $query->set('sort_dir', 'desc');
+
             // Jump back to the beginning of the folders list
             // and try to find the first query available
             // to make it the current "active" query
@@ -148,11 +155,6 @@ class Tickets extends AdminController
                     $query = $folder->queries->first();
                     $filters['show'] = $query->get('id');
                     break;
-                } else {   // for no custom queries.
-                    $query = Query::blank();
-                    $query->set('count', 0);
-                    $query->set('sort', 'created');
-                    $query->set('sort_dir', 'desc');
                 }
             }
 

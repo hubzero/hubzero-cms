@@ -375,14 +375,16 @@ class Commentsv1r0 extends ApiController
 
         // Check if the notify list has eny entries
         if (count($comment->to())) {
-            $allowEmailResponses = Component::params('com_support')->get('email_processing');
-            if ($allowEmailResponses) {
+            // Replies by email need a token encryptor
+            $encryptor = null;
+            if (Component::params('com_support')->get('email_processing')) {
                 try {
                     $encryptor = new \Hubzero\Mail\Token();
                 } catch (Exception $e) {
-                    $allowEmailResponses = false;
+                    // Without one, replies by email stay off
                 }
             }
+            $allowEmailResponses = ($encryptor !== null);
 
             $subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 

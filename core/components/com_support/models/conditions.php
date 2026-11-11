@@ -207,7 +207,7 @@ class Conditions extends Obj
 
         $severities = Utilities::getSeverities($this->config->get('severities'));
         $items = 'text';
-        if (isset($severities) && is_array($severities)) {
+        if (is_array($severities)) {
             $items = [];
             foreach ($severities as $severity) {
                 $sel = false;

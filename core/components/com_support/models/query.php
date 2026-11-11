@@ -281,11 +281,6 @@ class Query extends Relational
         }
 
         for ($i = 0; $i < count($condition->expressions); $i++) {
-            $uid = 'username';
-            if (strtolower($expr->fldval) == 'owner') {
-                $uid = 'id';
-            }
-
             $expr = $condition->expressions[$i];
             $selfBuilt = false; // true only for value lists this method builds itself
 
