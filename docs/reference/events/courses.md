@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:314`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L314) with `[ $this->course, $unit, $lecture, ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:316`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L316) with `[ $this->course, $unit, $lecture, ]`
 
 Listeners:
 
@@ -100,7 +100,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/default.php:102`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L102) with `[ $course, $offering, ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/default.php:108`](../../../core/plugins/courses/outline/views/outline/tmpl/default.php#L108) with `[ $course, $offering, ]`
 
 Listeners:
 
@@ -110,7 +110,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:174`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L174) with `[$this->course, $this->offering]`
+- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:176`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L176) with `[$this->course, $this->offering]`
 
 Listeners:
 

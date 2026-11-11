@@ -115,7 +115,7 @@ of what a click on that element means.
 
 `kimera` does exactly one thing:
 
-<!--include: core/templates/kimera/index.php:22-25-->
+<!--include: core/templates/kimera/index.php:28-31-->
 
 `$this` in a template layout is the document, so `addScript()`,
 `addScriptDeclaration()`, `addStyleSheet()` and `addStyleDeclaration()` are all

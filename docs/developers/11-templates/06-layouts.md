@@ -222,7 +222,7 @@ returns whatever the administrator has assigned to it. Kimera's content region
 shows the usual shape — an optional left column, the component, an optional
 right column, and a footer:
 
-<!--include: core/templates/kimera/index.php:224-266-->
+<!--include: core/templates/kimera/index.php:230-272-->
 
 The `<positions>` block in `templateDetails.xml` does **not** restrict
 anything. It is read only by `com_modules` when it builds the position picker
@@ -347,7 +347,7 @@ Order matters, and the head block is late in the sequence, so anything a
 layout must load *before* extension assets goes in the markup above it. Kimera
 links its own stylesheet first and lets the head block follow:
 
-<!--include: core/templates/kimera/index.php:63-85-->
+<!--include: core/templates/kimera/index.php:69-91-->
 
 Anything the layout adds with `$this->addStyleSheet()` or `$this->addScript()`
 instead appears *inside* the head block, after whatever the component queued.

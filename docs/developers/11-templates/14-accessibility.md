@@ -56,7 +56,7 @@ and `role="navigation"` attributes in `kameleon` duplicate what `<header>` and
 `lucent` is the only shipped template with a skip link, and it is the first
 thing in the body:
 
-<!--include: core/templates/lucent/index.php:85-86-->
+<!--include: core/templates/lucent/index.php:91-92-->
 
 ### The skip link never becomes visible
 

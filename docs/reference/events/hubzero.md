@@ -32,7 +32,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_blog/admin/views/entries/tmpl/edit.php:189`](../../../core/components/com_blog/admin/views/entries/tmpl/edit.php#L189) with `[['tags', 'tags', 'field-tags', '', $this->row->tags('string')]]`
-- [`core/components/com_citations/site/views/citations/tmpl/browse.php:366`](../../../core/components/com_citations/site/views/citations/tmpl/browse.php#L366) with `[['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]`
+- [`core/components/com_citations/site/views/citations/tmpl/browse.php:367`](../../../core/components/com_citations/site/views/citations/tmpl/browse.php#L367) with `[['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:192`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L192) with `[ [ 'members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''), ], ]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:451`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L451) with `[ [ 'tags', 'tags', 'actags', '', implode(",", $this->tags), ], ]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:479`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L479) with `[ [ 'tags', 'badges', 'actags1', '', implode(",", $this->badges), ], ]`

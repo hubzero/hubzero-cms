@@ -39,7 +39,7 @@ loads ahead of anything an extension queues:
 Or through the document, in which case it lands *inside* the head block, after
 the component's stylesheets:
 
-<!--include: core/templates/kameleon/index.php:21-31-->
+<!--include: core/templates/kameleon/index.php:27-37-->
 
 Kimera and Lucent use the first form; Kameleon uses the second, which is why
 its own rules need enough specificity to win against a component's.
