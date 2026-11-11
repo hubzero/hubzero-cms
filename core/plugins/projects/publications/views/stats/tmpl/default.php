@@ -78,14 +78,16 @@ $base = rtrim(Request::base(true), '/');
     ?>
 <h3 class="prov-header"><a href="<?= $linkUrl ?>"><?= $linkText ?></a> <?php if ($this->pub->exists()) {
     $linkUrl = Route::url($this->pub->link('editversion'));
-    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
+    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a
+        href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                  } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else {
     $linkUrl = Route::url($this->project->link('publications'));
     ?>
 <h3 class="publications c-header"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> <?php if ($this->pub->exists()) {
     $linkUrl = Route::url($this->pub->link('editversion'));
-    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
+    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a
+        href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                            } ?> &raquo; <span class="indlist"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')) ?></span></h3>
 <?php } ?>
 </div>

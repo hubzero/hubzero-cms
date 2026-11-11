@@ -28,7 +28,8 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
 <header id="content-header">
     <h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) {
         $linkUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
-        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a href="<?= $linkUrl ?>"><?= $this->escape(Str::truncate($this->group->get('description'), 50)) ?></a><?php
+        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a
+            href="<?= $linkUrl ?>"><?= $this->escape(Str::truncate($this->group->get('description'), 50)) ?></a><?php
         } ?></h2>
 </header><!-- / #content-header -->
 

@@ -113,7 +113,9 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 <td><?php if (!$row->isComplete()) {
                     $changestateUrl = Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id')
                         . '&amp;state=1';
-                    ?><button type="submit" form="hz-post-action" formaction="<?= $changestateUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF') ?>" class="unchecked confirm-checkoff">&nbsp;</button><?php
+                    ?><button type="submit" form="hz-post-action" formaction="<?= $changestateUrl ?>"
+                        title="<?= Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF') ?>"
+                        class="unchecked confirm-checkoff">&nbsp;</button><?php
                     } ?></td>
             </tr>
                 <?php $order++;

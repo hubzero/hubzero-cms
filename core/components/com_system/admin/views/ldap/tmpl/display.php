@@ -47,7 +47,9 @@ $this
                                             . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000)
                                             . '&start=',
                                     );
-                                    ?><input type="submit" name="exportUsers" id="exportUsers" value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" data-delay="3" data-start="0" data-progress="<?= $exportusersbatchUrl ?>" /><?php
+                                    ?><input type="submit" name="exportUsers" id="exportUsers"
+                                        value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" data-delay="3"
+                                        data-start="0" data-progress="<?= $exportusersbatchUrl ?>" /><?php
                                 } ?>
                             </td>
                             <td>
