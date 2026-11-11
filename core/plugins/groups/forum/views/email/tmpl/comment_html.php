@@ -85,29 +85,29 @@ $bdcolor = '#e1e1e1';
     </table>
     <!-- End Spacer -->
 
-    <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?= $bdcolor ?>; background: <?= $bgcolor ?>; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
-                                        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
-                                        color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
-                                        to(transparent));
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-                                    -webkit-background-size: 30px 30px;
-                                    -moz-background-size: 30px 30px;
-                                    background-size: 30px 30px;">
+    <?php
+    $ticketInfoStyle = 'border-collapse: collapse; border: 1px solid '
+        . $bdcolor
+        . '; background: '
+        . $bgcolor
+        . '; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%, '
+        . 'color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), '
+        . 'color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, '
+        . 'transparent), to(transparent)); background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) '
+        . '25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, '
+        . 'transparent 75%, transparent); background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) '
+        . '25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, '
+        . 'transparent 75%, transparent); background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, '
+        . 'transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent '
+        . '75%, transparent); background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent '
+        . '25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, '
+        . 'transparent); background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, '
+        . 'transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, '
+        . 'transparent); -webkit-background-size: 30px 30px; -moz-background-size: 30px 30px; background-size: 30px '
+        . '30px;';
+    ?>
+    <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="<?= $ticketInfoStyle ?>">
         <?php /*<thead class="mobilehide">
             <tr>
                 <th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px;
