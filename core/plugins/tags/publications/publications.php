@@ -272,9 +272,6 @@ class Publications extends Plugin
 
         // Set the display date
         switch ($config->get('show_date')) {
-            case 0:
-                $thedate = '';
-                break;
             case 1:
                 $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 break;
@@ -283,6 +280,10 @@ class Publications extends Plugin
                 break;
             case 3:
                 $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                break;
+            default:
+                // 0: no date
+                $thedate = '';
                 break;
         }
 

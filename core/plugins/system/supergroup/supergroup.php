@@ -51,7 +51,7 @@ class Supergroup extends Plugin
         $group  = \Hubzero\User\Group::getInstance($cn);
 
         // make sure we have all the needed stuff
-        if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active)) {
+        if (is_object($group) && $group->isSuperGroup() && isset($active)) {
             // get com_groups params to get upload path
             //$uploadPath      = $this->filespace($group);
             $params = App::get('component')->params('com_groups');

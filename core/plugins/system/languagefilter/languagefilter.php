@@ -138,7 +138,7 @@ class Languagefilter extends Plugin
                     // The language segment is always at the beginning of the route path if it exists.
                     $sef = $uri->getUriVar('lang');
 
-                    if (!empty($parts) && empty($sef)) {
+                    if (empty($sef)) {
                         $sef = reset($parts);
                     }
                 } else {

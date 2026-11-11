@@ -206,9 +206,9 @@ class Handler extends Plugin
             $mconfig = Component::params('com_members');
 
             // Get all the sender's groups
+            $usersgroups = [];
             if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck) {
                 $xgroups = User::groups('all');
-                $usersgroups = [];
                 if (!empty($xgroups)) {
                     foreach ($xgroups as $group) {
                         if ($group->regconfirmed) {

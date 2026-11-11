@@ -158,6 +158,9 @@ class Citations extends Plugin
             case 'both':
                 $citations_label_class = 'both-label';
                 break;
+            default:
+                $citations_label_class = '';
+                break;
         }
 
         $template = \Components\Citations\Models\Format::getDefault();

@@ -1739,6 +1739,7 @@ class WikiParser
 
         $text = preg_split("@(<[\w/!?].*>)@Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         $i = 0;
+        $glyph_out = [];
         foreach ($text as $line) {
             // text tag text tag text ...
             if (++$i % 2) {
@@ -2596,6 +2597,7 @@ class WikiParser
         $this->mLastSection = '';
 
         $prefixLength = 0;
+        $pref2 = '';
         $paragraphStack = false;
         $openlist = [];
         $openlistReal = []; // WCAG fix: tracks which openlist entries have real HTML elements
@@ -3009,7 +3011,7 @@ class WikiParser
             if ($refcount[$headlineCount] > 1) {
                 $anchor .= '_' . $refcount[$headlineCount];
             }
-            if ($enoughToc && (!isset($maxTocLevel) || $toclevel < $maxTocLevel)) {
+            if ($enoughToc && $toclevel < $maxTocLevel) {
                 if (!$doTocNumberHeadings) {
                     $numbering = '';
                 }
