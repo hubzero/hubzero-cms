@@ -54,7 +54,11 @@ $this
                                 . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
 
                             $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
-                            $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+                            $url = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sort=total&sortdir='
+                                    . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc')
+                                    . $filters,
+                            );
                             ?>
                             <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
@@ -65,7 +69,11 @@ $this
                             $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag')
                                 ? 'active '
                                 : '';
-                            $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+                            $url = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir='
+                                    . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc')
+                                    . $filters,
+                            );
                             ?>
                             <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>

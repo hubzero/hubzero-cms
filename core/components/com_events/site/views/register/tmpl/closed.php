@@ -65,7 +65,9 @@ $html .= "\t" . '<li';
 if ($this->page->alias == 'register') {
     $html .= ' class="active"';
 }
-$html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
+$html .= '><a class="tab" href="'
+    . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register')
+    . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
 $html .= '</ul>' . "\n";
 $html .= '<div class="clear"></div>' . "\n";
 $html .= '</div>' . "\n";

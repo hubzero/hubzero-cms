@@ -55,7 +55,27 @@ $height = (intval($height) > 0) ? intval($height) : 0;
 $videos = ['mp4'];
 $audios = ['mp3'];
 $images = ['png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp'];
-$files  = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg'];
+$files  = [
+    'pdf',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx',
+    'pages',
+    'ai',
+    'psd',
+    'tiff',
+    'dxf',
+    'eps',
+    'ps',
+    'ttf',
+    'xps',
+    'zip',
+    'rar',
+    'svg',
+];
 
 $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
     . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";

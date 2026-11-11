@@ -151,7 +151,10 @@ if ($secondaries->count() > 0) {
                 </div>
 
                 <?php
-                $link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
+                $link = $this->config->get(
+                    'email_tracking_link',
+                    'http://kb.mailchimp.com/article/how-open-tracking-works',
+                );
                 $hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
                 ?>
                 <div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">

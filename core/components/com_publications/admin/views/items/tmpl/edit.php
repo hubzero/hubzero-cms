@@ -125,7 +125,13 @@ $panels = [
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
                     <?php
-                    echo $this->editor('description', $this->escape(stripslashes($this->model->get('description'))), '40', '10', 'pub_description');
+                    echo $this->editor(
+                        'description',
+                        $this->escape(stripslashes($this->model->get('description'))),
+                        '40',
+                        '10',
+                        'pub_description',
+                    );
                     ?>
                 </div>
             </fieldset>

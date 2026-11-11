@@ -271,7 +271,11 @@ $onOffLabel = function ($v) {
                                     <?php
                                     $new = $this->group->get('description');
                                     echo $new;
-                                    echo $wasMarker('description', $new, isset($before['description']) ? $before['description'] : null);
+                                    echo $wasMarker(
+                                        'description',
+                                        $new,
+                                        isset($before['description']) ? $before['description'] : null,
+                                    );
                                     ?>
                                 </td>
                             </tr>
@@ -527,7 +531,13 @@ $onOffLabel = function ($v) {
                                     $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
                                     $pageComments = $pageCommentsLabel($gparams->get('page_comments'));
                                     echo $pageComments;
-                                    echo $wasMarker('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null);
+                                    echo $wasMarker(
+                                        'page_comments',
+                                        $pageComments,
+                                        isset($before['page_comments'])
+                                            ? $pageCommentsLabel($before['page_comments'])
+                                            : null,
+                                    );
                                     ?>
                                 </td>
                             </tr>
@@ -546,7 +556,11 @@ $onOffLabel = function ($v) {
                                     $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
                                     $pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
                                     echo $pageAuthor;
-                                    echo $wasMarker('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null);
+                                    echo $wasMarker(
+                                        'page_author',
+                                        $pageAuthor,
+                                        isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null,
+                                    );
                                     ?>
                                 </td>
                             </tr>

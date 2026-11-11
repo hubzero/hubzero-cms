@@ -33,7 +33,13 @@ if ($mark = $this->params->get('onCommentMark')) {
     }
 }
 
-$rtrn = $this->url ? $this->url : Request::getString('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
+$rtrn = $this->url
+    ? $this->url
+    : Request::getString(
+        'REQUEST_URI',
+        'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments',
+        'server',
+    );
 
 $this->comment->set('url', $rtrn);
 ?>
