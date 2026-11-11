@@ -732,7 +732,8 @@ $option = 'com_groups';
                             . '&active=members&action=reorderroles&no_html=1',
                     );
                     ?>
-                    <form class="roles-order" action="<?= $reorderrolesUrl ?>" method="post" data-error="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR')) ?>">
+                    <form class="roles-order" action="<?= $reorderrolesUrl ?>" method="post"
+                        data-error="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR')) ?>">
                         <?php echo Html::input('token'); ?>
                     </form>
                     <p class="roles-order-hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_HINT'); ?></p>

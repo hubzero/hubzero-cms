@@ -273,7 +273,8 @@ $membership_control = $params->get('membership_control', 1);
                         <?php
                         $cancelUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>" class="cancel-request">
+                        <button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>"
+                            class="cancel-request">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST_DESC'); ?></span>
                         </button>

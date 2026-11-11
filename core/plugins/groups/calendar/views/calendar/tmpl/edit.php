@@ -409,7 +409,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar',
             );
             ?>
-            <form name="importevent" action="<?= $actionUrl ?>" method="post" id="hubForm" enctype="multipart/form-data">
+            <form name="importevent" action="<?= $actionUrl ?>" method="post" id="hubForm"
+                enctype="multipart/form-data">
                 <fieldset>
                     <legend><?php echo Lang::txt('Import Event'); ?></legend>
 

@@ -456,7 +456,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 . $this->group->gidNumber . '&t=' . Date::toUnix(),
                         );
                         ?>
-                        <iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?= $sourceUrl ?>"></iframe>
+                        <iframe width="100%" height="500" name="media" id="media" frameborder="0"
+                            src="<?= $sourceUrl ?>"></iframe>
                     <?php } else { ?>
                         <p class="warning"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILES_WARNING'); ?></p>
                     <?php } ?>

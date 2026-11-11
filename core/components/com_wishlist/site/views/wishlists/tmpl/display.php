@@ -201,14 +201,19 @@ if ($this->wishlist->get('id')) {
                                             . $this->filters['tag'],
                                     );
                                     ?>
-                                    <li><a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ALL') ?></a></li>
+                                    <li><a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>"
+                                        href="<?= $linkUrl ?>"
+                                        rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ALL') ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=open&sortby=' . $this->filters['sortby'] . '&tags='
                                             . $this->filters['tag'],
                                     );
                                     ?>
-                                    <li><a class="filter-open<?= $this->filters['filterby'] == 'open' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_OPEN') ?></a></li>
+                                    <li><a
+                                        class="filter-open<?= $this->filters['filterby'] == 'open' ? ' active' : '' ?>"
+                                        href="<?= $linkUrl ?>"
+                                        rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_OPEN') ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=accepted&sortby=' . $this->filters['sortby'] . '&tags='

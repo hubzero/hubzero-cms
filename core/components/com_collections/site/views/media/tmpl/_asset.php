@@ -33,7 +33,8 @@ defined('_HZEXEC_') or die();
                         . $this->asset->get('id') . '&no_html=' . $this->no_html,
                 );
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete"
+                    data-id="<?= $this->asset->get('id') ?>" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                 </button>
             </span>

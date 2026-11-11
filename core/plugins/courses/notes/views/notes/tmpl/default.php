@@ -110,7 +110,8 @@ $base = $this->offering->link();
                         <?php
                         $deleteUrl = Route::url($base . '&active=notes&action=delete&note=' . $note->get('id'));
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="jSticky-delete" title="<?= Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE') ?>">x</button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                            class="jSticky-delete" title="<?= Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE') ?>">x</button>
                     </div>
                 <?php endforeach; ?>
                 <div class="clear"></div>

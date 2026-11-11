@@ -72,7 +72,8 @@ $this
                             'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=activate',
                         );
                         ?>
-                        <form action="<?= $activateUrl ?>" method="post" id="activate-form" enctype="multipart/form-data">
+                        <form action="<?= $activateUrl ?>" method="post" id="activate-form"
+                            enctype="multipart/form-data">
                             <fieldset>
                                 <input type="hidden" name="id" value="<?= $this->model->get('id') ?>" id="projectid" />
                                 <input type="hidden" name="task" value="activate" />

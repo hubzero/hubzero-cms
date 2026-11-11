@@ -22,7 +22,8 @@ $this->css();
                 $this->publication->link('version') . '&active=watch&confirm=1&action=unsubscribe',
             );
             ?>
-            <button type="submit" form="hz-post-action" formaction="<?= $unsubscribeUrl ?>" class="btn unsubscribe"><?= Lang::txt('PLG_PUBLICATIONS_WATCH_UNSUBSCRIBE') ?></button>
+            <button type="submit" form="hz-post-action" formaction="<?= $unsubscribeUrl ?>"
+                class="btn unsubscribe"><?= Lang::txt('PLG_PUBLICATIONS_WATCH_UNSUBSCRIBE') ?></button>
         </p>
     <?php } else { ?>
         <p>
@@ -31,7 +32,8 @@ $this->css();
                 $this->publication->link('version') . '&active=watch&confirm=1&action=subscribe',
             );
             ?>
-            <button type="submit" form="hz-post-action" formaction="<?= $subscribeUrl ?>" class="btn subscribe"><?= Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBE') ?></button>
+            <button type="submit" form="hz-post-action" formaction="<?= $subscribeUrl ?>"
+                class="btn subscribe"><?= Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBE') ?></button>
         </p>
     <?php } ?>
 

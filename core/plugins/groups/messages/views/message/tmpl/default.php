@@ -62,7 +62,8 @@ if (substr($this->xmessage->type, -8) == '_message') {
                                     . '&active=messages',
                             );
                             ?>
-                            <small>( <a href="<?= $linkUrl ?>"><?= Lang::txt('&lsaquo; Back to Sent Messages') ?></a> )</small>
+                            <small>( <a
+                                href="<?= $linkUrl ?>"><?= Lang::txt('&lsaquo; Back to Sent Messages') ?></a> )</small>
                         </span>
                     <?php endif; ?>
                 </caption>

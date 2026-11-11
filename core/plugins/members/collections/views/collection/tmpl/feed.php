@@ -107,7 +107,11 @@ $this
                                     <?php
                                     $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/vote');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') ?>">
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>"
+                                        class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>"
+                                        data-id="<?= $row->get('id') ?>"
+                                        data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>"
+                                        data-text-unlike="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') ?>">
                                         <span><?= ($item->get('voted')) ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?></span>
                                     </button>
                                 <?php } ?>
@@ -132,7 +136,8 @@ $this
                                         false,
                                     );
                                     ?>
-                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>"
+                                        title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
                                     <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
@@ -151,7 +156,8 @@ $this
                                         false,
                                     );
                                     ?>
-                                    <a class="btn repost tooltips" href="<?= $postUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <a class="btn repost tooltips" href="<?= $postUrl ?>"
+                                        title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                             <?php } ?>

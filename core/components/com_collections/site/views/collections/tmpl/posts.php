@@ -135,7 +135,11 @@ $this
                                                 $base . '&controller=posts&post=' . $row->get('id') . '&task=vote',
                                             );
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $item->get('id') ?>" data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
+                                            <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>"
+                                                class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>"
+                                                data-id="<?= $item->get('id') ?>"
+                                                data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>"
+                                                data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
                                                 <span><?= ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE') ?></span>
                                             </button>
                                         <?php } ?>
@@ -164,7 +168,8 @@ $this
                                             false,
                                         );
                                         ?>
-                                            <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                            <a class="btn vote like tooltips" href="<?= $linkUrl ?>"
+                                                title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
                                             </a>
                                             <?php

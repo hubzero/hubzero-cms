@@ -187,7 +187,8 @@ $stateSelected = function ($value) use ($view) {
                     . $this->escape($this->course_id),
             );
             ?>
-            <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?= $sourceUrl ?>"></iframe>
+            <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0"
+                src="<?= $sourceUrl ?>"></iframe>
         </fieldset>
     </div>
 

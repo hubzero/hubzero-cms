@@ -48,7 +48,8 @@ $this
                 . $this->redirect,
         );
         ?>
-        <p>You can have a new confirmation email sent to "<?= $this->escape($this->email) ?>" by <a href="<?= $resendUrl ?>">clicking here</a>.</p>
+        <p>You can have a new confirmation email sent to "<?= $this->escape($this->email) ?>" by <a
+            href="<?= $resendUrl ?>">clicking here</a>.</p>
     </aside><!-- / .aside -->
     </div>
 <?php elseif (!empty($this->justConfirmed)) : ?>

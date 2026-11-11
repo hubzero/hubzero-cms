@@ -118,7 +118,8 @@ $this
                                             . '&task=edit#s' . $section->get('id'),
                                     );
                                     ?>
-                                    <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                    <a class="icon-edit edit" href="<?= $editUrl ?>"
+                                        title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -134,7 +135,8 @@ $this
                                                 . '&task=new',
                                         );
                                         ?>
-                                        <a class="icon-add add btn" id="addto-<?= $section->get('id') ?>" href="<?= $newUrl ?>">
+                                        <a class="icon-add add btn" id="addto-<?= $section->get('id') ?>"
+                                            href="<?= $newUrl ?>">
                                             <span><?php echo Lang::txt('COM_FORUM_NEW_CATEGORY'); ?></span>
                                         </a>
                                     </td>

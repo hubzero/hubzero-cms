@@ -30,7 +30,11 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
         <?php
         $linkUrl = Route::url($this->pub->link('editversion'));
         ?>
-        <h3 class="publications c-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></span>
+        <h3 class="publications c-header"><a
+            href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span
+            class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a
+            href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> &raquo; <span
+            class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></span>
         </h3>
     <?php } ?>
     </div>

@@ -99,7 +99,8 @@ $roles = [
                             . $this->model->get('alias') . '&active=team&action=choose',
                     );
                     ?>
-                    <p><a class="btn icon-group" id="choosemember" href="<?= $chooseUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT') ?></a></p>
+                    <p><a class="btn icon-group" id="choosemember"
+                        href="<?= $chooseUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT') ?></a></p>
                 <?php } else { ?>
                     <p class="icon-info"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
                 <?php } ?>
@@ -178,7 +179,8 @@ $roles = [
                         . '&active=team&action=delete',
                 );
                 ?>
-                <a href="<?= $deleteUrl ?>" class="manage btn" id="t-delete" role="button"><?= Lang::txt('PLG_PROJECTS_TEAM_DELETE') ?></a>
+                <a href="<?= $deleteUrl ?>" class="manage btn" id="t-delete"
+                    role="button"><?= Lang::txt('PLG_PROJECTS_TEAM_DELETE') ?></a>
             </span>
         </p>
     </div>
@@ -314,7 +316,8 @@ $roles = [
                                 . '&task=team&action=approvemembership&owner=' . $owner->userid,
                         );
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $teamUrl ?>" id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
+                        <button type="submit" form="hz-post-action" formaction="<?= $teamUrl ?>"
+                            id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
                         </button>
                         <?php
@@ -323,7 +326,8 @@ $roles = [
                                 . '&task=team&action=denymembership&owner=' . $owner->userid,
                         );
                         ?>
-                        <a href="<?= $teamUrl ?>" id="<?= 'form-deny-' . $owner->id ?>" class="btn btn-danger" role="button">
+                        <a href="<?= $teamUrl ?>" id="<?= 'form-deny-' . $owner->id ?>" class="btn btn-danger"
+                            role="button">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
                         </a>
                     <?php endif; ?>

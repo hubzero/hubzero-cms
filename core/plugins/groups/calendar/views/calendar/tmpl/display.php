@@ -31,7 +31,8 @@ $timezone = $userLocalizer->getTimezone();
                 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add',
             );
             ?>
-            <a class="icon-add btn add" title="<?= Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT') ?>" href="<?= $addUrl ?>">
+            <a class="icon-add btn add" title="<?= Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT') ?>"
+                href="<?= $addUrl ?>">
                 <?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
             </a>
             <?php if ($this->authorized == 'manager') : ?>

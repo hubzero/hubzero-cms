@@ -193,7 +193,8 @@ $this->js();
                         . '&controller=versions&task=displayZones&tmpl=component&version=' . $this->row->get('id'),
                 );
                 ?>
-                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0" src="<?= $displayZonesUrl ?>"></iframe>
+                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0"
+                    src="<?= $displayZonesUrl ?>"></iframe>
             <?php endif; ?>
         </fieldset>
     </div>

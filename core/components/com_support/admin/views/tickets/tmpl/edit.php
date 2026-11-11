@@ -262,7 +262,8 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                             . $this->row->get('id') . '&watch=stop',
                     );
                     ?>
-                    <p><a class="stop-watching btn" href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING') ?></a></p>
+                    <p><a class="stop-watching btn"
+                        href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING') ?></a></p>
                 </div>
             <?php } else { ?>
                 <?php
@@ -271,7 +272,8 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                         . $this->row->get('id') . '&watch=start',
                 );
                 ?>
-                <p><a class="start-watching btn" href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_START_WATCHING') ?></a></p>
+                <p><a class="start-watching btn"
+                    href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_START_WATCHING') ?></a></p>
             <?php } ?>
             <p><?php echo Lang::txt('COM_SUPPORT_WATCH_TICKET_ABOUT'); ?></p>
         </div>

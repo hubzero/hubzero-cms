@@ -170,7 +170,8 @@ $this
                         <?php
                         $linkUrl = Route::url('index.php?option=' . $this->option);
                         ?>
-                        <a class="icon-add add btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
+                        <a class="icon-add add btn"
+                            href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>

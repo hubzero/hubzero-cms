@@ -225,7 +225,8 @@ $statusSelected = function ($value) use ($view) {
                             . $row->id . $filterstring,
                     );
                     ?>
-                    <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO') ?>::<?= $info ?>">
+                    <a class="editlinktip hasTip" href="<?= $editUrl ?>"
+                        title="<?= Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO') ?>::<?= $info ?>">
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                     </a><?php echo $checkedInfo ? $checkedInfo : ''; ?>
                 </td>

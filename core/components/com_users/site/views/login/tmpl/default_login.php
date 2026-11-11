@@ -203,7 +203,8 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                             <?php
                             $remindUrl = Route::url('index.php?option=com_members&task=remind');
                             ?>
-                            <a class="forgot-username" href="<?= $remindUrl ?>"><?= Lang::txt('COM_USERS_LOGIN_REMIND') ?></a>
+                            <a class="forgot-username"
+                                href="<?= $remindUrl ?>"><?= Lang::txt('COM_USERS_LOGIN_REMIND') ?></a>
                         <?php endif; ?>
                         <?php
                         $resetUrl = Route::url('index.php?option=com_members&task=reset');

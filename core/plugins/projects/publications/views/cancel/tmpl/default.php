@@ -46,7 +46,11 @@ $crumbs = $draft
         <?php
         $linkUrl = Route::url($this->pub->link('editversion'));
         ?>
-        <h3 class="publications"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= $crumbs ?></span>
+        <h3 class="publications"><a
+            href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span
+            class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a
+            href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span
+            class="indlist"> &raquo; <?= $crumbs ?></span>
         </h3>
     <?php } ?>
     </div>

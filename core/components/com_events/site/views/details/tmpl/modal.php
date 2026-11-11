@@ -27,7 +27,8 @@ defined('_HZEXEC_') or die();
             <?php
             $deleteUrl = Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id);
             ?>
-            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"
+                title="<?= Lang::txt('JACTION_DELETE') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
             </button>
         <?php } ?>

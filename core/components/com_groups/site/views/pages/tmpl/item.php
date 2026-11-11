@@ -89,7 +89,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                 . $this->page->get('id'),
         );
         ?>
-        <a class="tooltips page-preview" title="<?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?>" href="<?= $previewUrl ?>"><?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a>
+        <a class="tooltips page-preview" title="<?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?>"
+            href="<?= $previewUrl ?>"><?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a>
     </div>
 
     <div class="item-controls btn-group dropdown">
@@ -117,7 +118,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                     . $this->page->get('id'),
             );
             ?>
-            <li><a class="icon-search page-preview" href="<?= $previewUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a></li>
+            <li><a class="icon-search page-preview"
+                href="<?= $previewUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a></li>
             <?php if ($this->page->get('home') == 0) : ?>
                 <?php if ($this->page->get('state') == 0) : ?>
                     <?php
@@ -126,7 +128,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                             . '&controller=pages&task=publish&pageid=' . $this->page->get('id'),
                     );
                     ?>
-                    <li><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-ban-circle"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button></li>
+                    <li><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>"
+                        class="icon-ban-circle"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button></li>
                 <?php else : ?>
                     <?php
                     $unpublishUrl = Route::url(
@@ -134,7 +137,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                             . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id'),
                     );
                     ?>
-                    <li><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="icon-success"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button></li>
+                    <li><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>"
+                        class="icon-success"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button></li>
                 <?php endif; ?>
             <?php endif; ?>
             <li class="divider"></li>
@@ -144,7 +148,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                     . $this->page->get('id'),
             );
             ?>
-            <li><a class="icon-history page-history" href="<?= $versionsUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE') ?></a></li>
+            <li><a class="icon-history page-history"
+                href="<?= $versionsUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE') ?></a></li>
             
 
             <?php if ($this->page->get('home') == 0) : ?>
@@ -155,7 +160,8 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                         . '&controller=pages&task=delete&pageid=' . $this->page->get('id'),
                 );
                 ?>
-                <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE') ?></button></li>
+                <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                    class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE') ?></button></li>
             <?php endif; ?>
         </ul>
     </div>

@@ -316,7 +316,8 @@ $this
                                 . '&id=' . $row->dId,
                         );
                         ?>
-                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_CART_SET_TASK', $task) ?>">
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_CART_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

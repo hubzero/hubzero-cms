@@ -89,7 +89,8 @@ $accessSelected = function ($value) use ($view) {
                 <?php
                 $sourceUrl = Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media');
                 ?>
-                <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('COM_BLOG_FIELD_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
+                <iframe width="100%" height="370" name="filer" id="filer"
+                    title="<?= Lang::txt('COM_BLOG_FIELD_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
             </div>
             <fieldset>
                 <legend>

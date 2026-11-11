@@ -114,14 +114,18 @@ $sectionIdSelected = function ($value) use ($view) {
                             );
                             $dataListUrl = Route::url($base . '&action=list&no_html=1&section_id=');
                             ?>
-                            <div id="file-uploader" data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>" data-action="<?= $uploadUrl ?>" data-section="<?= $this->model->get('section_id') ?>" data-list="<?= $dataListUrl ?>">
+                            <div id="file-uploader"
+                                data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>"
+                                data-action="<?= $uploadUrl ?>" data-section="<?= $this->model->get('section_id') ?>"
+                                data-list="<?= $dataListUrl ?>">
                                 <?php
                                 $listUrl = Route::url(
                                     $base . '&action=list&tmpl=component&page=' . $this->model->get('id')
                                         . '&section_id=' . $this->model->get('section_id'),
                                 );
                                 ?>
-                                <iframe width="100%" height="370" name="filer" id="filer" src="<?= $listUrl ?>"></iframe>
+                                <iframe width="100%" height="370" name="filer" id="filer"
+                                    src="<?= $listUrl ?>"></iframe>
                             </div>
                         </div>
                         <div class="col span-half omega">

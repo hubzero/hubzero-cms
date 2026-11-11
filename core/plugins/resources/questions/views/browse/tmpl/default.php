@@ -130,7 +130,9 @@ $this->css();
                                 . '&category=question&vote=yes',
                         );
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)) ?>">
+                        <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>"
+                            class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips"
+                            title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)) ?>">
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </button>
                     <?php } ?>

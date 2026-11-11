@@ -157,7 +157,8 @@ if ($this->comment->isReported()) {
                         . '&parent=' . $this->comment->get('entry_id'),
                 );
                 ?>
-                <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= $reportabuseUrl ?>"><!--
+                <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE') ?>"
+                    href="<?= $reportabuseUrl ?>"><!--
                     --><?php echo Lang::txt('COM_BLOG_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>

@@ -70,7 +70,8 @@ defined('_HZEXEC_') or die();
                                     . '&controller=categories&task=edit&categoryid=' . $category->get('id'),
                             );
                             ?>
-                            <li><a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY') ?></a></li>
+                            <li><a class="icon-edit"
+                                href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY') ?></a></li>
                             <li class="divider"></li>
                             <?php
                             $deleteUrl = Route::url(
@@ -78,7 +79,8 @@ defined('_HZEXEC_') or die();
                                     . '&controller=categories&task=delete&categoryid=' . $category->get('id'),
                             );
                             ?>
-                            <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY') ?></button></li>
+                            <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY') ?></button></li>
                         </ul>
                     </div>
                 </div>

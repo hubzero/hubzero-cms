@@ -41,7 +41,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
         <?php if (($ct = $this->results->getCustomTitle())) :
             $linkUrl = Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1');
             ?>
-            <p class="information">You are viewing <strong><?= $ct ?></strong> matching your query. <a href="<?= $linkUrl ?>">View all results.</a></p>
+            <p class="information">You are viewing <strong><?= $ct ?></strong> matching your query. <a
+                href="<?= $linkUrl ?>">View all results.</a></p>
         <?php endif; ?>
 
             <div class="container">
@@ -217,7 +218,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     <?php if ($this->plugin) :
                         $linkUrl = Route::url('index.php?option=com_search&terms=' . $this->url_terms);
                         ?>
-                        <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span class="item-count"><?= $this->results->getTotalCount() ?></span></a>
+                        <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span
+                            class="item-count"><?= $this->results->getTotalCount() ?></span></a>
                     <?php else : ?>
                         <strong><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span
                             class="item-count"><?= $this->results->getTotalCount() ?></span></strong>
@@ -232,7 +234,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                         <?php else :
                             $linkUrl = Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms);
                             ?>
-                            <a href="<?= $linkUrl ?>"><?= $this->escape($def['friendly_name']) ?> <span class="item-count"><?= $def['count'] ?></span></a>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape($def['friendly_name']) ?> <span
+                                class="item-count"><?= $def['count'] ?></span></a>
                         <?php endif; ?>
                         <?php
                         $fc_child_flag = 'plgsearch' . $def['plugin_name'] . '::FIRST_CLASS_CHILDREN';

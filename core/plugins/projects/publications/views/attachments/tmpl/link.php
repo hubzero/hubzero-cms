@@ -33,7 +33,8 @@ $viewer  = $this->data->viewer;
                     $data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props,
                 );
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
         <?php } ?>
         </span>

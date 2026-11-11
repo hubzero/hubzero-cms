@@ -59,7 +59,8 @@ $this->js();
                 true,
             );
             ?>
-            <form action="<?= $actionUrl ?>" name="adminForm" id="upload-form" method="post" enctype="multipart/form-data">
+            <form action="<?= $actionUrl ?>" name="adminForm" id="upload-form" method="post"
+                enctype="multipart/form-data">
                 <div class="media-header">
                     <div class="media-breadcrumbs-block">
                         <?php
@@ -68,7 +69,8 @@ $this->js();
                                 . Session::getFormToken() . '=1&folder=/',
                         );
                         ?>
-                        <a href="<?= $linkUrl ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link" id="path_root">
+                        <a href="<?= $linkUrl ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link"
+                            id="path_root">
                             <img src="<?= Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true) ?>"
                                 alt="<?= COM_MEDIA_BASEURL ?>" />
                         </a>
@@ -93,7 +95,9 @@ $this->js();
                                         . Session::getFormToken() . '=1&folder=' . $fld,
                                 );
                                 ?>
-                                <a href="<?= $linkUrl ?>" data-folder="<?= $this->escape($fld) ?>" class="media-breadcrumbs folder has-next-button" id="path_<?= $this->escape($crumb) ?>"><?= $this->escape($crumb) ?></a>
+                                <a href="<?= $linkUrl ?>" data-folder="<?= $this->escape($fld) ?>"
+                                    class="media-breadcrumbs folder has-next-button"
+                                    id="path_<?= $this->escape($crumb) ?>"><?= $this->escape($crumb) ?></a>
                                 <?php
                             endforeach;
                             ?>
@@ -158,7 +162,8 @@ $this->js();
                             . Session::getFormToken() . '=1',
                     );
                     ?>
-                    <div class="media-items" id="media-items" data-tmpl="<?= $this->escape($tmpl) ?>" data-list="<?= $displayUrl ?>">
+                    <div class="media-items" id="media-items" data-tmpl="<?= $this->escape($tmpl) ?>"
+                        data-list="<?= $displayUrl ?>">
                         <?php
                         $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
 

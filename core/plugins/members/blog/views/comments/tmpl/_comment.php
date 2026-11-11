@@ -155,7 +155,8 @@ if ($this->comment->isReported()) {
                         . '&parent=' . $this->comment->get('entry_id'),
                 );
                 ?>
-                <a class="icon-abuse abuse" href="<?= $reportabuseUrl ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                <a class="icon-abuse abuse" href="<?= $reportabuseUrl ?>"
+                    rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('PLG_MEMBERS_BLOG_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>

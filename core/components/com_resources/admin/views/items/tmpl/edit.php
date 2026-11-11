@@ -207,7 +207,8 @@ $this
                                         . '&task=ratings&id=' . $this->row->id . '&no_html=1',
                                 );
                                 ?>
-                                <a class="btn btn-ratings" href="<?= $ratingsUrl ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
+                                <a class="btn btn-ratings"
+                                    href="<?= $ratingsUrl ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
                             <?php } ?>
                         </td>
                     </tr>

@@ -117,7 +117,8 @@ foreach ($this->rows as $row) {
                             . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
-                    <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_BILLBOARDS_SET_TO', $task) ?>">
+                    <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                        title="<?= Lang::txt('COM_BILLBOARDS_SET_TO', $task) ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

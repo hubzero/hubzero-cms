@@ -55,7 +55,8 @@ $this
                     <?php
                     $sourceUrl = Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1');
                     ?>
-                    <iframe id="newsletter-iframe" width="100%" height="0" title="<?= $this->escape($this->title) ?>" src="<?= $sourceUrl ?>"></iframe>
+                    <iframe id="newsletter-iframe" width="100%" height="0" title="<?= $this->escape($this->title) ?>"
+                        src="<?= $sourceUrl ?>"></iframe>
                 </div>
             <?php else : ?>
                 <p class="info">

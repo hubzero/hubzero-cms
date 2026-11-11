@@ -88,7 +88,8 @@ foreach ($this->notifications as $notification) {
                             <?php
                             $acceptUrl = Route::url('index.php?option=com_groups&cn=' . $invite->cn . '&task=accept');
                             ?>
-                            <li><?= $this->escape($invite->description) ?><button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>">Accept Invite</button></li>
+                            <li><?= $this->escape($invite->description) ?><button type="submit" form="hz-post-action"
+                                formaction="<?= $acceptUrl ?>">Accept Invite</button></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -107,7 +108,8 @@ foreach ($this->notifications as $notification) {
                                 'index.php?option=com_groups&cn=' . $applicant->cn . '&task=cancel',
                             );
                             ?>
-                            <li><?= $this->escape($applicant->description) ?><button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>">Cancel Request</button></li>
+                            <li><?= $this->escape($applicant->description) ?><button type="submit" form="hz-post-action"
+                                formaction="<?= $cancelUrl ?>">Cancel Request</button></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

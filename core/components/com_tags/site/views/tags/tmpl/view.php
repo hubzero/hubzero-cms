@@ -161,7 +161,8 @@ foreach ($cats as $cat) {
                                     . $this->filters['limit'] . '&start=' . $this->filters['start'],
                             );
                             ?>
-                            <a<?= ($this->filters['sort'] == 'title') ? ' class="active"' : '' ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE') ?>">
+                            <a<?= ($this->filters['sort'] == 'title') ? ' class="active"' : '' ?> rel="nofollow"
+                                href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_TITLE'); ?>
                             </a>
                         </li>

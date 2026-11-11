@@ -37,19 +37,22 @@ $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
                         $data->editUrl . '&action=orderdown&aid=' . $data->id . '&p=' . $data->props,
                     );
                     ?>
-                    <a href="<?= $orderdownUrl ?>" class="item-movedown" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN') ?>">&darr;</a>
+                    <a href="<?= $orderdownUrl ?>" class="item-movedown"
+                        title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN') ?>">&darr;</a>
                     <?php
                     $orderupUrl = Route::url(
                         $data->editUrl . '&action=orderup&aid=' . $data->id . '&p=' . $data->props,
                     );
                     ?>
-                    <a href="<?= $orderupUrl ?>" class="item-moveup" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP') ?>">&uarr;</a>
+                    <a href="<?= $orderupUrl ?>" class="item-moveup"
+                        title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP') ?>">&uarr;</a>
                     <?php
                     $deleteitemUrl = Route::url(
                         $data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props,
                     );
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove"
+                        title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                 </span>
             <?php } ?>
         </span>

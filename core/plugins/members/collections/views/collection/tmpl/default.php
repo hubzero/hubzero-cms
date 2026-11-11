@@ -128,7 +128,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
             'index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1',
         );
         ?>
-        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= $reorderUrl ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
+        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= $reorderUrl ?>"
+            class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
             <?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
                 <div class="post new-post" id="post_0">
                     <a class="icon-add add"
@@ -197,7 +198,11 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                     <?php
                                     $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/vote');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('Unlike') ?>">
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>"
+                                        class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>"
+                                        data-id="<?= $row->get('id') ?>"
+                                        data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>"
+                                        data-text-unlike="<?= Lang::txt('Unlike') ?>">
                                         <span><?= ($item->get('voted')) ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?></span>
                                     </button>
                                 <?php } ?>
@@ -229,7 +234,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                     <?php
                                     $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/remove');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn unpost" data-id="<?= $row->get('id') ?>">
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>"
+                                        class="btn unpost" data-id="<?= $row->get('id') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_REMOVE'); ?></span>
                                     </button>
                                 <?php } ?>
@@ -247,7 +253,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         false,
                                     );
                                     ?>
-                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>"
+                                        title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
                                 <?php
@@ -271,7 +278,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         false,
                                     );
                                     ?>
-                                    <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <a class="btn repost tooltips" href="<?= $linkUrl ?>"
+                                        title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                             <?php } ?>

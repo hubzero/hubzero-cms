@@ -234,7 +234,8 @@ $stateSelected = function ($value) use ($view) {
                                     . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                        <a class="jgrid" href="<?= $unpublishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')) ?>">
+                        <a class="jgrid" href="<?= $unpublishUrl ?>"
+                            title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')) ?>">
                             <span class="state publish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
                             </span>
@@ -246,7 +247,8 @@ $stateSelected = function ($value) use ($view) {
                                     . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <a class="jgrid" href="<?= $publishUrl ?>"
+                            title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state trash">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
                             </span>
@@ -258,7 +260,8 @@ $stateSelected = function ($value) use ($view) {
                                     . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <a class="jgrid" href="<?= $publishUrl ?>"
+                            title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state pending">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
                             </span>
@@ -270,7 +273,8 @@ $stateSelected = function ($value) use ($view) {
                                     . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <a class="jgrid" href="<?= $publishUrl ?>"
+                            title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state unpublish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
                             </span>

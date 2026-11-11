@@ -366,7 +366,8 @@ $quotaSelected = function ($value) use ($view) {
                                 'index.php?option=' . $this->option . '&controller=activity&project=' . $row->id,
                             );
                             ?>
-                            <a class="state activity hasTip" title="<?= Lang::txt('COM_PROJECTS_ACTIVITY_TITLE') ?>" href="<?= $linkUrl ?>">
+                            <a class="state activity hasTip" title="<?= Lang::txt('COM_PROJECTS_ACTIVITY_TITLE') ?>"
+                                href="<?= $linkUrl ?>">
                                 <span><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></span>
                             </a>
                         </td>

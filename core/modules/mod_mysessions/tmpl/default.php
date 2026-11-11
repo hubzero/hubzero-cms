@@ -150,7 +150,8 @@ $base = rtrim(Request::base(true), '/');
         <?php
         $storageUrl = Route::url('index.php?option=com_tools&task=storage');
         ?>
-        <span><?= Lang::txt('MOD_MYSESSIONS_STORAGE') ?> (<a href="<?= $storageUrl ?>"><?= Lang::txt('MOD_MYSESSIONS_MANAGE') ?></a>)</span>
+        <span><?= Lang::txt('MOD_MYSESSIONS_STORAGE') ?> (<a
+            href="<?= $storageUrl ?>"><?= Lang::txt('MOD_MYSESSIONS_MANAGE') ?></a>)</span>
         <?php
             $diskUsage = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
         if (!is_array($diskUsage) || !isset($diskUsage['space'])) {

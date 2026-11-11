@@ -197,7 +197,8 @@ foreach ($profiles as $profile) {
                     . stripslashes($this->profile->get('picture') ?? '') . '&amp;id=' . $this->profile->get('id'),
             );
             ?>
-            <iframe width="100%" height="350" border="0" name="filer" id="filer" title="<?= Lang::txt('MEMBER_PICTURE') ?>" src="<?= $sourceUrl ?>"></iframe>
+            <iframe width="100%" height="350" border="0" name="filer" id="filer"
+                title="<?= Lang::txt('MEMBER_PICTURE') ?>" src="<?= $sourceUrl ?>"></iframe>
         </fieldset><div class="clear"></div>
 
         <?php echo Html::input('token'); ?>

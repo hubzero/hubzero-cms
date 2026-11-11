@@ -404,7 +404,8 @@ $this
                                         $this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage',
                                     );
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $deletepageUrl ?>" class="icon-error btn btn-secondary btn-danger">
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deletepageUrl ?>"
+                                        class="icon-error btn btn-secondary btn-danger">
                                         <?php echo Lang::txt('COM_COURSES_DELETE'); ?>
                                     </button>
                                     <?php

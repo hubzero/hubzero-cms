@@ -488,7 +488,8 @@ $featuredSelected = function ($value) use ($view) {
                                             false,
                                         );
                                         ?>
-                                    <a href="<?= $archiveUrl ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL') ?></a>
+                                    <a href="<?= $archiveUrl ?>"
+                                        class="archival"><?= Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL') ?></a>
                                     <?php } ?>
                                 </td>
                             </tr>

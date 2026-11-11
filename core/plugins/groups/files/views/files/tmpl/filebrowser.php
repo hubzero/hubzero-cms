@@ -48,7 +48,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                                 . '&controller=media&task=addfolder&tmpl=component&protected=true',
                         );
                         ?>
-                        <a href="<?= $addfolderUrl ?>" class="icon-add action-addfolder"><?= Lang::txt('Add folder') ?></a>
+                        <a href="<?= $addfolderUrl ?>"
+                            class="icon-add action-addfolder"><?= Lang::txt('Add folder') ?></a>
                     </div>
                 <?php } ?>
             </div>
@@ -68,7 +69,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                                 . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= $ajaxuploadUrl ?>">
+                        <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>"
+                            data-action="<?= $ajaxuploadUrl ?>">
                             <noscript>
                                 <p><input type="file" name="upload" id="upload" /></p>
                                 <p><input type="submit" value="<?php echo Lang::txt('UPLOAD'); ?>" /></p>

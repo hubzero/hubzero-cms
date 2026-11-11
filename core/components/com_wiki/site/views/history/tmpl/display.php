@@ -205,7 +205,8 @@ $revisions = $this->page
                                         $this->page->link('', 'version=' . $revision->get('version') . '&format=raw'),
                                     );
                                     ?>
-                                    <a class="tooltips markup icon-file-alt-text" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE') ?>">
+                                    <a class="tooltips markup icon-file-alt-text" href="<?= $linkUrl ?>"
+                                        title="<?= Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE') ?>">
                                         <?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
                                     </a>
                                 </td>
@@ -248,7 +249,8 @@ $revisions = $this->page
                                             ),
                                         );
                                         ?>
-                                        <a class="icon-circle-arrow-up" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
+                                        <a class="icon-circle-arrow-up" href="<?= $linkUrl ?>"
+                                            title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
                                             <?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?>
                                         </a>
                                     </td>

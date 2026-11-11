@@ -76,7 +76,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         'index.php?option=com_members&id=' . User::get('id') . '&task=changepassword',
                     );
                     ?>
-                    <p>Passwords can be changed with <a href="<?= $changepasswordUrl ?>" title="Change password form">this form</a>.</p>
+                    <p>Passwords can be changed with <a href="<?= $changepasswordUrl ?>"
+                        title="Change password form">this form</a>.</p>
                 </div>
                 <?php
             }

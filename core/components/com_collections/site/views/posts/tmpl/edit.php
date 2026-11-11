@@ -179,7 +179,8 @@ $idSelected = function ($value) use ($view) {
                                         . $asset->get('id'),
                                 );
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $editUrl ?>" class="icon-delete delete" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
+                                <button type="submit" form="hz-post-action" formaction="<?= $editUrl ?>"
+                                    class="icon-delete delete" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                                 </button>
                             <?php } ?>

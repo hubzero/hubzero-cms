@@ -156,7 +156,8 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                                     . '&task=team&action=approvemembership&owner=' . $owner->userid,
                             );
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $teamUrl ?>" id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
+                            <button type="submit" form="hz-post-action" formaction="<?= $teamUrl ?>"
+                                id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
                             </button>
                             <a id="<?php echo 'form-deny-' . $owner->id;?>"
@@ -220,5 +221,6 @@ if (
     <?php
     $quitUrl = Route::url($this->model->link('team') . '&action=quit');
     ?>
-    <p class="extras"><span class="rightfloat"><a href="<?= $quitUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT') ?></a></span></p>
+    <p class="extras"><span class="rightfloat"><a
+        href="<?= $quitUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT') ?></a></span></p>
 <?php }

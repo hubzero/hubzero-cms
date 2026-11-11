@@ -43,7 +43,8 @@ $dataActionUrl = Route::url(
                                 . $this->lecture->get('alias'),
                         );
                         ?>
-                        <a class="add<?= !$this->thread ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('Start a new discussion') ?>"><?= Lang::txt('New') ?></a>
+                        <a class="add<?= !$this->thread ? ' active' : '' ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('Start a new discussion') ?>"><?= Lang::txt('New') ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 
@@ -124,7 +125,8 @@ $dataActionUrl = Route::url(
                             . $this->lecture->get('alias'),
                     );
                     ?>
-                    <form action="<?= $actionUrl ?>" method="post" id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
+                    <form action="<?= $actionUrl ?>" method="post"
+                        id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
 
                         <p class="comment-member-photo">
                             <a class="comment-anchor" name="commentform"></a>

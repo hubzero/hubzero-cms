@@ -27,7 +27,9 @@ if (count($this->folders) > 0) { ?>
                     'index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id,
                 );
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>" class="delete"
+                    title="<?= Lang::txt('JACTION_DELETE') ?>"
+                    data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                 </button>
                 <?php
@@ -40,7 +42,8 @@ if (count($this->folders) > 0) { ?>
                         . Session::getFormToken() . '=1&fields[id]=' . $folder->id,
                 );
                 ?>
-                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>"
+                    data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                 </a>
             </span>
@@ -64,7 +67,9 @@ if (count($this->folders) > 0) { ?>
                                     . $query->id,
                             );
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                            <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete"
+                                title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </button>
                             <?php
@@ -73,7 +78,8 @@ if (count($this->folders) > 0) { ?>
                                     . '&tmpl=component&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                            <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"
+                                rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                             </a>
                         </span>

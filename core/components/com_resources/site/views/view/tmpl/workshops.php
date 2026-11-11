@@ -61,7 +61,8 @@ if ($mode != 'preview') {
                                     'index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id,
                                 );
                                 ?>
-                                <a class="icon-edit edit btn" href="<?= $draftUrl ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
+                                <a class="icon-edit edit btn"
+                                    href="<?= $draftUrl ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
                             <?php } ?>
                         </h2>
                         <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />

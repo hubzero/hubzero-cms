@@ -89,14 +89,17 @@ $idSelected = function ($value) use ($view) {
                                     . $author->id . '&p=' . $props,
                             );
                             ?>
-                            <a href="<?= $editauthorUrl ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
+                            <a href="<?= $editauthorUrl ?>" class="showinbox item-edit"
+                                title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
                             <?php
                             $deleteitemUrl = Route::url(
                                 $this->pub->link('editversion') . '&active=publications&action=deleteitem&aid='
                                     . $author->id . '&p=' . $props,
                             );
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>"
+                                class="item-remove"
+                                title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                         </span>
                     </span>
                     <span class="item-order"><?php echo $i; ?></span>

@@ -101,7 +101,8 @@ if (strstr($newSession, '?')) {
                             . $session->sessnum . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
-                    <a class="disconnect" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>">
+                    <a class="disconnect" href="<?= $unshareUrl ?>"
+                        title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>">
                         <?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?>
                     </a>
                     <span

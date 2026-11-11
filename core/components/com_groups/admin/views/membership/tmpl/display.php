@@ -207,7 +207,8 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     'index.php?option=com_groups&controller=roles&tmpl=component&gid=' . $this->filters['gid'],
                 );
                 ?>
-                <a class="button modal" href="<?= $linkUrl ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
+                <a class="button modal" href="<?= $linkUrl ?>"
+                    rel="{size: {width: 570, height: 170}, onClose: function() {}}">
                     <span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
                 </a>
             </div>
@@ -392,7 +393,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?= $uninviteUrl ?>">
+                        <a class="state unpublish"
+                            onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}"
+                            href="<?= $uninviteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
                         </a>
                     </td>
@@ -420,7 +423,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                                 . '=1',
                         );
                         ?>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?= $denyUrl ?>">
+                        <a class="state unpublish"
+                            onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}"
+                            href="<?= $denyUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
                         </a>
                         <?php
@@ -464,7 +469,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?= $deleteUrl ?>">
+                        <a class="state trash"
+                            onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}"
+                            href="<?= $deleteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
                         </a>
                         <?php

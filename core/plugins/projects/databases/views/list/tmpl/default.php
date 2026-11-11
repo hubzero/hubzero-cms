@@ -142,7 +142,8 @@ $this->css();
                             . '&active=databases&action=delete&db_id=' . $r['id'],
                     );
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete-db"><?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE') ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                        class="delete-db"><?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE') ?></button>
                 </td>
             <?php } ?>
             </tr>

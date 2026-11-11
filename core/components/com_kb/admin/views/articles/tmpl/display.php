@@ -205,7 +205,8 @@ $access = Html::access('assetgroups');
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SET_TASK', $task) ?>">
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_KB_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

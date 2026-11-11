@@ -43,7 +43,8 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
             <?php
             $createUrl = Route::url('index.php?option=' . $this->option . '&task=create');
             ?>
-            <li class="last"><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <li class="last"><a class="icon-add add btn"
+                href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -114,7 +115,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . '&search=' . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="sort-date<?= $this->filters['sortby'] == 'f.registered' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_REG') ?>" rel="nofollow">
+                        <a class="sort-date<?= $this->filters['sortby'] == 'f.registered' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_REG') ?>"
+                            rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_DATE'); ?>
                         </a>
                     </li>
@@ -126,7 +129,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . '&search=' . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="sort-name<?= $this->filters['sortby'] == 'f.toolname' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_NAME') ?>" rel="nofollow">
+                        <a class="sort-name<?= $this->filters['sortby'] == 'f.toolname' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_NAME') ?>"
+                            rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_ALIAS'); ?>
                         </a>
                     </li>
@@ -139,7 +144,8 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . '&search=' . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="sort-priority<?= $this->filters['sortby'] == 'f.priority' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_PRIORITY') ?>" rel="nofollow">
+                        <a class="sort-priority<?= $this->filters['sortby'] == 'f.priority' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_PRIORITY') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_PRIORITY'); ?>
                         </a>
                     </li>
@@ -168,7 +174,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_ALL') ?>" rel="nofollow">
+                        <a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_ALL') ?>"
+                            rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_ALL'); ?>
                         </a>
                     </li>
@@ -180,7 +188,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="filter-mine<?= $this->filters['filterby'] == 'mine' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_MINE') ?>" rel="nofollow">
+                        <a class="filter-mine<?= $this->filters['filterby'] == 'mine' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_MINE') ?>"
+                            rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_MINE'); ?>
                         </a>
                     </li>
@@ -192,7 +202,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="filter-published<?= $this->filters['filterby'] == 'published' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_PUBLISHED') ?>" rel="nofollow">
+                        <a class="filter-published<?= $this->filters['filterby'] == 'published' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>"
+                            title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_PUBLISHED') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_PUBLISHED'); ?>
                         </a>
                     </li>
@@ -205,7 +217,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
                         ?>
-                        <a class="filter-dev<?= $this->filters['filterby'] == 'dev' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_DEV') ?>" rel="nofollow">
+                        <a class="filter-dev<?= $this->filters['filterby'] == 'dev' ? ' active' : '' ?>"
+                            href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_DEV') ?>"
+                            rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_DEVELOPMENT'); ?>
                         </a>
                     </li>

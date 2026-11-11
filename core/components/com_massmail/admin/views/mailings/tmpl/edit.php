@@ -246,7 +246,9 @@ $this->js('edit.js', 'com_massmail');
                                             $base . '&task=removeattachment&attachment=' . $att->get('id'),
                                         );
                                         ?>
-                                        <button type="submit" form="mm-action" class="mm-chip-x" title="<?= $this->escape(Lang::txt('JACTION_DELETE')) ?>" formaction="<?= $removeattachmentUrl ?>">&times;</button>
+                                        <button type="submit" form="mm-action" class="mm-chip-x"
+                                            title="<?= $this->escape(Lang::txt('JACTION_DELETE')) ?>"
+                                            formaction="<?= $removeattachmentUrl ?>">&times;</button>
                                     <?php } ?>
                                 </li>
                             <?php } ?>
@@ -289,7 +291,9 @@ $this->js('edit.js', 'com_massmail');
                         <?php
                         $discardUrl = Route::url($base . '&task=discard&id=' . (int) $this->row->get('id'));
                         ?>
-                        <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= $discardUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
+                        <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm"
+                            data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>"
+                            formaction="<?= $discardUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
                     <?php } ?>
                 </div>
                 <?php } ?>
@@ -434,7 +438,8 @@ $this->js('edit.js', 'com_massmail');
                             <?php
                             $pauseUrl = Route::url($base . '&task=pause&id=' . $this->row->get('id'));
                             ?>
-                            <button type="submit" form="mm-action" class="btn" formaction="<?= $pauseUrl ?>"><?= $icPause . Lang::txt('COM_MASSMAIL_PAUSE') ?></button>
+                            <button type="submit" form="mm-action" class="btn"
+                                formaction="<?= $pauseUrl ?>"><?= $icPause . Lang::txt('COM_MASSMAIL_PAUSE') ?></button>
                         <?php } ?>
                         <?php
                         if (

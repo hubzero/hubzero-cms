@@ -55,7 +55,8 @@ endif;
         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl,
     );
     ?>
-    <form action="<?= $newUrl ?>" id="hubForm" method="post" enctype="multipart/form-data" <?= ($no_html) ? ' class="full"' : '' ?>>
+    <form action="<?= $newUrl ?>" id="hubForm" method="post"
+        enctype="multipart/form-data" <?= ($no_html) ? ' class="full"' : '' ?>>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

@@ -175,14 +175,16 @@ $area = Request::getString('area', 'about');
                         . '&no_html=1',
                 );
                 ?>
-                <a class="" href="<?= $downloadUrl ?>" title="Download in BibTex Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') ?></a> |
+                <a class="" href="<?= $downloadUrl ?>"
+                    title="Download in BibTex Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') ?></a> |
                 <?php
                 $downloadUrl = Route::url(
                     'index.php?option=com_citations&task=download&citationFormat=endnote&id=' . $citation->id
                         . '&no_html=1',
                 );
                 ?>
-                <a class="" href="<?= $downloadUrl ?>" title="Download in Endnote Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') ?></a>
+                <a class="" href="<?= $downloadUrl ?>"
+                    title="Download in Endnote Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') ?></a>
             </div>
         </div>
 

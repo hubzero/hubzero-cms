@@ -348,7 +348,8 @@ $activationSelected = function ($value) use ($view) {
                                     . (int) $row->get('id'),
                             );
                             ?>
-                            <a class="state filter" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEMBERS_FILTER_NOTES') ?>">
+                            <a class="state filter" href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_MEMBERS_FILTER_NOTES') ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
                             <?php
@@ -357,7 +358,9 @@ $activationSelected = function ($value) use ($view) {
                                     . (int) $row->get('id'),
                             );
                             ?>
-                            <a class="modal state notes" href="<?= $modalUrl ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?= Lang::txts('COM_MEMBERS_N_USER_NOTES', $count) ?>">
+                            <a class="modal state notes" href="<?= $modalUrl ?>"
+                                rel="{handler: 'iframe', size: {x: 800, y: 450}}"
+                                title="<?= Lang::txts('COM_MEMBERS_N_USER_NOTES', $count) ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
                         <?php endif; ?>

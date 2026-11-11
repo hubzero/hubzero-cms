@@ -237,7 +237,8 @@ $this
         <?php
         $sourceUrl = Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview');
         ?>
-        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?= Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW') ?>" src="<?= $sourceUrl ?>"></iframe>
+        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0"
+            title="<?= Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW') ?>" src="<?= $sourceUrl ?>"></iframe>
     </div>
 <?php } ?>
 </section><!-- / .main section -->

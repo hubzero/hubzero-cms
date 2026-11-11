@@ -65,7 +65,8 @@ $revision = $this->revision;
                                     'index.php?option=com_tools&task=resource&step=1&app=' . $this->model->alias,
                                 );
                                 ?>
-                                <a class="icon-edit edit btn" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
+                                <a class="icon-edit edit btn"
+                                    href="<?= $resourceUrl ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
                             <?php } ?>
                         </h2>
                         <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />

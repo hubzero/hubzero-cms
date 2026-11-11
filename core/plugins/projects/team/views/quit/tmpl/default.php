@@ -39,14 +39,16 @@ if ($this->group && $this->model->get('sync_group') == 1) {
                 <?php
                 $linkUrl = Route::url($this->model->link('edit') . '&section=team');
                 ?>
-                <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_OWNER') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM') ?></a>.</p>
+                <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_OWNER') ?> <a
+                    href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM') ?></a>.</p>
             <?php } elseif ($this->model->access('componentmanager')) { ?>
                 <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_COMPONENTMANAGER'); ?></p>
             <?php } elseif ($this->onlymanager) { ?>
                     <?php
                     $linkUrl = Route::url($this->model->link('edit') . '&section=team');
                     ?>
-                    <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM') ?></a>.</p>
+                    <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER') ?> <a
+                        href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_TEAM') ?></a>.</p>
             <?php } elseif ($inGroup) { ?>
                 <?php
                 $linkUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('gidNumber'));

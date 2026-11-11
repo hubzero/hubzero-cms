@@ -153,7 +153,9 @@ $idSelected = function ($value) use ($view) {
                                         . $asset->get('id'),
                                 );
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE') ?>">
+                                <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="delete"
+                                    data-id="<?= $this->escape($asset->get('id')) ?>"
+                                    title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE') ?>">
                                     <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>
                                 </button>
                             <?php } ?>

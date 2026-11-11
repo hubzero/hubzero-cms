@@ -268,7 +268,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                                 . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'],
                                         );
                                         ?>
-                                        <a href="<?= $processUrl ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_APPROVE') ?></a>
+                                        <a href="<?= $processUrl ?>"
+                                            class="showinbox"><?= Lang::txt('COM_PROJECTS_APPROVE') ?></a>
                                     </span>
                                 <?php endif; ?>
                             </div>

@@ -43,7 +43,8 @@ $this
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',
             );
             ?>
-            <li><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <li><a class="icon-add add btn"
+                href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -81,7 +82,8 @@ $this
                                 . $this->status['toolname'],
                         );
                         ?>
-                        <h4>Tool Information <a class="edit button" href="<?= $editUrl ?>" title="Edit this version information">Edit</a></h4>
+                        <h4>Tool Information <a class="edit button" href="<?= $editUrl ?>"
+                            title="Edit this version information">Edit</a></h4>
                         <p><span class="heading"><?= Lang::txt('COM_TOOLS_TITLE') ?>: </span><span
                             class="desc"><?= $this->escape(stripslashes($this->status['title'])) ?></span></p>
                         <p><span class="heading"><?= Lang::txt('COM_TOOLS_VERSION') ?>: </span><span

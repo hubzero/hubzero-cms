@@ -91,7 +91,8 @@ $base = rtrim(Request::base(true), '/');
     <?php if ($this->pub) {
         $statsUrl = Route::url($this->project->link('publications') . '&action=stats');
         ?>
-<p class="viewallstats"><a href="<?= $statsUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS') ?> &raquo;</a></p>
+<p class="viewallstats"><a
+    href="<?= $statsUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS') ?> &raquo;</a></p>
     <?php } ?>
     <?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES') ?>.</p>

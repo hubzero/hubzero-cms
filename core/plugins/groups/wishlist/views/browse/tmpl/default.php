@@ -152,7 +152,8 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                             . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#comments',
                                     );
                                     ?>
-                                    <a href="<?= $wishUrl ?>" title="<?= $item->numreplies ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>">
+                                    <a href="<?= $wishUrl ?>"
+                                        title="<?= $item->numreplies ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>">
                                         <?php echo $item->numreplies; ?>
                                     </a>
                                 </span>

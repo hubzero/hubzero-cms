@@ -95,7 +95,8 @@ if ($closed == 'closed' && $this->showClose == true) {
                                     . '&active=announcements&action=edit&id=' . $this->announcement->get('id'),
                             );
                             ?>
-                            <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT') ?>">
+                            <a class="icon-edit edit" href="<?= $editUrl ?>"
+                                title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT') ?>">
                                 <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
                             </a>
                             <?php
@@ -116,7 +117,9 @@ if ($closed == 'closed' && $this->showClose == true) {
                 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements',
             );
             ?>
-            <a class="close" href="<?= $linkUrl ?>" data-id="<?= $this->announcement->get('id') ?>" data-duration="30" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE') ?>" aria-label="<?= $this->escape(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE')) ?>">
+            <a class="close" href="<?= $linkUrl ?>" data-id="<?= $this->announcement->get('id') ?>" data-duration="30"
+                title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE') ?>"
+                aria-label="<?= $this->escape(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE')) ?>">
                 <span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
             </a>
         <?php endif; ?>

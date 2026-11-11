@@ -50,7 +50,9 @@ $this
                                 . '&task=courseavailability&no_html=1',
                         );
                         ?>
-                        <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?= $this->escape($this->course->get('alias')) ?>" autocomplete="off" data-route="<?= $courseavailabilityUrl ?>" />
+                        <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control"
+                            value="<?= $this->escape($this->course->get('alias')) ?>" autocomplete="off"
+                            data-route="<?= $courseavailabilityUrl ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                     </label>
                 </div>

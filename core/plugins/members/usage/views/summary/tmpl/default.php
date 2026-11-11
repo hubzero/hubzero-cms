@@ -285,7 +285,9 @@ $this->css('usage', 'com_usage');
                             <?php
                             $linkUrl = Route::url('index.php?option=com_resources&id=' . $rw->id);
                             ?>
-                            <td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?= $linkUrl ?>"><?= $rw->title ?></a> <span class="small"><?= $rw->type ?></span></td>
+                            <td class="highlight textual-data"><span class="child-connector">|-</span> <a
+                                href="<?= $linkUrl ?>"><?= $rw->title ?></a> <span
+                                class="small"><?= $rw->type ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>
                             <td class="highlight"><?php echo $cites ?></td>

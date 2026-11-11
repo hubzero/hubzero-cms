@@ -156,7 +156,8 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                     . Session::getFormToken() . '=1',
             );
             ?>
-            <fieldset class="author-manager" data-add="<?= $addUrl ?>" data-update="<?= $updateUrl ?>" data-list="<?= $displayUrl ?>">
+            <fieldset class="author-manager" data-add="<?= $addUrl ?>" data-update="<?= $updateUrl ?>"
+                data-list="<?= $displayUrl ?>">
                     <div class="grid">
                         <div class="col span10">
                             <label for="field-author">
@@ -206,7 +207,9 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                                                 . Session::getFormToken() . '=1',
                                         );
                                         ?>
-                                        <a class="delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE') ?>" data-id="<?= $this->escape($this->author->id) ?>" href="<?= $removeUrl ?>">
+                                        <a class="delete"
+                                            data-confirm="<?= Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE') ?>"
+                                            data-id="<?= $this->escape($this->author->id) ?>" href="<?= $removeUrl ?>">
                                             <?php echo Lang::txt('JDELETE'); ?>
                                         </a>
                                     </span>

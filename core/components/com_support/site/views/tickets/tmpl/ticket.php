@@ -288,7 +288,8 @@ $categorySelected = function ($value) use ($view) {
                             . $this->filters['start'],
                     );
                     ?>
-                    <p><a class="stop-watching btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_STOP_WATCHING') ?></a></p>
+                    <p><a class="stop-watching btn"
+                        href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_STOP_WATCHING') ?></a></p>
                 </div>
             <?php } else { ?>
                 <?php
@@ -298,7 +299,8 @@ $categorySelected = function ($value) use ($view) {
                         . $this->filters['start'],
                 );
                 ?>
-                <p><a class="start-watching btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCHING_TICKET') ?></a></p>
+                <p><a class="start-watching btn"
+                    href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCHING_TICKET') ?></a></p>
             <?php } ?>
             <p><?php echo Lang::txt('COM_SUPPORT_WATCHING_EXPLANATION'); ?></p>
         </div>

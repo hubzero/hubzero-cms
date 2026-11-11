@@ -56,7 +56,8 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
                             . $data->get('props') . '&makedefault=1',
                     );
                     ?>
-                <a href="<?= $saveitemUrl ?>" class="item-default" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT') ?>">&nbsp;</a>
+                <a href="<?= $saveitemUrl ?>" class="item-default"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT') ?>">&nbsp;</a>
                 <?php } ?>
                 <a href="<?= Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>

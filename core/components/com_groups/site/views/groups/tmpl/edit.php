@@ -432,7 +432,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 . '&controller=media&task=filebrowser&tmpl=component',
                         );
                         ?>
-                        <iframe class="floating-iframe" title="<?= Lang::txt('COM_GROUPS_MEDIA_BROWSER') ?>" src="<?= $filebrowserUrl ?>"></iframe>
+                        <iframe class="floating-iframe" title="<?= Lang::txt('COM_GROUPS_MEDIA_BROWSER') ?>"
+                            src="<?= $filebrowserUrl ?>"></iframe>
                     </div>
                 <?php else : ?>
                     <p><em><?php echo Lang::txt('COM_GROUPS_EDIT_MUST_SAVE_TO_UPLOAD_IMAGES'); ?></em></p>

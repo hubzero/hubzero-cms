@@ -161,7 +161,8 @@ $this
                                     . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a title="<?= Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE') ?>" class="trash tooltips" href="<?= $sendtotrashUrl ?>">
+                            <a title="<?= Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE') ?>" class="trash tooltips"
+                                href="<?= $sendtotrashUrl ?>">
                                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
                             </a>
                         </td>

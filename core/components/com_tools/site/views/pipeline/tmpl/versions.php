@@ -38,7 +38,8 @@ $this
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',
             );
             ?>
-            <li><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <li><a class="icon-add add btn"
+                href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

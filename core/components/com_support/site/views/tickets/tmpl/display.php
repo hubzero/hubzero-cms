@@ -115,7 +115,9 @@ $this
                                                 . '&controller=queries&task=removefolder&id=' . $folder->id,
                                         );
                                         ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                        <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>"
+                                            class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                            data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                             <?php echo Lang::txt('JACTION_DELETE'); ?>
                                         </button>
                                         <?php
@@ -129,7 +131,10 @@ $this
                                                 . Session::getFormToken() . '=1&fields[id]=' . $folder->id,
                                         );
                                         ?>
-                                        <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= $dataHrefUrl ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                        <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>"
+                                            href="<?= $editfolderUrl ?>" data-href="<?= $dataHrefUrl ?>"
+                                            data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>"
+                                            title="<?= Lang::txt('JACTION_EDIT') ?>">
                                             <?php echo Lang::txt('JACTION_EDIT'); ?>
                                         </a>
                                     </span>
@@ -169,7 +174,9 @@ $this
                                                             . '&tmpl=component&' . Session::getFormToken() . '=1',
                                                     );
                                                     ?>
-                                                    <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                                                    <a class="modal edit" href="<?= $editUrl ?>"
+                                                        title="<?= Lang::txt('JACTION_EDIT') ?>"
+                                                        rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 </span>
@@ -190,7 +197,9 @@ $this
                                     . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_QUERY') ?>">
+                            <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>"
+                                rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                                title="<?= Lang::txt('COM_SUPPORT_ADD_QUERY') ?>">
                                 <?php echo Lang::txt('COM_SUPPORT_ADD_QUERY'); ?>
                             </a>
                         </li>
@@ -205,7 +214,10 @@ $this
                                     . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="icon-folder" id="new-folder" href="<?= $addfolderUrl ?>" data-href="<?= $savefolderUrl ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>">
+                            <a class="icon-folder" id="new-folder" href="<?= $addfolderUrl ?>"
+                                data-href="<?= $savefolderUrl ?>"
+                                data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>"
+                                title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>">
                                 <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
                             </a>
                         </li>

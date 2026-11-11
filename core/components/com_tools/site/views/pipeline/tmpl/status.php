@@ -58,13 +58,15 @@ $prioritySelected = function ($value) use ($view) {
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
             );
             ?>
-            <li><a class="icon-main main-page btn" href="<?= $pipelineUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
+            <li><a class="icon-main main-page btn"
+                href="<?= $pipelineUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
             <?php
             $createUrl = Route::url(
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',
             );
             ?>
-            <li><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <li><a class="icon-add add btn"
+                href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -176,14 +178,16 @@ $prioritySelected = function ($value) use ($view) {
                                     'index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev',
                                 );
                                 ?>
-                                <a class="preview-resource" href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                                <a class="preview-resource"
+                                    href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                                 <?php
                                 $resourceUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
                                         . '&task=resource&step=1&app=' . $this->status['toolname'],
                                 );
                                 ?>
-                                <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_EDIT_THIS_PAGE') ?></a>
+                                <a class="edit-resource"
+                                    href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_EDIT_THIS_PAGE') ?></a>
                             </td>
                         </tr>
                         <tr>
@@ -254,7 +258,8 @@ $prioritySelected = function ($value) use ($view) {
                                         'index.php?option=com_support&task=ticket&id=' . $this->status['ticketid'],
                                     );
                                     ?>
-                                    <li class="history"><a href="<?= $ticketUrl ?>" title="<?= Lang::txt('COM_TOOLS_HISTORY_TIPS') ?>">History</a></li>
+                                    <li class="history"><a href="<?= $ticketUrl ?>"
+                                        title="<?= Lang::txt('COM_TOOLS_HISTORY_TIPS') ?>">History</a></li>
                                     <?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status?>
                                         <li class="wiki"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki" title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
                                         <li class="sourcecode"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/browser" title="<?= Lang::txt('COM_TOOLS_SOURCE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
@@ -543,14 +548,16 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -561,7 +568,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="incomplete">
@@ -640,14 +648,16 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -658,7 +668,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="incomplete">
@@ -696,14 +707,16 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -714,7 +727,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="incomplete">
@@ -747,7 +761,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_REVIEW_RES_PAGE') ?></a>
+                            <a class="preview-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_REVIEW_RES_PAGE') ?></a>
                         <?php } else { ?>
                             <?php
                             $resourceUrl = Route::url(
@@ -755,7 +770,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?></a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?></a>
                             <p class="warning">
                                 <?= Lang::txt('COM_TOOLS_PLEASE') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']) ?>"><?= strtolower(Lang::txt('COM_TOOLS_CREATE')) ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_PAGE_DESC') ?>.
                             </p>
@@ -773,7 +789,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Approved&app=' . $this->status['toolname'],
                             );
                             ?>
-                            <span id="Approved"><a href="<?= $updateUrl ?>" class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_TOOL_WORKS') ?></a></span>
+                            <span id="Approved"><a href="<?= $updateUrl ?>"
+                                class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_TOOL_WORKS') ?></a></span>
                         </li>
                         <?php } else { ?>
                         <li class="todo_disabled">
@@ -790,7 +807,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
                             );
                             ?>
-                            <span id="Updated"><a href="<?= $updateUrl ?>" class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_CODE_FIXED_PLS_INSTALL') ?>.</a></span>
+                            <span id="Updated"><a href="<?= $updateUrl ?>"
+                                class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_CODE_FIXED_PLS_INSTALL') ?>.</a></span>
                         </li>
                     </ul>
                     <h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -809,14 +827,16 @@ $prioritySelected = function ($value) use ($view) {
                                 'index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev',
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -827,7 +847,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="todo">
@@ -839,7 +860,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Approved&app=' . $this->status['toolname'],
                             );
                             ?>
-                            <span id="Approved_"><a href="<?= $updateUrl ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_I_APPROVE') ?></a></span>
+                            <span id="Approved_"><a href="<?= $updateUrl ?>"
+                                class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_I_APPROVE') ?></a></span>
                         <?php } else { ?>
                             <span class="disabled"><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></span>
                         <?php } ?>
@@ -877,14 +899,16 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -895,7 +919,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="incomplete">
@@ -944,14 +969,16 @@ $prioritySelected = function ($value) use ($view) {
                                 'index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev',
                             );
                             ?>
-                            <a class="preview-resource" href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
+                            <a class="preview-resource"
+                                href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PREVIEW') ?></a> |
                             <?php
                             $resourceUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=resource&step=1&app='
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="edit-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
+                            <a class="edit-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
                         </li>
                         <?php } else { ?>
                         <li class="todo">
@@ -962,7 +989,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . $this->status['toolname'],
                             );
                             ?>
-                            <a class="create-resource" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
+                            <a class="create-resource"
+                                href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?>...</a>
                         </li>
                         <?php } ?>
                         <li class="complete">
@@ -976,7 +1004,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
                             );
                             ?>
-                            <br /><span id="Updated"><a href="<?= $updateUrl ?>" class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_WAIT') ?></a></span>
+                            <br /><span id="Updated"><a href="<?= $updateUrl ?>"
+                                class="flip" ><?= Lang::txt('COM_TOOLS_WHATSNEXT_WAIT') ?></a></span>
                         </li>
                     </ul>
                         <?php
@@ -1005,7 +1034,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
                             );
                             ?>
-                            <span id="Updated"><a href="<?= $updateUrl ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_PUBLISHED_PLS_INSTALL') ?></a></span>
+                            <span id="Updated"><a href="<?= $updateUrl ?>"
+                                class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_PUBLISHED_PLS_INSTALL') ?></a></span>
                         </li>
                     </ul>
                         <?php
@@ -1029,7 +1059,8 @@ $prioritySelected = function ($value) use ($view) {
                                         . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
                                 );
                                 ?>
-                                <a href="<?= $updateUrl ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_RETIRED_PLS_REPUBLISH') ?></a>
+                                <a href="<?= $updateUrl ?>"
+                                    class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_RETIRED_PLS_REPUBLISH') ?></a>
                             </span>
                         </li>
                     </ul>

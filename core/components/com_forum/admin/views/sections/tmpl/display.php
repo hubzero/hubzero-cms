@@ -298,7 +298,8 @@ $filterStateSelected = function ($value) use ($view) {
                                     . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
-                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
+                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>

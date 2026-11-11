@@ -248,7 +248,8 @@ if ($this->filters['parent_id'] > 0) {
                                 . $row->id . '&pid=' . $this->filters['parent_id'],
                         );
                         ?>
-                        <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
+                        <a class="editlinktip hasTip" href="<?= $editUrl ?>"
+                            title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
                         <?= ($row->standalone != 1 && $row->path != '')
@@ -274,7 +275,8 @@ if ($this->filters['parent_id'] > 0) {
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_RESOURCES_SET_TASK_TO', $task) ?>">
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_RESOURCES_SET_TASK_TO', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>
@@ -297,7 +299,8 @@ if ($this->filters['parent_id'] > 0) {
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="access <?= $color_access ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_RESOURCES_CHANGE_ACCESS') ?>">
+                        <a class="access <?= $color_access ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_RESOURCES_CHANGE_ACCESS') ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </a>
                     <?php } ?>

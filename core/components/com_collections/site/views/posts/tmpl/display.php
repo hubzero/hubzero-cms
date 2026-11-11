@@ -288,7 +288,8 @@ if (!$no_html) {
             <?php
             $dataCloseupUrlUrl = Route::url($base . '&controller=posts&collection=' . $this->collection->get('id'));
             ?>
-            <div class="post full collection" id="b<?= $this->collection->get('id') ?>" data-id="<?= $this->collection->get('id') ?>" data-closeup-url="<?= $dataCloseupUrlUrl ?>">
+            <div class="post full collection" id="b<?= $this->collection->get('id') ?>"
+                data-id="<?= $this->collection->get('id') ?>" data-closeup-url="<?= $dataCloseupUrlUrl ?>">
                 <div class="content">
                     <?php
                         $this
@@ -338,7 +339,8 @@ if (!$no_html) {
                                                 . '&task=collect',
                                         );
                                         ?>
-                                        <a class="btn repost" data-id="<?= $this->collection->get('id') ?>" href="<?= $collectUrl ?>">
+                                        <a class="btn repost" data-id="<?= $this->collection->get('id') ?>"
+                                            href="<?= $collectUrl ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                         </a>
                                     <?php if ($this->collection->isFollowing()) { ?>
@@ -490,7 +492,8 @@ if (!$no_html) {
                                                     . '&task=collect',
                                             );
                                             ?>
-                                            <a class="btn repost" data-id="<?= $collection->get('id') ?>" href="<?= $collectUrl ?>">
+                                            <a class="btn repost" data-id="<?= $collection->get('id') ?>"
+                                                href="<?= $collectUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                         <?php if ($collection->isFollowing()) { ?>

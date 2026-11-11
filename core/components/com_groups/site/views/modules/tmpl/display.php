@@ -129,7 +129,8 @@ foreach ($this->modules as $module) {
                                     . '&controller=modules&task=edit&moduleid=' . $module->get('id'),
                             );
                             ?>
-                            <li><a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE') ?></a></li>
+                            <li><a class="icon-edit"
+                                href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE') ?></a></li>
                             <li class="divider"></li>
                             <?php if ($module->get('state') == 0) : ?>
                                 <?php
@@ -155,7 +156,8 @@ foreach ($this->modules as $module) {
                                     . '&controller=modules&task=delete&moduleid=' . $module->get('id'),
                             );
                             ?>
-                            <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE') ?></button></li>
+                            <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE') ?></button></li>
                         </ul>
                     </div>
                 </div>

@@ -77,12 +77,14 @@ defined('_HZEXEC_') or die();
                     <?php
                     $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse');
                     ?>
-                    <li><a class="btn icon-browse" href="<?= $browseUrl ?>"><?= Lang::txt('COM_PROJECTS_ALL_PROJECTS') ?></a></li>
+                    <li><a class="btn icon-browse"
+                        href="<?= $browseUrl ?>"><?= Lang::txt('COM_PROJECTS_ALL_PROJECTS') ?></a></li>
                     <?php if (User::authorise('core.create', $this->option)) { ?>
                         <?php
                         $startUrl = Route::url('index.php?option=' . $this->option . '&task=start');
                         ?>
-                        <li><a class="btn icon-add" href="<?= $startUrl ?>"><?= Lang::txt('COM_PROJECTS_START_NEW') ?></a></li>
+                        <li><a class="btn icon-add"
+                            href="<?= $startUrl ?>"><?= Lang::txt('COM_PROJECTS_START_NEW') ?></a></li>
                     <?php } ?>
                 </ul>
                 <?php

@@ -147,7 +147,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                                 . $groups[$i],
                                         );
                                         ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                            class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -220,7 +221,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                                 . $individuals[$i],
                                         );
                                         ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                            class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -294,7 +296,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                                 . $advisory[$i],
                                         );
                                         ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                            class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     </td>
                                 </tr>
                                     <?php

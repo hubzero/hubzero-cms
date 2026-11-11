@@ -99,7 +99,9 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                         $this->model->link('feed') . '&action=editcomment&cid=' . $comment->id,
                                     );
                                     ?>
-                                    <a class="icon-edit edit tooltips" data-form="comment-form<?= $comment->id ?>" data-content="activity-event-content<?= $comment->id ?>" href="<?= $editcommentUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"><!--
+                                    <a class="icon-edit edit tooltips" data-form="comment-form<?= $comment->id ?>"
+                                        data-content="activity-event-content<?= $comment->id ?>"
+                                        href="<?= $editcommentUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"><!--
                                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                                     --></a>
                                 </li>

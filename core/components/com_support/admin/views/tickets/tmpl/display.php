@@ -90,7 +90,8 @@ $this
                                             . Session::getFormToken() . '=1',
                                     );
                                     ?>
-                                    <a class="delete" href="<?= $removefolderUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                    <a class="delete" href="<?= $removefolderUrl ?>"
+                                        title="<?= Lang::txt('JACTION_DELETE') ?>">
                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                     </a>
                                     <?php
@@ -103,7 +104,9 @@ $this
                                             . Session::getFormToken() . '=1&fields[id]=' . $folder->id,
                                     );
                                     ?>
-                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= $dataHrefUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>"
+                                        href="<?= $editfolderUrl ?>" data-href="<?= $dataHrefUrl ?>"
+                                        title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                     </a>
                                 </span>
@@ -142,7 +145,9 @@ $this
                                                         . '&tmpl=component&' . Session::getFormToken() . '=1',
                                                 );
                                                 ?>
-                                                <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                                                <a class="modal edit" href="<?= $editUrl ?>"
+                                                    title="<?= Lang::txt('JACTION_EDIT') ?>"
+                                                    rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                 </a>
                                             </span>
@@ -162,7 +167,9 @@ $this
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY') ?>">
+                        <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>"
+                            rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                            title="<?= Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY') ?>">
                             <?php echo Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY'); ?>
                         </a>
                     </li>
@@ -177,7 +184,9 @@ $this
                                 . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="icon-folder" id="new-folder" href="<?= $addfolderUrl ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>" data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
+                        <a class="icon-folder" id="new-folder" href="<?= $addfolderUrl ?>"
+                            data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>"
+                            data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
                             <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
                         </a>
                     </li>

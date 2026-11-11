@@ -83,7 +83,8 @@ $repohostChecked = function ($value) use ($view) {
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
             );
             ?>
-            <li class="last"><a class="icon-main main-page btn" href="<?= $pipelineUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
+            <li class="last"><a class="icon-main main-page btn"
+                href="<?= $pipelineUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -184,14 +185,16 @@ $repohostChecked = function ($value) use ($view) {
                             'index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev',
                         );
                         ?>
-                        <a class="icon-preview btn btn-secondary" href="<?= $linkUrl ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
+                        <a class="icon-preview btn btn-secondary"
+                            href="<?= $linkUrl ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
                         <?php
                         $resourceUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller=' . $this->controller
                                 . '&task=resource&app=' . $this->defaults['toolname'],
                         );
                         ?>
-                        <a class="icon-edit btn btn-secondary" href="<?= $resourceUrl ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
+                        <a class="icon-edit btn btn-secondary"
+                            href="<?= $resourceUrl ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
                     </p>
                 <?php } ?>
 
@@ -479,7 +482,8 @@ $repohostChecked = function ($value) use ($view) {
                             . $this->defaults['toolname'],
                     );
                     ?>
-                    <a class="btn btn-secondary" href="<?= $statusUrl ?>" title="<?= Lang::txt('COM_TOOLS_HINT_CANCEL') ?>">
+                    <a class="btn btn-secondary" href="<?= $statusUrl ?>"
+                        title="<?= Lang::txt('COM_TOOLS_HINT_CANCEL') ?>">
                         <?php echo Lang::txt('JCANCEL'); ?>
                     </a>
                 <?php } ?>

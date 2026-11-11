@@ -338,7 +338,8 @@ $this->category->set('section_alias', $this->filters['section']);
                             <?php
                             $linkUrl = Route::url($this->category->link('newthread'));
                             ?>
-                            <a class="icon-add add btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
+                            <a class="icon-add add btn"
+                                href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                         </p>
                     <?php } else { ?>
                         <p class="warning">

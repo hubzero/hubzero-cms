@@ -301,7 +301,8 @@ $statusSelected = function ($value) use ($view) {
                                 . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SET_TASK', $task) ?>">
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_WISHLIST_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -318,7 +319,8 @@ $statusSelected = function ($value) use ($view) {
                                 . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a href="<?= $linkUrl ?>" class="<?= $color_access ?>" title="<?= Lang::txt('COM_WISHLIST_CHANGE_ACCESS') ?>">
+                        <a href="<?= $linkUrl ?>" class="<?= $color_access ?>"
+                            title="<?= Lang::txt('COM_WISHLIST_CHANGE_ACCESS') ?>">
                             <?php echo $groupname; ?>
                         </a>
                     <?php } else { ?>

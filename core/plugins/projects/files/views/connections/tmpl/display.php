@@ -91,7 +91,8 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
                     $this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id,
                 );
                 ?>
-                <a class="connection-refresh icon-refresh" title="<?= Lang::txt('Refresh Connection Credentials') ?>" href="<?= $refreshaccessUrl ?>">
+                <a class="connection-refresh icon-refresh" title="<?= Lang::txt('Refresh Connection Credentials') ?>"
+                    href="<?= $refreshaccessUrl ?>">
                     <?php echo Lang::txt('Refresh Connection Credentials'); ?>
                 </a>
                 <?php
@@ -99,7 +100,8 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
                     $this->model->link('files') . '&action=refreshpath&connection=' . $connection->id,
                 );
                 ?>
-                <a class="connection-refreshpath icon-folder" title="<?= Lang::txt('Refresh Connection Path') ?>" href="<?= $refreshpathUrl ?>">
+                <a class="connection-refreshpath icon-folder" title="<?= Lang::txt('Refresh Connection Path') ?>"
+                    href="<?= $refreshpathUrl ?>">
                     <?php echo Lang::txt('Refresh Connection Path'); ?>
                 </a>
                 <?php
@@ -107,7 +109,8 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
                     $this->model->link('files') . '&action=editconnection&connection=' . $connection->id,
                 );
                 ?>
-                <a class="connection-edit icon-edit" title="<?= Lang::txt('Edit Connection') ?>" href="<?= $editconnectionUrl ?>">
+                <a class="connection-edit icon-edit" title="<?= Lang::txt('Edit Connection') ?>"
+                    href="<?= $editconnectionUrl ?>">
                     <?php echo Lang::txt('Edit'); ?>
                 </a>
                 <?php

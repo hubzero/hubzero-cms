@@ -184,7 +184,8 @@ $stateSelected = function ($value) use ($view) {
                                 . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
-                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_SAML_SET_STATE', $task) ?>">
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_SAML_SET_STATE', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

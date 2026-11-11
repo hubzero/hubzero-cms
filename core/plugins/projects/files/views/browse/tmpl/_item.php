@@ -149,14 +149,16 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
                     . urlencode($this->item->get('name')),
             );
             ?>
-            <a href="<?= $deleteUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP') ?>" class="i-delete">&nbsp;</a>
+            <a href="<?= $deleteUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP') ?>"
+                class="i-delete">&nbsp;</a>
             <?php
             $moveUrl = Route::url(
                 $this->model->link('files') . '&action=move' . $subdirPath . '&asset='
                     . urlencode($this->item->get('name')),
             );
             ?>
-            <a href="<?= $moveUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP') ?>" class="i-move">&nbsp;</a>
+            <a href="<?= $moveUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP') ?>"
+                class="i-move">&nbsp;</a>
         <?php } ?>
     </td>
     <?php if ($this->publishing) { ?>

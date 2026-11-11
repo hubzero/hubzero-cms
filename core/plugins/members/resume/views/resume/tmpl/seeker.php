@@ -88,7 +88,8 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
                 'index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs',
             );
             ?>
-            <a href="<?= $editprefsUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
+            <a href="<?= $editprefsUrl ?>"
+                title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
         </span>
     <?php } elseif ($this->emp or $this->admin) { ?>
         <span id="o<?php echo $this->seeker->uid; ?>">

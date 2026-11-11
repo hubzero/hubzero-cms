@@ -23,7 +23,8 @@ defined('_HZEXEC_') or die();
                         . $this->asset->get('id') . '&no_html=' . $this->no_html . '&' . Session::getFormToken() . '=1',
                 );
                 ?>
-                <a class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" href="<?= $deleteUrl ?>" title="<?= Lang::txt('COM_SUPPORT_DELETE') ?>">
+                <a class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" href="<?= $deleteUrl ?>"
+                    title="<?= Lang::txt('COM_SUPPORT_DELETE') ?>">
                     <?php echo Lang::txt('COM_SUPPORT_DELETE'); ?>
                 </a>
             </span>
