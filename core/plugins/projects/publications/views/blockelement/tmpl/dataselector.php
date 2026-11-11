@@ -104,7 +104,12 @@ if ($coming) {
         <div class="block-subject withhandler">
             <span class="checker">&nbsp;</span>
             <h5 class="element-title">
-                <?= $this->manifest->label ?> <?= count($this->attachments ? $this->attachments : []) ? '(' . (count($this->attachments ? $this->attachments : [])) . ')' : '' ?>
+                <?php
+                $attachmentsText = count($this->attachments ? $this->attachments : [])
+                    ? '(' . (count($this->attachments ? $this->attachments : [])) . ')'
+                    : '';
+                ?>
+                <?= $this->manifest->label ?> <?= $attachmentsText ?>
                 <span class="element-options">
                     <a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a>
                 </span>
@@ -123,7 +128,12 @@ if ($coming) {
                 <?php if (!$required) {
                     ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php
                 } ?>
-                <?= $this->manifest->label ?> <?= count($this->attachments ? $this->attachments : []) ? '(' . (count($this->attachments ? $this->attachments : [])) . ')' : '' ?>
+                <?php
+                $attachmentsText = count($this->attachments ? $this->attachments : [])
+                    ? '(' . (count($this->attachments ? $this->attachments : [])) . ')'
+                    : '';
+                ?>
+                <?= $this->manifest->label ?> <?= $attachmentsText ?>
             </label>
             <?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
             <?php

@@ -275,8 +275,18 @@ $prioritySelected = function ($value) use ($view) {
                                         ?>
                                         <li class="wiki"><a href="<?= $linkUrl ?>"
                                             title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
-                                        <li class="sourcecode"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/browser" title="<?= Lang::txt('COM_TOOLS_SOURCE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
-                                        <li class="timeline"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/timeline" title="<?= Lang::txt('COM_TOOLS_TIMELINE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
+                                        <?php
+                                        $linkUrl = $developer_url . $project_path . $this->status['toolname']
+                                            . '/browser';
+                                        $titleText = Lang::txt('COM_TOOLS_SOURCE_TIPS');
+                                        ?>
+                                        <li class="sourcecode"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
+                                        <?php
+                                        $linkUrl = $developer_url . $project_path . $this->status['toolname']
+                                            . '/timeline';
+                                        $titleText = Lang::txt('COM_TOOLS_TIMELINE_TIPS');
+                                        ?>
+                                        <li class="timeline"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
                                     <?php } else { ?>
                                         <li class="wiki"><span
                                             class="disabled"><?= Lang::txt('COM_TOOLS_WIKI') ?></span></li>
@@ -319,7 +329,12 @@ $prioritySelected = function ($value) use ($view) {
                                 </div>
                                 <div id="ctComment">
                                     <span class="closebox"><a href="javascript:void(0);" class="hidemsg">x</a></span>
-                                    <h4><?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : strtolower(Lang::txt('COM_TOOLS_SITE_ADMIN')) ?>:</h4>
+                                    <?php
+                                    $developmentTeamText = ($this->config->get('access-admin-component'))
+                                        ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'))
+                                        : strtolower(Lang::txt('COM_TOOLS_SITE_ADMIN'));
+                                    ?>
+                                    <h4><?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= $developmentTeamText ?>:</h4>
                                     <?php
                                     $statusUrl = Route::url(
                                         'index.php?option=' . $this->option . '&controller=' . $this->controller
@@ -701,7 +716,12 @@ $prioritySelected = function ($value) use ($view) {
                                     <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_DONE'); ?>
                                 </a>
                             </span>
-                            <br /><a class="developer-wiki" href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki/GettingStarted"><?= Lang::txt('COM_TOOLS_WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS') ?></a>
+                            <?php
+                            $linkUrl = $developer_url . $project_path . $this->status['toolname']
+                                . '/wiki/GettingStarted';
+                            $linkText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS');
+                            ?>
+                            <br /><a class="developer-wiki" href="<?= $linkUrl ?>"><?= $linkText ?></a>
                         </li>
                         <?php if ($this->status['resource_modified'] == '1') { ?>
                         <li class="complete">

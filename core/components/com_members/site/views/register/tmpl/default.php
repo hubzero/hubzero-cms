@@ -231,7 +231,13 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         <div class="form-group">
                             <label for="userlogin"
                                 <?= !empty($this->xregistration->invalid['login']) ? 'class="fieldWithErrors"' : '' ?>>
-                                <?= Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN') ?> <?= $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                                <?php
+                                $formRequiredText = $this->registrationUsername == Field::STATE_REQUIRED
+                                    ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                                        . '</span>'
+                                    : '';
+                                ?>
+                                <?= Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN') ?> <?= $formRequiredText ?>
                                 <?php
                                 $fieldValue = $this->escape($this->registration['login']);
                                 $ariaRequiredAttr = ($this->registrationUsername == Field::STATE_REQUIRED)
@@ -264,7 +270,13 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                     <label for="password"<?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                 ? ' class="fieldWithErrors"'
                                                 : ''; ?>>
-                                        <?= Lang::txt('COM_MEMBERS_REGISTER_PASSWORD') ?> <?= $this->registrationPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                                        <?php
+                                        $formRequiredText = $this->registrationPassword == Field::STATE_REQUIRED
+                                            ? '<span class="required">'
+                                                . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                                            : '';
+                                        ?>
+                                        <?= Lang::txt('COM_MEMBERS_REGISTER_PASSWORD') ?> <?= $formRequiredText ?>
                                         <?php
                                         $ariaRequiredAttr = ($this->registrationPassword == Field::STATE_REQUIRED)
                                             ? ' required aria-required="true"'
@@ -445,7 +457,13 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                         : '';
                                     ?>
                                     <label for="email"<?= $classAttr ?>>
-                                        <?= Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL') ?> <?= $this->registrationEmail == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                                        <?php
+                                        $formRequiredText = $this->registrationEmail == Field::STATE_REQUIRED
+                                            ? '<span class="required">'
+                                                . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                                            : '';
+                                        ?>
+                                        <?= Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL') ?> <?= $formRequiredText ?>
                                         <?php
                                         $fieldValue = $this->escape($this->registration['email']);
                                         $ariaRequiredAttr = ($this->registrationEmail == Field::STATE_REQUIRED)
@@ -479,7 +497,13 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                         : '';
                                     ?>
                                     <label for="email2"<?= $classAttr ?>>
-                                        <?= Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL') ?> <?= ($this->registrationConfirmEmail == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                                        <?php
+                                        $formRequiredText = ($this->registrationConfirmEmail == Field::STATE_REQUIRED)
+                                            ? '<span class="required">'
+                                                . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                                            : '';
+                                        ?>
+                                        <?= Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL') ?> <?= $formRequiredText ?>
                                         <?php
                                         $fieldValue = $this->escape($this->registration['confirmEmail']);
                                         $ariaRequiredAttr = ($this->registrationConfirmEmail == Field::STATE_REQUIRED)
@@ -727,7 +751,12 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         ?>
                         <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail"
                             value="1" <?= $checkedAttr ?> />
-                        <?= Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES') ?> <?= ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                        <?php
+                        $formRequiredText = ($this->registrationOptIn == Field::STATE_REQUIRED)
+                            ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                            : '';
+                        ?>
+                        <?= Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES') ?> <?= $formRequiredText ?>
                     </label>
                     <?php echo $message; ?>
                 </div>
@@ -750,7 +779,12 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             <?php } ?>
 
             <label id="botcheck-label" for="botcheck">
-                <?= Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL') ?> <?= $this->registrationCAPTCHA == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
+                <?php
+                $formRequiredText = $this->registrationCAPTCHA == Field::STATE_REQUIRED
+                    ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                    : '';
+                ?>
+                <?= Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL') ?> <?= $formRequiredText ?>
                 <input type="text" class="form-control" name="botcheck" id="botcheck" value="" />
             </label>
 

@@ -95,7 +95,15 @@ $this
                             </td>
                             <td>
                                 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
-                                    <a class="delete icon-delete delete-folder" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=deletefolder&amp;delFolder=<?= urlencode($dir) ?>&amp;listdir=<?= urlencode($this->listdir) ?>&amp;tmpl=component&amp;<?= Session::getFormToken() ?>=1" data-confirm="<?= Lang::txt('Are you sure you want to delete the folder "%s"?', $dir) ?>" data-files="<?= $numFiles ?>" data-notempty="<?= Lang::txt('Sorry unable to delete folder because it is not empty') ?>" target="filer" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                    <?php
+                                    $linkUrl = 'index.php?option=' . $this->option . '&amp;controller='
+                                        . $this->controller . '&amp;task=deletefolder&amp;delFolder=' . urlencode($dir)
+                                        . '&amp;listdir=' . urlencode($this->listdir) . '&amp;tmpl=component&amp;'
+                                        . Session::getFormToken() . '=1';
+                                    $confirmText = Lang::txt('Are you sure you want to delete the folder "%s"?', $dir);
+                                    $dataNotempty = Lang::txt('Sorry unable to delete folder because it is not empty');
+                                    ?>
+                                    <a class="delete icon-delete delete-folder" href="<?= $linkUrl ?>" data-confirm="<?= $confirmText ?>" data-files="<?= $numFiles ?>" data-notempty="<?= $dataNotempty ?>" target="filer" title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                     </a>
@@ -115,7 +123,14 @@ $this
                                 <?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
                             </td>
                             <td>
-                                <a class="delete icon-delete delete-file" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=deletefile&amp;file=<?= urlencode($name) ?>&amp;listdir=<?= urlencode($this->listdir) ?>&amp;tmpl=component&amp;<?= Session::getFormToken() ?>=1" target="filer" data-confirm="<?= Lang::txt('Are you sure you want to delete the file "%s"?', $name) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                <?php
+                                $linkUrl = 'index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+                                    . '&amp;task=deletefile&amp;file=' . urlencode($name) . '&amp;listdir='
+                                    . urlencode($this->listdir) . '&amp;tmpl=component&amp;' . Session::getFormToken()
+                                    . '=1';
+                                $confirmText = Lang::txt('Are you sure you want to delete the file "%s"?', $name);
+                                ?>
+                                <a class="delete icon-delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                 </a>

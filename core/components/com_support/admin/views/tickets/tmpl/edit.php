@@ -200,7 +200,12 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OS'); ?>:</th>
-                                <td><?= $this->escape($this->row->get('os')) ?> / <?= $this->escape($this->row->get('browser')) ?> (<?= ($this->row->get('cookies')) ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED') ?>)</td>
+                                <?php
+                                $cookiesEnabledText = ($this->row->get('cookies'))
+                                    ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED')
+                                    : Lang::txt('COM_SUPPORT_COOKIES_DISABLED');
+                                ?>
+                                <td><?= $this->escape($this->row->get('os')) ?> / <?= $this->escape($this->row->get('browser')) ?> (<?= $cookiesEnabledText ?>)</td>
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>
@@ -700,7 +705,20 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
 
                     <div class="input-wrap">
                         <label for="target_date"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_TARGET_DATE') ?></label>
-                        <?= Html::input('calendar', 'ticket[target_date]', ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), ['id' => 'field-target_date']) ?>
+                        <?php
+                        $targetDateText = Html::input(
+                            'calendar',
+                            'ticket[target_date]',
+                            (
+                                $this->row->get('target_date')
+                                    && $this->row->get('target_date') != '0000-00-00 00:00:00'
+                                    ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s'))
+                                    : ''
+                            ),
+                            ['id' => 'field-target_date'],
+                        );
+                        ?>
+                        <?= $targetDateText ?>
                     </div>
 
                     <div class="grid">

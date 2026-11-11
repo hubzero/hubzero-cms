@@ -69,7 +69,15 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                             <?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
                                 <?php echo rtrim($quote->get('short_quote'), '.'); ?>
                                  &#8230;
-                                <a href="<?= $this->escape($base) . (strstr($base, '?') ? '&amp;' : '?') ?>quoteid=<?= $quote->get('id') ?>" title="<?= Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))) ?>">
+                                <?php
+                                $linkUrl = $this->escape($base) . (strstr($base, '?') ? '&amp;' : '?') . 'quoteid='
+                                    . $quote->get('id');
+                                $titleText = Lang::txt(
+                                    'MOD_QUOTES_VIEW_QUOTE_BY',
+                                    $this->escape(stripslashes($quote->get('fullname'))),
+                                );
+                                ?>
+                                <a href="<?= $linkUrl ?>" title="<?= $titleText ?>">
                                     <?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
                                 </a>
                             <?php } else { ?>

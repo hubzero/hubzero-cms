@@ -217,7 +217,13 @@ $aliasSelected = function ($value) use ($view) {
                             <div class="col span-half">
                                 <div class="form-group">
                                     <label for="upload">
-                                        <?= Lang::txt('COM_FORUM_FIELD_FILE') ?> <?= $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : '' ?>
+                                        <?php
+                                        $filenameText = $attachment->get('filename')
+                                            ? '<strong>' . $this->escape(stripslashes($attachment->get('filename')))
+                                                . '</strong>'
+                                            : '';
+                                        ?>
+                                        <?= Lang::txt('COM_FORUM_FIELD_FILE') ?> <?= $filenameText ?>
                                         <input type="file" class="form-control-file" name="upload" id="upload" />
                                     </label>
                                 </div>

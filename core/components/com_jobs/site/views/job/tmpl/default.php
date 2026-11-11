@@ -125,7 +125,12 @@ defined('_HZEXEC_') or die();
             $reopenUrl = Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code);
             $removeUrl = Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code);
             ?>
-            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></span>
+            <?php
+            $titleText = Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING');
+            $buttonTitleText = Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS');
+            $thisJobText = Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB');
+            ?>
+            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>" class="btn" title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn" title="<?= $buttonTitleText ?>"><?= $thisJobText ?></button></span>
         <?php } ?>
         <?php
         if ($job->applied) {
@@ -258,7 +263,10 @@ defined('_HZEXEC_') or die();
                     <li class="applic">
                     <span class="countc"><?php echo $k . ". " ?></span><a href="<?= Route::url('members/' . $job->applications[$i]->uid . "/resume") ?>"><?php echo $this->escape($job->applications[$i]->seeker->name) ?></a><?php echo ' ' . Lang::txt('applied on') . ' ' . $applied;
                     if ($job->applications[$i]->cover) { ?>
-                        <blockquote><?php echo nl2br($this->escape(trim(stripslashes($job->applications[$i]->cover)))) ?></blockquote> 
+                        <?php
+                        $coverText = nl2br($this->escape(trim(stripslashes($job->applications[$i]->cover))));
+                        ?>
+                        <blockquote><?= $coverText ?></blockquote> 
                     <?php } else {
                         echo '';
                     } ?>

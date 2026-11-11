@@ -132,7 +132,12 @@ $idSelected = function ($value) use ($view) {
             // Showing submitter?
         if ($showSubmitter && $this->pub->submitter()) { ?>
             <div class="submitter"><p><strong><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER') ?>*: </strong>
-                <?= $this->escape($this->pub->submitter()->name) ?><?= $this->pub->submitter()->organization ? ', ' . $this->escape($this->pub->submitter()->organization) : '' ?></p>
+                <?php
+                $organizationText = $this->pub->submitter()->organization
+                    ? ', ' . $this->escape($this->pub->submitter()->organization)
+                    : '';
+                ?>
+                <?= $this->escape($this->pub->submitter()->name) ?><?= $organizationText ?></p>
                 <p class="hint">* <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?>
                 </p>
             </div>

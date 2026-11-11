@@ -104,7 +104,14 @@ $viewUrl = Route::url(
 
 ?>
 <div class="sample">
-    <p><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->escape($this->publication->title) . '</strong>' ?> <?= $this->primary->role != 1 ? '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->escape($this->primary->path) . '</strong>' : '' ?></p>
+    <?php
+    $paragraphText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->escape($this->publication->title)
+        . '</strong>';
+    $pathText = $this->primary->role != 1
+        ? '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->escape($this->primary->path) . '</strong>'
+        : '';
+    ?>
+    <p><?= $paragraphText ?> <?= $pathText ?></p>
 </div>
 
 <?php

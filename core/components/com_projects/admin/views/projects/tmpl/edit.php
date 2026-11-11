@@ -197,7 +197,15 @@ $paramsLayoutSelected = function ($value) use ($view) {
                         <?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
                         <select name="owned_by_user" class="block">
                             <?php foreach ($this->model->team($filters = ['status' => 1], true) as $member) {  ?>
-                                <option value="<?= $member->userid ?>" <?= $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : '' ?>><?= $this->escape($member->fullname) ?> <?= $member->userid == $this->model->get('owned_by_user') ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')' : '' ?></option>
+                                <?php
+                                $selectedAttr = $member->userid == $this->model->get('owned_by_user')
+                                    ? 'selected="selected"'
+                                    : '';
+                                $currentOwnerText = $member->userid == $this->model->get('owned_by_user')
+                                    ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'
+                                    : '';
+                                ?>
+                                <option value="<?= $member->userid ?>" <?= $selectedAttr ?>><?= $this->escape($member->fullname) ?> <?= $currentOwnerText ?></option>
                             <?php } ?>
                         </select>
                     </label>
@@ -458,7 +466,11 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     // Plain text: strip the tags, decode the entities they leave (&nbsp; etc.), then escape once
                             $activity = $this->escape(html_entity_decode(strip_tags($activity), ENT_QUOTES, 'UTF-8'));
                             ?>
-                            <?= $this->last_activity->created ?> (<?= ProjectsHtml::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO') ?>) <br /> <span class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span> <?= $activity ?>
+                            <?php
+                            $agoText = ProjectsHtml::timeAgo($this->last_activity->created) . ' '
+                                . Lang::txt('COM_PROJECTS_AGO');
+                            ?>
+                            <?= $this->last_activity->created ?> (<?= $agoText ?>) <br /> <span class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span> <?= $activity ?>
                             <?php } else {
                                 echo Lang::txt('COM_PROJECTS_NA');
                             }?>

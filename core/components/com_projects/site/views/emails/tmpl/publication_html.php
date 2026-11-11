@@ -122,7 +122,12 @@ if ($this->project->isProvisioned()) {
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                 align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->project->get('title')) ?> (<?= $this->project->get('alias') ?> <?= $this->project->isProvisioned() ? ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED') : '' ?>)</td>
+                            <?php
+                            $provisionedText = $this->project->isProvisioned()
+                                ? ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED')
+                                : '';
+                            ?>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->project->get('title')) ?> (<?= $this->project->get('alias') ?> <?= $provisionedText ?>)</td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"

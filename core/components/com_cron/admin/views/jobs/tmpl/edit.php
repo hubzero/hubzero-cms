@@ -510,12 +510,41 @@ foreach ($this->getErrors() as $error) {
 
                 <div class="input-wrap">
                     <label for="field-publish_up"><?= Lang::txt('COM_CRON_FIELD_START_RUNNING') ?>:</label><br />
-                    <?= Html::input('calendar', 'fields[publish_up]', $this->escape((!$this->row->get('publish_up') || $this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), ['id' => 'field-publish_up']) ?>
+                    <?php
+                    $publishUpText = Html::input(
+                        'calendar',
+                        'fields[publish_up]',
+                        $this->escape(
+                            (
+                                !$this->row->get('publish_up') || $this->row->get('publish_up') == '0000-00-00 00:00:00'
+                                    ? ''
+                                    : $this->row->get('publish_up')
+                            ),
+                        ),
+                        ['id' => 'field-publish_up'],
+                    );
+                    ?>
+                    <?= $publishUpText ?>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-publish_down"><?= Lang::txt('COM_CRON_FIELD_STOP_RUNNING') ?>:</label><br />
-                    <?= Html::input('calendar', 'fields[publish_down]', $this->escape((!$this->row->get('publish_down') || $this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), ['id' => 'field-publish_down']) ?>
+                    <?php
+                    $publishDownText = Html::input(
+                        'calendar',
+                        'fields[publish_down]',
+                        $this->escape(
+                            (
+                                !$this->row->get('publish_down')
+                                    || $this->row->get('publish_down') == '0000-00-00 00:00:00'
+                                    ? ''
+                                    : $this->row->get('publish_down')
+                            ),
+                        ),
+                        ['id' => 'field-publish_down'],
+                    );
+                    ?>
+                    <?= $publishDownText ?>
                 </div>
             </fieldset>
 

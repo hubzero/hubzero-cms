@@ -415,7 +415,19 @@ $discoverabilityChecked = function ($value) use ($view) {
                             </fieldset>
                             <div class="input-wrap">
                                 <label for="restrict_msg"><?= Lang::txt('COM_GROUPS_EDIT_CREDENTIALS') ?>:</label><br />
-                                <?= $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : '')), 40, 10, 'restrict_msg', ['class' => 'minimal']) ?>
+                                <?php
+                                $restrictMsgText = $this->editor(
+                                    'group[restrict_msg]',
+                                    $this->escape(
+                                        stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : ''),
+                                    ),
+                                    40,
+                                    10,
+                                    'restrict_msg',
+                                    ['class' => 'minimal'],
+                                );
+                                ?>
+                                <?= $restrictMsgText ?>
                             </div>
                         </fieldset>
                         <fieldset class="adminform">

@@ -251,7 +251,12 @@ $categorySelected = function ($value) use ($view) {
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OS'); ?>:</th>
-                                    <td><?= $this->escape($this->row->get('os')) ?> / <?= $this->escape($this->row->get('browser')) ?> (<?= ($this->row->get('cookies')) ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED') ?>)</td>
+                                    <?php
+                                    $cookiesEnabledText = ($this->row->get('cookies'))
+                                        ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED')
+                                        : Lang::txt('COM_SUPPORT_COOKIES_DISABLED');
+                                    ?>
+                                    <td><?= $this->escape($this->row->get('os')) ?> / <?= $this->escape($this->row->get('browser')) ?> (<?= $cookiesEnabledText ?>)</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>

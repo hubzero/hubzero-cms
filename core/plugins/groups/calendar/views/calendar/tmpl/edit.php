@@ -94,7 +94,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                                     ? 'selected="selected"'
                                     : '';
                                 ?>
-                                <option <?= $sel ?> data-img="<?= Request::base(true) ?>/core/plugins/groups/calendar/assets/img/swatch-<?= ($calendar->get('color')) ? $calendar->get('color') : 'gray' ?>.png" value="<?= $calendar->get('id') ?>"><?= $this->escape($calendar->get('title')) ?></option>
+                                <?php
+                                $dataImg = Request::base(true) . '/core/plugins/groups/calendar/assets/img/swatch-'
+                                    . (($calendar->get('color')) ? $calendar->get('color') : 'gray') . '.png';
+                                $optionText = $this->escape($calendar->get('title'));
+                                ?>
+                                <option <?= $sel ?> data-img="<?= $dataImg ?>" value="<?= $calendar->get('id') ?>"><?= $optionText ?></option>
                             <?php endforeach; ?>
                         </select>
 

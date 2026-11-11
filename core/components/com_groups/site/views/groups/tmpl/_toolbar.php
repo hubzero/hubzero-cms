@@ -175,7 +175,12 @@ if ($this->group->isSuperGroup()) {
         <li>
             <div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
                 <button type="button" class="btn dropdown-label" aria-expanded="false" aria-haspopup="true">
-                    <?= Lang::txt('COM_GROUPS_GROUP') ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
+                    <?php
+                    $toolbarManagerText = ($isManager)
+                        ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER')
+                        : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER');
+                    ?>
+                    <?= Lang::txt('COM_GROUPS_GROUP') ?> <?= $toolbarManagerText ?>
                 </button>
                 <?php if (!empty($menuItems)) : ?>
                     <button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true"

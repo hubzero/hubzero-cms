@@ -61,7 +61,16 @@ $this
                         ) ?>
                     </td>
                     <td>
-                        <a class="icon-delete delete delete-file" href="<?= Request::base(true) ?>/index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=delete&amp;file=<?= $this->escape($docs[$docName]) ?>&amp;resource=<?= $this->escape($this->resource) ?>&amp;tmpl=component&amp;subdir=<?= $this->escape($this->subdir) ?>&amp;<?= Session::getFormToken() ?>=1" target="filer" data-confirm="<?= $this->escape(Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName])) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                        <?php
+                        $linkUrl = Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller='
+                            . $this->controller . '&amp;task=delete&amp;file=' . $this->escape($docs[$docName])
+                            . '&amp;resource=' . $this->escape($this->resource) . '&amp;tmpl=component&amp;subdir='
+                            . $this->escape($this->subdir) . '&amp;' . Session::getFormToken() . '=1';
+                        $confirmText = $this->escape(
+                            Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]),
+                        );
+                        ?>
+                        <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>
