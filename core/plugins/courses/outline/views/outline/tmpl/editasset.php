@@ -163,7 +163,9 @@ $tool_path = $config->get('tool_path');
                     <?php foreach ($tools as $tool) : ?>
                         <?php
                         preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr);
-                        $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : '';
+                        $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias)
+                            ? 'selected="selected"'
+                            : '';
                         ?>
                         <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>>
                             <?php echo $this->escape($tool->title) ?>

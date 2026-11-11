@@ -114,7 +114,10 @@ $version = $record['summary']['version'];
                                                                         left: ' . $ans['left'] . 'px;
                                                                 }
                                                         ');
-                                                        echo '<div name="question-' . $qid . '" id="question-' . $qid . '-marker-correct" value="' . $ans['id'] . '" class="answer-marker correct" type="radio">&#10004;</div>';
+                                                        echo '<div name="question-' . $qid . '" id="question-' . $qid
+                                                            . '-marker-correct" value="' . $ans['id'] . '" '
+                                                            . 'class="answer-marker correct" '
+                                                            . 'type="radio">&#10004;</div>';
                         elseif ($record['detail'][$qid]['answer_id'] == $ans['id']) :
                                                             Document::addStyleDeclaration('
                                                                 #question-' . $qid . '-marker-incorrect {
@@ -122,7 +125,10 @@ $version = $record['summary']['version'];
                                                                         left: ' . $ans['left'] . 'px;
                                                                 }
                                                         ');
-                                                            echo '<div name="question-' . $qid . '" id="question-' . $qid . '-marker-incorrect" value="' . $ans['id'] . '" class="answer-marker incorrect" type="radio">&#10008;</div>';
+                                                            echo '<div name="question-' . $qid . '" id="question-'
+                                                                . $qid . '-marker-incorrect" value="' . $ans['id']
+                                                                . '" class="answer-marker incorrect" '
+                                                                . 'type="radio">&#10008;</div>';
                         endif;
                     endforeach;
                     ++$qidx;

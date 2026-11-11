@@ -443,7 +443,16 @@ $option = 'com_groups';
 
                                             if ($this->authorized == 'manager') {
                                                 if ($this->membership_control == 1) {
-                                                    $all_roles .= '<span class="delete-role"><button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=deleterole&uid=' . $u->get('id') . '&role=' . $role['id']) . '" title="' . Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') . '" aria-label="' . Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') . ': ' . $this->escape($role['name']) . '">x</button></span></span>';
+                                                    $all_roles .= '<span class="delete-role"><button type="submit" '
+                                                        . 'form="hz-post-action" formaction="'
+                                                        . Route::url(
+                                                            'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                                                . '&active=members&action=deleterole&uid='
+                                                                . $u->get('id') . '&role=' . $role['id'],
+                                                        ) . '" title="' . Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE')
+                                                        . '" aria-label="' . Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE')
+                                                        . ': ' . $this->escape($role['name'])
+                                                        . '">x</button></span></span>';
                                                 }
                                             } else {
                                                 $all_roles .= '</span>';
@@ -589,7 +598,18 @@ $option = 'com_groups';
                                                         $this->escape($u->get('name')),
                                                     ) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_DENY') . '</a></td>'
                                                     . "\n";
-                                                $html .= "\t\t\t\t" . '<td class="approve-member"><button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=approve&users[]=' . $guser . '&filter=' . $this->filter) . '" class="approve tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_APPROVE_MEMBER', $this->escape($u->get('name'))) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_APPROVE') . '</button></td>' . "\n";
+                                                $html .= "\t\t\t\t" . '<td class="approve-member"><button '
+                                                    . 'type="submit" form="hz-post-action" formaction="'
+                                                    . Route::url(
+                                                        'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                                            . '&active=members&action=approve&users[]=' . $guser
+                                                            . '&filter=' . $this->filter,
+                                                    ) . '" class="approve tooltips" title="'
+                                                    . Lang::txt(
+                                                        'PLG_GROUPS_MEMBERS_APPROVE_MEMBER',
+                                                        $this->escape($u->get('name')),
+                                                    ) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_APPROVE')
+                                                    . '</button></td>' . "\n";
                                             }
                                             break;
                                         case 'managers':
@@ -628,12 +648,37 @@ $option = 'com_groups';
                                                     //force admins to use backend to demote manager if only 1
                                                     //if ($this->authorized == 'admin' || count($this->managers) > 1) {
                                                     if (count($this->managers) > 1) {
-                                                        $html .= "\t\t\t\t" . '<td class="demote-member"><button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=demote&users[]=' . $guser . '&filter=' . $this->filter . '&limit=' . $this->limit . '&limitstart=' . $this->start) . '" class="demote tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER', $this->escape($u->get('name'))) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE') . '</button></td>' . "\n";
+                                                        $html .= "\t\t\t\t" . '<td class="demote-member"><button '
+                                                            . 'type="submit" form="hz-post-action" formaction="'
+                                                            . Route::url(
+                                                                'index.php?option=' . $option . '&cn='
+                                                                    . $this->group->cn
+                                                                    . '&active=members&action=demote&users[]=' . $guser
+                                                                    . '&filter=' . $this->filter . '&limit='
+                                                                    . $this->limit . '&limitstart=' . $this->start,
+                                                            ) . '" class="demote tooltips" title="'
+                                                            . Lang::txt(
+                                                                'PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',
+                                                                $this->escape($u->get('name')),
+                                                            ) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE')
+                                                            . '</button></td>' . "\n";
                                                     } else {
                                                         $html .= "\t\t\t\t" . '<td class="demote-member"> </td>' . "\n";
                                                     }
                                                 } else {
-                                                    $html .= "\t\t\t\t" . '<td class="promote-member"><button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=promote&users[]=' . $guser . '&filter=' . $this->filter . '&limit=' . $this->limit . '&limitstart=' . $this->start) . '" class="promote tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER', $this->escape($u->get('name'))) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE') . '</button></td>' . "\n";
+                                                    $html .= "\t\t\t\t" . '<td class="promote-member"><button '
+                                                        . 'type="submit" form="hz-post-action" formaction="'
+                                                        . Route::url(
+                                                            'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                                                . '&active=members&action=promote&users[]=' . $guser
+                                                                . '&filter=' . $this->filter . '&limit=' . $this->limit
+                                                                . '&limitstart=' . $this->start,
+                                                        ) . '" class="promote tooltips" title="'
+                                                        . Lang::txt(
+                                                            'PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',
+                                                            $this->escape($u->get('name')),
+                                                        ) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE')
+                                                        . '</button></td>' . "\n";
                                                 }
                                             }
                                             break;

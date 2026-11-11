@@ -113,7 +113,9 @@ if ($this->type == 'image') {
     echo '<img ' . $attributes . ' src="' . $this->url . '" alt="Image" />' . "\n";
 } elseif (in_array(strtolower($this->ext), $docs) && $this->googleView) {
     // View via Google
-    echo '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>' . "\n";
+    echo '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url='
+        . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" '
+        . 'name="file_resource" frameborder="0" bgcolor="white"></iframe>' . "\n";
 } else { // View in html5-browser
     ?>
     <p class="direct-download">Publication doesn't load in your browser or shows partial file? <a

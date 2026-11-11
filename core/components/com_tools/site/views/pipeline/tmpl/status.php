@@ -157,7 +157,13 @@ $prioritySelected = function ($value) use ($view) {
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_VERSION'); ?></th>
                             <td><?php echo ($this->status['version']) ? Lang::txt('COM_TOOLS_THIS_VERSION') . ' ' . $this->status['version'] : Lang::txt('COM_TOOLS_THIS_VERSION') . ': ' . Lang::txt('COM_TOOLS_NO_LABEL');
-                            if (!$this->status['published'] or ($this->status['version'] != $this->status['currentversion'] && ToolsHtml::toolActive($this->status['state']))) {
+                            if (
+                                !$this->status['published']
+                                or (
+                                    $this->status['version'] != $this->status['currentversion']
+                                    && ToolsHtml::toolActive($this->status['state'])
+                                )
+                            ) {
                                 echo ' (' . Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT') . ')';
                             }
                             if ($this->status['published']) {

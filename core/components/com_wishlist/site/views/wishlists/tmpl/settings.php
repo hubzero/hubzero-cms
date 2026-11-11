@@ -83,7 +83,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             if ($this->wishlist->get('public') == 1) {
                                 echo ' checked="checked"';
                             }
-                            if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
+                            if (
+                                $this->wishlist->get('category') == 'resource'
+                                or (
+                                    $this->wishlist->get('category') == 'general'
+                                    && $this->wishlist->get('referenceid') == 1
+                                )
+                            ) {
                                 echo ' disabled="disabled"';
                             } ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
                         </label>
@@ -95,7 +101,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             if ($this->wishlist->get('public') == 0) {
                                 echo ' checked="checked"';
                             }
-                            if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
+                            if (
+                                $this->wishlist->get('category') == 'resource'
+                                or (
+                                    $this->wishlist->get('category') == 'general'
+                                    && $this->wishlist->get('referenceid') == 1
+                                )
+                            ) {
                                 echo ' disabled="disabled"';
                             } ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
                         </label>

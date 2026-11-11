@@ -113,7 +113,11 @@ $this->css();
                         ) . '"';
                     $file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $this->escape($r['source_file'])
                         . '</span>';
-                    $recreate = '<span title="' . Lang::txt('The original file has been removed or renamed, please restore the file to enable this functionality') . '" style="color: #ddd; cursor: not-allowed;">' . Lang::txt('Recreate') . '<span>';
+                    $recreate = '<span title="'
+                        . Lang::txt(
+                            'The original file has been removed or renamed, please restore the file to enable this '
+                                . 'functionality',
+                        ) . '" style="color: #ddd; cursor: not-allowed;">' . Lang::txt('Recreate') . '<span>';
                 }
             }
             ?>

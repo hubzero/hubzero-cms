@@ -163,13 +163,18 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
         }
         $rufle_path =  Component::path('com_resources') . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'ruffle';
         $rufle_path = (substr($rufle_path, strlen(PATH_ROOT) + 0));
-        $html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="' . $height . '" id="SlideContent" VIEWASTEXT>' . "\n";
+        $html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" '
+            . 'codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" '
+            . 'width="100%" height="' . $height . '" id="SlideContent" VIEWASTEXT>' . "\n";
         $html .= ' <param name="movie" value="' . $this->escape($url) . '" />' . "\n";
         $html .= ' <param name="quality" value="high" />' . "\n";
         $html .= ' <param name="menu" value="false" />' . "\n";
         $html .= ' <param name="loop" value="false" />' . "\n";
         $html .= ' <param name="scale" value="showall" />' . "\n";
-        $html .= ' <embed src="' . $this->escape($url) . '" menu="false" quality="best" loop="false" width="100%" height="' . $height . '" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>' . "\n";
+        $html .= ' <embed src="' . $this->escape($url)
+            . '" menu="false" quality="best" loop="false" width="100%" height="' . $height . '" scale="showall" '
+            . 'name="SlideContent" align="" type="application/x-shockwave-flash" '
+            . 'pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>' . "\n";
         $html .= '</object>' . "\n";
         $html .= '<script>' . "\n";
         $html .= 'window.RufflePlayer = window.RufflePlayer || {};' . "\n";
@@ -205,7 +210,17 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
                 . basename($this->activechild->path) . '&token=' . $token . '&' . Session::getFormToken() . '=1',
         );
 
-        $html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" bgcolor="white"></iframe>' . "\n";
+        $html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" '
+            . 'src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/'))
+            . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" title="'
+            . htmlspecialchars(
+                stripslashes(
+                    isset($this->resource) && $this->resource->title
+                        ? $this->resource->title
+                        : $this->activechild->title,
+                ),
+                ENT_QUOTES,
+            ) . '" frameborder="0" bgcolor="white"></iframe>' . "\n";
     } elseif (in_array(strtolower($type), $videos)) {
         $html .= '<video controls autoplay ' . $attributes . '>' . "\n";
         $html .= '    <source src="' . $this->escape($url) . '" type="video/mp4"/>' . "\n";
