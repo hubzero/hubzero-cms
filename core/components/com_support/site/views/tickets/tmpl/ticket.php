@@ -692,7 +692,19 @@ $categorySelected = function ($value) use ($view) {
                         <div class="form-group">
                             <label for="field-target_date">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-                                <input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60) ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?= ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
+                                <?php
+                                $dataTimezone = timezone_offset_get(
+                                    new DateTimeZone(Config::get('offset')),
+                                    Date::getRoot(),
+                                ) / 60;
+                                $fieldValue = (
+                                    $this->row->get('target_date')
+                                    && $this->row->get('target_date') != '0000-00-00 00:00:00'
+                                )
+                                    ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s'))
+                                    : '';
+                                ?>
+                                <input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= $dataTimezone ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?= $fieldValue ?>" />
                             </label>
                         </div>
 
@@ -803,7 +815,14 @@ $categorySelected = function ($value) use ($view) {
                         $this->js('jquery.fileuploader.js', 'system');
                         $jbase = rtrim(Request::base(true), '/');
                         ?>
-                        <div id="ajax-uploader" data-action="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?= $this->row->get('id') ?>&amp;comment=<?= $tmp ?>&amp;<?= Session::getFormToken() ?>=1" data-list="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?= $this->row->get('id') ?>&amp;comment=<?= $tmp ?>">
+                        <?php
+                        $dataActionUrl = $jbase . '/index.php?option=com_support&amp;no_html=1&amp;controller=media'
+                            . '&amp;task=upload&amp;ticket=' . $this->row->get('id') . '&amp;comment=' . $tmp . '&amp;'
+                            . Session::getFormToken() . '=1';
+                        $dataList = $jbase . '/index.php?option=com_support&amp;no_html=1&amp;controller=media'
+                            . '&amp;task=list&amp;ticket=' . $this->row->get('id') . '&amp;comment=' . $tmp;
+                        ?>
+                        <div id="ajax-uploader" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                             <noscript>
                                 <div class="form-group">
                                     <label for="upload">

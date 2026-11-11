@@ -174,7 +174,11 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                     </h3>
                     <?php } ?>
                 <table class="articles entries">
-                    <caption class="sr-only"><?= $this->escape(stripslashes($group['category']->get('title'))) ?: Lang::txt('COM_KB_ARTICLES') ?></caption>
+                    <?php
+                    $captionText = $this->escape(stripslashes($group['category']->get('title')))
+                        ?: Lang::txt('COM_KB_ARTICLES');
+                    ?>
+                    <caption class="sr-only"><?= $captionText ?></caption>
                     <thead class="sr-only">
                         <tr>
                             <th scope="col"><?php echo Lang::txt('COM_KB_COL_ID'); ?></th>

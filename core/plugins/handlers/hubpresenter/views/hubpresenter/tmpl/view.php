@@ -130,12 +130,24 @@ if (isset($this->entityId) && isset($this->entityType)) {
                             <?php else : ?>
                                 <video class="slidevideo">
                                     <?php foreach ($slide->media as $source) : ?>
-                                        <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
+                                        <?php
+                                        $sourceUrl = with(new Moderator($content_folder . DS . $source->source))
+                                            ->getUrl();
+                                        ?>
+                                        <source src="<?= $sourceUrl ?>" />
                                     <?php endforeach; ?>
-                                    <a href="<?= with(new Moderator($content_folder . DS . $slide->media[0]->source))->getUrl() ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
+                                    <?php
+                                    $linkUrl = with(new Moderator($content_folder . DS . $slide->media[0]->source))
+                                        ->getUrl();
+                                    ?>
+                                    <a href="<?= $linkUrl ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                 </video>
                                 <?php if (isset($slide->media[3])) : ?>
-                                <img src="<?= with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
+                                    <?php
+                                    $sourceUrl = with(new Moderator($content_folder . DS . $slide->media[3]->source))
+                                        ->getUrl();
+                                    ?>
+                                <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>
@@ -451,7 +463,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                             <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>"
                                 type="<?= $type ?>">
                         <?php endforeach; ?>
-                        <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer"></a>
+                        <?php
+                        $linkUrl = with(new Moderator($content_folder . DS . $presentation->media[0]->source))
+                            ->getUrl();
+                        ?>
+                        <a href="<?= $linkUrl ?>" id="flowplayer"></a>
 
                         <?php if (isset($subs) && count($subs) > 0) : ?>
                             <?php foreach ($subs as $sub) : ?>
@@ -470,7 +486,14 @@ if (isset($this->entityId) && isset($this->entityType)) {
                             <source
                                 src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
                         <?php endforeach; ?>
-                        <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : '' ?>"></a>
+                        <?php
+                        $linkUrl = with(new Moderator($content_folder . DS . $presentation->media[0]->source))
+                            ->getUrl();
+                        $duration = isset($presentation->duration) && $presentation->duration
+                            ? $this->escape($presentation->duration)
+                            : '';
+                        ?>
+                        <a href="<?= $linkUrl ?>" id="flowplayer" duration="<?= $duration ?>"></a>
                     </audio>
                 <?php endif; ?>
                 <div id="video-subtitles"></div>

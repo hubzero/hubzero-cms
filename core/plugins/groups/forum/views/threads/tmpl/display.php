@@ -171,7 +171,11 @@ $this
                                 );
                                 ?>
                                 <a class="member" href="<?= $linkUrl ?>">
-                                    <?= $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS') ?>
+                                    <?php
+                                    $forumAnonymousText = $this->escape(stripslashes($participant->get('name')))
+                                        ?: Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+                                    ?>
+                                    <?= $forumAnonymousText ?>
                                 </a>
                             </li>
                             <?php

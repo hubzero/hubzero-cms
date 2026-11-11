@@ -308,8 +308,20 @@ $allowCommentsChecked = function ($value) use ($view) {
                         <div class="field-wrap">
                             <div class="grid">
                                 <div class="col span-half">
-                                    <div id="file-manager" data-instructions="<?= Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE') ?>" data-action="<?= rtrim(Request::base(true), '/') ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?= $lid ?>" data-list="<?= rtrim(Request::base(true), '/') ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?= $lid ?>">
-                                        <iframe name="filer" id="filer" src="<?= rtrim(Request::base(true), '/') ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?= $this->page->get('scope') ?>&amp;pagename=<?= $this->page->get('pagename') ?>&amp;listdir=<?= $lid ?>"></iframe>
+                                    <?php
+                                    $dataActionUrl = rtrim(Request::base(true), '/') . '/index.php?option=com_wiki'
+                                        . '&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=' . $lid;
+                                    $dataList = rtrim(Request::base(true), '/') . '/index.php?option=com_wiki'
+                                        . '&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=' . $lid;
+                                    ?>
+                                    <div id="file-manager" data-instructions="<?= Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
+                                        <?php
+                                        $sourceUrl = rtrim(Request::base(true), '/') . '/index.php?option=com_wiki'
+                                            . '&amp;tmpl=component&amp;controller=media&amp;scope='
+                                            . $this->page->get('scope') . '&amp;pagename='
+                                            . $this->page->get('pagename') . '&amp;listdir=' . $lid;
+                                        ?>
+                                        <iframe name="filer" id="filer" src="<?= $sourceUrl ?>"></iframe>
                                     </div>
                                     <div id="file-uploader-list"></div>
                                 </div>

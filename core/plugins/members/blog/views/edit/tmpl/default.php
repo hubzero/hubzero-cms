@@ -155,7 +155,16 @@ $accessSelected = function ($value) use ($view) {
                     <div class="form-group">
                         <label for="field-publish_up">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60) ?>" value="<?= ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
+                            <?php
+                            $dataTimezone = timezone_offset_get(
+                                new DateTimeZone(Config::get('offset')),
+                                Date::of('now'),
+                            ) / 60;
+                            $fieldValue = ($this->entry->get('publish_up'))
+                                ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s'))
+                                : '';
+                            ?>
+                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>
@@ -164,7 +173,16 @@ $accessSelected = function ($value) use ($view) {
                     <div class="form-group">
                         <label for="field-publish_down">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60) ?>" value="<?= ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
+                            <?php
+                            $dataTimezone = timezone_offset_get(
+                                new DateTimeZone(Config::get('offset')),
+                                Date::of('now'),
+                            ) / 60;
+                            $fieldValue = ($this->entry->get('publish_down'))
+                                ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s'))
+                                : '';
+                            ?>
+                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>

@@ -304,7 +304,11 @@ $now = Date::of('now')->toSql();
                                     );
                                     ?>
                                     <a class="member" href="<?= $linkUrl ?>">
-                                        <?= $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('COM_FORUM_ANONYMOUS') ?>
+                                        <?php
+                                        $anonymousText = $this->escape(stripslashes($participant->get('name')))
+                                            ?: Lang::txt('COM_FORUM_ANONYMOUS');
+                                        ?>
+                                        <?= $anonymousText ?>
                                     </a>
                                 </li>
                                 <?php
