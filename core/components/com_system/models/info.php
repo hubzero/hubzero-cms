@@ -103,10 +103,12 @@ class Info extends Obj
                         $this->config[$section . '.' . $key] = $value;
                     }
                 } else {
+                    $value = $data;
+
                     if (
-                        in_array($data, $blur)
-                        || substr($data, -strlen('password')) == 'password'
-                        || substr($data, -strlen('secret')) == 'secret'
+                        in_array($section, $blur)
+                        || substr($section, -strlen('password')) == 'password'
+                        || substr($section, -strlen('secret')) == 'secret'
                     ) {
                         $value = 'xxxxxx';
                     }
