@@ -407,7 +407,8 @@ $this
                                         <?php if (!$topProject->private) : ?>
                                             <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias) ?>">
                                         <?php endif; ?>
-                                        <?= $this->escape($topProject->title) . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')' ?>
+                                        <?= $this->escape($topProject->title) . ' (' . $topProject->team . ' '
+                                            . Lang::txt('members') . ')' ?>
                                         <?php if (!$topProject->private) : ?>
                                             </a>
                                         <?php endif; ?>

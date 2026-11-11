@@ -53,7 +53,12 @@ $this->js('events.js');
                 <div class="input-wrap">
                     <label for="catid"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY') ?>:<span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <?= \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', 0, $this->option) ?></td>
+                    <?= \Components\Events\Helpers\Html::buildCategorySelect(
+                        $this->row->catid,
+                        '',
+                        0,
+                        $this->option,
+                    ) ?></td>
                 </div>
 
                 <div class="input-wrap">
@@ -117,7 +122,12 @@ $this->js('events.js');
 
                 <div class="input-wrap">
                     <label for="field-publish_down"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ENDDATE') ?></label><br />
-                    <?= Html::input('calendar', 'publish_down', $this->row->publish_down, ['id' => 'field-publish_down']) ?>
+                    <?= Html::input(
+                        'calendar',
+                        'publish_down',
+                        $this->row->publish_down,
+                        ['id' => 'field-publish_down'],
+                    ) ?>
                 </div>
 
                 <div class="input-wrap">

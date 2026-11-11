@@ -73,7 +73,11 @@ $department = $author->department;
                     <p><img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($name); ?>" />
                         <span>
                         <span class="block faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_TEAM_MEMBER')) ?>:</span>
-                        <?= $this->escape($author->username ? $author->p_name . ' (' . $author->username . ')' : $name . ' (unconfirmed)') ?></span>
+                        <?= $this->escape(
+                            $author->username
+                                ? $author->p_name . ' (' . $author->username . ')'
+                                : $name . ' (unconfirmed)',
+                        ) ?></span>
                     </p>
                 </div>
                 <div class="author-edit">

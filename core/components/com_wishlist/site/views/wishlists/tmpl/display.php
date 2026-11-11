@@ -180,7 +180,12 @@ if ($this->wishlist->get('id')) {
                             <table class="ideas entries">
                                 <caption>
                                     <?= Lang::txt('COM_WISHLIST_FILTER_' . strtoupper($this->filters['filterby'])) ?>
-                                    <?= ($this->filters['tag'] != '') ? Lang::txt('COM_WISHLIST_WISHES_TAGGED_WITH', $this->escape($this->filters['tag'])) : '' ?>
+                                    <?= ($this->filters['tag'] != '')
+                                        ? Lang::txt(
+                                            'COM_WISHLIST_WISHES_TAGGED_WITH',
+                                            $this->escape($this->filters['tag']),
+                                        )
+                                        : '' ?>
                                     <span>
                                         (<?= ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start'] ?> - <?= $this->filters['start'] + $this->wishes->count() ?> of <?= $this->total ?>)
                                     </span>
@@ -281,7 +286,10 @@ if ($this->wishlist->get('id')) {
                                     <?php if (!$item->isReported() && $this->wishlist->get('banking')) { ?>
                                         <td class="priority-5 reward">
                                             <span class="entry-reward">
-                                            <?php if ($item->get('bonus') > 0 && ($item->isOpen() or $item->isAccepted())) { ?>
+                                            <?php
+                                            if (
+                                                $item->get('bonus') > 0 && ($item->isOpen() or $item->isAccepted())
+                                            ) { ?>
                                                 <a class="bonus tooltips" href="<?= Route::url($item->link('addbonus', $filters)) ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $item->get('bonusgivenby') . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->get('bonus') . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>">
                                                     <?= $item->get('bonus', 0) ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                                 </a>

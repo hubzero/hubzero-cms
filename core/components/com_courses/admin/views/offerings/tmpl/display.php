@@ -152,10 +152,14 @@ Html::behavior('tooltip');
                     <?php } ?>
                 </td>
                 <td class="priority-4">
-                    <?= ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE') ?>
+                    <?= ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00')
+                        ? Date::of($row->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : Lang::txt('COM_COURSES_NO_DATE') ?>
                 </td>
                 <td class="priority-4">
-                    <?= ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_down'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER') ?>
+                    <?= ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00')
+                        ? Date::of($row->get('publish_down'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : Lang::txt('COM_COURSES_NEVER') ?>
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>

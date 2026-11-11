@@ -130,7 +130,9 @@ if (!$this->dependency) {
                             </a>
                         </td>
                         <td class="priority-3">
-                            <?= ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN') ?>
+                            <?= ($newsletter->type == 'html')
+                                ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML')
+                                : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN') ?>
                         </td>
                         <td class="priority-4">
                             <?php

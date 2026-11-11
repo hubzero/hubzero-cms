@@ -96,13 +96,23 @@ $this->js();
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?>">
                     <label for="field-created"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-                    <?= Html::input('calendar', 'fields[created]', $this->row->get('created'), ['id' => 'field-created']) ?>
+                    <?= Html::input(
+                        'calendar',
+                        'fields[created]',
+                        $this->row->get('created'),
+                        ['id' => 'field-created'],
+                    ) ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?>">
                     <label for="field-expires"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label><br />
-                    <?= Html::input('calendar', 'fields[expires]', $this->row->get('expires'), ['id' => 'field-expires']) ?>
+                    <?= Html::input(
+                        'calendar',
+                        'fields[expires]',
+                        $this->row->get('expires'),
+                        ['id' => 'field-expires'],
+                    ) ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -125,7 +135,8 @@ $this->js();
                             <th><label
                                 for="field-redeemed_by"><?= Lang::txt('COM_COURSES_FIELD_REDEEMED_BY') ?>:</label></th>
                             <td>
-                                <?= $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')' ?>
+                                <?= $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' ('
+                                    . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')' ?>
                                 <input type="hidden" name="fields[redeemed_by]" id="field-redeemed_by"
                                     value="<?= $this->escape(stripslashes($this->row->get('redeemed_by'))) ?>" />
                             </td>

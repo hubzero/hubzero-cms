@@ -216,7 +216,9 @@ if (
                 ?>
                 <div class="img-fulltext-<?php echo htmlspecialchars($imgfloat); ?>">
                     <img
-                        <?= $images->image_fulltext_caption ? 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption) . '"' : '' ?>
+                        <?= $images->image_fulltext_caption
+                            ? 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption) . '"'
+                            : '' ?>
                         src="<?php echo htmlspecialchars($images->image_fulltext); ?>"
                         alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"
                     />

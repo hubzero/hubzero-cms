@@ -155,7 +155,14 @@ $this->comment->set('category', 'answercomment');
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?= Lang::txt('COM_WIKI_WARNING_LOGIN_REQUIRED', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->page->link('comments'), false, true))) . '">' . Lang::txt('COM_WIKI_LOGIN') . '</a>') ?>
+                    <?= Lang::txt(
+                        'COM_WIKI_WARNING_LOGIN_REQUIRED',
+                        '<a href="'
+                            . Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($this->page->link('comments'), false, true)),
+                            ) . '">' . Lang::txt('COM_WIKI_LOGIN') . '</a>',
+                    ) ?>
                 </p>
                 <?php } else { ?>
                 <form id="cform<?= $this->comment->get('id') ?>"

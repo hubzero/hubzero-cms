@@ -179,9 +179,23 @@ if (!$dir) {
                     <label for="field_description">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?>
                     <?php if ($this->entry->get('original')) { ?>
-                        <?= $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']) ?>
+                        <?= $this->editor(
+                            'fields[description]',
+                            $this->escape(stripslashes($item->description('raw'))),
+                            35,
+                            5,
+                            'field_description',
+                            ['class' => 'minimal no-footer'],
+                        ) ?>
                     <?php } else { ?>
-                        <?= $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']) ?>
+                        <?= $this->editor(
+                            'post[description]',
+                            $this->escape(stripslashes($this->entry->description('raw'))),
+                            35,
+                            5,
+                            'field_description',
+                            ['class' => 'minimal no-footer'],
+                        ) ?>
                     <?php } ?>
                     </label>
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>

@@ -136,7 +136,9 @@ if ($this->getError()) {
                     <label for="rejected" class="dark">
                          <input class="option" name="rejected" id="rejected" type="checkbox"
                              value="1" <?= $this->params->get('grant_status') == 2 ? 'checked="checked"' : '' ?> />
-                        <?= $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT') ?>
+                        <?= $this->params->get('grant_status') == 2
+                            ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP')
+                            : Lang::txt('COM_PROJECTS_SPS_REJECT') ?>
                     </label>
                     <?php } ?>
                 </td>
@@ -144,7 +146,11 @@ if ($this->getError()) {
         </table>
     </div>
     <?php } ?>
-    <?php if ($this->reviewer == 'sensitive' && ($this->model->isPending() || $this->model->isActive() || $this->model->isRejected())) { ?>
+    <?php
+    if (
+        $this->reviewer == 'sensitive'
+        && ($this->model->isPending() || $this->model->isActive() || $this->model->isRejected())
+    ) { ?>
     <div class="sensitivereview">
         <h4><?php echo Lang::txt('COM_PROJECTS_SENSITIVE_APPROVE_OR_REJECT'); ?></h4>
         <label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?= ($this->model->isActive()) ? 'checked="checked"' : '' ?>/> <?= Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE') ?></label>

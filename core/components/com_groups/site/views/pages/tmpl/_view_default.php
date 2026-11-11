@@ -91,7 +91,12 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
     ?>
 </div>
 
-<?php if ($memberAccess == 'anyone' || ($memberAccess == 'registered' && !User::isGuest()) || ($memberAccess == 'members' && $isMember)) : ?>
+<?php
+if (
+    $memberAccess == 'anyone'
+    || ($memberAccess == 'registered' && !User::isGuest())
+    || ($memberAccess == 'members' && $isMember)
+) : ?>
     <div class="group-content-header">
         <h3><?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_HEADING'); ?></h3>
         <div class="group-content-header-extra">
@@ -111,7 +116,11 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 
         foreach ($profiles as $profile) : ?>
             <?php if ($counter <= 12 && $profile->get('id')) : ?>
-                <?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels()) && ($profile->get('activation') > 0)) { ?>
+                <?php
+                if (
+                    in_array($profile->get('access'), User::getAuthorisedViewLevels())
+                    && ($profile->get('activation') > 0)
+                ) { ?>
                     <a href="<?= Route::url($profile->link()) ?>" class="member" title="<?= $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))) ?>">
                 <?php } else { ?>
                     <div class="member">

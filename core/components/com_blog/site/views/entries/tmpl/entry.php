@@ -130,7 +130,10 @@ $first = $this->archive
                         </span>
                     </dd>
                 <?php } ?>
-                <?php if (User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
+                <?php
+                if (
+                    User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)
+                ) { ?>
                     <dd class="state <?php echo strtolower($this->row->visibility('text')); ?>">
                         <?php echo $this->row->visibility('text'); ?>
                     </dd>
@@ -165,7 +168,10 @@ $first = $this->archive
                             </p>
                             <div class="entry-author-content">
                                 <h4>
-                                    <?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                    <?php
+                                    if (
+                                        in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())
+                                    ) { ?>
                                         <a href="<?php echo Route::url($this->row->creator->link()); ?>">
                                             <?php echo $name; ?>
                                         </a>
@@ -363,7 +369,16 @@ $first = $this->archive
                                 <span class="date"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('date') ?></time></span>
                             </p>
                             <p>
-                                <?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)) ?>
+                                <?= $this->escape(
+                                    \Hubzero\Utility\Str::truncate(
+                                        html_entity_decode(
+                                            strip_tags(stripslashes($replyto->get('content'))),
+                                            ENT_QUOTES,
+                                            'UTF-8',
+                                        ),
+                                        300,
+                                    ),
+                                ) ?>
                             </p>
                         </blockquote>
                             <?php
@@ -389,7 +404,14 @@ $first = $this->archive
                     <input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
                     <p class="warning">
-                        <?= Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>') ?>
+                        <?= Lang::txt(
+                            'COM_BLOG_MUST_LOG_IN',
+                            '<a href="'
+                                . Route::url(
+                                    'index.php?option=com_users&view=login&return='
+                                        . base64_encode(Route::url($this->row->link() . '#post-comment', false, true)),
+                                ) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>',
+                        ) ?>
                     </p>
                     <?php } ?>
 

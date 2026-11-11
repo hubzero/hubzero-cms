@@ -165,9 +165,23 @@ $this
                     <label for="field_description">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
                         <?php if ($this->entry->get('original')) { ?>
-                            <?= $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']) ?>
+                            <?= $this->editor(
+                                'fields[description]',
+                                $this->escape(stripslashes($item->description('raw'))),
+                                35,
+                                5,
+                                'field_description',
+                                ['class' => 'form-control minimal no-footer'],
+                            ) ?>
                         <?php } else { ?>
-                            <?= $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']) ?>
+                            <?= $this->editor(
+                                'post[description]',
+                                $this->escape(stripslashes($this->entry->description('raw'))),
+                                35,
+                                5,
+                                'field_description',
+                                ['class' => 'form-control minimal no-footer'],
+                            ) ?>
                         <?php } ?>
                     </label>
                 </div>

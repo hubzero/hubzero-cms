@@ -105,7 +105,10 @@ $this
                             <th class="priority-3" scope="col">
                                 <?php echo Lang::txt('COM_TAGS_COL_ALIAS'); ?>
                             </th>
-                            <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+                            <?php
+                            if (
+                                $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')
+                            ) { ?>
                                 <th scope="col" colspan="2">
                                     <?php echo Lang::txt('COM_TAGS_COL_ACTION'); ?>
                                 </th>
@@ -134,7 +137,10 @@ $this
                                         : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
                                     ?>
                                 </td>
-                                <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+                                <?php
+                                if (
+                                    $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')
+                                ) { ?>
                                     <td>
                                         <?php if ($this->config->get('access-delete-tag')) { ?>
                                             <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>" class="icon-delete delete delete-tag" data-confirm="<?= Lang::txt('COM_TAGS_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>

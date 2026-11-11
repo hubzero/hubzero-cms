@@ -222,7 +222,13 @@ if ($this->model->groupOwner()) {
                     </select>*/ ?>
                     <label for="field-access"><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
                     <select name="access" id="field-access">
-                        <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->model->get('access')) ?>
+                        <?= Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->model->get('access'),
+                        ) ?>
                     </select>
                 </div>
 

@@ -85,7 +85,10 @@ if ($closed == 'closed' && $this->showClose == true) {
             <?php if ($this->group->published == 1) : ?>
                 <?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
                     <dd class="entry-options">
-                        <?php if (User::get('id') == $this->announcement->get('created_by') || $this->authorized == 'manager') : ?>
+                        <?php
+                        if (
+                            User::get('id') == $this->announcement->get('created_by') || $this->authorized == 'manager'
+                        ) : ?>
                             <a class="icon-edit edit" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')) ?>" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT') ?>">
                                 <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
                             </a>

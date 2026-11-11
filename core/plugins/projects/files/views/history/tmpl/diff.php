@@ -153,7 +153,9 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
                 ?>
                 <div class="diffGit">
                     <h5>
-                    <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') ' ?></h5>
+                    <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' ('
+                        . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' ('
+                        . $this->escape($new['hash']) . ') ' ?></h5>
                     <?php if ($this->diff) {
                         echo '<pre>' . $this->diff . '</pre>';
                     } else {  ?>

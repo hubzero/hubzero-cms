@@ -62,7 +62,11 @@ if ($this->filters['parent_id'] > 0) {
             <?php if ($this->filters['parent_id'] > 0) { ?>
                 <tr>
                     <th colspan="9">
-                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->filters['parent_id']) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>' ?>
+                        <?= '<a href="'
+                            . Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $this->filters['parent_id'],
+                            ) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>' ?>
                     </th>
                 </tr>
             <?php } ?>
@@ -219,21 +223,40 @@ if ($this->filters['parent_id'] > 0) {
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <?php if ((($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
+                    <?php
+                    if (
+                        (
+                            (
+                                $row->checked_out
+                                || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
+                            )
+                            && $row->checked_out != User::get('id')
+                        )
+                        || !$canDo->get('core.edit')
+                    ) { ?>
                         <span class="editlinktip hasTip"
                             title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </span>
-                        <?= ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : '' ?>
+                        <?= ($row->standalone != 1 && $row->path != '')
+                            ? '<br /><small>' . $this->escape($row->path) . '</small>'
+                            : '' ?>
                     <?php } else { ?>
                         <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']) ?>" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
-                        <?= ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : '' ?>
+                        <?= ($row->standalone != 1 && $row->path != '')
+                            ? '<br /><small>' . $this->escape($row->path) . '</small>'
+                            : '' ?>
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
+                    <?php
+                    if (
+                        $row->checked_out
+                        || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
+                        || !$canDo->get('core.edit.state')
+                    ) { ?>
                         <span class="state <?php echo $class;?>">
                             <span><?php echo $alt; ?></span>
                         </span>
@@ -244,7 +267,12 @@ if ($this->filters['parent_id'] > 0) {
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
+                    <?php
+                    if (
+                        $row->checked_out
+                        || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
+                        || !$canDo->get('core.edit.state')
+                    ) { ?>
                         <span class="access <?php echo $color_access; ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </span>
@@ -259,10 +287,17 @@ if ($this->filters['parent_id'] > 0) {
                 </td>
                 <?php if ($this->filters['parent_id'] > 0) { ?>
                     <td>
-                        <?= $pageNav->orderUpIcon($i, isset($orderings[$i - 1]) ? ($row->associative_ordering != $orderings[$i - 1]) : true) ?>
+                        <?= $pageNav->orderUpIcon(
+                            $i,
+                            isset($orderings[$i - 1]) ? ($row->associative_ordering != $orderings[$i - 1]) : true,
+                        ) ?>
                     </td>
                     <td>
-                        <?= $pageNav->orderDownIcon($i, $pageNav->total, isset($ordering[$i + 1]) ? ($row->associative_ordering != $orderings[$i + 1]) : true) ?>
+                        <?= $pageNav->orderDownIcon(
+                            $i,
+                            $pageNav->total,
+                            isset($ordering[$i + 1]) ? ($row->associative_ordering != $orderings[$i + 1]) : true,
+                        ) ?>
                     </td>
                     <td>
                         <?php echo $row->associative_ordering; ?>

@@ -42,7 +42,13 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                 <?php echo $this->escape($this->connection->name); ?>
             </a>
             &nbsp;
-            <?= \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, true, $this->connection->adapter()) ?>
+            <?= \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
+                $this->subdir,
+                $this->model->link('files') . '&action=browse&connection=' . $this->connection->id,
+                $parent,
+                true,
+                $this->connection->adapter(),
+            ) ?>
         </h3>
     </div>
     <fieldset>
@@ -165,7 +171,9 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
     </table>
     <?php if (count($this->items) == 0) : ?>
         <p class="noresults">
-            <?= ($this->subdir) ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY') : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES') ?>
+            <?= ($this->subdir)
+                ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY')
+                : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES') ?>
         </p>
     <?php endif; ?>
  </form>

@@ -148,7 +148,10 @@ $this->category->set('section_alias', $this->filters['section']);
                                                 <span class="entry-date">
                                                     <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
                                                 </span>
-                                                <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
+                                                <?= Lang::txt(
+                                                    'COM_FORUM_BY_USER',
+                                                    '<span class="entry-author">' . $name . '</span>',
+                                                ) ?>
                                             </span>
                                         </td>
                                         <td class="priority-4">
@@ -189,22 +192,44 @@ $this->category->set('section_alias', $this->filters['section']);
                                                     <span class="entry-date">
                                                         <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
                                                     </span>
-                                                    <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>') ?>
+                                                    <?= Lang::txt(
+                                                        'COM_FORUM_BY_USER',
+                                                        '<span class="entry-author">' . $lname . '</span>',
+                                                    ) ?>
                                                 <?php } else { ?>
                                                     <?php echo Lang::txt('COM_FORUM_NONE'); ?>
                                                 <?php } ?>
                                             </span>
                                         </td>
-                                        <?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
+                                        <?php
+                                        if (
+                                            $this->config->get('access-manage-thread')
+                                            || $this->config->get('access-edit-thread')
+                                            || $this->config->get('access-delete-thread')
+                                        ) { ?>
                                             <td class="entry-options">
-                                                <?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == User::get('id'))) { ?>
+                                                <?php
+                                                if (
+                                                    $this->config->get('access-manage-thread')
+                                                    || (
+                                                        $this->config->get('access-edit-thread')
+                                                        && $row->get('created_by') == User::get('id')
+                                                    )
+                                                ) { ?>
                                                     <a class="icon-edit edit"
                                                         href="<?= Route::url($row->link('edit')) ?>"
                                                         title="<?= Lang::txt('JACTION_EDIT') ?>">
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 <?php } ?>
-                                                <?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == User::get('id'))) { ?>
+                                                <?php
+                                                if (
+                                                    $this->config->get('access-manage-thread')
+                                                    || (
+                                                        $this->config->get('access-delete-thread')
+                                                        && $row->get('created_by') == User::get('id')
+                                                    )
+                                                ) { ?>
                                                     <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                                 <?php } ?>
                                             </td>

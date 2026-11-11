@@ -61,10 +61,15 @@ $this
                             </th>
                             <td>
                                 <a class="entry-title" href="<?php echo Route::url($row->following()->link()); ?>">
-                                    <?= $this->escape(stripslashes($row->following()->title() ?: Lang::txt('(unknown)'))) ?>
+                                    <?= $this->escape(
+                                        stripslashes($row->following()->title() ?: Lang::txt('(unknown)')),
+                                    ) ?>
                                 </a>
                                 <?php if ($row->get('following_type') == 'collection') { ?>
-                                    <?= Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name') ?: ''))) ?>
+                                    <?= Lang::txt(
+                                        'by %s',
+                                        $this->escape(stripslashes($row->following()->creator('name') ?: '')),
+                                    ) ?>
                                 <?php } ?>
                                 <br />
                                 <span class="entry-details">

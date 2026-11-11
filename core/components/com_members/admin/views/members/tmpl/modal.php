@@ -37,7 +37,12 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
             </div>
             <div class="col span4">
                 <label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
-                <?= Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter filter-submit"') ?>
+                <?= Html::access(
+                    'usergroup',
+                    'filter_group_id',
+                    $this->filters['group_id'],
+                    'class="filter filter-submit"',
+                ) ?>
             </div>
         </div>
     </fieldset>

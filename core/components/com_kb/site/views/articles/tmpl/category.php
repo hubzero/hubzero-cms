@@ -174,7 +174,12 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                                     <span class="entry-snippet"><?php echo $snippet; ?></span>
                                 <?php } ?>
                                 <span class="entry-details">
-                                    <?= $this->catid <= 0 && !$grouped ? Lang::txt('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle', '')  ?? ''))) : '' ?>
+                                    <?= $this->catid <= 0 && !$grouped
+                                        ? Lang::txt(
+                                            'COM_KB_IN_CATEGORY',
+                                            $this->escape(stripslashes($row->get('ctitle', '') ?? '')),
+                                        )
+                                        : '' ?>
                                     <?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>
                                     <span class="entry-time-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
                                     <span class="entry-time"><?php echo $row->modified('time'); ?></span>

@@ -78,7 +78,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                                 <?php echo $this->escape(stripslashes($row->following()->title())); ?>
                             </a>
                             <?php if ($row->get('following_type') == 'collection') { ?>
-                                <?= Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name')))) ?>
+                                <?= Lang::txt(
+                                    'by %s',
+                                    $this->escape(stripslashes($row->following()->creator('name'))),
+                                ) ?>
                             <?php } ?>
                             <br />
                             <span class="entry-details">

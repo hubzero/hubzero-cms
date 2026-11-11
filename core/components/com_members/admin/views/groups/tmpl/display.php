@@ -106,7 +106,8 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                             <td>
                                 <?php if ($canDo && User::authorise('core.edit', 'com_groups')) { ?>
                                     <a href="<?= Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn) ?>" target="_parent">
-                                        <?= $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')' ?>
+                                        <?= $this->escape($group->description) . ' (' . $this->escape($group->cn)
+                                            . ')' ?>
                                     </a>
                                 <?php } else { ?>
                                     <?= $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')' ?>

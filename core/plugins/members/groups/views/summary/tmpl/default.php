@@ -172,11 +172,15 @@ $this
                             <?php if ($published) : ?>
                                 <a class="group-title" rel="<?= $group->gidNumber ?>"
                                     href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
-                                    <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)) ?>
+                                    <?= $this->escape(
+                                        Hubzero\Utility\Str::truncate(stripslashes($group->description), 60),
+                                    ) ?>
                                 </a>
                             <?php else : ?>
                                 <span class="group-title">
-                                    <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)) ?>
+                                    <?= $this->escape(
+                                        Hubzero\Utility\Str::truncate(stripslashes($group->description), 60),
+                                    ) ?>
                                 </span>
                             <?php endif; ?>
 

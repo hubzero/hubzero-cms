@@ -125,7 +125,10 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <div class="or"></div>
                     <div class="local">
                         <a href="<?= Route::url('index.php?option=' . $this->option . '&view=login&primary=hubzero&reset=1' . $this->returnQueryString) ?>">
-                            <?= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))) ?>
+                            <?= Lang::txt(
+                                'COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT',
+                                ((isset($this->site_display)) ? $this->site_display : Config::get('sitename')),
+                            ) ?>
                         </a>
                     </div>
                 <?php endif; ?>
@@ -134,7 +137,10 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 <div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
                 <form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
                     <div class="input-wrap">
-                        <?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
+                        <?php
+                        if (
+                            isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != ''
+                        ) : ?>
                             <input type="hidden" name="username" value="<?= $this->escape($user->get('username')) ?>" />
                             <div class="existing-name"><?php echo $this->escape($user->get('name')); ?></div>
                             <div class="existing-email"><?php echo $this->escape($user->get('email')); ?></div>

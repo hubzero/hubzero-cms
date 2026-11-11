@@ -344,8 +344,12 @@ if (count($inst) > 0) {
                         <?php echo Html::input('token'); ?>
 
                         <p class="instructions">
-                            <?= Lang::txt('Click on a section and category to the left to view a list of comments.') ?><br /><br />
-                            <?= Lang::txt('Click on a comment on the left to view a discussion or start your own above.') ?>
+                            <?= Lang::txt(
+                                'Click on a section and category to the left to view a list of comments.',
+                            ) ?><br /><br />
+                            <?= Lang::txt(
+                                'Click on a comment on the left to view a discussion or start your own above.',
+                            ) ?>
                         </p>
                     </form>
                     <?php } else { ?>

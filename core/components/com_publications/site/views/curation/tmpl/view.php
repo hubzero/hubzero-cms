@@ -73,7 +73,9 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
                 </strong>
                 <?php if ($this->pub->curator()) : ?>
                     <span class="block">
-                        <?= Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->escape($this->pub->curator('name')) . ' (' . $this->escape($this->pub->curator('username')) . ')</strong>' ?>
+                        <?= Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>'
+                            . $this->escape($this->pub->curator('name')) . ' ('
+                            . $this->escape($this->pub->curator('username')) . ')</strong>' ?>
                     </span>
                 <?php endif; ?>
                 <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>

@@ -89,10 +89,18 @@ if (User::authorise('core.delete', $this->option)) {
                     <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                 </td>
                 <td>
-                    <?= $this->escape($row->user ? $row->user->get('username', Lang::txt('COM_SAML_UNKNOWN')) : Lang::txt('COM_SAML_UNKNOWN')) ?>
+                    <?= $this->escape(
+                        $row->user
+                            ? $row->user->get('username', Lang::txt('COM_SAML_UNKNOWN'))
+                            : Lang::txt('COM_SAML_UNKNOWN'),
+                    ) ?>
                 </td>
                 <td class="priority-2">
-                    <?= $this->escape($row->sp && $row->sp->get('id') ? stripslashes($row->sp->get('name')) : Lang::txt('COM_SAML_UNKNOWN')) ?>
+                    <?= $this->escape(
+                        $row->sp && $row->sp->get('id')
+                            ? stripslashes($row->sp->get('name'))
+                            : Lang::txt('COM_SAML_UNKNOWN'),
+                    ) ?>
                 </td>
                 <td>
                     <?php if ($row->isActive()) { ?>

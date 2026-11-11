@@ -24,11 +24,19 @@ defined('_HZEXEC_') or die();
     <span class="pub-details">
         <?php echo $this->escape($this->row->get('title')); ?>
         <span class="block faded mini">
-            <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->escape($this->row->get('version_label')) ?>
+            <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' '
+                . $this->escape($this->row->get('version_label')) ?>
             <span class="<?= $this->row->getStatusCss() ?> major_status"><?= $this->row->getStatusName() ?></span>
             <span class="block">
-                <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->escape($this->row->creator('name')) ?>
-                <?= !$this->row->project()->isProvisioned() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link() . '">' . $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->row->project()->get('title')), 80)) . '</a>' : '' ?></span>
+                <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' '
+                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->escape($this->row->creator('name')) ?>
+                <?= !$this->row->project()->isProvisioned()
+                    ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link()
+                        . '">'
+                        . $this->escape(
+                            \Hubzero\Utility\Str::truncate(stripslashes($this->row->project()->get('title')), 80),
+                        ) . '</a>'
+                    : '' ?></span>
         </span>
     </span>
 </li>

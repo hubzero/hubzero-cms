@@ -246,7 +246,9 @@ if ($coming) {
             <div class="clear"></div>
             <div class="withhandler">
                 <p class="element-move">
-                    <?= $this->status->getError() ? '<span class="element-error">' . $this->status->getError() . '</span>' : '' ?>
+                    <?= $this->status->getError()
+                        ? '<span class="element-error">' . $this->status->getError() . '</span>'
+                        : '' ?>
                     <span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
                         <input type="button"
                             value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>"

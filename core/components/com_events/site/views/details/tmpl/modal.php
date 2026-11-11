@@ -65,7 +65,9 @@ defined('_HZEXEC_') or die();
 
     <div class="entry-details">
     <?php if ($this->page->alias != '') { ?>
-        <?= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>' ?>
+        <?= (trim($this->page->pagetext))
+            ? stripslashes($this->page->pagetext)
+            : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>' ?>
     <?php } else { ?>
         <div class="col span6">
             <div class="container">

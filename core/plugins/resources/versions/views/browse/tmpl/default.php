@@ -50,17 +50,27 @@ $this->css();
             ?>
             <tr class="<?php echo $cls; ?>">
                 <td>
-                    <?= ($v->version) ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A' ?>
+                    <?= ($v->version)
+                        ? '<a href="'
+                            . Route::url(
+                                'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev='
+                                    . $v->revision,
+                            ) . '">' . $v->version . '</a>'
+                        : 'N/A' ?>
                 </td>
                 <td>
-                    <?= ($v->released && $v->released != '0000-00-00 00:00:00') ? Date::of($v->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A' ?>
+                    <?= ($v->released && $v->released != '0000-00-00 00:00:00')
+                        ? Date::of($v->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : 'N/A' ?>
                 </td>
                 <td>
                     <?php echo ($handle) ? $handle : 'N/A'; ?>
                 </td>
                 <td>
                     <span class="version-state <?php echo ($v->state == '1') ? 'toolpublished' : 'toolunpublished'; ?>">
-                        <?= ($v->state == '1') ? Lang::txt('PLG_RESOURCES_VERSIONS_YES') : Lang::txt('PLG_RESOURCES_VERSIONS_NO') ?>
+                        <?= ($v->state == '1')
+                            ? Lang::txt('PLG_RESOURCES_VERSIONS_YES')
+                            : Lang::txt('PLG_RESOURCES_VERSIONS_NO') ?>
                     </span>
                 </td>
             </tr>

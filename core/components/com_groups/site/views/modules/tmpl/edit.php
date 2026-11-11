@@ -159,7 +159,9 @@ foreach ($menus as $menu) {
                         </label>
                         <?php foreach ($this->pages as $page) : ?>
                             <label>
-                                <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
+                                <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu))
+                                    ? 'checked="checked"'
+                                    : ''; ?>
                                 <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]"
                                     value="<?= $page->get('id') ?>" /> <?= $page->get('title') ?>
                             </label>
@@ -199,7 +201,9 @@ foreach ($menus as $menu) {
                                 class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
                             <select name="module[ordering]" id="field-ordering" class="fancy-select">
                                 <?php foreach ($this->order as $k => $order) : ?>
-                                    <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
+                                    <?php $sel = ($order->get('title') == $this->module->get('title'))
+                                        ? 'selected="selected"'
+                                        : ''; ?>
                                     <option <?= $sel ?> value="<?= ($k + 1) ?>"><?= ($k + 1) . '. ' . $order->get('title') ?></option>
                                 <?php endforeach; ?>
                             </select>

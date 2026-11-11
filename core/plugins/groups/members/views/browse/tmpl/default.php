@@ -76,7 +76,9 @@ $option = 'com_groups';
                     </a>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php $canManageRoles = (($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1); ?>
+                <?php $canManageRoles = (
+                    ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1
+                ); ?>
                 <?php if ($canManageRoles) : ?>
                     <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=addrole') ?>">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
@@ -122,7 +124,10 @@ $option = 'com_groups';
 
             <div class="container">
                 <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
-                    <?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->groupusers) > 0) { ?>
+                    <?php
+                    if (
+                        ($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->groupusers) > 0
+                    ) { ?>
                         <ul class="entries-menu message-options">
                             <li>
                                 <span class="message-all message-member">
@@ -170,7 +175,11 @@ $option = 'com_groups';
                                 continue;
                             }
                             ?>
-                            <?php if ($filter != 'pending' && $filter != 'invitees' || ($this->authorized == 'admin' || $this->authorized == 'manager')) { ?>
+                            <?php
+                            if (
+                                $filter != 'pending' && $filter != 'invitees'
+                                || ($this->authorized == 'admin' || $this->authorized == 'manager')
+                            ) { ?>
                                     <li>
                                         <a class="<?= $filter . $active ?>" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $filter) ?>"><?= $name ?>
                                             <?php
@@ -335,7 +344,11 @@ $option = 'com_groups';
                                                 $displayName .= !empty($givenName) ? !empty($displayName) ? ', '
                                                     . $givenName : $givenName : '';
                                             ?>
-                                        <?php if (in_array($u->get('access'), User::getAuthorisedviewLevels()) && ($u->get('activation') > 0)) { ?>
+                                        <?php
+                                        if (
+                                            in_array($u->get('access'), User::getAuthorisedviewLevels())
+                                            && ($u->get('activation') > 0)
+                                        ) { ?>
                                             <a href="<?= Route::url($url) ?>"><?= $this->escape($displayName) ?></a>
                                         <?php } else { ?>
                                             <?php echo $this->escape($displayName); ?>

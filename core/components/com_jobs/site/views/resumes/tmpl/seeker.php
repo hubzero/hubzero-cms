@@ -47,7 +47,11 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
     </div>
     <div class="grid">
         <div class="aboutlb col span5">
-            <?= $this->list ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : '' ?>
+            <?= $this->list
+                ? '<a href="'
+                    . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume')
+                    . '" class="profilelink">'
+                : '' ?>
             <?php echo $this->escape($this->seeker->name); ?>
             <?php echo $this->list ? '</a>' : ''; ?>
             <?php if ($this->seeker->countryresident) { ?>
@@ -78,7 +82,9 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
     <?php } elseif ($this->emp or $this->admin) { ?>
         <span id="o<?php echo $this->seeker->uid; ?>">
             <a href="<?= Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist') ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>">
-                <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>
+                <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted
+                    ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST')
+                    : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>
             </a>
         </span>
     <?php } ?>

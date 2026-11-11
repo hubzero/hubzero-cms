@@ -88,7 +88,13 @@ $this
             <label for="field-fulltxt">
                 <?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <?= $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), 50, 20, 'field-fulltxt') ?>
+                <?= $this->editor(
+                    'fields[fulltxt]',
+                    $this->escape(stripslashes($this->row->fulltxt)),
+                    50,
+                    20,
+                    'field-fulltxt',
+                ) ?>
             </label>
 
             <fieldset>

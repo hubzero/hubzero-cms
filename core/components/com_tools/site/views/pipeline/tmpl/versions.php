@@ -56,7 +56,11 @@ $this
                 <p class="error"><?php echo $this->escape($this->error); ?></p>
             <?php } ?>
 
-            <?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
+            <?php
+            if (
+                $this->action != 'dev'
+                && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')
+            ) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
                     <h4><?= Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM') ?> <?= ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS') ?> <?= Lang::txt('COM_TOOLS_TOOL_RELEASE') ?>:</h4>
                 <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
@@ -135,7 +139,9 @@ $this
                         </td>
                         <td>
                         <?php if ($t->state != 3) { ?>
-                                <?= $t->released ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A' ?>
+                                <?= $t->released
+                                    ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                    : 'N/A' ?>
                         <?php } else { ?>
                                 <span class="yes"><?php echo Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
                         <?php } ?>
@@ -178,7 +184,10 @@ $this
                                 <p><span
                                     class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')) ?>: </span><span
                                     class="desc"><?= $codeaccess ?></span></p>
-                            <?= $handle != '' ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>' : '' ?>
+                            <?= $handle != ''
+                                ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI')
+                                    . ': </span><span class="desc">' . $handle . '</span></p>'
+                                : '' ?>
                             </div>
                         </td>
                     </tr>

@@ -183,7 +183,9 @@ Html::behavior('framework');
     <?php $imgfloat = (empty($images->float_intro)) ? $params->get('float_intro') : $images->float_intro; ?>
     <div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>">
         <img
-            <?= $images->image_intro_caption ? 'class="caption" title="' . htmlspecialchars($images->image_intro_caption) . '"' : '' ?>
+            <?= $images->image_intro_caption
+                ? 'class="caption" title="' . htmlspecialchars($images->image_intro_caption) . '"'
+                : '' ?>
             src="<?php echo htmlspecialchars($images->image_intro); ?>"
             alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>"
         />

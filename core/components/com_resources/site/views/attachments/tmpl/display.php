@@ -111,7 +111,9 @@ $hideform = Request::getInt('hideform', 0);
                             data-token="<?= Session::getFormToken() ?>">
                             <?php echo $this->escape($child->title); ?>
                         </span>
-                        <?= ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>' ?>
+                        <?= ($isFile)
+                            ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base)
+                            : '<span class="caption">' . $this->escape($url) . '</span>' ?>
                     </td>
                     <td>
                         <?php

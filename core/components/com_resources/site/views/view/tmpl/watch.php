@@ -191,7 +191,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
     <?php endif; ?>
 </div>
 
-<?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
+<?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD')
+    ? 'presentation-hd'
+    : ''; ?>
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>" data-id="<?php echo $this->resid; ?>">
     <div id="presenter-header">
         <div id="title"><?php echo $this->escape($rr->title); ?></div>
@@ -460,7 +462,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
                 </div>
             </div><!-- /#control-box -->
         </div><!-- /#left -->
-        <?php $cls = (isset($presentation->videoPosition) && $presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left" : ""; ?>
+        <?php $cls = (
+            isset($presentation->videoPosition)
+            && $presentation->videoPosition == "left"
+            && strtolower($presentation->type) == 'video'
+        )
+            ? "move-left"
+            : ""; ?>
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>

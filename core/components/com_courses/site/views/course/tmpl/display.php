@@ -112,7 +112,12 @@ $this
                     <div class="form-group">
                         <label for="actags">
                             <?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
-                            <?= $this->autocompleter('tags', 'tags', $this->escape($this->course->tags('string')), 'actags') ?>
+                            <?= $this->autocompleter(
+                                'tags',
+                                'tags',
+                                $this->escape($this->course->tags('string')),
+                                'actags',
+                            ) ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
                         </label>
                     </div>
@@ -325,7 +330,14 @@ $this
 
                             <div class="form-group">
                                 <label for="field_description">
-                                    <?= $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content', ['class' => 'form-control']) ?>
+                                    <?= $this->editor(
+                                        'page[content]',
+                                        $this->escape(stripslashes($page->get('content'))),
+                                        35,
+                                        50,
+                                        'field_content',
+                                        ['class' => 'form-control'],
+                                    ) ?>
                                 </label>
                             </div>
 
@@ -667,7 +679,9 @@ $this
             ?>
             <div class="course-instructors" data-bio-length="200">
                 <h3>
-                    <?= (count($instructors) > 1) ? Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTORS') : Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTOR') ?>
+                    <?= (count($instructors) > 1)
+                        ? Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTORS')
+                        : Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTOR') ?>
                 </h3>
                 <?php
                 foreach ($instructors as $i) {

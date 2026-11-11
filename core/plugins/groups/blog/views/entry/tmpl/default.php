@@ -30,7 +30,10 @@ $first = $this->archive
     ->limit(1)
     ->row();
 ?>
-<?php if ($this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
+<?php
+if (
+    $this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')
+) { ?>
     <ul id="page_options">
     <?php if ($this->canpost) { ?>
         <li>
@@ -106,7 +109,12 @@ $first = $this->archive
                     </span>
                 </dd>
             <?php } ?>
-            <?php if (User::get('id') == $this->row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+            <?php
+            if (
+                User::get('id') == $this->row->get('created_by')
+                || $this->authorized == 'manager'
+                || $this->authorized == 'admin'
+            ) { ?>
                 <dd class="state">
                     <?php echo $this->row->visibility('text'); ?>
                 </dd>
@@ -142,7 +150,10 @@ $first = $this->archive
                     </p>
                     <div class="entry-author-content">
                         <h4>
-                            <?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                            <?php
+                            if (
+                                in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())
+                            ) { ?>
                                 <a href="<?php echo Route::url($this->row->creator->link()); ?>">
                                     <?php echo $name; ?>
                                 </a>
@@ -282,7 +293,14 @@ $first = $this->archive
                             <label for="comment_content">
                                 Your <?= ($replyto->get('id')) ? 'reply' : 'comments' ?>: <span
                                     class="required"><?= Lang::txt('PLG_GROUPS_BLOG_REQUIRED') ?></span>
-                                <?= $this->editor('comment[content]', '', 40, 15, 'comment_content', ['class' => 'minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    40,
+                                    15,
+                                    'comment_content',
+                                    ['class' => 'minimal no-footer'],
+                                ) ?>
                             </label>
 
                             <label class="comment-anonymous-label">
@@ -296,7 +314,16 @@ $first = $this->archive
                             </p>
                         <?php } else { ?>
                             <p class="warning">
-                                <?= Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>') ?>
+                                <?= Lang::txt(
+                                    'PLG_GROUPS_BLOG_MUST_LOG_IN',
+                                    '<a href="'
+                                        . Route::url(
+                                            'index.php?option=com_users&view=login&return='
+                                                . base64_encode(
+                                                    Route::url($this->row->link() . '#post-comment', false, true),
+                                                ),
+                                        ) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>',
+                                ) ?>
                             </p>
                         <?php } ?>
 

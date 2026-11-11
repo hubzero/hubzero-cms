@@ -48,7 +48,12 @@ $this
             <label>
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY') ?>: <span
                     class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
-                <?= \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', $this->gid, $this->option) ?>
+                <?= \Components\Events\Helpers\Html::buildCategorySelect(
+                    $this->row->catid,
+                    '',
+                    $this->gid,
+                    $this->option,
+                ) ?>
             </label>
 
             <label>
@@ -59,7 +64,19 @@ $this
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-                <?= App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, ['class' => 'minimal no-footer']) ?>
+                <?= App::get('editor')->display(
+                    'econtent',
+                    $this->row->content,
+                    '',
+                    '',
+                    10,
+                    15,
+                    false,
+                    'econtent',
+                    null,
+                    null,
+                    ['class' => 'minimal no-footer'],
+                ) ?>
             </label>
 
             <label>
@@ -110,7 +127,8 @@ $this
             <fieldset>
                 <legend><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_TIME'); ?></legend>
                 <label for="publish_up">
-                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?></label>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; '
+                    . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_up', $start_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
                     <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10"
@@ -127,7 +145,8 @@ $this
                 </p>
 
                 <label for="publish_down">
-                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?></label>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; '
+                    . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_down', $stop_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
                     <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10"

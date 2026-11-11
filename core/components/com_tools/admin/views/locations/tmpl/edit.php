@@ -326,7 +326,9 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <th class="key">
                             <label for="field-ipFROM"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
                         <td>
-                            <?php $ipFromVal = $this->escape(\Components\Tools\Helpers\Iprange::toText($this->row->get('ipFROM'))); ?>
+                            <?php $ipFromVal = $this->escape(
+                                \Components\Tools\Helpers\Iprange::toText($this->row->get('ipFROM')),
+                            ); ?>
                             <input type="text" name="fields[ipFROM]" id="field-ipFROM"
                                 value="<?php echo $ipFromVal; ?>" /></td>
                     </tr>
@@ -334,7 +336,9 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <th class="key">
                             <label for="field-ipTO"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
                         <td>
-                            <?php $ipToVal = $this->escape(\Components\Tools\Helpers\Iprange::toText($this->row->get('ipTO'))); ?>
+                            <?php $ipToVal = $this->escape(
+                                \Components\Tools\Helpers\Iprange::toText($this->row->get('ipTO')),
+                            ); ?>
                             <input type="text" name="fields[ipTO]" id="field-ipTO"
                                 value="<?php echo $ipToVal; ?>" /></td>
                     </tr>

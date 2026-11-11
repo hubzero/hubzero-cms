@@ -112,7 +112,13 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
                     <select name="fields[access]" id="field-access">
-                        <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')) ?>
+                        <?= Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->row->get('access'),
+                        ) ?>
                     </select>
                 </div>
             </fieldset>

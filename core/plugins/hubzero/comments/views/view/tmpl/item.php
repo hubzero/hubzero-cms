@@ -57,7 +57,10 @@ if ($mark = $this->params->get('onCommentMark')) {
                 <p class="comment-title">
                     <strong>
                         <?php if (!$this->comment->get('anonymous')) { ?>
-                            <?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                            <?php
+                            if (
+                                in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())
+                            ) { ?>
                                 <a href="<?php echo Route::url($this->comment->creator->link()); ?>"><!--
                                     --><?= $this->escape(stripslashes($this->comment->creator->get('name'))) ?><!--
                                 --></a>
@@ -144,15 +147,33 @@ if ($mark = $this->params->get('onCommentMark')) {
 
                 <?php if (!$this->comment->isReported()) { ?>
                     <div class="comment-options">
-                        <?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
+                        <?php
+                        if (
+                            (
+                                $this->params->get('access-delete-comment')
+                                && $this->comment->get('created_by') == User::get('id')
+                            )
+                            || $this->params->get('access-manage-comment')
+                        ) { ?>
                             <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM') ?>"><?= Lang::txt('PLG_HUBZERO_COMMENTS_DELETE') ?></button>
                         <?php } ?>
-                        <?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
+                        <?php
+                        if (
+                            (
+                                $this->params->get('access-edit-comment')
+                                && $this->comment->get('created_by') == User::get('id')
+                            )
+                            || $this->params->get('access-manage-comment')
+                        ) { ?>
                             <a class="icon-edit edit" href="<?= Route::url($this->comment->link('edit')) ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_EDIT'); ?><!--
                             --></a>
                         <?php } ?>
-                        <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+                        <?php
+                        if (
+                            $this->params->get('access-create-comment')
+                            && $this->depth < $this->params->get('comments_depth', 3)
+                        ) { ?>
                             <a class="icon-reply reply" data-txt-active="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_HUBZERO_COMMENTS_REPLY') ?>"href="<?= Route::url($this->comment->link('reply')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLY'); ?><!--
                             --></a>
@@ -164,7 +185,11 @@ if ($mark = $this->params->get('onCommentMark')) {
                             --></a>
                     </div><!-- / .comment-options -->
                 <?php } ?>
-                <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+                <?php
+                if (
+                    $this->params->get('access-create-comment')
+                    && $this->depth < $this->params->get('comments_depth', 3)
+                ) { ?>
                     <div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
                         <form action="<?= Route::url($this->comment->link('base')) ?>" method="post"
                             enctype="multipart/form-data">

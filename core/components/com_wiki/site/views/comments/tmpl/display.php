@@ -187,7 +187,14 @@ if (!$this->sub) {
                     <div class="form-group">
                         <label for="ctext">
                             <?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
-                            <?= \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), 'form-control minimal no-footer', '35', '15') ?>
+                            <?= \Components\Wiki\Helpers\Editor::getInstance()->display(
+                                'comment[ctext]',
+                                'ctext',
+                                $this->mycomment->get('ctext'),
+                                'form-control minimal no-footer',
+                                '35',
+                                '15',
+                            ) ?>
                         </label>
                     </div>
 

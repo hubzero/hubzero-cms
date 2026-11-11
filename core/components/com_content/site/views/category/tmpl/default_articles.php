@@ -33,7 +33,12 @@ $listDirn  = $this->escape($this->filters['direction']);
     <?php endif; ?>
 <?php else : ?>
     <form action="<?php echo htmlspecialchars(Request::current()); ?>" method="post" name="adminForm" id="adminForm">
-        <?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
+        <?php
+        if (
+            $this->params->get('show_headings')
+            || $this->params->get('filter_field') != 'hide'
+            || $this->params->get('show_pagination_limit')
+        ) : ?>
             <fieldset>
                 <?php if ($this->params->get('filter_field') != 'hide') :?>
                     <div class="container data-entry">
@@ -78,11 +83,29 @@ $listDirn  = $this->escape($this->filters['direction']);
                         <?php if ($date = $this->params->get('list_show_date')) : ?>
                             <th class="list-date" id="tableOrdering2">
                                 <?php if ($date == "created") : ?>
-                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.created', $listDirn, $listOrder) ?>
+                                    <?= Html::grid(
+                                        'sort',
+                                        'COM_CONTENT_' . $date . '_DATE',
+                                        'a.created',
+                                        $listDirn,
+                                        $listOrder,
+                                    ) ?>
                                 <?php elseif ($date == "modified") : ?>
-                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.modified', $listDirn, $listOrder) ?>
+                                    <?= Html::grid(
+                                        'sort',
+                                        'COM_CONTENT_' . $date . '_DATE',
+                                        'a.modified',
+                                        $listDirn,
+                                        $listOrder,
+                                    ) ?>
                                 <?php elseif ($date == "published") : ?>
-                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.publish_up', $listDirn, $listOrder) ?>
+                                    <?= Html::grid(
+                                        'sort',
+                                        'COM_CONTENT_' . $date . '_DATE',
+                                        'a.publish_up',
+                                        $listDirn,
+                                        $listOrder,
+                                    ) ?>
                                 <?php endif; ?>
                             </th>
                         <?php endif; ?>
@@ -125,7 +148,9 @@ $listDirn  = $this->escape($this->filters['direction']);
 
                         <?php if ($this->params->get('list_show_date')) : ?>
                         <td class="list-date">
-                            <?= Date::of($article->displayDate)->toLocal($this->escape($this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3')))) ?>
+                            <?= Date::of($article->displayDate)->toLocal(
+                                $this->escape($this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3'))),
+                            ) ?>
                         </td>
                         <?php endif; ?>
 
@@ -136,7 +161,10 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 <?php $author = ($article->created_by_alias ? $article->created_by_alias : $author);?>
 
                                 <?php if (!empty($article->contactid) &&  $this->params->get('link_author') == true) :?>
-                                    <?= '<a href="' . Route::url('index.php?option=com_contact&view=contact&id=' . $article->contactid) . '">' . $author . '</a>' ?>
+                                    <?= '<a href="'
+                                        . Route::url(
+                                            'index.php?option=com_contact&view=contact&id=' . $article->contactid,
+                                        ) . '">' . $author . '</a>' ?>
                                 <?php else :?>
                                     <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
                                 <?php endif; ?>
@@ -186,7 +214,11 @@ $listDirn  = $this->escape($this->filters['direction']);
 
     <?php // Add pagination links?>
     <?php if (!empty($this->items)) : ?>
-        <?php if (($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+        <?php
+        if (
+            ($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2))
+            && ($this->pagination->get('pages.total') > 1)
+        ) : ?>
             <div class="pagination">
                 <?php echo $this->pagination->render(); ?>
             </div>

@@ -233,7 +233,10 @@ if ($this->page->get('id')) {
                         <label>
                             <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?>:</strong> <br />
                             <a class="btn icon-history" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')) ?>">
-                                <?= Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE', $this->page->versions()->count()) ?>
+                                <?= Lang::txt(
+                                    'COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE',
+                                    $this->page->versions()->count(),
+                                ) ?>
                             </a>
                         </label>
                     <?php endif; ?>
@@ -281,7 +284,8 @@ if ($this->page->get('id')) {
                                     } ?>
                                     <?php $sel = ($parent == $page->get('id')) ? 'selected="selected"' : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
-                                        <?= $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')) ?>
+                                        <?= $page->heirarchyIndicator(' &ndash; ')
+                                            . $this->escape($page->get('title')) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

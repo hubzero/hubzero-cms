@@ -98,7 +98,13 @@ $base = $this->offering->alias() . '&active=forum';
                                     <td>
                                         <span><?php echo Lang::txt('Category'); ?></span>
                                         <span class="entry-details category-name">
-                                            <?= $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, ['exact' => true])) ?>
+                                            <?= $this->escape(
+                                                \Hubzero\Utility\Str::truncate(
+                                                    $this->categories[$row->get('category_id')]->get('title'),
+                                                    100,
+                                                    ['exact' => true],
+                                                ),
+                                            ) ?>
                                         </span>
                                     </td>
                                 </tr>

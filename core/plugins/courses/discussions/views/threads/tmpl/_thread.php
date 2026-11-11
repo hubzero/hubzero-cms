@@ -84,7 +84,9 @@ if (!$this->thread->thread) {
     ?>
     <div class="comment-content">
         <p class="sticky-thread" title="<?= ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY') ?>">
-            <?= ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY') ?>
+            <?= ($this->thread->sticky)
+                ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY')
+                : Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY') ?>
         </p>
         <?php if ($this->thread->instructor_replied) { ?>
             <p class="instructor-commented" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED') ?>">

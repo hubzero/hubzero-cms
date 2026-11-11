@@ -48,12 +48,22 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                     <?php } ?>
                 </span>
 
-                <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
+                <?php
+                if (
+                    $this->config->get('access-edit-section')
+                    && $this->edit == $section->get('alias')
+                    && $section->get('id')
+                ) { ?>
                 <form action="<?php echo Route::url($base); ?>" method="post">
                 <?php } ?>
                 <table class="entries categories">
                     <caption>
-                        <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
+                        <?php
+                        if (
+                            $this->config->get('access-edit-section')
+                            && $this->edit == $section->get('alias')
+                            && $section->get('id')
+                        ) { ?>
                                 <!-- <span id="s<?= $section->get('id') ?>"></span> [!] This seems to cause some serious display issues -->
                                 <input type="text" name="fields[title]"
                                     value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
@@ -71,14 +81,23 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                         <?php } else { ?>
                             <?php echo $this->escape(stripslashes($section->get('title'))); ?>
                         <?php } ?>
-                        <?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
+                        <?php
+                        if (
+                            ($this->config->get('access-edit-section') || $this->config->get('access-delete-section'))
+                            && $section->get('id')
+                        ) { ?>
                             <?php if ($this->config->get('access-delete-section')) { ?>
                                 <button type="submit" form="hz-post-action"
                                     formaction="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=delete') ?>"
                                     class="delete"
                                     title="<?= Lang::txt('Delete') ?>"><span><?= Lang::txt('Delete') ?></span></button>
                             <?php } ?>
-                            <?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
+                            <?php
+                            if (
+                                $this->config->get('access-edit-section')
+                                && $this->edit != $section->get('alias')
+                                && $section->get('id')
+                            ) { ?>
                                 <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('Edit') ?>">
                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                 </a>
@@ -135,14 +154,28 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                             <?php echo Lang::txt('Posts'); ?>
                                         </span>
                                     </td>
-                                    <?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
+                                    <?php
+                                    if (
+                                        $this->config->get('access-edit-category')
+                                        || $this->config->get('access-delete-category')
+                                    ) { ?>
                                         <td class="entry-options">
-                                            <?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
+                                            <?php
+                                            if (
+                                                (
+                                                    $row->get('created_by') == User::get('id')
+                                                    || $this->config->get('access-edit-category')
+                                                )
+                                                && $section->get('id')
+                                            ) { ?>
                                                 <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/edit') ?>" title="<?= Lang::txt('Edit') ?>">
                                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                                 </a>
                                             <?php } ?>
-                                            <?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
+                                            <?php
+                                            if (
+                                                $this->config->get('access-delete-category') && $section->get('id')
+                                            ) { ?>
                                                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete') ?>" class="delete tooltips" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY') ?>"><span><?= Lang::txt('Delete') ?></span></button>
                                             <?php } ?>
                                         </td>
@@ -156,7 +189,12 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                         <?php } ?>
                     </tbody>
                 </table>
-                <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
+                <?php
+                if (
+                    $this->config->get('access-edit-section')
+                    && $this->edit == $section->get('alias')
+                    && $section->get('id')
+                ) { ?>
                 </form>
                 <?php } ?>
             </div><!-- /.container -->

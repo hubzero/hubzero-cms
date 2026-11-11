@@ -137,7 +137,10 @@ $this
                     </p>
                     <div class="actions">
                         <?php if (!User::isGuest()) { ?>
-                            <?php if ($row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')) { ?>
+                            <?php
+                            if (
+                                $row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')
+                            ) { ?>
                                 <?php if ($this->params->get('access-edit-collection')) { ?>
                                     <a class="btn edit" data-id="<?= $row->get('id') ?>"
                                         href="<?= Route::url($base . '&task=' . $row->get('alias') . '/edit') ?>">

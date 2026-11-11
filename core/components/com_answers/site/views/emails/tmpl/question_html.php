@@ -61,7 +61,12 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
             <tr>
                 <td align="left" valign="bottom"
                     style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-                    <?= Lang::txt('A question has been posted by %s.', $this->question->get('anonymous') ? Lang::txt('JANONYMOUS') : $this->escape(stripslashes($this->question->creator->get('name')))) ?>
+                    <?= Lang::txt(
+                        'A question has been posted by %s.',
+                        $this->question->get('anonymous')
+                            ? Lang::txt('JANONYMOUS')
+                            : $this->escape(stripslashes($this->question->creator->get('name'))),
+                    ) ?>
                 </td>
             </tr>
         </tbody>

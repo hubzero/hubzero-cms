@@ -259,7 +259,16 @@ $this
                         } else {
                             ?>
                         <p class="warning">
-                            <?= Lang::txt('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>') ?>
+                            <?= Lang::txt(
+                                'PLG_MEMBERS_BLOG_MUST_LOG_IN',
+                                '<a href="'
+                                    . Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url($this->row->link() . '#post-comment', false, true),
+                                            ),
+                                    ) . '">' . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>',
+                            ) ?>
                         </p>
                         <?php } ?>
                     </label>

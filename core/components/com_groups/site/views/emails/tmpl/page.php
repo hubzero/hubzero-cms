@@ -118,7 +118,9 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <?= ($page->version()->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved') ?>
+                                    <?= ($page->version()->get('approved') == 1)
+                                        ? Lang::txt('Approved')
+                                        : Lang::txt('Unapproved') ?>
                                 </td>
                             </tr>
                             <tr>

@@ -228,7 +228,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][daily]" class="daily-days event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -241,7 +243,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][weekly]" class="weekly-weeks event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -255,7 +259,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <select name="reccurance[interval][monthly]"
                                 class="monthly-months event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -268,7 +274,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][yearly]" class="yearly-years event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -304,7 +312,15 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                     <legend><?php echo Lang::txt('Registration Settings'); ?></legend>
 
                     <label id="include-registration-toggle">
-                        <?php $ckd = (($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') || $includeRegistration) ? 'checked="checked"' : ''; ?>
+                        <?php $ckd = (
+                            (
+                                $this->event->get('registerby')
+                                && $this->event->get('registerby') != '0000-00-00 00:00:00'
+                            )
+                            || $includeRegistration
+                        )
+                            ? 'checked="checked"'
+                            : ''; ?>
                         <input class="option" type="checkbox" id="include-registration" name="include-registration"
                             value="1" <?= $ckd ?> />
                         <?php echo Lang::txt('Include registration for this event.'); ?>
@@ -334,7 +350,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <input type="text" name="event[email]"
                                 value="<?= $this->escape($this->event->get('email')) ?>" />
                             <span class="hint">
-                                <?= Lang::txt('A copy of event registrations will get sent to this event\'s admin email address.') ?>
+                                <?= Lang::txt(
+                                    'A copy of event registrations will get sent to this event\'s admin email address.',
+                                ) ?>
                             </span>
                         </label>
 

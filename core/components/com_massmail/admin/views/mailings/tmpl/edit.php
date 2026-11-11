@@ -305,7 +305,10 @@ $this->js('edit.js', 'com_massmail');
                                 <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
                                 <td><span class="mm-status mm-status-<?= $status ?>"><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)) ?></span></td>
                             </tr>
-                            <?php if ($this->row->get('created') && $this->row->get('created') != '0000-00-00 00:00:00') { ?>
+                            <?php
+                            if (
+                                $this->row->get('created') && $this->row->get('created') != '0000-00-00 00:00:00'
+                            ) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED'); ?></th>
                                     <td><?php echo Date::of($this->row->get('created'))->toLocal($fmt); ?></td>
@@ -317,7 +320,10 @@ $this->js('edit.js', 'com_massmail');
                                     <td><?php echo $this->escape($creatorName); ?></td>
                                 </tr>
                             <?php } ?>
-                            <?php if ($this->row->get('modified') && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
+                            <?php
+                            if (
+                                $this->row->get('modified') && $this->row->get('modified') != '0000-00-00 00:00:00'
+                            ) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
                                     <td><?php echo Date::of($this->row->get('modified'))->toLocal($fmt);
@@ -332,7 +338,10 @@ $this->js('edit.js', 'com_massmail');
                                     } ?></td>
                                 </tr>
                             <?php } ?>
-                            <?php if ($status == constant($Mailing . '::STATUS_SCHEDULED') && $this->row->get('scheduled_at')) { ?>
+                            <?php
+                            if (
+                                $status == constant($Mailing . '::STATUS_SCHEDULED') && $this->row->get('scheduled_at')
+                            ) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_SCHEDULED'); ?></th>
                                     <td><?= Date::of($this->row->get('scheduled_at'))->toLocal($fmt . ' T') ?></td>
@@ -348,13 +357,20 @@ $this->js('edit.js', 'com_massmail');
                                     } ?></td>
                                 </tr>
                             <?php } ?>
-                            <?php if ($this->row->get('started_on') && $this->row->get('started_on') != '0000-00-00 00:00:00') { ?>
+                            <?php
+                            if (
+                                $this->row->get('started_on') && $this->row->get('started_on') != '0000-00-00 00:00:00'
+                            ) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_STARTED'); ?></th>
                                     <td><?php echo Date::of($this->row->get('started_on'))->toLocal($fmt); ?></td>
                                 </tr>
                             <?php } ?>
-                            <?php if ($this->row->get('completed_on') && $this->row->get('completed_on') != '0000-00-00 00:00:00') { ?>
+                            <?php
+                            if (
+                                $this->row->get('completed_on')
+                                && $this->row->get('completed_on') != '0000-00-00 00:00:00'
+                            ) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_COMPLETED'); ?></th>
                                     <td><?php echo Date::of($this->row->get('completed_on'))->toLocal($fmt); ?></td>
@@ -371,22 +387,52 @@ $this->js('edit.js', 'com_massmail');
                               // (#mm-action, after the main form) so state changes never ride
                               // on a GET link; formaction carries the task and id, the form
                               // carries the token.?>
-                        <?php if ($this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))) { ?>
+                        <?php
+                        if (
+                            $this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))
+                        ) { ?>
                             <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?= Route::url($base . '&task=todraft&id=' . $this->row->get('id')) ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT') ?></button>
                         <?php } ?>
-                        <?php if ($status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')) { ?>
+                        <?php
+                        if (
+                            $status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')
+                        ) { ?>
                             <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= Route::url($base . '&task=approve&id=' . $this->row->get('id')) ?>"><?= $icCheck . Lang::txt('COM_MASSMAIL_APPROVE') ?></button>
                         <?php } ?>
                         <?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
                             <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= Route::url($base . '&task=release&id=' . $this->row->get('id')) ?>"><?= $icSend . Lang::txt('COM_MASSMAIL_RELEASE') ?></button>
                         <?php } ?>
-                        <?php if (in_array($status, [constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING')]) && $canDo->get('core.edit.state')) { ?>
+                        <?php
+                        if (
+                            in_array(
+                                $status,
+                                [constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING')],
+                            )
+                            && $canDo->get('core.edit.state')
+                        ) { ?>
                             <button type="submit" form="mm-action" class="btn" formaction="<?= Route::url($base . '&task=pause&id=' . $this->row->get('id')) ?>"><?= $icPause . Lang::txt('COM_MASSMAIL_PAUSE') ?></button>
                         <?php } ?>
-                        <?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
+                        <?php
+                        if (
+                            $status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')
+                        ) { ?>
                             <button type="submit" form="mm-action" class="btn" formaction="<?= Route::url($base . '&task=resume&id=' . $this->row->get('id')) ?>"><?= $icPlay . Lang::txt('COM_MASSMAIL_RESUME') ?></button>
                         <?php } ?>
-                        <?php if (in_array($status, [constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED')]) && $canDo->get('core.edit.state')) { ?>
+                        <?php
+                        if (
+                            in_array(
+                                $status,
+                                [
+                                    constant($Mailing . '::STATUS_SENDING'),
+                                    constant($Mailing . '::STATUS_PREPARING'),
+                                    constant($Mailing . '::STATUS_PAUSED'),
+                                    constant($Mailing . '::STATUS_PENDING_APPROVAL'),
+                                    constant($Mailing . '::STATUS_HELD'),
+                                    constant($Mailing . '::STATUS_SCHEDULED'),
+                                ],
+                            )
+                            && $canDo->get('core.edit.state')
+                        ) { ?>
                             <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')) ?>" formaction="<?= Route::url($base . '&task=stop&id=' . $this->row->get('id')) ?>"><?= $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING') ?></button>
                         <?php } ?>
                         <?php // Permanent delete -- only for mailings that never started sending
@@ -436,7 +482,12 @@ $this->js('edit.js', 'com_massmail');
                         </label>
                     </div>
                     <div class="mm-schedule-field"<?php echo $isScheduled ? '' : ' hidden'; ?>>
-                        <?= Html::input('calendar', 'scheduled_at', $scheduledLocal, ['id' => 'field-schedule', 'format' => 'Y-m-d H:i:s']) ?>
+                        <?= Html::input(
+                            'calendar',
+                            'scheduled_at',
+                            $scheduledLocal,
+                            ['id' => 'field-schedule', 'format' => 'Y-m-d H:i:s'],
+                        ) ?>
                     </div>
 
                 </div>

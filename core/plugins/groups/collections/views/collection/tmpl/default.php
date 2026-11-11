@@ -177,7 +177,14 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
                                             </a>
                                         <?php } ?>
-                                        <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-manage-collection'))) { ?>
+                                        <?php
+                                        if (
+                                            $row->get('original')
+                                            && (
+                                                $item->get('created_by') == User::get('id')
+                                                || $this->params->get('access-manage-collection')
+                                            )
+                                        ) { ?>
                                             <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/delete') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
@@ -240,7 +247,12 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                 </span>
                             </p>
                         </div><!-- / .attribution -->
-                        <?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
+                        <?php
+                        if (
+                            !User::isGuest()
+                            && $this->params->get('access-create-item')
+                            && $this->filters['sort'] == 'ordering'
+                        ) { ?>
                             <div class="sort-handle tooltips"
                                 title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
                         <?php } ?>

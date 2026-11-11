@@ -64,7 +64,14 @@ $this
                 <label for="entrycontent">
                     <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT') ?> <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                    <?= $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', ['class' => 'form-control']) ?>
+                    <?= $this->editor(
+                        'entry[content]',
+                        $this->entry->get('content'),
+                        50,
+                        30,
+                        'entrycontent',
+                        ['class' => 'form-control'],
+                    ) ?>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

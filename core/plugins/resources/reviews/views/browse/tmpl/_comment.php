@@ -83,7 +83,10 @@ if ($this->comment->get('resource_id')) {
         </p>
         <div class="comment-content">
         <?php // voting defaults on (reviews.xml, and reviews.php passes voting=1); a hub that never saved the plugin params has none stored?>
-        <?php if (!$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting', 1)) { ?>
+        <?php
+        if (
+            !$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting', 1)
+        ) { ?>
             <div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                 <?php
                 $this->comment->set('helpful', $this->comment->votes()->whereEquals('vote', 1)->total());
@@ -176,7 +179,10 @@ if ($this->comment->get('resource_id')) {
 
             <div class="comment-options">
         <?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
-            <?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')) { ?>
+            <?php
+            if (
+                User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')
+            ) { ?>
                     <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DELETE') ?></button>
                     <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')) ?>"><!--
                         --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EDIT'); ?><!--
@@ -213,7 +219,14 @@ if ($this->comment->get('resource_id')) {
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?= Lang::txt('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>') ?>
+                    <?= Lang::txt(
+                        'PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER',
+                        '<a href="'
+                            . Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($this->base, false, true)),
+                            ) . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>',
+                    ) ?>
                 </p>
                 <?php } else { ?>
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"

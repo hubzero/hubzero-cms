@@ -43,7 +43,13 @@ $this->js();
 
     <?php echo $this->page->event->afterDisplayTitle; ?>
 
-    <?php if ($this->page->isStatic() && $this->page->access('admin') && $this->controller == 'pages' && $this->task == 'display') { ?>
+    <?php
+    if (
+        $this->page->isStatic()
+        && $this->page->access('admin')
+        && $this->controller == 'pages'
+        && $this->task == 'display'
+    ) { ?>
         <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
             <ul>
                 <li><a class="icon-edit edit btn"
@@ -78,7 +84,10 @@ if (!$this->page->isStatic()) {
             <?php echo $this->revision->get('pagehtml'); ?>
 
             <p class="timestamp">
-                <?= Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">' . $this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>' ?>
+                <?= Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">'
+                    . $this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED')
+                    . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date')
+                    . '</time>' ?>
                 <?php /*if ($stats = $this->page->getMetrics()) { ?>
                 <span class="article-usage">
                     <?php echo Lang::txt('COM_WIKI_PAGE_METRICS', $stats['visitors'], $stats['visits']); ?>

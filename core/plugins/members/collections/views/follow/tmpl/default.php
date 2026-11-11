@@ -118,7 +118,11 @@ if ($this->rows->total() > 0) {
                             href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
                             <span><?php echo Lang::txt('Collect'); ?></span>
                         </a>
-                <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
+                <?php
+                if (
+                    $row->get('original')
+                    && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))
+                ) { ?>
                         <a class="delete" data-id="<?= $row->get('id') ?>"
                             href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                             <span><?php echo Lang::txt('Delete'); ?></span>

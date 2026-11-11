@@ -67,7 +67,9 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                     <select name="page[category]" id="field-category">
                         <option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_OPTION_NULL'); ?></option>
                         <?php foreach ($this->categories as $pageCategory) : ?>
-                            <?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
+                            <?php $sel = ($this->page->get('category') == $pageCategory->get('id'))
+                                ? 'selected="selected"'
+                                : ''; ?>
                             <option <?= $sel ?> value="<?= $pageCategory->get('id') ?>"><?= $this->escape($pageCategory->get('title')) ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -84,7 +86,9 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                 <?php if ($page->get('id') == $this->page->get('id')) {
                                     continue;
                                 } ?>
-                                <?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
+                                <?php $sel = ($this->page->get('parent') == $page->get('id'))
+                                    ? 'selected="selected"'
+                                    : ''; ?>
                                 <option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
                                     <?= $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')) ?>
                                 </option>
@@ -162,7 +166,14 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
 
                 <div class="input-wrap">
                     <label for="field-content"><?= Lang::txt('COM_GROUPS_PAGES_CONTENT') ?>:</span></label><br />
-                    <?= $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', ['buttons' => false]) ?>
+                    <?= $this->editor(
+                        'pageversion[content]',
+                        $this->escape(stripslashes($this->version->get('content'))),
+                        50,
+                        30,
+                        'field-content',
+                        ['buttons' => false],
+                    ) ?>
                     <input type="hidden" name="pageversion[version]" value="<?= $this->version->get('version') ?>" />
                 </div>
             </fieldset>

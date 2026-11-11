@@ -593,7 +593,10 @@ $cc = [];
                     <input type="hidden" name="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
                 <?php } ?>
 
-                <?php if ($this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')) { ?>
+                <?php
+                if (
+                    $this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')
+                ) { ?>
                     <?php
                         $results = Event::trigger('support.onTicketComment', [$this->row]);
                         echo implode("\n", $results);
@@ -601,7 +604,10 @@ $cc = [];
                     <fieldset>
                         <legend><?php echo Lang::txt('COM_SUPPORT_COMMENT_LEGEND_COMMENTS'); ?>:</legend>
 
-                    <?php if ($this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')) { ?>
+                    <?php
+                    if (
+                        $this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')
+                    ) { ?>
                         <div class="top grouping">
                     <?php } ?>
                         <?php if ($this->row->access('create', 'comments') > 0) { ?>
@@ -636,7 +642,10 @@ $cc = [];
                                 </label>
                             </div>
                         <?php } ?>
-                    <?php if ($this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')) { ?>
+                    <?php
+                    if (
+                        $this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')
+                    ) { ?>
                         </div>
                         <div class="clear"></div>
                     <?php } ?>

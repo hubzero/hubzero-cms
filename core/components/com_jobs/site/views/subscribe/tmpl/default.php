@@ -202,7 +202,8 @@ defined('_HZEXEC_') or die();
                 : Lang::txt('COM_JOBS_SUBSCRIPTION_PROCESS_ORDER');
             ?>
             <label for="contact">
-                <?= Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">' . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>' ?>
+                <?= Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">'
+                    . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>' ?>
                 <input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15"
                     value="<?= $this->escape($this->subscription->contact) ?>" />
             </label>

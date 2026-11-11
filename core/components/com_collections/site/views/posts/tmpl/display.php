@@ -66,7 +66,19 @@ if (!$no_html) {
                                 </span>
                             <?php } ?>
                             <p>
-                                <?= Lang::txt('COM_COLLECTIONS_USER_CREATED_POST', (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($item->creator()->link()) . '">' : '') . $this->escape(stripslashes($item->creator()->get('name'))) . (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels()) ? '</a>' : '')) ?>
+                                <?= Lang::txt(
+                                    'COM_COLLECTIONS_USER_CREATED_POST',
+                                    (
+                                        in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())
+                                            ? '<a href="' . Route::url($item->creator()->link()) . '">'
+                                            : ''
+                                    ) . $this->escape(stripslashes($item->creator()->get('name')))
+                                        . (
+                                            in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())
+                                                ? '</a>'
+                                                : ''
+                                        ),
+                                ) ?>
                                 <br />
                                 <span class="entry-date">
                                     <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
@@ -224,7 +236,14 @@ if (!$no_html) {
 
                             <label for="comment-content">
                                 <span class="label-text"><?= Lang::txt('COM_COLLECTIONS_FIELD_COMMENTS') ?></span>
-                                <?= $this->editor('comment[content]', '', 35, 5, 'comment-content', ['class' => 'minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    35,
+                                    5,
+                                    'comment-content',
+                                    ['class' => 'minimal no-footer'],
+                                ) ?>
                             </label>
 
                             <input type="hidden" name="comment[id]" value="0" />
@@ -287,7 +306,11 @@ if (!$no_html) {
                         <?php if (!$no_html) { ?>
                         <div class="actions">
                             <?php if (!User::isGuest()) { ?>
-                                <?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == User::get('id')) { ?>
+                                <?php
+                                if (
+                                    $this->collection->get('object_type') == 'member'
+                                    && $this->collection->get('object_id') == User::get('id')
+                                ) { ?>
                                         <a class="btn edit" data-id="<?= $this->collection->get('id') ?>"
                                             href="<?= Route::url($this->collection->link() . '/edit') ?>">
                                             <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
@@ -346,7 +369,10 @@ if (!$no_html) {
                             </span>
                         <?php } ?>
                         <p>
-                            <?php if (in_array($this->collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+                            <?php
+                            if (
+                                in_array($this->collection->creator()->get('access'), User::getAuthorisedViewLevels())
+                            ) { ?>
                                 <a href="<?php echo Route::url($this->collection->creator()->link()); ?>">
                                     <?php echo $name; ?>
                                 </a>
@@ -405,7 +431,11 @@ if (!$no_html) {
                             <?php if (!$no_html) { ?>
                             <div class="actions">
                                 <?php if (!User::isGuest()) { ?>
-                                    <?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == User::get('id')) { ?>
+                                    <?php
+                                    if (
+                                        $collection->get('object_type') == 'member'
+                                        && $collection->get('object_id') == User::get('id')
+                                    ) { ?>
                                             <a class="btn edit" data-id="<?= $collection->get('id') ?>"
                                                 href="<?= Route::url($collection->link() . '/edit') ?>">
                                                 <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
@@ -464,7 +494,10 @@ if (!$no_html) {
                                 </span>
                             <?php } ?>
                             <p>
-                                <?php if (in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                <?php
+                                if (
+                                    in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())
+                                ) { ?>
                                     <a href="<?= Route::url($collection->creator()->link() . '&active=collections') ?>"
                                         aria-label="<?= Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) ?>">
                                         <?php echo $name; ?>

@@ -72,7 +72,11 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                                     <?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_VIEW_RAW'); ?>
                                 </a>
                             </li>
-                            <?php if ($needsAttention->version()->get('checked_errors') && $needsAttention->version()->get('scanned')) : ?>
+                            <?php
+                            if (
+                                $needsAttention->version()->get('checked_errors')
+                                && $needsAttention->version()->get('scanned')
+                            ) : ?>
                                 <li class="preview">
                                     <a class="preview" href="<?= Route::url($base . '&task=preview&pageid=' . $needsAttention->get('id')) ?>" class="btn">
                                         <?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
@@ -109,7 +113,11 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     </td>
                     <td>
                         <ol class="attention-actions">
-                            <?php if ($needsAttention->version()->get('checked_errors') && $needsAttention->version()->get('scanned')) : ?>
+                            <?php
+                            if (
+                                $needsAttention->version()->get('checked_errors')
+                                && $needsAttention->version()->get('scanned')
+                            ) : ?>
                                 <li class="approve">
                                     <a href="<?= Route::url($base . '&task=approve&id=' . $needsAttention->get('id') . '&' . Session::getFormToken() . '=1') ?>" class="btn">
                                         <strong><?= Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_APPROVE') ?></strong>

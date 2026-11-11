@@ -154,7 +154,9 @@ if (!$this->app->sess) {
                             $viewer = $this->output->rendered;
                         }
                         ?>
-                        <?= $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER') ?>
+                        <?= $viewer
+                            ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE'))
+                            : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER') ?>
 
                         <span class="input-wrap">
                             <label for="app-viewer">
@@ -259,7 +261,13 @@ if (!$this->app->sess) {
                             <?php } ?>
                         </p>
                         <p>
-                            <?= $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))) ?>
+                            <?= $this->zone->get(
+                                'description',
+                                Lang::txt(
+                                    'COM_TOOLS_POWERED_BY_MIRROR',
+                                    $this->zone->get('title', $this->zone->get('zone')),
+                                ),
+                            ) ?>
                         </p>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">

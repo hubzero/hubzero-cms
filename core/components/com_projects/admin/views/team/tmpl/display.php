@@ -180,7 +180,9 @@ $this->css();
                     </span>
                 </td>
                 <td class="priority-4">
-                    <?= $row->status == 1 ? Date::of($row->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_TEAM_INVITED') . '</span>' ?>
+                    <?= $row->status == 1
+                        ? Date::of($row->added)->toLocal('M d, Y')
+                        : '<span class="invited">' . Lang::txt('COM_PROJECTS_TEAM_INVITED') . '</span>' ?>
                 </td>
                 <td class="priority-4">
                     <?php

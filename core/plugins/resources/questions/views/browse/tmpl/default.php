@@ -93,7 +93,9 @@ $this->css();
                             datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
-                            <?= ($row->get('state') == 1) ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED') : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN') ?>
+                            <?= ($row->get('state') == 1)
+                                ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED')
+                                : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN') ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">

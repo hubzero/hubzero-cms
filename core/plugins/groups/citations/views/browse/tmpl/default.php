@@ -201,7 +201,11 @@ if (isset($this->messages)) {
                                                         . $sp->get('sponsor') . '</a>, ';
                                                 }
                                                 ?>
-                                                <?php if ($final != '' && $this->config->get('citation_sponsors', 'yes') == 'yes') : ?>
+                                                <?php
+                                                if (
+                                                    $final != ''
+                                                    && $this->config->get('citation_sponsors', 'yes') == 'yes'
+                                                ) : ?>
                                                     <p class="sponsor"><?= Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY') ?> <?= substr($final, 0, -2) ?></p>
                                                 <?php endif; ?>
                                                 <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>

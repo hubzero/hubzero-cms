@@ -280,7 +280,12 @@ $authors = implode(', ', $authors);
                         <?php //}?>
                     </fieldset><div class="clear"></div>
 
-                    <?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>
+                    <?php
+                    if (
+                        !$this->page->exists()
+                        || $this->page->get('created_by') == User::get('id')
+                        || $this->page->access('manage')
+                    ) { ?>
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 

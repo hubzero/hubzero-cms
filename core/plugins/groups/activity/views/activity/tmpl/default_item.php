@@ -211,7 +211,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
             <div class="activity-options">
                 <?php if ($this->group->published == 1) { ?>
                 <ul class="activity-options-main">
-                    <?php if ($this->row->log->get('scope') == 'activity.comment' && !$this->row->log->get('parent')) { ?>
+                    <?php
+                    if (
+                        $this->row->log->get('scope') == 'activity.comment' && !$this->row->log->get('parent')
+                    ) { ?>
                         <li>
                             <?php if (Request::getInt('reply', 0) == $this->row->get('id')) { ?>
                                 <a
@@ -296,7 +299,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         <div class="form-group">
                             <label for="comment-<?php echo $this->row->get('id'); ?>-content">
                                 <span class="label-text"><?= Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS') ?></span>
-                                <?= $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', ['class' => 'form-control minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'activity[description]',
+                                    '',
+                                    35,
+                                    4,
+                                    'field_' . $this->row->get('id') . '_comment',
+                                    ['class' => 'form-control minimal no-footer'],
+                                ) ?>
                             </label>
                         </div>
 

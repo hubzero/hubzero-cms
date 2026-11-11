@@ -51,7 +51,9 @@ $this->css('jobs', 'com_jobs');
             <form id="prefsForm" method="post" action="<?= Route::url($this->member->link() . '&active=resume') ?>">
                 <fieldset>
                     <legend>
-                        <?= $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS') ?>
+                        <?= $this->editpref == 1
+                            ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO')
+                            : Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS') ?>
                     </legend>
 
                     <label class="spacious">
@@ -220,7 +222,9 @@ $this->css('jobs', 'com_jobs');
             </table>
         <?php } elseif (!$this->js->active) { ?>
             <p class="no_resume">
-                <?= (!$this->self) ? Lang::txt('PLG_MEMBERS_RESUME_USER_HAS_NO_RESUME') : Lang::txt('PLG_MEMBERS_RESUME_YOU_HAVE_NO_RESUME') ?>
+                <?= (!$this->self)
+                    ? Lang::txt('PLG_MEMBERS_RESUME_USER_HAS_NO_RESUME')
+                    : Lang::txt('PLG_MEMBERS_RESUME_YOU_HAVE_NO_RESUME') ?>
             </p>
         <?php } ?>
 
@@ -262,7 +266,9 @@ $this->css('jobs', 'com_jobs');
 
             <p>
                 <a class="icon-next btn" href="<?php echo Route::url('index.php?option=com_jobs'); ?>">
-                    <?= ($this->config->get('industry')) ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS') ?>
+                    <?= ($this->config->get('industry'))
+                        ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry'))
+                        : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS') ?>
                 </a>
             </p>
         </div><!-- / .container -->

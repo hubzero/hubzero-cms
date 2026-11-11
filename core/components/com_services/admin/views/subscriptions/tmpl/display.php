@@ -124,7 +124,9 @@ $this->css('admin.subscriptions.css');
                     </a>
                 </td>
                 <td>
-                    <?= $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0) ? '<span class="service-pending">' . $pending . '</span>' : $pending ?>
+                    <?= $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)
+                        ? '<span class="service-pending">' . $pending . '</span>'
+                        : $pending ?>
                 </td>
                 <td>
                     <?php echo $this->escape($name) . ' (' . $this->escape($login) . ')'; ?>
@@ -133,7 +135,9 @@ $this->css('admin.subscriptions.css');
                     <?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
                 </td>
                 <td>
-                    <?= $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER') ?>
+                    <?= $row->updated
+                        ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : Lang::txt('COM_SERVICES_NEVER') ?>
                 </td>
                 <td>
                     <?php echo $expires; ?>

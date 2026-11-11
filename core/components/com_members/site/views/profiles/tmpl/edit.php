@@ -65,7 +65,11 @@ foreach ($profiles as $profile) {
 
             <label>
                 <?php echo Lang::txt('Visibility (who has access to my profile)'); ?>
-                <?= Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select') ?>
+                <?= Components\Members\Helpers\Html::selectAccess(
+                    'access',
+                    $this->profile->get('access'),
+                    'input-select',
+                ) ?>
             </label>
 
             <div class="grid">

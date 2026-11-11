@@ -88,7 +88,9 @@ $this
 
     <div class="toolinfo_note">
         <?php echo $this->msg ? '<p class="passed">' . $this->msg . '</p>' : ''; ?>
-        <?= \Components\Tools\Helpers\Html::getNumofTools($this->status) ? '<p>' . \Components\Tools\Helpers\Html::getNumofTools($this->status) . '.</p>' : '' ?>
+        <?= \Components\Tools\Helpers\Html::getNumofTools($this->status)
+            ? '<p>' . \Components\Tools\Helpers\Html::getNumofTools($this->status) . '.</p>'
+            : '' ?>
     </div><!-- / .toolinfo_note -->
 
     <div class="grid">
@@ -155,7 +157,11 @@ $this
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?></th>
                             <td><?php echo \Components\Tools\Helpers\Html::getCodeAccess($this->status['code']); ?>
-                            <?php if (\Components\Tools\Helpers\Html::toolActive($this->status['state']) && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])) { ?>
+                            <?php
+                            if (
+                                \Components\Tools\Helpers\Html::toolActive($this->status['state'])
+                                && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])
+                            ) { ?>
                                 [<a class="license-tool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
                             <?php } ?>
                             </td>
@@ -317,7 +323,8 @@ $this
 
                             <div class="form-group">
                                 <label for="comment">
-                                    <?= Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')' ?>
+                                    <?= Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' ('
+                                        . Lang::txt('COM_TOOLS_OPTIONAL') . ')' ?>
                                     <textarea name="comment" id="comment" class="form-control" cols="40"
                                         rows="5"></textarea>
                                 </label>
@@ -640,7 +647,12 @@ $this
                     case 6:
                         ?>
                     <p>
-                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) . ' ' . $sitename . ' ' . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE') . ' ' . Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') . ' ' . \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) . ' ' . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_SINCE') . '  ' . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN') . ' ' . $toolaccess ?>.
+                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) . ' ' . $sitename . ' '
+                            . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE') . ' '
+                            . Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') . ' '
+                            . \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) . ' '
+                            . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_SINCE') . '  '
+                            . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN') . ' ' . $toolaccess ?>.
                     </p>
                     <p>
                         <?= Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_PLS_CLICK') ?> <?= $sitename ?>: <br />

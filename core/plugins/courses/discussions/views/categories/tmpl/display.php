@@ -112,7 +112,10 @@ $base = $this->offering->link() . '&active=forum';
                                             <span class="entry-date">
                                                 <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
                                             </span>
-                                            <?= Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
+                                            <?= Lang::txt(
+                                                'PLG_COURSES_DISCUSSIONS_BY_USER',
+                                                '<span class="entry-author">' . $name . '</span>',
+                                            ) ?>
                                         </span>
                                     </td>
                                     <td>
@@ -152,15 +155,26 @@ $base = $this->offering->link() . '&active=forum';
                                                 <span class="entry-date">
                                                     <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
                                                 </span>
-                                                <?= Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $lname . '</span>') ?>
+                                                <?= Lang::txt(
+                                                    'PLG_COURSES_DISCUSSIONS_BY_USER',
+                                                    '<span class="entry-author">' . $lname . '</span>',
+                                                ) ?>
                                             <?php } else { ?>
                                                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>
                                             <?php } ?>
                                         </span>
                                     </td>
-                                    <?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
+                                    <?php
+                                    if (
+                                        $this->config->get('access-delete-thread')
+                                        || $this->config->get('access-edit-thread')
+                                    ) { ?>
                                         <td class="entry-options">
-                                            <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
+                                            <?php
+                                            if (
+                                                $row->get('created_by') == User::get('id')
+                                                || $this->config->get('access-edit-thread')
+                                            ) { ?>
                                                 <a class="edit" href="<?= Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit') ?>">
                                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
                                                 </a>

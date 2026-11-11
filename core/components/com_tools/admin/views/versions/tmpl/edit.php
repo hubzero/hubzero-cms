@@ -69,7 +69,9 @@ $this->js();
                                 value="<?= $this->escape(stripslashes($this->row->vnc_timeout ?: '')) ?>" size="50" />
                         </div>
 
-                        <?php list($hardTimeout, $hardTimeoutUnit) = \Components\Tools\Helpers\Duration::fromSeconds($this->row->hardTimeout); ?>
+                        <?php list($hardTimeout, $hardTimeoutUnit) = \Components\Tools\Helpers\Duration::fromSeconds(
+                            $this->row->hardTimeout,
+                        ); ?>
                         <div class="input-wrap" data-hint="<?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT') ?>">
                             <label
                                 for="field-hardtimeout"><?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT') ?>:</label><br />

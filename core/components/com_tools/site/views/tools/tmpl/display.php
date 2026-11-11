@@ -27,7 +27,11 @@ $this
         <div class="col span9">
             <h3><?php echo Lang::txt('COM_TOOLS_TOOL_DEVELOPMENT'); ?></h3>
             <p>
-                <?= Lang::txt('COM_TOOLS_TOOL_DEVELOPMENT_INTRO', $this->escape($this->forgeName), $this->escape(Config::get('sitename'))) ?>
+                <?= Lang::txt(
+                    'COM_TOOLS_TOOL_DEVELOPMENT_INTRO',
+                    $this->escape($this->forgeName),
+                    $this->escape(Config::get('sitename')),
+                ) ?>
             </p>
         </div>
         <div class="col span3 omega">

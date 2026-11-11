@@ -61,7 +61,13 @@ $this->js();
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col">
-                    <?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED', 'date_confirmed', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED',
+                        'date_confirmed',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
             </tr>
         </thead>

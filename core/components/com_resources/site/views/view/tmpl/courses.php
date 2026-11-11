@@ -87,9 +87,13 @@ if ($mode != 'preview') {
                         ?>
                             <p class="warning">
                                 <?php if (User::isGuest()) : ?>
-                                    <?= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())) ?>
+                                    <?= Lang::txt(
+                                        'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                        base64_encode(Request::path()),
+                                    ) ?>
                                 <?php elseif ($this->get('group_owner')) : ?>
-                                    <?= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml) ?>
+                                    <?= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' '
+                                        . implode(', ', $ghtml) ?>
                                 <?php else : ?>
                                     <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                                 <?php endif; ?>
@@ -396,7 +400,9 @@ if ($mode != 'preview') {
                                 <span class="course-lecture-title"><?php echo $titleHtml; ?></span>
                                 <?php if ($child->get('type') != 31 && $child->introtext) : ?>
                                     <span class="course-lecture-description">
-                                        <?= nl2br(\Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200)) ?>
+                                        <?= nl2br(
+                                            \Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200),
+                                        ) ?>
                                     </span>
                                 <?php endif; ?>
                             </button>

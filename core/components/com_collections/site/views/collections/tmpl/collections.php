@@ -109,7 +109,11 @@ $this
                                 </p>
                                 <div class="actions">
                                     <?php if (!User::isGuest()) { ?>
-                                        <?php if ($row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')) { ?>
+                                        <?php
+                                        if (
+                                            $row->get('object_type') == 'member'
+                                            && $row->get('object_id') == User::get('id')
+                                        ) { ?>
                                                 <a class="btn edit" data-id="<?= $row->get('id') ?>"
                                                     href="<?= Route::url($row->link() . '/edit') ?>">
                                                     <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
@@ -159,7 +163,10 @@ $this
                                     </span>
                                 <?php } ?>
                                 <p>
-                                    <?php if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                    <?php
+                                    if (
+                                        in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())
+                                    ) { ?>
                                         <a href="<?= Route::url($row->creator()->link() . '&active=collections') ?>">
                                             <?php echo $name; ?>
                                         </a>

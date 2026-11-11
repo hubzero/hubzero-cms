@@ -240,7 +240,11 @@ $this
                 <?php // if ($this->row->standalone == 1) {?>
                     <div class="input-wrap">
                         <label for="publish_up"><?= Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP') ?>:</label><br />
-                        <?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
+                        <?php $up = (
+                            $this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00'
+                                ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s')
+                                : ''
+                        ); ?>
                         <?php echo Html::input('calendar', 'fields[publish_up]', $up); ?>
                     </div>
                     <div class="input-wrap">

@@ -87,7 +87,10 @@ endforeach;
                 <div class="wiki-files-available">
                     <?php $path = $asset->path($this->course->get('id')); ?>
                     <?php if ($path && is_dir(PATH_APP . $path)) : ?>
-                        <?php $files = array_diff(scandir(PATH_APP . $asset->path($this->course->get('id'))), ['..', '.', '.DS_Store']); ?>
+                        <?php $files = array_diff(
+                            scandir(PATH_APP . $asset->path($this->course->get('id'))),
+                            ['..', '.', '.DS_Store'],
+                        ); ?>
                         <ul class="wiki-files-list">
                             <?php foreach ($files as $file) : ?>
                                 <li class="wiki-file">

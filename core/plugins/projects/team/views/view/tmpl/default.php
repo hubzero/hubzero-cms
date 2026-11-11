@@ -119,7 +119,11 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                         <span class="block short prominent"><?php echo $this->escape($username); ?></span>
                     </td>
                     <td>
-                        <?= ($creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : '') . $role ?>
+                        <?= (
+                            $creator && !$this->model->groupOwner()
+                                ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/'
+                                : ''
+                        ) . $role ?>
                     </td>
                     <td class="priority-5">
                         <?php if ($owner->status == 1) : ?>
@@ -191,6 +195,9 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
     </div>
 </form>
 
-<?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
+<?php
+if (
+    (!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()
+) { ?>
     <p class="extras"><span class="rightfloat"><a href="<?= Route::url($this->model->link('team') . '&action=quit') ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT') ?></a></span></p>
 <?php }

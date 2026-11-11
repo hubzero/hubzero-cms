@@ -77,7 +77,10 @@ if ($this->config->get('access-manage-section')) {
 
                 <table class="entries categories">
                     <caption>
-                        <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias')) { ?>
+                        <?php
+                        if (
+                            $this->config->get('access-edit-section') && $this->edit == $section->get('alias')
+                        ) { ?>
                             <form action="<?= Route::url($base) ?>" method="post" id="s<?= $section->get('id') ?>">
                                 <input type="text" name="fields[title]"
                                     value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
@@ -97,11 +100,17 @@ if ($this->config->get('access-manage-section')) {
                         <?php } else { ?>
                             <?php echo $this->escape(stripslashes($section->get('title'))); ?>
                         <?php } ?>
-                        <?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
+                        <?php
+                        if (
+                            $this->config->get('access-edit-section') || $this->config->get('access-delete-section')
+                        ) { ?>
                             <?php if ($this->config->get('access-delete-section')) { ?>
                                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $section->get('alias') . '/delete') ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
                             <?php } ?>
-                            <?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
+                            <?php
+                            if (
+                                $this->config->get('access-edit-section') && $this->edit != $section->get('alias')
+                            ) { ?>
                                 <a class="icon-edit edit" href="<?= Route::url($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
                                 </a>
@@ -157,9 +166,17 @@ if ($this->config->get('access-manage-section')) {
                                             <?php echo Lang::txt('PLG_GROUPS_FORUM_POSTS'); ?>
                                         </span>
                                     </td>
-                                <?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
+                                <?php
+                                if (
+                                    $this->config->get('access-edit-category')
+                                    || $this->config->get('access-delete-category')
+                                ) { ?>
                                     <td class="entry-options">
-                                        <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) { ?>
+                                        <?php
+                                        if (
+                                            $row->get('created_by') == User::get('id')
+                                            || $this->config->get('access-edit-category')
+                                        ) { ?>
                                             <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>"
                                                 title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>

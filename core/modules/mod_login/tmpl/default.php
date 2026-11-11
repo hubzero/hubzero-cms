@@ -94,7 +94,10 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             <div class="or"></div>
             <div class="local">
                 <a href="<?= Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $returnQueryString) ?>">
-                    <?= Lang::txt('MOD_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($site_display)) ? $site_display : Config::get('sitename'))) ?>
+                    <?= Lang::txt(
+                        'MOD_LOGIN_SIGN_IN_WITH_ACCOUNT',
+                        ((isset($site_display)) ? $site_display : Config::get('sitename')),
+                    ) ?>
                 </a>
             </div>
         </div>

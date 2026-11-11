@@ -188,7 +188,14 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
-                                <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
+                                <?php
+                                if (
+                                    $row->get('original')
+                                    && (
+                                        $item->get('created_by') == User::get('id')
+                                        || $this->params->get('access-delete-item')
+                                    )
+                                ) { ?>
                                     <a class="btn delete" data-id="<?= $row->get('id') ?>"
                                         href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
@@ -253,7 +260,12 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             </span>
                         </p>
                     </div><!-- / .attribution -->
-                    <?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
+                    <?php
+                    if (
+                        !User::isGuest()
+                        && $this->params->get('access-create-item')
+                        && $this->filters['sort'] == 'ordering'
+                    ) { ?>
                         <div class="sort-handle tooltips"
                             title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
                     <?php } ?>

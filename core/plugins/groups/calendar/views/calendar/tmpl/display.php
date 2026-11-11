@@ -38,7 +38,11 @@ $timezone = $userLocalizer->getTimezone();
     </ul>
 <?php endif; ?>
 
-<?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array(User::get('id'), $this->group->get('members'))) ? true : 0; ?>
+<?php $quickCreate = (
+    $this->params->get('allow_quick_create', 1) && in_array(User::get('id'), $this->group->get('members'))
+)
+    ? true
+    : 0; ?>
 <div id="calendar"
     data-base="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar') ?>"
     data-month="<?php echo $this->month; ?>"
@@ -75,7 +79,10 @@ $timezone = $userLocalizer->getTimezone();
                             <dd class="calendar">
                                 in <?= ($event->calendar()->get('id')) ? $this->escape($event->calendar()->get('title')) : 'Uncategorized' ?>
                             </dd>
-                            <?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
+                            <?php
+                            if (
+                                $event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00'
+                            ) : ?>
                                 <dd class="start-and-end">
                                     <?php
                                         echo Date::of($event->get('publish_up'))->toTimezone(

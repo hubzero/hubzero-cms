@@ -577,7 +577,10 @@ $area = Request::getString('area', 'about');
                             <ul class="secondary openurl">
                                 <?php if ($this->openUrl) : ?>
                                     <li>
-                                        <?= \Components\Citations\Helpers\Format::citationOpenUrl($this->openUrl, $citation) ?>
+                                        <?= \Components\Citations\Helpers\Format::citationOpenUrl(
+                                            $this->openUrl,
+                                            $citation,
+                                        ) ?>
                                     </li>
                                 <?php endif; ?>
                             </ul>

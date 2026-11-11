@@ -45,7 +45,8 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 <?php if (!$seeker) { ?>
     <p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' ' . Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?>
-        <?= '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume') . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>' ?>
+        <?= '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume')
+            . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>' ?>
     </p>
 <?php } else { ?>
     <section class="main section">
@@ -54,15 +55,28 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
         $appid = $application->status != 2 ? $application->id : 0;
         ?>
 
-        <?php if ((!$this->admin && User::get('id') == $job->employerid) or ($this->admin && $job->employerid == 1)) { ?>
+        <?php
+        if (
+            (!$this->admin && User::get('id') == $job->employerid) or ($this->admin && $job->employerid == 1)
+        ) { ?>
             <p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_WARNING_OWN_AD'); ?></p>
         <?php } ?>
 
         <div id="applyinfo">
             <h3>
                 <?php echo $this->escape($job->title); ?> -
-                <?= preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName) ?>,
-                <?= $this->escape(implode(', ', array_filter([trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry)]))) ?>
+                <?= preg_match('#^https?://#i', (string) $job->companyWebsite)
+                    ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName)
+                        . '</a>'
+                    : $this->escape($job->companyName) ?>,
+                <?= $this->escape(
+                    implode(
+                        ', ',
+                        array_filter(
+                            [trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry)],
+                        ),
+                    ),
+                ) ?>
                 <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
             </h3>
         </div>

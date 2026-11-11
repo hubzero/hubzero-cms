@@ -84,7 +84,13 @@ if (substr($base, -13) == 'administrator') {
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']) ?>
+                    <?= Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $this->filters['access'],
+                    ) ?>
                 </select>
 
                 <label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>

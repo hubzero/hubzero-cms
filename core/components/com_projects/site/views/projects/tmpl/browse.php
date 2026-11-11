@@ -68,7 +68,10 @@ $total = $this->model->entries('count', $this->filters);
                 }
                 ?>
                 <ul class="entries-menu order-options">
-                    <?php if (!empty($this->filters['reviewer']) && (strtolower($this->filters['reviewer']) == 'sponsored')) : ?>
+                    <?php
+                    if (
+                        !empty($this->filters['reviewer']) && (strtolower($this->filters['reviewer']) == 'sponsored')
+                    ) : ?>
                     <li><a<?= ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs) ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS') ?></a></li>
                     <?php endif;?>
                     <li><a<?= ($this->filters['sortby'] == 'owner') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs) ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_OWNER') ?></a></li>

@@ -172,7 +172,11 @@ endif;
                             <div class="preview" id="logo">
                                 <div id="logo_picked">
                                     <?php if ($this->group->get('logo')) : ?>
-                                        <?php $selectedPath = substr(PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS . $this->group->get('logo'), strlen(PATH_ROOT)); ?>
+                                        <?php $selectedPath = substr(
+                                            PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber')
+                                                . DS . 'uploads' . DS . $this->group->get('logo'),
+                                            strlen(PATH_ROOT),
+                                        ); ?>
                                         <img src="<?= rtrim(Request::root(true), '/') . $selectedPath ?>"
                                             alt="<?php echo $this->group->get('cn') ?>" />
                                     <?php else : ?>
@@ -304,7 +308,14 @@ endif;
                                             <select name="group_plugin[<?= $i ?>][access]" aria-label="<?= $this->escape($this->hub_group_plugins[$i]['title']) . ' ' . Lang::txt('COM_GROUPS_ACCESS') ?>">
                                                 <?php foreach ($levels as $level => $name) : ?>
                                                     <?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
-                                                    <?php if (($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') : ?>
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            $this->hub_group_plugins[$i]['name'] == 'overview'
+                                                            && $level != 'nobody'
+                                                        )
+                                                        || $this->hub_group_plugins[$i]['name'] != 'overview'
+                                                    ) : ?>
                                                         <option <?= $sel ?> value="<?= $level ?>"><?= $name ?></option>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>

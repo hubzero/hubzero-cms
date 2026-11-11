@@ -247,7 +247,11 @@ $this
                     </div>
                     <?php } ?>
 
-                    <?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
+                    <?php
+                    if (
+                        $this->config->get('simtool', 1)
+                        && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')
+                    ) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
                             <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?= $this->defaults['publishType'] == 'simtool' ? 'checked="checked"' : '' ?> class="option form-check-input" />
@@ -330,7 +334,11 @@ $this
                     </div>
                     <?php } ?>
 
-                    <?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
+                    <?php
+                    if (
+                        $this->config->get('simtool', 1)
+                        && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')
+                    ) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
                             <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?= $this->defaults['publishType'] == 'simtool' ? 'checked="checked"' : '' ?> class="option form-check-input" />
@@ -352,7 +360,13 @@ $this
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <span class="question-mark tooltips"
                             title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS') ?>">What should I choose?</span>
-                        <?= \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices') ?>
+                        <?= \Components\Tools\Helpers\Html::formSelect(
+                            'tool[exec]',
+                            't_exec',
+                            $execChoices,
+                            $this->defaults['exec'],
+                            'groupchoices',
+                        ) ?>
                     </label>
                 </div>
 
@@ -369,7 +383,12 @@ $this
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <span class="question-mark tooltips"
                             title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS') ?>">What should I choose?</span>
-                        <?= \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']) ?>
+                        <?= \Components\Tools\Helpers\Html::formSelect(
+                            'tool[code]',
+                            't_code',
+                            $codeChoices,
+                            $this->defaults['code'],
+                        ) ?>
                     </label>
                 </div>
 
@@ -379,7 +398,12 @@ $this
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <span class="question-mark tooltips"
                             title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS') ?>">What should I choose?</span>
-                        <?= \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']) ?>
+                        <?= \Components\Tools\Helpers\Html::formSelect(
+                            'tool[wiki]',
+                            't_wiki',
+                            $wikiChoices,
+                            $this->defaults['wiki'],
+                        ) ?>
                     </label>
                 </div>
 

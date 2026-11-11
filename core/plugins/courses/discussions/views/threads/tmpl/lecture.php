@@ -186,7 +186,9 @@ $base = $this->course->offering()->link();
                         <?php echo Html::input('token'); ?>
 
                         <p class="instructions">
-                            <?= Lang::txt('Click on a comment on the left to view a discussion or start your own above.') ?>
+                            <?= Lang::txt(
+                                'Click on a comment on the left to view a discussion or start your own above.',
+                            ) ?>
                         </p>
                     </form>
 

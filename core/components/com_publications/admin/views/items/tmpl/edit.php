@@ -132,14 +132,23 @@ $panels = [
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
                 <div class="input-wrap">
-                    <?= $fields ? $fields : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>' ?>
+                    <?= $fields
+                        ? $fields
+                        : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>' ?>
                 </div>
             </fieldset>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
-                    <?= $this->editor('release_notes', $this->escape(stripslashes($this->model->get('release_notes', ''))), '20', '10', 'notes', ['class' => 'minimal no-footer']) ?>
+                    <?= $this->editor(
+                        'release_notes',
+                        $this->escape(stripslashes($this->model->get('release_notes', ''))),
+                        '20',
+                        '10',
+                        'notes',
+                        ['class' => 'minimal no-footer'],
+                    ) ?>
                 </div>
             </fieldset>
             <fieldset class="adminform">
@@ -349,7 +358,16 @@ $panels = [
                 <?php endif; ?>
                 <div class="input-wrap">
                     <label for="publish_up"><?= Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE') ?>:</label><br />
-                    <?= Html::input('calendar', 'published_up', ($this->model->version->published_up && $this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')) ?>
+                    <?= Html::input(
+                        'calendar',
+                        'published_up',
+                        (
+                            $this->model->version->published_up
+                                && $this->model->version->published_up != '0000-00-00 00:00:00'
+                                ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s'))
+                                : ''
+                        ),
+                    ) ?>
                 </div>
                 <div class="input-wrap">
                     <label for="publish_down"><?= Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE') ?>:</label><br />

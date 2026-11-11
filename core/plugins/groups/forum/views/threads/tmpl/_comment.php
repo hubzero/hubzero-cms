@@ -211,12 +211,22 @@ if ($this->comment->isReported()) {
                  || $this->config->get('access-delete-post')
                  || $this->config->get('access-edit-post')
 ) { ?>
-                <?php if ($this->comment->get('parent') && ($this->config->get('access-delete-post') || $this->comment->get('created_by') == User::get('id'))) { ?>
+                <?php
+                if (
+                    $this->comment->get('parent')
+                    && (
+                        $this->config->get('access-delete-post') || $this->comment->get('created_by') == User::get('id')
+                    )
+                ) { ?>
                     <button type="submit" form="hz-post-action"
                         formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete"
                         data-id="c<?= $this->comment->get('id') ?>"><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></button>
                 <?php } ?>
-                <?php if (($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) && $this->comment->get('created_by') == User::get('id')) { ?>
+                <?php
+                if (
+                    ($this->config->get('access-edit-thread') || $this->config->get('access-edit-post'))
+                    && $this->comment->get('created_by') == User::get('id')
+                ) { ?>
                     <a class="icon-edit edit" data-id="c<?= $this->comment->get('id') ?>"
                         href="<?= Route::url($this->comment->link('edit')) ?>"><!--
                         --><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?><!--
@@ -225,7 +235,12 @@ if ($this->comment->isReported()) {
             <?php } ?>
 
             <?php if (!$this->comment->isReported()) { ?>
-                <?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+                <?php
+                if (
+                    !$this->thread->get('closed')
+                    && $this->config->get('threading') == 'tree'
+                    && $this->depth < $this->config->get('threading_depth', 3)
+                ) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
                     <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
                         data-txt-inactive="<?= Lang::txt('PLG_GROUPS_FORUM_REPLY') ?>"
@@ -249,7 +264,12 @@ if ($this->comment->isReported()) {
             <?php } ?>
             </div>
 
-            <?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+            <?php
+            if (
+                !$this->thread->get('closed')
+                && $this->config->get('threading') == 'tree'
+                && $this->depth < $this->config->get('threading_depth', 3)
+            ) { ?>
                 <div class="comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>"
                     id="comment-form<?= $this->comment->get('id') ?>">
             <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->thread->link()) ?>"

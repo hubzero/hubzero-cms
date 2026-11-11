@@ -240,7 +240,11 @@ $this
                                                 : '';
                                             ?>
                                         </span>
-                                        <?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
+                                        <?php
+                                        if (
+                                            $row->get('target_date')
+                                            && $row->get('target_date') != '0000-00-00 00:00:00'
+                                        ) { ?>
                                             <span class="ticket-target_date tooltips" title="<?= Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))) ?>">
                                                 <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                                             </span>
@@ -275,7 +279,9 @@ $this
                                     </p>
                                     <p>
                                         <a class="ticket-content" title="<?= $this->escape(str_replace(['<br />', '&amp;'], ['', '&'], $row->content)) ?>" href="<?= Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
-                                            <?= $row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND') ?>
+                                            <?= $row->content
+                                                ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200)
+                                                : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND') ?>
                                         </a>
                                     </p>
                                     <?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>

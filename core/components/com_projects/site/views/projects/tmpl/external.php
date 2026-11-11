@@ -65,7 +65,10 @@ $this->css('theme' . $theme . '.css');
     <section class="main section">
         <div class="project-inner-wrap grid">
             <?php $member = $this->model->member(); ?>
-            <?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $this->model->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
+            <?php $link = Route::url(
+                'index.php?option=com_projects&task=requestaccess&alias=' . $this->model->get('alias') . '&'
+                    . Session::getFormToken() . '=1',
+            ); ?>
             <?php if ($this->model->allowMembershipRequest()) : ?>
                 <?php if (!$member || $member->status == 2) : ?>
                     <div class="btn-container tooltips span4">

@@ -89,7 +89,14 @@ $revisions = $this->page
 
         <form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
             <p class="info">
-                <?= Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toLocal('Y-m-d H:i:s') . '</time>') ?>
+                <?= Lang::txt(
+                    'COM_WIKI_HISTORY_SUMMARY',
+                    count($revisions),
+                    '<time datetime="' . $this->page->get('created') . '">'
+                        . Date::of($this->page->get('created'))->toLocal('Y-m-d H:i:s') . '</time>',
+                    '<time datetime="' . $this->page->get('modified') . '">'
+                        . Date::of($this->page->get('modified'))->toLocal('Y-m-d H:i:s') . '</time>',
+                ) ?>
             </p>
 
             <div class="container">
@@ -107,7 +114,11 @@ $revisions = $this->page
                             <th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
                             <th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
                             <th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
-                            <?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
+                            <?php
+                            if (
+                                ($this->page->isLocked() && $this->page->access('manage'))
+                                || (!$this->page->isLocked() && $this->page->access('delete'))
+                            ) { ?>
                                 <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
                             <?php } ?>
                         </tr>
@@ -198,7 +209,11 @@ $revisions = $this->page
                                         </a>
                                     <?php } ?>
                                 </td>
-                                <?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
+                                <?php
+                                if (
+                                    ($this->page->isLocked() && $this->page->access('manage'))
+                                    || (!$this->page->isLocked() && $this->page->access('delete'))
+                                ) { ?>
                                     <?php if ($this->page->get('version_id') == $revision->get('id')) { ?>
                                     <td>
                                         (Current Version)

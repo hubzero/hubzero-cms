@@ -120,7 +120,14 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                 <input type="hidden" name="cid" value="<?php echo $comment->id; ?>" />
                                 <?php echo Html::input('token'); ?>
 
-                                <?= $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, ['class' => 'minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'comment',
+                                    $comment->comment,
+                                    5,
+                                    5,
+                                    'comment' . $comment->id,
+                                    ['class' => 'minimal no-footer'],
+                                ) ?>
 
                                 <p class="blog-submit">
                                     <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE') ?>"

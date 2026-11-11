@@ -40,7 +40,10 @@ $this
 </ul>
 
 <section class="main section">
-    <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+    <?php
+    if (
+        $this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered'
+    ) { ?>
     <div class="subject">
     <?php } ?>
 
@@ -93,12 +96,22 @@ $this
             <?php } ?>
 
             <?php if (!$this->post->get('parent')) { ?>
-                <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+                <?php
+                if (
+                    $this->config->get('access-plugin') == 'anyone'
+                    || $this->config->get('access-plugin') == 'registered'
+                ) { ?>
                     <div class="form-group">
                         <label for="field-access">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
                             <select name="fields[access]" id="field-access" class="form-control">
-                                <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')) ?>
+                                <?= Html::select(
+                                    'options',
+                                    Html::access('assetgroups'),
+                                    'value',
+                                    'text',
+                                    $this->post->get('access'),
+                                ) ?>
                             </select>
                         </label>
                     </div>
@@ -202,7 +215,12 @@ $this
                 <div class="form-group">
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
-                        <?= $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags') ?>
+                        <?= $this->autocompleter(
+                            'tags',
+                            'tags',
+                            $this->escape($this->post->tags('string')),
+                            'actags',
+                        ) ?>
                     </label>
                 </div>
 
@@ -288,7 +306,10 @@ $this
 
             <?php echo Html::input('token'); ?>
         </form>
-    <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+    <?php
+    if (
+        $this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered'
+    ) { ?>
     </div><!-- / .subject -->
     <aside class="aside">
         <p><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>

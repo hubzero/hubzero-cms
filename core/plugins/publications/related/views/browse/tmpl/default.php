@@ -103,7 +103,9 @@ $authorlist = '';
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?= $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->abstract)), 300)) ?>
+                                    <?= $this->escape(
+                                        \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->abstract)), 300),
+                                    ) ?>
                                 </div>
                         <?php } ?>
                     </td>

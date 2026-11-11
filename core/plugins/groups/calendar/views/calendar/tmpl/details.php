@@ -39,7 +39,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <span>&ndash;&nbsp;<?php echo $this->escape($this->calendar->get('title')); ?></span>
         <?php endif; ?>
     </span>
-    <?php if ($this->group->published == 1 && ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager')) : ?>
+    <?php
+    if (
+        $this->group->published == 1
+        && ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager')
+    ) : ?>
         <?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
             <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=delete&event_id=' . $this->event->get('id')) ?>" class="delete">Delete</button>
             <a class="edit" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=edit&event_id=' . $this->event->get('id')) ?>">
@@ -118,9 +122,21 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <tr>
                 <th scope="row" class="date"><span class="sr-only visually-hidden">Date:</span></th>
                 <td colspan="3">
-                    <?= $this->event->get('time_zone') ? Date::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T') ?>
+                    <?= $this->event->get('time_zone')
+                        ? Date::of($publish_up)->toTimezone(
+                            $this->event->get('time_zone'),
+                            'l, F d, Y @ h:i a T',
+                            $ignoreDst,
+                        )
+                        : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T') ?>
                     &mdash;
-                    <?= $this->event->get('time_zone') ? Date::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_down)->toLocal('l, F d, Y @ h:i a T') ?>
+                    <?= $this->event->get('time_zone')
+                        ? Date::of($publish_down)->toTimezone(
+                            $this->event->get('time_zone'),
+                            'l, F d, Y @ h:i a T',
+                            $ignoreDst,
+                        )
+                        : Date::of($publish_down)->toLocal('l, F d, Y @ h:i a T') ?>
                 </td>
             </tr>
         <?php else : ?>

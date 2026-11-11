@@ -141,7 +141,10 @@ $accept = $base . '/'
                                         </p>
                                     <?php } else { ?>
                                         <p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
-                                            <?= Lang::txt('You\'ve been invited to the "%s" group!', $this->escape($this->group->get('description'))) ?>
+                                            <?= Lang::txt(
+                                                'You\'ve been invited to the "%s" group!',
+                                                $this->escape($this->group->get('description')),
+                                            ) ?>
                                         </p>
                                     <?php } ?>
                                     <div style="text-align: center; margin: 2rem 0 1rem;">

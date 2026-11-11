@@ -117,7 +117,10 @@ if ($this->comment->isReported()) {
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
-                <?php if ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')) { ?>
+                <?php
+                if (
+                    $this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')
+                ) { ?>
                     <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')) ?>"><!--
                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                     --></a>

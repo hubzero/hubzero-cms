@@ -138,7 +138,10 @@ if ($revertAllowed && $this->pub->accepted()) {
                         <tr>
                             <td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
                             <td class="tbl-input"><?= $this->pub->version->get('doi') ? $this->pub->version->get('doi') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA') ?>
-                            <?= $this->pub->version->get('doi') ? ' <a href="' . $this->pub->config('doi_verify', 'http://data.datacite.org/') . $this->pub->version->get('doi') . '" rel="external">[&rarr;]</a>' : '' ?>
+                            <?= $this->pub->version->get('doi')
+                                ? ' <a href="' . $this->pub->config('doi_verify', 'http://data.datacite.org/')
+                                    . $this->pub->version->get('doi') . '" rel="external">[&rarr;]</a>'
+                                : '' ?>
                             </td>
                         </tr>
                         <?php } if ($this->pub->submitted()) { ?>
@@ -222,7 +225,12 @@ if ($revertAllowed && $this->pub->accepted()) {
                         if ($past->details->get('admin') != 1) { ?>
                                 <li>
                                     <p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH') ?></p>
-                                    <?= ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION') . '</a> ' ?>
+                                    <?= ' <a href="'
+                                        . Route::url(
+                                            $this->pub->link('edit') . '&action=newversion&ajax=1&selected_version='
+                                                . $this->selected_version,
+                                        ) . '" class="showinbox btn icon-add">'
+                                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION') . '</a> ' ?>
                                 </li>
                         <?php } ?>
                             <?php if ($past->details->get('admin') == 1) { ?>
@@ -247,8 +255,17 @@ if ($revertAllowed && $this->pub->accepted()) {
                             <li id="next-citation"><p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_ADD_CITATIONS') ?>
                                 <span class="block italic"><a href="<?= Route::url($this->pub->link('editversion') . '&section=citations') ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS') ?> &raquo;</a></span></p></li>
                             <?php } ?>
-                            <?= $this->pub->archived() ? '<li id="next-archive"><p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_ON') . ' <strong class="highlighted">' . $this->pub->archived('date') . '</strong>. ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_NO_CHANGE') . '</p></li>' : '' ?>
-                            <?php if ($this->pub->versionProperty('version_label', 'dev') && $this->pub->versionProperty('version_label', 'dev') != $this->pub->versionAlias) { ?>
+                            <?= $this->pub->archived()
+                                ? '<li id="next-archive"><p class="info">'
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_ON')
+                                    . ' <strong class="highlighted">' . $this->pub->archived('date') . '</strong>. '
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_NO_CHANGE') . '</p></li>'
+                                : '' ?>
+                            <?php
+                            if (
+                                $this->pub->versionProperty('version_label', 'dev')
+                                && $this->pub->versionProperty('version_label', 'dev') != $this->pub->versionAlias
+                            ) { ?>
                             <li id="next-draft"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
                             . ' (<strong>v.'
                             . $this->pub->versionProperty('version_label', 'dev')
@@ -262,7 +279,12 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 if ($revertAllowed) {
                                     echo ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_GRACE_PERIOD');
                                 } ?>
-                                <?= $revertAllowed && $allowArchive && $archiveDate ? '<p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED') . ' <strong class="highlighted">' . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</strong>, ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p>' : '' ?>
+                                <?= $revertAllowed && $allowArchive && $archiveDate
+                                    ? '<p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED')
+                                        . ' <strong class="highlighted">'
+                                        . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</strong>, '
+                                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p>'
+                                    : '' ?>
                                 <span class="revert-options">
                                 <?php if ($revertAllowed) {
                                     echo ' <a href="' . Route::url($this->pub->link('editversion') . '&action=revert')
@@ -296,7 +318,10 @@ if ($revertAllowed && $this->pub->accepted()) {
                         ?>
                         <li id="next-pending">
                             <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING');  ?></p>
-                            <?= $this->pub->version->get('doi') && !empty($citation) ? '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING_DOI_ISSUED') . '</p>' . '<div class="citeit">' . $citation . '</div>' : '' ?>
+                            <?= $this->pub->version->get('doi') && !empty($citation)
+                                ? '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING_DOI_ISSUED') . '</p>'
+                                    . '<div class="citeit">' . $citation . '</div>'
+                                : '' ?>
                         </li>
                         <?php
                         break;

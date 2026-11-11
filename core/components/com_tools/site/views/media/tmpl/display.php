@@ -55,7 +55,11 @@ $this
                 ?>
                 <tr>
                     <td width="100%">
-                        <?= Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . urlencode($docs[$docName])) ?>
+                        <?= Route::url(
+                            'index.php?option=com_resources&id='
+                                . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file='
+                                . urlencode($docs[$docName]),
+                        ) ?>
                     </td>
                     <td>
                         <a class="icon-delete delete delete-file" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=delete&amp;file=<?= urlencode($docs[$docName]) ?>&amp;resource=<?= $this->escape($this->resource) ?>&amp;tmpl=component&amp;subdir=<?= $this->escape($this->subdir) ?>&amp;<?= Session::getFormToken() ?>=1" target="filer" data-confirm="<?= $this->escape(Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName])) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">

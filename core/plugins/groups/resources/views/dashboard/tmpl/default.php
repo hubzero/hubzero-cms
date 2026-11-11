@@ -174,7 +174,12 @@ if ($this->results) {
                                 </tbody>
                             </table>
                         </div>
-                    <?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags((string) $line->itext), ENT_QUOTES, 'UTF-8'), 300)) ?>
+                    <?= $this->escape(
+                        \Hubzero\Utility\Str::truncate(
+                            html_entity_decode(strip_tags((string) $line->itext), ENT_QUOTES, 'UTF-8'),
+                            300,
+                        ),
+                    ) ?>
                     </div>
                 </td>
                 <td class="type"><?php echo $line->area; ?></td>

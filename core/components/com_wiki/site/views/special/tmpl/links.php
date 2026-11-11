@@ -113,7 +113,9 @@ endif;
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
-                                <?= $this->escape(stripslashes($row->get('title', '') ?: $row->get('pagename', '(untitled)'))) ?>
+                                <?= $this->escape(
+                                    stripslashes($row->get('title', '') ?: $row->get('pagename', '(untitled)')),
+                                ) ?>
                             </a>
                         </td>
                     </tr>

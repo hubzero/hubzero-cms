@@ -57,7 +57,13 @@ $this->css();
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_FORUM_FIELD_VIEW_ACCESS'); ?>
                                 <select class="form-control" name="fields[access]" id="field-access">
-                                    <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->category->get('access')) ?>
+                                    <?= Html::select(
+                                        'options',
+                                        Html::access('assetgroups'),
+                                        'value',
+                                        'text',
+                                        $this->category->get('access'),
+                                    ) ?>
                                 </select>
                             </label>
                         </div>

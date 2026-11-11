@@ -89,7 +89,13 @@ if ($this->post->get('id')) {
                         <label for="field-access">
                             <?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS'); ?>
                             <select class="form-control" name="fields[access]" id="field-access">
-                                <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')) ?>
+                                <?= Html::select(
+                                    'options',
+                                    Html::access('assetgroups'),
+                                    'value',
+                                    'text',
+                                    $this->post->get('access'),
+                                ) ?>
                             </select>
                         </label>
                     </div>

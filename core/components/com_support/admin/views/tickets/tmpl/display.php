@@ -244,7 +244,11 @@ $this
                                             <time datetime="<?= $lastcomment ?>"><?= Date::of($lastcomment)->relative() ?></time>
                                         </span>
                                         <?php } ?>
-                                        <?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
+                                        <?php
+                                        if (
+                                            $row->get('target_date')
+                                            && $row->get('target_date') != '0000-00-00 00:00:00'
+                                        ) { ?>
                                         <span class="ticket-target_date hasTip" title="<?= Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))) ?>">
                                             <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                                         </span>
@@ -262,7 +266,9 @@ $this
                                 </p>
                                 <p>
                                     <a class="ticket-content" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
-                                            <?= $this->escape($row->get('summary', Lang::txt('COM_SUPPORT_TICKET_NO_CONTENT'))) ?>
+                                            <?= $this->escape(
+                                                $row->get('summary', Lang::txt('COM_SUPPORT_TICKET_NO_CONTENT')),
+                                            ) ?>
                                     </a>
                                 </p>
                                     <?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>

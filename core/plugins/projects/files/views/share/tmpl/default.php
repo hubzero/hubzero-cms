@@ -32,7 +32,9 @@ if ($this->getError()) {
 <form id="hubForm-ajax" method="post" class=""
     action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')) ?>">
     <p class="notice">
-    <?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM') ?>
+    <?= $remoteControl
+        ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM')
+        : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM') ?>
     </p>
 
     <fieldset >

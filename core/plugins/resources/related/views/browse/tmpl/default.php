@@ -72,7 +72,9 @@ defined('_HZEXEC_') or die();
                                 </tbody>
                             </table>
                         </div>
-                        <?= $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->introtext)), 300)) ?>
+                        <?= $this->escape(
+                            \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->introtext)), 300),
+                        ) ?>
                     </div>
                 <?php } else { ?>
                     <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>

@@ -315,7 +315,11 @@ if ($secondaries->count() > 0) {
 
     <div class="col span12">
         <?php if ($this->newsletter->id != null) : ?>
-            <?php if ($this->newsletter->template_id == '-1' || (!$this->newsletter->template_id && $this->newsletter->content != '')) : ?>
+            <?php
+            if (
+                $this->newsletter->template_id == '-1'
+                || (!$this->newsletter->template_id && $this->newsletter->content != '')
+            ) : ?>
                 <fieldset class="adminform">
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
 
@@ -449,7 +453,9 @@ if ($secondaries->count() > 0) {
 
                                                     <?php if ($secondary->order < $secondary_highest_order) : ?>
                                                         <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1') ?>">
-                                                            <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN') ?>
+                                                            <?= Lang::txt(
+                                                                'COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN',
+                                                            ) ?>
                                                         </a>
                                                     <?php endif; ?>
                                                 </td>

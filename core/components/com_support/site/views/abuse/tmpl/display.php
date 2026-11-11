@@ -60,7 +60,9 @@ if (!$no_html) {
                             echo ($this->report->anon != 0) ? Lang::txt('JANONYMOUS') : $name;
                             echo ($this->report->href) ? '</a>' : '';
                         ?></p>
-                        <?= ($this->report->subject) ? '<p><strong>' . $this->escape(stripslashes($this->report->subject)) . '</strong></p>' : '' ?>
+                        <?= ($this->report->subject)
+                            ? '<p><strong>' . $this->escape(stripslashes($this->report->subject)) . '</strong></p>'
+                            : '' ?>
                         <blockquote
                             cite="<?= ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name ?>">
                             <p><?php echo Sanitize::html($this->report->text); ?></p>

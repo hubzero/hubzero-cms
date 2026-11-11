@@ -217,7 +217,11 @@ if ($label == 'none') {
                                                         }
                                                     }
                                                     ?>
-                                                    <?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+                                                    <?php
+                                                    if (
+                                                        $final != ''
+                                                        && $this->config->get("citation_sponsors", "yes") == 'yes'
+                                                    ) : ?>
                                                         <?php $final = substr($final, 0, -2); ?>
                                                         <p class="sponsor"><?= Lang::txt('COM_CITATIONS_ABSTRACT_BY') ?> <?= $final ?></p>
                                                     <?php endif; ?>
@@ -231,7 +235,10 @@ if ($label == 'none') {
                                                     echo $cite->citationDetails($this->openurl);
                                                 }
                                                 ?>
-                                                <?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
+                                                <?php
+                                                if (
+                                                    $this->config->get("citation_show_badges", "no") == "yes"
+                                                ) : ?>
                                                     <?= \Components\Citations\Helpers\Format::citationBadges($cite) ?>
                                                 <?php endif; ?>
 

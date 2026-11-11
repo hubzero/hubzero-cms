@@ -116,22 +116,58 @@ Toolbar::help('notes');
                         class="checkbox-toggle toggle-all"/>
                 </th>
                 <th class="left">
-                    <?= Html::grid('sort', 'COM_MEMBERS_USER_HEADING', 'u.name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_USER_HEADING',
+                        'u.name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
                 <th class="left">
-                    <?= Html::grid('sort', 'COM_MEMBERS_SUBJECT_HEADING', 'a.subject', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_SUBJECT_HEADING',
+                        'a.subject',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
                 <th class="priority-5">
-                    <?= Html::grid('sort', 'COM_MEMBERS_CATEGORY_HEADING', 'c.title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_CATEGORY_HEADING',
+                        'c.title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
                 <th class="priority-3">
-                    <?= Html::grid('sort', 'JSTATUS', 'a.state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'JSTATUS',
+                        'a.state',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
                 <th>
-                    <?= Html::grid('sort', 'COM_MEMBERS_REVIEW_HEADING', 'a.review_time', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_REVIEW_HEADING',
+                        'a.review_time',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
                 <th class="nowrap priority-6">
-                    <?= Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                    <?= Html::grid(
+                        'sort',
+                        'JGRID_HEADING_ID',
+                        'a.id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
                 </th>
             </tr>
         </thead>
@@ -177,7 +213,16 @@ Toolbar::help('notes');
                     <?php echo $this->escape($row->category->get('title')); ?>
                 </td>
                 <td class="center priority-4">
-                    <?= Html::grid('published', $row->get('state'), $i, 'notes.', $canChange, 'cb', $row->get('publish_up'), $row->get('publish_down')) ?>
+                    <?= Html::grid(
+                        'published',
+                        $row->get('state'),
+                        $i,
+                        'notes.',
+                        $canChange,
+                        'cb',
+                        $row->get('publish_up'),
+                        $row->get('publish_down'),
+                    ) ?>
                 </td>
                 <td class="center">
                     <?php if ($row->get('review_time') && $row->get('review_time') != '0000-00-00 00:00:00') : ?>

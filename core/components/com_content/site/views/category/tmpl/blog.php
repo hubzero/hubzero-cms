@@ -15,7 +15,12 @@ defined('_HZEXEC_') or die();
 Html::addIncludePath(PATH_COMPONENT . '/helpers');
 
 ?>
-<?php if ($this->params->get('show_page_heading') or $this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
+<?php
+if (
+    $this->params->get('show_page_heading') or $this->params->get('show_category_title', 1) or $this->params->get(
+        'page_subheading',
+    )
+) : ?>
     <header id="content-header">
         <?php if ($this->params->get('show_page_heading')) : ?>
             <h2>
@@ -39,7 +44,10 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 
         <?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
             <div class="category-desc">
-                <?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+                <?php
+                if (
+                    $this->params->get('show_description_image') && $this->category->getParams()->get('image')
+                ) : ?>
                     <img src="<?php echo $this->escape($this->category->getParams()->get('image')); ?>" alt="" />
                 <?php endif; ?>
                 <?php if ($this->params->get('show_description') && $this->category->description) : ?>
@@ -114,7 +122,11 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
             </div>
         <?php endif; ?>
 
-        <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+        <?php
+        if (
+            ($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2))
+            && ($this->pagination->get('pages.total') > 1)
+        ) : ?>
             <div class="pagination">
                 <?php /*if ($this->params->def('show_pagination_results', 1)) : ?>
                     <p class="counter">

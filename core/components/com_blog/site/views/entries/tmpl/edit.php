@@ -85,7 +85,14 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <label for="entrycontent"<?= $this->task == 'save' && !$this->entry->get('content') ? ' class="fieldWithErrors"' : '' ?>>
                         <?= Lang::txt('COM_BLOG_FIELD_CONTENT') ?> <span
                             class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
-                        <?= $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', ['class' => 'form-control']) ?>
+                        <?= $this->editor(
+                            'entry[content]',
+                            $this->escape($this->entry->content('raw')),
+                            50,
+                            40,
+                            'entrycontent',
+                            ['class' => 'form-control'],
+                        ) ?>
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                         <p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

@@ -558,7 +558,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         $__ptype  = isset($presentation->type) ? strtolower((string) $presentation->type) : '';
         $__pmedia = isset($presentation->media) ? array_values((array) $presentation->media) : [];
     ?>
-    <?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
+    <?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD')
+        ? 'presentation-hd'
+        : ''; ?>
     <div id="presenter-container">
         <div id="presenter-header">
             <div id="title"><?php echo $this->escape($this->asset->get('title')); ?></div>

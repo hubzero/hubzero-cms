@@ -123,7 +123,10 @@ $this->css();
                 <?php if ($this->config->get('banking')) { ?>
                     <td class="reward">
                         <span class="entry-reward">
-                        <?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)) { ?>
+                        <?php
+                        if (
+                            isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)
+                        ) { ?>
                             <a class="bonus tooltips" href="<?= Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action') ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . $item->bonusgivenby . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>"><?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span></a>
                         <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
                             <a class="nobonus tooltips" href="<?= Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action') ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>"><?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span></a>

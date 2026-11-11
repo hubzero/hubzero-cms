@@ -65,7 +65,9 @@ Toolbar::cancel();
                     <label for="field-ordering"><?php echo Lang::txt('COM_GROUPS_MODULES_ORDERING'); ?>:</label>
                     <select name="module[ordering]" id="field-ordering">
                         <?php foreach ($this->order as $k => $order) : ?>
-                            <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
+                            <?php $sel = ($order->get('title') == $this->module->get('title'))
+                                ? 'selected="selected"'
+                                : ''; ?>
                             <option <?= $sel ?> value="<?= ($k + 1) ?>"><?= ($k + 1) . '. ' . $this->escape($order->get('title')) ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -96,7 +98,9 @@ Toolbar::cancel();
                     <?php foreach ($this->pages as $i => $page) : ?>
                         <div class="input-wrap">
                             <label for="assigned<?php echo $i; ?>">
-                                <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
+                                <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu))
+                                    ? 'checked="checked"'
+                                    : ''; ?>
                                 <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]"
                                     id="assigned<?= $i ?>"
                                     value="<?= $page->get('id') ?>" /> <?= $this->escape($page->get('title')) ?>

@@ -78,14 +78,31 @@ if ($this->lecture) {
                         <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
-                <?php if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) { ?>
-                    <?php if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) { ?>
+                <?php
+                if (
+                    !$this->comment->get('anonymous')
+                    && $this->course->offering()->member($this->comment->get('created_by'))->get('id')
+                ) { ?>
+                    <?php
+                    if (
+                        !$this->course->offering()->member($this->comment->get('created_by'))->get('student')
+                    ) { ?>
                     <span class="role <?= strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')) ?>">
-                        <?= $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))) ?>
+                        <?= $this->escape(
+                            stripslashes(
+                                $this->course->offering()->member($this->comment->get('created_by'))->get('role_title'),
+                            ),
+                        ) ?>
                     </span>
                     <?php } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
                         <span class="role <?= strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')) ?>">
-                            <?= $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))) ?>
+                            <?= $this->escape(
+                                stripslashes(
+                                    $this->course->offering()->member($this->comment->get('created_by'))->get(
+                                        'role_title',
+                                    ),
+                                ),
+                            ) ?>
                         </span>
                     <?php } ?>
                 <?php } ?>
@@ -173,7 +190,14 @@ if ($this->lecture) {
                             <label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
                                 <span
                                     class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
-                                <?= $this->editor('fields[comment]', '', 35, 5, 'comment_' . $this->comment->get('id') . '_reply', ['class' => 'minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'fields[comment]',
+                                    '',
+                                    35,
+                                    5,
+                                    'comment_' . $this->comment->get('id') . '_reply',
+                                    ['class' => 'minimal no-footer'],
+                                ) ?>
                             </label>
 
                             <label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">

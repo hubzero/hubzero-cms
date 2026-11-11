@@ -41,7 +41,9 @@ $team = $this->model->team($filters = ['status' => 1]);
         <?php foreach ($team as $member) {  ?>
             <option value="<?php echo $member->userid; ?>
             " <?= $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : '' ?>><?= $member->fullname ?>
-                           <?= $member->userid == $this->model->get('owned_by_user') ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')' : '' ?></option>
+                           <?= $member->userid == $this->model->get('owned_by_user')
+                               ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'
+                               : '' ?></option>
         <?php } ?>
             </select>
         </label>

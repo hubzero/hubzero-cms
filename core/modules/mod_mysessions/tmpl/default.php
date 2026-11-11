@@ -118,7 +118,9 @@ $base = rtrim(Request::base(true), '/');
                                     title="<?= Lang::txt('MOD_MYSESSIONS_RESUME_TITLE') ?>">
                                     <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_RESUME')); ?>
                                 </a>
-                                <?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
+                                <?php $tcls = ($this->params->get('terminate_double_check', 1))
+                                    ? 'terminate-confirm'
+                                    : 'terminate'; ?>
                                 <?php if (User::get('username') == $session->username) : ?>
                                     <a class="btn icon-terminate <?= $tcls ?>" href="<?= $terminateLink ?>"
                                         title="<?= Lang::txt('MOD_MYSESSIONS_TERMINATE_TITLE') ?>">

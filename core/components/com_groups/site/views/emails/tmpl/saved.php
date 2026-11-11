@@ -314,7 +314,11 @@ $onOffLabel = function ($v) {
                                     <?php else : ?>
                                         &#60;Empty&#62;
                                     <?php endif; ?>
-                                    <?= $wasMarker('public_desc', $this->group->get('public_desc'), isset($before['public_desc']) ? $before['public_desc'] : null) ?>
+                                    <?= $wasMarker(
+                                        'public_desc',
+                                        $this->group->get('public_desc'),
+                                        isset($before['public_desc']) ? $before['public_desc'] : null,
+                                    ) ?>
                                 </td>
                             </tr>
 
@@ -333,7 +337,11 @@ $onOffLabel = function ($v) {
                                     <?php else : ?>
                                         &#60;Empty&#62;
                                     <?php endif; ?>
-                                    <?= $wasMarker('private_desc', $this->group->get('private_desc'), isset($before['private_desc']) ? $before['private_desc'] : null) ?>
+                                    <?= $wasMarker(
+                                        'private_desc',
+                                        $this->group->get('private_desc'),
+                                        isset($before['private_desc']) ? $before['private_desc'] : null,
+                                    ) ?>
                                 </td>
                             </tr>
 
@@ -354,7 +362,11 @@ $onOffLabel = function ($v) {
                                     <?php else : ?>
                                         &#60;Not Set&#62;
                                     <?php endif; ?>
-                                    <?= $wasMarker('logo', $this->group->get('logo'), isset($before['logo']) ? $before['logo'] : null) ?>
+                                    <?= $wasMarker(
+                                        'logo',
+                                        $this->group->get('logo'),
+                                        isset($before['logo']) ? $before['logo'] : null,
+                                    ) ?>
                                 </td>
                             </tr>
 

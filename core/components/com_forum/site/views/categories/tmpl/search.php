@@ -112,19 +112,26 @@ $this
                                                 <span class="entry-date">
                                                     <?php echo $row->created('date'); ?>
                                                 </span>
-                                                <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
+                                                <?= Lang::txt(
+                                                    'COM_FORUM_BY_USER',
+                                                    '<span class="entry-author">' . $name . '</span>',
+                                                ) ?>
                                             </span>
                                         </td>
                                         <td class="priority-4">
                                             <span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
                                             <span class="entry-details section-name">
-                                                <?= $this->escape(\Hubzero\Utility\Str::truncate($section, 100, ['exact' => true])) ?>
+                                                <?= $this->escape(
+                                                    \Hubzero\Utility\Str::truncate($section, 100, ['exact' => true]),
+                                                ) ?>
                                             </span>
                                         </td>
                                         <td class="priority-3">
                                             <span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
                                             <span class="entry-details category-name">
-                                                <?= $this->escape(\Hubzero\Utility\Str::truncate($category, 100, ['exact' => true])) ?>
+                                                <?= $this->escape(
+                                                    \Hubzero\Utility\Str::truncate($category, 100, ['exact' => true]),
+                                                ) ?>
                                             </span>
                                         </td>
                                     </tr>

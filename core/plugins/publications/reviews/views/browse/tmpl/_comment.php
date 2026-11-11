@@ -217,7 +217,14 @@ if ($this->comment->get('publication_id')) {
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN') . '</a>') ?>
+                    <?= Lang::txt(
+                        'PLG_PUBLICATIONS_REVIEWS_PLEASE_LOGIN_TO_ANSWER',
+                        '<a href="'
+                            . Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($this->base, false, true)),
+                            ) . '">' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN') . '</a>',
+                    ) ?>
                 </p>
                 <?php } else { ?>
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"

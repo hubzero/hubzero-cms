@@ -124,7 +124,9 @@ switch ($this->which) {
                         <?php echo $role; ?>
                     </td>
                     <td class="th_membership">
-                        <?= ($row->get('sync_group')) ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>' ?>
+                        <?= ($row->get('sync_group'))
+                            ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>'
+                            : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>' ?>
                     </td>
                 </tr>
                 <?php

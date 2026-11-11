@@ -128,7 +128,9 @@ if ($this->name == 'curator') {
         <div class="block-subject">
         <?php } ?>
             <h5 class="element-title"><?php echo $this->manifest->label; ?>
-                <?= is_array($this->attachments) && count($this->attachments) ? ' (' . count($this->attachments) . ')' : '' ?>
+                <?= is_array($this->attachments) && count($this->attachments)
+                    ? ' (' . count($this->attachments) . ')'
+                    : '' ?>
                 <?php
                 $showDownloadAll = is_array($this->attachments)
                     && count($this->attachments) > 1
@@ -142,7 +144,9 @@ if ($this->name == 'curator') {
                         title="<?php echo $bundleName; ?>"
                     ><?php echo $downloadLabel; ?></a></span>
                 <?php } ?></h5>
-                <?= $this->name == 'curator' ? $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName) : '' ?>
+                <?= $this->name == 'curator'
+                    ? $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName)
+                    : '' ?>
         <?php if (is_array($this->attachments) && count($this->attachments) > 0) { ?>
         <div class="list-wrapper">
             <ul class="itemlist">

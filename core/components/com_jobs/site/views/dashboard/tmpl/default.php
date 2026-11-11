@@ -80,7 +80,8 @@ if ($this->masterAdmin) {
                 <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_DASHBOARD_TOTAL_POOL'); ?></span>
                 <p>
                     <span class="view">
-                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>' ?>
+                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes')
+                            . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>' ?>
                     </span><?php echo $this->stats['total_resumes']; ?>
                 </p>
                 <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_DASHBOARD_SHORTLISTED'); ?></span>
@@ -140,7 +141,9 @@ if ($this->masterAdmin) {
                                                            . ')';
                                                    } ?>
                                 </span>
-                                <?= '<span class="code">' . $mj->code . '</span>: <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '">' . \Hubzero\Utility\Str::truncate($mj->title, 50) . '</a>' ?>
+                                <?= '<span class="code">' . $mj->code . '</span>: <a href="'
+                                    . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code)
+                                    . '">' . \Hubzero\Utility\Str::truncate($mj->title, 50) . '</a>' ?>
                     </p>
                     <?php }
                 } ?>
@@ -168,9 +171,14 @@ if ($this->masterAdmin) {
                     <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_EXPIRE_DATE'); ?></span>
                     <p><?php echo $expiredate; ?></p>
                     <p>
-                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe') . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL') . ' ]</a>' ?>
+                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe')
+                            . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL')
+                            . ' ]</a>' ?>
                     </p>
-                    <?php \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid)); ?>
+                    <?php \Components\Jobs\Helpers\Html::confirmscreen(
+                        Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid),
+                        Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid),
+                    ); ?>
                     <div class="spacer"></div>
 
                     <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION') ?><span><?= Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login ?></span></h3>

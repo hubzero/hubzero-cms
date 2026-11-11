@@ -128,7 +128,13 @@ if (!$this->comment->get('item_id')) {
                         href="<?= Route::url($this->comment->link('report')) ?>"><!--
                     --><?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?><!--
                 --></a>
-                <?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
+                <?php
+                if (
+                    User::get('id') == $this->question->get('created_by')
+                    && $this->question->isOpen()
+                    && $this->comment->get('qid')
+                    && $this->depth <= 1
+                ) { ?>
                     <a class="icon-success accept" href="<?= Route::url($this->comment->link('accept')) ?>"><?= Lang::txt('COM_ANSWERS_ACCEPT_ANSWER') ?></a>
                 <?php } ?>
             <?php } ?>
@@ -138,7 +144,14 @@ if (!$this->comment->get('item_id')) {
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>">
                 <?php if (User::get('guest')) { ?>
                 <p class="warning">
-                    <?= Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>') ?>
+                    <?= Lang::txt(
+                        'COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER',
+                        '<a href="'
+                            . Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($this->base, false, true)),
+                            ) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>',
+                    ) ?>
                 </p>
                 <?php } else { ?>
                 <form id="cform<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"

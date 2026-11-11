@@ -170,7 +170,13 @@ $month = date("m", strtotime($this->event->get('publish_up')));
         <?php endif; ?>
     </fieldset>
 
-    <?php if ($this->params->get('show_position') || $this->params->get('show_degree') || $this->params->get('show_gender') || $this->params->get('show_race')) : ?>
+    <?php
+    if (
+        $this->params->get('show_position')
+        || $this->params->get('show_degree')
+        || $this->params->get('show_gender')
+        || $this->params->get('show_race')
+    ) : ?>
         <fieldset>
             <legend><?php echo Lang::txt('Demographics'); ?></legend>
             <?php if ($this->params->get('show_position')) : ?>

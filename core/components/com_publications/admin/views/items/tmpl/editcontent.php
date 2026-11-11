@@ -147,7 +147,17 @@ if ($tmpl != 'component') {
                     <tr>
                         <td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE'); ?></td>
                         <td>
-                            <?= $element->params->role == 1 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY') : ($element->params->role == 2 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND') : ($element->params->role == 3 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_GALLERY') : "")) ?>
+                            <?= $element->params->role == 1
+                                ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY')
+                                : (
+                                    $element->params->role == 2
+                                        ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND')
+                                        : (
+                                            $element->params->role == 3
+                                                ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_GALLERY')
+                                                : ""
+                                        )
+                                ) ?>
                         </td> 
                     </tr>
                 </tbody>

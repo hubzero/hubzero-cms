@@ -56,7 +56,11 @@ Html::behavior('modal', 'a.modals');
                                 // it shows an administrator literal <p> and <a> tags. Purify it, which
                                 // is what the site twin (site/views/abuse/tmpl/display.php) does.?>
                                 <p><?= (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : '' ?></p>
-                                <?= is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject != '' ? '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>' : '' ?>
+                                <?= is_object($this->reported)
+                                    && isset($this->reported->subject)
+                                    && $this->reported->subject != ''
+                                    ? '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>'
+                                    : '' ?>
                             </td>
                         </tr>
                     </tbody>

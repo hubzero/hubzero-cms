@@ -112,7 +112,13 @@ $this->js();
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_ACCESS_DESC'); ?>">
                     <label for="field-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                     <select name="fields[access]" id="field-access">
-                        <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->item->access) ?>
+                        <?= Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->item->access,
+                        ) ?>
                     </select>
                 </div>
 

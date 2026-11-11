@@ -32,7 +32,9 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                     <?php if (isset($this->result['_childDocuments_'])) : ?>
                         <?php foreach ($this->result['_childDocuments_'] as $index => $badge) : ?>
                             <?php if (isset($badge['badge_b']) && $badge['badge_b']) : ?>
-                                <?php $description = !empty($badge['description']) ? $badge['description'] : $badge['title'][0];?>
+                                <?php $description = !empty($badge['description'])
+                                    ? $badge['description']
+                                    : $badge['title'][0]; ?>
                                 <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
                                     <?php echo $this->escape($badge['title'][0]); ?>
                                 </a>
@@ -110,7 +112,9 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                     <?php foreach ($this->result['_childDocuments_'] as $tag) : ?>
                         <?php if (!empty($tag['title'][0])) : ?>
                         <li>
-                            <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0]; ?>
+                            <?php $description = !empty($tag['description'])
+                                ? $tag['description']
+                                : $tag['title'][0]; ?>
                             <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
                                 <?php echo $this->escape($tag['title'][0]); ?>
                             </a>

@@ -59,7 +59,13 @@ $access = Html::access('assetgroups');
             </div>
             <div class="col span7">
                 <label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-                <?= Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'class="filter filter-submit"') ?>
+                <?= Components\Kb\Admin\Helpers\Html::categories(
+                    $this->categories,
+                    $this->filters['category'],
+                    'category',
+                    'filter-category',
+                    'class="filter filter-submit"',
+                ) ?>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">

@@ -83,7 +83,11 @@ Toolbar::deleteList();
                         <?php echo $pageNav->orderUpIcon($i, ($row->ordering != ($orderings[$i - 1] ?? null))); ?>
                     </td>
                     <td>
-                        <?= $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != ($orderings[$i + 1] ?? null))) ?>
+                        <?= $pageNav->orderDownIcon(
+                            $i,
+                            $pageNav->total,
+                            ($row->ordering != ($orderings[$i + 1] ?? null)),
+                        ) ?>
                     </td>
                     <td><?php echo $row->ordering; ?></td>
                 </tr>

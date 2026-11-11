@@ -229,7 +229,17 @@ $membership_control = $params->get('membership_control', 1);
                     </li>
                 <?php endif; ?>
 
-                <?php if (($isManager || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.invite')) && $membership_control == 1) : ?>
+                <?php
+                if (
+                    (
+                        $isManager
+                        || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction(
+                            $group,
+                            'group.invite',
+                        )
+                    )
+                    && $membership_control == 1
+                ) : ?>
                     <li>
                         <a class="membership" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=members') ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE'); ?>
@@ -238,7 +248,11 @@ $membership_control = $params->get('membership_control', 1);
                     </li>
                 <?php endif; ?>
 
-                <?php if ($isManager || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.edit')) : ?>
+                <?php
+                if (
+                    $isManager
+                    || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.edit')
+                ) : ?>
                     <li>
                         <a class="settings" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=edit') ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT'); ?>
@@ -247,7 +261,11 @@ $membership_control = $params->get('membership_control', 1);
                     </li>
                 <?php endif; ?>
 
-                <?php if ($isManager || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.pages')) : ?>
+                <?php
+                if (
+                    $isManager
+                    || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.pages')
+                ) : ?>
                     <li>
                         <a class="pages" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=pages') ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES'); ?>
@@ -256,7 +274,10 @@ $membership_control = $params->get('membership_control', 1);
                     </li>
                 <?php endif; ?>
 
-                <?php if (($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1) : ?>
+                <?php
+                if (
+                    ($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1
+                ) : ?>
                     <li>
                         <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel') ?>" class="cancel">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL'); ?>

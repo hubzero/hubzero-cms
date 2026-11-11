@@ -156,7 +156,11 @@ if (
                 <?php endif; ?>
             </div>
 
-            <?php if ($this->authorized == 'manager' || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
+            <?php
+            if (
+                $this->authorized == 'manager'
+                || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')
+            ) : ?>
                 <div class="page-controls col span2 omega">
                     <ul class="page-controls">
                     <?php if ($this->page->get('id') != 0) : ?>

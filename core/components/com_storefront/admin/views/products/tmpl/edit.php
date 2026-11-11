@@ -92,12 +92,26 @@ if (empty($this->meta->qtyTxt)) {
             <div class="input-wrap">
                 <label for="field-description"><?= Lang::txt('COM_STOREFRONT_DESCRIPTION') ?>: <span
                     class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                <?= $this->editor('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), 50, 10, 'field-description', ['buttons' => false]) ?>
+                <?= $this->editor(
+                    'fields[pDescription]',
+                    $this->escape(stripslashes($this->row->getDescription())),
+                    50,
+                    10,
+                    'field-description',
+                    ['buttons' => false],
+                ) ?>
             </div>
 
             <div class="input-wrap">
                 <label for="field-features"><?php echo Lang::txt('COM_STOREFRONT_FEATURES'); ?>:</label><br />
-                <?= $this->editor('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), 50, 10, 'field-features', ['buttons' => false]) ?>
+                <?= $this->editor(
+                    'fields[pFeatures]',
+                    $this->escape(stripslashes($this->row->getFeatures())),
+                    50,
+                    10,
+                    'field-features',
+                    ['buttons' => false],
+                ) ?>
             </div>
         </fieldset>
     </div>

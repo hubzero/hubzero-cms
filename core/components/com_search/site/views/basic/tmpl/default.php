@@ -71,7 +71,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <ol class="results">
                 <?php foreach ($this->results as $res) : ?>
                     <li>
-                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->getPlugin()), [$res]); ?>
+                        <?php $before = Event::trigger(
+                            'search.onBeforeSearchRender' . ucfirst($res->getPlugin()),
+                            [$res],
+                        ); ?>
                         <p class="title"><a
                             href="<?= $res->getLink() ?>"><?= $this->escape($res->getHighlightedTitle()) ?></a></p>
                         <div class="summary">

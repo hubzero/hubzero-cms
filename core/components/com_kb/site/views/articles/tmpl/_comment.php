@@ -95,7 +95,10 @@ if ($this->comment->isReported()) {
                 <?php } ?>
             <?php }*/ ?>
             <?php if (!$this->comment->get('reports')) { ?>
-                <?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
+                <?php
+                if (
+                    $this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()
+                ) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
                     <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
                         data-txt-inactive="<?= Lang::txt('COM_KB_REPLY') ?>"
@@ -124,7 +127,13 @@ if ($this->comment->isReported()) {
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?= Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))) ?>
+                    <?= Lang::txt(
+                        'COM_KB_MUST_LOG_IN',
+                        Route::url(
+                            'index.php?option=com_users&view=login&return='
+                                . base64_encode(Route::url($this->base, false, true)),
+                        ),
+                    ) ?>
                 </p>
                 <?php } else { ?>
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
@@ -154,7 +163,14 @@ if ($this->comment->isReported()) {
 
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?php echo Lang::txt('COM_KB_ENTER_COMMENTS'); ?></span>
-                            <?= $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']) ?>
+                            <?= $this->editor(
+                                'comment[content]',
+                                '',
+                                35,
+                                4,
+                                'comment_' . $this->comment->get('id') . '_content',
+                                ['class' => 'minimal no-footer'],
+                            ) ?>
                         </label>
 
                         <label class="comment-anonymous-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">

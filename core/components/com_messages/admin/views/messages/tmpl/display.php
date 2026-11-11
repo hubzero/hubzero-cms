@@ -79,7 +79,13 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
             <div class="col span6 filter-select">
                 <select name="filter_state" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?= Html::select('options', Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']) ?>
+                    <?= Html::select(
+                        'options',
+                        Components\Messages\Helpers\Utilities::getStateOptions(),
+                        'value',
+                        'text',
+                        $this->filters['state'],
+                    ) ?>
                 </select>
             </div>
         </div>

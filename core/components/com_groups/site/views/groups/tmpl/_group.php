@@ -84,7 +84,9 @@ $published = ($group->get('published')) ? true : false;
                 <span class="group-details">
                     <span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
                     <span class="group-title" data-id="<?php echo $group->get('gidNumber'); ?>">
-                        <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)) ?>
+                        <?= $this->escape(
+                            Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60),
+                        ) ?>
                     </span>
                 </span>
             </a>

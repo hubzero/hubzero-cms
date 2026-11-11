@@ -75,7 +75,10 @@ switch ($this->comment->get('rating')) {
                 <p class="comment-title">
                     <strong>
                     <?php if (!$this->comment->get('anonymous')) { ?>
-                        <?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                        <?php
+                        if (
+                            in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())
+                        ) { ?>
                             <a href="<?php echo Route::url($this->comment->creator()->link()); ?>">
                                 <?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
                             </a>
@@ -124,17 +127,32 @@ switch ($this->comment->get('rating')) {
 
             <?php if (!$this->comment->isReported()) { ?>
                 <div class="comment-options">
-                <?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
+                <?php
+                if (
+                    ($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id'))
+                    || $this->params->get('access-manage-comment')
+                ) { ?>
                     <a class="icon-edit edit" href="<?= Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment') ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
-                <?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
+                <?php
+                if (
+                    (
+                        $this->params->get('access-delete-comment')
+                        && $this->comment->get('created_by') == User::get('id')
+                    )
+                    || $this->params->get('access-manage-comment')
+                ) { ?>
                     <button type="submit" form="hz-post-action"
                         formaction="<?= Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')) ?>"
                         class="icon-delete delete"><?= Lang::txt('PLG_COURSES_REVIEWS_DELETE') ?></button>
                 <?php } ?>
-                <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+                <?php
+                if (
+                    $this->params->get('access-create-comment')
+                    && $this->depth < $this->params->get('comments_depth', 3)
+                ) { ?>
                     <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
                         data-txt-inactive="<?= Lang::txt('PLG_COURSES_REVIEWS_REPLY') ?>"
                         href="<?= Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment') ?>"
@@ -148,7 +166,10 @@ switch ($this->comment->get('rating')) {
                 </div><!-- / .comment-options -->
             <?php } ?>
 
-            <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+            <?php
+            if (
+                $this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)
+            ) { ?>
                 <div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
                     <form action="<?php echo Route::url($this->url); ?>" method="post" enctype="multipart/form-data">
                         <fieldset>
@@ -167,7 +188,14 @@ switch ($this->comment->get('rating')) {
 
                             <label for="comment-<?php echo $this->comment->get('id'); ?>-content">
                                 <span class="label-text"><?= Lang::txt('PLG_COURSES_REVIEWS_ENTER_COMMENTS') ?></span>
-                                <?= $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', ['class' => 'minimal no-footer']) ?>
+                                <?= $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    35,
+                                    4,
+                                    'comment-' . $this->comment->get('id') . '-content',
+                                    ['class' => 'minimal no-footer'],
+                                ) ?>
                             </label>
 
                             <label class="reply-anonymous-label"
