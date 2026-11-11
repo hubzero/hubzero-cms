@@ -132,9 +132,19 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                             <p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CLICK_CREATE_BUTTON'); ?></p>
                         </div>
                         <div class="col span4 omega">
-                            <p><a id="create-orcid" class="btn" href="https://<?= $this->config->get('orcid_service', 'members') == 'sandbox' ? 'sandbox.' : '' ?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
-                            <?= htmlspecialchars('&') ?>response_type=code<?= htmlspecialchars('&') ?>scope=/authenticate<?= htmlspecialchars('&') ?>redirect_uri=<?php echo urlencode($redirectURI) ?><?= htmlspecialchars('&') ?>family_names=<?= $this->escape($lname) ?>
-                            <?= htmlspecialchars('&') ?>given_names=<?= $this->escape($fname) ?><?= htmlspecialchars('&') ?>email=<?= $this->escape($email) ?> " rel="nofollow external">
+                            <?php
+                            // One address, with nothing between its parts: indentation inside the attribute
+                            // would become spaces in the address
+                            $amp = htmlspecialchars('&');
+                            $orcidUrl = 'https://' . ($this->config->get('orcid_service', 'members') == 'sandbox' ? 'sandbox.' : '')
+                                . 'orcid.org/oauth/authorize?client_id=' . $clientID
+                                . $amp . 'response_type=code' . $amp . 'scope=/authenticate'
+                                . $amp . 'redirect_uri=' . urlencode($redirectURI)
+                                . $amp . 'family_names=' . $this->escape($lname)
+                                . $amp . 'given_names=' . $this->escape($fname)
+                                . $amp . 'email=' . $this->escape($email);
+                            ?>
+                            <p><a id="create-orcid" class="btn" href="<?= $orcidUrl ?>" rel="nofollow external">
                             <?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT'); ?></a></p>
                         </div>
                     </div>
