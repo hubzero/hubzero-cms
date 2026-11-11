@@ -131,7 +131,8 @@ if ($this->contributors) {
                         $fieldName = 'authors['
                             . (isset($contributor->authorid) ? $contributor->authorid : $contributor->id) . '][role]';
                         ?>
-                        <select name="<?= $fieldName ?>" id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
+                        <select name="<?= $fieldName ?>"
+                            id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
                             <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>>
                                 <?= Lang::txt('COM_TOOLS_AUTHOR') ?>
                             </option>
@@ -184,7 +185,8 @@ if ($this->contributors) {
                             . $this->id . '&amp;ver=' . $this->escape($this->version) . '&amp;'
                             . Session::getFormToken() . '=1';
                         ?>
-                        <a class="icon-delete delete" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TOOLS_DELETE') ?>">
+                        <a class="icon-delete delete" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('COM_TOOLS_DELETE') ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
                         </a>
                     </td>

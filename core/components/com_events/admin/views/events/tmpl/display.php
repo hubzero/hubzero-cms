@@ -176,7 +176,8 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                         $onclick = 'return listItemTask(\'cb' . $i . '\',\'' . ($row->state ? 'unpublish' : 'publish')
                             . '\')';
                         ?>
-                        <a class="state <?= $trashClass ?> hasTip" href="javascript:void(0);" onclick="<?= $onclick ?>" title="<?= Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO') ?>::<?= $times ?>">
+                        <a class="state <?= $trashClass ?> hasTip" href="javascript:void(0);" onclick="<?= $onclick ?>"
+                            title="<?= Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO') ?>::<?= $times ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>

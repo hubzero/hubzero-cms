@@ -102,7 +102,8 @@ $this->js();
                         $onclick = 'if (confirm(' . $this->escape(json_encode(Lang::txt('Remove Repository') . '?'))
                             . ')) { Joomla.submitform(\'remove\', document.getElementById(\'item-form\')); }';
                         ?>
-                        <button type="button" class="button" onclick="<?= $onclick ?>"><?= Lang::txt('Remove Repository') ?></button>
+                        <button type="button" class="button"
+                            onclick="<?= $onclick ?>"><?= Lang::txt('Remove Repository') ?></button>
                     </p>
                 <?php endif; ?>
             </div>

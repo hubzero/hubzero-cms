@@ -69,7 +69,8 @@ $timezone = $userLocalizer->getTimezone();
         $dataImg = Request::base(true) . '/core/plugins/groups/calendar/assets/img/swatch-'
             . (($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray') . '.png';
         ?>
-        <option <?= $sel ?> data-img="<?= $dataImg ?>" value="<?= $calendar->get('id') ?>" class="calendar-picker-option"><?= $this->escape($calendar->get('title')) ?></option>
+        <option <?= $sel ?> data-img="<?= $dataImg ?>" value="<?= $calendar->get('id') ?>"
+            class="calendar-picker-option"><?= $this->escape($calendar->get('title')) ?></option>
     <?php endforeach; ?>
 </select>
 

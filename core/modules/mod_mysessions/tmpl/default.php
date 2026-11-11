@@ -64,7 +64,8 @@ $base = rtrim(Request::base(true), '/');
                                 $titleText = Lang::txt('MOD_MYSESSIONS_QUICK_LAUNCH') . ' :: '
                                     . Lang::txt('MOD_MYSESSIONS_RESUME_TITLE');
                                 ?>
-                                <a class="session-title-quicklaunch tooltips" title="<?= $titleText ?>" href="<?= $resumeLink ?>">
+                                <a class="session-title-quicklaunch tooltips" title="<?= $titleText ?>"
+                                    href="<?= $resumeLink ?>">
                                     <img class="snapshot" data-src="<?php echo $snapshot; ?>" />
                                 </a>
                             <?php else : ?>

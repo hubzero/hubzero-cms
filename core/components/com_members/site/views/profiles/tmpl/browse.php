@@ -108,7 +108,10 @@ $sortDirSelected = function ($value) use ($view) {
                                                             $field->get('name') . '-' . $option->get('value'),
                                                         );
                                                     ?>
-                                                    <input class="option form-check-input" type="checkbox" name="q[<?= $this->escape($field->get('name')) ?>][]" value="<?= $this->escape($option->get('value')) ?>" <?= $checked ?> id="<?= $elementId ?>" />
+                                                    <input class="option form-check-input" type="checkbox"
+                                                        name="q[<?= $this->escape($field->get('name')) ?>][]"
+                                                        value="<?= $this->escape($option->get('value')) ?>"
+                                                        <?= $checked ?> id="<?= $elementId ?>" />
                                                     <?php echo $this->escape($option->get('label')); ?>
                                                 </label>
                                             </div>

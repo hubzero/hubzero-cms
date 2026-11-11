@@ -174,7 +174,9 @@ endif;
                         . '/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket='
                         . $tmp;
                     ?>
-                    <div id="ajax-uploader" role="group" data-instructions="<?= Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
+                    <div id="ajax-uploader" role="group"
+                        data-instructions="<?= Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE') ?>"
+                        data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                         <noscript>
                             <div class="form-group">
                                 <label for="upload">

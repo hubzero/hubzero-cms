@@ -111,7 +111,8 @@ $this
                     $sourceUrl = Request::base(true) . '/index.php?option=' . $this->option
                         . '&amp;controller=media&amp;tmpl=component&amp;resource=' . $this->row->id;
                     ?>
-                    <iframe width="100%" height="160" name="filer" id="filer" title="<?= Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER') ?>" src="<?= $sourceUrl ?>"></iframe>
+                    <iframe width="100%" height="160" name="filer" id="filer"
+                        title="<?= Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER') ?>" src="<?= $sourceUrl ?>"></iframe>
                 </div>
             </fieldset>
         </fieldset><div class="clear"></div>

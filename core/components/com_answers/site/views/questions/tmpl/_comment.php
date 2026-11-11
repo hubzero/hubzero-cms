@@ -120,7 +120,9 @@ if (!$this->comment->get('item_id')) {
                         $dataRel = 'comment-form' . $this->depth . $this->comment->get('item_type')
                             . $this->comment->get('id');
                         ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="<?= $dataRel ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>"
+                        data-rel="<?= $dataRel ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else {
@@ -130,7 +132,9 @@ if (!$this->comment->get('item_id')) {
                         $dataRel = 'comment-form' . $this->depth . $this->comment->get('item_type')
                             . $this->comment->get('id');
                         ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="<?= $dataRel ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>"
+                        data-rel="<?= $dataRel ?>"><!--
                     --><?php echo Lang::txt('COM_ANSWERS_REPLY'); ?><!--
                 --></a>
                     <?php } ?>

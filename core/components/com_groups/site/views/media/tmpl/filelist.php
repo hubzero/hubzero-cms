@@ -194,7 +194,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                             $sourceUrl = rtrim(Request::base(true), '/')
                                 . '/core/components/com_groups/site/assets/img/loading.gif';
                             ?>
-                            <img src="<?= $sourceUrl ?>" data-src="<?= $this->escape($downloadPath) ?>" alt="<?= $this->escape(basename($file)) ?>" />
+                            <img src="<?= $sourceUrl ?>" data-src="<?= $this->escape($downloadPath) ?>"
+                                alt="<?= $this->escape(basename($file)) ?>" />
                         <?php else : ?>
                             <p><strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE') ?></strong></p>
                         <?php endif; ?>
@@ -232,7 +233,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                                 $onclick = 'return editorInsertFile(' . $this->escape(json_encode($downloadPath))
                                     . ');';
                                 ?>
-                                <a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="<?= $onclick ?>"><?= Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE') ?></a>
+                                <a href="javascript:void(0);" class="btn btn-secondary icon-add"
+                                    onclick="<?= $onclick ?>"><?= Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE') ?></a>
                             <?php endif; ?>
                             <?php
                             $linkText = Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD');
