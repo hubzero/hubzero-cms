@@ -14,6 +14,25 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     attach: mixed,
+ *     base: mixed,
+ *     cls: mixed,
+ *     comment: mixed,
+ *     config: mixed,
+ *     course: mixed,
+ *     depth: mixed,
+ *     lecture: mixed,
+ *     option: mixed,
+ *     post: mixed,
+ *     search: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
 if ($this->comment->isReported()) {
     $this->comment->set('anonymous', 1);
     $comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
@@ -48,10 +67,10 @@ if (
     $cls .= ' ' . $this->comment->get('treename');
 
 if ($this->unit) {
-    $this->base .= '&unit=' . $this->unit;
+    $this->set('base', $this->base . ('&unit=' . $this->unit));
 }
 if ($this->lecture) {
-    $this->base .= '&b=' . $this->lecture;
+    $this->set('base', $this->base . ('&b=' . $this->lecture));
 }
 ?>
     <li class="comment <?= $cls ?><?= !$this->comment->get('parent') ? ' start' : '' ?>"

@@ -20,6 +20,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, course: mixed, notifications: mixed, plugins: mixed} $this
+ */
+
 $field  = strtolower(Request::getWord('field', ''));
 $action = strtolower(Request::getWord('action', ''));
 
@@ -296,7 +302,7 @@ $this
             <ul class="sub-menu">
                 <?php
                 if ($action == 'addpage') {
-                    $this->active = '';
+                    $this->set('active', '');
                 }
 
                 if ($this->plugins) {

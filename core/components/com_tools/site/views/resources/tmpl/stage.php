@@ -12,13 +12,26 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->stages = [
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     row: mixed,
+ *     stage: mixed,
+ *     stages: mixed,
+ *     status: mixed,
+ *     version: mixed,
+ *     vnum: mixed,
+ * } $this
+ */
+
+$this->set('stages', [
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_DESCRIPTION'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONTRIBUTORS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_ATTACHMENTS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_TAGS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE'),
-];
+]);
 $key = $this->stage - 1;
 $stageEditTip = ($this->version == 'dev')
     ? Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE')

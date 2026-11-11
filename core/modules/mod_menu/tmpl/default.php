@@ -9,6 +9,12 @@
 // No direct access.
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Menu\Menu $this
+ */
+
 $classnames = "menu{$class_sfx}";
 
 if ($disclosureMenu) {

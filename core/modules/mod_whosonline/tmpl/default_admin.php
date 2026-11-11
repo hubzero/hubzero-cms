@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Whosonline\Whosonline $this
+ */
+
 $this->css();
 
 // get whos online summary

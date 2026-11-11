@@ -14,8 +14,26 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     backUrl: mixed,
+ *     database: mixed,
+ *     option: mixed,
+ *     project: mixed,
+ *     props: mixed,
+ *     pub: mixed,
+ *     row: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Load full record
-$pAuthor    = new \Components\Publications\Tables\Author($this->database);
+$pAuthor    = new \Components\Publications\Tables\Author($database);
 
 $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this->row->project_owner_id);
 

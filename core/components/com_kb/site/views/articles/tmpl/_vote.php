@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{id: mixed, item: mixed, vote: mixed} $this
+ */
+
 $dcls = '';
 $lcls = '';
 
@@ -35,7 +41,7 @@ if (isset($this->vote)) {
             break;
     }
 } else {
-    $this->vote = null;
+    $this->set('vote', null);
 }
 
 if (!User::isGuest()) {

@@ -13,9 +13,15 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{link: mixed, question: mixed, row: mixed} $this
+ */
+
 if (!isset($this->link)) {
-    $this->link = rtrim(Request::base(), '/')
-        . '/' . ltrim(Route::url($this->question->link()), '/');
+    $this->set('link', rtrim(Request::base(), '/')
+        . '/' . ltrim(Route::url($this->question->link()), '/'));
 }
 
 $message  = Lang::txt('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";

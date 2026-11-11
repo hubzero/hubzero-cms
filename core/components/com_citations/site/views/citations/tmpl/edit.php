@@ -15,6 +15,22 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     assocs: mixed,
+ *     authorString: mixed,
+ *     badges: mixed,
+ *     config: mixed,
+ *     row: mixed,
+ *     tags: mixed,
+ *     title: mixed,
+ *     token: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();
@@ -521,7 +537,9 @@ $formatSelected = function ($value) use ($view) {
                         }
                         for ($i = 0; $i < $n; $i++) {
                             if ($r == 0 || !isset($this->assocs[$i])) {
-                                $this->assocs[$i] = new stdClass();
+                                $assocs = $this->assocs;
+                                $assocs[$i] = new stdClass();
+                                $this->set('assocs', $assocs);
                                 $this->assocs[$i]->id   = null;
                                 $this->assocs[$i]->cid  = $this->row->id;
                                 $this->assocs[$i]->oid  = null;

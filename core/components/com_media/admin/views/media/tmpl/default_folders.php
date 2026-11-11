@@ -14,8 +14,14 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{folder: mixed, folderDepth: mixed, folderTree: mixed, folders_id: mixed} $this
+ */
+
 if (!isset($this->folderDepth)) :
-    $this->folderDepth = 1;
+    $this->set('folderDepth', 1);
 endif;
 ?>
 <ul <?php echo $this->folders_id; ?> class="<?php echo 'depth' . $this->folderDepth; ?>">
@@ -73,14 +79,14 @@ endif;
             if (isset($folder['children']) && count($folder['children'])) :
                 $temp = $this->folderTree;
 
-                $this->folderTree = $folder['children'];
-                $this->folders_id = 'id="folder-' . $folder['name'] . '"';
-                $this->folderDepth++;
+                $this->set('folderTree', $folder['children']);
+                $this->set('folders_id', 'id="folder-' . $folder['name'] . '"');
+                $this->set('folderDepth', $this->folderDepth + 1);
 
                 echo $this->loadTemplate('folders');
 
-                $this->folderTree = $temp;
-                $this->folderDepth--;
+                $this->set('folderTree', $temp);
+                $this->set('folderDepth', $this->folderDepth - 1);
             endif;
             ?>
         </li>

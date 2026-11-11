@@ -13,6 +13,20 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     columns: mixed,
+ *     intro_items: mixed,
+ *     lead_items: mixed,
+ *     link_items: mixed,
+ *     pageclass_sfx: mixed,
+ *     pagination: mixed,
+ *     params: mixed,
+ * } $this
+ */
+
 Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 
 // If the page class is defined, add to class as suffix.
@@ -32,7 +46,7 @@ Html::addIncludePath(Component::path('com_content') . '/site/helpers');
                 <?php $unpub = $item->state == 0 ? ' system-unpublished' : null; ?>
                 <div class="leading-<?php echo $leadingcount; ?><?php echo $unpub; ?>">
                     <?php
-                    $this->item = &$item;
+                    $this->set('item', $item);
                     echo $this->loadTemplate('item');
                     ?>
                 </div>
@@ -59,7 +73,7 @@ Html::addIncludePath(Component::path('com_content') . '/site/helpers');
             <?php $unpub = $item->state == 0 ? ' system-unpublished"' : null; ?>
             <div class="item column-<?php echo $rowcount; ?><?php echo $unpub; ?>">
                 <?php
-                $this->item = &$item;
+                $this->set('item', $item);
                 echo $this->loadTemplate('item');
                 ?>
             </div>

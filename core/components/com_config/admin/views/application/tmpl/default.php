@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{data: mixed, others: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config');
 Toolbar::apply('application.apply');
 Toolbar::save('application.save');
@@ -52,7 +58,7 @@ $ignore = [
     'hub_secret',
 ];
 
-$this->others = [];
+$this->set('others', []);
 foreach ($this->data as $section => $values) :
     if (in_array($section, $ignore)) :
         continue;
@@ -62,7 +68,9 @@ foreach ($this->data as $section => $values) :
         continue;
     endif;
 
-    $this->others[$section] = $values;
+    $others = $this->others;
+    $others[$section] = $values;
+    $this->set('others', $others);
 endforeach;
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
@@ -146,8 +154,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
         </div>
         <?php
         foreach ($this->others as $section => $values) :
-            $this->section = $section;
-            $this->values  = $values;
+            $this->set('section', $section);
+            $this->set('values', $values);
             ?>
             <div id="page-<?php echo $section; ?>" class="tab">
                 <div class="noshow">

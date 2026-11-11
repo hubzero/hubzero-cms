@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{bits: mixed, level: mixed} $this
+ */
+
 $html = '';
 switch ($this->level) {
     case 1:
@@ -131,7 +137,9 @@ switch ($this->level) {
         }
         $html .= '</ul>';
         if ($type->isForTools() && $params->get('show_ranking')) {
-            $this->bits['filter'] = is_array($this->bits['filter']) ? $this->bits['filter'] : [];
+            $bits = $this->bits;
+            $bits['filter'] = is_array($this->bits['filter']) ? $this->bits['filter'] : [];
+            $this->set('bits', $bits);
             if (!empty($filters)) {
                 $html .= '<div id="filteroptions">';
                 $html .= ' <div>' . Lang::txt('Show:');

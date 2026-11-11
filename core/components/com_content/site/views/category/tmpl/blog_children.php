@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{category: mixed, children: mixed, maxLevel: mixed, params: mixed} $this
+ */
+
 $class = ' class="first"';
 ?>
 
@@ -58,14 +64,16 @@ $class = ' class="first"';
                     <?php endif; ?>
 
                     <?php if (count($child->getChildren()) > 0) :
-                        $this->children[$child->id] = $child->getChildren();
-                        $this->category = $child;
-                        $this->maxLevel--;
+                        $children = $this->children;
+                        $children[$child->id] = $child->getChildren();
+                        $this->set('children', $children);
+                        $this->set('category', $child);
+                        $this->set('maxLevel', $this->maxLevel - 1);
                         if ($this->maxLevel != 0) :
                             echo $this->loadTemplate('children');
                         endif;
-                        $this->category = $child->getParent();
-                        $this->maxLevel++;
+                        $this->set('category', $child->getParent());
+                        $this->set('maxLevel', $this->maxLevel + 1);
                     endif; ?>
                 </li>
             <?php endif; ?>

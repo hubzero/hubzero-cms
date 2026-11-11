@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, filters: mixed, rows: mixed, title: mixed, total: mixed} $this
+ */
+
 $this
      ->css()
      ->js();
@@ -102,7 +108,9 @@ $this
                     <!-- <caption>
                         <?php
                         if (!$this->filters['limit']) {
-                            $this->filters['limit'] = $this->total;
+                            $viewFilters = $this->filters;
+                            $viewFilters['limit'] = $this->total;
+                            $this->set('filters', $viewFilters);
                         }
                         $s = ($this->total > 0) ? $this->filters['start'] + 1 : $this->filters['start'];
                         $e = ($this->total > ($this->filters['start'] + $this->filters['limit']))

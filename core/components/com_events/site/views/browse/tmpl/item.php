@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{categories: mixed, fields: mixed, row: mixed, showdate: mixed} $this
+ */
+
 // Check to see if the timezone is set by the event.
 // $this->row->time_zone is the event timezone
 if (!isset($this->row->time_zone) || $this->row->time_zone == '') {
@@ -58,10 +64,12 @@ $this->row->content = str_replace('<br />', '', $this->row->content);
 if (!empty($this->fields)) {
     for ($i = 0, $n = count($this->fields); $i < $n; $i++) {
         // explore the text and pull out all matches
+        $viewFields = $this->fields;
         array_push(
-            $this->fields[$i],
-            \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]),
+            $viewFields[$i],
+            \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $viewFields[$i][0]),
         );
+        $this->set('fields', $viewFields);
         // clean the original text of any matches
         $this->row->content = str_replace(
             '<ef:' . $this->fields[$i][0] . '>' . end($this->fields[$i]) . '</ef:' . $this->fields[$i][0] . '>',

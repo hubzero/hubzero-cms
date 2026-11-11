@@ -19,7 +19,15 @@ use Components\Media\Admin\Helpers\MediaHelper;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->currentDoc['path'] = ltrim($this->currentDoc['path'], '/');
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{_tmp_doc: mixed, currentDoc: mixed} $this
+ */
+
+$currentDoc = $this->currentDoc;
+$currentDoc['path'] = ltrim($this->currentDoc['path'], '/');
+$this->set('currentDoc', $currentDoc);
 
 // File type icon
 $ext  = Filesystem::extension($this->currentDoc['name']);

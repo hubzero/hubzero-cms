@@ -15,6 +15,25 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     block: mixed,
+ *     blockId: mixed,
+ *     database: mixed,
+ *     element: mixed,
+ *     option: mixed,
+ *     project: mixed,
+ *     props: mixed,
+ *     publication: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Get requirements
 $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 ?>
@@ -73,7 +92,7 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
             $selections = null;
             $selected   = null;
 
-            $objL = new \Components\Publications\Tables\License($this->database);
+            $objL = new \Components\Publications\Tables\License($database);
             $selected   = $objL->getPubLicense($this->publication->get('version_id'));
             $selections = $objL->getBlockLicenses($manifest, $selected);
 
@@ -99,7 +118,7 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                     ]);
                     $view->option      = $this->option;
                     $view->project     = $this->project;
-                    $view->database    = $this->database;
+                    $view->database    = $database;
                     $view->manifest    = $manifest;
                     $view->publication = $this->publication;
                     $view->selected    = $selected;
@@ -130,7 +149,7 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
             ]);
             $view->option      = $this->option;
             $view->project     = $this->project;
-            $view->database    = $this->database;
+            $view->database    = $database;
             $view->manifest    = $manifest;
             $view->publication = $this->publication;
             $view->url         = Route::url($this->publication->link('edit'));

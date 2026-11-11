@@ -15,6 +15,23 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     active: mixed,
+ *     cats: mixed,
+ *     limit: mixed,
+ *     period: mixed,
+ *     periodlist: mixed,
+ *     results: mixed,
+ *     start: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ *     totals: mixed,
+ * } $this
+ */
+
 $this->css();
 
 // Add the "all" category
@@ -24,7 +41,9 @@ $all = [
     'total'    => $this->total,
 ];
 
-array_unshift($this->cats, $all);
+$cats = $this->cats;
+array_unshift($cats, $all);
+$this->set('cats', $cats);
 
 // An array for storing all the links we make
 $links = [];
@@ -153,7 +172,7 @@ foreach ($this->cats as $cat) {
                     $num = ($total > 1)
                         ? Lang::txt('COM_WHATSNEW_RESULTS', $total)
                         : Lang::txt('COM_WHATSNEW_RESULT', $total);
-                    $this->total = $num;
+                    $this->set('total', $num);
 
                     // A function for category specific items that may be needed
                     // Check if a function exist (using old style plugins)

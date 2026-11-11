@@ -9,6 +9,25 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     category: mixed,
+ *     cls: mixed,
+ *     comments: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     filters: mixed,
+ *     group: mixed,
+ *     likes: mixed,
+ *     option: mixed,
+ *     parent: mixed,
+ *     search: mixed,
+ *     thread: mixed,
+ * } $this
+ */
+
 $hash_map = [];
 
 if (isset($this->likes)) {
@@ -34,10 +53,10 @@ if (isset($this->likes)) {
     }
 
     if (!isset($this->search)) {
-        $this->search = '';
+        $this->set('search', '');
     }
 
-    $this->depth++;
+    $this->set('depth', $this->depth + 1);
 
     foreach ($this->comments as $comment) {
         $postId = $comment->get('id');

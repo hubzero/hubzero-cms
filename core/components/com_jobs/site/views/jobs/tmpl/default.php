@@ -14,8 +14,25 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     admin: mixed,
+ *     config: mixed,
+ *     emp: mixed,
+ *     employer: mixed,
+ *     filters: mixed,
+ *     jobs: mixed,
+ *     mini: mixed,
+ *     pageNav: mixed,
+ *     subscriptionCode: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 if ($this->subscriptionCode && $this->employer) {
-    $this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->escape($this->employer->companyName);
+    $this->set('title', $this->title . (' ' . Lang::txt('FROM') . ' ' . $this->escape($this->employer->companyName)));
 }
 
 ?>

@@ -13,14 +13,29 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     group_cn: mixed,
+ *     id: mixed,
+ *     progress: mixed,
+ *     resource: mixed,
+ *     step: mixed,
+ *     steps: mixed,
+ * } $this
+ */
+
 $attachments = 0;
 $authors     = 0;
 $tags        = 0;
 $state       = 'draft';
 
 if ($this->progress == null) {
-    $this->progress = [];
-    $this->progress['submitted'] = 0;
+    $this->set('progress', []);
+    $progress = $this->progress;
+    $progress['submitted'] = 0;
+    $this->set('progress', $progress);
 }
 
 if ($this->resource->get('id')) {
@@ -45,7 +60,7 @@ if ($this->resource->get('id')) {
     $tags = count($this->resource->tags());
 }
 
-$this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString('group', ''));
+$this->set('group_cn', (isset($this->group_cn) ? $this->group_cn : Request::getString('group', '')));
 
 ?>
 <div class="meta-container">

@@ -18,6 +18,12 @@ use Components\Media\Admin\Helpers\MediaHelper;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{currentFolder: mixed} $this
+ */
+
 // Querystring option
 $t = '';
 $tmpl = Request::getCmd('tmpl');
@@ -32,9 +38,11 @@ if ($tmpl == 'component' && strlen($name) > 10) :
 endif;
 
 // Last modified time
-$this->currentFolder['modified'] = filemtime(
+$currentFolder = $this->currentFolder;
+$currentFolder['modified'] = filemtime(
     MediaHelper::base() . $this->currentFolder['path'],
 );
+$this->set('currentFolder', $currentFolder);
 $modified = Date::of($this->currentFolder['modified']);
 
 $token = Session::getFormToken();

@@ -16,12 +16,12 @@ use Hubzero\Facades\App;
  */
 class Members extends Module
 {
-    protected $approved;
-    protected $confirmed;
-    protected $domains;
-    protected $pastDay;
-    protected $unapproved;
-    protected $unconfirmed;
+    public $approved;
+    public $confirmed;
+    public $domains;
+    public $pastDay;
+    public $unapproved;
+    public $unconfirmed;
 
     /**
      * Display module contents

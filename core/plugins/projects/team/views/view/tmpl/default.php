@@ -16,6 +16,27 @@ use Hubzero\Utility\Str;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     count_groups: mixed,
+ *     currentUser: mixed,
+ *     database: mixed,
+ *     filters: mixed,
+ *     managers_count: mixed,
+ *     model: mixed,
+ *     setup: mixed,
+ *     team: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ *     uid: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 $this->css();
 $this->js('team');
 
@@ -114,7 +135,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                 // User deleted?
                 // Edge case!
                 if ($owner->userid && !$owner->username) {
-                    $objO = new \Components\Projects\Tables\Owner($this->database);
+                    $objO = new \Components\Projects\Tables\Owner($database);
                     $objO->load($owner->id);
                     $objO->status = 2;
                     $objO->store();

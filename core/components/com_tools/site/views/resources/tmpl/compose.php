@@ -12,7 +12,15 @@ use Hubzero\Facades\Request;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->status['fulltxt'] = stripslashes($this->status['fulltxt']);
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{dev: mixed, row: mixed, status: mixed} $this
+ */
+
+$status = $this->status;
+$status['fulltxt'] = stripslashes($this->status['fulltxt']);
+$this->set('status', $status);
 
 $type = \Components\Resources\Models\Type::one(7);
 
@@ -24,12 +32,16 @@ if (count($matches) > 0) {
     }
 }
 
-$this->status['fulltxt'] = preg_replace(
+$status = $this->status;
+$status['fulltxt'] = preg_replace(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     '',
     $this->status['fulltxt'],
 );
-$this->status['fulltxt'] = trim($this->status['fulltxt']);
+$this->set('status', $status);
+$status = $this->status;
+$status['fulltxt'] = trim($this->status['fulltxt']);
+$this->set('status', $status);
 
 $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();

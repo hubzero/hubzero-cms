@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, msg: mixed, status: mixed, statusClass: mixed, title: mixed} $this
+ */
+
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
 $live_site = rtrim(Request::base(), '/');
@@ -24,7 +30,8 @@ $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
 // get status name
 ToolsHtml::getStatusName($this->status['state'], $state);
-ToolsHtml::getStatusClass($this->status['state'], $this->statusClass);
+ToolsHtml::getStatusClass($this->status['state'], $statusClass);
+$this->set('statusClass', $statusClass);
 
 $this
      ->css('pipeline.css')
@@ -583,10 +590,10 @@ $prioritySelected = function ($value) use ($view) {
                 $dev_suffix     = $this->config->get('dev_suffix', '_dev');
 
                 // set common paths
-                $this->statuspath = Route::url(
+                $this->set('statuspath', Route::url(
                     'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
                         . $this->status['toolname'],
-                );
+                ));
                 $testpath = Route::url(
                     'index.php?option=' . $this->option . '&controller=sessions&task=invoke&app='
                         . $this->status['toolname'] . '&version=test',

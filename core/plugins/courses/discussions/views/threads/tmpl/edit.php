@@ -16,6 +16,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     category: mixed,
+ *     course: mixed,
+ *     name: mixed,
+ *     offering: mixed,
+ *     option: mixed,
+ *     post: mixed,
+ *     sections: mixed,
+ * } $this
+ */
+
 $no_html = Request::getInt('no_html', 0);
 
 $base = $this->offering->link() . '&active=' . $this->name;
@@ -26,7 +40,7 @@ if ($this->post->id) {
 }
 
 if (!($this->post instanceof \Components\Forum\Models\Post)) {
-    $this->post = \Components\Forum\Models\Post::blank();
+    $this->set('post', \Components\Forum\Models\Post::blank());
 }
 
 $view = $this;

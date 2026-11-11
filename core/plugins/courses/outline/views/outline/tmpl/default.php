@@ -18,6 +18,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{course: mixed, member: mixed} $this
+ */
+
 // ---------------
 // Course Outline
 // ---------------
@@ -50,7 +56,7 @@ if (Request::getInt('nonadmin', 0) == 1) {
     $isNowOnManager = false;
 }
 
-$this->database = App::get('db');
+$this->set('database', App::get('db'));
 
 $base = $offering->link();
 
@@ -101,7 +107,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 // Output results
                 echo implode("\n", $results);
 
-                $this->member  = $section->member(User::get('id'));
+                $this->set('member', $section->member(User::get('id')));
                 $memberId = $this->member->get('id');
                 $progress = ($memberId)
                     ? $offering->gradebook()->progress($memberId)

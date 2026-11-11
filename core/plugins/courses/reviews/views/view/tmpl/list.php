@@ -9,6 +9,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     cls: mixed,
+ *     comments: mixed,
+ *     depth: mixed,
+ *     obj: mixed,
+ *     obj_type: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 if ($this->comments) { ?>
     <ol class="comments">
     <?php
@@ -17,7 +32,7 @@ if ($this->comments) { ?>
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
     }
 
-    $this->depth++;
+    $this->set('depth', $this->depth + 1);
 
     foreach ($this->comments as $comment) {
         $this

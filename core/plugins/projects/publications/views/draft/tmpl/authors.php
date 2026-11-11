@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{groups: mixed, manifest: mixed, pub: mixed, step: mixed, teamids: mixed} $this
+ */
+
 // Get block properties
 $complete = $this->pub->curation('blocks', $this->step, 'complete');
 $props    = $this->pub->curation('blocks', $this->step, 'props');
@@ -144,7 +150,9 @@ $idSelected = function ($value) use ($view) {
         <?php }
         if (($showGroupOwner && $this->groups) || $this->pub->_project->groupOwner()) {
             if ($this->pub->_project->groupOwner()) {
-                $this->groups[] = $this->pub->_project->groupOwner();
+                $groups = $this->groups;
+                $groups[] = $this->pub->_project->groupOwner();
+                $this->set('groups', $groups);
             }
             $used = [];
 

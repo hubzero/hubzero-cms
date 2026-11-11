@@ -14,13 +14,19 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{item: mixed, url: mixed} $this
+ */
+
 $dcls = '';
 $lcls = '';
 
 if (!strstr($this->url, 'index.php')) {
-    $this->url .= '?';
+    $this->set('url', $this->url . ('?'));
 } else {
-    $this->url .= '&';
+    $this->set('url', $this->url . ('&'));
 }
 
 if ($this->item->get('vote') !== null) {

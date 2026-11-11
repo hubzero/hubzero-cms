@@ -14,6 +14,26 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     cType: mixed,
+ *     data: mixed,
+ *     embed: mixed,
+ *     file: mixed,
+ *     image: mixed,
+ *     log: mixed,
+ *     model: mixed,
+ *     oHeight: mixed,
+ *     oWidth: mixed,
+ *     option: mixed,
+ *     outputDir: mixed,
+ *     subdir: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
@@ -74,7 +94,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
     <?php if (!empty($this->data) && $this->cType != 'application/pdf') {
         // Clean up data from Windows characters - important!
-        $this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $this->data);
+        $this->set('data', preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $this->data));
         ?>
         <pre><?php echo htmlentities($this->data); ?></pre>
     <?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) {

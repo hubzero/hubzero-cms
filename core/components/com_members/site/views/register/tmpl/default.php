@@ -9,6 +9,29 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     fields: mixed,
+ *     isSelf: mixed,
+ *     password_rules: mixed,
+ *     registration: mixed,
+ *     registrationCAPTCHA: mixed,
+ *     registrationConfirmEmail: mixed,
+ *     registrationConfirmPassword: mixed,
+ *     registrationEmail: mixed,
+ *     registrationFullname: mixed,
+ *     registrationOptIn: mixed,
+ *     registrationPassword: mixed,
+ *     registrationTOU: mixed,
+ *     registrationUsername: mixed,
+ *     showMissing: mixed,
+ *     sitename: mixed,
+ *     xregistration: mixed,
+ * } $this
+ */
+
 use Components\Members\Models\Profile\Field;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Event;
@@ -56,7 +79,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             }
 
             if (!Request::getBool('update', false, 'post')) {
-                $this->showMissing = false;
+                $this->set('showMissing', false);
 
                 // First display, before the user has submitted: show the plain
                 // "required" markers on the fields but no error state at all —
@@ -533,7 +556,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <div class="col span6 omega">
                                 <?php
                                 if (!empty($this->xregistration->invalid['email'])) {
-                                    $this->registration['confirmEmail'] = '';
+                                    $registration = $this->registration;
+                                    $registration['confirmEmail'] = '';
+                                    $this->set('registration', $registration);
                                 }
                                 ?>
                                 <div class="form-group">
@@ -779,7 +804,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
             //if we dont have a mail pref option set to unanswered
             if (!isset($this->registration['sendEmail']) || $this->registration['sendEmail'] == '') {
-                $this->registration['sendEmail'] = '-1';
+                $registration = $this->registration;
+                $registration['sendEmail'] = '-1';
+                $this->set('registration', $registration);
             }
 
             ?>

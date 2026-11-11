@@ -14,6 +14,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     cats: mixed,
+ *     limit: mixed,
+ *     member: mixed,
+ *     results: mixed,
+ *     sort: mixed,
+ *     start: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this
     ->css()
     ->js('resources', 'com_resources');
@@ -25,7 +40,9 @@ $all = [
     'total'    => $this->total,
 ];
 
-array_unshift($this->cats, $all);
+$cats = $this->cats;
+array_unshift($cats, $all);
+$this->set('cats', $cats);
 
 // An array for storing all the links we make
 $links = [];

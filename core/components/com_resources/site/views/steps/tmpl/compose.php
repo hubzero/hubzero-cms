@@ -14,6 +14,21 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     group_cn: mixed,
+ *     id: mixed,
+ *     next_step: mixed,
+ *     progress: mixed,
+ *     row: mixed,
+ *     step: mixed,
+ *     steps: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this->row->fulltxt = ($this->row->fulltxt)
     ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : "")
     : stripslashes($this->row->introtext ? $this->row->introtext : "");
@@ -52,7 +67,7 @@ $this
 
 <section class="main section">
     <?php
-        $this->group_cn = Request::getString('group', '');
+        $this->set('group_cn', Request::getString('group', ''));
         $this
              ->view('steps')
              ->set('option', $this->option)

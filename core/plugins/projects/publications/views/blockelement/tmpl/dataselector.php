@@ -12,6 +12,28 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     attachments: mixed,
+ *     collapse: mixed,
+ *     database: mixed,
+ *     elementId: mixed,
+ *     manifest: mixed,
+ *     master: mixed,
+ *     order: mixed,
+ *     pub: mixed,
+ *     status: mixed,
+ *     total: mixed,
+ *     type: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Get block/element properties
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
@@ -53,10 +75,10 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus(
 );
 
 // Get attachment model
-$modelAttach = new \Components\Publications\Models\Attachments($this->database);
+$modelAttach = new \Components\Publications\Models\Attachments($database);
 
 // Get handler model
-$modelHandler = new \Components\Publications\Models\Handlers($this->database);
+$modelHandler = new \Components\Publications\Models\Handlers($database);
 
 // Is there handler choice?
 $handlers     = $this->manifest->params->typeParams->handlers;
@@ -146,7 +168,7 @@ if ($coming) {
                 is_object($handler) && $handler->getName() == 'imageviewer'
                 && count($this->attachments ? $this->attachments : []) > 0
             ) {
-                $_currentDefault = new \Components\Publications\Tables\Attachment($this->database);
+                $_currentDefault = new \Components\Publications\Tables\Attachment($database);
                 if (!$_currentDefault->getDefault($this->pub->version_id)) {
                     $_firstAtt = reset($this->attachments);
                     if ($_firstAtt && $_firstAtt->id) {

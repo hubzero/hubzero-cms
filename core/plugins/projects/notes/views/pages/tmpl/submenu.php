@@ -16,8 +16,14 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{controller: mixed, page: mixed, sub: mixed, task: mixed} $this
+ */
+
 if (!isset($this->controller)) {
-    $this->controller = Request::getWord('controller', 'page');
+    $this->set('controller', Request::getWord('controller', 'page'));
 }
 ?>
     <div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">

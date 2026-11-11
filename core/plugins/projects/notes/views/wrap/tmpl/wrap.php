@@ -14,6 +14,22 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     content: mixed,
+ *     note: mixed,
+ *     option: mixed,
+ *     page: mixed,
+ *     params: mixed,
+ *     project: mixed,
+ *     scope: mixed,
+ *     task: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();
@@ -21,13 +37,13 @@ $this
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes';
 
 // Com_wiki adds /projects - strip it out
-$this->content = str_replace('projects/projects/', 'projects/', $this->content);
+$this->set('content', str_replace('projects/projects/', 'projects/', $this->content));
 
-$this->content = str_replace(
+$this->set('content', str_replace(
     'projects/pr-' . $this->project->get('alias'),
     'projects/' . $this->project->get('alias'),
     $this->content,
-);
+));
 
 // Get the page
 $page = $this->page;

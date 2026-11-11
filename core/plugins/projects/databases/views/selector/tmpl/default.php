@@ -14,12 +14,32 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     block: mixed,
+ *     database: mixed,
+ *     element: mixed,
+ *     items: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     props: mixed,
+ *     publication: mixed,
+ *     step: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Get requirements
 $element = $this->publication->curation('blocks', $this->step, 'elements', $this->element);
 $params  = $element->params;
 
 // Get attachment type model
-$attModel = new \Components\Publications\Models\Attachments($this->database);
+$attModel = new \Components\Publications\Models\Attachments($database);
 
 // Get attached items
 $attachments = $this->publication->attachments();

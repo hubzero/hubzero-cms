@@ -14,9 +14,26 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     active: mixed,
+ *     categories: mixed,
+ *     filters: mixed,
+ *     parent: mixed,
+ *     results: mixed,
+ *     search: mixed,
+ *     tags: mixed,
+ *     tagstring: mixed,
+ *     title: mixed,
+ *     total: mixed,
+ * } $this
+ */
+
 $this->css();
 
-$this->tagstring = str_replace(['%20', ' ', '+'], ',', $this->tagstring);
+$this->set('tagstring', str_replace(['%20', ' ', '+'], ',', $this->tagstring));
 
 $name  = Lang::txt('COM_TAGS_ALL_CATEGORIES');
 $total = $this->total;

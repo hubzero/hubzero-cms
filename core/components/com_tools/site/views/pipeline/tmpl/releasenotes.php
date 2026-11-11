@@ -13,8 +13,21 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     action: mixed,
+ *     code: mixed,
+ *     license_choice: mixed,
+ *     licenses: mixed,
+ *     status: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $open             = ($this->code == '@OPEN') ? 1 : 0;
-$this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
+$this->set('codeaccess', ($this->code == '@OPEN') ? 'open' : 'closed');
 $newstate         = ($this->action == 'confirm') ? 'Approved' : $this->status['state'];
 //$this->statuspath = Route::url('index.php?option=' . $this->option
 //  . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);

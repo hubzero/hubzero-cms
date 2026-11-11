@@ -15,6 +15,20 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     bounces: mixed,
+ *     clicks: mixed,
+ *     forwards: mixed,
+ *     opens: mixed,
+ *     opensGeo: mixed,
+ *     prints: mixed,
+ *     recipients: mixed,
+ * } $this
+ */
+
 //set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_STATS'), 'stats.png');
 
@@ -124,8 +138,10 @@ if ($this->getError()) {
                 <?php
                     //removed undertermined as we cant put that on the map
                     //json encode so we can get value with js
-                    unset($this->opensGeo['country']['undetermined']);
-                    unset($this->opensGeo['state']['undetermined']);
+                    $opensGeo = $this->opensGeo;
+                    unset($opensGeo['country']['undetermined']);
+                    unset($opensGeo['state']['undetermined']);
+                    $this->set('opensGeo', $opensGeo);
                     $countryGeo = strtoupper(json_encode($this->opensGeo['country']));
                     $stateGeo = strtoupper(json_encode($this->opensGeo['state']));
                 ?>

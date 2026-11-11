@@ -17,6 +17,32 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorized: mixed,
+ *     can_set_expiration: mixed,
+ *     current_inviteemails: mixed,
+ *     expiration_enabled: mixed,
+ *     expiration_warn_days: mixed,
+ *     expirations: mixed,
+ *     filter: mixed,
+ *     group: mixed,
+ *     groupusers: mixed,
+ *     limit: mixed,
+ *     managers: mixed,
+ *     member_roles: mixed,
+ *     membership_control: mixed,
+ *     messages_acl: mixed,
+ *     option: mixed,
+ *     prompt_filter: mixed,
+ *     q: mixed,
+ *     role_filter: mixed,
+ *     start: mixed,
+ * } $this
+ */
+
 $filters = [
     'members'  => Lang::txt('PLG_GROUPS_MEMBERS'),
     'managers' => Lang::txt('PLG_GROUPS_MEMBERS_MANAGERS'),
@@ -25,7 +51,7 @@ $filters = [
 ];
 
 if ($this->filter == '') {
-    $this->filter = 'members';
+    $this->set('filter', 'members');
 }
 
 // Tell the viewer when their own membership is due to end. Shown to everyone
@@ -250,7 +276,7 @@ $option = 'com_groups';
                             // Loop through the results
                             $html = '';
                             if ($this->limit == 0) {
-                                $this->limit = 500;
+                                $this->set('limit', 500);
                             }
 
                             $db = App::get('db');

@@ -12,6 +12,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Resources\Resources $this
+ */
+
 Html::behavior('chart', 'pie');
 
 $this->css();

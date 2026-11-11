@@ -14,13 +14,33 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     base: mixed,
+ *     category: mixed,
+ *     cls: mixed,
+ *     config: mixed,
+ *     course: mixed,
+ *     instructors: mixed,
+ *     lecture: mixed,
+ *     option: mixed,
+ *     prfx: mixed,
+ *     search: mixed,
+ *     threads: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
 $lastchange = '0000-00-00 00:00:00';
 if ($this->threads && is_array($this->threads)) {
     $lastchange = $this->threads[0]->created;
 }
 if (!isset($this->category)) {
-    $this->category = 'category'
-        . substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 5)), 0, 10);
+    $this->set('category', 'category'
+        . substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 5)), 0, 10));
 }
 ?>
 <ul class="discussions" id="<?php echo $this->category; ?>" data-lastchange="<?php echo $lastchange; ?>">
@@ -34,7 +54,7 @@ if (!isset($this->category)) {
         //$this->depth++;
 
         if (!isset($this->search)) {
-            $this->search = '';
+            $this->set('search', '');
         }
 
         $subs = [];

@@ -19,8 +19,8 @@ use Hubzero\Facades\App;
  */
 class Menu extends Module
 {
-    protected $parentLink;
-    protected $rootLink;
+    public $parentLink;
+    public $rootLink;
 
     /**
      * Display module

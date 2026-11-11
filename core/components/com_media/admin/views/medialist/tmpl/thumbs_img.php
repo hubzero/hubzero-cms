@@ -18,7 +18,15 @@ use Components\Media\Admin\Helpers\MediaHelper;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->currentImg['path'] = ltrim($this->currentImg['path'], '/');
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{_tmp_img: mixed, currentImg: mixed} $this
+ */
+
+$currentImg = $this->currentImg;
+$currentImg['path'] = ltrim($this->currentImg['path'], '/');
+$this->set('currentImg', $currentImg);
 
 // Get a shortened name
 $ext  = Filesystem::extension($this->currentImg['name']);

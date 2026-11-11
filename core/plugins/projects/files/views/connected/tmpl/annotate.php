@@ -14,6 +14,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{item: mixed, metadata: mixed, subdir: mixed, url: mixed} $this
+ */
+
 // Directory path breadcrumbs
 $bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false);
 $bcEnd = $this->item->isDir()
@@ -75,7 +81,9 @@ $dubCore = [
                         </li>
                         <?php $i++; ?>
                         <?php if (isset($this->metadata[$element])) {
-                            unset($this->metadata[$element]);
+                            $viewMetadata = $this->metadata;
+                            unset($viewMetadata[$element]);
+                            $this->set('metadata', $viewMetadata);
                         } ?>
                     <?php endforeach; ?>
                     <?php if (count($this->metadata) > 0) : ?>

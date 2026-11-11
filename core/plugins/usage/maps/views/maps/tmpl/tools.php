@@ -11,11 +11,17 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{key: mixed, lat: mixed, long: mixed, mappath: mixed, zoom: mixed} $this
+ */
+
 $id = Request::getString('id', '');
 
-$this->lat = 20;
-$this->lng = 0;
-$this->zoom = 2;
+$this->set('lat', 20);
+$this->set('lng', 0);
+$this->set('zoom', 2);
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo Document::getDirection(); ?>" lang="<?php echo Document::getLanguage(); ?>" class="no-js">

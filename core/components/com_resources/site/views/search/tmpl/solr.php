@@ -13,6 +13,12 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{result: mixed, tagSearch: mixed, terms: mixed} $this
+ */
+
 $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', [$id]);
 ?>
@@ -44,7 +50,11 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                                 <a class="tag" href="<?= $linkUrl ?>" data-tag="<?= $this->escape($description) ?>">
                                     <?php echo $this->escape($badge['title'][0]); ?>
                                 </a>
-                                <?php unset($this->result['_childDocuments_'][$index]); ?>
+                                <?php
+                                $result = $this->result;
+                                unset($result['_childDocuments_'][$index]);
+                                $this->set('result', $result);
+                                ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>

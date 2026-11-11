@@ -15,14 +15,32 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->active = (isset($this->active) ? $this->active : '');
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     active: mixed,
+ *     base: mixed,
+ *     course: mixed,
+ *     instructors: mixed,
+ *     lecture: mixed,
+ *     prfx: mixed,
+ *     search: mixed,
+ *     thread: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
+$this->set('active', (isset($this->active) ? $this->active : ''));
 
 if (!isset($this->instructors) || !is_array($this->instructors)) {
-    $this->instructors = [];
+    $this->set('instructors', []);
     $inst = $this->course->instructors();
     if (count($inst) > 0) {
         foreach ($inst as $i) {
-            $this->instructors[] = $i->get('user_id');
+            $instructors = $this->instructors;
+            $instructors[] = $i->get('user_id');
+            $this->set('instructors', $instructors);
         }
     }
 }
@@ -33,10 +51,10 @@ if (isset($this->prfx)) {
 }
 
 if ($this->unit) {
-    $this->base .= '&unit=' . $this->unit;
+    $this->set('base', $this->base . ('&unit=' . $this->unit));
 }
 if ($this->lecture) {
-    $this->base .= '&b=' . $this->lecture;
+    $this->set('base', $this->base . ('&b=' . $this->lecture));
 }
 
 if (!$this->thread->thread) {

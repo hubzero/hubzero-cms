@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{parentid: mixed, report: mixed, reported: mixed, title: mixed} $this
+ */
+
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 Toolbar::save();
 //Toolbar::cancel();
@@ -27,11 +33,11 @@ if (is_object($this->reported)) {
     $author = User::getInstance($this->reported->author);
 
     if (is_object($author) && $author->get('username')) {
-        $this->title .= $author->get('username');
+        $this->set('title', $this->title . ($author->get('username')));
     } else {
-        $this->title .= Lang::txt('COM_SUPPORT_UNKNOWN');
+        $this->set('title', $this->title . (Lang::txt('COM_SUPPORT_UNKNOWN')));
     }
-    $this->title .= ($this->reported->anon) ? '(' . Lang::txt('JANONYMOUS') . ')' : '';
+    $this->set('title', $this->title . (($this->reported->anon) ? '(' . Lang::txt('JANONYMOUS') . ')' : ''));
 
     $link = str_replace('/administrator', '', $this->reported->href);
 }

@@ -12,6 +12,23 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     arrival: mixed,
+ *     departure: mixed,
+ *     dietary: mixed,
+ *     dinner: mixed,
+ *     disability: mixed,
+ *     event: mixed,
+ *     group: mixed,
+ *     params: mixed,
+ *     race: mixed,
+ *     register: mixed,
+ * } $this
+ */
+
 $message  = 'Group "'
     . $this->group->get('description')
     . '" event registration: "'
@@ -83,7 +100,9 @@ if ($this->params->get('show_gender', 1) == 1 && isset($this->register['sex'])) 
 if ($this->params->get('show_race', 1) == 1 && isset($this->race)) {
     if (isset($this->race['nativetribe'])) {
         $tribe = $this->race['nativetribe'];
-        unset($this->race['nativetribe']);
+        $race = $this->race;
+        unset($race['nativetribe']);
+        $this->set('race', $race);
     }
     $message .= 'Race: ' . implode(', ', $this->race);
     $message .= ($tribe != '') ? ', ' . $tribe : '';

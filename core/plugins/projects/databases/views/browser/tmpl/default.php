@@ -14,8 +14,17 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{attachments: mixed, database: mixed, model: mixed, primary: mixed} $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Get databases to choose from
-$objPD = new \Components\Projects\Tables\Database($this->database);
+$objPD = new \Components\Projects\Tables\Database($database);
 $items = $objPD->getItems($this->model->get('id'), []);
 
 $missing = [];

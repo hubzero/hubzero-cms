@@ -12,7 +12,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->baseURL = rtrim($this->baseURL, '/');
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     baseURL: mixed,
+ *     confirm: mixed,
+ *     email: mixed,
+ *     login: mixed,
+ *     name: mixed,
+ *     registerDate: mixed,
+ *     sitename: mixed,
+ * } $this
+ */
+
+$this->set('baseURL', rtrim($this->baseURL, '/'));
 
 $confirmationCode = -$this->confirm;
 $userEmail = urlencode($this->email);

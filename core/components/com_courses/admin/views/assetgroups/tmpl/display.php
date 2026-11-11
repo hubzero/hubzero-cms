@@ -15,10 +15,26 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     course: mixed,
+ *     filters: mixed,
+ *     offering: mixed,
+ *     ordering: mixed,
+ *     rows: mixed,
+ *     total: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
 // Preprocess the list of items to find ordering divisions.
-$this->ordering = [];
+$this->set('ordering', []);
 foreach ($this->rows as $row) {
-    $this->ordering[$row->get('parent')][] = $row->get('id');
+    $viewOrdering = $this->ordering;
+    $viewOrdering[$row->get('parent')][] = $row->get('id');
+    $this->set('ordering', $viewOrdering);
 }
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();

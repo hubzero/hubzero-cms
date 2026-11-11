@@ -15,6 +15,20 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     comments: mixed,
+ *     depth: mixed,
+ *     obj: mixed,
+ *     obj_type: mixed,
+ *     option: mixed,
+ *     params: mixed,
+ *     url: mixed,
+ * } $this
+ */
+
 $comment = \Components\Courses\Models\Comment::blank();
 
 $edit = Request::getInt('editcomment', 0);
@@ -177,7 +191,7 @@ $this->js();
                     </p>
                     <?php
                     if ($comment->get('parent')) {
-                        $this->depth = 2;
+                        $this->set('depth', 2);
                     }
                 }
 

@@ -13,6 +13,23 @@ use Hubzero\Facades\Component;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     category: mixed,
+ *     children: mixed,
+ *     columns: mixed,
+ *     intro_items: mixed,
+ *     lead_items: mixed,
+ *     link_items: mixed,
+ *     maxLevel: mixed,
+ *     pageclass_sfx: mixed,
+ *     pagination: mixed,
+ *     params: mixed,
+ * } $this
+ */
+
 Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 
 ?>
@@ -70,7 +87,7 @@ if (
                 <?php foreach ($this->lead_items as &$item) : ?>
                     <div class="leading-<?= $leadingcount ?><?= $item->state == 0 ? ' system-unpublished' : null ?>">
                         <?php
-                        $this->item = &$item;
+                        $this->set('item', $item);
                         echo $this->loadTemplate('item');
                         ?>
                     </div>
@@ -96,7 +113,7 @@ if (
                 <?php endif; ?>
                 <div class="item column-<?= $rowcount ?><?= $item->state == 0 ? ' system-unpublished' : null ?>">
                     <?php
-                        $this->item = &$item;
+                        $this->set('item', $item);
                         echo $this->loadTemplate('item');
                     ?>
                 </div>

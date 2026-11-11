@@ -13,6 +13,20 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     banking: mixed,
+ *     config: mixed,
+ *     h: mixed,
+ *     infolink: mixed,
+ *     option: mixed,
+ *     publication: mixed,
+ *     reviews: mixed,
+ * } $this
+ */
+
 $this
      ->css()
      ->js();
@@ -20,13 +34,15 @@ $this
 $database = App::get('db');
 
 if (!isset($this->reviews) || !$this->reviews) {
-    $this->reviews = [];
+    $this->set('reviews', []);
 }
 
 foreach ($this->reviews as $k => $review) {
-    $this->reviews[$k] = new Plugins\Publications\Reviews\Models\Review($review);
+    $reviews = $this->reviews;
+    $reviews[$k] = new Plugins\Publications\Reviews\Models\Review($review);
+    $this->set('reviews', $reviews);
 }
-$this->reviews = new \Hubzero\Base\ItemList($this->reviews);
+$this->set('reviews', new \Hubzero\Base\ItemList($this->reviews));
 ?>
 <h3 class="section-header">
     <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS'); ?>

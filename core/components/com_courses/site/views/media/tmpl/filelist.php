@@ -15,6 +15,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, docs: mixed, folders: mixed, images: mixed, listdir: mixed} $this
+ */
+
 // The hub's own address, for the file paths shown to copy.
 $siteUrl = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
 
@@ -53,7 +59,7 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                     }
 
                     if ($this->listdir == '/') {
-                        $this->listdir = '';
+                        $this->set('listdir', '');
                     }
                     ?>
                     <tr>

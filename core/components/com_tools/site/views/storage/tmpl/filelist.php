@@ -15,6 +15,12 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{dirtree: mixed, docs: mixed, folders: mixed, listdir: mixed} $this
+ */
+
 Html::behavior('framework', true);
 
 $this
@@ -75,7 +81,7 @@ $this
                         $numFiles = count(Filesystem::files($fullpath, '.', false, true, []));
 
                         if ($this->listdir == DS) {
-                            $this->listdir = '';
+                            $this->set('listdir', '');
                         }
                         $d = ($this->listdir) ? $this->listdir . DS . $name : DS . $name;
                         ?>

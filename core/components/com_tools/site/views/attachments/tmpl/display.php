@@ -14,6 +14,19 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     allowupload: mixed,
+ *     children: mixed,
+ *     cparams: mixed,
+ *     id: mixed,
+ *     path: mixed,
+ *     resource: mixed,
+ * } $this
+ */
+
 $this
      ->css('component.css')
      ->js('create.js');
@@ -26,7 +39,7 @@ if (!$this->allowupload) { ?>
     </p>
 <?php } ?>
 
-<?php $this->allowupload = true; ?>
+<?php $this->set('allowupload', true); ?>
     <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
         name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
         <fieldset>

@@ -16,6 +16,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{config: mixed, filters: mixed, results: mixed} $this
+ */
+
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt(strtoupper($this->option)),
@@ -30,7 +36,9 @@ $this
      ->js();
 
 if (!$this->filters['filterby'] || $this->filters['filterby'] == 'none') {
-    $this->filters['filterby'] = 'all';
+    $filters = $this->filters;
+    $filters['filterby'] = 'all';
+    $this->set('filters', $filters);
 }
 $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 

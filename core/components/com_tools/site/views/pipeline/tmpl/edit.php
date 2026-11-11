@@ -13,6 +13,18 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     config: mixed,
+ *     defaults: mixed,
+ *     editversion: mixed,
+ *     id: mixed,
+ *     title: mixed,
+ * } $this
+ */
+
 $exec_pu = $this->config->get('exec_pu', 1);
 
 $execChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
@@ -35,8 +47,12 @@ $wikiChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_OPEN'));
 $wikiChoices['@DEV'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'));
 
 if (!is_array($this->defaults['developers'])) {
-    $this->defaults['developers'] = explode(',', $this->defaults['developers']);
-    $this->defaults['developers'] = array_map('trim', $this->defaults['developers']);
+    $defaults = $this->defaults;
+    $defaults['developers'] = explode(',', $this->defaults['developers']);
+    $this->set('defaults', $defaults);
+    $defaults = $this->defaults;
+    $defaults['developers'] = array_map('trim', $this->defaults['developers']);
+    $this->set('defaults', $defaults);
 }
 
 $this

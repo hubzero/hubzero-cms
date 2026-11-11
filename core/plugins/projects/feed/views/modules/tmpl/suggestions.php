@@ -11,7 +11,15 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
-shuffle($this->suggestions);
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{suggestions: mixed} $this
+ */
+
+$suggestions = $this->suggestions;
+shuffle($suggestions);
+$this->set('suggestions', $suggestions);
 $i = 0;
 
 ?>

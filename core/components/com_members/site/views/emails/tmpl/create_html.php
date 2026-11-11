@@ -12,7 +12,13 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->baseURL = rtrim($this->baseURL, '/');
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{baseURL: mixed, sitename: mixed, xprofile: mixed} $this
+ */
+
+$this->set('baseURL', rtrim($this->baseURL, '/'));
 
 // Carry any registration return URL through the confirmation so the user
 // lands back where they started. Stored internal-only; urlencoded for the link.

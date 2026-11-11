@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{entityId: mixed, entityType: mixed, items: mixed} $this
+ */
+
 use Hubzero\Content\Moderator;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
@@ -16,8 +22,8 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
-$this->oWidth   = '780';
-$this->oHeight  = '460';
+$this->set('oWidth', '780');
+$this->set('oHeight', '460');
 
 $manifest     = $this->items->findFirstWithExtension('json');
 $presentation = json_decode($manifest->read());

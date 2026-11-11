@@ -11,6 +11,12 @@ use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Members\Members $this
+ */
+
 $this->css();
 ?>
 <div class="<?php echo $this->module->module; ?>">

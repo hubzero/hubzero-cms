@@ -13,13 +13,26 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     published: mixed,
+ *     rid: mixed,
+ *     shots: mixed,
+ *     upath: mixed,
+ *     version: mixed,
+ *     wpath: mixed,
+ * } $this
+ */
+
 $this->css('component.css');
 
 $base = rtrim(Request::base(true), '/');
 
-$this->versionlabel = ($this->version == 'current')
+$this->set('versionlabel', ($this->version == 'current')
     ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED')
-    : Lang::txt('COM_TOOLS_DEVELOPMENT');
+    : Lang::txt('COM_TOOLS_DEVELOPMENT'));
 if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>

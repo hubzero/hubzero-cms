@@ -16,13 +16,13 @@ use Hubzero\Facades\App;
  */
 class Resources extends Module
 {
-    protected $draftInternal;
-    protected $draftUser;
-    protected $pending;
-    protected $published;
-    protected $removed;
-    protected $unpublished;
-    protected $draft;
+    public $draftInternal;
+    public $draftUser;
+    public $pending;
+    public $published;
+    public $removed;
+    public $unpublished;
+    public $draft;
 
     /**
      * Display module contents

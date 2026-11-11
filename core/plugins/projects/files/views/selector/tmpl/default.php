@@ -11,6 +11,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     ajax: mixed,
+ *     folders: mixed,
+ *     max: mixed,
+ *     min: mixed,
+ *     model: mixed,
+ *     option: mixed,
+ *     publication: mixed,
+ * } $this
+ */
+
 use Components\Projects\Models\Orm\Project;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -55,7 +69,7 @@ if (!empty($allowed)) {
 }
 $req .= ':';
 
-$this->req = $req;
+$this->set('req', $req);
 // Get folder array
 $subdirOptions = [];
 $subdirOptions[] = ['path' => '', 'label' => 'home directory'];

@@ -15,6 +15,18 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     course_id: mixed,
+ *     docs: mixed,
+ *     folders: mixed,
+ *     listdir: mixed,
+ *     subdir: mixed,
+ * } $this
+ */
+
 Html::behavior('framework', true);
 
 $this->js('media.js');
@@ -58,7 +70,7 @@ $imgBase = $base . '/core/components/'
                 }
 
                 if ($this->listdir == '/') {
-                    $this->listdir = '';
+                    $this->set('listdir', '');
                 }
                 $subdird = ($this->subdir && $this->subdir != DS)
                     ? $this->subdir . DS

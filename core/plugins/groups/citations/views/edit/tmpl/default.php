@@ -14,6 +14,20 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     authorString: mixed,
+ *     authors: mixed,
+ *     badges: mixed,
+ *     group: mixed,
+ *     row: mixed,
+ *     tags: mixed,
+ *     types: mixed,
+ * } $this
+ */
+
 $this->css()->js();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
@@ -45,7 +59,7 @@ $badges_list = Event::trigger(
 );
 
 //get the referrer
-$backLink = Route::url('index.php?option=' . $this->viewName);
+$backLink = Route::url('index.php?option=' . $this->getName());
 if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILTER_VALIDATE_URL)) {
     $backLink = $_SERVER['HTTP_REFERER'];
 }
@@ -214,19 +228,19 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 
                     <div class="field-wrap author-list">
                         <?php if (isset($this->authors) && count($this->authors)) { ?>
-                            <?php foreach ($this->authors as $i => $this->author) { ?>
-                                <p class="citation-author" id="author_<?php echo $this->escape($this->author->id); ?>">
+                            <?php foreach ($this->authors as $i => $author) { ?>
+                                <p class="citation-author" id="author_<?php echo $this->escape($author->id); ?>">
                                     <span class="author-handle">
                                     </span>
                                     <span class="author-name">
-                                        <?php echo $this->escape($this->author->author); ?>
+                                        <?php echo $this->escape($author->author); ?>
                                     </span>
                                     <span class="author-description">
                                         <?php
-                                        $authorId = $this->escape($this->author->id);
+                                        $authorId = $this->escape($author->id);
                                         $removeUrl = Route::url(
                                             $authorBase . '&task=remove&author='
-                                            . $this->author->id . '&' . $token . '=1',
+                                            . $author->id . '&' . $token . '=1',
                                         );
                                         ?>
                                         <input type="hidden"

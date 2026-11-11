@@ -8,10 +8,20 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{details: mixed} $this
+ */
 ?>
 
 <?php if ($this->details && count($this->details) > 0) : ?>
-    <?php ksort($this->details); ?>
+    <?php
+    $details = $this->details;
+    ksort($details);
+    $this->set('details', $details);
+    ?>
     <?php foreach ($this->details as $question_id => $responses) : ?>
         <div class="question-box">
             <div class="question-label">

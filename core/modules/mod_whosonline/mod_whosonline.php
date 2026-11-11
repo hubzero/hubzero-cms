@@ -21,7 +21,7 @@ class Whosonline extends Module
     protected $guestCount;
     protected $loggedInCount;
     protected $loggedInList;
-    protected $rows;
+    public $rows;
 
     /**
      * Display module contents

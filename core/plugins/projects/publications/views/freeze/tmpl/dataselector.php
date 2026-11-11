@@ -14,6 +14,25 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     attachments: mixed,
+ *     database: mixed,
+ *     elementId: mixed,
+ *     manifest: mixed,
+ *     master: mixed,
+ *     name: mixed,
+ *     pub: mixed,
+ *     status: mixed,
+ *     type: mixed,
+ * } $this
+ */
+
+// What takes the database below takes it by reference
+$database = $this->database;
+
 // Get block/element properties
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);
@@ -69,10 +88,10 @@ $bundleName  = $bundleName ? $bundleName : 'bundle';
 $bundleName .= '.zip';
 
 // Get attachment model
-$modelAttach = new \Components\Publications\Models\Attachments($this->database);
+$modelAttach = new \Components\Publications\Models\Attachments($database);
 
 // Get handler model
-$modelHandler = new \Components\Publications\Models\Handlers($this->database);
+$modelHandler = new \Components\Publications\Models\Handlers($database);
 
 // Is there handler choice?
 $handlers = $this->manifest->params->typeParams->handlers;

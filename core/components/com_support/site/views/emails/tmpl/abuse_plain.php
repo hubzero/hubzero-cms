@@ -14,6 +14,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{author: mixed, commentor: mixed, report: mixed, reported: mixed} $this
+ */
+
 $base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator') {
     $base = substr($base, 0, strlen($base) - 13);
@@ -56,7 +62,7 @@ if ($this->author) {
 $message .= '----------------------------' . "\n\n";
 
 if ($this->reported) {
-    $this->commentor = User::getInstance($this->reported->author);
+    $this->set('commentor', User::getInstance($this->reported->author));
     $commentorName   = stripslashes($this->commentor->get('name'));
     $commentorUser   = $this->commentor->get('username');
 

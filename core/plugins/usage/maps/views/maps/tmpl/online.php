@@ -14,9 +14,24 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->lat = 20;
-$this->long = 0;
-$this->zoom = 2;
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     key: mixed,
+ *     lat: mixed,
+ *     long: mixed,
+ *     mappath: mixed,
+ *     option: mixed,
+ *     task: mixed,
+ *     type: mixed,
+ *     zoom: mixed,
+ * } $this
+ */
+
+$this->set('lat', 20);
+$this->set('long', 0);
+$this->set('zoom', 2);
 
 $dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type
 . '&no_html=1&data=online');

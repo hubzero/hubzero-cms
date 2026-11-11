@@ -12,13 +12,21 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, guest: mixed, model: mixed, publicView: mixed, tabs: mixed} $this
+ */
+
 $assetTabs = [];
 
 if ($this->publicView || !isset($this->tabs)) {
-    $this->tabs = [];
+    $this->set('tabs', []);
 }
 if ($this->active == 'edit') {
-    $this->tabs[] = ['name' => 'edit', 'title' => 'Edit', 'submenu' => '', 'show' => true];
+    $tabs = $this->tabs;
+    $tabs[] = ['name' => 'edit', 'title' => 'Edit', 'submenu' => '', 'show' => true];
+    $this->set('tabs', $tabs);
 }
 
 // Sort tabs so that asset tabs are together
@@ -29,7 +37,9 @@ foreach ($this->tabs as $tab) {
 }
 
 if (count($assetTabs) > 1) {
-    array_splice($this->tabs, 3, 0, [0 => ['name' => 'assets', 'title' => 'Assets', 'show' => true]]);
+    $tabs = $this->tabs;
+    array_splice($tabs, 3, 0, [0 => ['name' => 'assets', 'title' => 'Assets', 'show' => true]]);
+    $this->set('tabs', $tabs);
 }
 
 $counts = $this->model->get('counts');

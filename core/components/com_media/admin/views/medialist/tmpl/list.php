@@ -15,6 +15,12 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{active: mixed, children: mixed, folder: mixed} $this
+ */
+
 $cls = '';
 if (!empty($this->active)) :
     $cls = ' active';
@@ -60,7 +66,7 @@ $tmpl = Request::getCmd('tmpl', '');
 
                     // Display folders first
                     foreach ($folders as $child) :
-                        $this->currentFolder = $child;
+                        $this->set('currentFolder', $child);
                         echo $this->loadTemplate('folder');
                     endforeach;
 
@@ -70,7 +76,7 @@ $tmpl = Request::getCmd('tmpl', '');
                             continue;
                         endif;
 
-                        $this->currentDoc = $child;
+                        $this->set('currentDoc', $child);
                         echo $this->loadTemplate('doc');
                     endforeach;
                     ?>

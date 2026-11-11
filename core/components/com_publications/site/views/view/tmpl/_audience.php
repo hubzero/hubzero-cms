@@ -11,12 +11,24 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     audience: mixed,
+ *     audiencelink: mixed,
+ *     hideEmpty: mixed,
+ *     numlevels: mixed,
+ *     showtips: mixed,
+ * } $this
+ */
+
 $levels   = [];
 $labels   = [];
 $selected = [];
 $txtlabel = '';
 
-$this->audience = !empty($this->audience[0]) ? $this->audience[0] : $this->audience;
+$this->set('audience', !empty($this->audience[0]) ? $this->audience[0] : $this->audience);
 $hideEmpty = isset($this->hideEmpty) ? $this->hideEmpty : true;
 
 if ($this->audience) {

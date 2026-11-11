@@ -12,6 +12,26 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Plugin\View&object{
+ *     attach: mixed,
+ *     base: mixed,
+ *     cls: mixed,
+ *     comments: mixed,
+ *     config: mixed,
+ *     course: mixed,
+ *     depth: mixed,
+ *     lecture: mixed,
+ *     option: mixed,
+ *     parent: mixed,
+ *     post: mixed,
+ *     search: mixed,
+ *     unit: mixed,
+ * } $this
+ */
+
 if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
     $stick = $this->base
         . '&unit='
@@ -51,10 +71,10 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
     }
 
     if (!isset($this->search)) {
-        $this->search = '';
+        $this->set('search', '');
     }
 
-        $this->depth++;
+        $this->set('depth', $this->depth + 1);
 
     foreach ($this->comments as $comment) {
         $this
