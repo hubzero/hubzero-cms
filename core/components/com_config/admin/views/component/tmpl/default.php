@@ -32,16 +32,36 @@ $this->js();
  */
 body#component-body.contentpane { height: 100vh; margin: 0; overflow: hidden; display: flex; flex-direction: column; }
 body#component-body.contentpane > #system-message-container { flex: 0 0 auto; }
-body#component-body.contentpane > form#component-form { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+body#component-body.contentpane > form#component-form {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
 #component-body.contentpane #component-form > fieldset { flex: 0 0 auto; }
 #component-body.contentpane #component-form > dl.tabs { flex: 0 0 auto; }
 /* overflow-y:auto alone makes overflow-x compute to auto too, which adds a
    spurious horizontal bar on short tabs; pin it to hidden. */
-#component-body.contentpane #component-form > .current { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+#component-body.contentpane #component-form > .current {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 /* Radio/checkbox groups emit a screen-reader legend duplicating the field label;
    a template legend style overrides .sr-only and renders it as a stray uppercase
    heading. Restore proper visually-hidden clipping (kept for accessibility). */
-#component-body.contentpane #component-form legend.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+#component-body.contentpane #component-form legend.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 /* Lay each option row out as label + control on one line, vertically centered.
    Radio/checkbox groups label with a <span> (no <label for>), so on their own
    they miss the label column text fields get and their control drops to its own
@@ -49,7 +69,11 @@ body#component-body.contentpane > form#component-form { flex: 1 1 auto; min-heig
    control (floated labels would top-align and sit too high). The label column
    is a fixed width with right padding so long labels don't butt the control. */
 #component-body.contentpane #component-form .config-option-list > li { display: flex; align-items: center; }
-#component-body.contentpane #component-form .config-option-list > li > .hasTip { box-sizing: border-box; flex: 0 0 150px; padding-right: 14px; }
+#component-body.contentpane #component-form .config-option-list > li > .hasTip {
+    box-sizing: border-box;
+    flex: 0 0 150px;
+    padding-right: 14px;
+}
 #component-body.contentpane #component-form .config-option-list > li > fieldset.radio { width: auto; }
 </style>
 

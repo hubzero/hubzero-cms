@@ -138,7 +138,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
         width: auto;
         gap: 0.3rem;
         padding: 0 0.5rem;
-        font: 600 0.75rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font: 600 0.75rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+            sans-serif;
         font-variant-numeric: tabular-nums;
     }
     #app-footer > ul li a.zoom.active,
@@ -160,7 +161,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
     #novnc-keys-menu button {
         display: flex; justify-content: space-between; gap: 1rem; width: 100%;
         padding: 0.35rem 0.6rem; border: 0; border-radius: 5px; background: none; color: #e6e8eb;
-        font: 500 13px/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font: 500 13px/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+            sans-serif;
         font-variant-numeric: tabular-nums; text-align: left; cursor: pointer;
     }
     #novnc-zoom-menu button:hover,
@@ -173,7 +175,12 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
     #novnc-keys-menu .nzm-sep { height: 1px; margin: 0.25rem 0.2rem; background: #3a4048; }
     /* Special keys: the browser or the computer keeps these for itself */
     #novnc-keys-menu { min-width: 11rem; }
-    #novnc-keys-menu .nkm-head { padding: 0.3rem 0.6rem 0.15rem; color: #8b929c; font: 500 11px/1.3 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+    #novnc-keys-menu .nkm-head {
+        padding: 0.3rem 0.6rem 0.15rem;
+        color: #8b929c;
+        font: 500 11px/1.3 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+            sans-serif;
+    }
     /* File transfer (a tool's exportfile/importfile) */
     dialog.novnc-xfer {
         display: flex; flex-direction: column; box-sizing: border-box;
@@ -189,14 +196,28 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
         background: #1f2329; color: #f3f4f6;
         font: 500 13px/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-    .novnc-xfer-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+    .novnc-xfer-name {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 600;
+    }
     .novnc-xfer-bar button {
         flex: none; padding: 0.3rem 0.7rem; border: 1px solid #4a515b; border-radius: 6px;
         background: #2b3038; color: #f3f4f6; font: inherit; font-size: 12px; cursor: pointer;
     }
     .novnc-xfer-bar button:hover { filter: brightness(1.15); }
     .novnc-xfer-bar button[hidden] { display: none; }
-    .novnc-xfer-bar button.nx-close { border: 0; background: none; color: #9aa1ab; font-size: 18px; line-height: 1; padding: 0.15rem 0.45rem; }
+    .novnc-xfer-bar button.nx-close {
+        border: 0;
+        background: none;
+        color: #9aa1ab;
+        font-size: 18px;
+        line-height: 1;
+        padding: 0.15rem 0.45rem;
+    }
     .novnc-xfer iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; background: #fff; }
     #novnc-modern-action button {
         flex: none; padding: 0 0.4rem; border: 0; background: none; color: #9aa1ab;
