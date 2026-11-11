@@ -69,18 +69,18 @@ class Column extends Macro
         $text = strtolower(array_shift($attribs));
 
         if (is_numeric($text)) {
-            $this->columns = intval($text);
+            self::$columns = intval($text);
             return '<div class="grid">' . "\n";
         }
 
         $div  = '';
 
         if (trim($text) == 'start') {
-            $this->cursor++;
+            self::$cursor++;
 
             $cls = ['col'];
 
-            switch ($this->columns) {
+            switch (self::$columns) {
                 case 6:
                     $cls[] = 'span2';
                     break;
@@ -100,7 +100,7 @@ class Column extends Macro
                     break;
             }
 
-            if ($this->cursor == $this->columns) {
+            if (self::$cursor == self::$columns) {
                 $cls[] = 'omega';
             }
 
@@ -129,9 +129,9 @@ class Column extends Macro
             $div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
         } elseif (trim($text) == 'end') {
             $div  = '</div><!-- / .col -->';
-            if ($this->cursor == $this->columns) {
+            if (self::$cursor == self::$columns) {
                 $div .= "\n" . '</div><!-- / .grid -->';
-                $this->cursor = 0;
+                self::$cursor = 0;
             }
         }
 
