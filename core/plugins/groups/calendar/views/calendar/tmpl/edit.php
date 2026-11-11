@@ -386,7 +386,10 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <input type="text" name="event[restricted]"
                                 value="<?= $this->escape($this->event->get('restricted')) ?>" />
                             <span class="hint">
-                                <?= Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.') ?>
+                                <?= Lang::txt(
+                                    'If you want registration to be restricted (invite only), enter the password users '
+                                        . 'must enter to gain access to the registration form.',
+                                ) ?>
                             </span>
                         </label>
 

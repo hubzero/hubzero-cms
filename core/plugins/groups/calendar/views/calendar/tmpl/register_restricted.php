@@ -111,7 +111,10 @@ $registerUrl = Route::url(
     <fieldset>
         <legend><?php echo Lang::txt('Limited Registration'); ?></legend>
         <p class="info">
-            <?= Lang::txt('Registration is password protected. Please supply the password you were given with your invite to join the event.') ?>
+            <?= Lang::txt(
+                'Registration is password protected. Please supply the password you were given with your invite to '
+                    . 'join the event.',
+            ) ?>
         </p>
         <label>
             <?php echo Lang::txt('Password:'); ?> <span class="required">Required</span>

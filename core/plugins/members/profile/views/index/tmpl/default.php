@@ -427,7 +427,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             </div>
                         </div>
                     </div>
-                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
+                    <?php
+                    if (
+                        $isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)
+                    ) : ?>
                     <div class="section-edit">
                         <a class="edit-profile-section" href="#">
                             <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -451,7 +454,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             ?>
                         </div>
                     </div>
-                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
+                    <?php
+                    if (
+                        $isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)
+                    ) : ?>
                     <div class="section-edit">
                         <a href="<?php echo Route::url($this->profile->link() . '&active=account'); ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -462,7 +468,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($this->profile->get('email') && (Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
+        <?php
+        if (
+            $this->profile->get('email') && (Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_HIDDEN)
+        ) : ?>
             <?php if (
             $this->params->get('access_email', 2) == 0
                     || ($this->params->get('access_email', 2) == 1 && $loggedin)
@@ -494,7 +503,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                                 <?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>
                             </a>
                         </div>
-                        <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
+                        <?php
+                        if (
+                            $isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY
+                        ) : ?>
                             <br class="clear" />
                             <input type="hidden" class="input-text" name="email" id="email"
                                 value="<?= $this->escape($this->profile->get('email')) ?>" />
@@ -525,7 +537,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             ?>
                         <?php endif; ?>
                     </div>
-                    <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
+                    <?php
+                    if (
+                        $isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY
+                    ) : ?>
                         <div class="section-edit">
                             <a class="edit-profile-section" href="#">
                                 <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>

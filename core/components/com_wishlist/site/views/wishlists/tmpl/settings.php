@@ -342,7 +342,11 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             <span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
                         </label>
                     </div>
-                <?php if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) { ?>
+                <?php
+                if (
+                    $this->wishlist->get('category') == 'resource'
+                    or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)
+                ) { ?>
                     <input type="hidden" name="fields[public]" value="<?php echo $this->wishlist->get('public'); ?>" />
                 <?php } ?>
                 </fieldset>

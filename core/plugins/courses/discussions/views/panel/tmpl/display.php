@@ -383,7 +383,10 @@ if (count($inst) > 0) {
                     </form>
                     <?php } else { ?>
                         <p class="instructions">
-                            <?= Lang::txt('This forum is currently empty and requires some set-up by the course managers before it can be used.') ?>
+                            <?= Lang::txt(
+                                'This forum is currently empty and requires some set-up by the course managers before '
+                                    . 'it can be used.',
+                            ) ?>
                             <?php if ($this->course->access('manage', 'offering')) { ?>
                                 <br /><br /><?= Lang::txt('Discussions require at least one section and category before posts can be made. Click the "manage" button to set up this forum.') ?>
                             <?php } ?>
