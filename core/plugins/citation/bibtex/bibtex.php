@@ -175,7 +175,7 @@ class Bibtex extends Plugin
                     $match = $id;
                     break;
                 }
-            } elseif (isset($scope) && isset($scope_id)) {
+            } elseif (isset($scope_id)) {
                 // Matching within a scope domain
                 if ($cScope == $scope && $cScope_id == $scope_id) {
                     // Direct matches on doi

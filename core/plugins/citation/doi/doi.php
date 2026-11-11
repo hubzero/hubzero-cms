@@ -527,7 +527,7 @@ class Doi extends Plugin
     /**
      * Get Identifier type and value from the Citation
      *
-     * @param   object  $citation
+     * @param   array  $citation
      * @return  array or false
      */
     public function getIdentifier($citation)

@@ -83,6 +83,7 @@ class Endnote extends Plugin
             $line = trim($line);
 
             // Check to see if we can get the next lines content
+            $nextline = '';
             if (isset($raw_citations_text[$k + 1])) {
                 $nextline = trim($raw_citations_text[$k + 1]);
             }
@@ -197,6 +198,7 @@ class Endnote extends Plugin
         }
 
         // Check for duplicates
+        $final = [];
         for ($i = 0; $i < count($final_citations); $i++) {
             $duplicate = $this->checkDuplicateCitation($final_citations[$i]);
 
@@ -356,7 +358,7 @@ class Endnote extends Plugin
                     $match = $id;
                     break;
                 }
-            } elseif (isset($scope) && isset($scope_id)) {
+            } elseif (isset($scope_id)) {
                 // Matching within a scope domain
                 if ($cScope == $scope && $cScope_id == $scope_id) {
                     // Direct matches on doi
