@@ -118,7 +118,5 @@ class Response extends Obj
      *
      * @return  void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

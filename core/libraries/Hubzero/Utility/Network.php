@@ -46,9 +46,7 @@ class Network
      * Declared final so that a subclass cannot change the signature,
      * which keeps new static() in parse() safe.
      */
-    final public function __construct()
-    {
-    }
+    final public function __construct() {}
 
     /**
      * Read a network: 192.0.2.0/24, 192.0.2.0/255.255.255.0, 2001:db8::/32,

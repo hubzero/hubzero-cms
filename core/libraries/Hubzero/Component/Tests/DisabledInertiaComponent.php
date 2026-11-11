@@ -29,7 +29,5 @@ class DisabledInertiaComponent extends AbstractComponent implements InertiaCompo
         $this->registered = true;
     }
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class DomainException extends \DomainException
-{
-}
+class DomainException extends \DomainException {}

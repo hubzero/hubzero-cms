@@ -116,7 +116,5 @@ class Migration20261104170100ComTools extends Base
      *
      * IPv6 ranges have no integer form, so leave the columns as they are
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

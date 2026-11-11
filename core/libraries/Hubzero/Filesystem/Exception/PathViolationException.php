@@ -11,6 +11,4 @@ namespace Hubzero\Filesystem\Exception;
 /**
  * Path violation exception
  */
-class PathViolationException extends \LogicException
-{
-}
+class PathViolationException extends \LogicException {}

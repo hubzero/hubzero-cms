@@ -12,9 +12,7 @@ use Hubzero\Component\SiteController;
 
 class InertiaFlowController extends SiteController
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function renderTask(): ?array
     {

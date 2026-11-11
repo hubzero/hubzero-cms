@@ -299,9 +299,7 @@ class Version
      *
      * @return   void
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Short description for 'clear'

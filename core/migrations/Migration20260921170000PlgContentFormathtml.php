@@ -80,7 +80,5 @@ class Migration20260921170000PlgContentFormathtml extends Base
      *
      * @return  void
      */
-    public function down()
-    {
-    }
+    public function down() {}
 }

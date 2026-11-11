@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class LengthException extends \LengthException
-{
-}
+class LengthException extends \LengthException {}

@@ -32,7 +32,5 @@ class Migration20151023000001ComStorefront extends Base
             ->execute();
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

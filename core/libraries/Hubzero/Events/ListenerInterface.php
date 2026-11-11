@@ -11,6 +11,4 @@ namespace Hubzero\Events;
 /**
  * Interface for event listener
  */
-interface ListenerInterface
-{
-}
+interface ListenerInterface {}

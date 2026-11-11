@@ -205,7 +205,5 @@ class Migration20150401110000ComProjects extends Base
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

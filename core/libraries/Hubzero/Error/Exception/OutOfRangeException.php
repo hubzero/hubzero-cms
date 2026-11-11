@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class OutOfRangeException extends \OutOfRangeException
-{
-}
+class OutOfRangeException extends \OutOfRangeException {}

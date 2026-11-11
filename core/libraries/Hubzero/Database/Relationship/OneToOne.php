@@ -11,6 +11,4 @@ namespace Hubzero\Database\Relationship;
 /**
  * Database one to one relationship
  */
-class OneToOne extends Relationship
-{
-}
+class OneToOne extends Relationship {}

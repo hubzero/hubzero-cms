@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class UnderflowException extends \UnderflowException
-{
-}
+class UnderflowException extends \UnderflowException {}

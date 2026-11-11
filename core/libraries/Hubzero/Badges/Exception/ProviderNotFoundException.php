@@ -8,6 +8,4 @@
 
 namespace Hubzero\Badges\Exception;
 
-class ProviderNotFoundException extends \InvalidArgumentException
-{
-}
+class ProviderNotFoundException extends \InvalidArgumentException {}

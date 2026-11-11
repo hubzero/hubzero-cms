@@ -13,6 +13,4 @@ namespace Hubzero\Database\Drivers\Mariadb;
  *
  * MariaDB currently shares MySQL grammar behavior in the legacy layout.
  */
-class MariadbGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
-{
-}
+class MariadbGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar {}

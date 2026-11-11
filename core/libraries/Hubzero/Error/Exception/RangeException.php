@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class RangeException extends \RangeException
-{
-}
+class RangeException extends \RangeException {}

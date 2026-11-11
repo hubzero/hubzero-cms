@@ -8,6 +8,4 @@
 
 namespace Hubzero\Console\Exception;
 
-class InvalidPropertyException extends \InvalidArgumentException implements ExceptionInterface
-{
-}
+class InvalidPropertyException extends \InvalidArgumentException implements ExceptionInterface {}

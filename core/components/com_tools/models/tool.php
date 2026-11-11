@@ -135,9 +135,7 @@ class Tool
      *
      * @return    void
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Clear data

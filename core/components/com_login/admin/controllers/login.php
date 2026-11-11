@@ -244,7 +244,5 @@ class Login extends AdminController
      *
      * @return  void
      */
-    public function attach()
-    {
-    }
+    public function attach() {}
 }

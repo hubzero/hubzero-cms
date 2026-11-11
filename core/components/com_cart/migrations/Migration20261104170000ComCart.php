@@ -53,7 +53,5 @@ class Migration20261104170000ComCart extends Base
      *
      * IPv6 addresses have no integer form, so leave the column as it is
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

@@ -25,16 +25,12 @@ class Subcommand extends Base implements CommandInterface
      *
      * @return  void
      **/
-    public function execute()
-    {
-    }
+    public function execute() {}
 
     /**
      * Output help documentation
      *
      * @return  void
      **/
-    public function help()
-    {
-    }
+    public function help() {}
 }

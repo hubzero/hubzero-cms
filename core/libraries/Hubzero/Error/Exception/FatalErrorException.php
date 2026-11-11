@@ -11,6 +11,4 @@ namespace Hubzero\Error\Exception;
 /**
  * Fatal Error Exception.
  */
-class FatalErrorException extends \ErrorException
-{
-}
+class FatalErrorException extends \ErrorException {}

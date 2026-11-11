@@ -25,7 +25,5 @@ class TraitCustomHtmxComponent extends AbstractComponent implements HtmxComponen
         ];
     }
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

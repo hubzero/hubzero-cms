@@ -196,9 +196,7 @@ class Group extends Obj
      *
      * @return  void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Clear data

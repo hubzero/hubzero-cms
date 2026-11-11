@@ -8,6 +8,4 @@
 
 namespace Hubzero\Config\Exception;
 
-class UnsupportedFormatException extends \Exception
-{
-}
+class UnsupportedFormatException extends \Exception {}

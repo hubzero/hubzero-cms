@@ -298,7 +298,5 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__answers_questions', 'subject');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

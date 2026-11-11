@@ -8,6 +8,4 @@
 
 namespace Hubzero\Database\Exception;
 
-class RuntimeException extends \RuntimeException
-{
-}
+class RuntimeException extends \RuntimeException {}

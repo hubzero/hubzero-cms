@@ -45,9 +45,7 @@ class Collaborator extends Relational
      *
      * @return  void
      */
-    public function automaticId()
-    {
-    }
+    public function automaticId() {}
 
     /**
      * Get collaborator by name

@@ -61,7 +61,5 @@ class Migration20261029120000ComResources extends Base
      * Nothing to undo: the plugin these types asked for does not exist, so
      * asking for it again would only take the tab away.
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

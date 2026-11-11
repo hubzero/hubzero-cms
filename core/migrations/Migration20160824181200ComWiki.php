@@ -81,7 +81,5 @@ class Migration20160824181200ComWiki extends Base
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

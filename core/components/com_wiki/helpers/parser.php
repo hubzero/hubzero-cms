@@ -282,9 +282,7 @@ class Parser extends Obj
      * @param   object  $observer  An observer object to attach
      * @return  void
      */
-    public function attach($observer)
-    {
-    }
+    public function attach($observer) {}
 
     /**
      * Detach an observer object
@@ -292,9 +290,7 @@ class Parser extends Obj
      * @param   object   $observer  An observer object to detach.
      * @return  void
      */
-    public function detach($observer)
-    {
-    }
+    public function detach($observer) {}
 
     /**
      * Get the path to the parser's default pages

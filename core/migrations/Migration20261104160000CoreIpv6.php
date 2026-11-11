@@ -68,7 +68,5 @@ class Migration20261104160000CoreIpv6 extends Base
      * Narrowing the columns again would cut short every IPv6 address stored
      * since, so leave them as they are
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

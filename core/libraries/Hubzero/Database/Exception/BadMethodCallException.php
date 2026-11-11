@@ -8,6 +8,4 @@
 
 namespace Hubzero\Database\Exception;
 
-class BadMethodCallException extends \BadMethodCallException
-{
-}
+class BadMethodCallException extends \BadMethodCallException {}

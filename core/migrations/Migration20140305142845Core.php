@@ -385,7 +385,5 @@ class Migration20140305142845Core extends Base
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

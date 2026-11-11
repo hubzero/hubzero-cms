@@ -65,7 +65,5 @@ class Migration20150826205631PlgResourcesAbout extends Base
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

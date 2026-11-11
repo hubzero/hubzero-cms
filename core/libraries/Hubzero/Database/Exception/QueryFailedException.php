@@ -8,6 +8,4 @@
 
 namespace Hubzero\Database\Exception;
 
-class QueryFailedException extends RuntimeException
-{
-}
+class QueryFailedException extends RuntimeException {}

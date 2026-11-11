@@ -307,7 +307,5 @@ class Base extends Obj
      *
      * @return  void
      */
-    public function load()
-    {
-    }
+    public function load() {}
 }

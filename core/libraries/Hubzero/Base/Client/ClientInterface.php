@@ -11,6 +11,4 @@ namespace Hubzero\Base\Client;
 /**
  * Client interface
  */
-interface ClientInterface
-{
-}
+interface ClientInterface {}

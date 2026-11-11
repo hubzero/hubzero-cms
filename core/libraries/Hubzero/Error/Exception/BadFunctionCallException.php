@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class BadFunctionCallException extends \BadFunctionCallException
-{
-}
+class BadFunctionCallException extends \BadFunctionCallException {}

@@ -26,7 +26,5 @@ class Migration20160907112600Core extends Base
         $schema->dropIndex('#__courses_form_respondents', 'jos_pdf_form_responses_respondent_id_idx');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

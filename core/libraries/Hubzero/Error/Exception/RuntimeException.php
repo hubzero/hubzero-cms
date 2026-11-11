@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class RuntimeException extends \RuntimeException
-{
-}
+class RuntimeException extends \RuntimeException {}

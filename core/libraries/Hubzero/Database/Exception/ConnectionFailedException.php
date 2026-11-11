@@ -8,6 +8,4 @@
 
 namespace Hubzero\Database\Exception;
 
-class ConnectionFailedException extends RuntimeException
-{
-}
+class ConnectionFailedException extends RuntimeException {}

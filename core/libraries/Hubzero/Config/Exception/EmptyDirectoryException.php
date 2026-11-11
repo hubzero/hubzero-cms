@@ -8,6 +8,4 @@
 
 namespace Hubzero\Config\Exception;
 
-class EmptyDirectoryException extends \Exception
-{
-}
+class EmptyDirectoryException extends \Exception {}

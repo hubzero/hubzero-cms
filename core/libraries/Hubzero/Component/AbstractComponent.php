@@ -179,9 +179,7 @@ abstract class AbstractComponent
      *
      * @return void
      */
-    protected function init(): void
-    {
-    }
+    protected function init(): void {}
 
     /**
      * Component-specific request handling.

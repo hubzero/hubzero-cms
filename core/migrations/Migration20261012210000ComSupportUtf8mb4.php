@@ -47,7 +47,5 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
      * Converting back would truncate any 4-byte characters stored since, so
      * leave the tables as they are
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

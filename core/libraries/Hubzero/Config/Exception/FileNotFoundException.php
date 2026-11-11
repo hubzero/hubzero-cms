@@ -8,6 +8,4 @@
 
 namespace Hubzero\Config\Exception;
 
-class FileNotFoundException extends \Exception
-{
-}
+class FileNotFoundException extends \Exception {}

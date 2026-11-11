@@ -18,6 +18,4 @@ namespace Hubzero\Content\Migration;
  * Usage in a migration:
  *   throw new \Hubzero\Content\Migration\SkipMigrationException('Metrics database not available');
  */
-class SkipMigrationException extends \Exception
-{
-}
+class SkipMigrationException extends \Exception {}

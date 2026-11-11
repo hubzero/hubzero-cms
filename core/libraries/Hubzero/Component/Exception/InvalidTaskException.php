@@ -11,6 +11,4 @@ namespace Hubzero\Component\Exception;
 /**
  * Invalid component task exception
  */
-class InvalidTaskException extends \InvalidArgumentException
-{
-}
+class InvalidTaskException extends \InvalidArgumentException {}

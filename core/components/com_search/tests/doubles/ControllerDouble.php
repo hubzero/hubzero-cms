@@ -32,9 +32,7 @@ class ControllerDouble
      * @param   mixed  $layout
      * @return  void
      */
-    public function setView($name, $layout)
-    {
-    }
+    public function setView($name, $layout) {}
 
     /**
      * Stubbed by the tests to observe a return to the new form
@@ -42,9 +40,7 @@ class ControllerDouble
      * @param   mixed  $record
      * @return  void
      */
-    public function newTask($record)
-    {
-    }
+    public function newTask($record) {}
 
     /**
      * Stubbed by the tests to observe a return to the edit form
@@ -52,7 +48,5 @@ class ControllerDouble
      * @param   mixed  $record
      * @return  void
      */
-    public function editTask($record)
-    {
-    }
+    public function editTask($record) {}
 }

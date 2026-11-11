@@ -21,9 +21,7 @@ class DispatcherServiceProvider extends Middleware
      *
      * @return  void
      */
-    public function register()
-    {
-    }
+    public function register() {}
 
     /**
      * Handle request in stack

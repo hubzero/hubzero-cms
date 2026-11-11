@@ -11,6 +11,4 @@ namespace Hubzero\Component\Exception;
 /**
  * Invalid component controller exception
  */
-class InvalidControllerException extends \RuntimeException
-{
-}
+class InvalidControllerException extends \RuntimeException {}

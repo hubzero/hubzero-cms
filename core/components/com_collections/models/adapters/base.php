@@ -35,9 +35,7 @@ abstract class Base extends Obj
      * @param   integer  $scope_id S cope ID (group, course, etc.)
      * @return  void
      */
-    public function __construct($scope_id = 0)
-    {
-    }
+    public function __construct($scope_id = 0) {}
 
     /**
      * Generate and return various links to the entry

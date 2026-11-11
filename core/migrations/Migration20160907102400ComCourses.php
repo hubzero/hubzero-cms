@@ -25,7 +25,5 @@ class Migration20160907102400ComCourses extends Base
         }
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

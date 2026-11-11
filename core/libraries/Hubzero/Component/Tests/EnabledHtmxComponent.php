@@ -25,7 +25,5 @@ class EnabledHtmxComponent extends AbstractComponent implements HtmxComponentInt
         $htmx->state('marker', 'enabled');
     }
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

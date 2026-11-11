@@ -13,6 +13,4 @@ use Hubzero\Module\Module;
 /**
  * Module class for displaying a Twitter feed
  */
-class Twitterfeed extends Module
-{
-}
+class Twitterfeed extends Module {}

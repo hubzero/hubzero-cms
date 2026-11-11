@@ -12,9 +12,7 @@ use Hubzero\Component\SiteController;
 
 class HtmxFlowController extends SiteController
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function fragmentTask(): void
     {

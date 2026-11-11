@@ -24,7 +24,5 @@ class Migration20160907105300ComUsers extends Base
         $schema->setTableEngine('#__users_quotas_classes_groups', 'MyISAM');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

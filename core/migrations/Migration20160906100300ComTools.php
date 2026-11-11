@@ -121,7 +121,5 @@ class Migration20160906100300ComTools extends Base
         $mwdb->schema()->dropIndex('display', 'hostname');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

@@ -47,7 +47,5 @@ class Separator extends Button
      *
      * @return  void
      */
-    public function fetchButton()
-    {
-    }
+    public function fetchButton() {}
 }

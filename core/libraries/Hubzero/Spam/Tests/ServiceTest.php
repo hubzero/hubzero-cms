@@ -23,8 +23,7 @@ class ServiceTest extends Basic
      **/
     protected function getStub()
     {
-        return new class extends Service {
-        };
+        return new class extends Service {};
     }
 
     /**

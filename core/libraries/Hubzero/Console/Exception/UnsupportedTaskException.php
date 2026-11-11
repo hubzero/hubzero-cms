@@ -8,6 +8,4 @@
 
 namespace Hubzero\Console\Exception;
 
-class UnsupportedTaskException extends \InvalidArgumentException implements ExceptionInterface
-{
-}
+class UnsupportedTaskException extends \InvalidArgumentException implements ExceptionInterface {}

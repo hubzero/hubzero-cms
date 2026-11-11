@@ -15,6 +15,4 @@ namespace Hubzero\Database\Drivers\Percona;
  * and employs the same SQL syntax.
  *
  */
-class PerconaSyntax extends \Hubzero\Database\Drivers\Mysql\MysqlSyntax
-{
-}
+class PerconaSyntax extends \Hubzero\Database\Drivers\Mysql\MysqlSyntax {}

@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class LogicException extends \LogicException
-{
-}
+class LogicException extends \LogicException {}

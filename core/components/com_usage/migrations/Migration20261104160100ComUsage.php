@@ -102,9 +102,7 @@ class Migration20261104160100ComUsage extends Base
      * Narrowing the columns again would cut short every IPv6 address stored
      * since, so leave them as they are
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 
     /**
      * The metrics database connection, or null after marking the migration

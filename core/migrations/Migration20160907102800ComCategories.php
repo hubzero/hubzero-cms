@@ -27,7 +27,5 @@ class Migration20160907102800ComCategories extends Base
             ->execute();
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

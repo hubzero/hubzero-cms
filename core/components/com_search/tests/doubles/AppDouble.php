@@ -22,7 +22,5 @@ class AppDouble
      * @param   mixed  $url
      * @return  void
      */
-    public function redirect($url)
-    {
-    }
+    public function redirect($url) {}
 }

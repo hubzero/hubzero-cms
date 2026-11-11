@@ -22,9 +22,7 @@ class NotifyDouble
      * @param   mixed  $message
      * @return  void
      */
-    public function success($message)
-    {
-    }
+    public function success($message) {}
 
     /**
      * Stubbed by the tests to observe error messages
@@ -32,7 +30,5 @@ class NotifyDouble
      * @param   mixed  $message
      * @return  void
      */
-    public function error($message)
-    {
-    }
+    public function error($message) {}
 }

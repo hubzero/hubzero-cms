@@ -11,6 +11,4 @@ namespace Hubzero\View\Exception;
 /**
  * Invalid helper manager exception
  */
-class InvalidLayoutException extends \InvalidArgumentException
-{
-}
+class InvalidLayoutException extends \InvalidArgumentException {}

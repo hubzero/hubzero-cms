@@ -11,6 +11,4 @@ namespace Hubzero\Filesystem\Type;
 /**
  * Gz model
  */
-class Gz extends Tar
-{
-}
+class Gz extends Tar {}

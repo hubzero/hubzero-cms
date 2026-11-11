@@ -13,6 +13,4 @@ namespace Hubzero\Database\Drivers\Mock;
  *
  * Mock driver reuses SQLite grammar behavior.
  */
-class MockGrammar extends \Hubzero\Database\Drivers\Sqlite\SqliteGrammar
-{
-}
+class MockGrammar extends \Hubzero\Database\Drivers\Sqlite\SqliteGrammar {}

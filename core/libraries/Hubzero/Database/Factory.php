@@ -105,9 +105,7 @@ abstract class Factory
      * Declared final so that subclasses cannot change the signature,
      * which ensures new static() in the new() method is always safe.
      */
-    final public function __construct()
-    {
-    }
+    final public function __construct() {}
 
     /**
      * The model class this factory creates

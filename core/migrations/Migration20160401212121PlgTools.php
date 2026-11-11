@@ -83,7 +83,5 @@ iOS, Safari 9999.9');
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

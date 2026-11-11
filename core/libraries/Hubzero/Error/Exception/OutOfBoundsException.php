@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class OutOfBoundsException extends \OutOfBoundsException
-{
-}
+class OutOfBoundsException extends \OutOfBoundsException {}

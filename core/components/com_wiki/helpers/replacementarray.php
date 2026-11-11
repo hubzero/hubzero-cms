@@ -59,9 +59,7 @@ class ReplacementArray
      *
      * @return     void
      */
-    public function __wakeup()
-    {
-    }
+    public function __wakeup() {}
 
     // Set the whole replacement array at once
 

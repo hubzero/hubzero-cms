@@ -117,7 +117,5 @@ class Element extends Obj
      * @param   object  &$xmlElement   Element object
      * @param   string  $control_name  Control name of the element
      */
-    public function fetchElement($name, $value, &$xmlElement, $control_name)
-    {
-    }
+    public function fetchElement($name, $value, &$xmlElement, $control_name) {}
 }

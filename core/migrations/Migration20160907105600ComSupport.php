@@ -23,7 +23,5 @@ class Migration20160907105600ComSupport extends Base
         $schema->setTableEngine('#__support_query_folders', 'MyISAM');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

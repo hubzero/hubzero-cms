@@ -8,6 +8,4 @@
 
 namespace Hubzero\Error\Exception;
 
-class OverflowException extends \OverflowException
-{
-}
+class OverflowException extends \OverflowException {}

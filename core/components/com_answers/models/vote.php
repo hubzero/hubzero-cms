@@ -13,6 +13,4 @@ use Hubzero\Item\Vote as Base;
 /**
  * Vote Log for Q&A
  */
-class Vote extends Base
-{
-}
+class Vote extends Base {}

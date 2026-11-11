@@ -194,7 +194,5 @@ class Migration20241218103500ComMembers extends Base
         $this->syncProfiles();
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

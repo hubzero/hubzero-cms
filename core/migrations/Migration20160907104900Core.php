@@ -32,7 +32,5 @@ class Migration20160907104900Core extends Base
         $this->changeEngine('#__associations', 'MyISAM');
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

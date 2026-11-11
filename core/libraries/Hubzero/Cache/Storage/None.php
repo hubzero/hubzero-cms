@@ -129,9 +129,7 @@ class None implements StorageInterface
      * @param   string  $group
      * @return  void
      */
-    public function clean($group = null)
-    {
-    }
+    public function clean($group = null) {}
 
     /**
      * Garbage collect expired cache data

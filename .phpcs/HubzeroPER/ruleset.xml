@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="HubzeroPER" namespace="HubzeroPER">
+    <description>PER-CS rules that the PSR-12 standard shipped with PHP_CodeSniffer contradicts: an empty class,
+        function, method or closure body is written {} on the line of the symbol before it. The first three sniffs
+        are the PSR-12 ones with that one case let through; the fourth requires the short form.</description>
+</ruleset>

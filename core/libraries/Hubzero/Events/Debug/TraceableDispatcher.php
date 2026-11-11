@@ -227,9 +227,7 @@ class TraceableDispatcher implements DispatcherInterface
      *
      * @param Event  $event     The event
      */
-    protected function preTrigger(Event $event)
-    {
-    }
+    protected function preTrigger(Event $event) {}
 
     /**
      * Called after dispatching the event.
@@ -237,9 +235,7 @@ class TraceableDispatcher implements DispatcherInterface
      * @param   object  $event  The event
      * @return  void
      */
-    protected function postTrigger(Event $event)
-    {
-    }
+    protected function postTrigger(Event $event) {}
 
     /**
      * Called before preTrigger

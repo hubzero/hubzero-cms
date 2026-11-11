@@ -13,6 +13,4 @@ namespace Hubzero\Database\Drivers\Percona;
  *
  * Percona currently shares MySQL grammar behavior in the legacy layout.
  */
-class PerconaGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
-{
-}
+class PerconaGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar {}

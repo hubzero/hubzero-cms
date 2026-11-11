@@ -20,9 +20,7 @@ class RateLimitServiceProvider extends ServiceProvider
      *
      * @return  void
      */
-    public function register()
-    {
-    }
+    public function register() {}
 
     /**
      * Run the ratelimit tests durint request boot

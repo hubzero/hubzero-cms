@@ -83,9 +83,7 @@ class TableDiffFormatter extends DiffFormatter
      * @param      string $color Parameter description (if any) ...
      * @return     void
      */
-    public function lines($lines, $prefix = ' ', $color = 'white')
-    {
-    }
+    public function lines($lines, $prefix = ' ', $color = 'white') {}
 
     // HTML-escape parameter before calling this
 

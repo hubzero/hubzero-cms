@@ -63,7 +63,5 @@ class Migration20150826208413ComContent extends Base
     /**
      * Down
      **/
-    public function down()
-    {
-    }
+    public function down() {}
 }

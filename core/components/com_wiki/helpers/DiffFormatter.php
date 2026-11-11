@@ -242,9 +242,7 @@ class DiffFormatter
      *
      * @return     void
      */
-    public function endBlock()
-    {
-    }
+    public function endBlock() {}
 
     /**
      * Short description for '_lines'

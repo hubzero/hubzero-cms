@@ -28,7 +28,5 @@ class EnabledInertiaComponent extends AbstractComponent implements InertiaCompon
         $inertia->share('marker', 'enabled');
     }
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

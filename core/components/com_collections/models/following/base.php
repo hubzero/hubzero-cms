@@ -44,9 +44,7 @@ abstract class Base extends Obj
      * @param   integer  $id  ID
      * @return  void
      */
-    public function __construct($oid = null)
-    {
-    }
+    public function __construct($oid = null) {}
 
     /**
      * Returns a reference to this object

@@ -891,7 +891,5 @@ class Applications extends SiteController
         }
     }
 
-    public function buildTitle()
-    {
-    }
+    public function buildTitle() {}
 }

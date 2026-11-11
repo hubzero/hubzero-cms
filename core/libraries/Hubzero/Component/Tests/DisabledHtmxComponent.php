@@ -29,7 +29,5 @@ class DisabledHtmxComponent extends AbstractComponent implements HtmxComponentIn
         $this->registered = true;
     }
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

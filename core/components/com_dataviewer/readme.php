@@ -337,6 +337,4 @@ namespace Components\Dataviewer;
  * The `view()` function in View classes was renamed to `render()` to avoid
  * conflicts with potential PHP reserved words and improve clarity.
  */
-class Readme
-{
-}
+class Readme {}

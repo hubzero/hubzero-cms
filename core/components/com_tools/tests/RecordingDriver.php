@@ -23,9 +23,7 @@ class RecordingDriver
      * @param   array  $columns
      * @return  void
      */
-    public function __construct(private array $columns)
-    {
-    }
+    public function __construct(private array $columns) {}
 
     public function getTableColumns($table, $typeOnly = true)
     {

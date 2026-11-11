@@ -8,6 +8,4 @@
 
 namespace Hubzero\Console\Exception;
 
-class UnsupportedCommandException extends \InvalidArgumentException implements ExceptionInterface
-{
-}
+class UnsupportedCommandException extends \InvalidArgumentException implements ExceptionInterface {}

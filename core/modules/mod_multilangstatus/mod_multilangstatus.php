@@ -13,6 +13,4 @@ use Hubzero\Module\Module;
 /**
  * Module class for multilanguage status
  */
-class Multilangstatus extends Module
-{
-}
+class Multilangstatus extends Module {}

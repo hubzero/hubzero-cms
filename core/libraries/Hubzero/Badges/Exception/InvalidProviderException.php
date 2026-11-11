@@ -8,6 +8,4 @@
 
 namespace Hubzero\Badges\Exception;
 
-class InvalidProviderException extends \InvalidArgumentException
-{
-}
+class InvalidProviderException extends \InvalidArgumentException {}

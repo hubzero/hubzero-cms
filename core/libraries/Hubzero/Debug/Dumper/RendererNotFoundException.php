@@ -8,6 +8,4 @@
 
 namespace Hubzero\Debug\Dumper;
 
-class RendererNotFoundException extends \InvalidArgumentException
-{
-}
+class RendererNotFoundException extends \InvalidArgumentException {}

@@ -11,6 +11,4 @@ namespace Hubzero\Menu\Type;
 /**
  * Administrator Menu class
  */
-class Administrator extends Base
-{
-}
+class Administrator extends Base {}

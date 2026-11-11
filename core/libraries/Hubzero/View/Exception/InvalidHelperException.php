@@ -11,6 +11,4 @@ namespace Hubzero\View\Exception;
 /**
  * Invalid helper exception
  */
-class InvalidHelperException extends \Exception
-{
-}
+class InvalidHelperException extends \Exception {}

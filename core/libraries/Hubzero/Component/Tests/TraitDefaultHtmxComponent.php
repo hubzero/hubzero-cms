@@ -16,7 +16,5 @@ class TraitDefaultHtmxComponent extends AbstractComponent implements HtmxCompone
 {
     use UsesHtmxComponent;
 
-    protected function execute(): void
-    {
-    }
+    protected function execute(): void {}
 }

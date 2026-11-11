@@ -8,6 +8,4 @@
 
 namespace Hubzero\Console\Exception;
 
-interface ExceptionInterface
-{
-}
+interface ExceptionInterface {}

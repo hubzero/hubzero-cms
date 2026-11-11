@@ -27,7 +27,5 @@ class Migration20160907103500ComBillboards extends Base
             ->execute();
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 }

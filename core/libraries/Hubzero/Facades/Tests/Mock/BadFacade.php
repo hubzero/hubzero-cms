@@ -19,6 +19,4 @@ use Hubzero\Facades\Facade;
  *
  * @codeCoverageIgnore
  */
-class BadFacade extends Facade
-{
-}
+class BadFacade extends Facade {}

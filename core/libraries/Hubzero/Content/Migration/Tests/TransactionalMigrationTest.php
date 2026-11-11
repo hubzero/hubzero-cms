@@ -97,25 +97,19 @@ class TransactionalMigrationTest extends TestCase
         // but we can verify the logic by testing property detection
 
         $migrationWithDefault = new class extends Base {
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
 
         $migrationOptOut = new class extends Base {
             public $useTransaction = false;
 
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
 
         $migrationOptIn = new class extends Base {
             public $useTransaction = true;
 
-            public function __construct()
-            {
-            }
+            public function __construct() {}
         };
 
         // Test property exists check
@@ -152,9 +146,7 @@ class TransactionalMigrationTest extends TestCase
         $oldStyleMigration = new class extends Base {
             // No useTransaction property - uses inherited default
 
-            public function __construct()
-            {
-            }
+            public function __construct() {}
 
             public function up()
             {
