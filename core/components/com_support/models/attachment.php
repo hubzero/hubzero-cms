@@ -252,7 +252,7 @@ class Attachment extends Relational
         switch (strtolower($type)) {
             case 'base':
             case 'component':
-                return $this->_base;
+                return $link;
                 break;
 
             case 'filepath':

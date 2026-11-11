@@ -584,7 +584,6 @@ class Tickets extends AdminController
             'email_terse'     => Request::getInt('email_terse', 0) == 1,
             'option'          => $this->option,
             'controller'      => $this->controller,
-            'acl'             => $this->acl,
         ]);
 
         if ($this->getTask() != 'apply') {
