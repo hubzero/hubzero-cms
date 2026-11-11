@@ -121,9 +121,9 @@ class Mytools extends Module
      */
     public function buildList($toollist, $type = 'all')
     {
-        if ($type == 'favs') {
-            $favs = [];
-        } elseif ($type == 'all') {
+        // Only the list of all tools marks the user's favourites
+        $favs = [];
+        if ($type == 'all') {
             $favs = $this->favs;
         }
 

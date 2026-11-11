@@ -73,6 +73,8 @@ class Collect extends Module
                 $collection->setup(User::get('id'), 'member');
             }
 
+            $ids = [];
+
             $this->myboards = $this->model->mine();
             if ($this->myboards) {
                 foreach ($this->myboards as $board) {

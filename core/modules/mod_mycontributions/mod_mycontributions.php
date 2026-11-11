@@ -205,6 +205,9 @@ class Mycontributions extends Module
      */
     public function getState($int)
     {
+        // A status not listed here has no name
+        $state = '';
+
         switch ($int) {
             case 1:
                 $state = 'registered';

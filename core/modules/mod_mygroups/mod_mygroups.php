@@ -80,6 +80,9 @@ class Mygroups extends Module
             case 'invitees':
                 $query = $query4;
                 break;
+            default:
+                // Not a list there is a query for
+                return [];
         }
 
         if (!empty($groups)) {

@@ -135,6 +135,7 @@ class Youtube extends Module
 
             //get the title, subtitle, logo
             $title = $feed['title']['$t'];
+            $desc  = '';
             if ($type == 'playlists') {
                 $desc = $feed['subtitle']['$t'];
             }
@@ -204,6 +205,7 @@ class Youtube extends Module
                     $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle
                         . "\" href=\"{$alt_link}\">" . $moreText . "</a></p><br class=\"clear\" />";
                 } else {
+                    $link = '';
                     switch ($type) {
                         case 'playlists':
                             $link = "http://www.youtube.com/view_play_list?p=" . $content;

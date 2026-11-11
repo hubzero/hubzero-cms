@@ -307,6 +307,7 @@ class Latest extends Module
                 // Angie Fixed Routing
                 $menu = App::get('menu');
                 $menuitems = $menu->getItems('link', 'index.php?option=com_login');
+                $Itemid = '';
                 if (isset($menuitems[0])) {
                     $Itemid = $menuitems[0]->id;
                 } elseif (Request::getInt('Itemid') > 0) {
