@@ -199,7 +199,8 @@ $activeStatusSelected = function ($value) use ($view) {
                         'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(),
                     );
                     ?>
-                    <a class="options-link" href="<?= $editUrl ?>">Edit type-related options (save product first if you updated the type)</a></p>
+                    <a class="options-link" href="<?= $editUrl ?>">Edit type-related options (save product first if you
+                        updated the type)</a></p>
                 <?php
             }
             ?>

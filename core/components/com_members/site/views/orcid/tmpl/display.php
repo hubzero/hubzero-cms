@@ -136,7 +136,8 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                             // One address, with nothing between its parts: indentation inside the attribute
                             // would become spaces in the address
                             $amp = htmlspecialchars('&');
-                            $orcidUrl = 'https://' . ($this->config->get('orcid_service', 'members') == 'sandbox' ? 'sandbox.' : '')
+                            $orcidUrl = 'https://'
+                                . ($this->config->get('orcid_service', 'members') == 'sandbox' ? 'sandbox.' : '')
                                 . 'orcid.org/oauth/authorize?client_id=' . $clientID
                                 . $amp . 'response_type=code' . $amp . 'scope=/authenticate'
                                 . $amp . 'redirect_uri=' . urlencode($redirectURI)

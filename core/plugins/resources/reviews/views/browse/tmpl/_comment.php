@@ -82,7 +82,10 @@ if ($this->comment->get('resource_id')) {
             <img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous', 0)); ?>" alt="" />
         </p>
         <div class="comment-content">
-        <?php // voting defaults on (reviews.xml, and reviews.php passes voting=1); a hub that never saved the plugin params has none stored?>
+        <?php
+        // voting defaults on (reviews.xml, and reviews.php passes voting=1); a hub that never saved the plugin
+        // params has none stored
+        ?>
         <?php
         if (
             !$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting', 1)

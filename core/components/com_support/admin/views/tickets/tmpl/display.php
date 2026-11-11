@@ -395,7 +395,9 @@ $this
                                     <span class="<?= $row->status->get('alias') ?> status hasTip"
                                         title="<?= $titleText ?>">
                                             <?php echo $row->status->get('title');
-                                            echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+                                            echo (!$row->isOpen())
+                                                ? ' (' . $this->escape($row->get('resolved')) . ')'
+                                                : ''; ?>
                                     </span>
                                         <?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
                                         <span class="ticket-activity">
@@ -432,7 +434,14 @@ $this
                                 <p>
                                     <span class="ticket-author">
                                             <?php echo $this->escape($row->get('name'));
-                                            echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
+                                            echo ($row->get('login'))
+                                                ? ' (<a href="'
+                                                    . Route::url(
+                                                        'index.php?option=com_members&task=edit&id='
+                                                            . $this->escape($row->get('login')),
+                                                    )
+                                                    . '">' . $this->escape($row->get('login')) . '</a>)'
+                                                : ''; ?>
                                     </span>
                                     <span class="ticket-datetime">
                                         @ <time

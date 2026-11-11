@@ -95,7 +95,10 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
     <td class="middle_valign nobsp is-relative">
         <?php echo $this->item->drawIcon($ext); ?>
         <?php if ($this->item->get('type') == 'file') { ?>
-            <div class="file-action-dropdown<?= ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : '' ?>">
+            <?php
+            $handlers = Handler::getLaunchUrlsForFile($handlerBase);
+            ?>
+            <div class="file-action-dropdown<?= $handlers ? ' hasMultiple' : '' ?>">
                 <?php
                 $attributes = $this->item->get('converted')
                     ? ' rel="noopener noreferrer external" target="_blank"'

@@ -63,7 +63,9 @@ if (!$no_html) { ?>
 <div class="comment-voting voting">
 <?php } ?>
     <span class="vote-like<?php echo $lcls; ?>">
-        <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { // || !$this->params->get('access-vote-comment')) {?>
+        <?php
+        // || !$this->params->get('access-vote-comment')) {
+        if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
             <span class="vote-button <?= ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls ?>"
                 title="<?= $like_title ?>">
                 <?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE') ?></span>

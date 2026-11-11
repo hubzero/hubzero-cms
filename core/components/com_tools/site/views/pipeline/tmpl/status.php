@@ -156,7 +156,10 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_VERSION'); ?></th>
-                            <td><?php echo ($this->status['version']) ? Lang::txt('COM_TOOLS_THIS_VERSION') . ' ' . $this->status['version'] : Lang::txt('COM_TOOLS_THIS_VERSION') . ': ' . Lang::txt('COM_TOOLS_NO_LABEL');
+                            <td><?php
+                            echo ($this->status['version'])
+                                ? Lang::txt('COM_TOOLS_THIS_VERSION') . ' ' . $this->status['version']
+                                : Lang::txt('COM_TOOLS_THIS_VERSION') . ': ' . Lang::txt('COM_TOOLS_NO_LABEL');
                             if (
                                 !$this->status['published']
                                 or (
@@ -317,7 +320,11 @@ $prioritySelected = function ($value) use ($view) {
                                     ?>
                                     <li class="message"><a href="javascript:void(0);" title="<?= $titleText ?>"
                                         class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
-                                    <?php if ($this->status['published'] != 1 && ToolsHtml::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
+                                    <?php
+                                    // show cancel option only for tools under development
+                                    if (
+                                        $this->status['published'] != 1 && ToolsHtml::toolActive($this->status['state'])
+                                    ) { ?>
                                         <li class="canceltool"><a href="javascript:void(0);"
                                             title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>"
                                             class="showcancel"><?= Lang::txt('JCANCEL') ?></a></li>

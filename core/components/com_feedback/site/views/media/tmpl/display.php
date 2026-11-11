@@ -60,7 +60,8 @@ $this
                         <img src="<?php echo $this->default_picture; ?>" alt="" id="oimage" name="oimage" />
                     </td>
                     <td>
-                        <p><?= Lang::txt('COM_FEEDBACK_STORY_ADD_PICTURE') ?><br /><small>(gif/jpg/jpeg/png - 200K max)</small></p>
+                        <p><?= Lang::txt('COM_FEEDBACK_STORY_ADD_PICTURE') ?><br /><small>(gif/jpg/jpeg/png - 200K
+                            max)</small></p>
                     </td>
                 </tr>
                 <tr>

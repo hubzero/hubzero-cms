@@ -405,7 +405,8 @@ $this->js('edit.js', 'com_massmail');
                             <?php if ($this->row->get('approved_by')) { ?>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_APPROVED_BY'); ?></th>
-                                    <td><?php echo $this->escape(User::getInstance($this->row->get('approved_by'))->get('name'));
+                                    <td><?php
+                                    echo $this->escape(User::getInstance($this->row->get('approved_by'))->get('name'));
                                     if ($this->row->get('approved_on')) {
                                         echo '<br /><span class="mm-meta-sub">'
                                             . Date::of($this->row->get('approved_on'))->toLocal($fmt) . '</span>';

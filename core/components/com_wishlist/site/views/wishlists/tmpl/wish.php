@@ -896,7 +896,9 @@ $categoryChecked = function ($value) use ($view) {
         </div><!-- / .aside -->
     </section><!-- / .below section -->
 
-                <?php if (!User::isGuest()) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) {?>
+                <?php
+                //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) {
+                if (!User::isGuest()) { ?>
         <section class="below section">
             <div class="subject">
                 <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="commentform"

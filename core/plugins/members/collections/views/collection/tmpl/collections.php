@@ -155,7 +155,9 @@ $this
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } ?>
-                                <?php if ($this->params->get('access-delete-collection')) { //!$row->get('is_default') &&?>
+                                <?php
+                                //!$row->get('is_default') &&
+                                if ($this->params->get('access-delete-collection')) { ?>
                                     <a class="btn delete" data-id="<?= $row->get('id') ?>"
                                         href="<?= Route::url($base . '&task=' . $row->get('alias') . '/delete') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>

@@ -197,7 +197,11 @@ $statusSelected = function ($value) use ($view) {
                     );
                     ?>
                     <a href="<?= $editUrl ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
-                        <span><?= $this->escape($service->get('category')) . ' -- ' . $this->escape($service->get('title')) ?></span>
+                        <?php
+                        $serviceName = $this->escape($service->get('category')) . ' -- '
+                            . $this->escape($service->get('title'));
+                        ?>
+                        <span><?= $serviceName ?></span>
                     </a>
                 </td>
                 <td>

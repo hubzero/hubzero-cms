@@ -90,8 +90,10 @@ $this
         </div>
         <script id="entry-template" type="text/x-handlebars-template">
             <h3 class="resource-title">
-                {{#if record.errors}}<span class="has-errors"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS') ?></span>{{/if}}
-                {{#if record.notices}}<span class="has-notices"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES') ?></span>{{/if}}
+                {{#if record.errors}}<span
+                    class="has-errors"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS') ?></span>{{/if}}
+                {{#if record.notices}}<span
+                    class="has-notices"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES') ?></span>{{/if}}
                 {{{ record.entry.name }}}
             </h3>
 

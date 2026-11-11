@@ -147,7 +147,10 @@ $this->css('usage', 'com_usage');
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
                     ?>
-                    <td><a href="<?= $toolsUrl ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
+                    <?php
+                    $userCount = (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14;
+                    ?>
+                    <td><a href="<?= $toolsUrl ?>"><?= $userCount ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
                     $linkText = (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14;
