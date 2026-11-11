@@ -477,6 +477,7 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
     $items = array_reverse($menu->getMenu());
 
     $found           = false;
+    $foundDepth      = 0;
     $foundRank       = null;
     $route_lowercase = strtolower($route);
     $lang_tag        = App::get('language')->getTag();
@@ -830,7 +831,7 @@ if (Config::get('debug')) {
         // language would refuse the second. The check and the insert go in one
         // transaction, and a deadlock is worth one retry.
         try {
-            $db->transaction(function () use ($routes, $option, $id, $enabled) {
+            $db->transaction(function () use ($routes, $option, $id) {
                 if (!$routes->exists($option)) {
                     $routes->create($option, $id);
                 }
