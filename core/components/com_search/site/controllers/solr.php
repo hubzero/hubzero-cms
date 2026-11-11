@@ -252,7 +252,7 @@ class Solr extends SiteController
             $this->view->pagination->setAdditionalUrlParam('tags', $child['title']);
         }
 
-        if (isset($results) && count($results) > 0) {
+        if (count($results) > 0) {
             $this->view->query = $terms;
             $this->view->results = $results;
             $this->view->facets = $searchComponents;

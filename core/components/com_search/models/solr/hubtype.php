@@ -67,6 +67,7 @@ class HubType extends Relational
             $database = App::get('db');
             $model = new $classpath($database);
         }
+        $modelStructure = null;
         if (get_parent_class($model) == 'Hubzero\Database\Relational') {
             $modelStructure = $model->getStructure()->getTableColumns($model->getTableName());
         } elseif (get_parent_class($model) == 'Hubzero\Base\Model') {

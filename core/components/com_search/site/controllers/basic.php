@@ -55,6 +55,7 @@ class Basic extends SiteController
         $this->view->url_terms = urlencode($terms->getRawWithoutSection());
         @list($plugin, $section) = $terms->getSection();
 
+        $total = 0;
         if ($plugin) {
             foreach ($results->getResultCounts() as $cat => $def) {
                 if ($plugin == $cat) {

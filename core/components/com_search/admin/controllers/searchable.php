@@ -283,6 +283,7 @@ class Searchable extends AdminController
         foreach ($components as $component) {
             $searchIndex = new \Hubzero\Search\Index($this->config);
             $componentSearchModel = $component->getSearchableModel();
+            $modelNamespace = null;
             if (class_exists($componentSearchModel)) {
                 $modelNamespace = $componentSearchModel::searchNamespace();
                 $deleteQuery = ['hubtype' => $modelNamespace];
@@ -294,9 +295,13 @@ class Searchable extends AdminController
             $component->set('indexed_records', 0);
             if ($component->save()) {
                 Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
-                $deleteObj = new stdClass();
-                $deleteObj->hubtype = $modelNamespace;
-                Event::trigger('search.sendSolrRequest', [$deleteObj, 'delete']);
+
+                // Without a searchable model there is no hub type to delete
+                if ($modelNamespace !== null) {
+                    $deleteObj = new stdClass();
+                    $deleteObj->hubtype = $modelNamespace;
+                    Event::trigger('search.sendSolrRequest', [$deleteObj, 'delete']);
+                }
             }
         }
 

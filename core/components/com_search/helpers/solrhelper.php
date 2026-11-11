@@ -73,6 +73,7 @@ class SolrHelper
     {
         if ($id != '') {
             $parts = explode('-', $id);
+            $type  = null;
 
             if (count($parts) == 3) {
                 $type = $parts[0] . '-' . $parts[1];
