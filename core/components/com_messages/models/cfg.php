@@ -95,6 +95,25 @@ class Cfg extends Relational
     }
 
     /**
+     * Removes every setting stored for a user
+     *
+     * @param   integer  $user_id  The user whose settings to remove
+     * @return  boolean  True on success
+     */
+    public static function removeForUser($user_id)
+    {
+        $model = self::blank();
+
+        $result = $model->getQuery()
+            ->delete($model->getTableName())
+            ->whereEquals('user_id', (int) $user_id)
+            ->execute();
+
+        // Having nothing to remove is not a failure
+        return $result !== false;
+    }
+
+    /**
      * Get the creator of this entry
      *
      * @return  object
