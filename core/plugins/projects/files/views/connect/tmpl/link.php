@@ -28,7 +28,7 @@ $limited = $this->params->get('connectedProjects')
 ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects'))
 : [];
 
-$authorized = (empty($limited) || (!empty($limited) && in_array($this->model->get('alias'), $limited))) ? true : false;
+$authorized = (!$limited || in_array($this->model->get('alias'), $limited)) ? true : false;
 
 $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $this->oparams->get('dropbox_token')))
 ? 1

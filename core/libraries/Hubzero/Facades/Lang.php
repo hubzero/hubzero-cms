@@ -35,6 +35,7 @@ namespace Hubzero\Facades;
  * @method static array  getOrphans()
  * @method static array  getKnownLanguages(string $basePath = '', string $client = null)
  * @method static string detect()
+ * @method static \Hubzero\Language\Translator getInstance(string $lang, bool $debug = false)
  *
  * @codeCoverageIgnore
  */

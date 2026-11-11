@@ -43,7 +43,7 @@ $this->css('
                     if (isset($document['owner']) && $document['owner'] != '') {
                         if ($document['owner_type'] == 'user') {
                             $user = \Hubzero\User\User::one($document['owner'][0]);
-                            if (isset($user) && is_object($user)) {
+                            if (is_object($user)) {
                                 echo $this->escape($user->get('name'));
                             } else {
                                 echo Lang::txt('UNKNOWN');

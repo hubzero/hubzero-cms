@@ -17,7 +17,7 @@ use Hubzero\Facades\Toolbar;
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png');
-Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
+Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false);
 Toolbar::deleteList('', 'remove', 'COM_EVENTS_DELETE');
 Toolbar::cancel();
 ?>

@@ -24,6 +24,7 @@ namespace Hubzero\Facades;
  * @method static string   link(string $type = '')
  * @method static array    groups(string $role = 'all')
  * @method static array    getAuthorisedViewLevels()
+ * @method static array    toArray()
  * @method static array    getAuthorisedGroups()
  * @method static array    getAuthorisedCategories(string $component, string $action)
  * @method static bool     save()

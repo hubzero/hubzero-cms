@@ -268,6 +268,7 @@ class Events extends SiteController
          */
         define('_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat'));
         Html::$dateFormat = $config->getCfg('dateformat');
+        Html::$startDay = $config->getCfg('starday');
 
         $currentDate = new \Hubzero\Utility\Date('now', Config::get('offset'));
         $this->offset = $currentDate->getOffsetFromGMT(true);

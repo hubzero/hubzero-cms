@@ -14,6 +14,7 @@ namespace Hubzero\Facades;
  * Inspired by Joomla's JToolbarHelper class
  *
  * @method static string render()
+ * @method static mixed  appendButton(mixed ...$args)
  *
  * @codeCoverageIgnore
  */

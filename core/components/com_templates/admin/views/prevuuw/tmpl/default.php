@@ -15,7 +15,7 @@ use Hubzero\Facades\Toolbar;
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER'), 'thememanager');
-Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false, false);
+Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false);
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $previewUrl = $this->url . 'index.php?tp=' . $this->tp

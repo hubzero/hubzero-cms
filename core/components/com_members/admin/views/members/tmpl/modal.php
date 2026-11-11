@@ -10,10 +10,11 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers/html');
+Html::addIncludePath(Component::path('com_members') . '/admin/helpers/html');
 Html::behavior('tooltip');
 
 $field     = Request::getCmd('field');

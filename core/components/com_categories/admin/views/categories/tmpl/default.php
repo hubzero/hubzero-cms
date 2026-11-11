@@ -11,6 +11,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -53,7 +54,7 @@ if ($this->canDo->get('core.admin')) {
 Toolbar::spacer();
 Toolbar::help('categories');
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers/html');
+Html::addIncludePath(Component::path('com_categories') . '/admin/helpers/html');
 Html::behavior('multiselect');
 Html::behavior('tooltip');
 

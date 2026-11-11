@@ -24,6 +24,7 @@ namespace Hubzero\Facades;
  * @method static object setMetaData(string $name, string $content, bool $http_equiv = false, bool $sync = true)
  * @method static object setCharset(string $type = 'utf-8')
  * @method static string getLanguage()
+ * @method static string getDirection()
  * @method static object setLink(string $url)
  * @method static mixed  getBuffer(string $type = null, string $name = null, array $attribs = [])
  * @method static object setBuffer(mixed $content, mixed $options = [], string $name = null)

@@ -194,7 +194,6 @@ $contactPhoneValue = $this->escape(
                         $this->cats,
                         $this->row->cid,
                         '',
-                        '',
                     );
                     ?>
                 </div>
@@ -207,7 +206,6 @@ $contactPhoneValue = $this->escape(
                         'type',
                         $this->types,
                         $this->row->type,
-                        '',
                         '',
                     );
                     ?>

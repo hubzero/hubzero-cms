@@ -20,7 +20,7 @@ $this
      ->css('import')
      ->js('import');
 
-$canDo = \Components\Members\Helpers\Admin::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions();
 
 // set title
 $title  = ($this->import->get('id'))

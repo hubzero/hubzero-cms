@@ -27,6 +27,14 @@ class Html
     public static $dateFormat = null;
 
     /**
+     * First day of the week: the events configuration's "starday", which the
+     * site controller sets here, and also defines as _CAL_CONF_STARDAY
+     *
+     * @var  mixed
+     */
+    public static $startDay = 0;
+
+    /**
      * Auto-link strings matching URL patterns
      * @deprectated
      *

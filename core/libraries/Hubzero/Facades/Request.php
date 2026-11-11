@@ -49,6 +49,8 @@ namespace Hubzero\Facades;
  * @method static bool    checkToken(string $method = 'post')
  * @method static bool    checkHoneypot(string $name = null, int $delay = 3)
  * @method static mixed   getState(string $key, string $request, string $default = null, string $type = 'none')
+ * @method static bool   isSecure()
+ * @method static string getHttpHost()
  *
  * @codeCoverageIgnore
  */

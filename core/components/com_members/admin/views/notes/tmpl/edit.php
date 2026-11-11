@@ -17,7 +17,7 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 $checkedOut = !($this->row->get('checked_out') == 0 || $this->row->get('checked_out') == User::get('id'));
-$canDo = \Components\Members\Helpers\Admin::getActions($this->row->get('category_id'), $this->row->get('id'));
+$canDo = \Components\Members\Helpers\Admin::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

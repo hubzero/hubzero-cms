@@ -182,12 +182,11 @@ $resumesUrl = Route::url(
                         $cats,
                         $filters['category'],
                         '',
-                        '',
                     ); ?>
                 </label>
                 <label>
                     <?php echo Lang::txt('Type sought'); ?>:
-                    <?php echo \Components\Jobs\Helpers\Html::formSelect('type', $types, $filters['type'], '', ''); ?>
+                    <?php echo \Components\Jobs\Helpers\Html::formSelect('type', $types, $filters['type'], ''); ?>
                 </label>
                 <label>
                     <input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" />

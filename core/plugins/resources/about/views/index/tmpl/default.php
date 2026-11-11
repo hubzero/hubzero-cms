@@ -238,8 +238,7 @@ $maintext = $this->model->description;
                 ?>
 
                 <?php
-                $hasCitations = isset($citations)
-                    && ($citations != null || $citations != '');
+                $hasCitations = ($citations != null || $citations != '');
                 $citationsHeading = $hasCitations
                     ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS')
                     : '';

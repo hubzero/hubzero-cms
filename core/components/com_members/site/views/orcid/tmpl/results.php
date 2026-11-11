@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
         <?php if (count($this->records)) { ?>
             <?php
             foreach ($this->records as $record) {
-                if (!$record || empty($record)) {
+                if (!$record) {
                     continue;
                 }
                 $fname     = array_key_exists('given-names', $record) ? $record['given-names'] : '';

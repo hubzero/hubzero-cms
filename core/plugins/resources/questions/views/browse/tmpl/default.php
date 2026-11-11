@@ -66,7 +66,7 @@ $this->css();
             $name = Lang::txt('JANONYMOUS');
             if (!$row->get('anonymous')) {
                 $name = $this->escape(stripslashes($row->creator->get('name', $name)));
-                if (in_array($row->creator->get('access'), User::getAuthorisedviewLevels())) {
+                if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                     $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                 }
             }

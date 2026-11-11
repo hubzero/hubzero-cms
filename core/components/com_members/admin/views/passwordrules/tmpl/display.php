@@ -15,7 +15,7 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Admin::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions();
 
 // Menu
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_RULES'), 'user');
@@ -27,7 +27,6 @@ if ($canDo->get('core.manage')) {
         'refresh',
         'refresh',
         'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS',
-        false,
         false,
     );
     Toolbar::spacer();

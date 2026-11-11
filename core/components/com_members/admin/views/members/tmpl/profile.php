@@ -14,7 +14,7 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Admin::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions();
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PROFILE'), 'user');
 if ($canDo->get('core.edit') || $canDo->get('core.create')) {

@@ -229,7 +229,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                             <strong><?= $strongText ?>: </strong> <span><?= $this->escape($downloadPath) ?></span>
                         </li>
                         <li>
-                            <?php if ($this->authorized && isset($editorName) && $editorName != '') : ?>
+                            <?php if ($this->authorized && $editorName != '') : ?>
                                 <?php
                                 $onclick = 'return editorInsertFile(' . $this->escape(json_encode($downloadPath))
                                     . ');';

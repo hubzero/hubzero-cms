@@ -194,11 +194,11 @@ if ($this->getError()) { ?>
 
             <label>
                 <?php echo Lang::txt('COM_JOBS_EDITJOB_CATEGORY'); ?>:
-                <?php echo \Components\Jobs\Helpers\Html::formSelect('cid', $this->cats, $job->cid, '', ''); ?>
+                <?php echo \Components\Jobs\Helpers\Html::formSelect('cid', $this->cats, $job->cid, ''); ?>
             </label>
             <label>
                 <?php echo Lang::txt('COM_JOBS_EDITJOB_TYPE'); ?>:
-                <?php echo \Components\Jobs\Helpers\Html::formSelect('type', $this->types, $job->type, '', ''); ?>
+                <?php echo \Components\Jobs\Helpers\Html::formSelect('type', $this->types, $job->type, ''); ?>
             </label>
             <div class="grid">
                 <div class="col span6">

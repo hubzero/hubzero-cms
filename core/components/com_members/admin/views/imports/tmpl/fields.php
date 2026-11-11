@@ -23,7 +23,7 @@ $this
 
 Request::setVar('hidemainmenu', 1);
 
-$canDo = \Components\Members\Helpers\Admin::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions();
 
 // set title
 $title  = ($this->import->get('id'))

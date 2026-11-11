@@ -393,7 +393,7 @@ $option = 'com_groups';
                                             ?>
                                         <?php
                                         if (
-                                            in_array($u->get('access'), User::getAuthorisedviewLevels())
+                                            in_array($u->get('access'), User::getAuthorisedViewLevels())
                                             && ($u->get('activation') > 0)
                                         ) { ?>
                                             <a href="<?= Route::url($url) ?>"><?= $this->escape($displayName) ?></a>

@@ -62,9 +62,7 @@ if ($params->get('tag_id') != null) {
             $ariaControlTarget = 'aria-control-target-' . $item->id;
         }
 
-        if (!empty($class)) {
-            $class = ' class="' . trim($class) . '"';
-        }
+        $class = ' class="' . trim($class) . '"';
 
         echo '<li' . $class . '>';
 

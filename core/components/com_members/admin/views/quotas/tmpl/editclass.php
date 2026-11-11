@@ -15,7 +15,7 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Admin::getActions('component');
+$canDo = Components\Members\Helpers\Admin::getActions();
 
 $text = ($this->task == 'editClass' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

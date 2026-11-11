@@ -18,7 +18,7 @@ $this
 $body     = '';
 $selected = $this->selected;
 
-if (!$selected || empty($selected)) {
+if (!$selected) {
     return false;
 }
 $rows   = 1;

@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 
 if (!$this->comment->get('anonymous')) {
     $name = $this->escape(stripslashes($huser->get('name')));
-    if (in_array($huser->get('access'), User::getAuthorisedviewLevels())) {
+    if (in_array($huser->get('access'), User::getAuthorisedViewLevels())) {
         $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $name
             . '</a>';
     }

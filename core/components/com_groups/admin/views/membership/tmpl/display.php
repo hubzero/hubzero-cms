@@ -56,7 +56,6 @@ switch ($this->filters['status']) {
                 'COM_GROUPS_MEMBER_UNINVITE',
                 'COM_GROUPS_MEMBER_UNINVITE',
                 false,
-                false,
             );
         }
         break;
@@ -68,11 +67,10 @@ switch ($this->filters['status']) {
                 'COM_GROUPS_MEMBER_APPROVE',
                 'COM_GROUPS_MEMBER_APPROVE',
                 false,
-                false,
             );
         }
         if ($canDo->get('core.delete')) {
-            Toolbar::custom('deny', 'unpublish', 'COM_GROUPS_MEMBER_DENY', 'COM_GROUPS_MEMBER_DENY', false, false);
+            Toolbar::custom('deny', 'unpublish', 'COM_GROUPS_MEMBER_DENY', 'COM_GROUPS_MEMBER_DENY', false);
         }
         break;
     default:
@@ -83,9 +81,8 @@ switch ($this->filters['status']) {
                 'COM_GROUPS_MEMBER_PROMOTE',
                 'COM_GROUPS_MEMBER_PROMOTE',
                 false,
-                false,
             );
-            Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false, false);
+            Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false);
         }
         if (
             $canDo->get('core.edit') && \Hubzero\User\Group\Membership::supported()
