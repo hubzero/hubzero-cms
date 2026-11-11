@@ -542,7 +542,11 @@ $prioritySelected = function ($value) use ($view) {
                         ?>
                     <p>
                         <?= Lang::txt('COM_TOOLS_TEAM_WILL_CREATE') ?> <a class="developer-site" href="<?= $developer_url ?>/tools"><?= $developer_site ?></a>, <?= Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS') ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST') ?>.
+                        <?php
+                        $hasBeenText = Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN');
+                        $yourRequestText = Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST');
+                        ?>
+                        <?= $hasBeenText ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= $yourRequestText ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>

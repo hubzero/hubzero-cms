@@ -31,7 +31,11 @@ endif;
     <div class="curation-history">
         <div class="pubtitle">
             <p>
-                <?= $this->escape(Str::truncate($this->pub->title, 65)) ?> | <?= Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label) ?>
+                <?php
+                $curationVersionText = Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' '
+                    . $this->escape($this->pub->version_label);
+                ?>
+                <?= $this->escape(Str::truncate($this->pub->title, 65)) ?> | <?= $curationVersionText ?>
             </p>
         </div>
         <?php if ($history) : ?>
