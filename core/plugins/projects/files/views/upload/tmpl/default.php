@@ -134,7 +134,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                             e.preventDefault();
                             alert(<?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_TOO_LARGE')); ?>
                                 + '\n\n' + oversized.join('\n')
-                                + '\n\n' + <?= json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_USE_CHUNKED')) ?>);
+                                + '\n\n'
+                                + <?= json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_USE_CHUNKED')) ?>);
                         }
                     });
                 })();

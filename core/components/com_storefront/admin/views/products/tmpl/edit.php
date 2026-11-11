@@ -508,8 +508,10 @@ $activeStatusSelected = function ($value) use ($view) {
                                 multiple: true,
                                 debug: true,
                                 template: '<div class="qq-uploader">' +
-                                '<div class="qq-upload-button"><span><?= Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP') ?></span></div>' +
-                                '<div class="qq-upload-drop-area"><span><?= Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP') ?></span></div>' +
+                                '<div class="qq-upload-button"><span>' +
+                                '<?= Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP') ?></span></div>' +
+                                '<div class="qq-upload-drop-area"><span>' +
+                                '<?= Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP') ?></span></div>' +
                                 '<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' +
                                 '</div>',
                                 onComplete: function(id, file, response) {
@@ -532,7 +534,11 @@ $activeStatusSelected = function ($value) use ($view) {
                             var currentfileVal = $('#currentfile').val();
                             $.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
                                 if (response.success) {
-                                    $('#img-display').attr('src', '<?= rtrim(Request::root(true), '/') ?>/core/components/com_storefront/site/assets/img/noimage.png');
+                                    $('#img-display').attr(
+                                        'src',
+                                        '<?= rtrim(Request::root(true), '/') ?>/core/components/com_storefront'
+                                            + '/site/assets/img/noimage.png'
+                                    );
                                     $('#img-name').text('[ none ]');
                                     $('#img-size').text('0');
                                     $('#img-width').text('0');

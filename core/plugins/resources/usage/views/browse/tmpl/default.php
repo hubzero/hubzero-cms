@@ -790,7 +790,8 @@ $bars = [];
 
                 var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-                dataurl = '<?= $base ?>/index.php?option=com_resources&id=<?= $this->resource->id ?>&active=usage&action=top&datetime=';
+                dataurl = '<?= $base ?>/index.php?option=com_resources&id=<?= $this->resource->id ?>'
+                    + '&active=usage&action=top&datetime=';
 
                 function updateTables(yyyy, mm) {
                     var dt = yyyy + '/' + mm + '/01';

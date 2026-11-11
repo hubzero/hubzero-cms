@@ -80,7 +80,10 @@
               if (seconds <= 0) {
                   clearInterval(interval);
                   const a = document.createElement("a");
-                  a.href = <?= json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+                  a.href = <?= json_encode(
+                      (string) $url,
+                      JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
+                  ) ?>;
                   a.rel = "noreferrer nofollow noopener";
                   document.body.appendChild(a);
                   a.click();
