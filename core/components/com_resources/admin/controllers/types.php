@@ -353,6 +353,10 @@ class Types extends AdminController
                 case 'unpublish':
                     $message = Lang::txt('COM_RESOURCES_ITEMS_UNPUBLISHED', $success);
                     break;
+                default:
+                    // Any task other than "publish" unpublished the types
+                    $message = Lang::txt('COM_RESOURCES_ITEMS_UNPUBLISHED', $success);
+                    break;
             }
 
             Notify::success($message);

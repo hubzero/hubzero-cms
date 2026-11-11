@@ -971,10 +971,10 @@ class Create extends SiteController
         // If group ownership has changed
         if ((!$prev && $row->get('group_owner')) || ($prev && !$row->get('group_owner'))) {
             // Log activity
+            // Exactly one of the two holds here
             if (!$prev && $row->get('group_owner')) {
                 $action = 'ADDED';
-            }
-            if ($prev && !$row->get('group_owner')) {
+            } else {
                 $action = 'REMOVED';
             }
 
@@ -988,8 +988,7 @@ class Create extends SiteController
 
             if (!$prev && $row->get('group_owner')) {
                 $group = \Hubzero\User\Group::getInstance($row->get('group_owner'));
-            }
-            if ($prev && !$row->get('group_owner')) {
+            } else {
                 $group = \Hubzero\User\Group::getInstance($prev);
             }
             if (!$group) {
@@ -1388,56 +1387,54 @@ class Create extends SiteController
             // Get any set emails that should be notified of ticket submission
             $defs = explode(',', $this->config->get('email_when_submitted', '{config.mailfrom}'));
 
-            if (!empty($defs)) {
-                $message = new \Hubzero\Mail\Message();
-                $message->setSubject(
-                    Config::get('sitename')
-                        . ' '
-                        . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id),
-                );
-                $message->addFrom(
-                    Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
-                );
+            $message = new \Hubzero\Mail\Message();
+            $message->setSubject(
+                Config::get('sitename')
+                    . ' '
+                    . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id),
+            );
+            $message->addFrom(
+                Config::get('mailfrom'),
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
+            );
 
-                // Plain text email
-                $eview = new \Hubzero\Mail\View([
-                    'name'   => 'emails',
-                    'layout' => 'submitted_plain',
-                ]);
-                $eview->option     = $this->option;
-                $eview->controller = $this->controller;
-                $eview->resource   = $resource;
-                $eview->delimiter  = '';
+            // Plain text email
+            $eview = new \Hubzero\Mail\View([
+                'name'   => 'emails',
+                'layout' => 'submitted_plain',
+            ]);
+            $eview->option     = $this->option;
+            $eview->controller = $this->controller;
+            $eview->resource   = $resource;
+            $eview->delimiter  = '';
 
-                $plain = $eview->loadTemplate(false);
-                $plain = str_replace("\n", "\r\n", $plain);
+            $plain = $eview->loadTemplate(false);
+            $plain = str_replace("\n", "\r\n", $plain);
 
-                $message->addPart($plain, 'text/plain');
+            $message->addPart($plain, 'text/plain');
 
-                // HTML email
-                $eview->setLayout('submitted_html');
+            // HTML email
+            $eview->setLayout('submitted_html');
 
-                $html = $eview->loadTemplate();
-                $html = str_replace("\n", "\r\n", $html);
+            $html = $eview->loadTemplate();
+            $html = str_replace("\n", "\r\n", $html);
 
-                $message->addPart($html, 'text/html');
+            $message->addPart($html, 'text/html');
 
-                // Loop through the addresses
-                foreach ($defs as $def) {
-                    $def = trim($def);
+            // Loop through the addresses
+            foreach ($defs as $def) {
+                $def = trim($def);
 
-                    // Check if the address should come from config
-                    if ($def == '{config.mailfrom}') {
-                        $def = Config::get('mailfrom');
-                    }
+                // Check if the address should come from config
+                if ($def == '{config.mailfrom}') {
+                    $def = Config::get('mailfrom');
+                }
 
-                    // Check for a valid address
-                    if (\Hubzero\Utility\Validate::email($def)) {
-                        // Send e-mail
-                        $message->setTo([$def]);
-                        $message->send();
-                    }
+                // Check for a valid address
+                if (\Hubzero\Utility\Validate::email($def)) {
+                    // Send e-mail
+                    $message->setTo([$def]);
+                    $message->send();
                 }
             }
 

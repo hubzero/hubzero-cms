@@ -871,7 +871,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform description
      *
-     * @return  string
+     * @return  array
      */
     public function fields()
     {

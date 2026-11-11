@@ -25,12 +25,15 @@ class Hubpresenter extends Obj
     public static function createJsonManifest($resource_path, $xml_path)
     {
         // Verify once again the file exists
-        if (file_exists($xml_path)) {
-            $manifest = simplexml_load_file($xml_path);
+        if (!file_exists($xml_path)) {
+            return;
         }
+        $manifest = simplexml_load_file($xml_path);
 
         // Set the media
         $old_media = $manifest->media;
+        $new_media = [];
+        $ext = '';
         foreach ($old_media->source as $source) {
             $old_media_parts = explode('\\', $source);
             $source          = array_pop($old_media_parts);

@@ -1920,8 +1920,9 @@ class Resources extends SiteController
                 }
 
                 // Get attributes
+                $duration = '';
                 if ($children) {
-                    $attribs = $children[0]->attribs;
+                    $duration = $children[0]->attribs->get('duration');
                 }
 
                 foreach ($podcasts as $podcast) {
@@ -1954,8 +1955,8 @@ class Resources extends SiteController
                     $item->itunes_keywords = $rtags;
                     $item->itunes_author   = $author;
 
-                    if ($attribs->get('duration')) {
-                        $item->itunes_duration = $attribs->get('duration');
+                    if ($duration) {
+                        $item->itunes_duration = $duration;
                     }
 
                     if ($podcast) {

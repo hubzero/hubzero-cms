@@ -123,6 +123,7 @@ class DoiService extends Obj
             return false;
         }
 
+        $call = '';
         if ($doi) {
             if ($this->configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
                 $call  = $this->configs->serviceURL . '/id/doi:' . $doi;
@@ -721,6 +722,7 @@ class DoiService extends Obj
         $url = $this->getServicePath();
 
         // Make service call to provision doi
+        $doi = false;
         if ($status == 'reserved') {
             $doi = $this->runCurl($url, $input);
         }

@@ -427,13 +427,11 @@ class Questions extends Plugin
         $apu = explode(',', $apu);
         $apu = array_map('trim', $apu);
 
-        if (!empty($apu)) {
-            foreach ($apu as $u) {
-                $user = User::getInstance($u);
+        foreach ($apu as $u) {
+            $user = User::getInstance($u);
 
-                if ($user->get('id')) {
-                    $receivers[] = $user->get('id');
-                }
+            if ($user->get('id')) {
+                $receivers[] = $user->get('id');
             }
         }
 

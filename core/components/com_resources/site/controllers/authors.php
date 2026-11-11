@@ -156,95 +156,93 @@ class Authors extends SiteController
         }
 
         // Do we have new authors?
-        if (!empty($authorsNew)) {
-            // loop through each one
-            for ($i = 0, $n = count($authorsNew); $i < $n; $i++) {
-                $cid = trim($authorsNew[$i]);
+        // loop through each one
+        for ($i = 0, $n = count($authorsNew); $i < $n; $i++) {
+            $cid = trim($authorsNew[$i]);
 
-                if (is_numeric($cid)) {
-                    $uid = intval($cid);
-                } else {
-                    // Zero defaults to current logged-in user
-                    $uid = -99999999;
+            if (is_numeric($cid)) {
+                $uid = intval($cid);
+            } else {
+                // Zero defaults to current logged-in user
+                $uid = -99999999;
+            }
+
+            $profile = User::getInstance($uid);
+
+            // Find the user's account info
+            if (!$profile->get('id')) {
+                // No account
+                // This should mean we have an author that is not a site member
+
+                $cid = trim($cid);
+
+                // No name. Can't save record, so pass over it.
+                if (!$cid) {
+                    continue;
                 }
 
-                $profile = User::getInstance($uid);
+                // Check to see if they're already an author
+                $author = Author::oneByName($id, $cid);
 
-                // Find the user's account info
-                if (!$profile->get('id')) {
-                    // No account
-                    // This should mean we have an author that is not a site member
-
-                    $cid = trim($cid);
-
-                    // No name. Can't save record, so pass over it.
-                    if (!$cid) {
-                        continue;
-                    }
-
-                    // Check to see if they're already an author
-                    $author = Author::oneByName($id, $cid);
-
-                    if ($author->get('id')) {
-                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
-                        continue;
-                    }
-
-                    $authorid     = $author->getUserId($cid);
-                    $name         = $cid;
-                    $organization = '';
-                } else {
-                    // Check to see if they're already an author
-                    $author = Author::oneByRelationship($id, $profile->get('id'));
-
-                    if ($author->get('id')) {
-                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
-                        continue;
-                    }
-
-                    $authorid     = $profile->get('id');
-                    $name         = $profile->get('name');
-                    $organization = $profile->get('organization');
+                if ($author->get('id')) {
+                    $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
+                    continue;
                 }
 
-                $author->set('subtable', 'resources');
-                $author->set('subid', $id);
-                $author->set('authorid', $authorid);
-                $author->set('name', (string) $name);
-                $author->set('organization', (string) $organization);
-                $author->set('role', (string) $role);
-                $author->save();
+                $authorid     = $author->getUserId($cid);
+                $name         = $cid;
+                $organization = '';
+            } else {
+                // Check to see if they're already an author
+                $author = Author::oneByRelationship($id, $profile->get('id'));
 
-                // Log activity
-                if ($authorid > 0) {
-                    $resource = Entry::oneOrFail($id);
+                if ($author->get('id')) {
+                    $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
+                    continue;
+                }
 
-                    Event::trigger('system.logActivity', [
-                        'activity' => [
-                            'action'      => 'updated',
-                            'scope'       => 'resource',
-                            'scope_id'    => $resource->get('id'),
-                            'description' => Lang::txt(
-                                'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED',
-                                $name,
-                                '<a href="'
-                                    . Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-                                    . '">'
-                                    . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
-                                    . '</a>',
-                            ),
-                            'details'     => [
-                                'title' => $resource->get('title'),
-                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),
-                            ],
+                $authorid     = $profile->get('id');
+                $name         = $profile->get('name');
+                $organization = $profile->get('organization');
+            }
+
+            $author->set('subtable', 'resources');
+            $author->set('subid', $id);
+            $author->set('authorid', $authorid);
+            $author->set('name', (string) $name);
+            $author->set('organization', (string) $organization);
+            $author->set('role', (string) $role);
+            $author->save();
+
+            // Log activity
+            if ($authorid > 0) {
+                $resource = Entry::oneOrFail($id);
+
+                Event::trigger('system.logActivity', [
+                    'activity' => [
+                        'action'      => 'updated',
+                        'scope'       => 'resource',
+                        'scope_id'    => $resource->get('id'),
+                        'description' => Lang::txt(
+                            'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED',
+                            $name,
+                            '<a href="'
+                                . Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+                                . '">'
+                                . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                        ),
+                        'details'     => [
+                            'title' => $resource->get('title'),
+                            'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),
                         ],
-                        'recipients' => [
-                            ['resource', $resource->get('id')],
-                            ['user', $resource->get('created_by')],
-                            ['user', $authorid],
-                        ],
-                    ]);
-                }
+                    ],
+                    'recipients' => [
+                        ['resource', $resource->get('id')],
+                        ['user', $resource->get('created_by')],
+                        ['user', $authorid],
+                    ],
+                ]);
             }
         }
 

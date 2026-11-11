@@ -145,10 +145,8 @@ class Watch extends Plugin
                     $this->setError($watch->getError());
                 }
             }
-        }
-
-        // Subscribing
-        if ($this->action == 'subscribe') {
+        } else {
+            // Subscribing, the only other action that reaches here
             $msg = Lang::txt('PLG_RESOURCES_WATCH_SUCCESS_SUBSCRIBED');
 
             if (!$watch->get('id')) {
