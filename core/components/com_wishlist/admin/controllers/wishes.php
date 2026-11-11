@@ -453,6 +453,9 @@ class Wishes extends AdminController
             case 'accessspecial':
                 $access = 2;
                 break;
+            default:
+                // Not one of the access tasks; change nothing
+                return $this->cancelTask();
         }
 
         // Load the article
@@ -520,7 +523,8 @@ class Wishes extends AdminController
                 case 'grant':
                     $message = Lang::txt('COM_WISHLIST_ITEMS_GRANTED', $success);
                     break;
-                case 'pending':
+                default:
+                    // Every task other than grant set the wishes to open
                     $message = Lang::txt('COM_WISHLIST_ITEMS_PENDING', $success);
                     break;
             }

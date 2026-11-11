@@ -294,6 +294,9 @@ class Lists extends AdminController
             case 'accessspecial':
                 $access = 2;
                 break;
+            default:
+                // Not one of the access tasks; change nothing
+                return $this->cancelTask();
         }
 
         // Load the article
