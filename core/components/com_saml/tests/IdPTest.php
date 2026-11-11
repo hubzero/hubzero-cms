@@ -10,6 +10,7 @@ namespace Components\Saml\Tests;
 
 use Hubzero\Test\Basic;
 use Components\Saml\Models\IdP;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * IdP protocol engine test
@@ -17,12 +18,13 @@ use Components\Saml\Models\IdP;
  * Covers the attribute-source whitelist, which decides what a Service
  * Provider may be told about a user.
  */
+#[CoversMethod(IdP::class, 'isKnownAttributeSource')]
+#[CoversMethod(IdP::class, 'attributeNameFormat')]
 class IdPTest extends Basic
 {
     /**
      * Documented sources resolve
      *
-     * @covers  Components\Saml\Models\IdP::isKnownAttributeSource
      * @return  void
      **/
     public function testKnownAttributeSources()
@@ -46,7 +48,6 @@ class IdPTest extends Basic
     /**
      * Anything else is refused, so a typo cannot silently release nothing
      *
-     * @covers  Components\Saml\Models\IdP::isKnownAttributeSource
      * @return  void
      **/
     public function testUnknownAttributeSourcesRejected()
@@ -67,7 +68,6 @@ class IdPTest extends Basic
     /**
      * URI attribute names are declared as URIs; others stay unspecified
      *
-     * @covers  Components\Saml\Models\IdP::attributeNameFormat
      * @return  void
      **/
     public function testAttributeNameFormat()

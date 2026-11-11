@@ -10,18 +10,22 @@ namespace Components\Saml\Tests;
 
 use Hubzero\Test\Basic;
 use Components\Saml\Models\ServiceProvider;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Service Provider model test
  *
  * Covers the trust-store helpers that need no database connection.
  */
+#[CoversMethod(ServiceProvider::class, 'normalizeCertificate')]
+#[CoversMethod(ServiceProvider::class, 'allowedGroups')]
+#[CoversMethod(ServiceProvider::class, 'userCanAccess')]
+#[CoversMethod(ServiceProvider::class, 'releasedGroups')]
 class ServiceProviderTest extends Basic
 {
     /**
      * PEM armor and whitespace are stripped down to the base64 body
      *
-     * @covers  Components\Saml\Models\ServiceProvider::normalizeCertificate
      * @return  void
      **/
     public function testNormalizeCertificate()
@@ -41,7 +45,6 @@ class ServiceProviderTest extends Basic
     /**
      * A group restriction that cannot be read must deny, not allow
      *
-     * @covers  Components\Saml\Models\ServiceProvider::allowedGroups
      * @return  void
      **/
     public function testAllowedGroupsFailsClosed()
@@ -71,7 +74,6 @@ class ServiceProviderTest extends Basic
     /**
      * An SP with no group restriction admits any signed-in user
      *
-     * @covers  Components\Saml\Models\ServiceProvider::userCanAccess
      * @return  void
      **/
     public function testUnrestrictedSpAdmitsAnyUser()
@@ -84,7 +86,6 @@ class ServiceProviderTest extends Basic
     /**
      * A guest (no user id) is never admitted to a restricted SP
      *
-     * @covers  Components\Saml\Models\ServiceProvider::userCanAccess
      * @return  void
      **/
     public function testGuestNeverAdmittedToRestrictedSp()
@@ -99,7 +100,6 @@ class ServiceProviderTest extends Basic
     /**
      * Membership of any one listed group is enough
      *
-     * @covers  Components\Saml\Models\ServiceProvider::userCanAccess
      * @return  void
      **/
     public function testMemberOfAnyListedGroupIsAdmitted()
@@ -119,7 +119,6 @@ class ServiceProviderTest extends Basic
      * A restriction naming only groups that do not resolve admits nobody,
      * rather than falling open
      *
-     * @covers  Components\Saml\Models\ServiceProvider::userCanAccess
      * @return  void
      **/
     public function testUnresolvableGroupsAdmitNobody()
@@ -133,7 +132,6 @@ class ServiceProviderTest extends Basic
     /**
      * A corrupted restriction denies rather than opening the SP up
      *
-     * @covers  Components\Saml\Models\ServiceProvider::userCanAccess
      * @return  void
      **/
     public function testCorruptRestrictionFailsClosed()
@@ -148,7 +146,6 @@ class ServiceProviderTest extends Basic
      * The 'allowed' policy releases the gates the user came through, and
      * only those — not the rest of the restriction, and not other groups
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testAllowedPolicyReleasesTheGatesPassed()
@@ -166,7 +163,6 @@ class ServiceProviderTest extends Basic
      * With no restriction there is no gate to report, so the 'allowed'
      * policy releases nothing rather than falling back to everything
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testAllowedPolicyReleasesNothingWithoutRestriction()
@@ -187,7 +183,6 @@ class ServiceProviderTest extends Basic
      * The 'all' policy releases confirmed membership, independently of the
      * restriction
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testAllPolicyReleasesConfirmedMembership()
@@ -201,7 +196,6 @@ class ServiceProviderTest extends Basic
     /**
      * A guest has no membership to release under either policy
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testGuestReleasesNoGroups()
@@ -219,7 +213,6 @@ class ServiceProviderTest extends Basic
      * A gate is released by the group's own cn, however the entry was
      * spelled, and two entries for one group release it once
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testAllowedPolicyReleasesTheGroupsOwnCn()
@@ -234,7 +227,6 @@ class ServiceProviderTest extends Basic
     /**
      * The access check and the release ask about each group once
      *
-     * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
      * @return  void
      **/
     public function testMembershipIsLookedUpOncePerGroup()

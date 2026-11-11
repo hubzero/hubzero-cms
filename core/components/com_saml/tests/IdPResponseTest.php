@@ -10,6 +10,7 @@ namespace Components\Saml\Tests;
 
 use Hubzero\Test\Basic;
 use Components\Saml\Models\IdP;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * SAML Response construction test
@@ -21,6 +22,7 @@ use Components\Saml\Models\IdP;
  * IdP_entityID is set explicitly so the model never has to resolve the hub's
  * base URL, which keeps the test free of framework facades.
  */
+#[CoversMethod(IdP::class, 'createSAMLResponse')]
 class IdPResponseTest extends Basic
 {
     /**
@@ -130,7 +132,6 @@ class IdPResponseTest extends Basic
      * The response is addressed to the registered ACS and names the request
      * it answers — never an address taken from the request itself
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testResponseIsAddressedToRegisteredAcs()
@@ -150,7 +151,6 @@ class IdPResponseTest extends Basic
     /**
      * The SessionIndex is the opaque value handed in, never a hub session id
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testSessionIndexIsTheOpaqueValueSupplied()
@@ -163,7 +163,6 @@ class IdPResponseTest extends Basic
     /**
      * NameID follows the SP's configured source
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testNameIdFollowsPerSpPolicy()
@@ -184,7 +183,6 @@ class IdPResponseTest extends Basic
     /**
      * With no map configured, the default attribute set is released
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testDefaultAttributeSetIsReleased()
@@ -198,7 +196,6 @@ class IdPResponseTest extends Basic
     /**
      * A configured map replaces the default set entirely
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testConfiguredMapReplacesDefaultSet()
@@ -220,7 +217,6 @@ class IdPResponseTest extends Basic
      * assertion that would carry no attributes at all omits the statement —
      * a childless AttributeStatement is schema-invalid
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testEmptyValuesAreOmittedAndNoEmptyStatementIsEmitted()
@@ -237,7 +233,6 @@ class IdPResponseTest extends Basic
      * The response is signed with SHA-256, and the assertion is signed only
      * when the SP's registration asks for it
      *
-     * @covers  Components\Saml\Models\IdP::createSAMLResponse
      * @return  void
      **/
     public function testSigningFollowsPerSpPolicy()

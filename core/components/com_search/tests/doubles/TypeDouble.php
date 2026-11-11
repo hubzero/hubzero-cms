@@ -11,9 +11,18 @@ namespace Components\Search\Tests\Doubles;
 /**
  * Stand-in for the resource type model in TypeOptionsHelper tests
  *
- * Only needs to exist so all() can be added through
- * MockBuilder::addMethods(); see ControllerDouble for why.
+ * Declares the all() the tests stub; see ControllerDouble for why a
+ * declared type is needed.
  */
 class TypeDouble
 {
+    /**
+     * Stubbed by the tests to return the types
+     *
+     * @return  mixed
+     */
+    public function all()
+    {
+        return null;
+    }
 }

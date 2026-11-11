@@ -10,11 +10,18 @@ namespace Components\Cron\Tests;
 
 use Hubzero\Utility\Process;
 use Hubzero\Test\Basic;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Tests for the cron process-identity helper, which underpins recovering
  * jobs whose owning process died/was killed/timed out.
  */
+#[CoversMethod(Process::class, 'parseStartTime')]
+#[CoversMethod(Process::class, 'startTime')]
+#[CoversMethod(Process::class, 'isAlive')]
+#[CoversMethod(Process::class, 'host')]
+#[CoversMethod(Process::class, 'isStale')]
+#[CoversMethod(Process::class, 'pidExists')]
 class ProcessTest extends Basic
 {
     /**
@@ -29,7 +36,6 @@ class ProcessTest extends Basic
     /**
      * parseStartTime() pulls field 22 out of a normal stat line.
      *
-     * @covers  Hubzero\Utility\Process::parseStartTime
      * @return  void
      */
     public function testParseStartTimeSimpleComm()
@@ -44,7 +50,6 @@ class ProcessTest extends Basic
      * containing spaces and parentheses must not shift the field offsets.
      * This is the case a naive explode() would get wrong.
      *
-     * @covers  Hubzero\Utility\Process::parseStartTime
      * @return  void
      */
     public function testParseStartTimeCommWithSpacesAndParens()
@@ -57,7 +62,6 @@ class ProcessTest extends Basic
     /**
      * parseStartTime() rejects empty/garbage input.
      *
-     * @covers  Hubzero\Utility\Process::parseStartTime
      * @return  void
      */
     public function testParseStartTimeRejectsMalformed()
@@ -70,7 +74,6 @@ class ProcessTest extends Basic
     /**
      * startTime() of the running process matches what /proc reports directly.
      *
-     * @covers  Hubzero\Utility\Process::startTime
      * @return  void
      */
     public function testStartTimeForSelfMatchesProc()
@@ -90,7 +93,6 @@ class ProcessTest extends Basic
     /**
      * startTime() of a pid that cannot exist returns false.
      *
-     * @covers  Hubzero\Utility\Process::startTime
      * @return  void
      */
     public function testStartTimeNonexistentPid()
@@ -103,7 +105,6 @@ class ProcessTest extends Basic
     /**
      * isAlive() is true only for the live process with the matching start time.
      *
-     * @covers  Hubzero\Utility\Process::isAlive
      * @return  void
      */
     public function testIsAliveForSelf()
@@ -122,7 +123,6 @@ class ProcessTest extends Basic
      * isAlive() guards against pid reuse: a live pid with the wrong start time
      * is treated as a different (gone) process.
      *
-     * @covers  Hubzero\Utility\Process::isAlive
      * @return  void
      */
     public function testIsAlivePidReuseGuard()
@@ -133,7 +133,6 @@ class ProcessTest extends Basic
     /**
      * isAlive() is false for a dead pid and for empty inputs.
      *
-     * @covers  Hubzero\Utility\Process::isAlive
      * @return  void
      */
     public function testIsAliveRejectsDeadAndEmpty()
@@ -147,7 +146,6 @@ class ProcessTest extends Basic
     /**
      * host() returns the current hostname.
      *
-     * @covers  Hubzero\Utility\Process::host
      * @return  void
      */
     public function testHost()
@@ -159,7 +157,6 @@ class ProcessTest extends Basic
     /**
      * A job that is not active is never stale.
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleInactiveIsNeverStale()
@@ -172,7 +169,6 @@ class ProcessTest extends Basic
      * An active job with no recorded ownership is treated as stale so it can
      * recover (e.g. rows from before pid tracking shipped).
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleMissingOwnershipIsStale()
@@ -186,7 +182,6 @@ class ProcessTest extends Basic
      * An active job owned by another host is never reclaimed (we can't verify
      * the process from here, so we never steal it).
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleOtherHostIsNotStale()
@@ -198,7 +193,6 @@ class ProcessTest extends Basic
      * An active job on this host whose process is gone is stale; one whose
      * process is still alive is not.
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleByLivenessOnThisHost()
@@ -220,7 +214,6 @@ class ProcessTest extends Basic
      * On another host (unverifiable), the time fallback only reclaims once the
      * run is older than the cutoff, and never when no cutoff is given.
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleOtherHostTimeFallback()
@@ -247,7 +240,6 @@ class ProcessTest extends Basic
      * a still-live pid must NOT be reclaimed within the cutoff — otherwise a live
      * worker's run gets double-executed. This is the regression guard.
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleSameHostNoStartTimeLivePidNotStale()
@@ -263,7 +255,6 @@ class ProcessTest extends Basic
      * On this host with no recorded start time, a pid that is provably gone is
      * still reclaimed (no false "alive").
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleSameHostNoStartTimeGonePidIsStale()
@@ -279,7 +270,6 @@ class ProcessTest extends Basic
      * On this host with no recorded start time and a pid we can't disprove, the
      * run is reclaimed once it is past the cutoff (bounded wedge).
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleSameHostNoStartTimePastCutoffIsStale()
@@ -292,7 +282,6 @@ class ProcessTest extends Basic
     /**
      * pidExists(): never false for a live process, false for impossible pids.
      *
-     * @covers  Hubzero\Utility\Process::pidExists
      * @return  void
      */
     public function testPidExists()
@@ -309,7 +298,6 @@ class ProcessTest extends Basic
      * reclaimed (a hung/wedged run must not block work forever); within the
      * cutoff, or with no cutoff, a live owner is left alone.
      *
-     * @covers  Hubzero\Utility\Process::isStale
      * @return  void
      */
     public function testIsStaleSameHostAliveButPastCutoffIsStale()

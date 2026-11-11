@@ -42,7 +42,10 @@ trait CanMock
      * @var  array
      */
     protected static $mockClassMap = [
-        'Notify'             => ['Hubzero\\Message\\Notify', null],
+        'App'                => ['Components\\Search\\Tests\\Doubles\\AppDouble', 'tests/doubles/AppDouble.php'],
+        'Lang'               => ['Components\\Search\\Tests\\Doubles\\LangDouble', 'tests/doubles/LangDouble.php'],
+        'User'               => ['Components\\Search\\Tests\\Doubles\\UserDouble', 'tests/doubles/UserDouble.php'],
+        'Notify'             => ['Components\\Search\\Tests\\Doubles\\NotifyDouble', 'tests/doubles/NotifyDouble.php'],
         'Rows'               => ['Hubzero\\Database\\Rows', null],
         'Relational'         => ['Hubzero\\Database\\Relational', null],
         'Boost'              => ['Components\\Search\\Tests\\Doubles\\BoostDouble', 'tests/doubles/BoostDouble.php'],
@@ -79,10 +82,8 @@ trait CanMock
      */
     protected function resolveClass($name)
     {
-        if (class_exists($name) || interface_exists($name)) {
-            return $name;
-        }
-
+        // The map comes first: App, Lang and User are real facade aliases, but
+        // their methods are reached through __callStatic and cannot be stubbed
         if (!isset(static::$mockClassMap[$name])) {
             return $name;
         }
@@ -149,26 +150,19 @@ trait CanMock
 
     protected function setMethodNames($methods)
     {
-        // setMethods() was removed in PHPUnit 10. It doubled as both
-        // "replace this existing method" and "invent one that does not exist",
-        // so split the names across its two replacements to keep behaviour.
-        $existing = [];
-        $invented = [];
-
+        // Only declared methods can be stubbed: MockBuilder::addMethods(),
+        // which invented missing ones, is deprecated and goes in PHPUnit 12.
+        // A method a test needs belongs on the double in tests/doubles.
         foreach (array_keys($methods) as $name) {
-            if (method_exists($this->mockClass, $name)) {
-                $existing[] = $name;
-            } else {
-                $invented[] = $name;
+            if (!method_exists($this->mockClass, $name)) {
+                throw new \LogicException(
+                    "{$this->mockClass} has no {$name}() to stub; declare it on the double in tests/doubles",
+                );
             }
         }
 
-        if (!empty($existing)) {
-            $this->mock->onlyMethods($existing);
-        }
-
-        if (!empty($invented)) {
-            $this->mock->addMethods($invented);
+        if (!empty($methods)) {
+            $this->mock->onlyMethods(array_keys($methods));
         }
 
         $this->mock = $this->mock->getMock();

@@ -10,10 +10,13 @@ namespace Components\Saml\Tests;
 
 use Hubzero\Test\Basic;
 use Components\Saml\Helpers\Metadata;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Metadata import helper test
  */
+#[CoversMethod(Metadata::class, 'parse')]
+#[CoversMethod(Metadata::class, 'fetch')]
 class MetadataTest extends Basic
 {
     /**
@@ -48,7 +51,6 @@ class MetadataTest extends Basic
     /**
      * Parsing a full SP descriptor extracts every field
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseExtractsFields()
@@ -65,7 +67,6 @@ class MetadataTest extends Basic
     /**
      * The HTTP-POST ACS is preferred over other bindings regardless of order
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParsePrefersPostAcs()
@@ -80,7 +81,6 @@ class MetadataTest extends Basic
      * answer over, so storing a SOAP or POST endpoint would look configured
      * while every logout response went nowhere
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseTakesOnlyRedirectSlo()
@@ -106,7 +106,6 @@ class MetadataTest extends Basic
      * matching value source — an SP that only accepts emailAddress must not
      * be left on the username default
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseAdoptsPublishedNameIdFormat()
@@ -129,7 +128,6 @@ class MetadataTest extends Basic
      * descriptor that publishes none leaves the keys out entirely so an
      * existing registration is not overwritten
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseIgnoresUnsupportedAndAbsentNameIdFormats()
@@ -154,7 +152,6 @@ class MetadataTest extends Basic
      * An SP with no HTTP-POST ACS cannot be delivered to, so the import
      * fails rather than registering an unreachable address
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseRequiresPostAcs()
@@ -172,7 +169,6 @@ class MetadataTest extends Basic
     /**
      * An explicit AuthnRequestsSigned="false" is reported
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseExplicitlyUnsignedRequests()
@@ -189,7 +185,6 @@ class MetadataTest extends Basic
      * re-importing cannot silently disable signature verification on an SP
      * that already requires it
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseOmitsAbsentSignedFlag()
@@ -204,7 +199,6 @@ class MetadataTest extends Basic
     /**
      * Invalid or non-SP documents fail cleanly with false
      *
-     * @covers  Components\Saml\Helpers\Metadata::parse
      * @return  void
      **/
     public function testParseRejectsBadDocuments()
@@ -228,7 +222,6 @@ class MetadataTest extends Basic
     /**
      * Non-http(s) URLs are refused before any fetch
      *
-     * @covers  Components\Saml\Helpers\Metadata::fetch
      * @return  void
      **/
     public function testFetchRejectsNonHttpsUrls()
@@ -245,7 +238,6 @@ class MetadataTest extends Basic
      * Internal addresses are refused, so the fetch cannot be used to probe
      * the hub's own network
      *
-     * @covers  Components\Saml\Helpers\Metadata::fetch
      * @return  void
      **/
     public function testFetchRejectsInternalAddresses()

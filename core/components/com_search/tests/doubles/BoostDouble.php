@@ -9,7 +9,8 @@
 namespace Components\Search\Tests\Doubles;
 
 /**
- * Stand-in for the Boost ORM where tests stub its all() call
+ * Stand-in for the Boost ORM where tests stub its all() call, and for a
+ * boost whose field, value and strength they stub
  *
  * The real Boost inherits all() from Relational as a static method, and the
  * production code reaches it through MockProxy, which turns a static call into
@@ -26,5 +27,35 @@ class BoostDouble
     public function all()
     {
         return [];
+    }
+
+    /**
+     * Stubbed by the tests to return the boosted field
+     *
+     * @return  mixed
+     */
+    public function getField()
+    {
+        return null;
+    }
+
+    /**
+     * Stubbed by the tests to return the boosted value
+     *
+     * @return  mixed
+     */
+    public function getFieldValue()
+    {
+        return null;
+    }
+
+    /**
+     * Stubbed by the tests to return the boost strength
+     *
+     * @return  mixed
+     */
+    public function getStrength()
+    {
+        return null;
     }
 }
