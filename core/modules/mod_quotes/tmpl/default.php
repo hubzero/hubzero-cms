@@ -85,7 +85,10 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                     echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname'))
                         . '" width="40" height="40" />';
                     ?>
-                    <cite><?= $this->escape(stripslashes($quote->get('fullname'))) ?> <span><?= $this->escape(stripslashes($quote->get('org'))) ?></span></cite>
+                    <?php
+                    $citeText = $this->escape(stripslashes($quote->get('fullname')));
+                    ?>
+                    <cite><?= $citeText ?> <span><?= $this->escape(stripslashes($quote->get('org'))) ?></span></cite>
                 </p>
                 <?php
                 $pictures = $quote->files();

@@ -261,8 +261,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                         'index.php?option=' . $this->option . '&task=process&id='
                                             . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'],
                                     );
+                                    $linkText = $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS');
                                     ?>
-                                    <a href="<?= $processUrl ?>" class="showinbox"><?= $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') ?></a>
+                                    <a href="<?= $processUrl ?>" class="showinbox"><?= $linkText ?></a>
                                 </span>
 
                                 <?php if ($this->row->isPending()) : ?>

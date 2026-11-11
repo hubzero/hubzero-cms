@@ -185,7 +185,10 @@ $accept = $base . '/'
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?= Config::get('sitename') ?> sent this email because you are a group manager for this group. Visit our <a href="<?= $base ?>/legal/privacy">Privacy Policy</a> and <a href="<?= $base ?>/support">Support Center</a> if you have any questions.</span>
+                    <?php
+                    $spanText = Config::get('sitename');
+                    ?>
+                    <span><?= $spanText ?> sent this email because you are a group manager for this group. Visit our <a href="<?= $base ?>/legal/privacy">Privacy Policy</a> and <a href="<?= $base ?>/support">Support Center</a> if you have any questions.</span>
                 </td>
             </tr>
         </tbody>

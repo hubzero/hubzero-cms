@@ -180,8 +180,10 @@ $this
                                                     . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit']
                                                     . '&limitstart=' . $this->filters['start'],
                                             );
+                                            $confirmText = Lang::txt('COM_TAGS_CONFIRM_DELETE');
+                                            $buttonText = Lang::txt('JACTION_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete delete-tag" data-confirm="<?= Lang::txt('COM_TAGS_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete delete-tag" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                                         <?php } ?>
                                     </td>
                                     <td>

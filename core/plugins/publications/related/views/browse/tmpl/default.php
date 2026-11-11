@@ -76,7 +76,10 @@ $authorlist = '';
                             <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
                         <?php } else { ?>
                             <?= $line->section == 'Series' ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') : '' ?>
-                                <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape(stripslashes($line->title)) ?></a>
+                                <?php
+                                $linkText = $this->escape(stripslashes($line->title));
+                                ?>
+                                <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $linkText ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
                                     <div>

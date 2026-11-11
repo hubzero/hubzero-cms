@@ -171,7 +171,10 @@ $bars = [];
                 <h4 id="sim-users-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
             <p class="total" role="group" aria-labelledby="sim-users-heading">
                     <span class="total-value" id="users-overview-total"><?= number_format($current->users) ?></span>
-                    <span><?= $periodWord ?> <span id="users-overview-date"><time datetime="<?= $current->datetime ?>"><?= Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span></span>
+                    <?php
+                    $timeText = Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                    ?>
+                    <span><?= $periodWord ?> <span id="users-overview-date"><time datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
                 </p>
             </div><!-- / .col span3 -->
             <div class="col span9 omega">
@@ -640,7 +643,10 @@ $bars = [];
                     <h4 id="sim-runs-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
                 <p class="total" role="group" aria-labelledby="sim-runs-heading">
                         <span class="total-value" id="runs-overview-total"><?= number_format($current->jobs) ?></span>
-                        <span><?= $periodWord ?> <span id="runs-overview-date"><time datetime="<?= $current->datetime ?>"><?= Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span></span>
+                        <?php
+                        $timeText = Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
+                        <span><?= $periodWord ?> <span id="runs-overview-date"><time datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
                     </p>
                 </div><!-- / .col span3 -->
                 <div class="col span9 omega">

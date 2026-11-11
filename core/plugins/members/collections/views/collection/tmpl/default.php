@@ -217,7 +217,12 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         data-id="<?= $row->get('id') ?>"
                                         data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>"
                                         data-text-unlike="<?= Lang::txt('Unlike') ?>">
-                                        <span><?= ($item->get('voted')) ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?></span>
+                                        <?php
+                                        $spanText = ($item->get('voted'))
+                                            ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE')
+                                            : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE');
+                                        ?>
+                                        <span><?= $spanText ?></span>
                                     </button>
                                 <?php } ?>
                                 <?php

@@ -270,12 +270,21 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     </div>
                 </div>
                 <div id="usage-agreement-buttons">
-                    <button class="section-edit-cancel usage-agreement-do-not-agree"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE') ?></button>
+                    <?php
+                    $buttonText = Lang::txt('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE');
+                    ?>
+                    <button class="section-edit-cancel usage-agreement-do-not-agree"><?= $buttonText ?></button>
                     <button class="section-edit-submit"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_AGREE') ?></button>
                 </div>
                 <div id="usage-agreement-last-chance-buttons">
-                    <button class="section-edit-cancel usage-agreement-back-to-agree"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_GO_BACK') ?></button>
-                    <button class="section-edit-cancel usage-agreement-dont-accept"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE') ?></button>
+                    <?php
+                    $buttonText = Lang::txt('PLG_MEMBERS_PROFILE_TERMS_GO_BACK');
+                    ?>
+                    <button class="section-edit-cancel usage-agreement-back-to-agree"><?= $buttonText ?></button>
+                    <?php
+                    $buttonText = Lang::txt('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE');
+                    ?>
+                    <button class="section-edit-cancel usage-agreement-dont-accept"><?= $buttonText ?></button>
                 </div>
                 <input type="hidden" name="declinetou" value="0" />
                 <input type="hidden" name="usageAgreement" value="1" />

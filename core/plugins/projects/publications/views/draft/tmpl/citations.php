@@ -89,7 +89,10 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                     </ul>
             <?php  }  ?>
                     <div class="item-new">
-                        <span><a href="<?= $selectUrl ?>" class="item-add showinbox"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION') ?></a></span>
+                        <?php
+                        $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION');
+                        ?>
+                        <span><a href="<?= $selectUrl ?>" class="item-add showinbox"><?= $linkText ?></a></span>
                     </div>
                 </div>
         </div>

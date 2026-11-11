@@ -526,8 +526,9 @@ $paramsLayoutSelected = function ($value) use ($view) {
         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id='
             . $this->model->get('id'),
     );
+    $linkText = Lang::txt('COM_PROJECTS_ERASE_PROJECT');
     ?>
-    <p class="notice"><a class="button" href="<?= $eraseUrl ?>"><?= Lang::txt('COM_PROJECTS_ERASE_PROJECT') ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
+    <p class="notice"><a class="button" href="<?= $eraseUrl ?>"><?= $linkText ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
 
         </div>
         <div id="page-images" class="tab">

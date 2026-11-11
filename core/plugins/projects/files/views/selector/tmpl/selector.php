@@ -70,7 +70,10 @@ defined('_HZEXEC_') or die();
                 <?php if ($item->get('type') == 'folder') {
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>
-                <img class="file-type file-type-<?= $item->get('ext') ?>" src="<?= $item->get('icon') ?>" alt="" /> <span title="<?= $this->escape($item->get('localPath')) ?>"><?= $this->escape(\Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50)) ?></span>
+                <?php
+                $spanText = $this->escape(\Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50));
+                ?>
+                <img class="file-type file-type-<?= $item->get('ext') ?>" src="<?= $item->get('icon') ?>" alt="" /> <span title="<?= $this->escape($item->get('localPath')) ?>"><?= $spanText ?></span>
             </span>
         </li>
     <?php } ?>

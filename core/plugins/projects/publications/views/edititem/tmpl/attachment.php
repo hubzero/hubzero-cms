@@ -68,7 +68,12 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
             <div class="content-edit">
 
                 <label for="title">
-                    <span class="leftshift faded"><?= $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')) ?>:</span>
+                    <?php
+                    $spanText = $this->row->type == 'link'
+                        ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'))
+                        : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL'));
+                    ?>
+                    <span class="leftshift faded"><?= $spanText ?>:</span>
                     <?php
                     $fieldValue = $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle);
                     ?>
@@ -84,16 +89,25 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                 <?php if ($this->row->type == 'file') { ?>
                     <?php if ($gone || !$allowRename) { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>:</span>
                             <span class="content-filepath"><?php echo $this->escape($this->row->path); ?></span>
                         </p>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION')) ?>:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>:</span>
                             <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?= $this->escape($this->row->attribs) ?></textarea>
                         </p>
                     <?php } else { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>*:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>*:</span>
                             <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100"
                                 value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
                         </p>

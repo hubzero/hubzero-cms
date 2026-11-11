@@ -45,7 +45,11 @@ $resp = $this->resp;
         <?php if (!empty($resp->title)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_TITLE'); ?></th>
-                <td><?= $this->escape($resp->title) . (empty($resp->position_description) ? '' : ' - ' . $this->escape($resp->position_description)) ?></td>
+                <?php
+                $cellText = $this->escape($resp->title)
+                    . (empty($resp->position_description) ? '' : ' - ' . $this->escape($resp->position_description));
+                ?>
+                <td><?= $cellText ?></td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->city) || !empty($resp->state) || !empty($resp->zip) || !empty($resp->country)) : ?>

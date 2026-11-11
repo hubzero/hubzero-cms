@@ -121,7 +121,14 @@ $hideform = Request::getInt('hideform', 0);
                         $st = ($child->access == 1 ? 0 : 1);
                         ?>
                         <a class="access-<?= $cs ?> access" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=access&amp;access=<?= $st ?>&amp;tmpl=component&amp;id=<?= $child->id ?>&amp;pid=<?= $this->id ?>&amp;hideform=<?= $hideform ?>&amp;<?= Session::getFormToken() ?>=1" title="<?= Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')) ?>">
-                            <span><?= Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC') ?></span>
+                            <?php
+                            $spanText = Lang::txt(
+                                $child->access == 1
+                                    ? 'COM_CONTRIBUTE_ACCESS_REGISTERED'
+                                    : 'COM_CONTRIBUTE_ACCESS_PUBLIC',
+                            );
+                            ?>
+                            <span><?= $spanText ?></span>
                         </a>
                     </td>
                     <td class="u">

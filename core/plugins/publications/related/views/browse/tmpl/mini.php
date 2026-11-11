@@ -38,7 +38,10 @@ $this->css('assets/css/related.css');
         }
         ?>
         <li class="<?php echo $line->class; ?>">
-            <a href="<?= $sef ?>"><?= ($line->section == 'Series') ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') . ' ' : '' ?><?= $this->escape(stripslashes($line->title)) ?></a>
+            <?php
+            $linkText = ($line->section == 'Series') ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') . ' ' : '';
+            ?>
+            <a href="<?= $sef ?>"><?= $linkText ?><?= $this->escape(stripslashes($line->title)) ?></a>
         </li>
     <?php } ?>
     </ul>

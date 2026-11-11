@@ -28,7 +28,10 @@ defined('_HZEXEC_') or die();
                 ?>
             </div>
             <div class="ptitle-container">
-                <h2><?= \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50) ?> <span>(<?= $this->model->get('alias') ?>)</span></h2>
+                <?php
+                $headingText = \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50);
+                ?>
+                <h2><?= $headingText ?> <span>(<?= $this->model->get('alias') ?>)</span></h2>
 
                 <?php if ($this->model->groupOwner()) { ?>
                     <p>

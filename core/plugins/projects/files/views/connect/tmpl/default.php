@@ -82,7 +82,11 @@ $i = 0;
             <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_OFF'); ?></p>
             <?php } elseif ($service['active'] || $connected) { ?>
             <p class="green prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_ACTIVE'); ?></p>
-            <p><span class="prominent darker"><?= count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' ' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED') ?></span></p>
+                <?php
+                $spanText = count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' '
+                    . Lang::txt('COM_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED');
+                ?>
+            <p><span class="prominent darker"><?= $spanText ?></span></p>
             <p>
                 <span><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR') ?>:</span> <span class="prominent darker"><?= $service['remote_dir'] ?></span> <?php if ($connected && $openUrl) {
                     ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php
@@ -97,8 +101,9 @@ $i = 0;
                     $disconnectUrl = Route::url(
                         $this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData,
                     );
+                    $buttonText = ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT'));
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $disconnectUrl ?>" id="disconnect"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')) ?> &raquo;</button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $disconnectUrl ?>" id="disconnect"><?= $buttonText ?> &raquo;</button>
                 </span>
                 &nbsp; &nbsp;
                 <span>

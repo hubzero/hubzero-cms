@@ -209,7 +209,12 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 data-id="<?= $row->get('id') ?>"
                                                 data-text-like="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE') ?>"
                                                 data-text-unlike="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') ?>">
-                                                <span><?= ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE') ?></span>
+                                                <?php
+                                                $spanText = ($item->get('voted'))
+                                                    ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE')
+                                                    : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE');
+                                                ?>
+                                                <span><?= $spanText ?></span>
                                             </button>
                                         <?php } ?>
                                         <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">

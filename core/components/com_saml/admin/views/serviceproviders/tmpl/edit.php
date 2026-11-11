@@ -268,7 +268,12 @@ $stateSelected = function ($value) use ($view) {
                         </select>
                     <?php } else { ?>
                         <span class="state <?php echo $this->row->get('state', 1) ? 'publish' : 'unpublish'; ?>">
-                            <span><?= $this->row->get('state', 1) ? Lang::txt('COM_SAML_STATE_ENABLED') : Lang::txt('COM_SAML_STATE_DISABLED') ?></span>
+                            <?php
+                            $spanText = $this->row->get('state', 1)
+                                ? Lang::txt('COM_SAML_STATE_ENABLED')
+                                : Lang::txt('COM_SAML_STATE_DISABLED');
+                            ?>
+                            <span><?= $spanText ?></span>
                         </span>
                     <?php } ?>
                 </div>

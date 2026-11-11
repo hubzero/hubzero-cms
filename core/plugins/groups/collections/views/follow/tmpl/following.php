@@ -85,9 +85,15 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                             <?php } ?>
                             <br />
                             <span class="entry-details">
-                                <span class="follower count"><?= Lang::txt('<strong>%s</strong> followers', $row->count('followers')) ?></span>
+                                <?php
+                                $followerText = Lang::txt('<strong>%s</strong> followers', $row->count('followers'));
+                                ?>
+                                <span class="follower count"><?= $followerText ?></span>
                             <?php if ($row->get('following_type') != 'collection') { ?>
-                                <span class="following count"><?= Lang::txt('<strong>%s</strong> following', $row->count('following')) ?></span>
+                                <?php
+                                $followingText = Lang::txt('<strong>%s</strong> following', $row->count('following'));
+                                ?>
+                                <span class="following count"><?= $followingText ?></span>
                             <?php } ?>
                             </span>
                         </td>

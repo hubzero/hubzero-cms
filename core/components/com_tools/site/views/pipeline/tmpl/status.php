@@ -611,10 +611,16 @@ $prioritySelected = function ($value) use ($view) {
                     </p>
                     <ul>
                         <?php if (!empty($learn_url)) { ?>
-                        <li><a href="<?= $learn_url ?>"><?= Lang::txt('COM_TOOLS_LEARN_MORE') ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_ABOUT_UPLOADING') ?></li>
+                            <?php
+                            $itemText = Lang::txt('COM_TOOLS_WHATSNEXT_ABOUT_UPLOADING');
+                            ?>
+                        <li><a href="<?= $learn_url ?>"><?= Lang::txt('COM_TOOLS_LEARN_MORE') ?></a> <?= $itemText ?></li>
                         <?php } ?>
                         <?php if (!empty($rappture_url)) { ?>
-                        <li><?= Lang::txt('COM_TOOLS_LEARN_MORE') ?> <?= Lang::txt('COM_TOOLS_ABOUT') ?> <?= Lang::txt('COM_TOOLS_THE') ?> <a href="<?= $rappture_url ?>">Rappture toolkit</a>.</li>
+                            <?php
+                            $itemText = Lang::txt('COM_TOOLS_LEARN_MORE');
+                            ?>
+                        <li><?= $itemText ?> <?= Lang::txt('COM_TOOLS_ABOUT') ?> <?= Lang::txt('COM_TOOLS_THE') ?> <a href="<?= $rappture_url ?>">Rappture toolkit</a>.</li>
                         <?php } ?>
                     <li><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_GIT_INSTRUCTIONS'); ?></li>
                     <li><a class="developer-wiki" href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki/GettingStarted"><?= Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS') ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE') ?>.</li>
@@ -965,8 +971,11 @@ $prioritySelected = function ($value) use ($view) {
                         $linkUrl = Route::url(
                             'index.php?option=' . $this->option . '&app=' . $this->status['toolname'],
                         );
+                        $linkText = Route::url(
+                            'index.php?option=' . $this->option . '&app=' . $this->status['toolname'],
+                        );
                         ?>
-                        <a class="view-tool" href="<?= $linkUrl ?>"><?= Route::url('index.php?option=' . $this->option . '&app=' . $this->status['toolname']) ?></a>
+                        <a class="view-tool" href="<?= $linkUrl ?>"><?= $linkText ?></a>
                     </p>
                     <h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
                     <ul>
@@ -1036,8 +1045,12 @@ $prioritySelected = function ($value) use ($view) {
                             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app='
                                 . $this->status['toolname'],
                         );
+                        $linkText = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app='
+                                . $this->status['toolname'],
+                        );
                         ?>
-                        <a class="view-tool" href="<?= $linkUrl ?>"><?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $this->status['toolname']) ?></a>
+                        <a class="view-tool" href="<?= $linkUrl ?>"><?= $linkText ?></a>
                     </p>
                     <h3><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
                     <ul class="youroptions">

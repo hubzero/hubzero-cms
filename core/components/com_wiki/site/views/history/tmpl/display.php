@@ -175,7 +175,13 @@ $revisions = $this->page
                                 <?php if ($this->page->get('version_id') == $revision->get('id')) { ?>
                                     <td><?php /* [a11y] old-version radio placeholder */ ?></td>
                                     <td>
-                                        <label class="sr-only" for="diff-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')) ?></label>
+                                        <?php
+                                        $labelText = Lang::txt(
+                                            'COM_WIKI_HISTORY_COMPARE_NEW_VERSION',
+                                            $revision->get('version'),
+                                        );
+                                        ?>
+                                        <label class="sr-only" for="diff-<?= $revision->get('id') ?>"><?= $labelText ?></label>
                                     <?php
                                     $ariaLabel = Lang::txt(
                                         'COM_WIKI_HISTORY_COMPARE_NEW_VERSION',
@@ -188,7 +194,13 @@ $revisions = $this->page
                                     </td>
                                 <?php } else { ?>
                                     <td>
-                                        <label class="sr-only" for="oldid-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')) ?></label>
+                                        <?php
+                                        $labelText = Lang::txt(
+                                            'COM_WIKI_HISTORY_COMPARE_OLD_VERSION',
+                                            $revision->get('version'),
+                                        );
+                                        ?>
+                                        <label class="sr-only" for="oldid-<?= $revision->get('id') ?>"><?= $labelText ?></label>
                                         <?php
                                         $ariaLabel = Lang::txt(
                                             'COM_WIKI_HISTORY_COMPARE_OLD_VERSION',
@@ -213,7 +225,12 @@ $revisions = $this->page
                                         . $this->escape(strip_tags((string) $summary));
                                     ?>
                                     <a href="<?= $linkUrl ?>" class="tooltips" title="<?= $titleText ?>">
-                                        <time datetime="<?= $revision->get('created') ?>"><?= $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')) ?></time>
+                                        <?php
+                                        $timeText = $this->escape(
+                                            Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s'),
+                                        );
+                                        ?>
+                                        <time datetime="<?= $revision->get('created') ?>"><?= $timeText ?></time>
                                     </a>
                                 </td>
                                 <td>

@@ -139,7 +139,13 @@ if ($this->comment->isReported()) {
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
                     enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?= Lang::txt('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'COM_KB_REPLYING_TO',
+                            (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[parent]"

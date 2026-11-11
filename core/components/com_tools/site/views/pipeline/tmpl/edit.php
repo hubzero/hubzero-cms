@@ -199,7 +199,12 @@ $repohostChecked = function ($value) use ($view) {
                 <?php } ?>
 
                 <fieldset>
-                    <legend><?php echo ($this->id) ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE') : Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE')  ?>:</legend>
+                    <?php
+                    $legendText = ($this->id)
+                        ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE')
+                        : Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE');
+                    ?>
+                    <legend><?= $legendText ?>:</legend>
                     <div class="form-group">
                         <div class="inline">
                             <label for="vncGeometryX"><?= Lang::txt('COM_TOOLS_MARKER_WIDTH') ?> <input type="text"

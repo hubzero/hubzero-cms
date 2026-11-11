@@ -56,13 +56,19 @@ if ($this->row->type == 'file') {
                     <?php if ($this->row->type == 'file') { ?>
                         <?php if ($gone) { ?>
                         <p>
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>*:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>*:</span>
                             <span><?php echo $this->escape($this->row->path); ?></span>
                         </p>
                         <p class="content-hint"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_MISSING_NOTICE') ?></p>
                         <?php } else { ?>
                         <p>
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>*:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>*:</span>
                             <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100"
                                 value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
                         </p>

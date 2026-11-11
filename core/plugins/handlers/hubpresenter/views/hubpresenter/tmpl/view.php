@@ -163,7 +163,10 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 <h3><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT') ?></h3>
                                 <div class="grid">
                                     <div class="col span4 label">
-                                        <label for="subtitle-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS') ?>:</label>
+                                        <?php
+                                        $labelText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS');
+                                        ?>
+                                        <label for="subtitle-selector"><?= $labelText ?>:</label>
                                     </div>
                                     <div class="col span8 omega input">
                                         <select id="subtitle-selector">
@@ -177,7 +180,10 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 </div>
                                 <div class="grid">
                                     <div class="col span4 label">
-                                        <label for="transcript-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_TRANSCRIPT') ?>:</label>
+                                        <?php
+                                        $labelText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_TRANSCRIPT');
+                                        ?>
+                                        <label for="transcript-selector"><?= $labelText ?>:</label>
                                     </div>
                                     <div class="col span8 omega input">
                                         <select class="transcript-selector">
@@ -190,11 +196,19 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                 </div>
 
-                                <span class="options-toggle"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTIONS') ?></span>
+                                <?php
+                                $optionsToggleText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTIONS');
+                                ?>
+                                <span class="options-toggle"><?= $optionsToggleText ?></span>
                                 <div class="subtitle-settings hide">
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt(
+                                                'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT',
+                                            );
+                                            ?>
+                                            <label for="font-selector"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <select id="font-selector">
@@ -213,7 +227,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                                         'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TAHOMA',
                                                     ) ?>
                                                 </option>
-                                                <option value="Trebuchet MS"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
+                                                <?php
+                                                $optionText = Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TREBUCHET',
+                                                );
+                                                ?>
+                                                <option value="Trebuchet MS"><?= $optionText ?></option>
                                                 <option value="Verdana">
                                                     <?= Lang::txt(
                                                         'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_VERDANA',
@@ -229,19 +248,44 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-size-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt(
+                                                'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE',
+                                            );
+                                            ?>
+                                            <label for="font-size-selector"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <select id="font-size-selector">
-                                                <option value="12"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
-                                                <option value="18" selected><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
-                                                <option value="24"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
+                                                <?php
+                                                $optionText = Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL',
+                                                );
+                                                ?>
+                                                <option value="12"><?= $optionText ?></option>
+                                                <?php
+                                                $optionText = Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM',
+                                                );
+                                                ?>
+                                                <option value="18" selected><?= $optionText ?></option>
+                                                <?php
+                                                $optionText = Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE',
+                                                );
+                                                ?>
+                                                <option value="24"><?= $optionText ?></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-color"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt(
+                                                'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR',
+                                            );
+                                            ?>
+                                            <label for="font-color"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <div id="font-color" data-color="FFF"></div>
@@ -249,7 +293,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="background-color"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt(
+                                                'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND',
+                                            );
+                                            ?>
+                                            <label for="background-color"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <div id="background-color" data-color="000"></div>
@@ -267,7 +316,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                         </div>
                                     </div>
                                     <div class="actions">
-                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_SAVE') ?></button>
+                                        <?php
+                                        $buttonText = Lang::txt(
+                                            'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_SAVE',
+                                        );
+                                        ?>
+                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
                                     </div>
                                 </div>
                             </div>
@@ -285,7 +339,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 <h3><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS'); ?></h3>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="speed"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE') ?>:</label>
+                                        <?php
+                                        $labelText = Lang::txt(
+                                            'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE',
+                                        );
+                                        ?>
+                                        <label for="speed"><?= $labelText ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="speed">
@@ -338,11 +397,18 @@ if (isset($this->entityId) && isset($this->entityType)) {
                             title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_THIS_SPOT') ?>">
                             <?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK'); ?>
                             <div class="control-container link-controls">
-                                <h3><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO') ?> <span><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO_AT_POSITION') ?></span></h3>
+                                <?php
+                                $headingText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO');
+                                $spanText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO_AT_POSITION');
+                                ?>
+                                <h3><?= $headingText ?> <span><?= $spanText ?></span></h3>
                                 <div class="grid">
                                     <div class="col span12 omega">
                                         <input type="text" value="ss" />
-                                        <span class="hint"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_HINT') ?></span>
+                                        <?php
+                                        $hintText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_HINT');
+                                        ?>
+                                        <span class="hint"><?= $hintText ?></span>
                                     </div>
                                 </div>
                             </div>

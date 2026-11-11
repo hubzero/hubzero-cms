@@ -283,25 +283,37 @@ if ($secondaries->count() > 0) {
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
 
                     <div class="input-wrap">
-                        <label for="param-from_name"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME') ?>:</label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME');
+                        ?>
+                        <label for="param-from_name"><?= $labelText ?>:</label>
                         <input type="text" name="params[from_name]" id="param-from_name"
                             value="<?= $this->escape($params->get('from_name')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-from_address"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL') ?>:</label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL');
+                        ?>
+                        <label for="param-from_address"><?= $labelText ?>:</label>
                         <input type="text" name="params[from_address]" id="param-from_address"
                             value="<?= $this->escape($params->get('from_address')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-replyto_name"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME') ?>:</label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME');
+                        ?>
+                        <label for="param-replyto_name"><?= $labelText ?>:</label>
                         <input type="text" name="params[replyto_name]" id="param-replyto_name"
                             value="<?= $this->escape($params->get('replyto_name')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-replyto_address"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL') ?>:</label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL');
+                        ?>
+                        <label for="param-replyto_address"><?= $labelText ?>:</label>
                         <input type="text" name="params[replyto_address]" id="param-replyto_address"
                             value="<?= $this->escape($params->get('replyto_address')) ?>" />
                     </div>
@@ -327,7 +339,10 @@ if ($secondaries->count() > 0) {
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
 
                     <div class="input-wrap" data-hint="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT') ?>">
-                        <label for="newsletter-html_content"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML') ?></label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML');
+                        ?>
+                        <label for="newsletter-html_content"><?= $labelText ?></label>
                         <textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100"
                             rows="20"><?= $this->escape($this->newsletter->html_content) ?></textarea>
                         <span class="hint"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT') ?></span>
@@ -335,7 +350,10 @@ if ($secondaries->count() > 0) {
 
                     <div class="input-wrap"
                         data-hint="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT') ?>">
-                        <label for="newsletter-plain_content"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN') ?></label>
+                        <?php
+                        $labelText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN');
+                        ?>
+                        <label for="newsletter-plain_content"><?= $labelText ?></label>
                         <textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100"
                             rows="20"><?= $this->escape($this->newsletter->plain_content) ?></textarea>
                         <span class="hint"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT') ?></span>
@@ -451,7 +469,10 @@ if ($secondaries->count() > 0) {
                                             <td class="key">
                                                 <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:
                                             </td>
-                                            <td><strong><?= $primary->readmore_title ?></strong> - <?= $primary->readmore_link ?></td>
+                                            <?php
+                                            $cellText = $primary->readmore_link;
+                                            ?>
+                                            <td><strong><?= $primary->readmore_title ?></strong> - <?= $cellText ?></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -563,7 +584,11 @@ if ($secondaries->count() > 0) {
                                                 <td class="key">
                                                     <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:
                                                 </td>
-                                                <td><strong><?= $secondary->readmore_title ?></strong> - <?= $secondary->readmore_link ?></td>
+                                                <?php
+                                                $strongText = $secondary->readmore_title;
+                                                $cellText = $secondary->readmore_link;
+                                                ?>
+                                                <td><strong><?= $strongText ?></strong> - <?= $cellText ?></td>
                                             </tr>
                                         </tbody>
                                     </table>

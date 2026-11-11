@@ -48,7 +48,11 @@ $elName = "authorList";
                             if (
                                 $author->repository_contact == 1 && !empty($dept) && !empty($org) && !empty($email)
                             ) { ?>
-                            <span class="item-subtext"><?= ' - ' . $this->escape($dept) . ' - ' . $this->escape($org) . ' - ' . $this->escape($email) ?></span>
+                                <?php
+                                $itemSubtextText = ' - ' . $this->escape($dept) . ' - ' . $this->escape($org) . ' - '
+                                    . $this->escape($email);
+                                ?>
+                            <span class="item-subtext"><?= $itemSubtextText ?></span>
                             <?php } else {?>
                             <span class="item-subtext"><?php echo $org ? ' - ' . $this->escape($org) : ''; ?></span>
                             <?php }?>

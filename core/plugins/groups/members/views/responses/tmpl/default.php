@@ -59,7 +59,10 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->gr
                             cols="50"><?= $this->escape($response['text']) ?></textarea>
                     </label>
                     <p class="deny-response-remove">
-                        <button type="button" class="btn btn-danger icon-trash"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REMOVE') ?></button>
+                        <?php
+                        $buttonText = Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REMOVE');
+                        ?>
+                        <button type="button" class="btn btn-danger icon-trash"><?= $buttonText ?></button>
                     </p>
                 </fieldset>
             <?php endforeach; ?>

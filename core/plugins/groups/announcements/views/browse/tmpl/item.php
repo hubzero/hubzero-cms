@@ -104,8 +104,10 @@ if ($closed == 'closed' && $this->showClose == true) {
                                 'index.php?option=com_groups&cn=' . $this->group->get('cn')
                                     . '&active=announcements&action=delete&id=' . $this->announcement->get('id'),
                             );
+                            $confirmText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE');
+                            $buttonText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                         <?php endif; ?>
                     </dd>
                 <?php endif; ?>

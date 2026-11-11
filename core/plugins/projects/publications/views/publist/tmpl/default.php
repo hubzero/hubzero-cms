@@ -26,8 +26,10 @@ if (count($this->items) > 0) { ?>
                 <span class="pub-details">
                     <?php
                     $linkUrl = Route::url($pub->link('version'));
+                    $linkText = $this->escape(stripslashes($pub->get('title'))) . ' v.'
+                        . $this->escape($pub->get('version_label'));
                     ?>
-                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(stripslashes($pub->get('title'))) . ' v.' . $this->escape($pub->get('version_label')) ?></a>
+                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $linkText ?></a>
                     <span class="public-list-info">
                         - <?= Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">' . $pub->category()->name . '</a>' ?>
                     </span>

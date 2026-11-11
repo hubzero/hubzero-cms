@@ -140,7 +140,10 @@ defined('_HZEXEC_') or die();
 
     <div id="jobinfo">
         <h3>
-            <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code ?></span><?php $job->title . ' - ' ?>
+            <?php
+            $spanText = Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code;
+            ?>
+            <span><?= $spanText ?></span><?php $job->title . ' - ' ?>
             <?php if (preg_match('#^https?://#i', (string) $job->companyWebsite)) { ?>
                 <?php
                 $linkUrl = $this->escape($job->companyWebsite);
@@ -161,9 +164,17 @@ defined('_HZEXEC_') or die();
         <div class="apply">
         <p>
             <?php if ($job->applied) { ?>
-                <span class="alreadyapplied"><?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON') . ' ' . Date::of($job->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?><span><?php echo "\n";
+                <?php
+                $alreadyappliedText = Lang::txt('COM_JOBS_JOB_APPLIED_ON') . ' '
+                    . Date::of($job->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                ?>
+                <span class="alreadyapplied"><?= $alreadyappliedText ?><span><?php echo "\n";
             } elseif ($job->withdrawn) { ?>
-                <span class="withdrawn"><?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON') . ' ' . Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?><span><?php echo "\n";
+                <?php
+                $withdrawnText = Lang::txt('COM_JOBS_JOB_WITHDREW_ON') . ' '
+                    . Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                ?>
+                <span class="withdrawn"><?= $withdrawnText ?><span><?php echo "\n";
             } ?>
         </p>
         </div>
@@ -183,12 +194,18 @@ defined('_HZEXEC_') or die();
             <p class="reg"><?php echo "\n"; ?>
             <span class="contactname"><?php echo $this->escape($job->contactName) ?></span><?php echo "\n";
             if ($job->contactPhone) { ?>
-                <span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_TEL') . ': ' . $this->escape($job->contactPhone) ?></span><?php echo "\n";
+                <?php
+                $contactinfoText = Lang::txt('COM_JOBS_JOB_TABLE_TEL') . ': ' . $this->escape($job->contactPhone);
+                ?>
+                <span class="contactinfo"><?= $contactinfoText ?></span><?php echo "\n";
             } else {
                 echo '';
             }
             if ($job->contactEmail) { ?>
-                <span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_EMAIL') . ': ' . $this->escape($job->contactEmail) ?></span><?php echo "\n";
+                <?php
+                $contactinfoText = Lang::txt('COM_JOBS_JOB_TABLE_EMAIL') . ': ' . $this->escape($job->contactEmail);
+                ?>
+                <span class="contactinfo"><?= $contactinfoText ?></span><?php echo "\n";
             } else {
                 echo '';
             } ?>

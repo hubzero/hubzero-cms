@@ -72,7 +72,10 @@ $department = $author->department;
                 <div class="profile-info">
                     <p><img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($name); ?>" />
                         <span>
-                        <span class="block faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_TEAM_MEMBER')) ?>:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_TEAM_MEMBER'));
+                        ?>
+                        <span class="block faded"><?= $spanText ?>:</span>
                         <?= $this->escape(
                             $author->username
                                 ? $author->p_name . ' (' . $author->username . ')'
@@ -82,17 +85,26 @@ $department = $author->department;
                 </div>
                 <div class="author-edit">
                     <label class="display_inline">
-                        <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_FIRST_NAME')) ?>*:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_FIRST_NAME'));
+                        ?>
+                        <span class="leftshift faded"><?= $spanText ?>*:</span>
                         <input type="text" name="firstName" value="<?= $this->escape($firstname) ?>" maxlength="255" />
                     </label>
                     <div class="clear"></div>
                     <label class="display_inline">
-                        <span class="faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME')) ?>*:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME'));
+                        ?>
+                        <span class="faded"><?= $spanText ?>*:</span>
                         <input type="text" name="lastName" value="<?= $this->escape($lastname) ?>" maxlength="255" />
                     </label>
                     <div class="clear"></div>
                     <label class="display_inline">
-                        <span class="faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT')) ?>*:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT'));
+                        ?>
+                        <span class="faded"><?= $spanText ?>*:</span>
                         <input type="text" name="department" value="<?= $this->escape($department) ?>"
                             maxlength="255" />
                         <?php
@@ -103,7 +115,10 @@ $department = $author->department;
                     </label>
                     <div class="clear"></div>
                     <label for="organization">
-                        <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION')) ?>*:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION'));
+                        ?>
+                        <span class="leftshift faded"><?= $spanText ?>*:</span>
                         <?php
                         $fieldValue = (isset($author->organization) && $author->organization)
                             ? htmlspecialchars($author->organization == null ? '' : $author->organization)
@@ -123,7 +138,10 @@ $department = $author->department;
                     <div class="clear"></div>
                     <?php if (!$author->username) { ?>
                         <label for="email">
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')) ?>:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>:</span>
                             <input type="text" name="email" class="long"
                                 value="<?= $this->escape($author->invited_email ? $author->invited_email : '') ?>"
                                 maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
@@ -131,7 +149,10 @@ $department = $author->department;
                         <div class="clear"></div>
                     <?php } else { ?>
                         <label for="email">
-                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')) ?>:</span>
+                            <?php
+                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL'));
+                            ?>
+                            <span class="leftshift faded"><?= $spanText ?>:</span>
                             <input type="text" name="email" class="long"
                                 value="<?= $this->escape($author->p_email ? $author->p_email : '') ?>"
                                 maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
@@ -139,7 +160,10 @@ $department = $author->department;
                         <div class="clear"></div>
                     <?php } ?>
                     <label for="orcid">
-                        <span class="leftshift faded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID') ?>:</span>
+                        <?php
+                        $spanText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID');
+                        ?>
+                        <span class="leftshift faded"><?= $spanText ?>:</span>
                         <input type="text" name="orcid"  class="long" placeholder="####-####-####-####"
                             value="<?= $this->escape($author->orcid) ?>" maxlength="255"/>
                         <p id="orcid-message"
@@ -148,7 +172,10 @@ $department = $author->department;
                     </label>
                     <div class="clear"></div>
                     <label for="credit">
-                        <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')) ?>:</span>
+                        <?php
+                        $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT'));
+                        ?>
+                        <span class="leftshift faded"><?= $spanText ?>:</span>
                         <input type="text" name="credit"  class="long"
                             value="<?= htmlspecialchars($author->credit ?: '') ?>" maxlength="255"  /><span
                             class="optional"><?= Lang::txt('OPTIONAL') ?></span>

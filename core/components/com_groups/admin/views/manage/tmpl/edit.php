@@ -275,7 +275,10 @@ $discoverabilityChecked = function ($value) use ($view) {
 
                             <div class="input-wrap"
                                 data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT') ?>">
-                                <label for="param-page_trusted"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT') ?>:</label>
+                                <?php
+                                $labelText = Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT');
+                                ?>
+                                <label for="param-page_trusted"><?= $labelText ?>:</label>
                                 <select name="group[params][page_trusted]" id="param-page_trusted">
                                     <option <?= $trusted == 0 ? 'selected="selected"' : '' ?> value="0">
                                         <?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO') ?>
@@ -288,7 +291,10 @@ $discoverabilityChecked = function ($value) use ($view) {
 
                             <div class="input-wrap"
                                 data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?>">
-                                <label for="param-page_comments"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS') ?>:</label>
+                                <?php
+                                $labelText = Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS');
+                                ?>
+                                <label for="param-page_comments"><?= $labelText ?>:</label>
                                 <select name="group[params][page_comments]" id="param-page_comments">
                                     <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0">
                                         <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?>
@@ -367,15 +373,34 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="checkbox" name="group[params][membership_control]" id="field-membership_control" value="1" <?php if ($membership_control == 1) {
                                     ?>checked="checked"<?php
                                                                                                                                         } ?> />
-                                <label for="field-membership_control"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_CONTROL') ?></label>
+                                <?php
+                                $labelText = Lang::txt('COM_GROUPS_MEMBERSHIP_CONTROL');
+                                ?>
+                                <label for="field-membership_control"><?= $labelText ?></label>
                             </div>
                             <fieldset>
                                 <legend><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</legend>
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $joinPolicyChecked(0) ?> /> <label for="field-join_policy0"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $joinPolicyChecked(1) ?> /> <label for="field-join_policy1"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $joinPolicyChecked(2) ?> /> <label for="field-join_policy2"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $joinPolicyChecked(3) ?> /> <label for="field-join_policy3"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC') ?></label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; '
+                                        . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC');
+                                    ?>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $joinPolicyChecked(0) ?> /> <label for="field-join_policy0"><?= $labelText ?></label><br />
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; '
+                                        . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC');
+                                    ?>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $joinPolicyChecked(1) ?> /> <label for="field-join_policy1"><?= $labelText ?></label><br />
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; '
+                                        . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC');
+                                    ?>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $joinPolicyChecked(2) ?> /> <label for="field-join_policy2"><?= $labelText ?></label><br />
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; '
+                                        . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC');
+                                    ?>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $joinPolicyChecked(3) ?> /> <label for="field-join_policy3"><?= $labelText ?></label>
                                 </div>
                             </fieldset>
                             <div class="input-wrap">
@@ -392,11 +417,17 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <div class="input-wrap">
                                     <input type="radio" name="group[discoverability]" id="field-discoverability0"
                                         value="0"<?= $discoverabilityChecked(0) ?> />
-                                    <label for="field-discoverability0"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE') ?></label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE');
+                                    ?>
+                                    <label for="field-discoverability0"><?= $labelText ?></label>
                                     <br />
                                     <input type="radio" name="group[discoverability]" id="field-discoverability1"
                                         value="1"<?= $discoverabilityChecked(1) ?> />
-                                    <label for="field-discoverability1"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN') ?></label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN');
+                                    ?>
+                                    <label for="field-discoverability1"><?= $labelText ?></label>
                                 </div>
                             </fieldset>
 
@@ -407,7 +438,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                             </div>
 
                             <div class="input-wrap">
-                                <label for="display_system_users"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS') ?>:</label><br />
+                                <?php
+                                $labelText = Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS');
+                                ?>
+                                <label for="display_system_users"><?= $labelText ?>:</label><br />
                                 <select name="group[params][display_system_users]" id="display_system_users">
                                     <option <?= $display_system_users == 'global' ? 'selected="selected"' : '' ?>
                                         value="global">
@@ -437,7 +471,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                         <input type="checkbox" name="group[discussion_email_autosubscribe]" id="field-membership_control" value="1" <?php if ($autoEmailResponses == 1) {
                                             ?>checked="checked"<?php
                                                                                                                                                     } ?> />
-                                        <label for="field-membership_control"><?= Lang::txt('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE') ?></label>
+                                        <?php
+                                        $labelText = Lang::txt('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE');
+                                        ?>
+                                        <label for="field-membership_control"><?= $labelText ?></label>
                                     </div>
                                 </fieldset>
                             </fieldset>
@@ -449,7 +486,15 @@ $discoverabilityChecked = function ($value) use ($view) {
             <div id="page-files" class="tab">
                 <fieldset class="adminform">
                     <?php if ($this->group->gidNumber) { ?>
-                        <legend><span><?= Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'COM_GROUPS_MEDIA_PATH',
+                            substr(PATH_APP, strlen(PATH_ROOT)) . DS
+                                . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS
+                                . $this->group->get('gidNumber'),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
                         <?php
                         $sourceUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller=media&tmpl=component&gidNumber='

@@ -173,7 +173,10 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         }
                         ?>
                         <label>
-                            <span class="review-label"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')) ?>:</span> <?= $submitter ?>
+                            <?php
+                            $reviewLabelText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'));
+                            ?>
+                            <span class="review-label"><?= $reviewLabelText ?>:</span> <?= $submitter ?>
                         </label>
                     <?php } ?>
 
@@ -228,7 +231,10 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                         $missingItem = "email address";
                                     }
                                     ?>
-                                    <span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?php echo "The contact is required to include $missingItem. Please " ?>
+                                    <?php
+                                    $itemMsgText = "The contact is required to include $missingItem. Please ";
+                                    ?>
+                                    <span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?= $itemMsgText ?>
                                     <?php
                                     $editauthorUrl = Route::url(
                                         $this->pub->link('editversionid')
@@ -250,12 +256,18 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         <label>
                             <input class="option" name="action" type="radio" value="publish" checked="checked" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
-                            <span class="hint block ipadded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT') ?></span>
+                            <?php
+                            $hintText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT');
+                            ?>
+                            <span class="hint block ipadded"><?= $hintText ?></span>
                         </label>
                         <label>
                             <input class="option" name="action" type="radio" value="post" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
-                            <span class="hint block ipadded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT') ?></span>
+                            <?php
+                            $hintText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT');
+                            ?>
+                            <span class="hint block ipadded"><?= $hintText ?></span>
                         </label>
                     <?php } else { ?>
                         <input type="hidden" name="action" value="publish" />

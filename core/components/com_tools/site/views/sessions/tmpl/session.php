@@ -363,14 +363,20 @@ if (!$this->app->sess) {
                             d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line
                             x1="21" y1="12" x2="9" y2="12"/></svg>
                         <span class="ts-choice-label"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE')) ?></span>
-                        <span class="ts-choice-desc"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC')) ?></span>
+                        <?php
+                        $tsChoiceDescText = $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC'));
+                        ?>
+                        <span class="ts-choice-desc"><?= $tsChoiceDescText ?></span>
                     </a>
                     <a class="ts-choice ts-choice-terminate" data-ts-choice="terminate" href="<?= $terminateUrl ?>">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                             d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                         <span class="ts-choice-label"><?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?></span>
-                        <span class="ts-choice-desc"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC')) ?></span>
+                        <?php
+                        $tsChoiceDescText = $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC'));
+                        ?>
+                        <span class="ts-choice-desc"><?= $tsChoiceDescText ?></span>
                     </a>
                 </div>
                 <button type="button" class="ts-confirm-cancel"
@@ -519,7 +525,10 @@ if (!$this->app->sess) {
                                     <?php echo $this->escape(stripslashes($user->get('name'))); ?>
                                 </a><br />
                                 <span class="entry-details">
-                                    <span class="username"><?= $this->escape(stripslashes($user->get('username'))) ?></span>
+                                    <?php
+                                    $usernameText = $this->escape(stripslashes($user->get('username')));
+                                    ?>
+                                    <span class="username"><?= $usernameText ?></span>
                                 </span>
                             </td>
                             <td class="entry-actions">

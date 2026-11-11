@@ -169,7 +169,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                         $last_type = $current_type;
                                     ?>
                                         <li class="<?php echo $idx & 1 ? 'odd' : 'even'; ?>">
-                                            <a href="<?= $child->getLink() ?>"><?= $this->escape($child->getHighlightedTitle()) ?></a>
+                                            <?php
+                                            $linkText = $this->escape($child->getHighlightedTitle());
+                                            ?>
+                                            <a href="<?= $child->getLink() ?>"><?= $linkText ?></a>
                                             <p><?php echo $child->getHighlightedExcerpt(); ?></p>
                                         </li>
                                 <?php endforeach; ?>

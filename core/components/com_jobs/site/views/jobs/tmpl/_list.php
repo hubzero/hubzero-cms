@@ -125,7 +125,10 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
             <td class="secondary"><?php echo $curcat; ?></td>
             <td class="secondary"><?php echo $curtype; ?></td>
             <td class="secondary">
-                <span class="datedisplay"><?= Date::of($this->jobs[$i]->added)->toLocal('d&\n\b\s\p;M,&\n\b\s\p;20y') ?></span>
+                <?php
+                $datedisplayText = Date::of($this->jobs[$i]->added)->toLocal('d&\n\b\s\p;M,&\n\b\s\p;20y');
+                ?>
+                <span class="datedisplay"><?= $datedisplayText ?></span>
             </td>
             <td>
                 <?php if ($this->jobs[$i]->applied) { ?>

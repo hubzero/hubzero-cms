@@ -121,11 +121,17 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                                     );
                                     ?>
                                     <a href="<?= $approveUrl ?>" class="btn">
-                                        <strong><?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE') ?></strong>
+                                        <?php
+                                        $strongText = Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE');
+                                        ?>
+                                        <strong><?= $strongText ?></strong>
                                     </a>
                                 </li>
                             <?php else : ?>
-                                <span><em><?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT') ?></em></span>
+                                <?php
+                                $emphasisText = Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT');
+                                ?>
+                                <span><em><?= $emphasisText ?></em></span>
                             <?php endif; ?>
                         </ol>
                     </td>

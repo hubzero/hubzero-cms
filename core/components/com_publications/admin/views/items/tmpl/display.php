@@ -239,8 +239,9 @@ $statusSelected = function ($value) use ($view) {
                 <td class="priority-2">
                     <?php
                     $editUrl = Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id);
+                    $linkText = $this->escape(\Hubzero\Utility\Str::truncate($row->project_title, 50));
                     ?>
-                    <a href="<?= $editUrl ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($row->project_title, 50)) ?></a>
+                    <a href="<?= $editUrl ?>"><?= $linkText ?></a>
                 </td>
                 <td class="priority-4">
                     <?php

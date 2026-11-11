@@ -169,14 +169,21 @@ $this->js('edit.js', 'com_massmail');
                                     <?php // Read-only view: render the saved audience as static chips.?>
                                     <ul class="mm-to-chips">
                                         <?php foreach ($toChips as $c) { ?>
-                                            <li class="mm-to-chip"><span class="mm-chip-ic" aria-hidden="true"><?= $chipIcon[$c['kind']] ?></span> <?= $this->escape($c['label']) ?></li>
+                                            <?php
+                                            $spanText = $chipIcon[$c['kind']];
+                                            $itemText = $this->escape($c['label']);
+                                            ?>
+                                            <li class="mm-to-chip"><span class="mm-chip-ic" aria-hidden="true"><?= $spanText ?></span> <?= $itemText ?></li>
                                         <?php } ?>
                                     </ul>
                                 <?php } ?>
                             </div>
                         </div>
                         <?php if ($editable) { ?>
-                        <div class="mm-count"><span class="mm-preview"><strong><?= Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)) ?></strong></span></div>
+                            <?php
+                            $strongText = Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview));
+                            ?>
+                        <div class="mm-count"><span class="mm-preview"><strong><?= $strongText ?></strong></span></div>
                         <?php } ?>
 
                         <div class="mm-mail-row">
@@ -200,7 +207,10 @@ $this->js('edit.js', 'com_massmail');
                                     name="fields[subject]" id="field-subject"
                                     value="<?= $this->escape($this->row->get('subject')) ?>" />
                             <?php } else { ?>
-                                <span class="mm-mail-value mm-mail-subject-ro"><?= $this->escape(stripslashes($this->row->get('subject'))) ?></span>
+                                <?php
+                                $mmMailValueText = $this->escape(stripslashes($this->row->get('subject')));
+                                ?>
+                                <span class="mm-mail-value mm-mail-subject-ro"><?= $mmMailValueText ?></span>
                             <?php } ?>
                         </div>
                     </div>
@@ -319,7 +329,10 @@ $this->js('edit.js', 'com_massmail');
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
-                                <td><span class="mm-status mm-status-<?= $status ?>"><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)) ?></span></td>
+                                <?php
+                                $mmStatusText = Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status));
+                                ?>
+                                <td><span class="mm-status mm-status-<?= $status ?>"><?= $mmStatusText ?></span></td>
                             </tr>
                             <?php
                             if (
@@ -409,8 +422,9 @@ $this->js('edit.js', 'com_massmail');
                         ) { ?>
                             <?php
                             $todraftUrl = Route::url($base . '&task=todraft&id=' . $this->row->get('id'));
+                            $buttonText = $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT');
                             ?>
-                            <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?= $todraftUrl ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT') ?></button>
+                            <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?= $todraftUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -418,14 +432,16 @@ $this->js('edit.js', 'com_massmail');
                         ) { ?>
                             <?php
                             $approveUrl = Route::url($base . '&task=approve&id=' . $this->row->get('id'));
+                            $buttonText = $icCheck . Lang::txt('COM_MASSMAIL_APPROVE');
                             ?>
-                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $approveUrl ?>"><?= $icCheck . Lang::txt('COM_MASSMAIL_APPROVE') ?></button>
+                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $approveUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
                             <?php
                             $releaseUrl = Route::url($base . '&task=release&id=' . $this->row->get('id'));
+                            $buttonText = $icSend . Lang::txt('COM_MASSMAIL_RELEASE');
                             ?>
-                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $releaseUrl ?>"><?= $icSend . Lang::txt('COM_MASSMAIL_RELEASE') ?></button>
+                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $releaseUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -447,8 +463,9 @@ $this->js('edit.js', 'com_massmail');
                         ) { ?>
                             <?php
                             $resumeUrl = Route::url($base . '&task=resume&id=' . $this->row->get('id'));
+                            $buttonText = $icPlay . Lang::txt('COM_MASSMAIL_RESUME');
                             ?>
-                            <button type="submit" form="mm-action" class="btn" formaction="<?= $resumeUrl ?>"><?= $icPlay . Lang::txt('COM_MASSMAIL_RESUME') ?></button>
+                            <button type="submit" form="mm-action" class="btn" formaction="<?= $resumeUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -467,8 +484,9 @@ $this->js('edit.js', 'com_massmail');
                         ) { ?>
                             <?php
                             $stopUrl = Route::url($base . '&task=stop&id=' . $this->row->get('id'));
+                            $buttonText = $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING');
                             ?>
-                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')) ?>" formaction="<?= $stopUrl ?>"><?= $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING') ?></button>
+                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')) ?>" formaction="<?= $stopUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php // Permanent delete -- only for mailings that never started sending
                               // (a sent/in-flight mailing keeps its record and can only be
@@ -479,8 +497,9 @@ $this->js('edit.js', 'com_massmail');
                         <?php if (!$editable && $this->row->isDeletable() && $canDo->get('core.delete')) { ?>
                             <?php
                             $deleteUrl = Route::url($base . '&task=delete&id=' . $this->row->get('id'));
+                            $buttonText = $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING');
                             ?>
-                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')) ?>" formaction="<?= $deleteUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING') ?></button>
+                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')) ?>" formaction="<?= $deleteUrl ?>"><?= $buttonText ?></button>
                         <?php } ?>
                     </div>
 
@@ -488,10 +507,22 @@ $this->js('edit.js', 'com_massmail');
                         <div class="mm-progress-bar"><div class="mm-progress-fill" data-pct="<?= $pct ?>"></div></div>
                         <table class="mm-status-stats">
                             <tbody>
-                                <tr><th scope="row"><?= Lang::txt('COM_MASSMAIL_TOTAL_RECIPIENTS') ?></th><td><?= number_format($total) ?></td></tr>
-                                <tr><th scope="row"><?= Lang::txt('COM_MASSMAIL_SENT') ?></th><td><?= number_format($sentN) ?></td></tr>
-                                <tr><th scope="row"><?= Lang::txt('COM_MASSMAIL_PENDING') ?></th><td><?= number_format($pendingN) ?></td></tr>
-                                <tr><th scope="row"><?= Lang::txt('COM_MASSMAIL_FAILED') ?></th><td><?= number_format($failedN) ?></td></tr>
+                                <?php
+                                $headerText = Lang::txt('COM_MASSMAIL_TOTAL_RECIPIENTS');
+                                ?>
+                                <tr><th scope="row"><?= $headerText ?></th><td><?= number_format($total) ?></td></tr>
+                                <?php
+                                $headerText = Lang::txt('COM_MASSMAIL_SENT');
+                                ?>
+                                <tr><th scope="row"><?= $headerText ?></th><td><?= number_format($sentN) ?></td></tr>
+                                <?php
+                                $headerText = Lang::txt('COM_MASSMAIL_PENDING');
+                                ?>
+                                <tr><th scope="row"><?= $headerText ?></th><td><?= number_format($pendingN) ?></td></tr>
+                                <?php
+                                $headerText = Lang::txt('COM_MASSMAIL_FAILED');
+                                ?>
+                                <tr><th scope="row"><?= $headerText ?></th><td><?= number_format($failedN) ?></td></tr>
                             </tbody>
                         </table>
                     <?php } ?>

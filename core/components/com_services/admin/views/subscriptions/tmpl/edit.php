@@ -72,7 +72,14 @@ $priceline .= ($service->get('pointsprice') > 0)
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?= Lang::txt('COM_SERVICES_SUBSCRIPTION_NUM', $this->subscription->id, $this->subscription->code) ?></span></legend>
+                <?php
+                $spanText = Lang::txt(
+                    'COM_SERVICES_SUBSCRIPTION_NUM',
+                    $this->subscription->id,
+                    $this->subscription->code,
+                );
+                ?>
+                <legend><span><?= $spanText ?></span></legend>
 
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_SERVICES_FIELD_SERVICE'); ?>:</label><br />
@@ -161,7 +168,13 @@ $priceline .= ($service->get('pointsprice') > 0)
                         <label for="field-action-refund"><?= Lang::txt('COM_SERVICES_FIELD_PROCESS_REFUND') ?></label>
                     </div>
                     <div class="input-wrap">
-                        <label><?= Lang::txt('COM_SERVICES_FIELD_PENDING_REFUND_FOR', $this->subscription->pendingunits) ?>:</label><br />
+                        <?php
+                        $labelText = Lang::txt(
+                            'COM_SERVICES_FIELD_PENDING_REFUND_FOR',
+                            $this->subscription->pendingunits,
+                        );
+                        ?>
+                        <label><?= $labelText ?>:</label><br />
                         <?php echo $this->subscription->pendingpayment; ?>
                         <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');

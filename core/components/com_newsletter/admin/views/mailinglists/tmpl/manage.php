@@ -154,7 +154,10 @@ $statusSelected = function ($value) use ($view) {
                             ?>
                         </td>
                         <td>
-                            <time datetime="<?= $le->date_added ?>"><?= Date::of($le->date_added)->format('l, F d, Y @ g:ia') ?></time>
+                            <?php
+                            $timeText = Date::of($le->date_added)->format('l, F d, Y @ g:ia');
+                            ?>
+                            <time datetime="<?= $le->date_added ?>"><?= $timeText ?></time>
                         </td>
                         <td>
                             <?php

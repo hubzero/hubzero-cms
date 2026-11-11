@@ -160,8 +160,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                         <?php if ($group['category']->get('id')) { ?>
                             <?php
                             $linkUrl = Route::url($group['category']->link() . $carry);
+                            $linkText = $this->escape(stripslashes($group['category']->get('title')));
                             ?>
-                            <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($group['category']->get('title'))) ?></a>
+                            <a href="<?= $linkUrl ?>"><?= $linkText ?></a>
                         <?php } else { ?>
                             <?php echo Lang::txt('COM_KB_ARTICLES'); ?>
                         <?php } ?>
@@ -185,8 +186,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                             <td>
                                 <?php
                                 $linkUrl = Route::url($row->link());
+                                $linkText = $this->escape(stripslashes($row->get('title', '')));
                                 ?>
-                                <a class="entry-title" href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($row->get('title', ''))) ?></a><br />
+                                <a class="entry-title" href="<?= $linkUrl ?>"><?= $linkText ?></a><br />
                                 <?php if ($search && ($snippet = $row->snippet($search))) { ?>
                                     <span class="entry-snippet"><?php echo $snippet; ?></span>
                                 <?php } ?>

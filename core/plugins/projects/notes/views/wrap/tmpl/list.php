@@ -64,8 +64,9 @@ if ($pNotes) {
                                     . '&active=notes&pagename=' . ($entry->path ? $entry->path . '/' : '')
                                     . $entry->pagename,
                             );
+                            $linkText = $this->escape(\Hubzero\Utility\Str::truncate($entry->title, 35));
                             ?>
-                            <a href="<?= $linkUrl ?>" class="note wikilevel_<?= $level ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($entry->title, 35)) ?></a>
+                            <a href="<?= $linkUrl ?>" class="note wikilevel_<?= $level ?>"><?= $linkText ?></a>
                         </li>
                         <?php
                         // Third level of notes
@@ -79,8 +80,9 @@ if ($pNotes) {
                                             . '&active=notes&pagename=' . ($subpage->path ? $subpage->path . '/' : '')
                                             . $subpage->pagename,
                                     );
+                                    $linkText = $this->escape(\Hubzero\Utility\Str::truncate($subpage->title, 35));
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="note wikilevel_3"><?= $this->escape(\Hubzero\Utility\Str::truncate($subpage->title, 35)) ?></a>
+                                    <a href="<?= $linkUrl ?>" class="note wikilevel_3"><?= $linkText ?></a>
                                 </li>
                                 <?php
                             }

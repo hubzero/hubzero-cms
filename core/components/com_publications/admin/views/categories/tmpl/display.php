@@ -128,7 +128,12 @@ $this->css();
                 </td>
                 <td class="priority-2 centeralign">
                     <span class="state <?php echo ($row->state == 1) ? 'on' : 'off'; ?>">
-                        <span><?= ($row->state == 1) ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF') ?></span>
+                        <?php
+                        $spanText = ($row->state == 1)
+                            ? Lang::txt('COM_PUBLICATIONS_ON')
+                            : Lang::txt('COM_PUBLICATIONS_OFF');
+                        ?>
+                        <span><?= $spanText ?></span>
                     </span>
                 </td>
             </tr>

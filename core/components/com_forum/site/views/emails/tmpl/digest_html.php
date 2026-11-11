@@ -108,7 +108,10 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
         <tr>
             <td colspan="2" style="text-align: center; font-size: 14px; padding: 14px 0 4px;">
                 <strong><?php echo $this->escape($group->get('description')); ?></strong>
-                <span style="color: #999;">&mdash; <?= $posts->count() ?> new post<?= ($posts->count() != 1 ? 's' : '') ?></span>
+                <?php
+                $spanText = $posts->count() != 1 ? 's' : '';
+                ?>
+                <span style="color: #999;">&mdash; <?= $posts->count() ?> new post<?= $spanText ?></span>
             </td>
         </tr>
         <tr>

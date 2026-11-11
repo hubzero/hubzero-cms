@@ -60,7 +60,10 @@ $this->css($css);
                     <a href="<?= $this->baseUrl ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?= $this->baseUrl ?></a>
                 </span>
                 <br />
-                <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?= $this->config->get('MetaDesc') ?></span>
+                <?php
+                $spanText = $this->config->get('MetaDesc');
+                ?>
+                <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?= $spanText ?></span>
             </td>
             <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
                 <?php echo Lang::txt('COM_MEMBERS'); ?>

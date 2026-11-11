@@ -206,7 +206,10 @@ $this->category->set('section_alias', $this->filters['section']);
                                     ?>
                                     <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
+                                            <?php
+                                            $entryIdentifierText = $this->escape($row->get('id'));
+                                            ?>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
@@ -214,7 +217,10 @@ $this->category->set('section_alias', $this->filters['section']);
                                             </a>
                                             <span class="entry-details">
                                                 <span class="entry-date">
-                                                    <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
+                                                    <?php
+                                                    $timeText = $row->created('date');
+                                                    ?>
+                                                    <time datetime="<?= $row->created() ?>"><?= $timeText ?></time>
                                                 </span>
                                                 <?= Lang::txt(
                                                     'COM_FORUM_BY_USER',
@@ -258,7 +264,11 @@ $this->category->set('section_alias', $this->filters['section']);
                                                     }
                                                     ?>
                                                     <span class="entry-date">
-                                                        <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
+                                                        <?php
+                                                        $datetime = $lastpost->created();
+                                                        $timeText = $lastpost->created('date');
+                                                        ?>
+                                                        <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                                     </span>
                                                     <?= Lang::txt(
                                                         'COM_FORUM_BY_USER',

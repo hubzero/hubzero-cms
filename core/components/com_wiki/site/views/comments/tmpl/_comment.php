@@ -90,7 +90,10 @@ $this->comment->set('category', 'answercomment');
                         break;
                 }
                 ?>
-                <p><span class="avgrating<?= $rcls ?>"><span><?= Lang::txt('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')) ?></span></span></p>
+                <?php
+                $spanText = Lang::txt('COM_WIKI_COMMENT_RATING', $this->comment->get('rating'));
+                ?>
+                <p><span class="avgrating<?= $rcls ?>"><span><?= $spanText ?></span></span></p>
                 <?php
             }
             ?>
@@ -169,7 +172,13 @@ $this->comment->set('category', 'answercomment');
                     action="<?= Route::url($this->page->link('comments')) ?>" method="post"
                     enctype="multipart/form-data">
                     <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
-                        <legend><span><?= Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'COM_WIKI_REPLYING_TO',
+                            (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />

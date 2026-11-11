@@ -102,7 +102,10 @@ $this
                                     ?>
                                     <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
+                                            <?php
+                                            $entryIdentifierText = $this->escape($row->get('id'));
+                                            ?>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <?php

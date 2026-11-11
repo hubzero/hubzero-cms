@@ -171,8 +171,10 @@ $this->comment->set('url', $rtrn);
                         ) { ?>
                             <?php
                             $actionUrl = Route::url($this->comment->link('delete'));
+                            $dataTxtConfirm = Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM');
+                            $buttonText = Lang::txt('PLG_HUBZERO_COMMENTS_DELETE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM') ?>"><?= Lang::txt('PLG_HUBZERO_COMMENTS_DELETE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -212,7 +214,17 @@ $this->comment->set('url', $rtrn);
                             enctype="multipart/form-data">
                             <fieldset>
                                 <legend>
-                                    <span><?= Lang::txt('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('JANONYMOUS'))) ?></span>
+                                    <?php
+                                    $spanText = Lang::txt(
+                                        'PLG_HUBZERO_COMMENTS_REPLYING_TO',
+                                        (
+                                            !$this->comment->get('anonymous')
+                                                ? $this->comment->get('name')
+                                                : Lang::txt('JANONYMOUS')
+                                        ),
+                                    );
+                                    ?>
+                                    <span><?= $spanText ?></span>
                                 </legend>
 
                                 <input type="hidden" name="comment[id]" value="0" />
@@ -233,7 +245,10 @@ $this->comment->set('url', $rtrn);
 
                                 <div class="form-group">
                                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-                                        <span class="label-text"><?= Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS') ?></span>
+                                        <?php
+                                        $labelText = Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS');
+                                        ?>
+                                        <span class="label-text"><?= $labelText ?></span>
                                         <?php
                                         echo $this->editor(
                                             'comment[content]',
@@ -250,7 +265,10 @@ $this->comment->set('url', $rtrn);
                                 <div class="form-group">
                                     <label class="form-check-label comment-<?= $this->comment->get('id') ?>-file"
                                         for="comment-<?= $this->comment->get('id') ?>-file">
-                                        <span class="label-text"><?= Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE') ?>:</span>
+                                        <?php
+                                        $labelText = Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE');
+                                        ?>
+                                        <span class="label-text"><?= $labelText ?>:</span>
                                         <input type="file" class="form-control-file" name="comment_file"
                                             id="comment-<?= $this->comment->get('id') ?>-file" />
                                     </label>

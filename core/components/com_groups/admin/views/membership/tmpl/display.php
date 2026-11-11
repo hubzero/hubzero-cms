@@ -310,7 +310,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     <input type="checkbox" name="id[]" id="cb<?= $i ?>"
                         value="<?= $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email) ?>"
                         class="checkbox-toggle" />
-                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email) ?></label>
+                    <?php
+                    $labelText = $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email);
+                    ?>
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $labelText ?></label>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->uidNumber); ?>

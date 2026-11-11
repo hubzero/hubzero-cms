@@ -156,9 +156,15 @@ $dataActionUrl = Route::url(
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>
-                                    <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_ON') ?></span>
-                                    <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 
@@ -178,7 +184,10 @@ $dataActionUrl = Route::url(
                             </label>
 
                             <label for="field-upload" id="comment-upload">
-                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS') ?>:</span>
+                                <?php
+                                $labelText = Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS');
+                                ?>
+                                <span class="label-text"><?= $labelText ?>:</span>
                                 <input type="file" name="upload" id="field-upload" />
                             </label>
 

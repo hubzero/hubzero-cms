@@ -235,9 +235,15 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                 <p>
                                     <strong><?php echo $name; ?></strong>
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
-                                    <span class="time"><time datetime="<?= $replyto->created() ?>"><?= $replyto->created('time') ?></time></span>
+                                    <?php
+                                    $timeText = $replyto->created('time');
+                                    ?>
+                                    <span class="time"><time datetime="<?= $replyto->created() ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
-                                    <span class="date"><time datetime="<?= $replyto->created() ?>"><?= $replyto->created('date') ?></time></span>
+                                    <?php
+                                    $timeText = $replyto->created('date');
+                                    ?>
+                                    <span class="date"><time datetime="<?= $replyto->created() ?>"><?= $timeText ?></time></span>
                                 </p>
                                 <p>
                                     <?php echo \Hubzero\Utility\Sanitize::html((string) $replyto->get('content')); ?>

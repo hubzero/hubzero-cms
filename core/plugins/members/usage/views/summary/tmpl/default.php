@@ -136,20 +136,23 @@ $this->css('usage', 'com_usage');
                     <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $row->title ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
+                    $linkText = (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12;
                     ?>
-                    <td><a href="<?= $toolsUrl ?>"><?= (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12 ?></a></td>
+                    <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
+                    $linkText = (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12;
                     ?>
-                    <td><a href="<?= $toolsUrl ?>"><?= (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12 ?></a></td>
+                    <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
+                    $linkText = (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14;
                     ?>
-                    <td><a href="<?= $toolsUrl ?>"><?= (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14 ?></a></td>
+                    <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <td><?php echo PlgMembersUsage::getCitationcount($row->id, 0); ?></td>
                     <td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
                 </tr>

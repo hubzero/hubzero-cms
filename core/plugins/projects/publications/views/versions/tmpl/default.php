@@ -24,8 +24,10 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
     <?php if ($this->project->isProvisioned()) { ?>
         <?php
         $linkUrl = Route::url($this->pub->link('editversion'));
+        $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
+        $headingText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'));
         ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></h3>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $linkText ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $headingText ?></h3>
     <?php } else { ?>
         <?php
         $linkUrl = Route::url($this->pub->link('editversion'));

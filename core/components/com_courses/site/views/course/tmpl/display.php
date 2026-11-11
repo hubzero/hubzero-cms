@@ -338,7 +338,10 @@ $this
                                                 class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
                                             <input type="text" name="page[title]" id="field-title" class="form-control"
                                                 value="<?= $this->escape(stripslashes($page->get('title'))) ?>" />
-                                            <span class="hint"><?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT') ?></span>
+                                            <?php
+                                            $hintText = Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT');
+                                            ?>
+                                            <span class="hint"><?= $hintText ?></span>
                                         </label>
                                     </div>
                                 </div>
@@ -349,7 +352,10 @@ $this
                                                 class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
                                             <input type="text" name="page[url]" id="field-url" class="form-control"
                                                 value="<?= $this->escape(stripslashes($page->get('url'))) ?>" />
-                                            <span class="hint"><?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT') ?></span>
+                                            <?php
+                                            $hintText = Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT');
+                                            ?>
+                                            <span class="hint"><?= $hintText ?></span>
                                         </label>
                                     </div>
                                 </div>

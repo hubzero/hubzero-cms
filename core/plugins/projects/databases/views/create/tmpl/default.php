@@ -51,8 +51,11 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 <div id="plg-header">
 <?php
 $linkUrl = Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias'));
+$spanText = isset($this->db_id)
+    ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE')
+    : Lang::txt('PLG_PROJECTS_DATA_START');
 ?>
-<h3 class="databases c-header"><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span class="indlist"><?= isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START') ?></span></h3>
+<h3 class="databases c-header"><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span class="indlist"><?= $spanText ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php

@@ -23,6 +23,9 @@ if ($this->email) {
         <?php echo Lang::txt('PLG_PUBLICATIONS_WATCH_CONFIRM_' . strtoupper($this->action)); ?>
     </p>
     <p>
-        <button type="submit" form="hz-post-action" formaction="<?= $link ?>" class="btn <?= $this->action ?>"><?= Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action)) ?></button>
+        <?php
+        $buttonText = Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action));
+        ?>
+        <button type="submit" form="hz-post-action" formaction="<?= $link ?>" class="btn <?= $this->action ?>"><?= $buttonText ?></button>
     </p>
 </div>

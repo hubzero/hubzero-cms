@@ -98,7 +98,10 @@ $this->css('display.css', 'com_massmail');
                         ?><span class="badge badge-warning" title="<?= Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT') ?>">!</span><?php
                     } ?>
                 </td>
-                <td><a class="mm-status-link" href="<?= $link ?>"><span class="mm-status mm-status-<?= $row->get('status') ?>"><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status'))) ?></span></a></td>
+                <?php
+                $mmStatusText = Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status')));
+                ?>
+                <td><a class="mm-status-link" href="<?= $link ?>"><span class="mm-status mm-status-<?= $row->get('status') ?>"><?= $mmStatusText ?></span></a></td>
                 <td>
                     <?php
                     $total = (int) $row->get('total_recipients');

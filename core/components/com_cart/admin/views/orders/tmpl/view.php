@@ -47,7 +47,12 @@ $this
                     </tr>
                     <tr>
                         <th>Ordered by:</th>
-                        <td><span><?= ($this->user->get('id')) ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN') ?></span></td>
+                        <?php
+                        $spanText = ($this->user->get('id'))
+                            ? $this->user->get('name') . ' (' . $this->user->get('username') . ')'
+                            : Lang::txt('COM_CART_UNKNOWN');
+                        ?>
+                        <td><span><?= $spanText ?></span></td>
                     </tr>
                     <tr>
                         <th>Order subtotal:</th>
@@ -182,7 +187,12 @@ $this
                         ?>
                             <span><?php echo $product; ?></span>
                         </td>
-                        <td><span><?= isset($itemOrdered['transactionInfo']->tiPrice) ? $itemOrdered['transactionInfo']->tiPrice : 'N/A' ?></span></td>
+                        <?php
+                        $spanText = isset($itemOrdered['transactionInfo']->tiPrice)
+                            ? $itemOrdered['transactionInfo']->tiPrice
+                            : 'N/A';
+                        ?>
+                        <td><span><?= $spanText ?></span></td>
                         <td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
                     </tr>
                 <?php

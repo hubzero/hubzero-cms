@@ -212,8 +212,16 @@ $categorySelected = function ($value) use ($view) {
                                                 <?= $this->escape($attachment->get('description')) ?>
                                             </p>
                                             <p class="attachment-meta">
-                                                <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
-                                                <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
+                                                <?php
+                                                $attachmentSizeText = Hubzero\Utility\Number::formatBytes(
+                                                    $attachment->size(),
+                                                );
+                                                ?>
+                                                <span class="attachment-size"><?= $attachmentSizeText ?></span>
+                                                <?php
+                                                $attachmentActionText = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
+                                                ?>
+                                                <span class="attachment-action"><?= $attachmentActionText ?></span>
                                             </p>
                                         </a>
                                         <?php
@@ -246,7 +254,10 @@ $categorySelected = function ($value) use ($view) {
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>
-                                    <td><?= $this->escape($this->row->get('ip')) ?> (<?= $this->escape($this->row->get('hostname')) ?>)</td>
+                                    <?php
+                                    $cellText = $this->escape($this->row->get('ip'));
+                                    ?>
+                                    <td><?= $cellText ?> (<?= $this->escape($this->row->get('hostname')) ?>)</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><?= Lang::txt('COM_SUPPORT_TICKET_DETAILS_REFERRER') ?>:</th>
@@ -270,7 +281,12 @@ $categorySelected = function ($value) use ($view) {
         <aside class="aside">
         <div class="ticket-status">
             <p class="<?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>">
-                <strong><?= (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET') ?></strong>
+                <?php
+                $strongText = (!$this->row->isOpen())
+                    ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET')
+                    : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET');
+                ?>
+                <strong><?= $strongText ?></strong>
             </p>
             <?php if (!$this->row->isOpen()) { ?>
                 <p><?php echo Lang::txt('COM_SUPPORT_NOTE_TO_REOPEN'); ?></p>
@@ -421,8 +437,16 @@ $categorySelected = function ($value) use ($view) {
                                                 <?= $this->escape($attachment->get('description')) ?>
                                             </p>
                                             <p class="attachment-meta">
-                                                <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
-                                                <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
+                                                <?php
+                                                $attachmentSizeText = Hubzero\Utility\Number::formatBytes(
+                                                    $attachment->size(),
+                                                );
+                                                ?>
+                                                <span class="attachment-size"><?= $attachmentSizeText ?></span>
+                                                <?php
+                                                $attachmentActionText = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
+                                                ?>
+                                                <span class="attachment-action"><?= $attachmentActionText ?></span>
                                             </p>
                                         </a>
                                         <?php
@@ -435,8 +459,14 @@ $categorySelected = function ($value) use ($view) {
                                             <?= $this->escape($attachment->get('description')) ?>
                                         </p>
                                         <p class="attachment-meta">
-                                            <span class="attachment-size"><?= $this->escape($attachment->get('filename')) ?></span>
-                                            <span class="attachment-action"><?= Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') ?></span>
+                                            <?php
+                                            $attachmentSizeText = $this->escape($attachment->get('filename'));
+                                            ?>
+                                            <span class="attachment-size"><?= $attachmentSizeText ?></span>
+                                            <?php
+                                            $attachmentActionText = Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND');
+                                            ?>
+                                            <span class="attachment-action"><?= $attachmentActionText ?></span>
                                         </p>
                                     </div>
                                     <?php

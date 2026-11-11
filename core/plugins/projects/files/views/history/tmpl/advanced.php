@@ -186,8 +186,14 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <?php if ($allowDiff) { ?>
                     <td><?php echo '@' . $v; ?></td>
                     <?php } ?>
-                    <td class="commit-actor"><span class="prominent"><?= \Components\Projects\Helpers\Html::formatTime($version['date'], true) ?></span>
-                        <span class="block"><?= $this->escape($version['author'] ? $version['author'] : $version['email']) ?></span>
+                    <?php
+                    $spanText = \Components\Projects\Helpers\Html::formatTime($version['date'], true);
+                    ?>
+                    <td class="commit-actor"><span class="prominent"><?= $spanText ?></span>
+                        <?php
+                        $spanText = $this->escape($version['author'] ? $version['author'] : $version['email']);
+                        ?>
+                        <span class="block"><?= $spanText ?></span>
                     </td>
                     <?php if ($allowDiff) { ?>
                     <td class="diffing">

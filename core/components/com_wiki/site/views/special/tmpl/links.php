@@ -115,7 +115,10 @@ endif;
                     ?>
                     <tr>
                         <td>
-                            <time datetime="<?= $this->escape($row->get('timestamp')) ?>"><?= $this->escape(Date::of($row->get('timestamp'))->toLocal()) ?></time>
+                            <?php
+                            $timeText = $this->escape(Date::of($row->get('timestamp'))->toLocal());
+                            ?>
+                            <time datetime="<?= $this->escape($row->get('timestamp')) ?>"><?= $timeText ?></time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">

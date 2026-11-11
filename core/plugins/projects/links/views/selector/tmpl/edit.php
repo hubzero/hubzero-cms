@@ -212,7 +212,11 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
             <label for="formatted">
                 <textarea name="cite[formatted]" id="formatted" rows="4"
                     cols="10"><?= $this->escape(stripslashes($this->row->formatted())) ?></textarea>
-                <span class="hint"><?= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_EXPLANATION') ?> <?= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_FORMAT') ?> <?= strtoupper($citationFormat) ?></span>
+                <?php
+                $hintText = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_EXPLANATION');
+                $spanText = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_FORMAT');
+                ?>
+                <span class="hint"><?= $hintText ?> <?= $spanText ?> <?= strtoupper($citationFormat) ?></span>
             </label>
         </div>
     </form>

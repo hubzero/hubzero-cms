@@ -126,7 +126,10 @@ $base = $this->offering->link() . '&active=forum';
                                         </a>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
+                                                <?php
+                                                $timeText = $row->created('date');
+                                                ?>
+                                                <time datetime="<?= $row->created() ?>"><?= $timeText ?></time>
                                             </span>
                                             <?= Lang::txt(
                                                 'PLG_COURSES_DISCUSSIONS_BY_USER',
@@ -169,7 +172,10 @@ $base = $this->offering->link() . '&active=forum';
                                                 }
                                                 ?>
                                                 <span class="entry-date">
-                                                    <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
+                                                    <?php
+                                                    $timeText = $lastpost->created('date');
+                                                    ?>
+                                                    <time datetime="<?= $lastpost->created() ?>"><?= $timeText ?></time>
                                                 </span>
                                                 <?= Lang::txt(
                                                     'PLG_COURSES_DISCUSSIONS_BY_USER',
@@ -207,8 +213,9 @@ $base = $this->offering->link() . '&active=forum';
                                                     $base . '&scope=' . $this->filters['category'] . '&b='
                                                         . $row->get('id') . '&c=delete',
                                                 );
+                                                $buttonText = Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE');
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE') ?></button>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete"><?= $buttonText ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

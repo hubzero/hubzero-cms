@@ -53,7 +53,10 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
         </div>
 
         <!-- Title : mandatory -->
-        <h3 class="result-title"><a href="<?= $this->escape($this->result['url']) ?>"><b><!-- highlight portion --></b><?= $this->escape($this->result['title']) ?></a></h3>
+        <?php
+        $linkText = $this->escape($this->result['title']);
+        ?>
+        <h3 class="result-title"><a href="<?= $this->escape($this->result['url']) ?>"><b><!-- highlight portion --></b><?= $linkText ?></a></h3>
 
         <div class="result-extras">
             <?php if (!empty($extras)) : ?>

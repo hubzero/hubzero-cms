@@ -206,7 +206,11 @@ $namespaceSelected = function ($value) use ($view) {
                     <?php } ?>
                     <br />
                     <span class="smallsub">/wiki/</span> &nbsp;
-                    <span class="smallsub"><?= ($row->get('path') ? $this->escape(stripslashes($row->get('path'))) . '/' : '') . $this->escape(stripslashes($row->get('pagename', ''))) ?></span>
+                    <?php
+                    $spanText = ($row->get('path') ? $this->escape(stripslashes($row->get('path'))) . '/' : '')
+                        . $this->escape(stripslashes($row->get('pagename', '')));
+                    ?>
+                    <span class="smallsub"><?= $spanText ?></span>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->param('mode')); ?>

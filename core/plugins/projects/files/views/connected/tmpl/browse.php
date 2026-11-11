@@ -157,7 +157,10 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                     <?php endif; ?>
                 </span>
                 <noscript>
-                    <span class="faded ipadded"><?= Lang::txt('Enable JavaScript in your browser for advanced file management.') ?></span>
+                    <?php
+                    $spanText = Lang::txt('Enable JavaScript in your browser for advanced file management.');
+                    ?>
+                    <span class="faded ipadded"><?= $spanText ?></span>
                 </noscript>
             <?php endif; ?>
         </p>

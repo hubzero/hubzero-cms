@@ -246,7 +246,10 @@ $featuredSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <input type="checkbox" name="disabledownloadlink"
                         id="disabledownloadlink" <?= $this->model->version->downloadDisabled ? "checked" : '' ?>/>
-                    <label for="disabledownloadlink"><?= Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION') ?></label>
+                    <?php
+                    $labelText = Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION');
+                    ?>
+                    <label for="disabledownloadlink"><?= $labelText ?></label>
                 </div>
             </fieldset>
         </div>
@@ -323,7 +326,13 @@ $featuredSelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL'); ?></th>
-                            <td><a href="<?= trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number') ?>"><?= trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number') ?></a></td>
+                            <?php
+                            $linkUrl = trim($site, '/') . '/publications/' . $this->model->get('id') . '/'
+                                . $this->model->get('version_number');
+                            $linkText = trim($site, '/') . '/publications/' . $this->model->get('id') . '/'
+                                . $this->model->get('version_number');
+                            ?>
+                            <td><a href="<?= $linkUrl ?>"><?= $linkText ?></a></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
@@ -364,7 +373,10 @@ $featuredSelected = function ($value) use ($view) {
                     </select>
                 </div>
                 <div class="input-wrap" id="unPubReasonDiv">
-                    <label for="field-unPubReason"><?= Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISHED_REASON') ?>:</label><br />
+                    <?php
+                    $labelText = Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISHED_REASON');
+                    ?>
+                    <label for="field-unPubReason"><?= $labelText ?>:</label><br />
                     <select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
                         <option value="0"<?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS') ?></option>
                         <option value="1" <?= ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>

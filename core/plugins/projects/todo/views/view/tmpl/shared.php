@@ -73,14 +73,16 @@ $rows = $this->todo->entries('list', $this->filters);
             $linkUrl = Route::url(
                 $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1',
             );
+            $linkText = Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE');
             ?>
-            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?></a></li>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
             <?php
             $linkUrl = Route::url(
                 $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1',
             );
+            $linkText = Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE');
             ?>
-            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?></a></li>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
         </ul>
     </nav>
 </div>
@@ -114,7 +116,11 @@ $rows = $this->todo->entries('list', $this->filters);
             $viewUrl = Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id'));
             ?>
             <td><a href="<?= $viewUrl ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 200) ?></a>
-                <span class="block mini faded"><?= Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name') ?>
+                <?php
+                $spanText = Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' '
+                    . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name');
+                ?>
+                <span class="block mini faded"><?= $spanText ?>
                     | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= $row->comments('count') ?></a></span>
             </td>
             <?php

@@ -62,7 +62,10 @@ $certWarn = 30 * 24 * 60 * 60;
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_METADATA_URL'); ?>:</th>
                             <td>
                                 <?php if ($this->params->get('enableIdPMetadataEndpoint', 1)) { ?>
-                                    <a href="<?= $this->escape($this->idp->getMetadataUrl()) ?>" target="_blank" rel="noopener"><code><?= $this->escape($this->idp->getMetadataUrl()) ?></code></a>
+                                    <?php
+                                    $codeText = $this->escape($this->idp->getMetadataUrl());
+                                    ?>
+                                    <a href="<?= $this->escape($this->idp->getMetadataUrl()) ?>" target="_blank" rel="noopener"><code><?= $codeText ?></code></a>
                                 <?php } else { ?>
                                     <?php echo Lang::txt('COM_SAML_OVERVIEW_METADATA_DISABLED'); ?>
                                 <?php } ?>
@@ -95,7 +98,11 @@ $certWarn = 30 * 24 * 60 * 60;
                             <tr>
                                 <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRES'); ?>:</th>
                                 <td>
-                                    <time datetime="<?= gmdate('Y-m-d\TH:i:s\Z', $this->cert['valid_to']) ?>"><?= Date::of($this->cert['valid_to'])->toLocal() ?></time>
+                                    <?php
+                                    $datetime = gmdate('Y-m-d\TH:i:s\Z', $this->cert['valid_to']);
+                                    $timeText = Date::of($this->cert['valid_to'])->toLocal();
+                                    ?>
+                                    <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                     <?php if ($this->cert['valid_to'] < $now) { ?>
                                         <p class="error"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRED'); ?></p>
                                     <?php } elseif ($this->cert['valid_to'] < ($now + $certWarn)) { ?>

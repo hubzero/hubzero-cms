@@ -85,7 +85,10 @@ if ($this->getError()) {
                     $leftMargin = ($level * 15) . 'px';
                     ?>
                 <li style="margin-left:<?php echo $leftMargin; ?>">
-                    <input type="radio" name="newpath" value="<?= urlencode($dir) ?>" <?= $this->subdir == $dir ? 'disabled="disabled" ' : '' ?> /> <span><span class="folder <?= $this->subdir == $dir ? 'prominent ' : '' ?>"><?= $this->escape($dirname) ?></span></span>
+                    <?php
+                    $folderText = $this->escape($dirname);
+                    ?>
+                    <input type="radio" name="newpath" value="<?= urlencode($dir) ?>" <?= $this->subdir == $dir ? 'disabled="disabled" ' : '' ?> /> <span><span class="folder <?= $this->subdir == $dir ? 'prominent ' : '' ?>"><?= $folderText ?></span></span>
                 </li>
                 <?php }
                 echo '</ul>';

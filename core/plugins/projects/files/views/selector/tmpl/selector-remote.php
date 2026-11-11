@@ -69,7 +69,12 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>
                 <?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
-                <span title="<?= $this->escape($item->getPath()) ?>"><?= $this->escape(\Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 50)) ?></span>
+                <?php
+                $spanText = $this->escape(
+                    \Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 50),
+                );
+                ?>
+                <span title="<?= $this->escape($item->getPath()) ?>"><?= $spanText ?></span>
             </span>
 
         </li>

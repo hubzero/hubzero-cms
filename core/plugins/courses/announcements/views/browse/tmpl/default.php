@@ -87,8 +87,10 @@ $base = $this->offering->link() . '&active=announcements';
                                 </a>
                                 <?php
                                 $deleteUrl = Route::url($base . '&action=delete&entry=' . $row->get('id'));
+                                $confirmText = Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE');
+                                $buttonText = Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE');
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE') ?></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                             <?php } ?>
                             </dd>
                     <?php } ?>

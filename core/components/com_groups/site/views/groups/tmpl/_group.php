@@ -209,9 +209,15 @@ $published = ($group->get('published')) ? true : false;
                         <div>
                             <div>
                                 <?php if (!$group->get('join_policy')) : ?>
-                                    <span class="open join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></span>
+                                    <?php
+                                    $openText = Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN');
+                                    ?>
+                                    <span class="open join-policy"><?= $openText ?></span>
                                 <?php elseif ($group->get('join_policy') == 1) : ?>
-                                    <span class="open join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></span>
+                                    <?php
+                                    $openText = Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED');
+                                    ?>
+                                    <span class="open join-policy"><?= $openText ?></span>
                                 <?php endif; ?>
                                 <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                             </div>
@@ -225,7 +231,10 @@ $published = ($group->get('published')) ? true : false;
                                     . $this->escape($group->get('cn')) . ')';
                                 ?>
                                 <?php if (!$group->get('join_policy')) : ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
+                                    <?php
+                                    $buttonText = Lang::txt('COM_GROUPS_TOOLBAR_JOIN');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= $buttonText ?></button>
                                 <?php else : ?>
                                     <a class="btn btn-success" href="<?= $joinUrl ?>"
                                         aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></a>
@@ -236,7 +245,10 @@ $published = ($group->get('published')) ? true : false;
                         <span class="closed join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php elseif ($group->get('join_policy') == 2) : ?>
-                        <span class="inviteonly join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></span>
+                        <?php
+                        $inviteonlyText = Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY');
+                        ?>
+                        <span class="inviteonly join-policy"><?= $inviteonlyText ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php endif; ?>
                 <?php endif; ?>

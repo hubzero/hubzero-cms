@@ -88,8 +88,9 @@ if (isset($this->messages)) {
                             $browseUrl = Route::url(
                                 $base . '&action=browse' . $queryString . '&filters[filter]=member',
                             );
+                            $linkText = Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED');
                             ?>
-                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED') ?></a></li>
+                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= $linkText ?></a></li>
                         </ul>
                     </nav>
                     <?php endif; ?>
@@ -205,7 +206,10 @@ if (isset($this->messages)) {
                                             <ul class="citation-links">
                                                 <?php foreach ($links as $link) { ?>
                                                     <li>
-                                                        <a href="<?= $this->escape($link->url) ?>"><?= $this->escape($link->title) ?></a>
+                                                        <?php
+                                                        $linkText = $this->escape($link->title);
+                                                        ?>
+                                                        <a href="<?= $this->escape($link->url) ?>"><?= $linkText ?></a>
                                                     </li>
                                                 <?php } ?>
                                             </ul>
@@ -225,7 +229,11 @@ if (isset($this->messages)) {
                                                     $final != ''
                                                     && $this->config->get('citation_sponsors', 'yes') == 'yes'
                                                 ) : ?>
-                                                    <p class="sponsor"><?= Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY') ?> <?= substr($final, 0, -2) ?></p>
+                                                    <?php
+                                                    $sponsorText = Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY');
+                                                    $paragraphText = substr($final, 0, -2);
+                                                    ?>
+                                                    <p class="sponsor"><?= $sponsorText ?> <?= $paragraphText ?></p>
                                                 <?php endif; ?>
                                                 <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
                                             </div>
@@ -251,14 +259,22 @@ if (isset($this->messages)) {
                                         <td class="col-delete">
                                             <?php
                                             $deleteUrl = Route::url($base . '&action=delete&id=' . $cite->id);
+                                            $titleText = Lang::txt('PLG_GROUPS_CITATIONS_DELETE');
+                                            $spanText = Lang::txt('PLG_GROUPS_CITATIONS_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" title="<?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         </td>
                                         <td class="col-publish">
                                             <?php
                                             $publishUrl = Route::url($base . '&action=publish&id=' . $cite->id);
+                                            $titleText = ($cite->published == $cite::STATE_PUBLISHED)
+                                                ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH')
+                                                : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH');
+                                            $spanText = ($cite->published == $cite::STATE_PUBLISHED)
+                                                ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH')
+                                                : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>';
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish" title="<?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') ?>"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>' ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         </td>
                                     <?php endif; ?>
                                 </tr>

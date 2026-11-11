@@ -50,8 +50,9 @@ $this->css();
                 <span class="pub-details">
                     <?php
                     $linkUrl = Route::url($pub->link('editversion'));
+                    $linkText = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100));
                     ?>
-                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100)) ?></a>
+                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $linkText ?></a>
                      <span class="block faded mini">
                         <span>v. <?= $this->escape($pub->get('version_label')) ?> (<?= $this->escape($status) ?>)</span>
                     </span>

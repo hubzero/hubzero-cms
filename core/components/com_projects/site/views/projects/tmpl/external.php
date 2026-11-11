@@ -35,15 +35,17 @@ $this->css('theme' . $theme . '.css');
         <div id="project-preview">
             <?php
             $linkUrl = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias'));
+            $paragraphText = Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW');
             ?>
-            <p><?= Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_PAGE') ?></a></span></p>
+            <p><?= $paragraphText ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_PAGE') ?></a></span></p>
         </div>
     <?php } elseif ($this->reviewer) { ?>
         <div id="project-preview">
             <?php
             $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer);
+            $paragraphText = Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW');
             ?>
-            <p><?= Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $browseUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_LIST') ?></a></span></p>
+            <p><?= $paragraphText ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $browseUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_LIST') ?></a></span></p>
         </div>
     <?php } ?>
 

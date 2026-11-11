@@ -244,7 +244,10 @@ $idSelected = function ($value) use ($view) {
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
                         <?= $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags') ?>
-                        <span class="hint"><?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT') ?></span>
+                        <?php
+                        $hintText = Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT');
+                        ?>
+                        <span class="hint"><?= $hintText ?></span>
                     </label>
                 </div>
             </div>

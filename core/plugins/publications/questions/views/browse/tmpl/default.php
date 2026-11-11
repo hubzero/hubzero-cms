@@ -68,7 +68,10 @@ $this->css();
                         <a class="entry-title"
                             href="<?= $linkUrl ?>"><?= $this->escape(strip_tags($row->get('subject'))) ?></a><br />
                     <?php } else { ?>
-                        <span class="entry-title"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
+                        <?php
+                        $entryTitleText = Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW');
+                        ?>
+                        <span class="entry-title"><?= $entryTitleText ?></span><br />
                     <?php } ?>
                     <span class="entry-details">
                         <?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name) ?> <span

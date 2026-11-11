@@ -149,9 +149,15 @@ $now = Date::of('now')->toSql();
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                                    <span class="time"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                                    ?>
+                                    <span class="time"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                                    <span class="date"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                    ?>
+                                    <span class="date"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 

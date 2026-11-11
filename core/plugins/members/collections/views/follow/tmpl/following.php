@@ -80,9 +80,21 @@ $this
                                 <?php } ?>
                                 <br />
                                 <span class="entry-details">
-                                    <span class="follower count"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS', $row->count('followers')) ?></span>
+                                    <?php
+                                    $followerText = Lang::txt(
+                                        'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS',
+                                        $row->count('followers'),
+                                    );
+                                    ?>
+                                    <span class="follower count"><?= $followerText ?></span>
                                     <?php if ($row->get('following_type') != 'collection') { ?>
-                                        <span class="following count"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING', $row->count('following')) ?></span>
+                                        <?php
+                                        $followingText = Lang::txt(
+                                            'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING',
+                                            $row->count('following'),
+                                        );
+                                        ?>
+                                        <span class="following count"><?= $followingText ?></span>
                                     <?php } ?>
                                 </span>
                             </td>

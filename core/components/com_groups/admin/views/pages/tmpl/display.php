@@ -61,7 +61,11 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                 <tr>
                     <td>
                         <?php echo $this->escape($needsAttention->get('title')); ?> <br />
-                        <span class="hint" tabindex="-1"><?= '/groups/' . $this->group->get('cn') . '/' . $this->escape($needsAttention->get('alias')) ?></span>
+                        <?php
+                        $hintText = '/groups/' . $this->group->get('cn') . '/'
+                            . $this->escape($needsAttention->get('alias'));
+                        ?>
+                        <span class="hint" tabindex="-1"><?= $hintText ?></span>
                     </td>
                     <td>
                         <ol class="attention-view">
@@ -135,7 +139,10 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                                     </a>
                                 </li>
                             <?php else : ?>
-                                <span><em><?= Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_APPROVE_HINT') ?></em></span>
+                                <?php
+                                $emphasisText = Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_APPROVE_HINT');
+                                ?>
+                                <span><em><?= $emphasisText ?></em></span>
                             <?php endif; ?>
                         </ol>
                     </td>

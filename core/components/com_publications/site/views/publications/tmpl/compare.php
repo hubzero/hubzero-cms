@@ -23,7 +23,11 @@ $this->css('compare.css');
         <div class="grid">
             <div class="col span6">
                 <div class="diff-side diff-lft">
-                    <span class="diff-id"><?= '#' . (int) $this->lft->get('publication_id') . ', v' . $this->escape($this->lft->get('version_label')) ?></span>
+                    <?php
+                    $diffIdText = '#' . (int) $this->lft->get('publication_id') . ', v'
+                        . $this->escape($this->lft->get('version_label'));
+                    ?>
+                    <span class="diff-id"><?= $diffIdText ?></span>
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->lft->isPublished()) {
@@ -51,7 +55,11 @@ $this->css('compare.css');
             </div>
             <div class="col span6 diff-rgt omega">
                 <div class="diff-side diff-rgt">
-                    <span class="diff-id"><?= '#' . (int) $this->rgt->get('publication_id') . ', v' . $this->escape($this->rgt->get('version_label')) ?></span>
+                    <?php
+                    $diffIdText = '#' . (int) $this->rgt->get('publication_id') . ', v'
+                        . $this->escape($this->rgt->get('version_label'));
+                    ?>
+                    <span class="diff-id"><?= $diffIdText ?></span>
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->rgt->isPublished()) {

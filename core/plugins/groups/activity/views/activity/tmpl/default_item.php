@@ -81,7 +81,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-                <span class="activity-channel"><?= ($this->row->get('scope') == 'group_managers') ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS') : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL') ?></span>
+                <?php
+                $activityChannelText = ($this->row->get('scope') == 'group_managers')
+                    ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS')
+                    : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL');
+                ?>
+                <span class="activity-channel"><?= $activityChannelText ?></span>
                 <span class="activity-context"><?php
                     $scope = explode('.', $this->row->log->get('scope'));
                     echo $this->escape($scope[0]);
@@ -187,8 +192,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                         alt="<?= $this->escape($attachment->get('description')) ?>"
                                         width="<?= ($attachment->width() > 400) ? 400 : $attachment->width() ?>" />
                                     <p class="attachment-meta">
-                                        <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
-                                        <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
+                                        <?php
+                                        $attachmentSizeText = Hubzero\Utility\Number::formatBytes($attachment->size());
+                                        ?>
+                                        <span class="attachment-size"><?= $attachmentSizeText ?></span>
+                                        <?php
+                                        $attachmentActionText = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
+                                        ?>
+                                        <span class="attachment-action"><?= $attachmentActionText ?></span>
                                     </p>
                                 </a>
                                 <?php
@@ -201,8 +212,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                         <?= $this->escape($attachment->get('description')) ?>
                                     </p>
                                     <p class="attachment-meta">
-                                        <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
-                                        <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
+                                        <?php
+                                        $attachmentSizeText = Hubzero\Utility\Number::formatBytes($attachment->size());
+                                        ?>
+                                        <span class="attachment-size"><?= $attachmentSizeText ?></span>
+                                        <?php
+                                        $attachmentActionText = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
+                                        ?>
+                                        <span class="attachment-action"><?= $attachmentActionText ?></span>
                                     </p>
                                 </a>
                                 <?php
@@ -263,8 +280,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     <li>
                         <?php
                         $removeUrl = Route::url($base . '&action=remove&activity=' . $this->row->get('id'));
+                        $dataTxtConfirm = Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE');
+                        $buttonText = Lang::txt('PLG_GROUPS_ACTIVITY_DELETE');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     </li>
                     <?php } ?>
                     <?php /*<li>
@@ -286,7 +305,13 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                 <form id="cform<?= $this->row->get('id') ?>" action="<?= Route::url($base) ?>" method="post"
                     enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?= Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'PLG_GROUPS_ACTIVITY_REPLYING_TO',
+                            (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
 
                         <input type="hidden" name="activity[id]" value="0" />
                         <input type="hidden" name="activity[action]" value="created" />

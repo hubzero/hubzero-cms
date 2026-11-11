@@ -184,34 +184,58 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                     <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DETAILS'); ?></div>
                     <ul>
                         <li>
-                            <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_NAME') ?>: </strong> <?= $this->escape($file) ?>
+                            <?php
+                            $strongText = Lang::txt('COM_GROUPS_MEDIA_FILE_NAME');
+                            ?>
+                            <strong><?= $strongText ?>: </strong> <?= $this->escape($file) ?>
                         </li>
                         <li>
                             <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE') ?>: </strong> <?= $formattedFilesize ?>
                         </li>
                         <?php if ($isImage) : ?>
                             <li>
-                                <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS') ?>: </strong> <?= $formattedDimensions ?>
+                                <?php
+                                $strongText = Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS');
+                                ?>
+                                <strong><?= $strongText ?>: </strong> <?= $formattedDimensions ?>
                             </li>
                         <?php endif; ?>
                         <li class="path">
-                            <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_PATH') ?>: </strong> <span><?= $this->escape($downloadPath) ?></span>
+                            <?php
+                            $strongText = Lang::txt('COM_GROUPS_MEDIA_FILE_PATH');
+                            ?>
+                            <strong><?= $strongText ?>: </strong> <span><?= $this->escape($downloadPath) ?></span>
                         </li>
                         <li>
                             <?php if ($this->authorized && isset($editorName) && $editorName != '') : ?>
                                 <a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile(<?= $this->escape(json_encode($downloadPath)) ?>);"><?= Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE') ?></a>
                             <?php endif; ?>
-                            <a href="<?= $this->escape($downloadPath) ?>" class="btn btn-secondary icon-download action-download"><?= Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD') ?></a>
+                            <?php
+                            $linkText = Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD');
+                            ?>
+                            <a href="<?= $this->escape($downloadPath) ?>" class="btn btn-secondary icon-download action-download"><?= $linkText ?></a>
                             <?php if ($this->authorized) : ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a href="<?= $renamePath ?>" class="btn btn-secondary icon-edit action-rename"><?= Lang::txt('COM_GROUPS_MEDIA_RENAME') ?></a>
-                                    <a href="<?= $movePath ?>" class="btn btn-secondary icon-move action-move"><?= Lang::txt('COM_GROUPS_MEDIA_MOVE') ?></a>
+                                    <?php
+                                    $linkText = Lang::txt('COM_GROUPS_MEDIA_RENAME');
+                                    ?>
+                                    <a href="<?= $renamePath ?>" class="btn btn-secondary icon-edit action-rename"><?= $linkText ?></a>
+                                    <?php
+                                    $linkText = Lang::txt('COM_GROUPS_MEDIA_MOVE');
+                                    ?>
+                                    <a href="<?= $movePath ?>" class="btn btn-secondary icon-move action-move"><?= $linkText ?></a>
                                 <?php endif; ?>
                                 <?php if ($isArchive) : ?>
-                                    <a href="<?= $extractPath ?>" class="btn btn-secondary icon-extract action-extract"><?= Lang::txt('COM_GROUPS_MEDIA_EXTRACT') ?></a>
+                                    <?php
+                                    $linkText = Lang::txt('COM_GROUPS_MEDIA_EXTRACT');
+                                    ?>
+                                    <a href="<?= $extractPath ?>" class="btn btn-secondary icon-extract action-extract"><?= $linkText ?></a>
                                 <?php endif; ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a data-file="<?= $this->escape($relFilePath) ?>" href="<?= $deletePath ?>" class="btn btn-secondary icon-delete action-delete"><?= Lang::txt('COM_GROUPS_MEDIA_DELETE') ?></a>
+                                    <?php
+                                    $linkText = Lang::txt('COM_GROUPS_MEDIA_DELETE');
+                                    ?>
+                                    <a data-file="<?= $this->escape($relFilePath) ?>" href="<?= $deletePath ?>" class="btn btn-secondary icon-delete action-delete"><?= $linkText ?></a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>

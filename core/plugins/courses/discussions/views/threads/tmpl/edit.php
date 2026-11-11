@@ -70,9 +70,15 @@ $anonymousChecked = function ($value) use ($view) {
                 </strong>
                 <span class="permalink">
                     <span class="comment-date-at">@</span>
-                    <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                    <?php
+                    $timeText = Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                    ?>
+                    <span class="time"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+                    <?php
+                    $timeText = Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                    ?>
+                    <span class="date"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                 </span>
             </p>
             <?php } ?>

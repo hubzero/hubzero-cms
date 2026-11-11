@@ -100,9 +100,15 @@ $this
                                         <p>
                                             <strong><?php echo $name; ?></strong>
                                             <span class="comment-date-at"><?= Lang::txt('COM_ANSWERS_AT') ?></span>
-                                            <span class="time"><time datetime="<?= $reply->created() ?>"><?= $reply->created('time') ?></time></span>
+                                            <?php
+                                            $timeText = $reply->created('time');
+                                            ?>
+                                            <span class="time"><time datetime="<?= $reply->created() ?>"><?= $timeText ?></time></span>
                                             <span class="comment-date-on"><?= Lang::txt('COM_ANSWERS_ON') ?></span>
-                                            <span class="date"><time datetime="<?= $reply->created() ?>"><?= $reply->created('date') ?></time></span>
+                                            <?php
+                                            $timeText = $reply->created('date');
+                                            ?>
+                                            <span class="date"><time datetime="<?= $reply->created() ?>"><?= $timeText ?></time></span>
                                         </p>
                                         <p><?php echo $reply->content; ?></p>
                                     </blockquote>
@@ -188,9 +194,17 @@ $this
                     <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">
                     <ul class="entries-menu sort-options">
                         <?php if ($currentOrderDir == 'asc') : ?>
-                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?= Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESCENDING') ?></button></li>
+                            <?php
+                            $buttonText = Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' '
+                                . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESCENDING');
+                            ?>
+                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?= $buttonText ?></button></li>
                         <?php else : ?>
-                            <li><button type="submit" name="orderdir" value="asc" class="as-link"><?= Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC') ?></button></li>
+                            <?php
+                            $buttonText = Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' '
+                                . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC');
+                            ?>
+                            <li><button type="submit" name="orderdir" value="asc" class="as-link"><?= $buttonText ?></button></li>
                         <?php endif; ?>
                     </ul>
                     </form>

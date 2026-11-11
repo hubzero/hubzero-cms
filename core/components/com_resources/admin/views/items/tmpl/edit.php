@@ -373,7 +373,10 @@ $this
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="param-restrict_direct_access"><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT') ?>:</label><br />
+                    <?php
+                    $labelText = Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT');
+                    ?>
+                    <label for="param-restrict_direct_access"><?= $labelText ?>:</label><br />
                     <select name="params[restrict_direct_access]" id="param-link_action">
                         <option
                             value="0"<?= !$this->params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>>

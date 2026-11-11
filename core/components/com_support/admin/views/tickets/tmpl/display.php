@@ -335,7 +335,10 @@ $this
                                     </span>
                                         <?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
                                         <span class="ticket-activity">
-                                            <time datetime="<?= $lastcomment ?>"><?= Date::of($lastcomment)->relative() ?></time>
+                                            <?php
+                                            $timeText = Date::of($lastcomment)->relative();
+                                            ?>
+                                            <time datetime="<?= $lastcomment ?>"><?= $timeText ?></time>
                                         </span>
                                         <?php } ?>
                                         <?php
@@ -352,7 +355,13 @@ $this
                                             );
                                             ?>
                                         <span class="ticket-target_date hasTip" title="<?= $titleText ?>">
-                                            <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
+                                            <?php
+                                            $datetime = Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z');
+                                            $timeText = Date::of($row->get('target_date'))->toLocal(
+                                                Lang::txt('DATE_FORMAT_HZ1'),
+                                            );
+                                            ?>
+                                            <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                         </span>
                                         <?php } ?>
                                 </p>

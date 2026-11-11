@@ -72,9 +72,24 @@ $debugUrl = Route::url(
         <caption>
             <?php echo Lang::txt('COM_MEMBERS_DEBUG_LEGEND'); ?>
             <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-');?></span>
-            <span class="check-0 swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>') ?></span>
-            <span class="check-a swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '<span class="state yes"><span>&#10003;</span></span>') ?></span>
-            <span class="check-d swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '<span class="state no"><span>&#10007;</span></span>') ?></span>
+            <?php
+            $check0Text = Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>');
+            ?>
+            <span class="check-0 swatch"><?= $check0Text ?></span>
+            <?php
+            $spanText = Lang::txt(
+                'COM_MEMBERS_DEBUG_EXPLICIT_ALLOW',
+                '<span class="state yes"><span>&#10003;</span></span>',
+            );
+            ?>
+            <span class="check-a swatch"><?= $spanText ?></span>
+            <?php
+            $spanText = Lang::txt(
+                'COM_MEMBERS_DEBUG_EXPLICIT_DENY',
+                '<span class="state no"><span>&#10007;</span></span>',
+            );
+            ?>
+            <span class="check-d swatch"><?= $spanText ?></span>
         </caption>
         <thead>
             <tr>

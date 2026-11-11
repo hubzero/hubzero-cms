@@ -94,7 +94,10 @@ if (count($inst) > 0) {
                             ->rows();
                         ?>
                         <div class="category-header">
-                            <span class="category-title"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_REPLIES_TO_MY_COMMENTS') ?></span>
+                            <?php
+                            $categoryTitleText = Lang::txt('PLG_COURSES_DISCUSSIONS_REPLIES_TO_MY_COMMENTS');
+                            ?>
+                            <span class="category-title"><?= $categoryTitleText ?></span>
                             <span class="category-discussions count"><?php echo $threads->count(); ?></span>
                         </div><!-- / .category-header -->
                         <div class="category-content">
@@ -130,7 +133,10 @@ if (count($inst) > 0) {
                             ->rows();
                         ?>
                         <div class="category-header">
-                            <span class="category-title"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LATEST_COMMENTS') ?></span>
+                            <?php
+                            $categoryTitleText = Lang::txt('PLG_COURSES_DISCUSSIONS_LATEST_COMMENTS');
+                            ?>
+                            <span class="category-title"><?= $categoryTitleText ?></span>
                             <span class="category-discussions count"><?php echo $threads->count(); ?></span>
                         </div><!-- / .category-header -->
                         <div class="category-content">
@@ -160,7 +166,11 @@ if (count($inst) > 0) {
 
             <div class="comments-panel">
                 <div class="comments-toolbar">
-                    <p><span class="comments" data-comments="%s comments" data-add="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC') ?>"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC') ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
+                    <?php
+                    $dataAdd = Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC');
+                    $commentsText = Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC');
+                    ?>
+                    <p><span class="comments" data-comments="%s comments" data-add="<?= $dataAdd ?>"><?= $commentsText ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
                 </div><!-- / .comments-toolbar -->
                 <div class="comments-frame">
 
@@ -200,9 +210,15 @@ if (count($inst) > 0) {
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>
-                                    <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="time"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_ON') ?></span>
-                                    <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="date"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 
@@ -224,13 +240,19 @@ if (count($inst) > 0) {
                             <div class="grid">
                                 <div class="col span-half">
                                     <label for="field-upload" id="comment-upload">
-                                        <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS') ?>:</span>
+                                        <?php
+                                        $labelText = Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS');
+                                        ?>
+                                        <span class="label-text"><?= $labelText ?>:</span>
                                         <input type="file" name="upload" id="field-upload" />
                                     </label>
                                 </div>
                                 <div class="col span-half omega">
                                     <label for="field-category_id">
-                                    <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY') ?></span>
+                                    <?php
+                                    $labelText = Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY');
+                                    ?>
+                                    <span class="label-text"><?= $labelText ?></span>
                                     <select name="fields[category_id]" id="field-category_id">
                                         <option value="0">
                                             <?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT') ?>

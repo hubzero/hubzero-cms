@@ -70,7 +70,11 @@ $this->css('tools.css');
                             . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
-                <td><a class="disconnect" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= Lang::txt('COM_TOOLS_DISCONNECT') ?></a> <span class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span></td>
+                    <?php
+                    $linkText = Lang::txt('COM_TOOLS_DISCONNECT');
+                    $ownerText = Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username;
+                    ?>
+                <td><a class="disconnect" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= $linkText ?></a> <span class="owner"><?= $ownerText ?></span></td>
                 <?php } ?>
             </tr>
                 <?php

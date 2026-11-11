@@ -124,9 +124,15 @@ $this->css();
                         <span class="entry-details">
                             <?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
                             <span class="entry-time-at">@</span>
-                            <span class="entry-time"><time datetime="<?= $item->proposed ?>"><?= Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                            <?php
+                            $timeText = Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-time"><time datetime="<?= $item->proposed ?>"><?= $timeText ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('PLG_RESOURCES_WISHLIST_ON'); ?></span>
-                            <span class="entry-date"><time datetime="<?= $item->proposed ?>"><?= Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                            <?php
+                            $timeText = Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-date"><time datetime="<?= $item->proposed ?>"><?= $timeText ?></time></span>
                             <span class="entry-details-divider">&bull;</span>
                             <?php
                             $wishUrl = Route::url(
@@ -156,8 +162,14 @@ $this->css();
                                     . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
                                     . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
                             );
+                            $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . $item->bonusgivenby . ' '
+                                . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' '
+                                . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' '
+                                . Lang::txt('COM_WISHLIST_POINTS') . ' '
+                                . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
+                            $spanText = Lang::txt('COM_WISHLIST_POINTS');
                             ?>
-                            <a class="bonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . $item->bonusgivenby . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>"><?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span></a>
+                            <a class="bonus tooltips" href="<?= $wishUrl ?>" title="<?= $titleText ?>"><?= $item->bonus ?> <span><?= $spanText ?></span></a>
                         <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
                             <?php
                             $wishUrl = Route::url(
@@ -166,8 +178,11 @@ $this->css();
                                     . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
                                     . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
                             );
+                            $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: '
+                                . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED');
+                            $spanText = Lang::txt('COM_WISHLIST_POINTS');
                             ?>
-                            <a class="nobonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>"><?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span></a>
+                            <a class="nobonus tooltips" href="<?= $wishUrl ?>" title="<?= $titleText ?>"><?= $item->bonus ?> <span><?= $spanText ?></span></a>
                         <?php } else { ?>
                             <span class="inactive"
                                 title="<?= Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED') ?>">&nbsp;</span>

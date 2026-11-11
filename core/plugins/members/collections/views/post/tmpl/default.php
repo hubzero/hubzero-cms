@@ -201,9 +201,15 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                     <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a> will say <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                        ?>
+                        <span class="time"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
+                        <span class="date"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                     </span>
                 </p>
                 <form action="<?= Route::url($base . '&task=post/' . $this->post->get('id') . '/savecomment') ?>"

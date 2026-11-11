@@ -145,7 +145,10 @@ $this->js();
                             <?php echo Lang::txt('JGLOBAL_FIELD_CREATED_LABEL'); ?>
                         </th>
                         <td>
-                            <time datetime="<?= $this->escape($this->row->created) ?>"><?= $this->escape(Date::of($this->row->created)->toLocal()) ?></time>
+                            <?php
+                            $timeText = $this->escape(Date::of($this->row->created)->toLocal());
+                            ?>
+                            <time datetime="<?= $this->escape($this->row->created) ?>"><?= $timeText ?></time>
                         </td>
                     </tr>
                     <?php endif; ?>
@@ -172,7 +175,10 @@ $this->js();
                             <?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
                         </th>
                         <td>
-                            <time datetime="<?= $this->escape($this->row->modified) ?>"><?= $this->escape(Date::of($this->row->modified)->toLocal()) ?></time>
+                            <?php
+                            $timeText = $this->escape(Date::of($this->row->modified)->toLocal());
+                            ?>
+                            <time datetime="<?= $this->escape($this->row->modified) ?>"><?= $timeText ?></time>
                         </td>
                     </tr>
                     <?php endif; ?>

@@ -103,8 +103,10 @@ $this
                                         'index.php?option=' . $this->option . '&section=' . $section->get('alias')
                                             . '&task=delete',
                                     );
+                                    $dataTxtConfirm = Lang::txt('COM_FORUM_CONFIRM_DELETE');
+                                    $spanText = Lang::txt('JACTION_DELETE');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><span><?= $spanText ?></span></button>
                                 <?php } ?>
                                 <?php
                                 if (
@@ -155,7 +157,10 @@ $this
                                     ?>
                                     <tr<?php echo $row->get('closed') ? ' class="closed"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
+                                            <?php
+                                            $entryIdentifierText = $this->escape($row->get('id'));
+                                            ?>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">

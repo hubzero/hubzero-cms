@@ -162,7 +162,10 @@ if (count($inst) > 0) {
                         <?php foreach ($this->sections as $section) { ?>
                                 <div class="category category-results closed" id="sc<?php echo $section->get('id'); ?>">
                                     <div class="category-header">
-                                        <span class="category-title"><?= $this->escape(stripslashes($section->get('title'))) ?></span>
+                                        <?php
+                                        $categoryTitleText = $this->escape(stripslashes($section->get('title')));
+                                        ?>
+                                        <span class="category-title"><?= $categoryTitleText ?></span>
                                         <span class="category-discussions count"><?= $section->get('threads') ?></span>
                                     </div><!-- / .category-header -->
                                     <div class="category-content">
@@ -173,7 +176,10 @@ if (count($inst) > 0) {
                                             <div class="thread closed" id="ct<?= $row->get('id') ?>"
                                                 data-category="<?= $row->get('id') ?>">
                                                 <div class="thread-header">
-                                                    <span class="thread-title"><?= $this->escape(stripslashes($row->get('title'))) ?></span>
+                                                    <?php
+                                                    $threadTitleText = $this->escape(stripslashes($row->get('title')));
+                                                    ?>
+                                                    <span class="thread-title"><?= $threadTitleText ?></span>
                                                     <span class="thread-discussions count"><?= $row->get('threads') ?></span>
                                                 </div><!-- / .thread-header -->
                                                 <div class="thread-content">
@@ -262,9 +268,15 @@ if (count($inst) > 0) {
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>
-                                    <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="time"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_ON') ?></span>
-                                    <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                                    ?>
+                                    <span class="date"><time datetime="<?= $now ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 
@@ -286,13 +298,19 @@ if (count($inst) > 0) {
                             <div class="grid">
                                 <div class="col span-half">
                             <label for="field-upload" id="comment-upload">
-                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS') ?>:</span>
+                                <?php
+                                $labelText = Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS');
+                                ?>
+                                <span class="label-text"><?= $labelText ?>:</span>
                                 <input type="file" name="upload" id="field-upload" />
                             </label>
                                 </div>
                                 <div class="col span-half omega">
                                     <label for="field-category_id">
-                                    <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY') ?></span>
+                                    <?php
+                                    $labelText = Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY');
+                                    ?>
+                                    <span class="label-text"><?= $labelText ?></span>
                                     <select name="fields[category_id]" id="field-category_id">
                                         <option value="0">
                                             <?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT') ?>

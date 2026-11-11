@@ -313,7 +313,15 @@ $filterStateSelected = function ($value) use ($view) {
                     </td>
                     <td class="priority-3">
                         <span class="scope">
-                            <span><?= $this->escape($row->get('scope')) . ' (' . (isset($list[$row->get('scope')][$row->get('scope_id')]) ? $this->escape($list[$row->get('scope')][$row->get('scope_id')]->caption) : $this->escape($row->get('scope_id'))) . ')' ?></span>
+                            <?php
+                            $spanText = $this->escape($row->get('scope')) . ' ('
+                                . (
+                                    isset($list[$row->get('scope')][$row->get('scope_id')])
+                                        ? $this->escape($list[$row->get('scope')][$row->get('scope_id')]->caption)
+                                        : $this->escape($row->get('scope_id'))
+                                ) . ')';
+                            ?>
+                            <span><?= $spanText ?></span>
                         </span>
                     </td>
                     <td>

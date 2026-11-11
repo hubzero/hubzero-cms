@@ -47,7 +47,12 @@ $listDirn  = $this->escape($this->filters['direction']);
                         <fieldset class="entry-search">
                             <legend><?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?></legend>
 
-                            <label class="filter-search-lbl" for="filter-search"><?= Lang::txt('COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;' ?>></label>
+                            <?php
+                            $labelText = Lang::txt(
+                                'COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL',
+                            ) . '&#160;';
+                            ?>
+                            <label class="filter-search-lbl" for="filter-search"><?= $labelText ?>></label>
                             <input type="text" name="filter-search" id="filter-search"
                                 value="<?= $this->escape($this->filters['filter']) ?>"
                                 placeholder="<?= Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />

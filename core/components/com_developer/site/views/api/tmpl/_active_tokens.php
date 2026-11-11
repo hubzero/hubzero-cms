@@ -43,7 +43,10 @@ if (empty($this->tokens)) {
                                 <i class="icon-copy"></i>
                             </button>
                         </div>
-                        <small class="token-expires">Expires: <?= \Hubzero\Utility\Date::of($token->expires)->toLocal('M d, Y g:i a') ?></small>
+                        <?php
+                        $tokenExpiresText = \Hubzero\Utility\Date::of($token->expires)->toLocal('M d, Y g:i a');
+                        ?>
+                        <small class="token-expires">Expires: <?= $tokenExpiresText ?></small>
                     </div>
                 </div>
             <?php endforeach; ?>

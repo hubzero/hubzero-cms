@@ -168,7 +168,11 @@ defined('_HZEXEC_') or die();
                         echo 'checked="checked"';
                     }
                     echo '> ' . $this->escape($currentService->title) . ' - '; ?>
-                    <span class="priceline"><?= $currentService->currency . ' ' . $currentService->unitprice . '  ' . Lang::txt('COM_JOBS_PER') . ' ' . $currentService->unitmeasure ?></span>
+                    <?php
+                    $pricelineText = $currentService->currency . ' ' . $currentService->unitprice . '  '
+                        . Lang::txt('COM_JOBS_PER') . ' ' . $currentService->unitmeasure;
+                    ?>
+                    <span class="priceline"><?= $pricelineText ?></span>
                     <span><?php echo $currentService->description; ?></span>
 
                     <div class="subdetails" id="plan_<?php echo $currentService->id; ?>">

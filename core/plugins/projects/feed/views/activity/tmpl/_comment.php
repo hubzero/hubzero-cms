@@ -68,8 +68,15 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
             <div class="activity-body">
 
                 <div class="activity-details">
-                    <span class="activity-actor"><?= $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author ?></span>
-                    <span class="activity-time"><time datetime="<?= Date::of($comment->created)->format('Y-m-d\TH:i:s\Z') ?>"><?= \Components\Projects\Helpers\Html::showTime($comment->created, true) ?></time></span>
+                    <?php
+                    $activityActorText = $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author;
+                    ?>
+                    <span class="activity-actor"><?= $activityActorText ?></span>
+                    <?php
+                    $datetime = Date::of($comment->created)->format('Y-m-d\TH:i:s\Z');
+                    $timeText = \Components\Projects\Helpers\Html::showTime($comment->created, true);
+                    ?>
+                    <span class="activity-time"><time datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
                 </div><!-- / .activity-details -->
 
                 <div class="activity-event">

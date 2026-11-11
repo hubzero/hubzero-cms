@@ -122,10 +122,19 @@ $accessSelected = function ($value) use ($view) {
                 </div>
             </div>
             <p>
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
+                <?php
+                $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC');
+                ?>
+                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
                 <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?><br />
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION') ?><br />
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION') ?>
+                <?php
+                $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED');
+                ?>
+                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION') ?><br />
+                <?php
+                $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE');
+                ?>
+                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION') ?>
             </p>
         <?php } else { ?>
             <p class="information">

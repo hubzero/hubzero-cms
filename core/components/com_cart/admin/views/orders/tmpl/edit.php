@@ -48,7 +48,12 @@ $this
                     </tr>
                     <tr>
                         <th>Ordered by:</th>
-                        <td><span><?= $this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN') ?></span></td>
+                        <?php
+                        $spanText = $this->user->get('id')
+                            ? $this->user->get('name') . ' (' . $this->user->get('username') . ')'
+                            : Lang::txt('COM_CART_UNKNOWN');
+                        ?>
+                        <td><span><?= $spanText ?></span></td>
                     </tr>
                     <tr>
                         <th>Order subtotal:</th>

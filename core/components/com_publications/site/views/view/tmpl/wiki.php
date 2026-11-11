@@ -28,8 +28,9 @@ $html = str_replace($this->page->scope . DS . $this->page->pagename, 'wiki/' . $
 <div class="wiki-wrap">
     <?php
     $linkUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id);
+    $linkText = Lang::txt('COM_PUBLICATIONS_BACK_TO_PUBLICATION');
     ?>
-    <p class="wiki-back"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_BACK_TO_PUBLICATION') ?>  &ldquo;<?= $this->escape($this->publication->title) ?>&rdquo;</a></p>
+    <p class="wiki-back"><a href="<?= $linkUrl ?>"><?= $linkText ?>  &ldquo;<?= $this->escape($this->publication->title) ?>&rdquo;</a></p>
     <div class="wiki-content">
         <h1 class="page-title"><?php echo $this->escape($this->page->title); ?></h1>
         <div class="wikipage"><?php echo $html; ?></div>

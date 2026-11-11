@@ -279,7 +279,10 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                             </a><br />
                             <span class="entry-details">
                                 <?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?>
-                                <span class="entry-date"><?= Date::of($row->registered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
+                                <?php
+                                $entryDateText = Date::of($row->registered)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?>
+                                <span class="entry-date"><?= $entryDateText ?></span>
                             </span>
                         </td>
                         <td class="priority-4">
@@ -304,7 +307,11 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 <?php echo $status; ?>
                             </a><br />
                             <span class="entry-details">
-                                <span class="entry-time"><?= \Components\Tools\Helpers\Html::timeAgo($row->state_changed) . ' ' . Lang::txt('COM_TOOLS_AGO') ?></span>
+                                <?php
+                                $entryTimeText = \Components\Tools\Helpers\Html::timeAgo($row->state_changed) . ' '
+                                    . Lang::txt('COM_TOOLS_AGO');
+                                ?>
+                                <span class="entry-time"><?= $entryTimeText ?></span>
                             </span>
                         </td>
                         <td <?= !\Components\Tools\Helpers\Html::toolEstablished($row->state) ? 'class="disabled_links"' : '' ?>>

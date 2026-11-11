@@ -67,7 +67,10 @@ $this->css('jobs', 'com_jobs');
                         <span class="selectgroup">
                             <textarea name="tagline" id="tagline-men" rows="6"
                                 cols="35"><?= stripslashes($this->js->tagline) ?></textarea>
-                            <span class="counter"><span id="counter_number_tagline"></span> <?= Lang::txt('PLG_MEMBERS_RESUME_CHARS_LEFT') ?></span>
+                            <?php
+                            $counterText = Lang::txt('PLG_MEMBERS_RESUME_CHARS_LEFT');
+                            ?>
+                            <span class="counter"><span id="counter_number_tagline"></span> <?= $counterText ?></span>
                         </span>
                     </label>
                     <label class="spacious">
@@ -75,7 +78,10 @@ $this->css('jobs', 'com_jobs');
                         <span class="selectgroup">
                             <textarea name="lookingfor" id="lookingfor-men" rows="6"
                                 cols="35"><?= stripslashes($this->js->lookingfor) ?></textarea>
-                            <span class="counter"><span id="counter_number_lookingfor"></span> <?= Lang::txt('PLG_MEMBERS_RESUME_CHARS_LEFT') ?></span>
+                            <?php
+                            $counterText = Lang::txt('PLG_MEMBERS_RESUME_CHARS_LEFT');
+                            ?>
+                            <span class="counter"><span id="counter_number_lookingfor"></span> <?= $counterText ?></span>
                         </span>
                     </label>
                     <label>
@@ -223,7 +229,10 @@ $this->css('jobs', 'com_jobs');
                         <?php } ?>
                         </td>
                         <td>
-                            <time datetime="<?= $this->resume->created ?>"><?= Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
+                            <?php
+                            $timeText = Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <time datetime="<?= $this->resume->created ?>"><?= $timeText ?></time>
                         </td>
                         <td>
                             <?php

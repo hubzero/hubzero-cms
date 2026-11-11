@@ -159,7 +159,10 @@ foreach ($menus as $menu) {
                         </select>
                     </label>
 
-                    <label for="field-assignment-menu"><strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span></label>
+                    <?php
+                    $strongText = Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION');
+                    ?>
+                    <label for="field-assignment-menu"><strong><?= $strongText ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span></label>
                     <fieldset class="assignment" <?php if (in_array(0, $activeMenu)) :
                         ?>disabled="disabled"<?php
                                                  endif; ?>>
@@ -195,7 +198,10 @@ foreach ($menus as $menu) {
                 </fieldset>
                 <div class="form-controls cf">
                     <a href="<?php echo $base_link; ?>" class="cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
-                    <button type="submit" class="btn btn-info opposite save icon-save"><?= Lang::txt('COM_GROUPS_PAGES_SAVE_MODULE') ?></button>
+                    <?php
+                    $buttonText = Lang::txt('COM_GROUPS_PAGES_SAVE_MODULE');
+                    ?>
+                    <button type="submit" class="btn btn-info opposite save icon-save"><?= $buttonText ?></button>
                 </div>
 
                 <fieldset>

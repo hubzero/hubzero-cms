@@ -123,7 +123,10 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                     <?php echo Lang::txt('Contact:'); ?> <span class="optional">Optional</span>
                     <input type="text" name="event[contact_info]" id="event-contact_info"
                         value="<?= $this->escape($this->event->get('contact_info')) ?>" />
-                    <span class="hint"><?= Lang::txt('Accepts names and email addresses. (ex. John Doe john_doe@domain.com)') ?></span>
+                    <?php
+                    $hintText = Lang::txt('Accepts names and email addresses. (ex. John Doe john_doe@domain.com)');
+                    ?>
+                    <span class="hint"><?= $hintText ?></span>
                 </label>
 
                 <label for="event_website">

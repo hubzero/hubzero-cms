@@ -163,7 +163,10 @@ $this->js();
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
                             <td>
-                                <time datetime="<?= $this->escape($this->row->get('created')) ?>"><?= $this->escape(Date::of($this->row->get('created'))->toLocal()) ?></time>
+                                <?php
+                                $timeText = $this->escape(Date::of($this->row->get('created'))->toLocal());
+                                ?>
+                                <time datetime="<?= $this->escape($this->row->get('created')) ?>"><?= $timeText ?></time>
                             </td>
                         </tr>
                         <?php if ($this->row->get('created_by')) { ?>

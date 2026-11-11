@@ -614,7 +614,12 @@ $this
                                     <?php echo Lang::txt('total publication versions'); ?>
                                 </li>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?= $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A' ?></span>
+                                    <?php
+                                    $spanText = $this->stats['files']['pubspace']
+                                        ? $this->stats['files']['pubspace']
+                                        : 'N/A';
+                                    ?>
+                                    <span class="stats-num-small-unfloat"><?= $spanText ?></span>
                                     <?php echo Lang::txt('allocated to published files'); ?>
                                 </li>
                             </ul>

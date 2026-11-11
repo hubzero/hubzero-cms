@@ -152,7 +152,10 @@ $this
                             ?>
                         </td>
                         <td>
-                            <time datetime="<?= $row->created ?>"><?= Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
+                            <?php
+                            $timeText = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <time datetime="<?= $row->created ?>"><?= $timeText ?></time>
                         </td>
                         <td>
                             <?php

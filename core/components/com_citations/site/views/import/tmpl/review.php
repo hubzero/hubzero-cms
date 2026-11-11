@@ -38,9 +38,18 @@ $no_show = ["errors","duplicate"];
         ?>
 
         <ul id="steps">
-            <li><a href="<?= Request::base(true) ?>/citations/import" class="passed"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME') ?></span></a></li>
-            <li><a class="active"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP2') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME') ?></span></a></li>
-            <li><a><?= Lang::txt('COM_CITATIONS_IMPORT_STEP3') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME') ?></span></a></li>
+            <?php
+            $spanText = Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME');
+            ?>
+            <li><a href="<?= Request::base(true) ?>/citations/import" class="passed"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1') ?><span><?= $spanText ?></span></a></li>
+            <?php
+            $spanText = Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME');
+            ?>
+            <li><a class="active"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP2') ?><span><?= $spanText ?></span></a></li>
+            <?php
+            $spanText = Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME');
+            ?>
+            <li><a><?= Lang::txt('COM_CITATIONS_IMPORT_STEP3') ?><span><?= $spanText ?></span></a></li>
         </ul><!-- / #steps -->
 
         <form method="post" action="<?= Route::url('index.php?option=' . $this->option . '&task=import_save') ?>">
@@ -75,7 +84,10 @@ $no_show = ["errors","duplicate"];
                                 <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
                                 <td>
                                     <span class="citation-title"><u><?= Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE') ?></u>: <?= $this->escape(html_entity_decode((string) $c['title'])) ?></span>
-                                    <span class="click-more"><?= Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS') ?></span>
+                                    <?php
+                                    $clickMoreText = Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS');
+                                    ?>
+                                    <span class="click-more"><?= $clickMoreText ?></span>
                             <?php if (1) { ?>
                                     <table class="citation-details hide">
                                         <thead>
@@ -126,13 +138,30 @@ $no_show = ["errors","duplicate"];
                                                         <td>
                                                             <table class="citation-differences">
                                                                 <tr>
-                                                                    <td><?= Lang::txt('COM_CITATIONS_IMPORT_JUST_UPLOADED') ?>:</td>
+                                                                    <?php
+                                                                    $cellText = Lang::txt(
+                                                                        'COM_CITATIONS_IMPORT_JUST_UPLOADED',
+                                                                    );
+                                                                    ?>
+                                                                    <td><?= $cellText ?>:</td>
                                                                     <td>
-                                                                        <span class="new insert"><?= nl2br($this->escape(html_entity_decode((string) $c[$k]))) ?></span>
+                                                                        <?php
+                                                                        $newText = nl2br(
+                                                                            $this->escape(
+                                                                                html_entity_decode((string) $c[$k]),
+                                                                            ),
+                                                                        );
+                                                                        ?>
+                                                                        <span class="new insert"><?= $newText ?></span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><?= Lang::txt('COM_CITATIONS_IMPORT_ON_FILE') ?>:</td>
+                                                                    <?php
+                                                                    $cellText = Lang::txt(
+                                                                        'COM_CITATIONS_IMPORT_ON_FILE',
+                                                                    );
+                                                                    ?>
+                                                                    <td><?= $cellText ?>:</td>
                                                                     <td>
                                                                         <span class="old delete">
                                                                             <?php
@@ -205,7 +234,10 @@ $no_show = ["errors","duplicate"];
                                         }
                                         ?>
                                     </span>
-                                    <span class="click-more"><?= Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS') ?></span>
+                                    <?php
+                                    $clickMoreText = Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS');
+                                    ?>
+                                    <span class="click-more"><?= $clickMoreText ?></span>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>

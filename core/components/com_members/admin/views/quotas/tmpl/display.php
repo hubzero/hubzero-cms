@@ -104,7 +104,16 @@ $classAliasSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <!-- <th class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th> -->
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <!-- <th class="priority-6"><?= $headerText ?></th> -->
                 <th class="priority-5">
                     <?= Html::grid(
                         'sort',

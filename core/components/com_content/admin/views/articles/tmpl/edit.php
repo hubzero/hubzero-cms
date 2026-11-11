@@ -86,7 +86,12 @@ $editUrl = Route::url(
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?= empty($this->item->id) ? Lang::txt('COM_CONTENT_NEW_ARTICLE') : Lang::txt('COM_CONTENT_EDIT_ARTICLE', $this->item->id) ?></span></legend>
+                <?php
+                $spanText = empty($this->item->id)
+                    ? Lang::txt('COM_CONTENT_NEW_ARTICLE')
+                    : Lang::txt('COM_CONTENT_EDIT_ARTICLE', $this->item->id);
+                ?>
+                <legend><span><?= $spanText ?></span></legend>
 
                 <div class="form-group input-wrap">
                     <?php echo $this->form->getLabel('title'); ?>

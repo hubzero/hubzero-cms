@@ -95,8 +95,9 @@ $this
                         $wikiUrl = Route::url(
                             'index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki',
                         );
+                        $linkText = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50));
                         ?>
-                        <td><a href="<?= $wikiUrl ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)) ?></a></td>
+                        <td><a href="<?= $wikiUrl ?>"><?= $linkText ?></a></td>
                         <?php
                         $wikiUrl = Route::url(
                             'index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki',
@@ -106,7 +107,16 @@ $this
                         <td>
                             <span class="<?php echo $this->escape($status); ?>-code"><?php echo $status; ?></span>
                             <?php if ($pipeline) { ?>
-                                <br /><span class="pipeline-state"><?= Lang::txt('COM_TOOLS_PIPELINE_STATE_STALE', $this->escape($pipeline), $project->live ? Lang::txt('COM_TOOLS_PIPELINE_LIVE') : Lang::txt('COM_TOOLS_PIPELINE_NOT_LIVE')) ?></span>
+                                <?php
+                                $pipelineStateText = Lang::txt(
+                                    'COM_TOOLS_PIPELINE_STATE_STALE',
+                                    $this->escape($pipeline),
+                                    $project->live
+                                        ? Lang::txt('COM_TOOLS_PIPELINE_LIVE')
+                                        : Lang::txt('COM_TOOLS_PIPELINE_NOT_LIVE'),
+                                );
+                                ?>
+                                <br /><span class="pipeline-state"><?= $pipelineStateText ?></span>
                             <?php } ?>
                         </td>
                     </tr>

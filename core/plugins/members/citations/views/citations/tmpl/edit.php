@@ -184,7 +184,10 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                             </label>
                         </div>
                         <div class="col span2 omega">
-                            <button class="btn btn-success add-author"><?= Lang::txt('PLG_MEMBERS_CITATIONS_ADD') ?></button>
+                            <?php
+                            $buttonText = Lang::txt('PLG_MEMBERS_CITATIONS_ADD');
+                            ?>
+                            <button class="btn btn-success add-author"><?= $buttonText ?></button>
                         </div>
                     </div>
 

@@ -77,7 +77,10 @@ $idSelected = function ($value) use ($view) {
             <ul>
                 <li>
                     <a class="collections count" href="<?php echo Route::url($base . '&task=all'); ?>">
-                        <span><?= Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->counts['collections']) ?></span>
+                        <?php
+                        $spanText = Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->counts['collections']);
+                        ?>
+                        <span><?= $spanText ?></span>
                     </a>
                 </li>
                 <li>

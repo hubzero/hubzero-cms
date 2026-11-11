@@ -168,7 +168,13 @@ if ($this->lecture) {
                         action="<?= Route::url($this->comment->link('base')) ?>" method="post"
                         enctype="multipart/form-data">
                         <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
-                            <legend><span><?= Lang::txt('PLG_COURSES_DISCUSSIONS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                            <?php
+                            $spanText = Lang::txt(
+                                'PLG_COURSES_DISCUSSIONS_REPLYING_TO',
+                                (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                            );
+                            ?>
+                            <legend><span><?= $spanText ?></span></legend>
 
                             <input type="hidden" name="fields[id]" value="0" />
                             <input type="hidden" name="fields[state]" value="1" />

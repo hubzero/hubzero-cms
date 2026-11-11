@@ -187,7 +187,14 @@ $bdcolor = '#e1e1e1';
                         ? $this->escape($this->post->creator->get('name'))
                         : Lang::txt('JANONYMOUS') ?>
                 </th>
-                <th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?= Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->post->created('time'), $this->post->created('date')) ?></span></th>
+                <?php
+                $spanText = Lang::txt(
+                    'PLG_GROUPS_FORUM_CREATED',
+                    $this->post->created('time'),
+                    $this->post->created('date'),
+                );
+                ?>
+                <th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?= $spanText ?></span></th>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 0 2em;">

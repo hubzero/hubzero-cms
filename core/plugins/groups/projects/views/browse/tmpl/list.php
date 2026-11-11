@@ -99,7 +99,12 @@ switch ($this->which) {
                             <?php echo $this->escape($row->get('title')); ?>
                         <?php } ?>
                         <?php if ($this->which != 'owned') { ?>
-                            <span class="block"><?= $this->escape($row->groupOwner() ? $row->groupOwner('description') : $row->owner('name')) ?></span>
+                            <?php
+                            $spanText = $this->escape(
+                                $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'),
+                            );
+                            ?>
+                            <span class="block"><?= $spanText ?></span>
                         <?php } ?>
                     </td>
                     <td class="th_status">

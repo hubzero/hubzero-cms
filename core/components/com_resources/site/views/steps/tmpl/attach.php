@@ -61,8 +61,14 @@ $this
             <p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS'); ?></h4>
             <p>
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?>
+                <?php
+                $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC');
+                ?>
+                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
+                <?php
+                $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED');
+                ?>
+                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?>
             </p>
         </div>
         <fieldset>

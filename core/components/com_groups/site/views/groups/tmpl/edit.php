@@ -222,7 +222,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="join_policy" id="join_policy0"
                                     value="0"<?= $this->group->get('join_policy') == 0 ? ' checked="checked"' : '' ?> />
                                 <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING'); ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
@@ -230,12 +233,20 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="join_policy" id="join_policy1"
                                     value="1"<?= $this->group->get('join_policy') == 1 ? ' checked="checked"' : '' ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING') ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="restrict_msg" class="indent">
-                                <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS') ?></strong>
+                                <?php
+                                $strongText = Lang::txt(
+                                    'COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS',
+                                );
+                                ?>
+                                <strong><?= $strongText ?></strong>
                                 (<?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC') ?>) <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
                                 <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?= htmlentities(stripslashes($this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '')) ?></textarea>
                             </label>
@@ -245,7 +256,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="join_policy" id="join_policy2"
                                     value="2"<?= $this->group->get('join_policy') == 2 ? ' checked="checked"' : '' ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING') ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
@@ -253,7 +267,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="join_policy" id="join_policy3"
                                     value="3"<?= $this->group->get('join_policy') == 3 ? ' checked="checked"' : '' ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING') ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                     </fieldset>
@@ -276,7 +293,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <br /><span
                                     class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT_DESC') ?></span>
                                 <?php if ($hubMax > 0) : ?>
-                                    <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $hubMax) ?></span>
+                                    <?php
+                                    $spanText = Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $hubMax);
+                                    ?>
+                                    <br /><span class="indent"><?= $spanText ?></span>
                                 <?php endif; ?>
                             </label>
                         </div>
@@ -298,7 +318,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="discoverability"
                                     id="discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING') ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
@@ -306,7 +329,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <input type="radio" class="option form-check-input" name="discoverability"
                                     id="discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING') ?></strong>
-                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC') ?></span>
+                                <?php
+                                $spanText = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC');
+                                ?>
+                                <br /><span class="indent"><?= $spanText ?></span>
                             </label>
                         </div>
                     </fieldset>
@@ -325,7 +351,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                         <li class="group_access_control_<?= strtolower($this->hub_group_plugins[$i]['title']) ?>">
                                             <input type="hidden" name="group_plugin[<?= $i ?>][name]"
                                                 value="<?= $this->hub_group_plugins[$i]['name'] ?>">
-                                            <span class="menu_item_title"><?= $this->hub_group_plugins[$i]['title'] ?></span>
+                                            <?php
+                                            $menuItemTitleText = $this->hub_group_plugins[$i]['title'];
+                                            ?>
+                                            <span class="menu_item_title"><?= $menuItemTitleText ?></span>
                                             <?php
                                             $ariaLabel = $this->escape($this->hub_group_plugins[$i]['title']) . ' '
                                                 . Lang::txt('COM_GROUPS_ACCESS');
@@ -376,7 +405,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                         echo ' checked="checked"';
                                     endif;
                                     ?> />
-                                    <strong><?= Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE') ?></strong> <br />
+                                    <?php
+                                    $strongText = Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE');
+                                    ?>
+                                    <strong><?= $strongText ?></strong> <br />
                                     <span class="indent">
                                         <?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
                                     </span>

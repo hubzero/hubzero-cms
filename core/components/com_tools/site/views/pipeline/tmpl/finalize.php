@@ -105,8 +105,14 @@ $this
                             class="desc"> <?= $wikiaccess ?></span></p>
                         <p><span class="heading"><?= Lang::txt('COM_TOOLS_SCREEN_SIZE') ?>: </span><span
                             class="desc"> <?= $this->escape($this->status['vncGeometry']) ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_DEVELOPERS') ?>: </span><span class="desc"> <?= \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']) ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_AUTHORS') ?>: </span><span class="desc"> <?= \Components\Tools\Helpers\Html::getDevTeam($this->status['authors']) ?></span></p>
+                        <?php
+                        $descText = \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']);
+                        ?>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_DEVELOPERS') ?>: </span><span class="desc"> <?= $descText ?></span></p>
+                        <?php
+                        $descText = \Components\Tools\Helpers\Html::getDevTeam($this->status['authors']);
+                        ?>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_AUTHORS') ?>: </span><span class="desc"> <?= $descText ?></span></p>
                         <?php
                         $linkUrl = Route::url(
                             'index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev',

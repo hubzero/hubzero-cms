@@ -151,7 +151,12 @@ $this
                                                 data-id="<?= $item->get('id') ?>"
                                                 data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>"
                                                 data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
-                                                <span><?= ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE') ?></span>
+                                                <?php
+                                                $spanText = ($item->get('voted'))
+                                                    ? Lang::txt('COM_COLLECTIONS_UNLIKE')
+                                                    : Lang::txt('COM_COLLECTIONS_LIKE');
+                                                ?>
+                                                <span><?= $spanText ?></span>
                                             </button>
                                         <?php } ?>
                                         <?php

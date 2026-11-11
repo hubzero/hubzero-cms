@@ -230,9 +230,15 @@ $this->thread->set('category', $this->category->get('alias'));
                     </strong>
                     <span class="permalink">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-                        <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                        ?>
+                        <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                        <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                        ?>
+                        <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                     </span>
                 </p>
 

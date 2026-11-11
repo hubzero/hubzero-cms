@@ -139,9 +139,15 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                             <span class="entry-details">
                                 <?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
                                 <span class="entry-time-at"><?php echo Lang::txt('COM_WISHLIST_DATETIME_AT'); ?></span>
-                                <span class="entry-time"><time datetime="<?= $item->proposed ?>"><?= Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                                <?php
+                                $timeText = Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                                ?>
+                                <span class="entry-time"><time datetime="<?= $item->proposed ?>"><?= $timeText ?></time></span>
                                 <span class="entry-time-on"><?php echo Lang::txt('COM_WISHLIST_DATETIME_ON'); ?></span>
-                                <span class="entry-date"><time datetime="<?= $item->proposed ?>"><?= Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                                <?php
+                                $timeText = Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?>
+                                <span class="entry-date"><time datetime="<?= $item->proposed ?>"><?= $timeText ?></time></span>
                                 <span class="entry-details-divider">&bull;</span>
                                 <span class="entry-comments">
                                     <?php

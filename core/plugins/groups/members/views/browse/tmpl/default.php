@@ -358,9 +358,18 @@ $option = 'com_groups';
                                             <?php echo $this->escape($guser); ?>
                                         </a>
                                     </span>
-                                    <span class="status"><?= Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL') ?></span><br />
+                                    <?php
+                                    $statusText = Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL');
+                                    ?>
+                                    <span class="status"><?= $statusText ?></span><br />
                                     <?php if ($invited) { ?>
-                                        <span class="invited"><time datetime="<?= $invited ?>"><?= Lang::txt('Invited on %s', Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))) ?></time></span><br />
+                                        <?php
+                                        $timeText = Lang::txt(
+                                            'Invited on %s',
+                                            Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
+                                        );
+                                        ?>
+                                        <span class="invited"><time datetime="<?= $invited ?>"><?= $timeText ?></time></span><br />
                                     <?php } ?>
                                 <?php } else { ?>
                                     <span class="name">
@@ -388,10 +397,20 @@ $option = 'com_groups';
                                     </span>
                                     <span class="status"><?php echo $status; ?></span><br />
                                     <?php if ($invited) { ?>
-                                        <span class="invited"><?= Lang::txt('Invited on %s', '<time datetime="' . $invited . '">' . Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>') ?></span><br />
+                                        <?php
+                                        $invitedText = Lang::txt(
+                                            'Invited on %s',
+                                            '<time datetime="' . $invited . '">'
+                                                . Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>',
+                                        );
+                                        ?>
+                                        <span class="invited"><?= $invitedText ?></span><br />
                                     <?php } ?>
                                     <?php if ($u->get('organization')) { ?>
-                                        <span class="organization"><?= $this->escape(stripslashes($u->get('organization'))) ?></span><br />
+                                        <?php
+                                        $organizationText = $this->escape(stripslashes($u->get('organization')));
+                                        ?>
+                                        <span class="organization"><?= $organizationText ?></span><br />
                                     <?php } ?>
                                 <?php } ?>
                                 <?php
@@ -792,7 +811,11 @@ $option = 'com_groups';
                                         . '&active=members&action=removerole&role=' . $role['id'],
                                 );
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>" class="remove-role" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?></button>
+                                <?php
+                                $titleText = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE');
+                                $buttonText = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE');
+                                ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>" class="remove-role" title="<?= $titleText ?>"><?= $buttonText ?></button>
                                 <?php
                                 $editroleUrl = Route::url(
                                     'index.php?option=' . $option . '&cn=' . $this->group->cn

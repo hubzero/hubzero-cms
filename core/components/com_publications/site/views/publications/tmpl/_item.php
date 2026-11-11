@@ -18,8 +18,9 @@ defined('_HZEXEC_') or die();
     <span class="pub-details">
         <?php
         $linkUrl = Route::url('index.php?option=com_publications&id=' . $this->row->get('id'));
+        $linkText = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->row->get('title')), 100));
         ?>
-        <a href="<?= $linkUrl ?>" title="<?= $this->escape(stripslashes($this->row->get('abstract'))) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->row->get('title')), 100)) ?></a>
+        <a href="<?= $linkUrl ?>" title="<?= $this->escape(stripslashes($this->row->get('abstract'))) ?>"><?= $linkText ?></a>
         <span class="block details"><?php echo implode(' <span>|</span> ', $this->info); ?></span>
     </span>
 </li>

@@ -87,7 +87,10 @@ $base = $this->offering->alias() . '&active=forum';
                                         </a>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
+                                                <?php
+                                                $timeText = $row->created('date');
+                                                ?>
+                                                <time datetime="<?= $row->created() ?>"><?= $timeText ?></time>
                                             </span>
                                             <?php echo Lang::txt('by'); ?>
                                             <span class="entry-author">

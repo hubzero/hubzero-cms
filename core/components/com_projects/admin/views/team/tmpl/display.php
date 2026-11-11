@@ -201,7 +201,10 @@ $this->css();
                     <span>
                         <?php //echo ($creator && !$this->project->groupOwner() ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '') . $this->escape($role);?>
                     <?php if ($creator) { ?>
-                        <span class="prominent"><?= Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role) ?></span>
+                        <?php
+                        $spanText = Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role);
+                        ?>
+                        <span class="prominent"><?= $spanText ?></span>
                     <?php } else { ?>
                         <select name="role[<?php echo $row->userid; ?>]" onchange="Hubzero.submitbutton('update');">
                             <option value="1"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
@@ -227,7 +230,10 @@ $this->css();
                 </td>
                 <td>
                     <?= $row->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($row->groupdesc, 30)) : '' ?>
-                    <span class="block mini short prominent"><?= ($row->groupname) ? $row->groupname : Lang::txt('COM_PROJECTS_NONE') ?></span>
+                    <?php
+                    $spanText = ($row->groupname) ? $row->groupname : Lang::txt('COM_PROJECTS_NONE');
+                    ?>
+                    <span class="block mini short prominent"><?= $spanText ?></span>
                 </td>
                 <?php /*if (!$groupSynced) { ?>
                     <td>

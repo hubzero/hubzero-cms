@@ -223,7 +223,12 @@ $tblSelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td class="priority-3">
-                    <time datetime="<?= $row->get('taggedon') ?>"><?= ($row->get('taggedon') && $row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN') ?></time>
+                    <?php
+                    $timeText = ($row->get('taggedon') && $row->get('taggedon') != '0000-00-00 00:00:00')
+                        ? $row->get('taggedon')
+                        : Lang::txt('COM_TAGS_UNKNOWN');
+                    ?>
+                    <time datetime="<?= $row->get('taggedon') ?>"><?= $timeText ?></time>
                 </td>
                 <td class="priority-4">
                     <?php if ($row->get('taggerid')) { ?>

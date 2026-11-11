@@ -117,8 +117,10 @@ if ($this->config->get('access-manage-section')) {
                             <?php if ($this->config->get('access-delete-section')) { ?>
                                 <?php
                                 $actionUrl = Route::url($base . '&scope=' . $section->get('alias') . '/delete');
+                                $titleText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
+                                $spanText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                             <?php } ?>
                             <?php
                             if (
@@ -204,8 +206,10 @@ if ($this->config->get('access-manage-section')) {
                                         <?php if ($this->config->get('access-delete-category')) { ?>
                                             <?php
                                             $actionUrl = Route::url($row->link('delete'));
+                                            $titleText = Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY');
+                                            $spanText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         <?php } ?>
                                     </td>
                                 <?php } ?>

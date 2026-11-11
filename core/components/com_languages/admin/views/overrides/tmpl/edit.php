@@ -60,7 +60,12 @@ $editUrl = Route::url(
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?= empty($this->item->key) ? Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_NEW_OVERRIDE_LEGEND') : Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_EDIT_OVERRIDE_LEGEND') ?></span></legend>
+                <?php
+                $spanText = empty($this->item->key)
+                    ? Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_NEW_OVERRIDE_LEGEND')
+                    : Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_EDIT_OVERRIDE_LEGEND');
+                ?>
+                <legend><span><?= $spanText ?></span></legend>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_KEY_DESC'); ?>">
                     <label for="field-key"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_KEY_LABEL') ?>: <span
@@ -113,17 +118,26 @@ $editUrl = Route::url(
                 </div>
 
                 <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_DESC') ?>">
-                    <label for="fields_searchtype"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_LABEL') ?>:</label>
+                    <?php
+                    $labelText = Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_LABEL');
+                    ?>
+                    <label for="fields_searchtype"><?= $labelText ?>:</label>
                     <fieldset id="fields_searchtype" class="radio inputbox">
                         <ul>
                             <li>
                                 <input type="radio" id="jform_searchtype0" name="fields[searchtype]" value="constant" />
-                                <label for="fields_searchtype0"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_CONSTANT') ?></label>
+                                <?php
+                                $labelText = Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_CONSTANT');
+                                ?>
+                                <label for="fields_searchtype0"><?= $labelText ?></label>
                             </li>
                             <li>
                                 <input type="radio" id="jform_searchtype1" name="fields[searchtype]" value="value"
                                     checked="checked" />
-                                <label for="fields_searchtype1"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_TEXT') ?></label>
+                                <?php
+                                $labelText = Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_TEXT');
+                                ?>
+                                <label for="fields_searchtype1"><?= $labelText ?></label>
                             </li>
                         </ul>
                     </fieldset>

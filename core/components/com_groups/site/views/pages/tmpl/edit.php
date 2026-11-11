@@ -262,7 +262,10 @@ if ($this->page->get('id')) {
                 <div class="form-controls cf">
                     <a href="<?= Route::url($return_link) ?>" class="cancel"><?= Lang::txt('JCANCEL') ?></a>
                     <div class="btn-group save">
-                        <button type="submit" class="btn btn-info btn-main icon-save"><?= Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE') ?></button>
+                        <?php
+                        $buttonText = Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE');
+                        ?>
+                        <button type="submit" class="btn btn-info btn-main icon-save"><?= $buttonText ?></button>
                         <span class="btn dropdown-toggle btn-info"></span>
                         <ul class="dropdown-menu">
                             <li><a class="icon-save active" data-action="save"

@@ -72,7 +72,10 @@ if ($this->getError()) {
             <p class="info_title">
             <?= $this->escape($this->model->get('title')) ?> (<span
                 class="aliasname"><?= $this->model->get('alias') ?></span>)</p>
-            <p class="info_title"><span><?= Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->escape($this->model->creator('name')) ?></span></p>
+            <?php
+            $spanText = Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->escape($this->model->creator('name'));
+            ?>
+            <p class="info_title"><span><?= $spanText ?></span></p>
         </div>
     </div>
 
@@ -159,8 +162,14 @@ if ($this->getError()) {
     ) { ?>
     <div class="sensitivereview">
         <h4><?php echo Lang::txt('COM_PROJECTS_SENSITIVE_APPROVE_OR_REJECT'); ?></h4>
-        <label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?= ($this->model->isActive()) ? 'checked="checked"' : '' ?>/> <?= Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE') ?></label>
-        <label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio" value="0" <?= ($this->model->isRejected()) ? 'checked="checked"' : '' ?>/> <?= Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_REJECT') ?></label>
+        <?php
+        $labelText = Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE');
+        ?>
+        <label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?= ($this->model->isActive()) ? 'checked="checked"' : '' ?>/> <?= $labelText ?></label>
+        <?php
+        $labelText = Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_REJECT');
+        ?>
+        <label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio" value="0" <?= ($this->model->isRejected()) ? 'checked="checked"' : '' ?>/> <?= $labelText ?></label>
         <!--
         <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?= ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')) ?></label>-->
     </div>

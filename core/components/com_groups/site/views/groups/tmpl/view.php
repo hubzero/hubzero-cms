@@ -102,7 +102,10 @@ $no_html = Request::getInt('no_html', 0);
 
     <div id="page_main">
     <div id="page_header">
-        <h1><a href="<?= $link ?>" aria-label="<?= $this->escape($this->group->get('description')) ?> — Group Home"><?= $this->escape($this->group->get('description')) ?></a></h1>
+        <?php
+        $linkText = $this->escape($this->group->get('description'));
+        ?>
+        <h1><a href="<?= $link ?>" aria-label="<?= $this->escape($this->group->get('description')) ?> — Group Home"><?= $linkText ?></a></h1>
         <span class="divider" aria-hidden="true"></span>
         <h2>
             <?php echo \Components\Groups\Helpers\View::displayTab($this->group); ?>

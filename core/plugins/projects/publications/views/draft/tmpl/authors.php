@@ -81,7 +81,10 @@ $idSelected = function ($value) use ($view) {
                     <span class="item-options">
                         <span>
                             <?php if (count($this->pub->authors()) > 1) { ?>
-                            <span class="hint-reorder"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER') ?></span>
+                                <?php
+                                $hintReorderText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER');
+                                ?>
+                            <span class="hint-reorder"><?= $hintReorderText ?></span>
                             <?php } ?>
                             <?php
                             $editauthorUrl = Route::url(
@@ -141,7 +144,14 @@ $idSelected = function ($value) use ($view) {
             $used = [];
 
             ?>
-            <div class="submitter groupowner"><p><strong><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER') ?>*: </strong> <?= $this->pub->_project->groupOwner() ? $this->escape($this->pub->_project->groupOwner('description')) . '(' . $this->escape($this->pub->_project->groupOwner('cn')) . ')' : '' ?></p>
+            <?php
+            $strongText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER');
+            $paragraphText = $this->pub->_project->groupOwner()
+                ? $this->escape($this->pub->_project->groupOwner('description')) . '('
+                    . $this->escape($this->pub->_project->groupOwner('cn')) . ')'
+                : '';
+            ?>
+            <div class="submitter groupowner"><p><strong><?= $strongText ?>*: </strong> <?= $paragraphText ?></p>
                 <?php if (!$this->pub->_project->groupOwner()) { ?>
                     <select name="group_owner">
                         <option value=""><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
@@ -161,7 +171,12 @@ $idSelected = function ($value) use ($view) {
                 <?php } else { ?>
                 <input type="hidden" name="group_owner" value="<?php echo $this->pub->_project->groupOwner('id'); ?>" />
                 <?php } ?>
-                <p class="hint">* <?= $this->pub->_project->groupOwner() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT') ?></p>
+                <?php
+                $hintText = $this->pub->_project->groupOwner()
+                    ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT')
+                    : Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT');
+                ?>
+                <p class="hint">* <?= $hintText ?></p>
             </div>
         <?php }
         ?>

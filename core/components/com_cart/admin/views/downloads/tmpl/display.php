@@ -266,7 +266,13 @@ $this
                         ?>
                     <a href="<?= $linkUrl ?>">
                     <?php } ?>
-                        <span><?= ($row->uidNumber) ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN') ?></span>
+                        <?php
+                        $spanText = ($row->uidNumber)
+                            ? $this->escape(stripslashes($row->dName)) . ' ('
+                                . $this->escape(stripslashes($row->username)) . ')'
+                            : Lang::txt('COM_CART_UNKNOWN');
+                        ?>
+                        <span><?= $spanText ?></span>
                         <?php if ($row->uidNumber) { ?>
                     </a>
                         <?php } ?>

@@ -99,7 +99,10 @@ if (!$this->thread->thread) {
             </p>
         <?php } ?>
         <p class="comment-title">
-            <span class="date"><time datetime="<?= $this->thread->created ?>"><?= Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
+            <?php
+            $timeText = Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+            ?>
+            <span class="date"><time datetime="<?= $this->thread->created ?>"><?= $timeText ?></time></span>
         </p>
         <p class="comment-body">
             <?php

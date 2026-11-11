@@ -321,7 +321,12 @@ $categoryChecked = function ($value) use ($view) {
                         <table class="wish-priority" id="priority">
                             <caption>
                                 <?= Lang::txt('COM_WISHLIST_PRIORITY') ?>: <strong><?= $this->wish->get('ranking') ?></strong>
-                                <span>(<?= $this->wish->rankings()->total('count') . ' ' . Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') . ' ' . $voters . ' ' . Lang::txt('COM_WISHLIST_VOTES') ?>)</span>
+                                <?php
+                                $spanText = $this->wish->rankings()->total('count') . ' '
+                                    . Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') . ' ' . $voters . ' '
+                                    . Lang::txt('COM_WISHLIST_VOTES');
+                                ?>
+                                <span>(<?= $spanText ?>)</span>
                             </caption>
                             <thead>
                                 <tr>
@@ -564,7 +569,10 @@ $categoryChecked = function ($value) use ($view) {
                                         class="form-check-input" <?= $grantedAttrs ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
                                 <?php if ($grantedLocked) { ?>
-                                    <span class="forbidden"> - <?= Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING') ?>
+                                    <?php
+                                    $forbiddenText = Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING');
+                                    ?>
+                                    <span class="forbidden"> - <?= $forbiddenText ?>
                                 <?php }
                                 // Throws error Hubzero\Base\Model; Method [versions] does not exist.
                                 /*else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>

@@ -87,7 +87,12 @@ $this->js('events.js');
                     foreach ($this->fields as $field) {
                         ?>
                         <div class="input-wrap">
-                            <label for="field-<?= $field[0] ?>"><?= $field[1] ?>: <?= ($field[3]) ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '' ?></label><br />
+                            <?php
+                            $labelText = ($field[3])
+                                ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>'
+                                : '';
+                            ?>
+                            <label for="field-<?= $field[0] ?>"><?= $field[1] ?>: <?= $labelText ?></label><br />
                             <?php
                             if ($field[2] == 'checkbox') {
                                 echo '<input type="checkbox" name="fields[' . $field[0] . ']" id="field-' . $field[0]
@@ -141,10 +146,19 @@ $this->js('events.js');
                     <legend><span><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="field-repeating_rule"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE') ?></label><br />
+                        <?php
+                        $labelText = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE');
+                        ?>
+                        <label for="field-repeating_rule"><?= $labelText ?></label><br />
                         <input type="text" name="repeating_rule"
                             value="<?= $this->escape(stripslashes($this->row->repeating_rule)) ?>" />
-                        <span class="block-hint"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html') ?></span>
+                        <?php
+                        $blockHintText = Lang::txt(
+                            'COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT',
+                            'http://www.kanzaki.com/docs/ical/rrule.html',
+                        );
+                        ?>
+                        <span class="block-hint"><?= $blockHintText ?></span>
                     </div>
                 </fieldset>
             <?php endif; ?>
@@ -192,12 +206,26 @@ $this->js('events.js');
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
-                        <td><?= $this->row->created ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY') . '</th><td>' . $this->escape($userc) : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT') ?></td>
+                        <?php
+                        $cellText = $this->row->created
+                            ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>'
+                                . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY') . '</th><td>'
+                                . $this->escape($userc)
+                            : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT');
+                        ?>
+                        <td><?= $cellText ?></td>
                     </tr>
                 <?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
-                        <td><?= $this->row->modified ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY') . '</th><td>' . $this->escape($userm) : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED') ?></td>
+                        <?php
+                        $cellText = $this->row->modified
+                            ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>'
+                                . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY') . '</th><td>'
+                                . $this->escape($userm)
+                            : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED');
+                        ?>
+                        <td><?= $cellText ?></td>
                     </tr>
                 <?php } ?>
                 </tbody>

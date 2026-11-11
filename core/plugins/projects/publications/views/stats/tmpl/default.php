@@ -73,7 +73,10 @@ $base = rtrim(Request::base(true), '/');
 <?php if ($this->project->isProvisioned()) {
     $linkUrl = Route::url($this->pub->link('editbase'));
     ?>
-<h3 class="prov-header"><a href="<?= $linkUrl ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> <?php if ($this->pub->exists()) {
+    <?php
+    $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
+    ?>
+<h3 class="prov-header"><a href="<?= $linkUrl ?>"><?= $linkText ?></a> <?php if ($this->pub->exists()) {
     ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                  } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else {
@@ -95,7 +98,13 @@ $base = rtrim(Request::base(true), '/');
     href="<?= $statsUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS') ?> &raquo;</a></p>
     <?php } ?>
     <?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
-<p class="pubstats-overall"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES') ?>.</p>
+        <?php
+        $pubstatsOverallText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">'
+            . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' '
+            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">'
+            . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES');
+        ?>
+<p class="pubstats-overall"><?= $pubstatsOverallText ?>.</p>
     <?php } ?>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.min.js"></script>
 <script src="<?php echo $base; ?>/core/assets/js/flot/jquery.flot.time.min.js"></script>
@@ -132,7 +141,12 @@ $base = rtrim(Request::base(true), '/');
                     ?>
                     <img src="<?= $sourceUrl ?>" alt=""/>
                     <span class="h-title"><a href="<?= Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number) ?>"><?= $this->escape($stat->title) ?></a></span>
-                    <span class="block mini faded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . Date::of($stat->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name ?></span>
+                    <?php
+                    $spanText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' '
+                        . Date::of($stat->published_up)->toLocal('M d, Y') . ' '
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name;
+                    ?>
+                    <span class="block mini faded"><?= $spanText ?></span>
                 </td></tr>
                 <tr>
                     <td></td>
@@ -158,7 +172,10 @@ $base = rtrim(Request::base(true), '/');
 
                 </tr>
                 <tr>
-                    <td class="pubstats-sh"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS') ?> <?php if ($i == 1) {
+                    <?php
+                    $cellText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS');
+                    ?>
+                    <td class="pubstats-sh"><?= $cellText ?> <?php if ($i == 1) {
                         ?> <span class="info-pop tooltips" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS_TIPS_TITLE_ABOUT') ?>">&nbsp;</span> <?php
                                             } ?></td>
                     <td class="pubstats-graph">
@@ -255,7 +272,10 @@ $base = rtrim(Request::base(true), '/');
                     <td><span class="stats-num"><?php echo $stat->total_views; ?></span></td>
                 </tr>
                 <tr>
-                    <td class="pubstats-sh"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES') ?> <?php if ($i == 1) {
+                    <?php
+                    $cellText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES');
+                    ?>
+                    <td class="pubstats-sh"><?= $cellText ?> <?php if ($i == 1) {
                         ?> <span class="info-pop tooltips" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES_TIPS_TITLE_ABOUT') ?>">&nbsp;</span> <?php
                                             } ?></td>
                     <td class="pubstats-graph"><div id="access-<?php echo $stat->publication_id; ?>" class="ph"></div>

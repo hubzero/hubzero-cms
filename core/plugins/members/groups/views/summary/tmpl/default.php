@@ -210,11 +210,17 @@ $this
 
                         <?php if (!$published) : ?>
                             <div class="group-meta">
-                                <span class="not-published group-status"><?= Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP') ?></span>
+                                <?php
+                                $notPublishedText = Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP');
+                                ?>
+                                <span class="not-published group-status"><?= $notPublishedText ?></span>
                             </div>
                         <?php elseif (!$approved) : ?>
                             <div class="group-meta">
-                                <span class="pending-approval group-status"><?= Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP') ?></span>
+                                <?php
+                                $pendingApprovalText = Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP');
+                                ?>
+                                <span class="pending-approval group-status"><?= $pendingApprovalText ?></span>
                             </div>
                         <?php else : ?>
                             <div class="group-meta">
@@ -225,8 +231,10 @@ $this
                                     $acceptUrl = Route::url(
                                         'index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept',
                                     );
+                                    $titleText = Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE');
+                                    $buttonText = Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') ?>"><?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT') ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= $titleText ?>"><?= $buttonText ?></button>
                                 <?php else : ?>
                                     <div class="grid">
                                         <div class="col span6">

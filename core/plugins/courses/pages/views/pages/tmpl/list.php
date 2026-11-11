@@ -95,7 +95,12 @@ if (!$no_html) { ?>
                     </tr>
                     <tr class="row-group end">
                         <td colspan="2">
-                            <span class="file-path"><?= Route::url($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))) ?></span>
+                            <?php
+                            $filePathText = Route::url(
+                                $base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name)),
+                            );
+                            ?>
+                            <span class="file-path"><?= $filePathText ?></span>
                         </td>
                     </tr>
                         <?php

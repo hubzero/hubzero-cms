@@ -139,7 +139,10 @@ if (!$this->comment->get('item_id')) {
                     && $this->comment->get('qid')
                     && $this->depth <= 1
                 ) { ?>
-                    <a class="icon-success accept" href="<?= Route::url($this->comment->link('accept')) ?>"><?= Lang::txt('COM_ANSWERS_ACCEPT_ANSWER') ?></a>
+                    <?php
+                    $linkText = Lang::txt('COM_ANSWERS_ACCEPT_ANSWER');
+                    ?>
+                    <a class="icon-success accept" href="<?= Route::url($this->comment->link('accept')) ?>"><?= $linkText ?></a>
                 <?php } ?>
             <?php } ?>
             </p>
@@ -161,7 +164,13 @@ if (!$this->comment->get('item_id')) {
                 <form id="cform<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"
                     action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?= Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'COM_ANSWERS_REPLYING_TO',
+                            (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[item_type]"

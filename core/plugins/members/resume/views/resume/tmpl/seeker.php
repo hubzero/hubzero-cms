@@ -118,7 +118,10 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
             <a href="<?= $downloadUrl ?>" class="resume getit" title="<?= $this->escape($title) ?>">
                 <?php echo ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')); ?>
             </a>
-            <span class="mini"><?= Lang::txt('PLG_MEMBERS_RESUME_LAST_UPDATE') ?>: <?= plgMembersResume::nicetime($this->seeker->created) ?></span>
+            <?php
+            $spanText = plgMembersResume::nicetime($this->seeker->created);
+            ?>
+            <span class="mini"><?= Lang::txt('PLG_MEMBERS_RESUME_LAST_UPDATE') ?>: <?= $spanText ?></span>
             <?php
             // The stored url is free text; only an http(s) URL becomes a link
             $url = trim((string) $this->seeker->url);

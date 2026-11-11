@@ -117,7 +117,10 @@ $ferpaDataChecked = function ($value) use ($view) {
                 <?php if ($this->config->get('restricted_data', 0)) : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
                     <p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_EXPLAIN'); ?></p>
-                    <p><?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $hipaa ?>" rel="external" > <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA') ?></a>. <?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $ferpa ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') ?></a>.</p>
+                    <?php
+                    $linkText = Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA');
+                    ?>
+                    <p><?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $hipaa ?>" rel="external" > <?= $linkText ?></a>. <?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $ferpa ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') ?></a>.</p>
                     <p class="info"><?php echo Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
                 <?php else : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>

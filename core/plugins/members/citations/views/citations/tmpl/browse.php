@@ -170,7 +170,10 @@ if (isset($this->messages)) {
                                                     && $this->config->get("citation_sponsors", "yes") == 'yes'
                                                 ) : ?>
                                                     <?php $final = substr($final, 0, -2); ?>
-                                                    <p class="sponsor"><?= Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY') ?> <?= $final ?></p>
+                                                    <?php
+                                                    $sponsorText = Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY');
+                                                    ?>
+                                                    <p class="sponsor"><?= $sponsorText ?> <?= $final ?></p>
                                                 <?php endif; ?>
                                                 <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
                                             </div>

@@ -130,7 +130,10 @@ if ($this->comment->get('resource_id')) {
             </p>
             <?php if ($this->comment->get('resource_id')) { ?>
             <p>
-                <span class="avgrating<?= $class ?>"><span><?= Lang::txt('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS', $this->comment->get('rating', 0)) ?></span></span>
+                <?php
+                $spanText = Lang::txt('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS', $this->comment->get('rating', 0));
+                ?>
+                <span class="avgrating<?= $class ?>"><span><?= $spanText ?></span></span>
             </p>
             <?php } ?>
 
@@ -196,8 +199,10 @@ if ($this->comment->get('resource_id')) {
                         $this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply')
                             . '&comment=' . $this->comment->get('id'),
                     );
+                    $dataTxtConfirm = Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE');
+                    $buttonText = Lang::txt('PLG_RESOURCES_REVIEWS_DELETE');
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DELETE') ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     <?php
                     $editUrl = Route::url(
                         $this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '')
@@ -253,7 +258,13 @@ if ($this->comment->get('resource_id')) {
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
                     enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?= Lang::txt('PLG_RESOURCES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                        <?php
+                        $spanText = Lang::txt(
+                            'PLG_RESOURCES_REVIEWS_REPLYING_TO',
+                            (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS')),
+                        );
+                        ?>
+                        <legend><span><?= $spanText ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[item_type]"

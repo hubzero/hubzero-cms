@@ -95,7 +95,10 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
     <div class="grid">
     <div class="col span8">
         <fieldset>
-            <legend><span><?= Lang::txt('COM_SUPPORT_TICKET') . ($this->row->get('id') ? ' #' . $this->row->get('id') : '') ?></span></legend>
+            <?php
+            $spanText = Lang::txt('COM_SUPPORT_TICKET') . ($this->row->get('id') ? ' #' . $this->row->get('id') : '');
+            ?>
+            <legend><span><?= $spanText ?></span></legend>
     <?php } else { ?>
                 <dl class="ticket-info <?php echo $this->escape($this->row->get('severity')); ?>">
                     <dt>#</dt>
@@ -131,9 +134,15 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                     ?>
                     <a class="permalink" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                         <span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                        <span class="time"><time datetime="<?= $this->row->get('created') ?>"><?= Date::of($this->row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of($this->row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                        ?>
+                        <span class="time"><time datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
                         <span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->row->get('created') ?>"><?= Date::of($this->row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                        <?php
+                        $timeText = Date::of($this->row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
+                        <span class="date"><time datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
                     </a>
                 </div>
                 <blockquote class="ticket-content"
@@ -186,7 +195,10 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>
-                                <td><?= $this->escape($this->row->get('ip')) ?> (<?= $this->escape($this->row->get('hostname')) ?>)</td>
+                                <?php
+                                $cellText = $this->escape($this->row->get('ip'));
+                                ?>
+                                <td><?= $cellText ?> (<?= $this->escape($this->row->get('hostname')) ?>)</td>
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_REFERRER'); ?>:</th>
@@ -336,9 +348,17 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                             <a class="permalink" href="<?= $linkUrl ?>"
                                 title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                                 <span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                                <span class="time"><time datetime="<?= $this->escape($comment->get('created')) ?>"><?= Date::of($comment->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                                <?php
+                                $datetime = $this->escape($comment->get('created'));
+                                $timeText = Date::of($comment->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                                ?>
+                                <span class="time"><time datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
                                 <span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                                <span class="date"><time datetime="<?= $this->escape($comment->get('created')) ?>"><?= Date::of($comment->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                                <?php
+                                $datetime = $this->escape($comment->get('created'));
+                                $timeText = Date::of($comment->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?>
+                                <span class="date"><time datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
                             </a>
                         </p>
                         <blockquote class="comment-content" cite="<?php echo $cite; ?>">

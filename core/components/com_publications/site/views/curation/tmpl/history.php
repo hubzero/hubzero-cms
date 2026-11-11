@@ -48,7 +48,11 @@ endif;
                     ?>
                     <div class="history-block <?php echo $trClass; ?> grid">
                         <div class="changelog-time col span3">
-                            <time datetime="<?= Date::of($event->created)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($event->created)->toLocal('M d, Y H:iA') ?></time>
+                            <?php
+                            $datetime = Date::of($event->created)->format('Y-m-d\TH:i:s\Z');
+                            $timeText = Date::of($event->created)->toLocal('M d, Y H:iA');
+                            ?>
+                            <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                             <span class="block"><?php echo $this->escape($author); ?></span>
                             <span class="block">(
                             <?php echo ($event->curator)

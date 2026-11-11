@@ -212,9 +212,19 @@ if (!$no_html) {
                                     <a class="permalink" href="#c">
                                         <span class="entry-date">
                                             <span class="entry-date-at"><?= Lang::txt('COM_COLLECTIONS_AT') ?></span>
-                                            <span class="time"><time datetime="<?= $comment->created ?>"><?= Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                                            <?php
+                                            $timeText = Date::of($comment->created)->toLocal(
+                                                Lang::txt('TIME_FORMAT_HZ1'),
+                                            );
+                                            ?>
+                                            <span class="time"><time datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
                                             <span class="entry-date-on"><?= Lang::txt('COM_COLLECTIONS_ON') ?></span>
-                                            <span class="date"><time datetime="<?= $comment->created ?>"><?= Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                                            <?php
+                                            $timeText = Date::of($comment->created)->toLocal(
+                                                Lang::txt('DATE_FORMAT_HZ1'),
+                                            );
+                                            ?>
+                                            <span class="date"><time datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
                                         </span>
                                     </a>
                                 </p>
@@ -251,9 +261,15 @@ if (!$no_html) {
                                 </a>
                                 <span class="permalink">
                                     <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                    <span class="time"><time datetime="<?= Date::toSql() ?>"><?= Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                                    ?>
+                                    <span class="time"><time datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
                                     <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                    <span class="date"><time datetime="<?= Date::toSql() ?>"><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                                    <?php
+                                    $timeText = Date::toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                    ?>
+                                    <span class="date"><time datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 
@@ -615,9 +631,19 @@ if (!$no_html) {
                                 <br />
                                 <span class="entry-date">
                                     <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                    <span class="time"><?= Date::of($collection->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></span>
+                                    <?php
+                                    $timeText = Date::of($collection->get('created'))->toLocal(
+                                        Lang::txt('TIME_FORMAT_HZ1'),
+                                    );
+                                    ?>
+                                    <span class="time"><?= $timeText ?></span>
                                     <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                    <span class="date"><?= Date::of($collection->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
+                                    <?php
+                                    $dateText = Date::of($collection->get('created'))->toLocal(
+                                        Lang::txt('DATE_FORMAT_HZ1'),
+                                    );
+                                    ?>
+                                    <span class="date"><?= $dateText ?></span>
                                 </span>
                             </p>
                         </div><!-- / .attribution -->

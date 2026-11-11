@@ -169,7 +169,10 @@ if ($this->masterAdmin) {
         </div>
         <div class="col span6 omega">
             <div id="subinfo">
-                <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_DETAILS') ?><span><?= Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $this->subscription->code ?></span></h3>
+                <?php
+                $spanText = Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $this->subscription->code;
+                ?>
+                <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_DETAILS') ?><span><?= $spanText ?></span></h3>
 
                 <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_SERVICE'); ?></span>
                 <p><?php echo $this->escape($this->service->title); ?></p>
@@ -194,7 +197,10 @@ if ($this->masterAdmin) {
                     ); ?>
                     <div class="spacer"></div>
 
-                    <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION') ?><span><?= Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login ?></span></h3>
+                    <?php
+                    $spanText = Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login;
+                    ?>
+                    <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION') ?><span><?= $spanText ?></span></h3>
 
                     <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY'); ?></span>
                     <p>

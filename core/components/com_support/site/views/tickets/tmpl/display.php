@@ -414,7 +414,15 @@ $this
                                             );
                                             ?>
                                             <span class="ticket-target_date tooltips" title="<?= $titleText ?>">
-                                                <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
+                                                <?php
+                                                $datetime = Date::of($row->get('target_date'))->format(
+                                                    'Y-m-d\TH:i:s\Z',
+                                                );
+                                                $timeText = Date::of($row->get('target_date'))->toLocal(
+                                                    Lang::txt('DATE_FORMAT_HZ1'),
+                                                );
+                                                ?>
+                                                <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                             </span>
                                         <?php } ?>
                                     </span>
@@ -441,7 +449,11 @@ $this
                                         </span>
                                         <?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
                                             <span class="ticket-activity">
-                                                <time datetime="<?= Date::of($lastcomment)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($lastcomment)->relative() ?></time>
+                                                <?php
+                                                $datetime = Date::of($lastcomment)->format('Y-m-d\TH:i:s\Z');
+                                                $timeText = Date::of($lastcomment)->relative();
+                                                ?>
+                                                <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                             </span>
                                         <?php } ?>
                                     </p>

@@ -151,8 +151,14 @@ if ($this->rows->total() > 0) {
                         posted
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?= Date::of('date', $item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?= Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
+                            <?php
+                            $dateText = Date::of('date', $item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-date-at">@</span> <span class="date"><?= $dateText ?></span>
+                            <?php
+                            $timeText = Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-date-on">on</span> <span class="time"><?= $timeText ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->
@@ -179,8 +185,14 @@ if ($this->rows->total() > 0) {
                         </a>
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?= Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?= Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
+                            <?php
+                            $dateText = Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-date-at">@</span> <span class="date"><?= $dateText ?></span>
+                            <?php
+                            $timeText = Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <span class="entry-date-on">on</span> <span class="time"><?= $timeText ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->

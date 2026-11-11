@@ -97,32 +97,60 @@ $this->js('status.js', 'com_massmail');
                 'index.php?option=com_massmail&controller=mailings&status='
                     . \Components\Massmail\Models\Mailing::STATUS_HELD,
             );
+            $linkText = Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings));
             ?>
-            <a class="mm-sending held" href="<?= $linkUrl ?>"><?= Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)) ?></a>
+            <a class="mm-sending held" href="<?= $linkUrl ?>"><?= $linkText ?></a>
         <?php } ?>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT') ?>: <strong><?= number_format($this->hourly) ?>/hr</strong></span>
+        <?php
+        $spanText = Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT');
+        ?>
+        <span><?= $spanText ?>: <strong><?= number_format($this->hourly) ?>/hr</strong></span>
         <span><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN') ?>: <strong><?= number_format($this->perRun) ?></strong> <span class="mm-muted"><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)) ?></span></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR') ?>: <strong><?= number_format($this->ourLastHour) ?></strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_REMAINING') ?>: <strong><?= number_format($this->hourlyRemaining) ?></strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING') ?>: <strong><?= number_format($this->messagesPending) ?></strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_FAILED') ?>: <strong><?= number_format($this->messagesFailed) ?></strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_MESSAGES_SENT') ?>: <strong><?= number_format($this->messagesSent) ?></strong></span>
+        <?php
+        $spanText = Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR');
+        ?>
+        <span><?= $spanText ?>: <strong><?= number_format($this->ourLastHour) ?></strong></span>
+        <?php
+        $spanText = Lang::txt('COM_MASSMAIL_DASH_REMAINING');
+        ?>
+        <span><?= $spanText ?>: <strong><?= number_format($this->hourlyRemaining) ?></strong></span>
+        <?php
+        $spanText = Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING');
+        ?>
+        <span><?= $spanText ?>: <strong><?= number_format($this->messagesPending) ?></strong></span>
+        <?php
+        $strongText = number_format($this->messagesFailed);
+        ?>
+        <span><?= Lang::txt('COM_MASSMAIL_FAILED') ?>: <strong><?= $strongText ?></strong></span>
+        <?php
+        $spanText = Lang::txt('COM_MASSMAIL_DASH_MESSAGES_SENT');
+        ?>
+        <span><?= $spanText ?>: <strong><?= number_format($this->messagesSent) ?></strong></span>
     </div>
     <div class="mm-cards-3">
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_LASTHOUR'); ?></h3>
             <?php echo $bars($this->mmLastHour, 10, '#4299e1'); ?>
-            <div class="mm-pills"><span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmLastHour))) ?></span></div>
+            <?php
+            $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmLastHour)));
+            ?>
+            <div class="mm-pills"><span class="mm-count"><?= $mmCountText ?></span></div>
         </div>
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_HOURLY'); ?></h3>
             <?php echo $bars($this->mmHourly, 6, '#3182ce'); ?>
-            <div class="mm-pills"><span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmHourly))) ?></span></div>
+            <?php
+            $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmHourly)));
+            ?>
+            <div class="mm-pills"><span class="mm-count"><?= $mmCountText ?></span></div>
         </div>
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_DAILY'); ?></h3>
             <?php echo $bars($this->mmDaily, 5, '#2b6cb0'); ?>
-            <div class="mm-pills"><span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmDaily))) ?></span></div>
+            <?php
+            $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmDaily)));
+            ?>
+            <div class="mm-pills"><span class="mm-count"><?= $mmCountText ?></span></div>
         </div>
     </div>
 
@@ -132,35 +160,59 @@ $this->js('status.js', 'com_massmail');
         <span><span class="dot <?= $this->pfRunning ? 'ok' : 'bad' ?>"></span><?= Lang::txt('COM_MASSMAIL_PF_SERVICE') ?>: <strong><?= Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED') ?></strong></span>
         <span><span class="dot <?= $this->pfConfig['configured'] ? 'ok' : 'bad' ?>"></span><strong><?= Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED') ?></strong><?= $this->pfConfig['configured'] && $this->pfConfig['version'] ? ' <span class="mm-muted">' . $this->escape($this->pfConfig['version']) . '</span>' : '' ?></span>
         <span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_LAST_SENT') ?>: <strong><?= $this->lastSent ? $this->escape($this->lastSent) : '&mdash;' ?></strong></span>
+        <?php
+        $strongText = $this->lastSent ? $this->escape($this->lastSent) : '&mdash;';
+        ?>
+        <span><?= Lang::txt('COM_MASSMAIL_DASH_LAST_SENT') ?>: <strong><?= $strongText ?></strong></span>
     </div>
     <div class="mm-cards-3">
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LASTHOUR'); ?></h3>
             <?php echo $bars($this->lastHourVolume, 10, '#4299e1', $this->qLastHour, (int) $this->hourly); ?>
             <div class="mm-pills">
-                <span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->lastHourVolume))) ?></span>
-                <span class="mm-count mm-count-queue"><?= Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeakLastHour)) ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->lastHourVolume)));
+                ?>
+                <span class="mm-count"><?= $mmCountText ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeakLastHour));
+                ?>
+                <span class="mm-count mm-count-queue"><?= $mmCountText ?></span>
             </div>
         </div>
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
             <?php echo $bars($this->hourlyVolume, 6, '#3182ce', $this->qHourly, (int) $this->hourly); ?>
             <div class="mm-pills">
-                <span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->hourlyVolume))) ?></span>
-                <span class="mm-count mm-count-queue"><?= Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak48h)) ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->hourlyVolume)));
+                ?>
+                <span class="mm-count"><?= $mmCountText ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak48h));
+                ?>
+                <span class="mm-count mm-count-queue"><?= $mmCountText ?></span>
             </div>
         </div>
         <div class="mm-card">
             <h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?></h3>
             <?php echo $bars($this->dailyVolume, 5, '#2b6cb0', $this->q30, (int) $this->hourly); ?>
             <div class="mm-pills">
-                <span class="mm-count"><?= Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->dailyVolume))) ?></span>
-                <span class="mm-count mm-count-queue"><?= Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak30d)) ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->dailyVolume)));
+                ?>
+                <span class="mm-count"><?= $mmCountText ?></span>
+                <?php
+                $mmCountText = Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak30d));
+                ?>
+                <span class="mm-count mm-count-queue"><?= $mmCountText ?></span>
             </div>
         </div>
     </div>
-    <p class="mm-legend"><span class="mm-legend-swatch"></span><?= Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly)) ?></p>
+    <?php
+    $mmLegendText = Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly));
+    ?>
+    <p class="mm-legend"><span class="mm-legend-swatch"></span><?= $mmLegendText ?></p>
 </div>
 
 <?php // data-enlarge-hint, not data-hint: the admin template styles [data-hint] as an

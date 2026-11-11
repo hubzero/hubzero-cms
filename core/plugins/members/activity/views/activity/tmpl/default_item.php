@@ -116,7 +116,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-                <span class="activity-channel"><?= $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')) ?></span>
+                <?php
+                $activityChannelText = $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id'));
+                ?>
+                <span class="activity-channel"><?= $activityChannelText ?></span>
                 <span class="activity-context"><?php
                     $scope = explode('.', $this->row->log->get('scope'));
                     echo $this->escape($scope[0]);
@@ -233,7 +236,12 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                             <?php foreach ($duplicates as $dup) { ?>
                                 <li>
                                     <span class="activity-action"><?php echo $dup->log->get('action'); ?></span>
-                                    <span class="activity-time"><time datetime="<?= Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dup->log->get('created'))->toLocal('M j') . ' @ ' . Date::of($dup->log->get('created'))->toLocal('g:i a') ?></time></span>
+                                    <?php
+                                    $datetime = Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z');
+                                    $timeText = Date::of($dup->log->get('created'))->toLocal('M j') . ' @ '
+                                        . Date::of($dup->log->get('created'))->toLocal('g:i a');
+                                    ?>
+                                    <span class="activity-time"><time datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -263,8 +271,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     <li>
                         <?php
                         $removeUrl = Route::url($base . '&action=remove&activity=' . $this->row->get('id'));
+                        $dataTxtConfirm = Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE');
+                        $buttonText = Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     </li>
                     <?php /*<li>
                         <a

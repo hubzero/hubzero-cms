@@ -63,7 +63,11 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 </header><!-- / #content-header -->
 
 <?php if (!$seeker) { ?>
-    <p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' ' . Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?>
+    <?php
+    $warningText = Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' ' . Config::get('sitename') . ' '
+        . Lang::txt('COM_JOBS_APPLY_NEED_RESUME');
+    ?>
+    <p class="warning"><?= $warningText ?>
         <?= '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume')
             . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>' ?>
     </p>

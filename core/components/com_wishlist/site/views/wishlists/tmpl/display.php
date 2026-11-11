@@ -364,9 +364,15 @@ if ($this->wishlist->get('id')) {
                                                 <span class="entry-details-divider">&bull;</span>
                                                 <?= Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY') ?> <?= $name . ' ' ?>
                                                 <span class="entry-date-at"><?= Lang::txt('COM_WISHLIST_AT') ?></span>
-                                                <span class="entry-time"><time datetime="<?= $item->proposed() ?>"><?= $item->proposed('time') ?></time></span>
+                                                <?php
+                                                $timeText = $item->proposed('time');
+                                                ?>
+                                                <span class="entry-time"><time datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
                                                 <span class="entry-date-on"><?= Lang::txt('COM_WISHLIST_ON') ?></span>
-                                                <span class="entry-date"><time datetime="<?= $item->proposed() ?>"><?= $item->proposed('date') ?></time></span>
+                                                <?php
+                                                $timeText = $item->proposed('date');
+                                                ?>
+                                                <span class="entry-date"><time datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
                                                 <span class="entry-details-divider">&bull;</span>
                                                 <span class="entry-comments">
                                                     <?php
@@ -378,7 +384,10 @@ if ($this->wishlist->get('id')) {
                                                 </span>
                                             </span>
                                     <?php } else { ?>
-                                            <span class="warning adjust"><?= Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED') ?></span>
+                                            <?php
+                                            $warningText = Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED');
+                                            ?>
+                                            <span class="warning adjust"><?= $warningText ?></span>
                                     <?php } ?>
                                         </td>
                                     <?php if (!$item->isReported() && $this->wishlist->get('banking')) { ?>
@@ -500,8 +509,9 @@ if ($this->wishlist->get('id')) {
                                             <p class="nav_wishlist">
                                                 <?php
                                                 $linkUrl = Route::url($base);
+                                                $linkText = Lang::txt('COM_WISHLIST_VIEW_ALL_WISHES');
                                                 ?>
-                                                <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_WISHLIST_VIEW_ALL_WISHES') ?></a>
+                                                <a href="<?= $linkUrl ?>"><?= $linkText ?></a>
                                             </p>
                                         <?php } ?>
                                         </td>

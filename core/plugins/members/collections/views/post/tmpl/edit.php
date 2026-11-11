@@ -262,7 +262,10 @@ $idSelected = function ($value) use ($view) {
                             <input type="text" name="tags" id="actags" class="form-control"
                                 value="<?= $this->escape($item->tags('string')) ?>" />
                         <?php } ?>
-                        <span class="hint"><?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT') ?></span>
+                        <?php
+                        $hintText = Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT');
+                        ?>
+                        <span class="hint"><?= $hintText ?></span>
                     </label>
                 </div>
             </div>

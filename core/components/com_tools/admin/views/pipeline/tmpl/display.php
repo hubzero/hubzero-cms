@@ -233,7 +233,10 @@ $filterStateSelected = function ($value) use ($view) {
                 <td>
                     <span class="state <?= $state ?> hasTip"
                         title="<?= $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))) ?>">
-                        <span><?= $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))) ?></span>
+                        <?php
+                        $spanText = $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state)));
+                        ?>
+                        <span><?= $spanText ?></span>
                     </span>
                 </td>
                 <td class="priority-3">

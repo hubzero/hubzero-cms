@@ -374,7 +374,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
                             <div class="grid">
                                 <div class="col span4 label">
-                                    <label for="subtitle-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS') ?>:</label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS');
+                                    ?>
+                                    <label for="subtitle-selector"><?= $labelText ?>:</label>
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="subtitle-selector">
@@ -386,7 +389,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             </div>
                             <div class="grid">
                                 <div class="col span4 label">
-                                    <label for="transcript-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT') ?>:</label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT');
+                                    ?>
+                                    <label for="transcript-selector"><?= $labelText ?>:</label>
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="transcript-selector" class="transcript-selector">
@@ -396,11 +402,17 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS') ?></button>
+                            <?php
+                            $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS');
+                            ?>
+                            <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= $buttonText ?></button>
                             <div class="subtitle-settings hide" id="subtitle-options">
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="font-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
+                                        <?php
+                                        $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT');
+                                        ?>
+                                        <label for="font-selector"><?= $labelText ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-selector">
@@ -433,7 +445,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="font-size-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
+                                        <?php
+                                        $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE');
+                                        ?>
+                                        <label for="font-size-selector"><?= $labelText ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-size-selector">
@@ -457,7 +472,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
+                                        <?php
+                                        $spanText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR');
+                                        ?>
+                                        <span id="font-color-label"><?= $spanText ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
                                         <?php
@@ -471,7 +489,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
+                                        <?php
+                                        $spanText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND');
+                                        ?>
+                                        <span id="background-color-label"><?= $spanText ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
                                         <?php
@@ -494,7 +515,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                 </div>
                                 <div class="actions">
-                                    <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE') ?></button>
+                                    <?php
+                                    $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE');
+                                    ?>
+                                    <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
                                 </div>
                             </div>
                         </div>
@@ -546,7 +570,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                         <div class="control-container settings-controls">
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
                             <div class="grid">
-                                <div class="label"><label for="speed"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED') ?>:</label></div>
+                                <?php
+                                $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED');
+                                ?>
+                                <div class="label"><label for="speed"><?= $labelText ?>:</label></div>
                                 <div class="input">
                                     <select id="speed">
                                         <option value=".25">.25×</option>
@@ -573,10 +600,17 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <div class="control-container link-controls">
-                            <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
+                            <?php
+                            $headingText = Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK');
+                            $spanText = Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION');
+                            ?>
+                            <h3><?= $headingText ?> <span><?= $spanText ?></span></h3>
                             <div class="grid">
                                 <div class="input">
-                                    <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
+                                    <?php
+                                    $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION');
+                                    ?>
+                                    <label for="timestamp-link" class="sr-only"><?= $labelText ?></label>
                                     <?php
                                     $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'));
                                     ?>
@@ -692,7 +726,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
                                     <div class="grid">
                                         <div class="col span4 label">
-                                            <label for="subtitle-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS');
+                                            ?>
+                                            <label for="subtitle-selector"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="subtitle-selector">
@@ -706,7 +743,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                     <div class="grid">
                                         <div class="col span4 label">
-                                            <label for="transcript-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT') ?>:</label>
+                                            <?php
+                                            $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT');
+                                            ?>
+                                            <label for="transcript-selector"><?= $labelText ?>:</label>
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="transcript-selector" class="transcript-selector">
@@ -718,11 +758,17 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             </select>
                                         </div>
                                     </div>
-                                    <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS') ?></button>
+                                    <?php
+                                    $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS');
+                                    ?>
+                                    <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= $buttonText ?></button>
                                     <div class="subtitle-settings hide" id="subtitle-options">
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <label for="font-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
+                                                <?php
+                                                $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT');
+                                                ?>
+                                                <label for="font-selector"><?= $labelText ?>:</label>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-selector">
@@ -761,7 +807,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <label for="font-size-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
+                                                <?php
+                                                $labelText = Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE',
+                                                );
+                                                ?>
+                                                <label for="font-size-selector"><?= $labelText ?>:</label>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-size-selector">
@@ -785,7 +836,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
+                                                <?php
+                                                $spanText = Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR',
+                                                );
+                                                ?>
+                                                <span id="font-color-label"><?= $spanText ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <?php
@@ -802,7 +858,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
+                                                <?php
+                                                $spanText = Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND',
+                                                );
+                                                ?>
+                                                <span id="background-color-label"><?= $spanText ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <?php
@@ -829,7 +890,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             </div>
                                         </div>
                                         <div class="actions">
-                                            <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE') ?></button>
+                                            <?php
+                                            $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE');
+                                            ?>
+                                            <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
                                         </div>
                                     </div>
                                 </div>
@@ -885,7 +949,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 <div class="control-container settings-controls">
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
                                     <div class="grid">
-                                        <div class="label"><label for="speed"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED') ?>:</label></div>
+                                        <?php
+                                        $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED');
+                                        ?>
+                                        <div class="label"><label for="speed"><?= $labelText ?>:</label></div>
                                         <div class="input">
                                             <select id="speed">
                                                 <option value=".25">.25×</option>
@@ -918,10 +985,17 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         stroke-linejoin="round" />
                                 </svg>
                                 <div class="control-container link-controls">
-                                    <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
+                                    <?php
+                                    $headingText = Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK');
+                                    $spanText = Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION');
+                                    ?>
+                                    <h3><?= $headingText ?> <span><?= $spanText ?></span></h3>
                                     <div class="grid">
                                         <div class="input">
-                                            <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
+                                            <?php
+                                            $labelText = Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION');
+                                            ?>
+                                            <label for="timestamp-link" class="sr-only"><?= $labelText ?></label>
                                             <?php
                                             $ariaLabel = $this->escape(
                                                 Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'),
@@ -929,7 +1003,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             ?>
                                             <input type="text" id="timestamp-link" value=""
                                                 aria-label="<?= $ariaLabel ?>" readonly />
-                                            <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
+                                            <?php
+                                            $hintText = Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT');
+                                            ?>
+                                            <span class="hint"><?= $hintText ?></span>
                                         </div>
                                     </div>
                                 </div>

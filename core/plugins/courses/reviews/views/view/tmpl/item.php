@@ -198,7 +198,17 @@ switch ($this->comment->get('rating')) {
                 <div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
                     <form action="<?php echo Route::url($this->url); ?>" method="post" enctype="multipart/form-data">
                         <fieldset>
-                            <legend><span><?= Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator()->get('name') : Lang::txt('JANONYMOUS'))) ?></span></legend>
+                            <?php
+                            $spanText = Lang::txt(
+                                'PLG_COURSES_REVIEWS_REPLYING_TO',
+                                (
+                                    !$this->comment->get('anonymous')
+                                        ? $this->comment->creator()->get('name')
+                                        : Lang::txt('JANONYMOUS')
+                                ),
+                            );
+                            ?>
+                            <legend><span><?= $spanText ?></span></legend>
 
                             <input type="hidden" name="comment[id]" value="0" />
                             <input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />

@@ -119,7 +119,10 @@ $this->js();
                                 <div class="grid">
                                     <div class="col span5">
                                         <div class="input-wrap">
-                                            <label for="field-doi_shoulder"><?= Lang::txt('COM_TOOLS_FIELD_DOI_SHOULDER') ?>:</label><br />
+                                            <?php
+                                            $labelText = Lang::txt('COM_TOOLS_FIELD_DOI_SHOULDER');
+                                            ?>
+                                            <label for="field-doi_shoulder"><?= $labelText ?>:</label><br />
                                             <input type="text" name="doi[doi_shoulder]" id="field-doi_shoulder"
                                                 value="<?= $this->escape($this->doi->doi_shoulder) ?>" />
                                         </div>

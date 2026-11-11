@@ -68,7 +68,10 @@ $this->js('verify.js', 'com_massmail');
                         class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_REPLY_TO') ?></span><span
                         class="mm-env-val"><?= $this->escape($replyTo) ?></span></div>
                     <?php } ?>
-                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_SUBJECT') ?></span><span class="mm-env-val"><?= $this->escape(stripslashes((string) $row->get('subject'))) ?></span></div>
+                    <?php
+                    $mmEnvValText = $this->escape(stripslashes((string) $row->get('subject')));
+                    ?>
+                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_SUBJECT') ?></span><span class="mm-env-val"><?= $mmEnvValText ?></span></div>
                 </div>
                 <div class="mm-pv-body">
                     <iframe id="mm-pv-html" sandbox=""
@@ -109,7 +112,10 @@ $this->js('verify.js', 'com_massmail');
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
-                            <td><span class="mm-status mm-status-<?= $status ?>"><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)) ?></span></td>
+                            <?php
+                            $mmStatusText = Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status));
+                            ?>
+                            <td><span class="mm-status mm-status-<?= $status ?>"><?= $mmStatusText ?></span></td>
                         </tr>
                         <?php if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') { ?>
                             <tr>

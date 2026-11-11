@@ -88,7 +88,10 @@ $this
                                     <span class="prominent"><?php echo $this->escape($this->pub->title); ?></span>
                                 </p>
                                 <p>
-                                    <span class="activate-label"><?= Lang::txt('COM_PROJECTS_TEAM') ?>:</span> <?= $this->team ?>
+                                    <?php
+                                    $activateLabelText = Lang::txt('COM_PROJECTS_TEAM');
+                                    ?>
+                                    <span class="activate-label"><?= $activateLabelText ?>:</span> <?= $this->team ?>
                                 </p>
                             </div>
                             <fieldset>
