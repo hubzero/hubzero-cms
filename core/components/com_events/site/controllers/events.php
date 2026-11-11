@@ -37,6 +37,24 @@ use Hubzero\Facades\Session;
 
 /**
  * Controller class for events
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string                           $dateFormat       The long date format, set by execute()
+ * @property  string                           $dateFormatShort  The short date format, set by execute()
+ * @property  string                           $timeFormat       The time format, set by execute()
+ * @property  string                           $yearFormat       The year format, set by execute()
+ * @property  string                           $monthFormat      The month format, set by execute()
+ * @property  string                           $dayFormat        The day format, set by execute()
+ * @property  float                            $offset           The site's offset from GMT in hours, setup()
+ * @property  int                              $year             The year asked for, set by setup()
+ * @property  int|string                       $month            The month asked for, zero-padded by setup()
+ * @property  int|string                       $day              The day asked for, zero-padded by setup()
+ * @property  int                              $category         The category asked for, set by setup()
+ * @property  int                              $gid              The user's group ID, set by setup()
+ * @property  string                           $_title           The page title, set by buildTitle()
+ * @property  \Components\Events\Tables\Event  $event            The event registered for, set by processTask()
+ * @property  string                           $tags             The tags typed in, kept by saveTask() for the form
  */
 class Events extends SiteController
 {
