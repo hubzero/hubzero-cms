@@ -1298,11 +1298,6 @@ class File extends Base
             return false;
         }
 
-        // Nothing to change
-        if (empty($toAttach)) {
-            return false;
-        }
-
         // Git helper
 
         $this->git = new \Components\Projects\Helpers\Git($configs->path);

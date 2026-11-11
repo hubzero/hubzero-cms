@@ -539,7 +539,6 @@ class Link extends Base
         $params   = $element->typeParams;
         $required = $element->required;
         $counter  = count($attachments ? $attachments : []);
-        $allowed  = isset($params->accept) ? $params->accept : null;
 
         if (!$required) {
             $status->status = $counter ? 1 : 2;
@@ -557,16 +556,6 @@ class Link extends Base
             }
         } elseif ($max > 0 && $counter > $max) {
             $status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
-        } elseif (!self::checkAllowed($attachments, $allowed)) {
-            // Check allowed formats
-            if ($counter && !empty($accept)) {
-                $error = Lang::txt('Error: unacceptable URL. URL should start with: ');
-                foreach ($params->allowed_ext as $ext) {
-                    $error .= ' ' . $ext . ',';
-                }
-                $error = substr($error, 0, strlen($error) - 1);
-                $status->setError($error);
-            }
         }
 
         $status->status = $status->getError() ? 0 : 1;

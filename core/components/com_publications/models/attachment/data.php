@@ -292,6 +292,7 @@ class Data extends Base
         }
 
         // Loop through attachments
+        $objData = null;
         foreach ($attachments as $att) {
             if ($att->type != $this->name) {
                 continue;
@@ -344,7 +345,10 @@ class Data extends Base
         }
 
         // Determine accompanying files and copy them in the right location
-        $this->publishDataFiles($objData, $newConfigs);
+        // (only for the last database in the list, as this always has)
+        if ($objData) {
+            $this->publishDataFiles($objData, $newConfigs);
+        }
 
         return true;
     }
@@ -418,11 +422,6 @@ class Data extends Base
 
         // Cannot make changes
         if ($configs->freeze) {
-            return false;
-        }
-
-        // Nothing to change
-        if (empty($toAttach)) {
             return false;
         }
 

@@ -345,11 +345,6 @@ class Tool extends Base
             return false;
         }
 
-        // Nothing to change
-        if (empty($toAttach)) {
-            return false;
-        }
-
         // Create new version path
         if (!is_dir($configs->dataPath)) {
             if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true)) {

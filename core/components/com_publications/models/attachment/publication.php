@@ -340,11 +340,6 @@ class Publication extends Base
             return false;
         }
 
-        // Nothing to change
-        if (empty($toAttach) && !$configs->replace) {
-            return false;
-        }
-
         // Get existing attachments for the elemnt
         $attachments = $pub->_attachments;
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
@@ -573,7 +568,6 @@ class Publication extends Base
         $params   = $element->typeParams;
         $required = $element->required;
         $counter  = is_array($attachments) ? count($attachments) : 0;
-        $allowed  = isset($params->accept) ? $params->accept : null;
 
         if (!$required) {
             $status->status = $counter ? 1 : 2;
@@ -591,16 +585,6 @@ class Publication extends Base
             }
         } elseif ($max > 0 && $counter > $max) {
             $status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
-        } elseif (!self::checkAllowed($attachments, $allowed)) {
-            // Check allowed formats
-            if ($counter && !empty($accept)) {
-                $error = Lang::txt('Error: unacceptable URL. URL should start with: ');
-                foreach ($params->allowed_ext as $ext) {
-                    $error .= ' ' . $ext . ',';
-                }
-                $error = substr($error, 0, strlen($error) - 1);
-                $status->setError($error);
-            }
         }
 
         $status->status = $status->getError() ? 0 : 1;
