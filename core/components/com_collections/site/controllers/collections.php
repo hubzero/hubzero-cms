@@ -21,6 +21,10 @@ use Hubzero\Facades\Component;
 
 /**
  * Controller class for collections and posts
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Collections extends SiteController
 {

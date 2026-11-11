@@ -26,6 +26,10 @@ use Hubzero\Facades\Event;
 
 /**
  * Controller class for collection posts
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Collections\Models\Archive  $model  The collections archive, set by execute()
  */
 class Posts extends SiteController
 {
