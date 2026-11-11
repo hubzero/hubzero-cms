@@ -9,6 +9,13 @@
 use Hubzero\Facades\App;
 use Hubzero\Facades\User;
 
+/**
+ * Included by Hubzero\Routing\Manager::createRouter(), which supplies the
+ * router these rules are added to.
+ *
+ * @var  \Hubzero\Routing\Router  $router
+ */
+
 /*
 |--------------------------------------------------------------------------
 | SEF Build

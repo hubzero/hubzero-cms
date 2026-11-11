@@ -12,6 +12,13 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Log;
 use Hubzero\Facades\Request;
 
+/**
+ * Included by Hubzero\Routing\Manager::createRouter(), which supplies the
+ * router these rules are added to.
+ *
+ * @var  \Hubzero\Routing\Router  $router
+ */
+
 /*
 |--------------------------------------------------------------------------
 | SEF Build
