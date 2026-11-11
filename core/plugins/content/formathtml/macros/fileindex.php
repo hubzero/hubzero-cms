@@ -81,14 +81,14 @@ class FileIndex extends Macro
                     . DS
                     . trim($config->get('filepath', '/site/wiki'), DS)
                     . DS
-                    . $this->page_id
+                    . $this->pageid
                     . DS
                     . $row->filename;
                 $fpath = PATH_APP
                     . DS
                     . trim($config->get('filepath', '/site/wiki'), DS)
                     . DS
-                    . $this->page_id
+                    . $this->pageid
                     . DS
                     . $row->filename;
 
