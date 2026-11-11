@@ -113,13 +113,17 @@ class Migration20180627111315ComPublications extends Base
             $doi = str_replace('.', '_', $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
+
+            // A DOI bundle has always been linked under the bare name ".zip"
+            // here, not "<doi>.zip" as down() expects. Hubs have already run
+            // this migration, so it keeps doing what it did.
+            $fileName = '.zip';
         } else {
             $bundleName = 'Publication' . '_' . $pubId;
-            $bundleWithVersion = $bundleName . '_' . $versionNum;
+            $fileName = $bundleName . '_' . $versionNum . '.zip';
         }
 
         $tarname = $bundleName . '.zip';
-        $fileName = $bundleWithVersion . '.zip';
         $tarPath = '..' . '/'
             . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/'
             . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/'
