@@ -130,7 +130,11 @@ defined('_HZEXEC_') or die();
             $buttonTitleText = Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS');
             $thisJobText = Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB');
             ?>
-            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>" class="btn" title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn" title="<?= $buttonTitleText ?>"><?= $thisJobText ?></button></span>
+            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>"
+                class="btn"
+                title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button
+                type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn"
+                title="<?= $buttonTitleText ?>"><?= $thisJobText ?></button></span>
         <?php } ?>
         <?php
         if ($job->applied) {

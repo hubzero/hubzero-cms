@@ -71,7 +71,8 @@ $this
                             Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]),
                         );
                         ?>
-                        <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                        <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer"
+                            data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>

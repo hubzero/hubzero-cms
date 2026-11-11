@@ -280,13 +280,15 @@ $prioritySelected = function ($value) use ($view) {
                                             . '/browser';
                                         $titleText = Lang::txt('COM_TOOLS_SOURCE_TIPS');
                                         ?>
-                                        <li class="sourcecode"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
+                                        <li class="sourcecode"><a href="<?= $linkUrl ?>"
+                                            title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
                                         <?php
                                         $linkUrl = $developer_url . $project_path . $this->status['toolname']
                                             . '/timeline';
                                         $titleText = Lang::txt('COM_TOOLS_TIMELINE_TIPS');
                                         ?>
-                                        <li class="timeline"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
+                                        <li class="timeline"><a href="<?= $linkUrl ?>"
+                                            title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
                                     <?php } else { ?>
                                         <li class="wiki"><span
                                             class="disabled"><?= Lang::txt('COM_TOOLS_WIKI') ?></span></li>
@@ -334,7 +336,8 @@ $prioritySelected = function ($value) use ($view) {
                                         ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'))
                                         : strtolower(Lang::txt('COM_TOOLS_SITE_ADMIN'));
                                     ?>
-                                    <h4><?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= $developmentTeamText ?>:</h4>
+                                    <h4><?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?>
+                                        <?= $developmentTeamText ?>:</h4>
                                     <?php
                                     $statusUrl = Route::url(
                                         'index.php?option=' . $this->option . '&controller=' . $this->controller

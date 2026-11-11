@@ -179,35 +179,40 @@ if ($this->results) {
                                                 $titleText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR');
                                                 $linkText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR');
                                                 ?>
-                                                <li class="str1"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                                <li class="str1"><a href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                                 <?php
                                                 $linkUrl = $line->href . $d
                                                     . 'task=addreview&amp;myrating=2#reviewform';
                                                 $titleText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR');
                                                 $linkText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS');
                                                 ?>
-                                                <li class="str2"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                                <li class="str2"><a href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                                 <?php
                                                 $linkUrl = $line->href . $d
                                                     . 'task=addreview&amp;myrating=3#reviewform';
                                                 $titleText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD');
                                                 $linkText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS');
                                                 ?>
-                                                <li class="str3"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                                <li class="str3"><a href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                                 <?php
                                                 $linkUrl = $line->href . $d
                                                     . 'task=addreview&amp;myrating=4#reviewform';
                                                 $titleText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD');
                                                 $linkText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS');
                                                 ?>
-                                                <li class="str4"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                                <li class="str4"><a href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                                 <?php
                                                 $linkUrl = $line->href . $d
                                                     . 'task=addreview&amp;myrating=5#reviewform';
                                                 $titleText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT');
                                                 $linkText = Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS');
                                                 ?>
-                                                <li class="str5"><a href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
+                                                <li class="str5"><a href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                             </ul>
                                         </td>
                                     </tr>

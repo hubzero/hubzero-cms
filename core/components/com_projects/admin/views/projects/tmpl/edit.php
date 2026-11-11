@@ -205,7 +205,9 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                     ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'
                                     : '';
                                 ?>
-                                <option value="<?= $member->userid ?>" <?= $selectedAttr ?>><?= $this->escape($member->fullname) ?> <?= $currentOwnerText ?></option>
+                                <option value="<?= $member->userid ?>"
+                                    <?= $selectedAttr ?>><?= $this->escape($member->fullname) ?>
+                                    <?= $currentOwnerText ?></option>
                             <?php } ?>
                         </select>
                     </label>
@@ -470,7 +472,9 @@ $paramsLayoutSelected = function ($value) use ($view) {
                             $agoText = ProjectsHtml::timeAgo($this->last_activity->created) . ' '
                                 . Lang::txt('COM_PROJECTS_AGO');
                             ?>
-                            <?= $this->last_activity->created ?> (<?= $agoText ?>) <br /> <span class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span> <?= $activity ?>
+                            <?= $this->last_activity->created ?> (<?= $agoText ?>) <br /> <span
+                                class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span>
+                                <?= $activity ?>
                             <?php } else {
                                 echo Lang::txt('COM_PROJECTS_NA');
                             }?>

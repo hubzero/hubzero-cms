@@ -99,7 +99,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                                     . (($calendar->get('color')) ? $calendar->get('color') : 'gray') . '.png';
                                 $optionText = $this->escape($calendar->get('title'));
                                 ?>
-                                <option <?= $sel ?> data-img="<?= $dataImg ?>" value="<?= $calendar->get('id') ?>"><?= $optionText ?></option>
+                                <option <?= $sel ?> data-img="<?= $dataImg ?>"
+                                    value="<?= $calendar->get('id') ?>"><?= $optionText ?></option>
                             <?php endforeach; ?>
                         </select>
 

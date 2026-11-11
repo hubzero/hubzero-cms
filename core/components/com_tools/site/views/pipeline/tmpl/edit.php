@@ -126,7 +126,8 @@ $repohostChecked = function ($value) use ($view) {
                                 ? Lang::txt('COM_TOOLS_CURRENT_VERSION')
                                 : Lang::txt('COM_TOOLS_DEV_VERSION');
                             ?>
-                            <strong><?= $this->escape($this->defaults['toolname']) ?> (<?= $currentVersionText ?>)</strong>
+                            <strong><?= $this->escape($this->defaults['toolname']) ?>
+                                (<?= $currentVersionText ?>)</strong>
                             <?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
                                 <?php
                                 $versionsUrl = Route::url(

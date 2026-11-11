@@ -107,7 +107,9 @@ if ($comment) {
                             <?php
                             $versionLabelText = $this->escape($this->publication->get('version_label'));
                             ?>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->publication->get('title')) ?> v. <?= $versionLabelText ?>(#<?= $this->publication->get('id') ?>)</td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                align="left"><?= $this->escape($this->publication->get('title')) ?> v.
+                                <?= $versionLabelText ?>(#<?= $this->publication->get('id') ?>)</td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"

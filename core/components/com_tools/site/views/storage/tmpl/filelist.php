@@ -103,7 +103,10 @@ $this
                                     $confirmText = Lang::txt('Are you sure you want to delete the folder "%s"?', $dir);
                                     $dataNotempty = Lang::txt('Sorry unable to delete folder because it is not empty');
                                     ?>
-                                    <a class="delete icon-delete delete-folder" href="<?= $linkUrl ?>" data-confirm="<?= $confirmText ?>" data-files="<?= $numFiles ?>" data-notempty="<?= $dataNotempty ?>" target="filer" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                    <a class="delete icon-delete delete-folder" href="<?= $linkUrl ?>"
+                                        data-confirm="<?= $confirmText ?>" data-files="<?= $numFiles ?>"
+                                        data-notempty="<?= $dataNotempty ?>" target="filer"
+                                        title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                     </a>
@@ -130,7 +133,8 @@ $this
                                     . '=1';
                                 $confirmText = Lang::txt('Are you sure you want to delete the file "%s"?', $name);
                                 ?>
-                                <a class="delete icon-delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                <a class="delete icon-delete delete-file" href="<?= $linkUrl ?>" target="filer"
+                                    data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                 </a>

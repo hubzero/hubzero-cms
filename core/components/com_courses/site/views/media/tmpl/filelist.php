@@ -68,7 +68,9 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                                 $num_files,
                             );
                             ?>
-                            <a class="icon-delete delete delete-folder" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" data-files="<?= $num_files ?>" data-notempty="<?= $dataNotempty ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                            <a class="icon-delete delete delete-folder" href="<?= $linkUrl ?>" target="filer"
+                                data-confirm="<?= $confirmText ?>" data-files="<?= $num_files ?>"
+                                data-notempty="<?= $dataNotempty ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>
@@ -115,7 +117,8 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                                 $docs[$doc_name],
                             );
                             ?>
-                            <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                            <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer"
+                                data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>
@@ -155,7 +158,8 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                                 $images[$image_name],
                             );
                             ?>
-                            <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer" data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                            <a class="icon-delete delete delete-file" href="<?= $linkUrl ?>" target="filer"
+                                data-confirm="<?= $confirmText ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>
