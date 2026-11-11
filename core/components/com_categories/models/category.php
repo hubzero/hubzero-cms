@@ -532,7 +532,7 @@ class Category extends Nested
     /**
      * Move an entry up or down in th ordering
      *
-     * @param   itneger  $delta
+     * @param   integer  $delta
      * @param   string   $extension
      * @param   string   $where
      * @return  boolean
@@ -574,7 +574,8 @@ class Category extends Nested
                 $storage = $this->updatePositionWithChildren($thisStart);
                 $rowStart = $storage->last()->get('rgt') + 1;
                 $row->updatePositionWithChildren($rowStart, $storage);
-            } elseif ($delta > 0) {
+            } else {
+                // A zero delta returned early, so the delta is positive.
                 $rowStart = $this->get('lft');
                 $storage = $row->updatePositionWithChildren($rowStart);
                 $thisStart = $storage->last()->get('rgt') + 1;
