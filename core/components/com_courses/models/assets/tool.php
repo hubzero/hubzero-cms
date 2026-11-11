@@ -164,11 +164,15 @@ class Tool extends Content
         $return['projectFiles'] = [];
         foreach ($toAttach as $identifier) {
             if ($conFile = $this->checkForRemoteConnection($identifier)) {
-                if ($tempFile = $this->writeRemoteTempFile($conFile)) {
-                    $identifier = $tempFile->getFilename();
-                    $filePath = $tempFile->getAbsolutePath();
-                    $name = $identifier;
+                $tempFile = $this->writeRemoteTempFile($conFile);
+                if (!$tempFile) {
+                    // The remote file could not be copied here, so there is nothing to attach
+                    $tempFile = null;
+                    continue;
                 }
+                $identifier = $tempFile->getFilename();
+                $filePath = $tempFile->getAbsolutePath();
+                $name = $identifier;
             } else {
                 $identifier = urldecode($identifier);
 
@@ -209,7 +213,7 @@ class Tool extends Content
         $toolPath = $courseParams->get('tool_path');
         $toolPath = trim($toolPath == null ? '' : $toolPath, '/');
         $toolPath = '/' . $toolPath . '/';
-        if (!empty($toolPath) && is_writable($toolPath)) {
+        if (is_writable($toolPath)) {
             return $toolPath;
         }
         return false;

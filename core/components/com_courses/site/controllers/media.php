@@ -249,7 +249,7 @@ class Media extends SiteController
         // Check that the file type is allowed
         $allowed = ['png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx'];
 
-        if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
+        if (!in_array(strtolower($ext), $allowed)) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
             return $this->displayTask();
         }
@@ -711,6 +711,9 @@ class Media extends SiteController
             $file = urldecode(substr($filename, 6));
         } elseif (substr(strtolower($filename), 0, 4) == 'file') {
             $file = urldecode(substr($filename, 5));
+        } else {
+            App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+            return;
         }
 
         //check to make sure we can access it

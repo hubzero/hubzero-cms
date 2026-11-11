@@ -51,6 +51,7 @@ class Managers extends AdminController
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);
+            $uid = 0;
             // User ID
             if (is_numeric($mbr)) {
                 // Make sure the user exists
