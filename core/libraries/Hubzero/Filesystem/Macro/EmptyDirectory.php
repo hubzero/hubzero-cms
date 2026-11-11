@@ -26,19 +26,26 @@ class EmptyDirectory extends Base
     /**
      * Empty a directory's contents.
      *
-     * @param   string  $dirname
-     * @return  void
+     * @param   string   $dirname
+     * @return  boolean  True if everything in it was deleted
      */
     public function handle($dirname)
     {
         $listing = $this->filesystem->listContents($dirname, false);
+        $success = true;
 
         foreach ($listing as $item) {
             if ($item['type'] === 'dir') {
-                $this->filesystem->deleteDirectory($dirname . $item['path']);
+                $deleted = $this->filesystem->deleteDirectory($dirname . $item['path']);
             } else {
-                $this->filesystem->delete($dirname . $item['path']);
+                $deleted = $this->filesystem->delete($dirname . $item['path']);
+            }
+
+            if (!$deleted) {
+                $success = false;
             }
         }
+
+        return $success;
     }
 }
