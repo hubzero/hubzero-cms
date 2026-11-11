@@ -317,7 +317,8 @@ if (!$tmpl) :
                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
                     */ ?>
                     <option value="severity"<?= $sortSelected('severity') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?></option>
-                    <option value="tag"<?= $sortSelected('tag') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_TAG') ?></option>
+                    <option
+                        value="tag"<?= $sortSelected('tag') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_TAG') ?></option>
                     <option value="type"<?= $sortSelected('type') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE') ?></option>
                     <option value="created"<?= $sortSelected('created') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED') ?></option>
                     <option value="closed"<?= $sortSelected('closed') ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED') ?></option>

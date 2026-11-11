@@ -271,7 +271,8 @@ $repohostChecked = function ($value) {
                     ) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?= $publishTypeChecked('simtool') ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool"
+                                value="simtool" <?= $publishTypeChecked('simtool') ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_SIM'); ?>
                         </label>
                     </div>
@@ -301,7 +302,8 @@ $repohostChecked = function ($value) {
 
                     <div class="form-group form-check">
                         <label for="tool_repohost_svnlocal" class="form-check-label">
-                            <input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?= $repohostChecked('svnLocal') ?> class="option form-check-input" />
+                            <input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal"
+                                value="svnLocal" <?= $repohostChecked('svnLocal') ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
                         </label>
                     </div>
@@ -358,7 +360,8 @@ $repohostChecked = function ($value) {
                     ) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?= $publishTypeChecked('simtool') ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool"
+                                value="simtool" <?= $publishTypeChecked('simtool') ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_SIM'); ?>
                         </label>
                     </div>

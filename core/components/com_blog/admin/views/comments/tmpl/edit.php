@@ -166,7 +166,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
                         <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
                         <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
-                        <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_BLOG_FIELD_STATE_FLAGGED') ?></option>
+                        <option
+                            value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_BLOG_FIELD_STATE_FLAGGED') ?></option>
                     </select>
                 </div>
             </fieldset>

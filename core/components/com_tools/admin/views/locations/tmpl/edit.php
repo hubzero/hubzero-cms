@@ -357,7 +357,8 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                                 <?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
                         <td>
                             <select name="fields[continent]" id="field-continent">
-                                <option value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
+                                <option
+                                    value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
                                 <option value="NA"<?= $continentSelected('NA') ?>>North America</option>
                                 <option value="SA"<?= $continentSelected('SA') ?>>South America</option>
                                 <option value="EU"<?= $continentSelected('EU') ?>>Europe</option>
@@ -373,7 +374,8 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                             <label for="field-countrySHORT"><?php echo Lang::txt('Country'); ?>:</label></th>
                         <td>
                             <select name="fields[countrySHORT]" id="field-countrySHORT">
-                                <option value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
+                                <option
+                                    value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
                                 <?php
                                 //if ($countries = \Hubzero\Geocode\Geocode::countries())
                                 if ($countries) {

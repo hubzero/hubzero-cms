@@ -81,8 +81,10 @@ $filterStateSelected = function ($value) {
             <div class="col span6">
                 <label for="scopeinfo"><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE'); ?>:</label>
                 <select name="scopeinfo" id="scopeinfo" class="filter filter-submit">
-                    <option value=""<?= $scopeinfoSelected('') ?>><?= Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT') ?></option>
-                    <option value="site:0"<?= $scopeinfoSelected('site:0') ?>><?= Lang::txt('COM_FORUM_NONE') ?></option>
+                    <option
+                        value=""<?= $scopeinfoSelected('') ?>><?= Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT') ?></option>
+                    <option
+                        value="site:0"<?= $scopeinfoSelected('site:0') ?>><?= Lang::txt('COM_FORUM_NONE') ?></option>
                     <?php
                     $list = [];
                     foreach ($this->scopes as $result) {

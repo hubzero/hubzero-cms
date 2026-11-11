@@ -82,7 +82,8 @@ $quotaSelected = function ($value) {
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
-                    <option value=""<?= $filterbySelected('') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL') ?></option>
+                    <option
+                        value=""<?= $filterbySelected('') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL') ?></option>
                     <option value="setting_up_in_progress"<?= $filterbySelected('setting_up_in_progress') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS') ?></option>
                     <option value="active"<?= $filterbySelected('active') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE') ?></option>
                     <option value="deleted"<?= $filterbySelected('deleted') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED') ?></option>

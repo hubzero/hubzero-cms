@@ -367,7 +367,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                     <label for="field-sAllowMultiple"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
                     <select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
                         <option value="0"<?= $allowMultipleSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                        <option value="1"<?= $allowMultipleSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                        <option
+                            value="1"<?= $allowMultipleSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                     </select>
                 </div>
 

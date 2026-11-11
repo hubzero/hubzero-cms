@@ -79,8 +79,10 @@ $redeemedSelected = function ($value) {
                 <label for="filter-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="redeemed" id="filter-redeemed" class="filter filter-submit">
                     <option value="-1"<?= $redeemedSelected(-1) ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
-                    <option value="1"<?= $redeemedSelected(1) ?>><?= Lang::txt('COM_COURSES_FILTER_REDEEMED') ?></option>
-                    <option value="0"<?= $redeemedSelected(0) ?>><?= Lang::txt('COM_COURSES_FILTER_UNREDEEMED') ?></option>
+                    <option
+                        value="1"<?= $redeemedSelected(1) ?>><?= Lang::txt('COM_COURSES_FILTER_REDEEMED') ?></option>
+                    <option
+                        value="0"<?= $redeemedSelected(0) ?>><?= Lang::txt('COM_COURSES_FILTER_UNREDEEMED') ?></option>
                 </select>
             </div>
         </div>

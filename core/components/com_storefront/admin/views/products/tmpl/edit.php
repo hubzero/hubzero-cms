@@ -179,7 +179,8 @@ $activeStatusSelected = function ($value) {
 
                     foreach ($this->types as $type) {
                         ?>
-                        <option value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
+                        <option
+                            value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
                         <?php
                     }
 

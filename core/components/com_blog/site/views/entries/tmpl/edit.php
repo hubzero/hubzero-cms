@@ -128,7 +128,8 @@ $accessSelected = function ($value) {
                     <div class="col span-half">
                         <div class="form-group form-check">
                             <label for="field-allow_comments" class="form-check-label">
-                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $allowCommentsChecked(1) ?> />
+                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]"
+                                    id="field-allow_comments" value="1"<?= $allowCommentsChecked(1) ?> />
                                 <?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                             </label>
                         </div>

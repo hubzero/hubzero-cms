@@ -133,7 +133,8 @@ $ferpaDataChecked = function ($value) {
                         class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                     <div class="form-group form-check">
                         <label for="restricted-yes" class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?= $restrictedDataChecked('yes') ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted"
+                                id="restricted-yes" type="radio" value="yes" <?= $restrictedDataChecked('yes') ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES'); ?>
                         </label>
                     </div>
@@ -143,7 +144,8 @@ $ferpaDataChecked = function ($value) {
 
                         <div class="form-group form-check">
                             <label for="export" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="export" id="export" type="checkbox" value="yes" <?= $exportDataChecked('yes') ?> />
+                                <input class="option form-check-input restricted-opt" name="export" id="export"
+                                    type="checkbox" value="yes" <?= $exportDataChecked('yes') ?> />
                                 <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED') ?>
                             </label>
                         </div>
@@ -151,7 +153,8 @@ $ferpaDataChecked = function ($value) {
 
                         <div class="form-group form-check">
                             <label for="irb" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?= $irbDataChecked('yes') ?> />
+                                <input class="option form-check-input restricted-opt" name="irb" id="irb"
+                                    type="checkbox" value="yes" <?= $irbDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_IRB'); ?>
                             </label>
                         </div>
@@ -169,7 +172,8 @@ $ferpaDataChecked = function ($value) {
 
                         <div class="form-group form-check">
                             <label for="hipaa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?= $hipaaDataChecked('yes') ?> />
+                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa"
+                                    type="checkbox" value="yes" <?= $hipaaDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
                             </label>
                         </div>
@@ -177,7 +181,8 @@ $ferpaDataChecked = function ($value) {
 
                         <div class="form-group form-check">
                             <label for="ferpa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?= $ferpaDataChecked('yes') ?> />
+                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa"
+                                    type="checkbox" value="yes" <?= $ferpaDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_FERPA'); ?>
                             </label>
                         </div>
@@ -196,7 +201,8 @@ $ferpaDataChecked = function ($value) {
 
                     <div class="form-group form-check">
                         <label class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?= $restrictedDataChecked('no') ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted"
+                                id="restricted-no" type="radio" value="no" <?= $restrictedDataChecked('no') ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
                         </label>
                     </div>

@@ -79,7 +79,8 @@ $formAction = Route::url(
                 <select id="filter-type" name="type" class="filter filter-submit">
                     <option value="-1"<?= $typeSelected(-1) ?>><?= Lang::txt('COM_STOREFRONT_FILTER_TYPE') ?></option>
                     <?php foreach ($this->types as $type) { ?>
-                        <option value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
+                        <option
+                            value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
                     <?php } ?>
                 </select>
             </div>

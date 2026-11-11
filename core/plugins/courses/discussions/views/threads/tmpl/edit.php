@@ -123,7 +123,8 @@ $anonymousChecked = function ($value) {
         <?php } ?>
 
             <label for="field-anonymous" class="comment-anonymous-label">
-                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?= $anonymousChecked(1) ?> value="1" />
+                <input class="option" type="checkbox" name="fields[anonymous]"
+                    id="field-anonymous"<?= $anonymousChecked(1) ?> value="1" />
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
             </label>
 

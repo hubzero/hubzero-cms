@@ -141,7 +141,8 @@ $accessSelected = function ($value) {
                         $access,
                     ); ?>
                 <?php else : ?>
-                    <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC') ?></option>
+                    <option
+                        value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC') ?></option>
                     <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED') ?></option>
                     <option value="5"<?= $accessSelected(5) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE') ?></option>
                 <?php endif; ?>

@@ -311,16 +311,21 @@ foreach ($this->getErrors() as $error) {
                                     <option value="*/2"<?= $monthSelected('*/2') ?>><?= Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER') ?></option>
                                     <option value="*/3"<?= $monthSelected('*/4') ?>><?= Lang::txt('COM_CRON_FIELD_OPT_EVERY_THREE') ?></option>
                                     <option value="*/6"<?= $monthSelected('*/6') ?>><?= Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX') ?></option>
-                                    <option value="1"<?= $monthSelected('1') ?>><?= Lang::txt('JANUARY_SHORT') ?></option>
-                                    <option value="2"<?= $monthSelected('2') ?>><?= Lang::txt('FEBRUARY_SHORT') ?></option>
+                                    <option
+                                        value="1"<?= $monthSelected('1') ?>><?= Lang::txt('JANUARY_SHORT') ?></option>
+                                    <option
+                                        value="2"<?= $monthSelected('2') ?>><?= Lang::txt('FEBRUARY_SHORT') ?></option>
                                     <option value="3"<?= $monthSelected('3') ?>><?= Lang::txt('MARCH_SHORT') ?></option>
                                     <option value="4"<?= $monthSelected('4') ?>><?= Lang::txt('APRIL_SHORT') ?></option>
                                     <option value="5"<?= $monthSelected('5') ?>><?= Lang::txt('MAY_SHORT') ?></option>
                                     <option value="6"<?= $monthSelected('6') ?>><?= Lang::txt('JUNE_SHORT') ?></option>
                                     <option value="7"<?= $monthSelected('7') ?>><?= Lang::txt('JULY_SHORT') ?></option>
-                                    <option value="8"<?= $monthSelected('8') ?>><?= Lang::txt('AUGUST_SHORT') ?></option>
-                                    <option value="9"<?= $monthSelected('9') ?>><?= Lang::txt('SEPTEMBER_SHORT') ?></option>
-                                    <option value="10"<?= $monthSelected('10') ?>><?= Lang::txt('OCTOBER_SHORT') ?></option>
+                                    <option
+                                        value="8"<?= $monthSelected('8') ?>><?= Lang::txt('AUGUST_SHORT') ?></option>
+                                    <option
+                                        value="9"<?= $monthSelected('9') ?>><?= Lang::txt('SEPTEMBER_SHORT') ?></option>
+                                    <option
+                                        value="10"<?= $monthSelected('10') ?>><?= Lang::txt('OCTOBER_SHORT') ?></option>
                                     <option value="11"<?= $monthSelected('11') ?>><?= Lang::txt('NOVEMBER_SHORT') ?></option>
                                     <option value="12"<?= $monthSelected('12') ?>><?= Lang::txt('DECEMBER_SHORT') ?></option>
                                 </select>

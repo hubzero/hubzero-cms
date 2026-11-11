@@ -64,7 +64,8 @@ $statusSelected = function ($value) {
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_WISHLIST_STATE_ALL') ?></option>
                     <option value="granted"<?= $statusSelected('granted') ?>><?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?></option>
-                    <option value="open"<?= $statusSelected('open') ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
+                    <option
+                        value="open"<?= $statusSelected('open') ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
                     <option value="accepted"<?= $statusSelected('accepted') ?>><?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?></option>
                     <option value="pending"<?= $statusSelected('pending') ?>><?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?></option>
                     <option value="rejected"<?= $statusSelected('rejected') ?>><?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?></option>

@@ -180,17 +180,20 @@ $stateSelected = function ($value) {
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[hide_authors]" id="param-hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
+                    <input type="checkbox" name="params[hide_authors]"
+                        id="param-hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
                     <label for="param-hide_authors"><?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_changes]" id="param-allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
+                    <input type="checkbox" name="params[allow_changes]"
+                        id="param-allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
                     <label for="param-allow_changes"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_comments]" id="param-allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
+                    <input type="checkbox" name="params[allow_comments]"
+                        id="param-allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
                     <label for="param-allow_comments"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?></label>
                 </div>
 

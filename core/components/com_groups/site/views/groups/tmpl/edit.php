@@ -285,14 +285,16 @@ $discoverabilityChecked = function ($value) {
 
                         <div class="form-group form-check">
                             <label for="discoverability0" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
+                                <input type="radio" class="option form-check-input" name="discoverability"
+                                    id="discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING') ?></strong>
                                 <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="discoverability1" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
+                                <input type="radio" class="option form-check-input" name="discoverability"
+                                    id="discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING') ?></strong>
                                 <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC') ?></span>
                             </label>

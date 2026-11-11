@@ -91,9 +91,11 @@ $modeChecked = function ($value) {
         <?php if (!$this->getError()) { ?>
         <div class="diff-legend">
             <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-            <label><input type="radio" value="side-by-side" name="mode"  <?= $modeChecked('side-by-side') ?>  /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE') ?>
+            <label><input type="radio" value="side-by-side" name="mode"
+                 <?= $modeChecked('side-by-side') ?>  /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE') ?>
             </label>
-            <label><input type="radio" value="inline" name="mode" <?= $modeChecked('inline') ?> /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE') ?>
+            <label><input type="radio" value="inline"
+                name="mode" <?= $modeChecked('inline') ?> /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE') ?>
             </label>
             <input type="submit" value="Update" id="diff-update" class="btn" />
             <dl>

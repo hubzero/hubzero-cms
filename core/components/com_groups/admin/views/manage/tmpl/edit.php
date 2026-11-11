@@ -350,10 +350,12 @@ $discoverabilityChecked = function ($value) {
                                 <legend><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?>:</legend>
 
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability0"
+                                        value="0"<?= $discoverabilityChecked(0) ?> />
                                     <label for="field-discoverability0"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE') ?></label>
                                     <br />
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability1"
+                                        value="1"<?= $discoverabilityChecked(1) ?> />
                                     <label for="field-discoverability1"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN') ?></label>
                                 </div>
                             </fieldset>

@@ -59,7 +59,8 @@ $this
                 <label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
                 <select name="report-notes" id="filter-report-notes" class="filter filter-submit">
                     <option value="0"<?= $reportNotesSelected(0) ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ALL') ?></option>
-                    <option value="1"<?= $reportNotesSelected(1) ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ONLY') ?></option>
+                    <option
+                        value="1"<?= $reportNotesSelected(1) ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ONLY') ?></option>
                 </select>
                 &nbsp;&nbsp;
                 <label for="filter-report-from">From:</label>

@@ -372,21 +372,27 @@ $allowCommentsChecked = function ($value) {
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_hide_authors">
-                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[hide_authors]"
+                                            id="params_hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_changes">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[allow_changes]"
+                                            id="params_allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_comments">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[allow_comments]"
+                                            id="params_allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                                     </label>
                                 </div>

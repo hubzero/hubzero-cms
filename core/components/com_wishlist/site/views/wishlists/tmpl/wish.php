@@ -651,14 +651,16 @@ $categoryChecked = function ($value) {
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-general">
-                                        <input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?= $categoryChecked('general') ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="general"
+                                            id="field-type-general" <?= $categoryChecked('general') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_MAIN_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-resource">
-                                        <input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?= $categoryChecked('resource') ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="resource"
+                                            id="field-type-resource" <?= $categoryChecked('resource') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_RESOURCE_NAME'); ?>
                                     </label>
                                 </div>
@@ -676,7 +678,8 @@ $categoryChecked = function ($value) {
                             ) { ?>
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-group">
-                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?= $categoryChecked('group') ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="group"
+                                            id="field-type-group" <?= $categoryChecked('group') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
                                     </label>
                                 </div>

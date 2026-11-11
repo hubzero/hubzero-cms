@@ -335,7 +335,8 @@ $featuredSelected = function ($value) {
                         <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
                         <option value="4"<?= $stateSelected(4) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
                         <option value="5"<?= $stateSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
-                        <option value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
+                        <option
+                            value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
                         <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
                         <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
                         <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>

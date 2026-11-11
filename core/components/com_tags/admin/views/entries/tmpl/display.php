@@ -64,8 +64,10 @@ $bySelected = function ($value) {
                 <label for="filter-filterby"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
                     <option value="all"<?= $bySelected('all') ?>><?= Lang::txt('COM_TAGS_FILTER_ALL_TAGS') ?></option>
-                    <option value="user"<?= $bySelected('user') ?>><?= Lang::txt('COM_TAGS_FILTER_USER_TAGS') ?></option>
-                    <option value="admin"<?= $bySelected('admin') ?>><?= Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS') ?></option>
+                    <option
+                        value="user"<?= $bySelected('user') ?>><?= Lang::txt('COM_TAGS_FILTER_USER_TAGS') ?></option>
+                    <option
+                        value="admin"<?= $bySelected('admin') ?>><?= Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS') ?></option>
                 </select>
             </div>
         </div>

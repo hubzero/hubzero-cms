@@ -242,8 +242,10 @@ $stateSelected = function ($value) {
                     <label for="field-state"><?php echo Lang::txt('JSTATUS'); ?>:</label><br />
                     <?php if (User::authorise('core.edit.state', $this->option)) { ?>
                         <select name="fields[state]" id="field-state">
-                            <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
-                            <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
+                            <option
+                                value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
+                            <option
+                                value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
                         </select>
                     <?php } else { ?>
                         <span class="state <?php echo $this->row->get('state', 1) ? 'publish' : 'unpublish'; ?>">

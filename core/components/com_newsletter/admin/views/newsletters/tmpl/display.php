@@ -91,7 +91,8 @@ if (!$this->dependency) {
             <div class="col span8 align-right">
                 <select name="type" id="filter-type" class="filter filter-submit">
                     <option value=""<?= $typeSelected('') ?>><?= Lang::txt('COM_NEWSLETTER_ALL_TYPES') ?></option>
-                    <option value="html"<?= $typeSelected('html') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_HTML') ?></option>
+                    <option
+                        value="html"<?= $typeSelected('html') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_HTML') ?></option>
                     <option value="plain"<?= $typeSelected('plain') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_PLAIN') ?></option>
                 </select>
             </div>
