@@ -228,7 +228,12 @@ $roles = [
             </th>
             <th class="i_group <?php echo $this->filters['sortby'] == 'group' ? 'activesort' : ''; ?>">
                 <?php if ($this->count_groups > 0) {
-                    ?><a href="<?= Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=group&sortdir=' . $sortbyDir . '#teamlist') ?>" class="re_sort" ><?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=' . $this->task . '&alias='
+                            . $this->model->get('alias') . '&active=team&sortby=group&sortdir=' . $sortbyDir
+                            . '#teamlist',
+                    );
+                    ?><a href="<?= $linkUrl ?>" class="re_sort" ><?php
                 } ?>
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_ADDED_AS_PART_OF_GROUP'); ?>
                 <?php if ($this->count_groups > 0) {

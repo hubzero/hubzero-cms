@@ -603,7 +603,8 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                             'COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE',
                                         ) . '</span>' . $mc[0];
                                 } else {
-                                    ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
+                                    $hintText = Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS');
+                                    ?> <span class="hint"><?= $hintText ?></span>
                                     <input type="text" name="cc" id="comment-field-message"
                                         value="<?= implode(', ', $cc) ?>" />
                                 <?php } ?>

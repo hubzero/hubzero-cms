@@ -77,13 +77,15 @@ $base = rtrim(Request::base(true), '/');
     $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
     ?>
 <h3 class="prov-header"><a href="<?= $linkUrl ?>"><?= $linkText ?></a> <?php if ($this->pub->exists()) {
-    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
+    $linkUrl = Route::url($this->pub->link('editversion'));
+    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                  } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else {
     $linkUrl = Route::url($this->project->link('publications'));
     ?>
 <h3 class="publications c-header"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> <?php if ($this->pub->exists()) {
-    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
+    $linkUrl = Route::url($this->pub->link('editversion'));
+    ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                            } ?> &raquo; <span class="indlist"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')) ?></span></h3>
 <?php } ?>
 </div>
@@ -181,7 +183,8 @@ $base = rtrim(Request::base(true), '/');
                     $cellText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS');
                     ?>
                     <td class="pubstats-sh"><?= $cellText ?> <?php if ($i == 1) {
-                        ?> <span class="info-pop tooltips" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS_TIPS_TITLE_ABOUT') ?>">&nbsp;</span> <?php
+                        $titleText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS_TIPS_TITLE_ABOUT');
+                        ?> <span class="info-pop tooltips" title="<?= $titleText ?>">&nbsp;</span> <?php
                                             } ?></td>
                     <td class="pubstats-graph">
                         <div id="view-<?php echo $stat->publication_id; ?>" class="ph"></div>
@@ -285,7 +288,8 @@ $base = rtrim(Request::base(true), '/');
                     $cellText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES');
                     ?>
                     <td class="pubstats-sh"><?= $cellText ?> <?php if ($i == 1) {
-                        ?> <span class="info-pop tooltips" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES_TIPS_TITLE_ABOUT') ?>">&nbsp;</span> <?php
+                        $titleText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES_TIPS_TITLE_ABOUT');
+                        ?> <span class="info-pop tooltips" title="<?= $titleText ?>">&nbsp;</span> <?php
                                             } ?></td>
                     <td class="pubstats-graph"><div id="access-<?php echo $stat->publication_id; ?>" class="ph"></div>
                     <script type="text/javascript">

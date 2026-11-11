@@ -187,7 +187,8 @@ $this->js('edit.js', 'com_massmail');
                                     <button type="button" class="mm-to-edit"
                                         id="mm-to-edit"><?= Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS') ?></button>
                                     <?php if ($badRcpt) {
-                                        ?><span class="mm-required-note"><?= Lang::txt('COM_MASSMAIL_REQUIRED') ?></span><?php
+                                        $mmRequiredNoteText = Lang::txt('COM_MASSMAIL_REQUIRED');
+                                        ?><span class="mm-required-note"><?= $mmRequiredNoteText ?></span><?php
                                     } ?>
                                 <?php } else { ?>
                                     <?php // Read-only view: render the saved audience as static chips.?>

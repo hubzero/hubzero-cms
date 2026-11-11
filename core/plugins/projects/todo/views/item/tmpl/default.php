@@ -57,7 +57,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         ?> &raquo; <a href="<?= Route::url($url) . '/?list=' . $color ?>"><span class="indlist <?= 'pin_' . $color ?>"><?= $listName ?></span></a> <?php
     } ?>
     <?php if ($this->row->isComplete()) {
-        ?> &raquo; <span class="indlist completedtd"><a href="<?= Route::url($url) . '/?state=1' ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) ?></a></span> <?php
+        $linkText = ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED'));
+        ?> &raquo; <span class="indlist completedtd"><a href="<?= Route::url($url) . '/?state=1' ?>"><?= $linkText ?></a></span> <?php
     } ?>
     &raquo; <span class="itemname"><?php echo \Hubzero\Utility\Str::truncate($this->row->get('content'), 60); ?></span>
     </h3>
@@ -138,7 +139,10 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                         . Lang::txt('PLG_PROJECTS_TODO_AGO');
                     ?>
                     <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= $dateText ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
-                        ?><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=deletecomment') . '/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id') ?>" class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= Lang::txt('PLG_PROJECTS_TODO_DELETE') ?>]</button><?php
+                        $deletecommentUrl = Route::url($url . '&action=deletecomment') . '/?todoid='
+                            . $this->row->get('id') . '&amp;cid=' . $comment->get('id');
+                        $buttonText = Lang::txt('PLG_PROJECTS_TODO_DELETE');
+                        ?><button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= $buttonText ?>]</button><?php
                                              } ?></p>
                 </li>
             <?php } ?>

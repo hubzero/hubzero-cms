@@ -20,6 +20,7 @@ $title = $this->model->get('title')
 ?>
 <header id="content-header">
     <h2><?php echo $title; ?> <?php if ($this->model->groupOwner() && $cn = $this->model->groupOwner('cn')) {
-        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a href="<?= Route::url('index.php?option=com_groups&cn=' . $cn) ?>"><?= $this->escape(Str::truncate($this->model->groupOwner('description'), 50)) ?></a><?php
+        $linkText = $this->escape(Str::truncate($this->model->groupOwner('description'), 50));
+        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a href="<?= Route::url('index.php?option=com_groups&cn=' . $cn) ?>"><?= $linkText ?></a><?php
         } ?></h2>
 </header><!-- / #content-header -->

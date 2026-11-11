@@ -240,7 +240,9 @@ $categorySelected = function ($value) use ($view) {
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_EMAIL'); ?>:</th>
                                     <td><?php if ($this->row->get('email')) {
-                                        ?><a href="mailto:<?= $this->escape($this->row->get('email')) ?>"><?= $this->escape($this->row->get('email')) ?></a><?php
+                                        $linkUrl = 'mailto:' . $this->escape($this->row->get('email'));
+                                        $linkText = $this->escape($this->row->get('email'));
+                                        ?><a href="<?= $linkUrl ?>"><?= $linkText ?></a><?php
                                         } else {
                                             echo Lang::txt('COM_SUPPORT_UNKNOWN');
                                         } ?></td>
@@ -869,7 +871,8 @@ $categorySelected = function ($value) use ($view) {
                                         . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE')
                                         . '</span>' . $mc[0];
                                 } else {
-                                    ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
+                                    $hintText = Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS');
+                                    ?> <span class="hint"><?= $hintText ?></span>
                                 <input type="text" name="cc" id="acmembers" class="form-control"
                                     value="<?= implode(', ', $cc) ?>" size="35" />
                                 <?php } ?>

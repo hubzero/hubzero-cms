@@ -48,7 +48,8 @@ $this->css();
                 <a href="<?= $linkUrl ?>"><img src="<?= $sourceUrl ?>" alt="" />
                 <?php echo $this->escape($row->title) . ' v.' . $this->escape($row->version_label); ?></a>
                 <span><?php if ($row->state == 5) {
-                    ?><a href="<?= Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id) ?>"><?= Lang::txt('MOD_MYCURATION_REVIEW') ?></a><?php
+                    $linkUrl = Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id);
+                    ?><a href="<?= $linkUrl ?>"><?= Lang::txt('MOD_MYCURATION_REVIEW') ?></a><?php
                       } ?><?php echo $row->state == 7 ? Lang::txt('MOD_MYCURATION_PENDING_CHANGES') : ''; ?></span>
             </li>
             <?php

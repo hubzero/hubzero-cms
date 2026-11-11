@@ -254,7 +254,9 @@ if (!$tmpl && !$no_html) {
 
                     if ($folders) {
                         foreach ($folders as $folder) {
-                            ?><option value="<?= $folder->id ?>"<?= $folderIdSelected($folder->id) ?>><?= $this->escape(stripslashes($folder->title)) ?></option><?php
+                            $selectedAttr = $folderIdSelected($folder->id);
+                            $optionText = $this->escape(stripslashes($folder->title));
+                            ?><option value="<?= $folder->id ?>"<?= $selectedAttr ?>><?= $optionText ?></option><?php
                         }
                     }
                     ?>
