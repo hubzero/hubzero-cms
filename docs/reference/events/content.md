@@ -121,15 +121,15 @@ Fired from:
 - [`core/components/com_content/site/controllers/articles.php:181`](../../../core/components/com_content/site/controllers/articles.php#L181) with `['com_content.article', &$item, &$params, $offset]`
 - [`core/components/com_content/site/controllers/articles.php:791`](../../../core/components/com_content/site/controllers/articles.php#L791) with `['com_content.featured', &$item, &$params, 0]`
 - [`core/components/com_content/site/controllers/articles.php:1255`](../../../core/components/com_content/site/controllers/articles.php#L1255) with `['com_content.category', &$item, &$item->params, 0]`
-- [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:29`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L29) with `[ 'com_courses.asset.content', &$this->model, &$config, ]`
+- [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:35`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L35) with `[ 'com_courses.asset.content', &$this->model, &$config, ]`
 - [`core/components/com_publications/models/publication.php:1390`](../../../core/components/com_publications/models/publication.php#L1390) with `[ 'com_publications.publication.description', &$this, &$config, ]`
 - [`core/components/com_publications/models/publication.php:1460`](../../../core/components/com_publications/models/publication.php#L1460) with `[ 'com_publications.publication.release_notes', &$this, &$config, ]`
 - [`core/components/com_publications/models/publication.php:1562`](../../../core/components/com_publications/models/publication.php#L1562) with `[ 'com_publications.publication.' . $field, &$this, &$config, ]`
-- [`core/components/com_storefront/site/views/overview/tmpl/default.php:33`](../../../core/components/com_storefront/site/views/overview/tmpl/default.php#L33) with `['com_content.article', &$article, []]`
+- [`core/components/com_storefront/site/views/overview/tmpl/default.php:39`](../../../core/components/com_storefront/site/views/overview/tmpl/default.php#L39) with `['com_content.article', &$article, []]`
 - [`core/libraries/Hubzero/Html/Builder/Content.php:35`](../../../core/libraries/Hubzero/Html/Builder/Content.php#L35) with `[$context, &$article, &$params, 0]`
 - [`core/libraries/Hubzero/User/Group.php:1523`](../../../core/libraries/Hubzero/User/Group.php#L1523) with `[ 'com_groups.group.' . $type . '_desc', &$this, &$config, ]`
 - [`core/libraries/Hubzero/User/Profile.php:1538`](../../../core/libraries/Hubzero/User/Profile.php#L1538) with `[ 'com_members.profile.bio', &$this, &$config, ]`
-- [`core/plugins/members/profile/views/index/tmpl/default.php:263`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L263) with `['com_content.article', &$page, &$params, 0]`
+- [`core/plugins/members/profile/views/index/tmpl/default.php:276`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L276) with `['com_content.article', &$page, &$params, 0]`
 
 Listeners:
 

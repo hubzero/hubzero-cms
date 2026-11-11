@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/views/profiles/tmpl/browse.php:431`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L431) with `[$row]`
-- [`core/components/com_members/site/views/profiles/tmpl/view.php:116`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L116) with `[$this->profile]`
+- [`core/components/com_members/site/views/profiles/tmpl/browse.php:444`](../../../core/components/com_members/site/views/profiles/tmpl/browse.php#L444) with `[$row]`
+- [`core/components/com_members/site/views/profiles/tmpl/view.php:129`](../../../core/components/com_members/site/views/profiles/tmpl/view.php#L129) with `[$this->profile]`
 
 No plugin in the source tree listens for this event.
 

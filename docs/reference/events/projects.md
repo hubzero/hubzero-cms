@@ -172,7 +172,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/internal.php:58`](../../../core/components/com_projects/site/views/projects/tmpl/internal.php#L58) with `[ $this->model, $this->active ]`
+- [`core/components/com_projects/site/views/projects/tmpl/internal.php:72`](../../../core/components/com_projects/site/views/projects/tmpl/internal.php#L72) with `[ $this->model, $this->active ]`
 
 Listeners:
 
@@ -182,7 +182,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/_menu.php:143`](../../../core/components/com_projects/site/views/projects/tmpl/_menu.php#L143) with `[$this->model]`
+- [`core/components/com_projects/site/views/projects/tmpl/_menu.php:149`](../../../core/components/com_projects/site/views/projects/tmpl/_menu.php#L149) with `[$this->model]`
 
 No plugin in the source tree listens for this event.
 
@@ -214,7 +214,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/internal.php:49`](../../../core/components/com_projects/site/views/projects/tmpl/internal.php#L49) with `[ $this->model, $this->active ]`
+- [`core/components/com_projects/site/views/projects/tmpl/internal.php:63`](../../../core/components/com_projects/site/views/projects/tmpl/internal.php#L63) with `[ $this->model, $this->active ]`
 
 Listeners:
 
@@ -224,7 +224,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/external.php:129`](../../../core/components/com_projects/site/views/projects/tmpl/external.php#L129) with `[$this->model]`
+- [`core/components/com_projects/site/views/projects/tmpl/external.php:135`](../../../core/components/com_projects/site/views/projects/tmpl/external.php#L135) with `[$this->model]`
 
 Listeners:
 
@@ -237,7 +237,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/_item.php:334`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L334) with `[$this->row]`
+- [`core/components/com_projects/site/views/projects/tmpl/_item.php:340`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L340) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 
@@ -247,7 +247,7 @@ Fired from:
 
 - [`core/plugins/groups/projects/projects.php:365`](../../../core/plugins/groups/projects/projects.php#L365) with `[ 'feed', $this->model, $this->projects, User::get('id'), $filters,/*, in_array(User::get('id'), $this->group->get('managers')), array( '…`
 - [`core/plugins/members/projects/projects.php:252`](../../../core/plugins/members/projects/projects.php#L252) with `[ 'feed', $this->model, $projects, $this->user->get('id'), $view->filters, ]`
-- [`core/plugins/members/todo/views/browse/tmpl/default.php:72`](../../../core/plugins/members/todo/views/browse/tmpl/default.php#L72) with `[ 'todo', $this->model, $this->projects, $this->member->get('id'), $this->filters, ]`
+- [`core/plugins/members/todo/views/browse/tmpl/default.php:78`](../../../core/plugins/members/todo/views/browse/tmpl/default.php#L78) with `[ 'todo', $this->model, $this->projects, $this->member->get('id'), $this->filters, ]`
 
 Listeners:
 

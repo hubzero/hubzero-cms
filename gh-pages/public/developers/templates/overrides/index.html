@@ -261,7 +261,23 @@ component that owns the view.</li>
 <p>A component view resolves its layout through
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/View.php"><code>Hubzero\View\View::setPath()</code></a>,
 which builds the search list:</p>
-<pre><code class="language-php">    protected function setPath($type, $path)
+<pre><code class="language-php">            ob_end_clean();
+
+            return $this-&gt;renderedOutput;
+        }
+
+        throw new InvalidLayoutException(sprintf('Layout %s not found', $file), 404);
+    }
+
+    /**
+     * Sets an entire array of search paths for templates or resources.
+     *
+     * @param   string  $type  The type of path to set, typically 'template'.
+     * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the
+     *                         current directory only.
+     * @return  void
+     */
+    protected function setPath($type, $path)
     {
         $type = strtolower($type);
 
@@ -280,22 +296,6 @@ which builds the search list:</p>
         // Always add the fallback directories as last resort
         if ($type == 'template' &amp;&amp; $this-&gt;overrideRoot) {
             // Set the alternative template search dir
-            if (empty($this-&gt;overridePath)) {
-                $component = strtolower(App::get('request')-&gt;getCmd('option'));
-                $component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
-            } else {
-                $component = ltrim($this-&gt;overridePath, DIRECTORY_SEPARATOR);
-            }
-
-            // Lowest priority first: addPath() pushes onto the top of the stack
-            foreach (array_reverse($this-&gt;overrideRoot) as $root) {
-                $this-&gt;addPath(
-                    $type,
-                    $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this-&gt;getName(),
-                );
-            }
-        }
-    }
 </code></pre>
 <p>Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:</p>

@@ -30,7 +30,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/site/views/basic/tmpl/default.php:79`](../../../core/components/com_search/site/views/basic/tmpl/default.php#L79)
+- [`core/components/com_search/site/views/basic/tmpl/default.php:92`](../../../core/components/com_search/site/views/basic/tmpl/default.php#L92)
 
 No plugin in the source tree listens for this event.
 
@@ -124,7 +124,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_search/admin/views/basic/tmpl/display.php:37`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L37) with `[$context]`
+- [`core/components/com_search/admin/views/basic/tmpl/display.php:43`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L43) with `[$context]`
 
 No plugin in the source tree listens for this event.
 
@@ -132,6 +132,6 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/admin/views/basic/tmpl/display.php:26`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L26)
+- [`core/components/com_search/admin/views/basic/tmpl/display.php:32`](../../../core/components/com_search/admin/views/basic/tmpl/display.php#L32)
 
 No plugin in the source tree listens for this event.

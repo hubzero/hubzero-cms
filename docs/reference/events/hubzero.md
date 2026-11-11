@@ -11,9 +11,9 @@ Events in the `hubzero` group. A plugin in `core/plugins/hubzero/` receives an e
 
 Fired from:
 
-- [`core/components/com_citations/site/views/citations/tmpl/view.php:578`](../../../core/components/com_citations/site/views/citations/tmpl/view.php#L578) with `$params`
-- [`core/components/com_groups/site/views/pages/tmpl/_view.php:264`](../../../core/components/com_groups/site/views/pages/tmpl/_view.php#L264) with `$params`
-- [`core/plugins/groups/citations/views/view/tmpl/view.php:582`](../../../core/plugins/groups/citations/views/view/tmpl/view.php#L582) with `$params`
+- [`core/components/com_citations/site/views/citations/tmpl/view.php:592`](../../../core/components/com_citations/site/views/citations/tmpl/view.php#L592) with `$params`
+- [`core/components/com_groups/site/views/pages/tmpl/_view.php:276`](../../../core/components/com_groups/site/views/pages/tmpl/_view.php#L276) with `$params`
+- [`core/plugins/groups/citations/views/view/tmpl/view.php:594`](../../../core/plugins/groups/citations/views/view/tmpl/view.php#L594) with `$params`
 
 Listeners:
 
@@ -31,18 +31,18 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_blog/admin/views/entries/tmpl/edit.php:183`](../../../core/components/com_blog/admin/views/entries/tmpl/edit.php#L183) with `[['tags', 'tags', 'field-tags', '', $this->row->tags('string')]]`
-- [`core/components/com_citations/site/views/citations/tmpl/browse.php:348`](../../../core/components/com_citations/site/views/citations/tmpl/browse.php#L348) with `[['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]`
+- [`core/components/com_blog/admin/views/entries/tmpl/edit.php:189`](../../../core/components/com_blog/admin/views/entries/tmpl/edit.php#L189) with `[['tags', 'tags', 'field-tags', '', $this->row->tags('string')]]`
+- [`core/components/com_citations/site/views/citations/tmpl/browse.php:366`](../../../core/components/com_citations/site/views/citations/tmpl/browse.php#L366) with `[['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:176`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L176) with `[ [ 'members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''), ], ]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:435`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L435) with `[ [ 'tags', 'tags', 'actags', '', implode(",", $this->tags), ], ]`
 - [`core/components/com_citations/site/views/citations/tmpl/edit.php:463`](../../../core/components/com_citations/site/views/citations/tmpl/edit.php#L463) with `[ [ 'tags', 'badges', 'actags1', '', implode(",", $this->badges), ], ]`
-- [`core/components/com_courses/admin/views/students/tmpl/add.php:77`](../../../core/components/com_courses/admin/views/students/tmpl/add.php#L77) with `[ [ 'members', // The component to call 'fields[user_id]', // Name of the input field 'acmembers', // ID of the input field '', // CSS cl…`
-- [`core/components/com_courses/site/views/course/tmpl/edit.php:86`](../../../core/components/com_courses/site/views/course/tmpl/edit.php#L86) with `[['tags', 'tags', 'actags','', $this->course->tags('string')]]`
-- [`core/components/com_courses/site/views/managers/tmpl/display.php:36`](../../../core/components/com_courses/site/views/managers/tmpl/display.php#L36) with `[ ['members', 'usernames', 'field-usernames', '', ''], ]`
-- [`core/components/com_developer/admin/views/applications/tmpl/edit.php:153`](../../../core/components/com_developer/admin/views/applications/tmpl/edit.php#L153) with `[['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]]`
-- [`core/components/com_developer/site/views/applications/tmpl/edit.php:130`](../../../core/components/com_developer/site/views/applications/tmpl/edit.php#L130) with `[['members', 'team', 'acmembers']]`
-- [`core/components/com_events/site/views/edit/tmpl/default.php:126`](../../../core/components/com_events/site/views/edit/tmpl/default.php#L126) with `[['tags', 'tags', 'actags','',$this->lists['tags']]]`
-- [`core/components/com_groups/site/views/groups/tmpl/edit.php:25`](../../../core/components/com_groups/site/views/groups/tmpl/edit.php#L25) with `[['tags', 'tags', 'actags','', $this->tags]]`
+- [`core/components/com_courses/admin/views/students/tmpl/add.php:83`](../../../core/components/com_courses/admin/views/students/tmpl/add.php#L83) with `[ [ 'members', // The component to call 'fields[user_id]', // Name of the input field 'acmembers', // ID of the input field '', // CSS cl…`
+- [`core/components/com_courses/site/views/course/tmpl/edit.php:92`](../../../core/components/com_courses/site/views/course/tmpl/edit.php#L92) with `[['tags', 'tags', 'actags','', $this->course->tags('string')]]`
+- [`core/components/com_courses/site/views/managers/tmpl/display.php:42`](../../../core/components/com_courses/site/views/managers/tmpl/display.php#L42) with `[ ['members', 'usernames', 'field-usernames', '', ''], ]`
+- [`core/components/com_developer/admin/views/applications/tmpl/edit.php:159`](../../../core/components/com_developer/admin/views/applications/tmpl/edit.php#L159) with `[['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]]`
+- [`core/components/com_developer/site/views/applications/tmpl/edit.php:136`](../../../core/components/com_developer/site/views/applications/tmpl/edit.php#L136) with `[['members', 'team', 'acmembers']]`
+- [`core/components/com_events/site/views/edit/tmpl/default.php:140`](../../../core/components/com_events/site/views/edit/tmpl/default.php#L140) with `[['tags', 'tags', 'actags','',$this->lists['tags']]]`
+- [`core/components/com_groups/site/views/groups/tmpl/edit.php:42`](../../../core/components/com_groups/site/views/groups/tmpl/edit.php#L42) with `[['tags', 'tags', 'actags','', $this->tags]]`
 - and 50 more call sites
 
 Listeners:
@@ -53,8 +53,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_messages/admin/views/messages/tmpl/edit.php:41`](../../../core/components/com_messages/admin/views/messages/tmpl/edit.php#L41) with `[ [ 'members', // The component to call 'fields[user_id_to]', // Name of the input field 'field-user_id_to', // ID of the input field 're…`
-- [`core/components/com_tools/admin/views/preferences/tmpl/edit.php:55`](../../../core/components/com_tools/admin/views/preferences/tmpl/edit.php#L55) with `[ [ 'members', // The component to call 'fields[user_id]', // Name of the input field 'field-user_id', // ID of the input field '', // CS…`
+- [`core/components/com_messages/admin/views/messages/tmpl/edit.php:47`](../../../core/components/com_messages/admin/views/messages/tmpl/edit.php#L47) with `[ [ 'members', // The component to call 'fields[user_id_to]', // Name of the input field 'field-user_id_to', // ID of the input field 're…`
+- [`core/components/com_tools/admin/views/preferences/tmpl/edit.php:61`](../../../core/components/com_tools/admin/views/preferences/tmpl/edit.php#L61) with `[ [ 'members', // The component to call 'fields[user_id]', // Name of the input field 'field-user_id', // ID of the input field '', // CS…`
 - [`core/plugins/projects/team/team.php:459`](../../../core/plugins/projects/team/team.php#L459) with `[['members', 'uid', 'uid']]`
 
 Listeners:
@@ -65,12 +65,12 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/views/curation/tmpl/assign.php:48`](../../../core/components/com_publications/site/views/curation/tmpl/assign.php#L48) with `[['members', 'owner', 'owner', '', $selected, '', 'owner']]`
-- [`core/components/com_support/admin/views/tickets/tmpl/add.php:140`](../../../core/components/com_support/admin/views/tickets/tmpl/add.php#L140) with `[['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']]`
-- [`core/components/com_support/admin/views/tickets/tmpl/batch.php:95`](../../../core/components/com_support/admin/views/tickets/tmpl/batch.php#L95) with `[['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']]`
-- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:669`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L669) with `[['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]`
-- [`core/components/com_support/site/views/tickets/tmpl/new.php:229`](../../../core/components/com_support/site/views/tickets/tmpl/new.php#L229) with `[ [ 'groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner', ], ]`
-- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:586`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L586) with `[['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]`
+- [`core/components/com_publications/site/views/curation/tmpl/assign.php:54`](../../../core/components/com_publications/site/views/curation/tmpl/assign.php#L54) with `[['members', 'owner', 'owner', '', $selected, '', 'owner']]`
+- [`core/components/com_support/admin/views/tickets/tmpl/add.php:146`](../../../core/components/com_support/admin/views/tickets/tmpl/add.php#L146) with `[['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']]`
+- [`core/components/com_support/admin/views/tickets/tmpl/batch.php:101`](../../../core/components/com_support/admin/views/tickets/tmpl/batch.php#L101) with `[['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']]`
+- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:675`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L675) with `[['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]`
+- [`core/components/com_support/site/views/tickets/tmpl/new.php:242`](../../../core/components/com_support/site/views/tickets/tmpl/new.php#L242) with `[ [ 'groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner', ], ]`
+- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:599`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L599) with `[['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]`
 
 Listeners:
 

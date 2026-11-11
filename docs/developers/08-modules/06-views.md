@@ -110,7 +110,7 @@ The layout is `require`d from inside a method of the module class, so `$this`
 is the module object. Every property the class set is available, along with
 `$this->params`, `$this->module`, `$this->escape()`, and the asset helpers:
 
-<!--include: core/modules/mod_mygroups/tmpl/default.php:1-21-->
+<!--include: core/modules/mod_mygroups/tmpl/default.php:1-27-->
 
 Two things to note. The layout has no `namespace` declaration, so it runs in
 the global namespace, where `Lang::txt()`, `Route::url()` and `User` resolve

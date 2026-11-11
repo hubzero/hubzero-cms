@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/views/view/tmpl/default.php:243`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L243) with `[$this->publication, $this->option, 1]`
+- [`core/components/com_publications/site/views/view/tmpl/default.php:263`](../../../core/components/com_publications/site/views/view/tmpl/default.php#L263) with `[$this->publication, $this->option, 1]`
 
 Listeners:
 
@@ -87,7 +87,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/views/browse/tmpl/item.php:57`](../../../core/components/com_publications/site/views/browse/tmpl/item.php#L57) with `[$this->line]`
+- [`core/components/com_publications/site/views/browse/tmpl/item.php:70`](../../../core/components/com_publications/site/views/browse/tmpl/item.php#L70) with `[$this->line]`
 
 No plugin in the source tree listens for this event.
 

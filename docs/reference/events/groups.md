@@ -73,8 +73,8 @@ Fired from:
 - [`core/components/com_groups/api/controllers/groupsv1r1.php:402`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L402) with `[]`
 - [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
 - [`core/components/com_groups/site/controllers/groups.php:512`](../../../core/components/com_groups/site/controllers/groups.php#L512) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved.php:457`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L457) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:147`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L147) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved.php:463`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L463) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:153`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L153) with `[]`
 - [`core/libraries/Hubzero/User/Group/Helper.php:285`](../../../core/libraries/Hubzero/User/Group/Helper.php#L285) with `[]`
 
 No plugin in the source tree listens for this event.
@@ -83,7 +83,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/groups/projects/views/browse/tmpl/default.php:98`](../../../core/plugins/groups/projects/views/browse/tmpl/default.php#L98) with `[$this->group]`
+- [`core/plugins/groups/projects/views/browse/tmpl/default.php:114`](../../../core/plugins/groups/projects/views/browse/tmpl/default.php#L114) with `[$this->group]`
 
 No plugin in the source tree listens for this event.
 
@@ -121,7 +121,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/groups/members/views/profile/tmpl/default.php:234`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L234) with `[$this->group, $this->profile]`
+- [`core/plugins/groups/members/views/profile/tmpl/default.php:247`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L247) with `[$this->group, $this->profile]`
 
 Listeners:
 
@@ -131,7 +131,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/groups/members/views/profile/tmpl/default.php:97`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L97) with `[$this->group, $this->profile]`
+- [`core/plugins/groups/members/views/profile/tmpl/default.php:110`](../../../core/plugins/groups/members/views/profile/tmpl/default.php#L110) with `[$this->group, $this->profile]`
 
 No plugin in the source tree listens for this event.
 
@@ -147,7 +147,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/groups/projects/views/partials/tmpl/submenu.php:16`](../../../core/plugins/groups/projects/views/partials/tmpl/submenu.php#L16) with `[$this->group]`
+- [`core/plugins/groups/projects/views/partials/tmpl/submenu.php:22`](../../../core/plugins/groups/projects/views/partials/tmpl/submenu.php#L22) with `[$this->group]`
 
 No plugin in the source tree listens for this event.
 

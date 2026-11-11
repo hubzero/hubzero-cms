@@ -35,8 +35,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:207`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L207)
-- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:41`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L41)
+- [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:213`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L213)
+- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:47`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L47)
 
 Listeners:
 
@@ -56,7 +56,7 @@ Fired from:
 
 - [`core/components/com_courses/site/controllers/offering.php:219`](../../../core/components/com_courses/site/controllers/offering.php#L219) with `[ $this->course, $this->course->offering(), true, ]`
 - [`core/components/com_courses/site/controllers/offering.php:238`](../../../core/components/com_courses/site/controllers/offering.php#L238) with `[ $this->course, $this->course->offering(), ]`
-- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:17`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L17) with `[ $this->course, $this->offering, true, ]`
+- [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:23`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L23) with `[ $this->course, $this->offering, true, ]`
 
 Listeners:
 
@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:308`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L308) with `[ $this->course, $unit, $lecture, ]`
+- [`core/plugins/courses/outline/views/outline/tmpl/lecture.php:314`](../../../core/plugins/courses/outline/views/outline/tmpl/lecture.php#L314) with `[ $this->course, $unit, $lecture, ]`
 
 Listeners:
 
@@ -110,7 +110,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:168`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L168) with `[$this->course, $this->offering]`
+- [`core/plugins/courses/dashboard/views/overview/tmpl/default.php:174`](../../../core/plugins/courses/dashboard/views/overview/tmpl/default.php#L174) with `[$this->course, $this->offering]`
 
 Listeners:
 
@@ -140,7 +140,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/courses/tmpl/edit.php:243`](../../../core/components/com_courses/admin/views/courses/tmpl/edit.php#L243)
+- [`core/components/com_courses/admin/views/courses/tmpl/edit.php:249`](../../../core/components/com_courses/admin/views/courses/tmpl/edit.php#L249)
 
 No plugin in the source tree listens for this event.
 
@@ -207,7 +207,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:357`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L357)
+- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:363`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L363)
 
 Listeners:
 
@@ -235,7 +235,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/sections/tmpl/edit.php:657`](../../../core/components/com_courses/admin/views/sections/tmpl/edit.php#L657)
+- [`core/components/com_courses/admin/views/sections/tmpl/edit.php:663`](../../../core/components/com_courses/admin/views/sections/tmpl/edit.php#L663)
 
 Listeners:
 

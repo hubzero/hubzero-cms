@@ -43,7 +43,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/views/checkout/tmpl/payment.php:43`](../../../core/components/com_cart/site/views/checkout/tmpl/payment.php#L43) with `[$this->transaction, User::getRoot()]`
+- [`core/components/com_cart/site/views/checkout/tmpl/payment.php:49`](../../../core/components/com_cart/site/views/checkout/tmpl/payment.php#L49) with `[$this->transaction, User::getRoot()]`
 
 Listeners:
 
