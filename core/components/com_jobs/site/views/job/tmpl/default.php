@@ -40,7 +40,12 @@ defined('_HZEXEC_') or die();
     <div id="content-header-extra">
         <ul id="useroptions">
         <?php if (User::isGuest()) { ?>
-            <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " " ?><a href="<?php Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login' ?>"><?php echo Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?php echo " " . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
+            <?php
+            $loginUrl = Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login';
+            $viewOptionsText = " " . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS');
+            ?>
+            <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " " ?><a
+                href="<?= $loginUrl ?>"><?php echo Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?= $viewOptionsText ?></li>
         <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
             <?php
             $linkUrl = Route::url('index.php?option=' . $this->option . '&task=dashboard');
