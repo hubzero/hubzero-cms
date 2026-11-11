@@ -11,7 +11,6 @@ namespace Hubzero\Facades;
 /**
  * Request facade
  *
- * @method static mixed   getVar(string $key, mixed $default = null, string $hash = 'input', string $type = 'none', int $mask = 0)
  * @method static bool    setVar(string $name, string $value = null, string $hash = 'method', bool $overwrite = true)
  * @method static int     getInt(string $key, int $default = 0, string $hash = 'input')
  * @method static float   getFloat(string $key, float $default = 0.0, string $hash = 'input')
@@ -50,5 +49,23 @@ class Request extends Facade
     protected static function getAccessor()
     {
         return 'request';
+    }
+
+    /**
+     * Get a request variable
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string   $key      Request key
+     * @param   mixed    $default  Default value
+     * @param   string   $hash     Where the variable should come from (POST, GET, FILES, COOKIE, METHOD)
+     * @param   string   $type     Return type for the variable (deprecated, Joomla legacy)
+     * @param   integer  $mask     Filter mask for the variable (deprecated, Joomla legacy)
+     * @return  mixed
+     */
+    public static function getVar($key, $default = null, $hash = 'input', $type = 'none', $mask = 0)
+    {
+        return static::getRoot()->getVar(...func_get_args());
     }
 }

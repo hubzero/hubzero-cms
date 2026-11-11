@@ -13,7 +13,6 @@ namespace Hubzero\Facades;
  *
  * @method static string txt(string $string)
  * @method static string txts(string $string, int $n)
- * @method static bool   load(string $extension = 'hubzero', string $basePath = '', string $lang = null, bool $reload = false, bool $default = true)
  * @method static bool   exists(string $lang, string $basePath = '', string $client = null)
  * @method static bool   hasKey(string $string)
  * @method static string translate(string $string, bool $jsSafe = false, bool $interpretBackSlashes = true)
@@ -41,5 +40,28 @@ class Lang extends Facade
     protected static function getAccessor()
     {
         return 'language';
+    }
+
+    /**
+     * Loads a single language file and appends its strings to the existing ones
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string       $extension  The extension whose language file to load
+     * @param   string       $basePath   The base path to use
+     * @param   string|null  $lang       The language to load, null for the current language
+     * @param   boolean      $reload     Force the language to be reloaded
+     * @param   boolean      $default    Load the default language if the current one does not exist
+     * @return  boolean      True if the file was loaded
+     */
+    public static function load(
+        $extension = 'hubzero',
+        $basePath = PATH_APP,
+        $lang = null,
+        $reload = false,
+        $default = true,
+    ) {
+        return static::getRoot()->load(...func_get_args());
     }
 }

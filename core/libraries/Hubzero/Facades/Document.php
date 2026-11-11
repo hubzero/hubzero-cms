@@ -19,8 +19,6 @@ namespace Hubzero\Facades;
  * @method static string getTitle()
  * @method static object setDescription(string $description)
  * @method static string getDescription()
- * @method static object addStyleSheet(string $url, string $type = 'text/css', string $media = null, array $attribs = [])
- * @method static object addScript(string $url, string $type = 'text/javascript', bool $defer = false, bool $async = false)
  * @method static object addStyleDeclaration(string $content, string $type = 'text/css')
  * @method static object addScriptDeclaration(string $content, string $type = 'text/javascript')
  * @method static object setMetaData(string $name, string $content, bool $http_equiv = false)
@@ -37,5 +35,39 @@ class Document extends Facade
     protected static function getAccessor()
     {
         return 'document';
+    }
+
+    /**
+     * Adds a linked stylesheet to the page
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string       $url      URL to the linked style sheet
+     * @param   string       $type     Mime encoding type
+     * @param   string|null  $media    Media type that this stylesheet applies to
+     * @param   array        $attribs  Array of attributes
+     * @return  object       The document, to allow chaining
+     */
+    public static function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])
+    {
+        return static::getRoot()->addStyleSheet(...func_get_args());
+    }
+
+    /**
+     * Adds a linked script to the page
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string   $url    URL to the linked script
+     * @param   string   $type   Type of script
+     * @param   boolean  $defer  Adds the defer attribute
+     * @param   boolean  $async  Adds the async attribute
+     * @return  object   The document, to allow chaining
+     */
+    public static function addScript($url, $type = 'text/javascript', $defer = false, $async = false)
+    {
+        return static::getRoot()->addScript(...func_get_args());
     }
 }

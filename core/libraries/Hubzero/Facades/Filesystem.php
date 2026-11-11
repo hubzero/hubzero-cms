@@ -31,7 +31,6 @@ namespace Hubzero\Facades;
  * @method static bool   isWritable(string $path)
  * @method static bool   isFile(string $file)
  * @method static bool   isSafe(string $file)
- * @method static array  listContents(string $path, string $filter = '.', bool $recursive = false, bool $full = false, array $exclude = [])
  * @method static bool   makeDirectory(string $path, int $mode = 0755, bool $recursive = true, bool $force = false)
  * @method static bool   copyDirectory(string $path, string $target, int $options = null)
  * @method static bool   deleteDirectory(string $path, bool $preserve = false)
@@ -50,5 +49,34 @@ class Filesystem extends Facade
     protected static function getAccessor()
     {
         return 'filesystem';
+    }
+
+    /**
+     * Get all contents within a given directory
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string   $path       The path of the folder to read
+     * @param   string   $filter     A filter for file names
+     * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
+     * @param   boolean  $full       True to return the full path to the file
+     * @param   array    $exclude    Names of files which should not be shown in the result
+     * @return  array
+     */
+    public static function listContents(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
+        return static::getRoot()->listContents(...func_get_args());
     }
 }
