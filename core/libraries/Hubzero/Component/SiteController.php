@@ -40,6 +40,14 @@ use Hubzero\Htmx\Htmx;
  *            /one
  *                /tmpl
  *                    /two.php
+ *
+ * These are kept by __set() and read back by __get(), as are any others a
+ * controller sets on itself:
+ *
+ * @property  \Hubzero\Component\View  $view      Set by execute(), for the task's layout
+ * @property  \Hubzero\Config\Registry $config    The component's parameters
+ * @property  \Hubzero\Database\Driver $database  [!] Deprecated: use App::get('db')
+ * @property  \Hubzero\User\User       $juser     [!] Deprecated: use the User facade
  */
 class SiteController extends Obj implements ControllerInterface
 {
