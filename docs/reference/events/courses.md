@@ -54,8 +54,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:215`](../../../core/components/com_courses/site/controllers/offering.php#L215) with `[ $this->course, $this->course->offering(), true, ]`
-- [`core/components/com_courses/site/controllers/offering.php:234`](../../../core/components/com_courses/site/controllers/offering.php#L234) with `[ $this->course, $this->course->offering(), ]`
+- [`core/components/com_courses/site/controllers/offering.php:219`](../../../core/components/com_courses/site/controllers/offering.php#L219) with `[ $this->course, $this->course->offering(), true, ]`
+- [`core/components/com_courses/site/controllers/offering.php:238`](../../../core/components/com_courses/site/controllers/offering.php#L238) with `[ $this->course, $this->course->offering(), ]`
 - [`core/plugins/courses/guide/views/guide/tmpl/overlay.php:17`](../../../core/plugins/courses/guide/views/guide/tmpl/overlay.php#L17) with `[ $this->course, $this->offering, true, ]`
 
 Listeners:
@@ -121,7 +121,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/models/orm/course.php:387`](../../../core/components/com_courses/models/orm/course.php#L387) with `[$this]`
+- [`core/components/com_courses/models/orm/course.php:393`](../../../core/components/com_courses/models/orm/course.php#L393) with `[$this]`
 
 Listeners:
 
@@ -132,7 +132,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:566`](../../../core/components/com_courses/site/controllers/course.php#L566) with `[$this->course]`
+- [`core/components/com_courses/site/controllers/course.php:567`](../../../core/components/com_courses/site/controllers/course.php#L567) with `[$this->course]`
 
 No plugin in the source tree listens for this event.
 
@@ -156,7 +156,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/offering.php:384`](../../../core/components/com_courses/site/controllers/offering.php#L384) with `[ $this->course, $offering, $offering->section(), ]`
+- [`core/components/com_courses/site/controllers/offering.php:388`](../../../core/components/com_courses/site/controllers/offering.php#L388) with `[ $this->course, $offering, $offering->section(), ]`
 
 Listeners:
 
@@ -166,7 +166,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/models/orm/course.php:374`](../../../core/components/com_courses/models/orm/course.php#L374) with `[$this]`
+- [`core/components/com_courses/models/orm/course.php:380`](../../../core/components/com_courses/models/orm/course.php#L380) with `[$this]`
 
 Listeners:
 
@@ -176,7 +176,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:147`](../../../core/components/com_courses/site/controllers/course.php#L147) with `[ $this->course, $this->view->active, ]`
+- [`core/components/com_courses/site/controllers/course.php:150`](../../../core/components/com_courses/site/controllers/course.php#L150) with `[ $this->course, $this->view->active, ]`
 
 Listeners:
 

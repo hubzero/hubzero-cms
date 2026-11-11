@@ -21,9 +21,9 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_whatsnew/api/controllers/entriesv1r0.php:100`](../../../core/components/com_whatsnew/api/controllers/entriesv1r0.php#L100) with `[ $p, 999, 0, $areas, ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:113`](../../../core/components/com_whatsnew/site/controllers/results.php#L113) with `[ $p, 0, 0, $activeareas, ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:126`](../../../core/components/com_whatsnew/site/controllers/results.php#L126) with `[ $p, $limit, $start, $activeareas, ]`
-- [`core/components/com_whatsnew/site/controllers/results.php:307`](../../../core/components/com_whatsnew/site/controllers/results.php#L307) with `[ $p, $limit, $start, $activeareas, ]`
+- [`core/components/com_whatsnew/site/controllers/results.php:117`](../../../core/components/com_whatsnew/site/controllers/results.php#L117) with `[ $p, 0, 0, $activeareas, ]`
+- [`core/components/com_whatsnew/site/controllers/results.php:130`](../../../core/components/com_whatsnew/site/controllers/results.php#L130) with `[ $p, $limit, $start, $activeareas, ]`
+- [`core/components/com_whatsnew/site/controllers/results.php:311`](../../../core/components/com_whatsnew/site/controllers/results.php#L311) with `[ $p, $limit, $start, $activeareas, ]`
 - [`core/modules/mod_whatsnew/mod_whatsnew.php:177`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L177) with `[ $p, $count, 0, $activeareas, [], ]`
 
 Listeners:
@@ -39,7 +39,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_whatsnew/site/controllers/results.php:441`](../../../core/components/com_whatsnew/site/controllers/results.php#L441)
+- [`core/components/com_whatsnew/site/controllers/results.php:445`](../../../core/components/com_whatsnew/site/controllers/results.php#L445)
 - [`core/modules/mod_whatsnew/mod_whatsnew.php:49`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L49)
 
 Listeners:

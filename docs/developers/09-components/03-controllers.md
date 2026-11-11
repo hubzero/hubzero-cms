@@ -76,7 +76,7 @@ If the task is not in the map, the controller runs `__default`, which is
 
 ## A site controller
 
-<!--include: core/components/com_kb/site/controllers/articles.php:9-34-->
+<!--include: core/components/com_kb/site/controllers/articles.php:9-38-->
 
 The facade imports at the top are not decoration. Inside a namespace an
 unqualified `Route` resolves to
@@ -103,7 +103,7 @@ tree: the file parses, the page loads, and one branch — the error path, the
 A task takes no arguments and returns nothing; it produces output or a
 redirect:
 
-<!--include: core/components/com_kb/site/controllers/articles.php:36-65-->
+<!--include: core/components/com_kb/site/controllers/articles.php:40-69-->
 
 ## Properties
 

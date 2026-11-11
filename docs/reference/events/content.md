@@ -12,10 +12,10 @@ Events in the `content` group. A plugin in `core/plugins/content/` receives an e
 Fired from:
 
 - [`core/components/com_answers/site/controllers/questions.php:620`](../../../core/components/com_answers/site/controllers/questions.php#L620) with `['Question']`
-- [`core/components/com_blog/site/controllers/entries.php:155`](../../../core/components/com_blog/site/controllers/entries.php#L155) with `['Blog']`
-- [`core/components/com_groups/site/controllers/groups.php:356`](../../../core/components/com_groups/site/controllers/groups.php#L356) with `['Group']`
+- [`core/components/com_blog/site/controllers/entries.php:158`](../../../core/components/com_blog/site/controllers/entries.php#L158) with `['Blog']`
+- [`core/components/com_groups/site/controllers/groups.php:360`](../../../core/components/com_groups/site/controllers/groups.php#L360) with `['Group']`
 - [`core/components/com_projects/site/controllers/projects.php:677`](../../../core/components/com_projects/site/controllers/projects.php#L677) with `['Project']`
-- [`core/components/com_resources/site/controllers/create.php:1518`](../../../core/components/com_resources/site/controllers/create.php#L1518) with `['Resource']`
+- [`core/components/com_resources/site/controllers/create.php:1522`](../../../core/components/com_resources/site/controllers/create.php#L1522) with `['Resource']`
 
 No plugin in the source tree listens for this event.
 
@@ -96,11 +96,11 @@ Fired from:
 - [`core/components/com_answers/models/comment.php:77`](../../../core/components/com_answers/models/comment.php#L77) with `[ 'com_answers.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_answers/models/question.php:518`](../../../core/components/com_answers/models/question.php#L518) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
 - [`core/components/com_answers/models/response.php:432`](../../../core/components/com_answers/models/response.php#L432) with `[ 'com_answers.response.answer', &$this, $this->isNew(), ]`
-- [`core/components/com_blog/models/comment.php:341`](../../../core/components/com_blog/models/comment.php#L341) with `[ 'com_blog.comment.content', &$this, $this->isNew(), ]`
-- [`core/components/com_blog/models/entry.php:701`](../../../core/components/com_blog/models/entry.php#L701) with `[ 'com_blog.entry.content', &$this, $this->isNew(), ]`
+- [`core/components/com_blog/models/comment.php:345`](../../../core/components/com_blog/models/comment.php#L345) with `[ 'com_blog.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_blog/models/entry.php:723`](../../../core/components/com_blog/models/entry.php#L723) with `[ 'com_blog.entry.content', &$this, $this->isNew(), ]`
 - [`core/components/com_forum/models/category.php:327`](../../../core/components/com_forum/models/category.php#L327) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
 - [`core/components/com_forum/models/post.php:648`](../../../core/components/com_forum/models/post.php#L648) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
-- [`core/components/com_groups/site/controllers/groups.php:676`](../../../core/components/com_groups/site/controllers/groups.php#L676) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
+- [`core/components/com_groups/site/controllers/groups.php:680`](../../../core/components/com_groups/site/controllers/groups.php#L680) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
 - [`core/components/com_kb/models/comment.php:379`](../../../core/components/com_kb/models/comment.php#L379) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_media/admin/controllers/media.php:136`](../../../core/components/com_media/admin/controllers/media.php#L136) with `['com_media.folder', &$object_file, true]`
 - [`core/components/com_media/admin/controllers/media.php:201`](../../../core/components/com_media/admin/controllers/media.php#L201) with `['com_media.folder', &$object_file, true]`
@@ -122,9 +122,9 @@ Fired from:
 - [`core/components/com_content/site/controllers/articles.php:791`](../../../core/components/com_content/site/controllers/articles.php#L791) with `['com_content.featured', &$item, &$params, 0]`
 - [`core/components/com_content/site/controllers/articles.php:1255`](../../../core/components/com_content/site/controllers/articles.php#L1255) with `['com_content.category', &$item, &$item->params, 0]`
 - [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:29`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L29) with `[ 'com_courses.asset.content', &$this->model, &$config, ]`
-- [`core/components/com_publications/models/publication.php:1338`](../../../core/components/com_publications/models/publication.php#L1338) with `[ 'com_publications.publication.description', &$this, &$config, ]`
-- [`core/components/com_publications/models/publication.php:1408`](../../../core/components/com_publications/models/publication.php#L1408) with `[ 'com_publications.publication.release_notes', &$this, &$config, ]`
-- [`core/components/com_publications/models/publication.php:1510`](../../../core/components/com_publications/models/publication.php#L1510) with `[ 'com_publications.publication.' . $field, &$this, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1390`](../../../core/components/com_publications/models/publication.php#L1390) with `[ 'com_publications.publication.description', &$this, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1460`](../../../core/components/com_publications/models/publication.php#L1460) with `[ 'com_publications.publication.release_notes', &$this, &$config, ]`
+- [`core/components/com_publications/models/publication.php:1562`](../../../core/components/com_publications/models/publication.php#L1562) with `[ 'com_publications.publication.' . $field, &$this, &$config, ]`
 - [`core/components/com_storefront/site/views/overview/tmpl/default.php:33`](../../../core/components/com_storefront/site/views/overview/tmpl/default.php#L33) with `['com_content.article', &$article, []]`
 - [`core/libraries/Hubzero/Html/Builder/Content.php:35`](../../../core/libraries/Hubzero/Html/Builder/Content.php#L35) with `[$context, &$article, &$params, 0]`
 - [`core/libraries/Hubzero/User/Group.php:1525`](../../../core/libraries/Hubzero/User/Group.php#L1525) with `[ 'com_groups.group.' . $type . '_desc', &$this, &$config, ]`

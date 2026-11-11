@@ -41,10 +41,10 @@ Fired from:
 - [`core/components/com_answers/site/controllers/questions.php:1241`](../../../core/components/com_answers/site/controllers/questions.php#L1241) with `[$messageType , $subject, $message, $from, [$authorid], $this->option]`
 - [`core/components/com_answers/site/controllers/questions.php:1253`](../../../core/components/com_answers/site/controllers/questions.php#L1253) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->option]`
 - [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:465`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L465) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]`
-- [`core/components/com_courses/site/controllers/course.php:631`](../../../core/components/com_courses/site/controllers/course.php#L631) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
+- [`core/components/com_courses/site/controllers/course.php:632`](../../../core/components/com_courses/site/controllers/course.php#L632) with `['courses_deleted', $subject, $message, $from, $managers, $this->option]`
 - [`core/components/com_groups/site/controllers/membership.php:877`](../../../core/components/com_groups/site/controllers/membership.php#L877) with `['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option]`
 - [`core/components/com_jobs/admin/controllers/jobs.php:324`](../../../core/components/com_jobs/admin/controllers/jobs.php#L324) with `$messageParams`
-- [`core/components/com_projects/admin/controllers/projects.php:561`](../../../core/components/com_projects/admin/controllers/projects.php#L561) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
+- [`core/components/com_projects/admin/controllers/projects.php:564`](../../../core/components/com_projects/admin/controllers/projects.php#L564) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->option]`
 - [`core/components/com_projects/helpers/html.php:1234`](../../../core/components/com_projects/helpers/html.php#L1234) with `[ $component, $subject, $body, $from, $addressees, $option, ]`
 - and 26 more call sites
 

@@ -163,6 +163,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:309`](../../../core/components/com_members/admin/controllers/members.php#L309) with `[$user]`
+- [`core/components/com_members/admin/controllers/members.php:313`](../../../core/components/com_members/admin/controllers/members.php#L313) with `[$user]`
 
 No plugin in the source tree listens for this event.

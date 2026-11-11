@@ -49,7 +49,7 @@ The hub has two model base classes, and both define the same three numbers.
 [`Relational`](../../../core/libraries/Hubzero/Database/Relational.php), which
 the newer components use:
 
-<!--include: core/libraries/Hubzero/Database/Relational.php:177-179-->
+<!--include: core/libraries/Hubzero/Database/Relational.php:215-217-->
 
 [`Base\Model`](../../../core/libraries/Hubzero/Base/Model.php), which the
 older ones use, adds a fourth:

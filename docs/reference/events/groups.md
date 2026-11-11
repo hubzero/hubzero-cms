@@ -57,7 +57,7 @@ Fired from:
 
 - [`core/components/com_groups/admin/controllers/manage.php:425`](../../../core/components/com_groups/admin/controllers/manage.php#L425) with `[$before, $group]`
 - [`core/components/com_groups/admin/controllers/manage.php:1253`](../../../core/components/com_groups/admin/controllers/manage.php#L1253) with `[$before, $group]`
-- [`core/components/com_groups/site/controllers/groups.php:791`](../../../core/components/com_groups/site/controllers/groups.php#L791) with `[$before, $group]`
+- [`core/components/com_groups/site/controllers/groups.php:795`](../../../core/components/com_groups/site/controllers/groups.php#L795) with `[$before, $group]`
 
 Listeners:
 
@@ -72,7 +72,7 @@ Fired from:
 - [`core/components/com_groups/api/controllers/groupsv1r1.php:380`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L380)
 - [`core/components/com_groups/api/controllers/groupsv1r1.php:402`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L402) with `[]`
 - [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
-- [`core/components/com_groups/site/controllers/groups.php:508`](../../../core/components/com_groups/site/controllers/groups.php#L508) with `[]`
+- [`core/components/com_groups/site/controllers/groups.php:512`](../../../core/components/com_groups/site/controllers/groups.php#L512) with `[]`
 - [`core/components/com_groups/site/views/emails/tmpl/saved.php:457`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L457) with `[]`
 - [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:147`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L147) with `[]`
 - [`core/libraries/Hubzero/User/Group/Helper.php:285`](../../../core/libraries/Hubzero/User/Group/Helper.php#L285) with `[]`
@@ -92,7 +92,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_groups/admin/controllers/manage.php:1152`](../../../core/components/com_groups/admin/controllers/manage.php#L1152) with `[$group]`
-- [`core/components/com_groups/site/controllers/groups.php:1133`](../../../core/components/com_groups/site/controllers/groups.php#L1133) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:1137`](../../../core/components/com_groups/site/controllers/groups.php#L1137) with `[$group]`
 
 Listeners:
 
@@ -107,7 +107,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:1034`](../../../core/components/com_groups/site/controllers/groups.php#L1034) with `[$this->view->group]`
+- [`core/components/com_groups/site/controllers/groups.php:1038`](../../../core/components/com_groups/site/controllers/groups.php#L1038) with `[$this->view->group]`
 
 Listeners:
 
@@ -139,7 +139,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:806`](../../../core/components/com_groups/site/controllers/groups.php#L806) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:810`](../../../core/components/com_groups/site/controllers/groups.php#L810) with `[$group]`
 
 No plugin in the source tree listens for this event.
 
@@ -155,7 +155,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/models/orm/group.php:432`](../../../core/components/com_groups/models/orm/group.php#L432) with `[$this->get('gidNumber'), $userid]`
+- [`core/components/com_groups/models/orm/group.php:436`](../../../core/components/com_groups/models/orm/group.php#L436) with `[$this->get('gidNumber'), $userid]`
 - [`core/libraries/Hubzero/User/Group.php:611`](../../../core/libraries/Hubzero/User/Group.php#L611) with `[$this->gidNumber, $userid]`
 
 Listeners:

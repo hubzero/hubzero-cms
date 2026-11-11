@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:622`](../../../core/components/com_publications/site/controllers/publications.php#L622) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended, ]`
+- [`core/components/com_publications/site/controllers/publications.php:637`](../../../core/components/com_publications/site/controllers/publications.php#L637) with `[ $this->model, $this->option, [$tab], 'all', $this->model->versionAlias, $extended, ]`
 
 Listeners:
 
@@ -49,7 +49,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:615`](../../../core/components/com_publications/site/controllers/publications.php#L615) with `[ $this->model, $this->model->versionAlias, $extended, ]`
+- [`core/components/com_publications/site/controllers/publications.php:630`](../../../core/components/com_publications/site/controllers/publications.php#L630) with `[ $this->model, $this->model->versionAlias, $extended, ]`
 
 No plugin in the source tree listens for this event.
 
@@ -95,7 +95,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/curation.php:923`](../../../core/components/com_publications/site/controllers/curation.php#L923) with `[$pub]`
+- [`core/components/com_publications/site/controllers/curation.php:928`](../../../core/components/com_publications/site/controllers/curation.php#L928) with `[$pub]`
 
 Listeners:
 

@@ -11,7 +11,7 @@ Events in the `wiki` group. A plugin in `core/plugins/wiki/` receives an event b
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:260`](../../../core/components/com_wiki/site/controllers/pages.php#L260) with `[&$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:264`](../../../core/components/com_wiki/site/controllers/pages.php#L264) with `[&$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:254`](../../../core/components/com_wiki/site/controllers/pages.php#L254) with `[$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:258`](../../../core/components/com_wiki/site/controllers/pages.php#L258) with `[$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/site/controllers/pages.php:257`](../../../core/components/com_wiki/site/controllers/pages.php#L257) with `[&$this->page, &$revision, $this->config]`
+- [`core/components/com_wiki/site/controllers/pages.php:261`](../../../core/components/com_wiki/site/controllers/pages.php#L261) with `[&$this->page, &$revision, $this->config]`
 
 No plugin in the source tree listens for this event.
 
@@ -95,8 +95,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_wiki/admin/controllers/pages.php:264`](../../../core/components/com_wiki/admin/controllers/pages.php#L264) with `[&$page, $isNew]`
-- [`core/components/com_wiki/site/controllers/history.php:479`](../../../core/components/com_wiki/site/controllers/history.php#L479) with `[&$this->page, false]`
-- [`core/components/com_wiki/site/controllers/pages.php:768`](../../../core/components/com_wiki/site/controllers/pages.php#L768) with `[&$this->page, $isNew]`
+- [`core/components/com_wiki/site/controllers/history.php:482`](../../../core/components/com_wiki/site/controllers/history.php#L482) with `[&$this->page, false]`
+- [`core/components/com_wiki/site/controllers/pages.php:772`](../../../core/components/com_wiki/site/controllers/pages.php#L772) with `[&$this->page, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -121,7 +121,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_wiki/admin/controllers/pages.php:243`](../../../core/components/com_wiki/admin/controllers/pages.php#L243) with `[&$page, $isNew]`
-- [`core/components/com_wiki/site/controllers/pages.php:663`](../../../core/components/com_wiki/site/controllers/pages.php#L663) with `[&$this->page, $isNew]`
+- [`core/components/com_wiki/site/controllers/pages.php:667`](../../../core/components/com_wiki/site/controllers/pages.php#L667) with `[&$this->page, $isNew]`
 
 No plugin in the source tree listens for this event.
 
