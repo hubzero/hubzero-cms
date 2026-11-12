@@ -219,7 +219,7 @@ class Blocks extends Obj
      *
      * @param   string   $name      Name of block to render
      * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
-     * @param   string   $manifest
+     * @param   object|null  $manifest
      * @param   object   $pub
      * @param   integer  $blockId
      * @return  string|false   HTML

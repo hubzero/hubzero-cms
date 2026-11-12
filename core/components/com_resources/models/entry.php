@@ -1108,7 +1108,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Build and return the url
      *
      * @param   string  $as
-     * @return  string
+     * @return  mixed  A list of names, a string, or the tag cloud itself when $as is false
      */
     public function tags($as = 'list')
     {

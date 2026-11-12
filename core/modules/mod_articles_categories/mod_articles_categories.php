@@ -30,7 +30,7 @@ class ArticlesCategories extends Module
 
         $list = self::getList($params);
 
-        if ($list->count()) {
+        if ($list instanceof \Hubzero\Database\Rows && $list->count()) {
             $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
             $startLevel = Category::oneOrNew($list->first()->parent_id)->level;
             require $this->getLayoutPath($params->get('layout', 'default'));
@@ -41,7 +41,7 @@ class ArticlesCategories extends Module
      * Display module contents
      *
      * @param   object  $params  Registry
-     * @return  array|null
+     * @return  \Hubzero\Database\Rows|array  The categories; an empty array when the parent is not found
      */
     public static function getList(&$params)
     {
@@ -56,11 +56,13 @@ class ArticlesCategories extends Module
         }
 
         if ($category != null) {
-            $items = $category->getChildren();
-            if ($params->get('count', 0) > 0 && count($items) > $params->get('count', 0)) {
-                $items = array_slice($items, 0, $params->get('count', 0));
+            // The children come as rows, which cannot be sliced as an array; ask for no more than wanted
+            $children = $category->children();
+            $count = (int) $params->get('count', 0);
+            if ($count > 0) {
+                $children->limit($count);
             }
-            return $items;
+            return $children->rows();
         }
 
         return [];

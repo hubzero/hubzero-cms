@@ -317,7 +317,7 @@ class Detector implements DetectorInterface
      * @param   object   $token
      * @param   integer  $good_count
      * @param   integer  $bad_count
-     * @param   integer  $tokens_count
+     * @param   object   $tokens_count
      * @return  void
      */
     protected function calculateTokenProbality($token, $good_count, $bad_count, $tokens_count)

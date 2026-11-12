@@ -60,7 +60,7 @@ class Html
      *
      * @param   int      $pid
      * @param   int      $versionid
-     * @param   array    $config
+     * @param   object|null    $config
      * @param   boolean  $force
      * @param   string   $cat
      * @return  string   HTML
@@ -681,7 +681,7 @@ class Html
      * Generate the primary resources button
      *
      * @param   string   $icon     Class to add
-     * @param   string   $pub      Link url
+     * @param   object   $pub      The publication
      * @param   string   $url       Link text
      * @param   string   $xtra      Extra parameters to add (deprecated)
      * @param   string   $title     Link title

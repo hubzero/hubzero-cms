@@ -44,7 +44,7 @@ class Dataselector extends Base
      * @param   object   $manifest
      * @param   object   $pub
      * @param   string   $viewname
-     * @param   string   $status
+     * @param   object|null   $status
      * @param   object   $master
      * @param   integer  $order
      * @return  string
@@ -115,7 +115,7 @@ class Dataselector extends Base
      * @param   integer  $elementId
      * @param   object   $manifest
      * @param   object   $pub
-     * @param   string   $status
+     * @param   object|null   $status
      * @param   object   $master
      * @param   string   $viewname
      * @return  string
@@ -171,7 +171,7 @@ class Dataselector extends Base
      * @param   integer  $elementId
      * @param   object   $manifest
      * @param   object   $pub
-     * @param   string   $status
+     * @param   object|null   $status
      * @param   integer  $active
      * @param   integer  $collapse
      * @param   integer  $total

@@ -68,7 +68,7 @@ class RelatedItems extends Module
 
         $showDate = $params->get('showDate', 0);
         $nullDate = $db->getNullDate();
-        $now      = $date->toSql();
+        $now      = $date;
         $related  = [];
         $query    = $db->getQuery();
 
