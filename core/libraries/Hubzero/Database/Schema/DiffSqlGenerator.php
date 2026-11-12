@@ -85,14 +85,14 @@ class DiffSqlGenerator
     /**
      * Database driver
      *
-     * @var Driver
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected $driver;
 
     /**
      * Create a new DiffSqlGenerator
      *
-     * @param Driver $driver
+     * @param \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver
      */
     public function __construct(Driver $driver)
     {

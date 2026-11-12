@@ -112,6 +112,15 @@ class Item extends Obj
     public $pubDate;
 
     /**
+     * The date the item was published, which the feed renderers read
+     *
+     * Takes the same formats as pubDate.
+     *
+     * @var  string|int|null
+     */
+    public $date;
+
+    /**
      * Source element
      *
      * optional

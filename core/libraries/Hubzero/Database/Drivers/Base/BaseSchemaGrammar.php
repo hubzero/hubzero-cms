@@ -22,14 +22,14 @@ abstract class BaseSchemaGrammar
     /**
      * Database driver
      *
-     * @var Driver
+     * @var SqlDriver
      */
     protected $driver;
 
     /**
      * Create a new grammar instance
      *
-     * @param  Driver  $driver
+     * @param  SqlDriver  $driver
      */
     public function __construct(Driver $driver)
     {

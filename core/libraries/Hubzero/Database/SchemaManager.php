@@ -67,14 +67,16 @@ class SchemaManager
     /**
      * Database driver instance
      *
-     * @var Driver
+     * Typed as the driver every database has: the schema methods live there.
+     *
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected $driver;
 
     /**
      * Create a new schema manager
      *
-     * @param  Driver  $driver
+     * @param  \Hubzero\Database\Drivers\Base\BaseSqlDriver  $driver
      */
     public function __construct(Driver $driver)
     {
@@ -84,7 +86,7 @@ class SchemaManager
     /**
      * Get the database driver
      *
-     * @return Driver
+     * @return \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     public function getDriver(): Driver
     {

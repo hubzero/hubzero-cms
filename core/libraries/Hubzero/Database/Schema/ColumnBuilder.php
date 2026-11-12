@@ -46,7 +46,7 @@ class ColumnBuilder
     /**
      * Database driver instance
      *
-     * @var Driver
+     * @var \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     protected $driver;
 
@@ -123,7 +123,7 @@ class ColumnBuilder
     /**
      * Create a new column builder
      *
-     * @param  Driver       $driver      Database driver
+     * @param  \Hubzero\Database\Drivers\Base\BaseSqlDriver  $driver  Database driver
      * @param  string       $table       Table name
      * @param  string       $column      Column name
      * @param  string|null  $definition  Column definition (null for fluent abstract type API)
