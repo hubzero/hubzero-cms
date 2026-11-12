@@ -129,7 +129,7 @@ Fired from:
 
 - [`core/components/com_members/admin/controllers/members.php:847`](../../../core/components/com_members/admin/controllers/members.php#L847) with `[$data, true, $this->getError()]`
 - [`core/components/com_members/models/member.php:475`](../../../core/components/com_members/models/member.php#L475) with `[$data, true, $this->getError()]`
-- [`core/libraries/Hubzero/User/User.php:1159`](../../../core/libraries/Hubzero/User/User.php#L1159) with `[$data, true, $this->getError()]`
+- [`core/libraries/Hubzero/User/User.php:1162`](../../../core/libraries/Hubzero/User/User.php#L1162) with `[$data, true, $this->getError()]`
 
 Listeners:
 
@@ -154,7 +154,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_cart/lib/handlers/type/accessgroupmembershiptypehandler.php:56`](../../../core/components/com_cart/lib/handlers/type/accessgroupmembershiptypehandler.php#L56) with `[$table->toArray(), false, true, null]`
-- [`core/libraries/Hubzero/User/User.php:1113`](../../../core/libraries/Hubzero/User/User.php#L1113) with `[$data, $isNew, $result, $this->getError()]`
+- [`core/libraries/Hubzero/User/User.php:1116`](../../../core/libraries/Hubzero/User/User.php#L1116) with `[$data, $isNew, $result, $this->getError()]`
 
 Listeners:
 
@@ -194,7 +194,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_members/models/member.php:442`](../../../core/components/com_members/models/member.php#L442) with `[$data]`
-- [`core/libraries/Hubzero/User/User.php:1135`](../../../core/libraries/Hubzero/User/User.php#L1135) with `[$data]`
+- [`core/libraries/Hubzero/User/User.php:1138`](../../../core/libraries/Hubzero/User/User.php#L1138) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -210,7 +210,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/User.php:1077`](../../../core/libraries/Hubzero/User/User.php#L1077) with `[$oldUser->toArray(), $isNew, $data]`
+- [`core/libraries/Hubzero/User/User.php:1080`](../../../core/libraries/Hubzero/User/User.php#L1080) with `[$oldUser->toArray(), $isNew, $data]`
 
 Listeners:
 
@@ -241,7 +241,7 @@ Listeners:
 Fired from:
 
 - [`core/libraries/Hubzero/Auth/Manager.php:95`](../../../core/libraries/Hubzero/Auth/Manager.php#L95) with `[(array) $response, $options]`
-- [`core/libraries/Hubzero/User/User.php:649`](../../../core/libraries/Hubzero/User/User.php#L649) with `[$data]`
+- [`core/libraries/Hubzero/User/User.php:652`](../../../core/libraries/Hubzero/User/User.php#L652) with `[$data]`
 
 Listeners:
 

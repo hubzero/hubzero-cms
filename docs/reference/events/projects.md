@@ -78,7 +78,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:546`](../../../core/components/com_projects/models/orm/project.php#L546) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:548`](../../../core/components/com_projects/models/orm/project.php#L548) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -127,7 +127,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:517`](../../../core/components/com_projects/models/orm/project.php#L517) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:519`](../../../core/components/com_projects/models/orm/project.php#L519) with `[$data]`
 
 No plugin in the source tree listens for this event.
 

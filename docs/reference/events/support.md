@@ -11,7 +11,7 @@ Events in the `support` group. A plugin in `core/plugins/support/` receives an e
 
 Fired from:
 
-- [`core/components/com_support/models/comment.php:204`](../../../core/components/com_support/models/comment.php#L204) with `['com_support.comment', &$this]`
+- [`core/components/com_support/models/comment.php:209`](../../../core/components/com_support/models/comment.php#L209) with `['com_support.comment', &$this]`
 
 Listeners:
 

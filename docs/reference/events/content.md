@@ -94,12 +94,12 @@ Listeners:
 Fired from:
 
 - [`core/components/com_answers/models/comment.php:81`](../../../core/components/com_answers/models/comment.php#L81) with `[ 'com_answers.comment.content', &$this, $this->isNew(), ]`
-- [`core/components/com_answers/models/question.php:520`](../../../core/components/com_answers/models/question.php#L520) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/question.php:522`](../../../core/components/com_answers/models/question.php#L522) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
 - [`core/components/com_answers/models/response.php:437`](../../../core/components/com_answers/models/response.php#L437) with `[ 'com_answers.response.answer', &$this, $this->isNew(), ]`
 - [`core/components/com_blog/models/comment.php:345`](../../../core/components/com_blog/models/comment.php#L345) with `[ 'com_blog.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_blog/models/entry.php:718`](../../../core/components/com_blog/models/entry.php#L718) with `[ 'com_blog.entry.content', &$this, $this->isNew(), ]`
-- [`core/components/com_forum/models/category.php:327`](../../../core/components/com_forum/models/category.php#L327) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
-- [`core/components/com_forum/models/post.php:646`](../../../core/components/com_forum/models/post.php#L646) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
+- [`core/components/com_forum/models/category.php:329`](../../../core/components/com_forum/models/category.php#L329) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
+- [`core/components/com_forum/models/post.php:648`](../../../core/components/com_forum/models/post.php#L648) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
 - [`core/components/com_groups/site/controllers/groups.php:690`](../../../core/components/com_groups/site/controllers/groups.php#L690) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
 - [`core/components/com_kb/models/comment.php:378`](../../../core/components/com_kb/models/comment.php#L378) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_media/admin/controllers/media.php:142`](../../../core/components/com_media/admin/controllers/media.php#L142) with `['com_media.folder', &$object_file, true]`

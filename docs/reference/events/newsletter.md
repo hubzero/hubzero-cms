@@ -13,7 +13,7 @@ Fired from:
 
 - [`core/components/com_newsletter/admin/controllers/stories.php:104`](../../../core/components/com_newsletter/admin/controllers/stories.php#L104)
 - [`core/components/com_newsletter/admin/controllers/stories.php:140`](../../../core/components/com_newsletter/admin/controllers/stories.php#L140)
-- [`core/components/com_newsletter/models/newsletter.php:444`](../../../core/components/com_newsletter/models/newsletter.php#L444)
+- [`core/components/com_newsletter/models/newsletter.php:449`](../../../core/components/com_newsletter/models/newsletter.php#L449)
 
 Listeners:
 
@@ -25,7 +25,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_newsletter/admin/controllers/stories.php:148`](../../../core/components/com_newsletter/admin/controllers/stories.php#L148) with `[$itemCount]`
-- [`core/components/com_newsletter/models/newsletter.php:450`](../../../core/components/com_newsletter/models/newsletter.php#L450) with `[$parts[2]]`
+- [`core/components/com_newsletter/models/newsletter.php:455`](../../../core/components/com_newsletter/models/newsletter.php#L455) with `[$parts[2]]`
 
 Listeners:
 
