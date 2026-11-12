@@ -111,12 +111,13 @@ class Students extends AdminController
         //$this->view->filters['count'] = false;
 
         //$this->view->offering->students($this->view->filters);
-        $this->view->set('rows', $tbl->find($this->view->filters));
-        if ($this->view->get('rows')) {
-            foreach ($this->view->rows as $key => $row) {
-                $this->view->rows[$key] = new \Components\Courses\Models\Student($row);
+        $rows = $tbl->find($this->view->filters);
+        if ($rows) {
+            foreach ($rows as $key => $row) {
+                $rows[$key] = new \Components\Courses\Models\Student($row);
             }
         }
+        $this->view->set('rows', $rows);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -398,7 +399,7 @@ class Students extends AdminController
      */
     public function csvTask()
     {
-        $this->view->set('filters', [
+        $filters = [
             'offering' => Request::getState(
                 $this->option . '.' . $this->controller . '.offering',
                 'offering',
@@ -409,35 +410,37 @@ class Students extends AdminController
                 'section',
                 0,
             ),
-        ]);
+        ];
 
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+            \Components\Courses\Models\Offering::getInstance($filters['offering']),
         );
-        $this->view->filters['offering_id'] = $this->view->get('filters')['offering'];
+        $filters['offering_id'] = $filters['offering'];
         $this->view->set(
             'course',
             \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
-        if (!$this->view->filters['offering_id']) {
-            $this->view->filters['offering_id'] = null;
+        if (!$filters['offering_id']) {
+            $filters['offering_id'] = null;
         }
-        if (!$this->view->filters['section_id']) {
-            $this->view->filters['section_id'] = null;
+        if (!$filters['section_id']) {
+            $filters['section_id'] = null;
         }
-        $this->view->filters['student'] = 1;
+        $filters['student'] = 1;
 
         $tbl = new Tables\Member($this->database);
 
-        //$this->view->offering->students($this->view->filters);
-        $this->view->set('rows', $tbl->find($this->view->filters));
-        if ($this->view->get('rows')) {
-            foreach ($this->view->rows as $key => $row) {
-                $this->view->rows[$key] = new \Components\Courses\Models\Student($row);
+        //$this->view->offering->students($filters);
+        $rows = $tbl->find($filters);
+        $this->view->set('filters', $filters);
+        if ($rows) {
+            foreach ($rows as $key => $row) {
+                $rows[$key] = new \Components\Courses\Models\Student($row);
             }
         }
+        $this->view->set('rows', $rows);
 
         // Output the CSV
         $this->view->display();

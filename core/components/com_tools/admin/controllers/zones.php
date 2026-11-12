@@ -50,7 +50,7 @@ class Zones extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'zone' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.zone',
                 'zone',
@@ -85,20 +85,21 @@ class Zones extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->get('filters')['limit'] != 0
-            ? (floor($this->view->get('filters')['start'] / $this->view->get('filters')['limit'])
-                * $this->view->get('filters')['limit'])
+        $filters['start'] = ($filters['limit'] != 0
+            ? (floor($filters['start'] / $filters['limit'])
+                * $filters['limit'])
             : 0);
 
         // Get the middleware
         $model = new Middleware();
 
-        $this->view->set('total', $model->zones('count', $this->view->filters));
+        $this->view->set('total', $model->zones('count', $filters));
 
-        $this->view->set('rows', $model->zones('list', $this->view->filters));
+        $this->view->set('rows', $model->zones('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

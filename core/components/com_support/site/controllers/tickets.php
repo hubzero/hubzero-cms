@@ -193,7 +193,7 @@ class Tickets extends SiteController
         $month = $date->toLocal('m');
 
         $this->view->set('year', $year);
-        $this->view->set('opened', []);
+        $opened = [];
         $this->view->set('closed', []);
 
         $sql = "SELECT DISTINCT(g.`cn`), g.description
@@ -330,9 +330,9 @@ class Tickets extends SiteController
         $owners = [];
 
         $open = [];
-        $this->view->opened['open'] = 0;
-        $this->view->opened['new'] = 0;
-        $this->view->opened['unassigned'] = 0;
+        $opened['open'] = 0;
+        $opened['new'] = 0;
+        $opened['unassigned'] = 0;
         foreach ($openTickets as $o) {
             if (!isset($open[$o->year])) {
                 $open[$o->year] = [];
@@ -342,14 +342,14 @@ class Tickets extends SiteController
             }
             $open[$o->year][$o->month]++;
 
-            $this->view->opened['open']++;
+            $opened['open']++;
 
             if ($o->open) {
                 if (!$o->status) {
-                    $this->view->opened['new']++;
+                    $opened['new']++;
                 }
                 if (!$o->owner) {
-                    $this->view->opened['unassigned']++;
+                    $opened['unassigned']++;
                 } else {
                     if (!isset($owners[$o->owner])) {
                         $owners[$o->owner] = 0;
@@ -385,7 +385,7 @@ class Tickets extends SiteController
         $this->database->setQuery($sql);
         $clsd = $this->database->loadObjectList();
 
-        $this->view->opened['closed'] = 0;
+        $opened['closed'] = 0;
         // First we need to loop through all the entries and remove some potential duplicates
         $closedTickets = [];
         foreach ($clsd as $closed) {
@@ -408,17 +408,18 @@ class Tickets extends SiteController
                 $closed[$o->year][$o->month] = 0;
             }
             $closed[$o->year][$o->month]++;
-            $this->view->opened['closed']++;
+            $opened['closed']++;
         }
+        $this->view->set('opened', $opened);
 
         // Group data by year and gather some info for each user
 
-        $this->view->set('closedmonths', []);
-        $this->view->set('openedmonths', []);
+        $closedmonths = [];
+        $openedmonths = [];
 
         for ($k = $startyear, $n = $endyear; $k < $n; $k++) {
-            $this->view->closedmonths[$k] = [];
-            $this->view->openedmonths[$k] = [];
+            $closedmonths[$k] = [];
+            $openedmonths[$k] = [];
             if ($k == $startyear && intval($startmonth) > 1) {
                 $i = intval($startmonth) - 1;
             } else {
@@ -429,10 +430,10 @@ class Tickets extends SiteController
                 if ($k == $year && $i > $endmonth) {
                     break;
                 } else {
-                    $this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i]))
+                    $closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i]))
                         ? $closed[$k][$i]
                         : 0;
-                    $this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
+                    $openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
                 }
 
                 foreach ($users as $j => $user) {
@@ -454,6 +455,8 @@ class Tickets extends SiteController
                 }
             }
         }
+        $this->view->set('closedmonths', $closedmonths);
+        $this->view->set('openedmonths', $openedmonths);
 
         foreach ($closedTickets as $c) {
             if (isset($users[$c->created_by])) {

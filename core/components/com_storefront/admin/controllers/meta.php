@@ -30,28 +30,28 @@ class Meta extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'access' => -1,
-        ]);
-        $this->view->filters['sort'] = trim(Request::getState(
+        ];
+        $filters['sort'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sort',
             'filter_order',
             'title',
         ));
-        $this->view->filters['sort_Dir'] = trim(Request::getState(
+        $filters['sort_Dir'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sortdir',
             'filter_order_Dir',
             'ASC',
         ));
 
         // Get paging variables
-        $this->view->filters['limit'] = Request::getState(
+        $filters['limit'] = Request::getState(
             $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
-        $this->view->filters['start'] = Request::getState(
+        $filters['start'] = Request::getState(
             $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
@@ -61,10 +61,11 @@ class Meta extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->products('count', $this->view->filters));
+        $this->view->set('total', $obj->products('count', $filters));
 
         // Get records
-        $this->view->set('rows', $obj->products('list', $this->view->filters));
+        $this->view->set('rows', $obj->products('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         if ($this->getError()) {

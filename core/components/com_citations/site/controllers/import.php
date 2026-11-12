@@ -384,12 +384,13 @@ class Import extends SiteController
         $this->view->set('database', $this->database);
         $this->view->set('filters', $filters);
         $this->view->set('defaultFormat', Format::getDefault());
-        $this->view->set('citations', []);
+        $citations = [];
         $citations_saved = Citation::all()->whereIn('id', $citations_saved)->rows();
 
         foreach ($citations_saved as $cs) {
-            $this->view->citations[] = $cs;
+            $citations[] = $cs;
         }
+        $this->view->set('citations', $citations);
 
         $this->view->openurl['link'] = '';
         $this->view->openurl['text'] = '';

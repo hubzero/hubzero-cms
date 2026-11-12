@@ -76,29 +76,30 @@ class Pipeline extends SiteController
     public function pipelineTask()
     {
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option . '_' . $this->task)));
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task));
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Filters
-        $this->view->set('filters', []);
-        $this->view->filters['filterby'] = trim(Request::getString('filterby', 'all'));
-        $this->view->filters['search'] = trim(urldecode(Request::getString('search', '')));
+        $filters = [];
+        $filters['filterby'] = trim(Request::getString('filterby', 'all'));
+        $filters['search'] = trim(urldecode(Request::getString('search', '')));
         if (!$this->config->get('access-admin-component')) {
-            $this->view->filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state, f.registered')));
+            $filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state, f.registered')));
         } else {
-            $this->view->filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state_changed DESC')));
+            $filters['sortby'] = trim(trim(Request::getString('sortby', 'f.state_changed DESC')));
         }
 
         // Paging vars
-        $this->view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
-        $this->view->filters['start'] = Request::getInt('limitstart', 0);
-        if ($this->view->filters['limit'] != 0) {
-            $this->view->filters['start'] = floor(
-                $this->view->filters['start'] / $this->view->filters['limit'],
-            ) * $this->view->filters['limit'];
+        $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
+        $filters['start'] = Request::getInt('limitstart', 0);
+        if ($filters['limit'] != 0) {
+            $filters['start'] = floor(
+                $filters['start'] / $filters['limit'],
+            ) * $filters['limit'];
         } else {
-            $this->view->filters['start'] = 0;
+            $filters['start'] = 0;
         }
 
         // Create a Tool object
@@ -107,11 +108,12 @@ class Pipeline extends SiteController
         // Record count
         $this->view->set(
             'total',
-            $obj->getToolCount($this->view->filters, $this->config->get('access-admin-component')),
+            $obj->getToolCount($filters, $this->config->get('access-admin-component')),
         );
 
         // Fetch results
-        $this->view->set('rows', $obj->getTools($this->view->filters, $this->config->get('access-admin-component')));
+        $this->view->set('rows', $obj->getTools($filters, $this->config->get('access-admin-component')));
+        $this->view->set('filters', $filters);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -189,12 +191,13 @@ class Pipeline extends SiteController
         $this->view->set('admin', $this->config->get('access-admin-component'));
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option . '_' . $this->task)));
-        $this->view->title .= $status['toolname']
+        $title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task));
+        $title .= $status['toolname']
             ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname']
             : '';
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -268,18 +271,19 @@ class Pipeline extends SiteController
         $objV->getToolVersions($this->_toolid, $versions, '');
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ');
-        $this->view->title .= ($this->_action == 'confirm')
+        $title = Lang::txt(strtoupper($this->option)) . ': ';
+        $title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_VERSIONS');
 
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
         $hztv_dev = $hzt->getRevision('development');
         $hztv_current = $hzt->getRevision('current');
 
-        $this->view->set('status', [
+        $status = [
             'toolid'          => $hzt->id,
             'published'       => $hzt->published,
             'version'         => $hztv_dev->version,
@@ -289,7 +293,7 @@ class Pipeline extends SiteController
             'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
             'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
             'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : ''),
-        ]);
+        ];
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -299,17 +303,18 @@ class Pipeline extends SiteController
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
-            . $this->view->status['toolname'],
+            . $status['toolname'],
             'index.php?option=' . $this->option . '&controller=' . $this->controller
-            . 'task=status&app=' . $this->view->status['toolname'],
+            . 'task=status&app=' . $status['toolname'],
         );
         if ($this->_action != 'confirm') {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_VERSIONS'),
                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                . '&task=versions&app=' . $this->view->status['toolname'],
+                . '&task=versions&app=' . $status['toolname'],
             );
         }
+        $this->view->set('status', $status);
 
         $this->view->set('admin', $this->config->get('access-admin-component'));
         $this->view->set('error', $this->_error);
@@ -370,9 +375,10 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL'));
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -458,12 +464,13 @@ class Pipeline extends SiteController
         $this->view->set('licenses', $this->database->loadObjectList());
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ');
-        $this->view->title .= ($this->_action == 'confirm')
+        $title = Lang::txt(strtoupper($this->option)) . ': ';
+        $title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_LICENSE');
 
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -736,8 +743,9 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'));
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL');
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         if (Pathway::count() <= 0) {
             Pathway::append(

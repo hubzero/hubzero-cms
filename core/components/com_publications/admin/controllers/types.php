@@ -30,7 +30,7 @@ class Types extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'limit' => Request::getState(
                 $this->option . '.types.limit',
                 'limit',
@@ -58,19 +58,20 @@ class Types extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ]);
+        ];
 
-        $this->view->filters['state'] = 'all';
+        $filters['state'] = 'all';
 
         // Instantiate an object
         $database = App::get('db');
         $rt = new \Components\Publications\Tables\MasterType($database);
 
         // Get a record count
-        $this->view->set('total', $rt->getCount($this->view->filters));
+        $this->view->set('total', $rt->getCount($filters));
 
         // Get records
-        $this->view->set('rows', $rt->getRecords($this->view->filters));
+        $this->view->set('rows', $rt->getRecords($filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         if ($this->getError()) {

@@ -186,15 +186,17 @@ class Storage extends SiteController
         $this->view->set('exceeded', $exceeded);
         $this->view->set('output', (isset($this->view->output)) ? $this->view->output : null);
         $this->view->set('percentage', $this->percent);
-        $this->view->set('usedBytes', isset($this->used) ? $this->used : 0);
-        $this->view->set('softBytes', isset($this->soft) ? $this->soft : 0);
-        $this->view->set('freeBytes', ($this->view->softBytes > $this->view->usedBytes)
-            ? ($this->view->softBytes - $this->view->usedBytes)
+        $usedBytes = isset($this->used) ? $this->used : 0;
+        $softBytes = isset($this->soft) ? $this->soft : 0;
+        $this->view->set('freeBytes', ($softBytes > $usedBytes)
+            ? ($softBytes - $usedBytes)
             : 0);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
         }
+        $this->view->set('softBytes', $softBytes);
+        $this->view->set('usedBytes', $usedBytes);
 
         $this->view->display();
     }

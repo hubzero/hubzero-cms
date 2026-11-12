@@ -44,7 +44,7 @@ class Locations extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'zone' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.zone',
                 'zone',
@@ -67,19 +67,19 @@ class Locations extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ]);
+        ];
 
-        if ($this->view->get('filters')['tmpl'] == 'component') {
+        if ($filters['tmpl'] == 'component') {
             $this->view->setLayout('component');
         } else {
             // Get paging variables
-            $this->view->filters['limit'] = Request::getState(
+            $filters['limit'] = Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             );
-            $this->view->filters['start'] = Request::getState(
+            $filters['start'] = Request::getState(
                 $this->option . '.' . $this->controller . '.limitstart',
                 'limitstart',
                 0,
@@ -87,18 +87,19 @@ class Locations extends AdminController
             );
 
             // In case limit has been changed, adjust limitstart accordingly
-            $this->view->filters['start'] = ($this->view->filters['limit'] != 0
-                ? (floor($this->view->filters['start'] / $this->view->filters['limit'])
-                    * $this->view->filters['limit'])
+            $filters['start'] = ($filters['limit'] != 0
+                ? (floor($filters['start'] / $filters['limit'])
+                    * $filters['limit'])
                 : 0);
         }
 
         // Get the middleware database
-        $this->view->set('zone', new Middleware\Zone($this->view->filters['zone']));
+        $this->view->set('zone', new Middleware\Zone($filters['zone']));
 
-        $this->view->set('total', $this->view->get('zone')->locations('count', $this->view->filters));
+        $this->view->set('total', $this->view->get('zone')->locations('count', $filters));
 
-        $this->view->set('rows', $this->view->get('zone')->locations('list', $this->view->filters));
+        $this->view->set('rows', $this->view->get('zone')->locations('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

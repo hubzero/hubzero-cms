@@ -337,14 +337,15 @@ class Membership extends AdminController
 
         $this->view->set('users', $ids);
         $this->view->set('maxDays', (int) Component::params('com_groups')->get('membership_max_term_days', 0));
-        $this->view->set('current', []);
+        $current = [];
 
         foreach ($ids as $uid) {
-            $this->view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor(
+            $current[$uid] = \Hubzero\User\Group\Membership::expiresFor(
                 $this->view->get('group')->get('gidNumber'),
                 $uid,
             );
         }
+        $this->view->set('current', $current);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

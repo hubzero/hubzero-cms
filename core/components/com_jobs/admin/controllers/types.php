@@ -30,7 +30,7 @@ class Types extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('filters', [
+        $filters = [
             // Get paging variables
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
@@ -55,13 +55,14 @@ class Types extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ]);
+        ];
 
         // Instantiate an object
         $jt = new Type($this->database);
 
         // Get records
-        $this->view->set('rows', $jt->getTypes($this->view->filters['sort'], $this->view->filters['sort_Dir']));
+        $this->view->set('rows', $jt->getTypes($filters['sort'], $filters['sort_Dir']));
+        $this->view->set('filters', $filters);
         $this->view->set('total', count($this->view->get('rows')));
 
         // Load default types if none found

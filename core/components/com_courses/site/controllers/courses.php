@@ -148,39 +148,39 @@ class Courses extends SiteController
     public function browseTask()
     {
         // Filters
-        $this->view->set('filters', [
+        $filters = [
             'state'  => 1,
             'search' => Request::getString('search', ''),
             'sortby' => strtolower(Request::getWord('sortby', 'title')),
             'group'  => Request::getString('group', ''),
-        ]);
-        if ($this->view->get('filters')['group']) {
-            $group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
+        ];
+        if ($filters['group']) {
+            $group = \Hubzero\User\Group::getInstance($filters['group']);
             if ($group) {
-                $this->view->filters['group_id'] = $group->get('gidNumber');
+                $filters['group_id'] = $group->get('gidNumber');
             }
         }
         $validSorts = ['alias', 'title', 'popularity'];
-        if (!in_array($this->view->get('filters')['sortby'], $validSorts)) {
-            $this->view->filters['sortby'] = 'title';
+        if (!in_array($filters['sortby'], $validSorts)) {
+            $filters['sortby'] = 'title';
         }
-        switch ($this->view->get('filters')['sortby']) {
+        switch ($filters['sortby']) {
             case 'popularity':
-                $this->view->filters['sort']  = 'students';
-                $this->view->filters['sort_Dir'] = 'DESC';
+                $filters['sort']  = 'students';
+                $filters['sort_Dir'] = 'DESC';
                 break;
             case 'title':
             case 'alias':
             default:
-                $this->view->filters['sort']  = $this->view->get('filters')['sortby'];
-                $this->view->filters['sort_Dir'] = 'ASC';
+                $filters['sort']  = $filters['sortby'];
+                $filters['sort_Dir'] = 'ASC';
                 break;
         }
         // Filters for returning results
         $limit = Request::getInt('limit', Config::get('list_limit'));
-        $this->view->filters['limit']  = $limit ? $limit : 'all';
-        $this->view->filters['start']  = Request::getInt('limitstart', 0);
-        $this->view->filters['index']  = strtolower(Request::getWord('index', ''));
+        $filters['limit']  = $limit ? $limit : 'all';
+        $filters['start']  = Request::getInt('limitstart', 0);
+        $filters['index']  = strtolower(Request::getWord('index', ''));
         $validIndexes = [
             'a',
             'b',
@@ -209,21 +209,22 @@ class Courses extends SiteController
             'y',
             'z',
         ];
-        $index = $this->view->filters['index'];
+        $index = $filters['index'];
         if ($index && !in_array($index, $validIndexes)) {
-            $this->view->filters['index'] = '';
+            $filters['index'] = '';
         }
-        $this->view->filters['tag'] = Request::getString('tag', '');
+        $filters['tag'] = Request::getString('tag', '');
 
         $model = Models\Courses::getInstance();
 
         // Get a record count
-        $this->view->filters['count'] = true;
-        $this->view->set('total', $model->courses($this->view->filters));
+        $filters['count'] = true;
+        $this->view->set('total', $model->courses($filters));
 
         // Get records
-        $this->view->filters['count'] = false;
-        $this->view->set('courses', $model->courses($this->view->filters));
+        $filters['count'] = false;
+        $this->view->set('courses', $model->courses($filters));
+        $this->view->set('filters', $filters);
 
         //build the title
         $this->buildTitle();

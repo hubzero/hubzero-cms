@@ -32,7 +32,7 @@ class Preferences extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -70,13 +70,14 @@ class Preferences extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $obj = new Tables\Preferences($this->database);
 
         // Get a record count
-        $this->view->set('total', $obj->find('count', $this->view->filters));
-        $this->view->set('rows', $obj->find('list', $this->view->filters));
+        $this->view->set('total', $obj->find('count', $filters));
+        $this->view->set('rows', $obj->find('list', $filters));
+        $this->view->set('filters', $filters);
 
         $classes = new Tables\SessionClass($this->database);
         $this->view->set('classes', $classes->find('list'));

@@ -30,10 +30,12 @@ class Certificates extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('cert_id', Request::getInt('certificate', 0));
-        $this->view->set('course_id', Request::getInt('course', 0));
+        $cert_id = Request::getInt('certificate', 0);
+        $course_id = Request::getInt('course', 0);
 
-        $this->view->set('certificate', Certificate::getInstance($this->view->cert_id, $this->view->course_id));
+        $this->view->set('certificate', Certificate::getInstance($cert_id, $course_id));
+        $this->view->set('cert_id', $cert_id);
+        $this->view->set('course_id', $course_id);
 
         if (!$this->view->get('certificate')->exists()) {
             $this->addTask($this->view->certificate);

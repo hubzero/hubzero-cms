@@ -51,7 +51,7 @@ class Pages extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -80,28 +80,28 @@ class Pages extends AdminController
                 'offering',
                 0,
             ),
-        ]);
+        ];
 
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+            \Components\Courses\Models\Offering::getInstance($filters['offering']),
         );
         if ($this->view->get('offering')->exists()) {
-            $this->view->filters['course']    = Request::getState(
+            $filters['course']    = Request::getState(
                 $this->option . '.' . $this->controller . '.course',
                 'course',
                 $this->view->get('offering')->get('course_id'),
             );
         } else {
             $using = 'course';
-            $this->view->filters['course']    = Request::getState(
+            $filters['course']    = Request::getState(
                 $this->option . '.' . $this->controller . '.course',
                 'course',
                 0,
             );
         }
 
-        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($filters['course']));
 
         if ($this->view->get('offering')->exists()) {
             $list = $this->view->get('offering')->pages(['active' => [0, 1]]);
@@ -111,7 +111,8 @@ class Pages extends AdminController
 
         $this->view->set('total', count($list));
 
-        $this->view->set('rows', array_slice($list, $this->view->filters['start'], $this->view->filters['limit']));
+        $this->view->set('rows', array_slice($list, $filters['start'], $filters['limit']));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -143,23 +144,24 @@ class Pages extends AdminController
             $model = new \Components\Courses\Models\Page($id);
         }
 
-        $this->view->set('row', $model);
+        $row = $model;
 
-        if (!$this->view->get('row')->get('course_id')) {
-            $this->view->get('row')->set('course_id', Request::getInt('course', 0));
+        if (!$row->get('course_id')) {
+            $row->set('course_id', Request::getInt('course', 0));
         }
-        if (!$this->view->get('row')->get('offering_id')) {
-            $this->view->get('row')->set('offering_id', Request::getInt('offering', 0));
+        if (!$row->get('offering_id')) {
+            $row->set('offering_id', Request::getInt('offering', 0));
         }
-        if (!$this->view->get('row')->exists()) {
-            $this->view->get('row')->set('active', 1);
+        if (!$row->exists()) {
+            $row->set('active', 1);
         }
 
-        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($row->get('course_id')));
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->get('row')->get('offering_id')),
+            \Components\Courses\Models\Offering::getInstance($row->get('offering_id')),
         );
+        $this->view->set('row', $row);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -648,24 +650,26 @@ class Pages extends AdminController
     {
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $this->view->set('course_id', Request::getInt('course', 0));
-        $this->view->set('listdir', Request::getInt('listdir', 0));
+        $listdir = Request::getInt('listdir', 0);
 
         // Incoming sub-directory
-        $this->view->set('subdir', Request::getString('subdir', ''));
+        $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $this->view->set('path', $this->buildUploadPath($this->view->listdir));
+        $path = $this->buildUploadPath($listdir);
+        $this->view->set('listdir', $listdir);
 
         // Get list of directories
-        $dirs = $this->recursiveListDir($this->view->path);
+        $dirs = $this->recursiveListDir($path);
 
         $folders   = [];
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
-                $folders[] = Html::select('option', substr($dir, strlen($this->view->get('path'))));
+                $folders[] = Html::select('option', substr($dir, strlen($path)));
             }
         }
+        $this->view->set('path', $path);
         sort($folders);
 
         // Create folder <select> list
@@ -676,8 +680,9 @@ class Pages extends AdminController
             'onchange="goUpDir()" ',
             'value',
             'text',
-            $this->view->subdir,
+            $subdir,
         ));
+        $this->view->set('subdir', $subdir);
 
         $this->view->set('config', $this->config);
 
@@ -701,13 +706,14 @@ class Pages extends AdminController
     {
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $this->view->set('course_id', Request::getInt('course', 0));
-        $this->view->set('listdir', Request::getInt('listdir', 0));
+        $listdir = Request::getInt('listdir', 0);
 
         // Incoming sub-directory
         $this->view->set('subdir', Request::getString('subdir', ''));
 
         // Build the path
-        $path = $this->buildUploadPath($this->view->listdir);
+        $path = $this->buildUploadPath($listdir);
+        $this->view->set('listdir', $listdir);
 
         $folders = [];
         $docs    = [];

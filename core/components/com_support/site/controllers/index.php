@@ -26,9 +26,10 @@ class Index extends SiteController
     public function displayTask()
     {
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)));
+        $title = Lang::txt(strtoupper($this->option));
 
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Set the pathway
         if (Pathway::count() <= 0) {

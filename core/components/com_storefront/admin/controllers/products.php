@@ -35,7 +35,7 @@ class Products extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             // Get sorting variables
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
@@ -72,15 +72,16 @@ class Products extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->products('count', $this->view->filters));
+        $this->view->set('total', $obj->products('count', $filters));
 
         // Get records
-        $this->view->set('rows', $obj->products('list', $this->view->filters));
+        $this->view->set('rows', $obj->products('list', $filters));
+        $this->view->set('filters', $filters);
 
         // For all records here get SKUs
         $skus = new \stdClass();

@@ -191,8 +191,9 @@ class Screenshots extends SiteController
         $shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
 
         // Set the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS'));
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Output HTML
         $this->view
@@ -799,12 +800,13 @@ class Screenshots extends SiteController
 
         // Build paths
         $path = $resource->relativepath();
-        $this->view->set('upath', PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path);
+        $upath = PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
         $this->view->set('wpath', DS . trim($this->rconfig->get('uploadpath'), DS) . $path);
         if ($vid) {
-            $this->view->upath .= DS . $vid;
+            $upath .= DS . $vid;
             $this->view->wpath .= DS . $vid;
         }
+        $this->view->set('upath', $upath);
 
         // Make sure wpath is preceded by app
         if (substr($this->view->get('wpath'), 0, 4) != DS . 'app') {

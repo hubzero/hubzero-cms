@@ -107,14 +107,15 @@ class Results extends SiteController
         ]));
 
         // Build the page title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)));
+        $title = Lang::txt(strtoupper($this->option));
         if ($this->task) {
             $langKey = 'PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task);
-            $this->view->title .= ': ' . Lang::txt($langKey);
+            $title .= ': ' . Lang::txt($langKey);
         }
 
         // Set the page title
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Output HTML
         $this->view

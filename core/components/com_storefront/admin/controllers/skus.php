@@ -46,7 +46,7 @@ class Skus extends AdminController
         $this->view->set('product', $product);
 
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -71,15 +71,16 @@ class Skus extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->skus('count', $pId, $this->view->filters));
+        $this->view->set('total', $obj->skus('count', $pId, $filters));
 
         // Get records
-        $this->view->set('rows', $obj->skus('list', $pId, $this->view->filters));
+        $this->view->set('rows', $obj->skus('list', $pId, $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         if ($this->getError()) {

@@ -388,13 +388,14 @@ class Citations extends SiteController
         $this->view->set('openUrl', $this->openUrl());
 
         //make sure title isnt too long
-        $this->view->set('maxTitleLength', 50);
-        $this->view->set('shortenedTitle', (strlen($this->view->get('citation')->title) > $this->view->maxTitleLength)
-            ? substr($this->view->get('citation')->title, 0, $this->view->maxTitleLength) . '&hellip;'
-            : $this->view->get('citation')->title);
+        $maxTitleLength = 50;
+        $shortenedTitle = (strlen($this->view->get('citation')->title) > $maxTitleLength)
+            ? substr($this->view->get('citation')->title, 0, $maxTitleLength) . '&hellip;'
+            : $this->view->get('citation')->title;
 
         // Set the page title
-        Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
+        Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $shortenedTitle);
+        $this->view->set('maxTitleLength', $maxTitleLength);
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -402,9 +403,10 @@ class Citations extends SiteController
         }
         Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->option . '&task=browse');
         Pathway::append(
-            $this->view->shortenedTitle,
+            $shortenedTitle,
             'index.php?option=' . $this->option . '&task=view&id=' . $this->view->get('citation')->id,
         );
+        $this->view->set('shortenedTitle', $shortenedTitle);
 
         $this->view->set('citationType', $this->view->get('citation')->relatedType);
         $typeAlias = $this->view->get('citationType')->type;
@@ -622,25 +624,25 @@ class Citations extends SiteController
         }
 
         // Load the object
-        $this->view->set('row', $citation);
+        $row = $citation;
 
         //make sure title isnt too long
         $maxTitleLength = 30;
-        $shortenedTitle = (strlen($this->view->row->title ?? '') > $maxTitleLength)
-                        ? substr($this->view->get('row')->title, 0, $maxTitleLength) . '&hellip;'
-                        : $this->view->get('row')->title;
+        $shortenedTitle = (strlen($row->title ?? '') > $maxTitleLength)
+                        ? substr($row->title, 0, $maxTitleLength) . '&hellip;'
+                        : $row->title;
 
         // Set the pathway
         Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         if ($id && $id != 0) {
             Pathway::append(
                 $shortenedTitle,
-                'index.php?option=' . $this->option . '&task=view&id=' . $this->view->get('row')->id,
+                'index.php?option=' . $this->option . '&task=view&id=' . $row->id,
             );
         }
         Pathway::append(
             Lang::txt('JACTION_EDIT'),
-            'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->get('row')->id,
+            'index.php?option=' . $this->option . '&task=edit&id=' . $row->id,
         );
 
         // Set the page title
@@ -657,8 +659,8 @@ class Citations extends SiteController
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
-        if ($this->view->get('row')->isNew()) {
-            $this->view->get('row')->uid = User::get('id');
+        if ($row->isNew()) {
+            $row->uid = User::get('id');
             // Temporarily set ID with negative timestamp to add authors temporarily
             $citation->set('id', -time());
 
@@ -670,9 +672,10 @@ class Citations extends SiteController
             $this->view->set('badges', []);
         } else {
             //tags & badges
-            $this->view->set('tags', Format::citationTags($this->view->row, false));
-            $this->view->set('badges', Format::citationBadges($this->view->row, false));
+            $this->view->set('tags', Format::citationTags($row, false));
+            $this->view->set('badges', Format::citationBadges($row, false));
         }
+        $this->view->set('row', $row);
 
         // Output HTML
         foreach ($this->getErrors() as $error) {

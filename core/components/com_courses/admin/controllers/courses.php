@@ -46,7 +46,7 @@ class Courses extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'search' => urldecode(trim(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -81,22 +81,23 @@ class Courses extends AdminController
                 'filter_order_Dir',
                 'ASC',
             )),
-        ]);
+        ];
 
         // In case limit has been changed, adjust limitstart accordingly
-        $limit = $this->view->get('filters')['limit'];
-        $start = $this->view->get('filters')['start'];
-        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
+        $limit = $filters['limit'];
+        $start = $filters['start'];
+        $filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
         $model = \Components\Courses\Models\Courses::getInstance();
 
-        $this->view->filters['count'] = true;
+        $filters['count'] = true;
 
-        $this->view->set('total', $model->courses($this->view->filters));
+        $this->view->set('total', $model->courses($filters));
 
-        $this->view->filters['count'] = false;
+        $filters['count'] = false;
 
-        $this->view->set('rows', $model->courses($this->view->filters));
+        $this->view->set('rows', $model->courses($filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

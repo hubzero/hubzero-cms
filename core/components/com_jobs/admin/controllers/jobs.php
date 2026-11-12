@@ -37,7 +37,7 @@ class Jobs extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('filters', [
+        $filters = [
             // Get paging variables
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
@@ -74,13 +74,14 @@ class Jobs extends AdminController
                 'search',
                 '',
             )),
-        ]);
+        ];
 
         // Get data
         $obj = new Job($this->database);
 
-        $this->view->set('rows', $obj->getOpenings($this->view->filters, User::get('id'), 1));
-        $this->view->set('total', $obj->getOpenings($this->view->filters, User::get('id'), 1, '', 1));
+        $this->view->set('rows', $obj->getOpenings($filters, User::get('id'), 1));
+        $this->view->set('total', $obj->getOpenings($filters, User::get('id'), 1, '', 1));
+        $this->view->set('filters', $filters);
 
         $this->view->set('config', $this->config);
 
@@ -172,12 +173,14 @@ class Jobs extends AdminController
         $jc = new Category($this->database);
 
         // get job types
-        $this->view->set('types', $jt->getTypes());
-        $this->view->types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
+        $types = $jt->getTypes();
+        $types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
+        $this->view->set('types', $types);
 
         // get job categories
-        $this->view->set('cats', $jc->getCats());
-        $this->view->cats[0] = Lang::txt('COM_JOBS_CATEGORY_UNSPECIFIED');
+        $cats = $jc->getCats();
+        $cats[0] = Lang::txt('COM_JOBS_CATEGORY_UNSPECIFIED');
+        $this->view->set('cats', $cats);
 
         $this->view->set('config', $this->config);
         $this->view->set('isnew', $isnew);

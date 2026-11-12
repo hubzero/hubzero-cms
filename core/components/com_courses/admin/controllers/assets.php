@@ -46,7 +46,7 @@ class Assets extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'tmpl' => Request::getState(
                 $this->option . '.' . $this->controller . '.tmpl',
                 'tmpl',
@@ -82,14 +82,14 @@ class Assets extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $tbl = new Tables\Asset($this->database);
-        // print_r($this->view->filters);
+        // print_r($filters);
 
         // A scope id of 0 here means "every scope", but the table now reads a
         // zero as "match nothing", so drop the key instead of passing it.
-        $where = $this->view->get('filters');
+        $where = $filters;
 
         if (empty($where['asset_scope_id'])) {
             unset($where['asset_scope_id']);
@@ -110,8 +110,9 @@ class Assets extends AdminController
         $this->view->set('rows', $r);
 
         $assets = $tbl->find([
-            'w' => ['course_id' => $this->view->filters['course_id']],
+            'w' => ['course_id' => $filters['course_id']],
         ]);
+        $this->view->set('filters', $filters);
         $a = [];
         if ($assets) {
             foreach ($assets as $row) {

@@ -33,7 +33,7 @@ class Roles extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
                 'limit',
@@ -61,16 +61,17 @@ class Roles extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ]);
+        ];
 
         // Instantiate an object
         $model = new Tables\Role($this->database);
 
         // Get a record count
-        $this->view->set('total', $model->count($this->view->filters));
+        $this->view->set('total', $model->count($filters));
 
         // Get records
-        $this->view->set('rows', $model->find($this->view->filters));
+        $this->view->set('rows', $model->find($filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

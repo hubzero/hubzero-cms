@@ -94,7 +94,7 @@ class Projects extends AdminController
         ));
 
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'limit' => Request::getState(
                 $this->option . '.projects.limit',
                 'limit',
@@ -143,36 +143,36 @@ class Projects extends AdminController
             'getowner'   => 1,
             'activity'   => 1,
             'quota'      => Request::getString('quota', 'all', 'post'),
-        ]);
+        ];
 
         if (
             !in_array(
-                $this->view->get('filters')['filterby'],
+                $filters['filterby'],
                 ['setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'],
             )
         ) {
-            $this->view->filters['filterby'] = '';
+            $filters['filterby'] = '';
         }
 
-        $this->view->set('limit', $this->view->get('filters')['limit']);
-        $this->view->set('start', $this->view->get('filters')['start']);
+        $limit = $filters['limit'];
+        $start = $filters['start'];
 
         // Retrieve all records when filtering by quota (no paging)
-        if ($this->view->get('filters')['quota'] != 'all') {
-            $this->view->filters['limit'] = 'all';
-            $this->view->filters['start'] = 0;
+        if ($filters['quota'] != 'all') {
+            $filters['limit'] = 'all';
+            $filters['start'] = 0;
         }
 
         $obj = new Tables\Project($this->database);
 
         // Get records
-        $this->view->set('rows', $obj->getRecords($this->view->filters, 'admin', 0, 1));
+        $this->view->set('rows', $obj->getRecords($filters, 'admin', 0, 1));
 
         // Get a record count
-        $this->view->set('total', $obj->getCount($this->view->filters, 'admin', 0, 1));
+        $this->view->set('total', $obj->getCount($filters, 'admin', 0, 1));
 
         // Filtering by quota
-        if ($this->view->get('filters')['quota'] != 'all' && $this->view->get('rows')) {
+        if ($filters['quota'] != 'all' && $this->view->get('rows')) {
             $counter = $this->view->get('total');
             $rows = $this->view->rows;
 
@@ -180,8 +180,8 @@ class Projects extends AdminController
                 $params = new \Hubzero\Config\Registry($rows[$i]->params);
                 $quota = $params->get('quota', 0);
                 if (
-                    ($this->view->get('filters')['quota'] == 'premium' && $quota < $this->view->get('premiumQuota'))
-                    || ($this->view->get('filters')['quota'] == 'regular' && $quota > $this->view->get('defaultQuota'))
+                    ($filters['quota'] == 'premium' && $quota < $this->view->get('premiumQuota'))
+                    || ($filters['quota'] == 'regular' && $quota > $this->view->get('defaultQuota'))
                 ) {
                     $counter--;
                     unset($rows[$i]);
@@ -192,11 +192,11 @@ class Projects extends AdminController
             $this->view->set('total', $counter > 0 ? $counter : 0);
 
             // Fix up paging after filter
-            if (count($rows) > $this->view->get('limit')) {
+            if (count($rows) > $limit) {
                 $k = 0;
 
                 for ($i = 0, $n = count($rows); $i < $n; $i++) {
-                    if ($k < $this->view->get('start') || $k >= ($this->view->limit + $this->view->start)) {
+                    if ($k < $start || $k >= ($limit + $start)) {
                         unset($rows[$i]);
                     }
 
@@ -206,6 +206,9 @@ class Projects extends AdminController
 
             $this->view->rows = array_values($rows);
         }
+        $this->view->set('filters', $filters);
+        $this->view->set('limit', $limit);
+        $this->view->set('start', $start);
 
         // Set any errors
         if ($this->getError()) {

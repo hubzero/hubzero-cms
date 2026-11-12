@@ -51,42 +51,42 @@ class Items extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', []);
-        $this->view->filters['ignore_access'] = true;
-        $this->view->filters['limit']    = Request::getState(
+        $filters = [];
+        $filters['ignore_access'] = true;
+        $filters['limit']    = Request::getState(
             $this->option . '.publications.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
-        $this->view->filters['start']    = Request::getState(
+        $filters['start']    = Request::getState(
             $this->option . '.publications.limitstart',
             'limitstart',
             0,
             'int',
         );
-        $this->view->filters['search']   = urldecode(trim(Request::getState(
+        $filters['search']   = urldecode(trim(Request::getState(
             $this->option . '.publications.search',
             'search',
             '',
         )));
-        $this->view->filters['sortby']     = trim(Request::getState(
+        $filters['sortby']     = trim(Request::getState(
             $this->option . '.publications.sortby',
             'filter_order',
             'created',
         ));
-        $this->view->filters['sortdir'] = trim(Request::getState(
+        $filters['sortdir'] = trim(Request::getState(
             $this->option . '.publications.sortdir',
             'filter_order_Dir',
             'DESC',
         ));
-        $this->view->filters['status']   = trim(Request::getState(
+        $filters['status']   = trim(Request::getState(
             $this->option . '.publications.status',
             'status',
             'all',
         ));
-        $this->view->filters['dev'] = 1;
-        $this->view->filters['category']  = trim(Request::getState(
+        $filters['dev'] = 1;
+        $filters['category']  = trim(Request::getState(
             $this->option . '.publications.category',
             'category',
             '',
@@ -96,10 +96,11 @@ class Items extends AdminController
         $this->view->set('model', new Models\Publication($this->database));
 
         // Get record count
-        $this->view->set('total', $this->view->get('model')->entries('count', $this->view->filters, true));
+        $this->view->set('total', $this->view->get('model')->entries('count', $filters, true));
 
         // Get publications
-        $this->view->set('rows', $this->view->get('model')->entries('list', $this->view->filters, true));
+        $this->view->set('rows', $this->view->get('model')->entries('list', $filters, true));
+        $this->view->set('filters', $filters);
 
         $this->view->set('config', $this->config);
 

@@ -32,7 +32,7 @@ class Options extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -57,7 +57,7 @@ class Options extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         // Get option group ID
         $ogId = Request::getInt('ogId', 0);
@@ -70,10 +70,11 @@ class Options extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->options('count', $ogId, $this->view->filters));
+        $this->view->set('total', $obj->options('count', $ogId, $filters));
 
         // Get records
-        $this->view->set('rows', $obj->options('list', $ogId, $this->view->filters));
+        $this->view->set('rows', $obj->options('list', $ogId, $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         if ($this->getError()) {

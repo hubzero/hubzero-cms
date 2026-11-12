@@ -286,9 +286,10 @@ class Resources extends SiteController
         $tags = implode(', ', $mytagarray);
 
         // Set the document title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')');
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Set the document pathway (breadcrumbs)
         if (Pathway::count() <= 0) {
@@ -483,9 +484,10 @@ class Resources extends SiteController
         }
 
         // Set the document title
-        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')');
-        Document::setTitle($this->view->title);
+        $title = Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
+        Document::setTitle($title);
+        $this->view->set('title', $title);
 
         // Set the document pathway (breadcrumbs)
         if (Pathway::count() <= 0) {

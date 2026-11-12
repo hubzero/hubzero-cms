@@ -58,7 +58,7 @@ class Manage extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('filters', [
+        $filters = [
             // Filters for getting a result count
             'limit'      => 'all',
             'fields'     => ['COUNT(*)'],
@@ -102,21 +102,21 @@ class Manage extends AdminController
             'approved'   => Request::getString('approved'),
             //'published'  => Request::getInt('published', 1),
             'created'    => Request::getString('created', ''),
-        ]);
-        $this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+        ];
+        $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
         $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
         if (!$canDo->get('core.admin')) {
             if (
-                $this->view->filters['type'][0] == 'system'
-                || $this->view->filters['type'][0] == "0"
-                || $this->view->filters['type'][0] == null
+                $filters['type'][0] == 'system'
+                || $filters['type'][0] == "0"
+                || $filters['type'][0] == null
             ) {
-                $this->view->filters['type'] = ['all'];
+                $filters['type'] = ['all'];
             }
 
-            if ($this->view->filters['type'][0] == 'all') {
-                $this->view->filters['type'] = [
+            if ($filters['type'][0] == 'all') {
+                $filters['type'] = [
                     //0,  No system groups
                     1,  // hub
                     2,  // project
@@ -125,39 +125,40 @@ class Manage extends AdminController
             }
         }
 
-        if ($this->view->filters['state'] >= 0) {
-            $this->view->filters['published'] = $this->view->filters['state'];
+        if ($filters['state'] >= 0) {
+            $filters['published'] = $filters['state'];
         }
 
         // Get a record count
-        $this->view->set('total', Group::find($this->view->filters));
+        $this->view->set('total', Group::find($filters));
 
         // Filters for returning results
-        $this->view->filters['limit']  = Request::getState(
+        $filters['limit']  = Request::getState(
             $this->option . '.browse.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
-        $this->view->filters['start']  = Request::getState(
+        $filters['start']  = Request::getState(
             $this->option . '.browse.limitstart',
             'limitstart',
             0,
             'int',
         );
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor(
-            $this->view->filters['start'] / $this->view->filters['limit'],
-        ) * $this->view->filters['limit']) : 0);
-        $this->view->filters['fields'] = ['cn', 'description', 'published', 'gidNumber', 'type'];
+        $filters['start']  = ($filters['limit'] != 0 ? (floor(
+            $filters['start'] / $filters['limit'],
+        ) * $filters['limit']) : 0);
+        $filters['fields'] = ['cn', 'description', 'published', 'gidNumber', 'type'];
 
         // Get a list of all groups
         $this->view->set('rows', []);
         if ($this->view->get('total') > 0) {
-            if ($rows = Group::find($this->view->filters)) {
+            if ($rows = Group::find($filters)) {
                 $this->view->set('rows', $rows);
             }
         }
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

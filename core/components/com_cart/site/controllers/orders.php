@@ -55,10 +55,10 @@ class Orders extends ComponentController
     public function homeTask()
     {
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-        ]);
+        ];
 
         $cart = new CurrentCart();
 
@@ -66,7 +66,8 @@ class Orders extends ComponentController
         $this->view->set('total', $cart->getTransactions(['count' => true]));
 
         // Get all completed transactions
-        $transactions = $cart->getTransactions($this->view->filters);
+        $transactions = $cart->getTransactions($filters);
+        $this->view->set('filters', $filters);
 
         // Get transactions' info
         if ($transactions) {

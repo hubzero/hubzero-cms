@@ -31,7 +31,7 @@ class Optiongroups extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('filters', [
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -56,15 +56,16 @@ class Optiongroups extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->optionGroups('count', $this->view->filters));
+        $this->view->set('total', $obj->optionGroups('count', $filters));
 
         // Get records
-        $this->view->set('rows', $obj->optionGroups('list', $this->view->filters));
+        $this->view->set('rows', $obj->optionGroups('list', $filters));
+        $this->view->set('filters', $filters);
 
         // For all records here get options
         $options = new \stdClass();

@@ -438,12 +438,12 @@ class Media extends AdminController
         }
 
         // Incoming sub-directory
-        $this->view->set('subdir', Request::getString('subdir', ''));
+        $subdir = Request::getString('subdir', '');
 
         // Build the path
         //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS
         //    . $this->view->course_id . DS . $this->view->listdir;
-        $this->view->set('path', $this->buildUploadPath($this->view->listdir, $this->view->subdir));
+        $this->view->set('path', $this->buildUploadPath($this->view->listdir, $subdir));
 
         // Get list of directories
         $dirs = $this->recursiveListDir($this->view->path);
@@ -465,8 +465,9 @@ class Media extends AdminController
             'onchange="goUpDir()" ',
             'value',
             'text',
-            $this->view->subdir,
+            $subdir,
         ));
+        $this->view->set('subdir', $subdir);
 
         $this->view->set('config', $this->config);
 
@@ -495,10 +496,11 @@ class Media extends AdminController
         }
 
         // Incoming sub-directory
-        $this->view->set('subdir', Request::getString('subdir', ''));
+        $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
+        $path = $this->buildUploadPath($this->view->listdir, $subdir);
+        $this->view->set('subdir', $subdir);
 
         $folders = [];
         $docs    = [];

@@ -140,13 +140,14 @@ class Offerings extends AdminController
             $model = \Components\Courses\Models\Offering::getInstance($id);
         }
 
-        $this->view->set('row', $model);
+        $row = $model;
 
-        if (!$this->view->get('row')->get('course_id')) {
-            $this->view->get('row')->set('course_id', Request::getInt('course', 0));
+        if (!$row->get('course_id')) {
+            $row->set('course_id', Request::getInt('course', 0));
         }
 
-        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($row->get('course_id')));
+        $this->view->set('row', $row);
         $this->view->set('config', $this->config);
 
         // Set any errors

@@ -940,19 +940,20 @@ class Tags extends SiteController
      */
     protected function buildTitle($tags = null)
     {
-        $this->view->set('title', Lang::txt(strtoupper($this->option)));
+        $title = Lang::txt(strtoupper($this->option));
         if ($this->task && $this->task != 'view' && $this->task != 'display') {
-            $this->view->title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+            $title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }
         if (is_array($tags) && count($tags) > 0) {
             $t = [];
             foreach ($tags as $tag) {
                 $t[] = stripslashes($tag->get('raw_tag'));
             }
-            $this->view->title .= ': ' . implode(' + ', $t);
+            $title .= ': ' . implode(' + ', $t);
         }
 
-        Document::setTitle($this->view->title);
+        Document::setTitle($title);
+        $this->view->set('title', $title);
     }
 
     /**

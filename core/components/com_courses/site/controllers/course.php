@@ -145,15 +145,15 @@ class Course extends SiteController
         // Build pathway
         $this->buildPathway();
 
-        $this->view->set('active', Request::getString('active', 'overview'));
+        $active = Request::getString('active', 'overview');
 
-        $this->view->set('plugins', Event::trigger(
+        $plugins = Event::trigger(
             'courses.onCourseView',
             [
                 $this->course,
-                $this->view->active,
+                $active,
             ],
-        ));
+        );
 
         if ($pages = $this->course->pages(['active' => 1])) {
             foreach ($pages as $page) {
@@ -161,14 +161,16 @@ class Course extends SiteController
                     ->set('name', $page->get('url'))
                     ->set('title', $page->get('title'));
 
-                if ($page->get('url') == $this->view->get('active')) {
+                if ($page->get('url') == $active) {
                     $plg->set('html', $page->content('parsed'));
                     $plg->set('isPage', true);
                 }
 
-                $this->view->plugins[] = $plg;
+                $plugins[] = $plg;
             }
         }
+        $this->view->set('active', $active);
+        $this->view->set('plugins', $plugins);
 
         $this->view->set('course', $this->course);
         $this->view->set('config', $this->config);

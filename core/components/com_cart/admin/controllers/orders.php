@@ -32,7 +32,7 @@ class Orders extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -84,16 +84,17 @@ class Orders extends AdminController
                 'report-to',
                 gmdate('m/d/Y'),
             ),
-        ]);
+        ];
 
         // Get record count
-        $this->view->filters['count'] = true;
-        $this->view->filters['userInfo'] = true;
-        $this->view->set('total', Cart::getAllTransactions($this->view->filters));
+        $filters['count'] = true;
+        $filters['userInfo'] = true;
+        $this->view->set('total', Cart::getAllTransactions($filters));
 
         // Get records
-        $this->view->filters['count'] = false;
-        $this->view->set('rows', Cart::getAllTransactions($this->view->filters));
+        $filters['count'] = false;
+        $this->view->set('rows', Cart::getAllTransactions($filters));
+        $this->view->set('filters', $filters);
 
         if (!$this->view->get('rows')) {
             $this->view->rows = [];
@@ -374,7 +375,7 @@ class Orders extends AdminController
         }
 
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . $this->task . '.search',
                 'search',
@@ -432,18 +433,19 @@ class Orders extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
-        if ($this->view->get('filters')['order']) {
-            $this->view->filters['report-from'] = '';
-            $this->view->filters['report-to'] = '';
+        if ($filters['order']) {
+            $filters['report-from'] = '';
+            $filters['report-to'] = '';
         }
 
         // Get orders count
-        $this->view->set('total', OrdersHelper::getItemsOrdered('count', $this->view->filters));
+        $this->view->set('total', OrdersHelper::getItemsOrdered('count', $filters));
 
         // Get orders
-        $orders = OrdersHelper::getItemsOrdered('list', $this->view->filters);
+        $orders = OrdersHelper::getItemsOrdered('list', $filters);
+        $this->view->set('filters', $filters);
 
         foreach ($orders as $order) {
             $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);

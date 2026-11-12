@@ -519,13 +519,14 @@ class Groups extends Base
 
         // Trigger the functions that return the areas we'll be using
         // then add overview to array
-        $this->view->set('hub_group_plugins', Event::trigger('groups.onGroupAreas', []));
-        array_unshift($this->view->hub_group_plugins, [
+        $hub_group_plugins = Event::trigger('groups.onGroupAreas', []);
+        array_unshift($hub_group_plugins, [
             'name'             => 'overview',
             'title'            => 'Overview',
             'default_access'   => 'anyone',
             'display_menu_tab' => true,
         ]);
+        $this->view->set('hub_group_plugins', $hub_group_plugins);
 
         // Get plugin access
         $this->view->set('group_plugin_access', Group\Helper::getPluginAccess($this->view->group));

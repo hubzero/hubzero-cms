@@ -125,18 +125,19 @@ class Articles extends SiteController
         Request::setVar('start', Request::getInt('start', 0));
 
         // Get configuration
-        $this->view->set('filters', [
+        $filters = [
             'sort'     => Request::getWord('sort', 'recent'),
             'category' => $category->get('id'),
             'search'   => Request::getString('search', ''),
-        ]);
+        ];
 
-        if (!in_array($this->view->get('filters')['sort'], ['recent', 'popularity'])) {
-            $this->view->filters['sort'] = 'recent';
+        if (!in_array($filters['sort'], ['recent', 'popularity'])) {
+            $filters['sort'] = 'recent';
         }
         if (!User::isGuest()) {
-            $this->view->filters['user_id'] = User::get('id');
+            $filters['user_id'] = User::get('id');
         }
+        $this->view->set('filters', $filters);
 
         $this->view->set('archive', $this->archive);
         $this->view->set('category', $category);

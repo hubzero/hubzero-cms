@@ -31,7 +31,7 @@ class Collections extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -56,15 +56,16 @@ class Collections extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         $obj = new Archive();
 
         // Get record count
-        $this->view->set('total', $obj->collections('count', $this->view->filters));
+        $this->view->set('total', $obj->collections('count', $filters));
 
         // Get records
-        $this->view->set('rows', $obj->collections('list', $this->view->filters));
+        $this->view->set('rows', $obj->collections('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         if ($this->getError()) {

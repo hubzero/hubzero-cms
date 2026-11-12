@@ -54,7 +54,7 @@ class Collections extends SiteController
         $this->view->set('config', $this->config);
 
         // Filters for returning results
-        $this->view->set('filters', [
+        $filters = [
             'limit'   => Request::getInt('limit', 25),
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
@@ -63,18 +63,19 @@ class Collections extends SiteController
             'sort'    => 'p.created',
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ]);
-        if ($this->view->get('filters')['id']) {
-            $this->view->filters['object_type'] = 'site';
+        ];
+        if ($filters['id']) {
+            $filters['object_type'] = 'site';
         }
 
         $this->view->set('collection', new Collection());
 
-        $this->view->filters['count'] = true;
-        $this->view->set('total', $this->view->get('collection')->posts($this->view->filters));
+        $filters['count'] = true;
+        $this->view->set('total', $this->view->get('collection')->posts($filters));
 
-        $this->view->filters['count'] = false;
-        $this->view->set('rows', $this->view->get('collection')->posts($this->view->filters));
+        $filters['count'] = false;
+        $this->view->set('rows', $this->view->get('collection')->posts($filters));
+        $this->view->set('filters', $filters);
 
         $model = Archive::getInstance();
 
@@ -102,30 +103,31 @@ class Collections extends SiteController
         $this->view->set('config', $this->config);
 
         // Filters for returning results
-        $this->view->set('filters', [
+        $filters = [
             'limit'   => Request::getInt('limit', 25),
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
             'id'      => Request::getInt('id', 0),
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ]);
-        if ($this->view->get('filters')['id']) {
-            $this->view->filters['object_type'] = 'site';
+        ];
+        if ($filters['id']) {
+            $filters['object_type'] = 'site';
         }
 
         $model = Archive::getInstance();
 
-        $this->view->filters['count'] = true;
-        $this->view->set('total', $model->collections($this->view->filters));
+        $filters['count'] = true;
+        $this->view->set('total', $model->collections($filters));
 
-        $this->view->filters['user_id'] = User::get('id');
+        $filters['user_id'] = User::get('id');
 
-        $this->view->set('posts', $model->posts($this->view->filters));
-        unset($this->view->filters['user_id']);
+        $this->view->set('posts', $model->posts($filters));
+        unset($filters['user_id']);
 
-        $this->view->filters['count'] = false;
-        $this->view->set('rows', $model->collections($this->view->filters));
+        $filters['count'] = false;
+        $this->view->set('rows', $model->collections($filters));
+        $this->view->set('filters', $filters);
 
         $this->buildTitle();
         $this->buildPathway();
@@ -143,21 +145,22 @@ class Collections extends SiteController
     public function aboutTask()
     {
         // Filters for returning results
-        $this->view->set('filters', [
+        $filters = [
             'id'      => Request::getInt('id', 0),
             'search'  => Request::getString('search', ''),
             'sort'    => 'p.created',
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ]);
-        if ($this->view->get('filters')['id']) {
-            $this->view->filters['object_type'] = 'site';
+        ];
+        if ($filters['id']) {
+            $filters['object_type'] = 'site';
         }
 
         $this->view->set('collection', new Collection());
 
-        $this->view->filters['count'] = true;
-        $this->view->set('total', $this->view->get('collection')->posts($this->view->filters));
+        $filters['count'] = true;
+        $this->view->set('total', $this->view->get('collection')->posts($filters));
+        $this->view->set('filters', $filters);
 
         $model = Archive::getInstance();
 

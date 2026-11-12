@@ -116,10 +116,11 @@ class Tools extends SiteController
         $live_site = rtrim(Request::base(), '/');
         $slive_site = preg_replace('/^http:\/\//', 'https://', $live_site, 1);
 
-        $this->view->set('forgeName', Config::get('sitename') . ' FORGE');
+        $forgeName = Config::get('sitename') . ' FORGE';
 
         // Set the page title
-        $this->buildTitle($this->view->forgeName);
+        $this->buildTitle($forgeName);
+        $this->view->set('forgeName', $forgeName);
 
         // Set the pathway
         $this->buildPathway();

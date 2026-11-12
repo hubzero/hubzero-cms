@@ -41,7 +41,7 @@ class Downloads extends AdminController
         }
 
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -104,12 +104,12 @@ class Downloads extends AdminController
                 0,
                 'int',
             ),
-        ]);
+        ];
 
         // Is a particular SKU requested?
         $skuRequested = Request::getInt('sku', 0);
-        if (!$skuRequested && !empty($this->view->filters['skuRequested'])) {
-            $skuRequested = $this->view->filters['skuRequested'];
+        if (!$skuRequested && !empty($filters['skuRequested'])) {
+            $skuRequested = $filters['skuRequested'];
         }
         if ($skuRequested) {
             $warehouse = new Warehouse();
@@ -120,21 +120,22 @@ class Downloads extends AdminController
                 $skuName = 'Product no longer exists';
             }
 
-            $this->view->filters['skuRequested'] = $skuRequested;
+            $filters['skuRequested'] = $skuRequested;
             $this->view->set('skuRequestedName', $skuName);
         }
 
         // Clean filters -- reset to default if needed
         $allowedSorting = ['product', 'dName', 'dDownloaded', 'dStatus'];
-        if (!in_array($this->view->get('filters')['sort'], $allowedSorting)) {
-            $this->view->filters['sort'] = 'dDownloaded';
+        if (!in_array($filters['sort'], $allowedSorting)) {
+            $filters['sort'] = 'dDownloaded';
         }
 
         // Get record count
-        $this->view->set('total', Download::getDownloads('count', $this->view->filters));
+        $this->view->set('total', Download::getDownloads('count', $filters));
 
         // Get records
-        $this->view->set('rows', Download::getDownloads('list', $this->view->filters));
+        $this->view->set('rows', Download::getDownloads('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Output the HTML
         $this->view->display();
@@ -148,7 +149,7 @@ class Downloads extends AdminController
     public function skuTask()
     {
         // Get filters
-        $this->view->set('filters', [
+        $filters = [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . 'sku.search',
                 'search',
@@ -188,13 +189,14 @@ class Downloads extends AdminController
                 'report-to',
                 date('m/d/Y'),
             ),
-        ]);
+        ];
 
         // Get record count
-        $this->view->set('total', Download::getDownloadsSku('count', $this->view->filters));
+        $this->view->set('total', Download::getDownloadsSku('count', $filters));
 
         // Get records
-        $this->view->set('rows', Download::getDownloadsSku('list', $this->view->filters));
+        $this->view->set('rows', Download::getDownloadsSku('list', $filters));
+        $this->view->set('filters', $filters);
 
         // Output the HTML
         //print_r($this->view); die;

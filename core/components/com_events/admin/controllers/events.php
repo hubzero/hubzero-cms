@@ -81,34 +81,34 @@ class Events extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->set('filters', []);
-        $this->view->filters['limit']    = Request::getState(
+        $filters = [];
+        $filters['limit']    = Request::getState(
             $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
-        $this->view->filters['start']    = Request::getState(
+        $filters['start']    = Request::getState(
             $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
         );
-        $this->view->filters['search']   = urldecode(Request::getState(
+        $filters['search']   = urldecode(Request::getState(
             $this->option . '.' . $this->controller . '.search',
             'search',
             '',
         ));
-        $this->view->filters['catid']    = Request::getInt('catid', 0);
-        $this->view->filters['scope_id'] = Request::getInt('group_id', 0);
+        $filters['catid']    = Request::getInt('catid', 0);
+        $filters['scope_id'] = Request::getInt('group_id', 0);
 
         $ee = new Event($this->database);
 
         // Get a record count
-        $this->view->set('total', $ee->getCount($this->view->filters));
+        $this->view->set('total', $ee->getCount($filters));
 
         // Get records
-        $this->view->set('rows', $ee->getRecords($this->view->filters));
+        $this->view->set('rows', $ee->getRecords($filters));
 
         // Get list of categories
         $categories[] = \Html::select(
@@ -130,7 +130,7 @@ class Events extends AdminController
             'class="inputbox"',
             'value',
             'text',
-            $this->view->filters['catid'],
+            $filters['catid'],
             false,
             false,
         ));
@@ -150,10 +150,11 @@ class Events extends AdminController
             'class="inputbox"',
             'value',
             'text',
-            $this->view->filters['scope_id'],
+            $filters['scope_id'],
             false,
             false,
         ));
+        $this->view->set('filters', $filters);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -231,13 +232,13 @@ class Events extends AdminController
         }
 
         // Load the event object
-        $this->view->set('row', new Event($this->database));
-        $this->view->get('row')->load($id);
+        $row = new Event($this->database);
+        $row->load($id);
 
         // Fail if checked out not by 'me'
         if (
-            $this->view->get('row')->checked_out
-            && $this->view->get('row')->checked_out <> User::get('id')
+            $row->checked_out
+            && $row->checked_out <> User::get('id')
         ) {
             $this->redirect = 'index.php?option=' . $this->option;
             $this->message = Lang::txt('COM_EVENTS_CAL_LANG_WARN_CHECKEDOUT');
@@ -245,32 +246,32 @@ class Events extends AdminController
 
         $this->css('calendar.css');
 
-        if ($this->view->get('row')->id) {
-            $this->view->get('row')->checkout(User::get('id'));
+        if ($row->id) {
+            $row->checkout(User::get('id'));
 
-            if (!$this->view->row->publish_down || trim($this->view->row->publish_down) == '0000-00-00 00:00:00') {
-                $this->view->get('row')->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
+            if (!$row->publish_down || trim($row->publish_down) == '0000-00-00 00:00:00') {
+                $row->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
             }
 
-            $start_publish = Date::of($this->view->get('row')->publish_up)->toLocal('Y-m-d');
-            $start_time = Date::of($this->view->get('row')->publish_up)->toLocal('H:i');
+            $start_publish = Date::of($row->publish_up)->toLocal('Y-m-d');
+            $start_time = Date::of($row->publish_up)->toLocal('H:i');
 
             // make sure the never setting doesn't throw an error
-            if ($this->view->get('row')->publish_down != 'Never') {
-                $stop_publish = Date::of($this->view->get('row')->publish_down)->toLocal('Y-m-d');
-                $end_time = Date::of($this->view->get('row')->publish_down)->toLocal('H:i');
+            if ($row->publish_down != 'Never') {
+                $stop_publish = Date::of($row->publish_down)->toLocal('Y-m-d');
+                $end_time = Date::of($row->publish_down)->toLocal('H:i');
             } else {
                 $end_time = '00:00';
                 $stop_publish = '0000-00-00';
             }
         } else {
-            $this->view->get('row')->state = 0;
-            $this->view->get('row')->time_zone = Config::get('offset');
-            $this->view->get('row')->content = '';
-            $this->view->get('row')->title = '';
-            $this->view->get('row')->adresse_info = '';
-            $this->view->get('row')->contact_info = '';
-            $this->view->get('row')->extra_info = '';
+            $row->state = 0;
+            $row->time_zone = Config::get('offset');
+            $row->content = '';
+            $row->title = '';
+            $row->adresse_info = '';
+            $row->contact_info = '';
+            $row->extra_info = '';
             $start_publish = Date::format('Y-m-d');
             $stop_publish = Date::format('Y-m-d');
             $start_time = "08:00";
@@ -287,10 +288,10 @@ class Events extends AdminController
                 // explore the text and pull out all matches
                 array_push(
                     $this->view->fields[$i],
-                    $this->parseTag($this->view->get('row')->content, $this->view->fields[$i][0]),
+                    $this->parseTag($row->content, $this->view->fields[$i][0]),
                 );
                 // clean the original text of any matches
-                $this->view->get('row')->content = str_replace(
+                $row->content = str_replace(
                     '<ef:'
                         . $this->view->fields[$i][0]
                         . '>'
@@ -299,10 +300,10 @@ class Events extends AdminController
                         . $this->view->fields[$i][0]
                         . '>',
                     '',
-                    $this->view->get('row')->content,
+                    $row->content,
                 );
             }
-            $this->view->get('row')->content = trim($this->view->get('row')->content);
+            $row->content = trim($row->content);
         }
 
         list($start_hrs, $start_mins) = explode(':', $start_time);
@@ -345,20 +346,22 @@ class Events extends AdminController
         }
         $end_time = $end_hrs . ':' . $end_mins;
 
-        $this->view->set('times', []);
-        $this->view->times['start_publish'] = $start_publish;
-        $this->view->times['start_time'] = $start_time;
-        $this->view->times['start_pm'] = $start_pm;
-        $this->view->times['stop_publish'] = $stop_publish;
-        $this->view->times['end_time'] = $end_time;
-        $this->view->times['end_pm'] = $end_pm;
+        $times = [];
+        $times['start_publish'] = $start_publish;
+        $times['start_time'] = $start_time;
+        $times['start_pm'] = $start_pm;
+        $times['stop_publish'] = $stop_publish;
+        $times['end_time'] = $end_time;
+        $times['end_pm'] = $end_pm;
+        $this->view->set('times', $times);
 
         // only load tags if the event exists already
-        if ($this->view->get('row')->id != null) {
+        if ($row->id != null) {
             // Get tags on this event
-            $rt = new Tags($this->view->get('row')->id);
+            $rt = new Tags($row->id);
             $this->view->set('tags', $rt->render('string'));
         }
+        $this->view->set('row', $row);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
