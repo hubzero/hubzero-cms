@@ -180,7 +180,7 @@ class Tags extends SiteController
                 $query = '';
                 if ($this->view->get('categories')) {
                     $s = [];
-                    foreach ($this->view->categories as $response) {
+                    foreach ($this->view->get('categories') as $response) {
                         $this->view->total += $response['total'];
 
                         if (is_array($response['sql'])) {
@@ -221,14 +221,15 @@ class Tags extends SiteController
                         $this->view->get('filters')['limit'] != 'all'
                         && $this->view->get('filters')['limit'] > 0
                     ) {
-                        $query .= " LIMIT " . $this->view->filters['start'] . "," . $this->view->filters['limit'];
+                        $query .= " LIMIT " . $this->view->get('filters')['start']
+                            . "," . $this->view->get('filters')['limit'];
                     }
                 }
                 $this->database->setQuery($query);
                 $this->view->set('results', $this->database->loadObjectList());
             } else {
                 if ($this->view->get('categories')) {
-                    foreach ($this->view->categories as $response) {
+                    foreach ($this->view->get('categories') as $response) {
                         $this->view->total += $response['total'];
                     }
                     foreach ($this->view->categories as $response) {

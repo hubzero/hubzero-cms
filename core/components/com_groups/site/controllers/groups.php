@@ -228,7 +228,11 @@ class Groups extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Check to make sure we were able to load group
-        if (!is_object($this->view->group) || !$this->view->group->get('gidNumber') || !$this->view->group->get('cn')) {
+        if (
+            !is_object($this->view->get('group'))
+            || !$this->view->group->get('gidNumber')
+            || !$this->view->group->get('cn')
+        ) {
             $this->suggestNonExistingGroupTask();
             return;
         }
@@ -286,10 +290,10 @@ class Groups extends Base
         $this->view->set('gparams', new \Hubzero\Config\Registry($this->view->get('group')->get('params')));
 
         // Check authorization
-        $this->view->set('authorized', Helpers\View::authorize($this->view->group));
+        $this->view->set('authorized', Helpers\View::authorize($this->view->get('group')));
 
         // Get active tab
-        $this->view->set('tab', Helpers\View::getTab($this->view->group));
+        $this->view->set('tab', Helpers\View::getTab($this->view->get('group')));
         $this->view->set('trueTab', strtolower(Request::getString('active', 'overview')));
         if ($this->view->get('group')->get('approved') != 1 && $this->view->get('trueTab') != 'overview') {
             $this->unapprovedGroupTask();
@@ -311,21 +315,21 @@ class Groups extends Base
         ]);
 
         // Custom error handling for super groups
-        Helpers\View::attachCustomErrorHandler($this->view->group);
+        Helpers\View::attachCustomErrorHandler($this->view->get('group'));
 
         // Add the overview content
         $overviewContent = '';
         $activePage      = null;
         if ($this->view->get('tab') == 'overview') {
             // Add home page to pages list
-            $pages = Helpers\Pages::addHomePage($this->view->group, $pages);
+            $pages = Helpers\Pages::addHomePage($this->view->get('group'), $pages);
 
             // Fetch the active page
-            $activePage = Helpers\Pages::getActivePage($this->view->group, $pages);
+            $activePage = Helpers\Pages::getActivePage($this->view->get('group'), $pages);
 
             // Are we on the login?
             if ($this->view->get('trueTab') == 'login') {
-                $overviewContent = Helpers\View::superGroupLogin($this->view->group);
+                $overviewContent = Helpers\View::superGroupLogin($this->view->get('group'));
             }
 
             // Check to see if we have super group component or PHP page
@@ -333,17 +337,20 @@ class Groups extends Base
                 $overviewContent == null
                 && $this->config->get('super_components', 0)
             ) {
-                $overviewContent = Helpers\View::superGroupComponents($this->view->group, $this->view->trueTab);
+                $overviewContent = Helpers\View::superGroupComponents(
+                    $this->view->get('group'),
+                    $this->view->get('trueTab'),
+                );
             }
 
             // Do we have group PHP pages?
             if ($overviewContent == null) {
-                $overviewContent = Helpers\View::superGroupPhpPages($this->view->group);
+                $overviewContent = Helpers\View::superGroupPhpPages($this->view->get('group'));
             }
 
             // Set overview content
             if ($overviewContent == null) {
-                $overviewContent = Helpers\Pages::displayPage($this->view->group, $activePage);
+                $overviewContent = Helpers\Pages::displayPage($this->view->get('group'), $activePage);
             }
         }
 
@@ -355,7 +362,7 @@ class Groups extends Base
 
         // Set some vars for view
         $this->view->set('title', $this->_title);
-        $this->view->set('content', Helpers\View::displaySectionsContent($this->view->group, $overviewContent));
+        $this->view->set('content', Helpers\View::displaySectionsContent($this->view->get('group'), $overviewContent));
         $this->view->set('activePage', $activePage);
         $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
@@ -529,7 +536,7 @@ class Groups extends Base
         $this->view->set('hub_group_plugins', $hub_group_plugins);
 
         // Get plugin access
-        $this->view->set('group_plugin_access', Group\Helper::getPluginAccess($this->view->group));
+        $this->view->set('group_plugin_access', Group\Helper::getPluginAccess($this->view->get('group')));
 
         // Build the title
         $this->buildTitle();

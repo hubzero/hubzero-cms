@@ -414,7 +414,7 @@ class Notes extends Plugin
             }
 
             $controller->redirect();
-            $view->content = ob_get_contents();
+            $view->set('content', ob_get_contents());
             ob_end_clean();
         }
 

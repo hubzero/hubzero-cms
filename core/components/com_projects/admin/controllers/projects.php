@@ -174,7 +174,7 @@ class Projects extends AdminController
         // Filtering by quota
         if ($filters['quota'] != 'all' && $this->view->get('rows')) {
             $counter = $this->view->get('total');
-            $rows = $this->view->rows;
+            $rows = $this->view->get('rows');
 
             for ($i = 0, $n = count($rows); $i < $n; $i++) {
                 $params = new \Hubzero\Config\Registry($rows[$i]->params);
@@ -204,7 +204,7 @@ class Projects extends AdminController
                 }
             }
 
-            $this->view->rows = array_values($rows);
+            $this->view->set('rows', array_values($rows));
         }
         $this->view->set('filters', $filters);
         $this->view->set('limit', $limit);
@@ -326,7 +326,7 @@ class Projects extends AdminController
 
             $this->view->set('suspended', null);
             if ($result) {
-                $this->view->suspended = $result->details->get('admin');
+                $this->view->set('suspended', $result->details->get('admin'));
             }
         }
 

@@ -90,7 +90,10 @@ class Offerings extends AdminController
             ),
         ]);
 
-        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->get('filters')['course']),
+        );
         if (!$this->view->get('course')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),

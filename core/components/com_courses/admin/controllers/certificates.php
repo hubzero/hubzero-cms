@@ -38,13 +38,13 @@ class Certificates extends AdminController
         $this->view->set('course_id', $course_id);
 
         if (!$this->view->get('certificate')->exists()) {
-            $this->addTask($this->view->certificate);
+            $this->addTask($this->view->get('certificate'));
 
             return;
         }
 
         if (!$this->view->get('certificate')->hasFile()) {
-            $this->editTask($this->view->certificate);
+            $this->editTask($this->view->get('certificate'));
 
             return;
         }

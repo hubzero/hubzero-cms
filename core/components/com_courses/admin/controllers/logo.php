@@ -552,7 +552,7 @@ class Logo extends AdminController
 
         // Build the file path
         $this->view->set('dir', $id);
-        $this->view->set('path', $this->path($this->view->type, $id));
+        $this->view->set('path', $this->path($this->view->get('type'), $id));
 
         switch ($this->view->get('type')) {
             case 'section':

@@ -86,7 +86,7 @@ class Assetgroups extends AdminController
             ),
         ]);
 
-        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']));
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->get('filters')['unit']));
         if (!$this->view->get('unit')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
@@ -121,7 +121,10 @@ class Assetgroups extends AdminController
 
         $this->view->set('total', count($list));
 
-        $this->view->set('rows', array_slice($list, $this->view->filters['start'], $this->view->filters['limit']));
+        $this->view->set(
+            'rows',
+            array_slice($list, $this->view->get('filters')['start'], $this->view->get('filters')['limit']),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

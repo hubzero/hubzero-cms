@@ -220,10 +220,10 @@ class Posts extends SiteController
         // groups', the same two sources collectTask()'s repost form draws on.
         // saveTask() enforces canBePostedToBy() on whatever is submitted, so
         // this closes the listing, not the write.
-        $this->view->set('collections', $this->postableBoards($this->view->collection));
+        $this->view->set('collections', $this->postableBoards($this->view->get('collection')));
         if (!$this->view->get('collections')->total()) {
             $this->view->get('collection')->setup(User::get('id'), 'member');
-            $this->view->set('collections', $this->postableBoards($this->view->collection));
+            $this->view->set('collections', $this->postableBoards($this->view->get('collection')));
 
             // A board named in the request only if the post did not already
             // resolve one -- re-resolving unconditionally would discard it.

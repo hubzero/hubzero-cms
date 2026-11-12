@@ -36,7 +36,7 @@ $view = $this;
 
 // The attribute that marks the current value in the form fields below
 $categorySelected = function ($value) use ($view) {
-    if ($view->category == $value) {
+    if ($view->get('category') == $value) {
         return ' selected="selected"';
     }
 

@@ -195,7 +195,7 @@ class Offering extends SiteController
             )));
             User::setState(
                 $stateKey,
-                $this->view->nonadmin,
+                $this->view->get('nonadmin'),
             );
         }
 

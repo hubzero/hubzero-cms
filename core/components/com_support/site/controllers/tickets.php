@@ -283,14 +283,14 @@ class Tickets extends SiteController
 
         $end = '';
         if ($this->view->get('end')) {
-            if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->end)) {
-                $this->view->end = '';
+            if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->get('end'))) {
+                $this->view->set('end', '');
             }
 
             // We need to get the NEXT month. This is so that for a time range
             // of 2013-01 to 2013-12 will display data for all of 2013-12.
             // So, the actual time range is 2013-01-01 00:00:00 to 2014-01-01 00:00:00
-            if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->end, $regs)) {
+            if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->get('end'), $regs)) {
                 $endmonth = intval($regs[2]);
                 $endyear  = intval($regs[1]);
                 $endyear++;
@@ -300,7 +300,7 @@ class Tickets extends SiteController
                 $end   = $year . '-' . $month;
             }
         } else {
-            $this->view->end = $year . '-' . $month;
+            $this->view->set('end', $year . '-' . $month);
         }
 
         // Opened tickets
@@ -308,9 +308,9 @@ class Tickets extends SiteController
 				FROM `#__support_tickets`
 				WHERE report!=''
 				AND type=" . $this->view->get('type'); // . " AND open=1";
-        if ($this->view->group == '_none_') {
+        if ($this->view->get('group') == '_none_') {
             $sql .= " AND `group_id`=0";
-        } elseif ($this->view->group) {
+        } elseif ($this->view->get('group')) {
             $gidNumber = 0;
             if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
                 $gidNumber = $group->get('gidNumber');

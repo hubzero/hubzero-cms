@@ -2205,7 +2205,7 @@ class Files extends Plugin
 
                 if ($xRatio * $height < $view->get('oHeight')) {
                     // Resize the image based on width
-                    $view->oHeight = ceil($xRatio * $height);
+                    $view->set('oHeight', ceil($xRatio * $height));
                 } else {
                     // Resize the image based on height
                     $view->set('oWidth', ceil($yRatio * $width));

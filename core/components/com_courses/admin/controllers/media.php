@@ -443,10 +443,10 @@ class Media extends AdminController
         // Build the path
         //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS
         //    . $this->view->course_id . DS . $this->view->listdir;
-        $this->view->set('path', $this->buildUploadPath($this->view->listdir, $subdir));
+        $this->view->set('path', $this->buildUploadPath($this->view->get('listdir'), $subdir));
 
         // Get list of directories
-        $dirs = $this->recursiveListDir($this->view->path);
+        $dirs = $this->recursiveListDir($this->view->get('path'));
 
         $folders   = [];
         $folders[] = Html::select('option', '/');
@@ -499,7 +499,7 @@ class Media extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($this->view->listdir, $subdir);
+        $path = $this->buildUploadPath($this->view->get('listdir'), $subdir);
         $this->view->set('subdir', $subdir);
 
         $folders = [];

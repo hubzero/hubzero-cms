@@ -101,7 +101,7 @@ class Types extends AdminController
 
             // Get new records
             $this->view->set('rows', $jt->getTypes());
-            $this->view->total = count($this->view->get('rows'));
+            $this->view->set('total', count($this->view->get('rows')));
         }
 
         // Output the HTML

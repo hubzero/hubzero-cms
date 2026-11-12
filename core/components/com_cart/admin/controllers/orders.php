@@ -97,11 +97,11 @@ class Orders extends AdminController
         $this->view->set('filters', $filters);
 
         if (!$this->view->get('rows')) {
-            $this->view->rows = [];
+            $this->view->set('rows', []);
         }
 
         // update with total and items ordered
-        foreach ($this->view->rows as $r) {
+        foreach ($this->view->get('rows') as $r) {
             $tInfo = Cart::getTransactionInfo($r->tId);
             $r->tiTotal = $tInfo->tiTotal;
             $tiItemsQty = count(unserialize($tInfo->tiItems));

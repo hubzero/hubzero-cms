@@ -188,7 +188,7 @@ class Screenshots extends SiteController
         $this->view->set('upath', PATH_ROOT . $this->view->get('wpath'));
 
         // Instantiate a new screenshot object
-        $shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
+        $shot = Screenshot::oneByFilename($this->view->get('file'), $pid, $vid);
 
         // Set the page title
         $title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');

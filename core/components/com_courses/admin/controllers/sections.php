@@ -93,7 +93,7 @@ class Sections extends AdminController
 
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('filters')['offering']),
         );
         if (!$this->view->get('offering')->exists()) {
             App::redirect(

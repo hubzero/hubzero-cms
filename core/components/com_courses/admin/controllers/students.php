@@ -65,7 +65,7 @@ class Students extends AdminController
 
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('filters')['offering']),
         );
         $this->view->filters['offering_id'] = $this->view->get('filters')['offering'];
         /*if (!$this->view->offering->exists())

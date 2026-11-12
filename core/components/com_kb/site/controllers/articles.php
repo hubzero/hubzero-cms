@@ -110,7 +110,7 @@ class Articles extends SiteController
 
             $this->view->set('catid', $category->get('id'));
             if ($category->get('parent_id') > 1) {
-                $this->view->catid = $category->get('parent_id');
+                $this->view->set('catid', $category->get('parent_id'));
             }
         }
 

@@ -167,10 +167,10 @@ class Media extends Base
 
         // make sure we have an active folder
         if ($this->view->get('activeFolder') == '') {
-            $this->view->activeFolder = '/uploads';
+            $this->view->set('activeFolder', '/uploads');
         }
 
-        $this->view->activeFolder = '/' . trim($this->view->activeFolder, '/');
+        $this->view->set('activeFolder', '/' . trim($this->view->get('activeFolder'), '/'));
 
         // regular groups can only access inside /uploads
         //if (!$this->group->isSuperGroup())
@@ -374,11 +374,11 @@ class Media extends Base
 
         // make sure we default to uploads folder for non-super groups
         if ($this->group->get('type') != 3 && (!$this->view->get('relpath') || $this->view->get('relpath') == '/')) {
-            $this->view->relpath = '/uploads';
+            $this->view->set('relpath', '/uploads');
         }
 
-        $this->view->set('relpath', \Hubzero\Filesystem\Util::normalizePath($this->view->relpath));
-        $this->view->relpath = explode('/', $this->view->get('relpath'));
+        $this->view->set('relpath', \Hubzero\Filesystem\Util::normalizePath($this->view->get('relpath')));
+        $this->view->set('relpath', explode('/', $this->view->get('relpath')));
         foreach ($this->view->relpath as $i => $p) {
             $this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
         }

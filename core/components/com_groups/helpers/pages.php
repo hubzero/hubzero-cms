@@ -96,7 +96,7 @@ class Pages
 
         // make sure we have a public desc
         if ($view->get('publicDesc') == '') {
-            $view->publicDesc = $view->get('group')->get('description');
+            $view->set('publicDesc', $view->get('group')->get('description'));
         }
 
         // return template

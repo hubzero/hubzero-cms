@@ -32,7 +32,7 @@ $view = $this;
 
 // The attribute that marks the current value in the form fields below
 $stateSelected = function ($value) use ($view) {
-    if ($view->filters['state'] == $value) {
+    if ($view->get('filters')['state'] == $value) {
         return ' selected="selected"';
     }
 

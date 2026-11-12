@@ -61,7 +61,10 @@ class Codes extends AdminController
             ),
         ]);
 
-        $this->view->set('section', \Components\Courses\Models\Section::getInstance($this->view->filters['section']));
+        $this->view->set(
+            'section',
+            \Components\Courses\Models\Section::getInstance($this->view->get('filters')['section']),
+        );
         if (!$this->view->get('section')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),

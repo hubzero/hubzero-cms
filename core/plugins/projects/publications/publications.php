@@ -2859,7 +2859,7 @@ class Publications extends Plugin
         $view->set('rows', $pub_model->entries('list', $filters));
 
         // Get used space
-        $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($view->rows));
+        $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($view->get('rows')));
         $view->set('params', $model->params);
         $view->set('quota', $view->get('params')->get('pubQuota')
                         ? $view->get('params')->get('pubQuota')
