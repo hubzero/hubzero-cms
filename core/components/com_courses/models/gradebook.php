@@ -38,7 +38,7 @@ class GradeBook extends Base
     /**
      * Course object
      *
-     * @var string
+     * @var object|null
      */
     protected $course = null;
 

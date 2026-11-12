@@ -141,7 +141,7 @@ abstract class Driver implements LoggerAwareInterface
      * For PDO-based drivers, this will be a PdoConnection instance.
      * For other drivers, this may be a different implementation.
      *
-     * @var ConnectionInterface|object|resource|null
+     * @var ConnectionInterface|object|null
      */
     protected $connection;
 

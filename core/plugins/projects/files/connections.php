@@ -67,9 +67,9 @@ class Connections
     public $task;
 
     /**
-     * the connection id
+     * the connection
      *
-     * @var int
+     * @var \Components\Projects\Models\Orm\Connection|null
      */
     public $connection = null;
 
