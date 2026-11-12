@@ -30,7 +30,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Array to hold config
      *
-     * @public array
+     * @var array
      */
     private $config = [];
 

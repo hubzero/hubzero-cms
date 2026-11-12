@@ -249,7 +249,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * so this should save us some time by storing the results
      * for future reference.
      *
-     * @public array
+     * @var array
      **/
     private $methods = [];
 
@@ -291,14 +291,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Whether or not we're caching query results
      *
-     * @public string
+     * @var string
      **/
     private $noCache = false;
 
     /**
      * The relationships on this model
      *
-     * @public array
+     * @var array
      **/
     private $relationships = [];
 
@@ -308,7 +308,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * When a relationship with orphanRemoval enabled is loaded, we store
      * the original IDs here. On save, we compare current IDs to find orphans.
      *
-     * @public array
+     * @var array
      **/
     private $originalRelationshipIds = [];
 
@@ -322,21 +322,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The forwards for the model (i.e. other places to look for attributes)
      *
-     * @public array
+     * @var array
      **/
     private $forwards = [];
 
     /**
      * The includes set on the model for eager loading
      *
-     * @public array
+     * @var array
      **/
     private $includes = [];
 
     /**
      * The model data returned as the result of a query, or set for saving
      *
-     * @public array
+     * @var array
      **/
     private $attributes = [];
 
@@ -401,14 +401,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * It defaults to 'id', but can be overwritten by a subclass.
      *
-     * @public string
+     * @var string
      **/
     protected $pk = 'id';
 
     /**
      * Fields that have content that can/should be parsed
      *
-     * @public array
+     * @var array
      **/
     protected $parsed = [];
 
@@ -425,7 +425,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - Array: ['register', 'update'] - in multiple scenarios
      * - Omitted: applies to all scenarios
      *
-     * @public array
+     * @var array
      * @see  \Hubzero\Database\Rules
      **/
     protected $rules = [];
@@ -446,14 +446,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This can be overwritten in a model or by calling
      * the order method on the query object.
      *
-     * @public string
+     * @var string
      **/
     public $orderBy = 'id';
 
     /**
      * Default order direction for select queries
      *
-     * @public string
+     * @var string
      **/
     public $orderDir = 'asc';
 
@@ -469,21 +469,21 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Automatic fields to populate every time a row is touched
      *
-     * @public array
+     * @var array
      **/
     public $always = [];
 
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @public array
+     * @var array
      **/
     public $initiate = [];
 
     /**
      * Automatic fields to populate every time a row is updated
      *
-     * @public array
+     * @var array
      **/
     public $renew = [];
 
@@ -497,7 +497,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Cached list of class methods
      *
-     * @public array
+     * @var array
      **/
     private static $classMethods = [];
 

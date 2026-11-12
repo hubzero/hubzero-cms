@@ -18,7 +18,7 @@ class Transaction extends Relational
     /**
      * The table namespace
      *
-     * @public string
+     * @var string
      */
     protected $namespace = 'users';
 
@@ -29,28 +29,28 @@ class Transaction extends Relational
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @public string
+     * @var string
      */
     protected $table = '#__users_transactions';
 
     /**
      * Default order by for model
      *
-     * @public string
+     * @var string
      */
     public $orderBy = 'created';
 
     /**
      * Default order direction for select queries
      *
-     * @public string
+     * @var string
      */
     public $orderDir = 'desc';
 
     /**
      * Fields and their validation criteria
      *
-     * @public array
+     * @var array
      */
     protected $rules = [
         'uid'      => 'positive|nonzero',
@@ -61,7 +61,7 @@ class Transaction extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @public array
+     * @var array
      */
     public $initiate = [
         'created',

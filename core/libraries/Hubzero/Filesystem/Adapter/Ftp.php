@@ -20,14 +20,14 @@ class Ftp implements AdapterInterface
     /**
      * FTP Transfer mode
      *
-     * @public int
+     * @var int
      */
     protected $transferMode = FTP_BINARY;
 
     /**
      * List of configurable items
      *
-     * @public array
+     * @var array
      */
     protected $configurable = [
         'host',

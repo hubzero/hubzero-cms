@@ -16,7 +16,7 @@ class Base
     /**
      * Fields available in this log and their default visibility
      *
-     * @public array
+     * @var array
      **/
     protected static $fields = [];
 

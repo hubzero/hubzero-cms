@@ -19,7 +19,7 @@ class Menuitem extends Groupedlist
     /**
      * The form field type.
      *
-     * @public string
+     * @var string
      */
     public $type = 'Menuitem';
 

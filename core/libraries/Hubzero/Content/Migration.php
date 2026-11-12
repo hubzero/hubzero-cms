@@ -21,21 +21,21 @@ class Migration
     /**
      * Paths in which to search for migration scripts
      *
-     * @public array
+     * @var array
      **/
     private $searchPaths = [];
 
     /**
      * Array holding paths to migration scripts
      *
-     * @public array
+     * @var array
      **/
     private $files = [];
 
     /**
      * Array holding files affected during this migration (i.e. those that are/would be run)
      *
-     * @public array
+     * @var array
      **/
     private $affectedFiles = [];
 
@@ -59,7 +59,7 @@ class Migration
     /**
      * Log messages themselves (stored as array to return to browser, or other client)
      *
-     * @public array
+     * @var array
      **/
     private $log = [];
 
@@ -73,14 +73,14 @@ class Migration
     /**
      * Table holding migration entries
      *
-     * @public string
+     * @var string
      **/
     private $tbl_name = '#__migrations';
 
     /**
      * Whether or not to ignore callbacks
      *
-     * @public bool
+     * @var bool
      **/
     private $ignoreCallbacks = false;
 
@@ -90,7 +90,7 @@ class Migration
      * When enabled, wraps all migrations in a single transaction.
      * If any migration fails, the entire batch is rolled back.
      *
-     * @public bool
+     * @var bool
      **/
     private $allOrNothing = false;
 

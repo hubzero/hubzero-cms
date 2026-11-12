@@ -20,7 +20,7 @@ class Confirm extends Button
     /**
      * Button type
      *
-     * @public string
+     * @var string
      */
     protected $name = 'Confirm';
 

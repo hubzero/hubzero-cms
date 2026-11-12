@@ -20,57 +20,57 @@ namespace Hubzero\Browser;
 class Detector
 {
     /**
-     * @public integer  Major version number
+     * @var integer  Major version number
      */
     protected $majorVersion = 0;
 
     /**
-     * @public integer  Minor version number
+     * @var integer  Minor version number
      */
     protected $minorVersion = 0;
 
     /**
-     * @public string  Browser name.
+     * @var string  Browser name.
      */
     protected $browser = '';
 
     /**
-     * @public string  Full user agent string.
+     * @var string  Full user agent string.
      */
     protected $agent = '';
 
     /**
-     * @public string  Lower-case user agent string
+     * @var string  Lower-case user agent string
      */
     protected $lowerAgent = '';
 
     /**
-     * @public string  HTTP_ACCEPT string.
+     * @var string  HTTP_ACCEPT string.
      */
     protected $accept = '';
 
     /**
-     * @public array  Parsed HTTP_ACCEPT string
+     * @var array  Parsed HTTP_ACCEPT string
      */
     protected $acceptParsed = [];
 
     /**
-     * @public string  Platform the browser is running on
+     * @var string  Platform the browser is running on
      */
     protected $platform = '';
 
     /**
-     * @public string  Platform version the browser is running on
+     * @var string  Platform version the browser is running on
      */
     protected $platformVersion = '';
 
     /**
-     * @public string  Device the browser is running on
+     * @var string  Device the browser is running on
      */
     protected $device = '';
 
     /**
-     * @public array  Known robots.
+     * @var array  Known robots.
      */
     protected $robots = [
         'Googlebot\/',
@@ -477,7 +477,7 @@ class Detector
     /**
      * Is this a mobile browser?
      *
-     * @public boolean
+     * @var boolean
      */
     protected $mobile = false;
 
@@ -485,7 +485,7 @@ class Detector
      * List of viewable image MIME subtypes.
      * This list of viewable images works for IE and Netscape/Mozilla.
      *
-     * @public array
+     * @var array
      */
     protected $images = [
         'jpeg',
@@ -499,7 +499,7 @@ class Detector
     /**
      * List of browser regex
      *
-     * @public array
+     * @var array
      */
     protected $regexes = [
         [
@@ -747,7 +747,7 @@ class Detector
     /**
      * Browser instances container.
      *
-     * @public array
+     * @var array
      */
     protected static $instances = [];
 

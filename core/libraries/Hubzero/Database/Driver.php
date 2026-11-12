@@ -74,7 +74,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The connection instances factory
      *
-     * @public array
+     * @var array
      **/
     protected static $instances = [];
 
@@ -130,7 +130,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The cumulative query timer (in miliseconds)
      *
-     * @public int
+     * @var int
      */
     protected $timer = 0;
 
@@ -148,7 +148,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The incremental count of executed queries
      *
-     * @public int
+     * @var int
      */
     protected $count = 0;
 
@@ -172,7 +172,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The prepared statement bindings
      *
-     * @public array
+     * @var array
      */
     protected $bindings = [];
 
@@ -182,7 +182,7 @@ abstract class Driver implements LoggerAwareInterface
      * For prepared statements, we'll try to interpolate prepared statement into basic strings,
      * even though this isn't really an accurate representation of the query.
      *
-     * @public array
+     * @var array
      */
     protected $log = [];
 
@@ -206,28 +206,28 @@ abstract class Driver implements LoggerAwareInterface
      * Default uses SQL standard double-quote identifiers. MySQL and SQLite
      * override this to use backticks.
      *
-     * @public string
+     * @var string
      */
     protected $wrapper = '"%s"';
 
     /**
      * The null or zero representation of a timestamp for the database driver
      *
-     * @public string
+     * @var string
      */
     protected $nullDate = '0000-00-00 00:00:00';
 
     /**
      * The common database table prefix
      *
-     * @public string
+     * @var string
      */
     protected $tablePrefix = 'jos_';
 
     /**
      * The state of debugging
      *
-     * @public bool
+     * @var bool
      */
     protected $debug = false;
 

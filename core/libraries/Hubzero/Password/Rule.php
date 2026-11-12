@@ -21,7 +21,7 @@ class Rule extends Relational
     /**
      * The table namespace
      *
-     * @public string
+     * @var string
      */
     protected $namespace = 'password';
 
@@ -32,28 +32,28 @@ class Rule extends Relational
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @public string
+     * @var string
      */
     protected $table = '#__password_rule';
 
     /**
      * Default order by for model
      *
-     * @public string
+     * @var string
      */
     public $orderBy = 'ordering';
 
     /**
      * Default order direction for select queries
      *
-     * @public string
+     * @var string
      */
     public $orderDir = 'asc';
 
     /**
      * Fields and their validation criteria
      *
-     * @public array
+     * @var array
      */
     protected $rules = [
         'description' => 'notempty',
@@ -63,7 +63,7 @@ class Rule extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @public array
+     * @var array
      */
     public $initiate = [
         'ordering',

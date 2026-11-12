@@ -20,7 +20,7 @@ class Groupedlist extends Field
     /**
      * The form field type.
      *
-     * @public string
+     * @var string
      */
     protected $type = 'Groupedlist';
 

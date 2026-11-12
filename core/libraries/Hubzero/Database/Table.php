@@ -28,14 +28,14 @@ abstract class Table extends \stdClass
     /**
      * Name of the database table to model.
      *
-     * @public string
+     * @var string
      */
     protected $tableName = '';
 
     /**
      * Name of the primary key field in the table.
      *
-     * @public string
+     * @var string
      */
     protected $tableKey = '';
 
@@ -49,7 +49,7 @@ abstract class Table extends \stdClass
     /**
      * Should rows be tracked as ACL assets?
      *
-     * @public boolean
+     * @var boolean
      */
     protected $trackAssets = false;
 
@@ -63,7 +63,7 @@ abstract class Table extends \stdClass
     /**
      * Indicator that the tables have been locked.
      *
-     * @public boolean
+     * @var boolean
      */
     protected $tableLocked = false;
 

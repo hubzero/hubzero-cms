@@ -28,7 +28,7 @@ class Filesystem
     /**
      * Macros list
      *
-     * @public array
+     * @var array
      */
     protected $macros = [];
 

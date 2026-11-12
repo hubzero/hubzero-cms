@@ -29,42 +29,42 @@ class Translator extends Obj
     /**
      * List of languages
      *
-     * @public array
+     * @var array
      */
     protected static $languages = [];
 
     /**
      * javascript strings
      *
-     * @public array
+     * @var array
      */
     protected static $jsStrings = [];
 
     /**
      * Application client
      *
-     * @public string
+     * @var string
      */
     protected $client = 'site';
 
     /**
      * Debug language, If true, highlights if string isn't found.
      *
-     * @public boolean
+     * @var boolean
      */
     protected $debug = false;
 
     /**
      * The default language, used when a language file in the requested language does not exist.
      *
-     * @public string
+     * @var string
      */
     protected $default = 'en-GB';
 
     /**
      * An array of orphaned text.
      *
-     * @public array
+     * @var array
      */
     protected $orphans = [];
 
@@ -92,14 +92,14 @@ class Translator extends Obj
     /**
      * A nested array of language files that have been loaded
      *
-     * @public array
+     * @var array
      */
     protected $paths = [];
 
     /**
      * List of language files that are in error state
      *
-     * @public array
+     * @var array
      */
     protected $errorfiles = [];
 
@@ -113,21 +113,21 @@ class Translator extends Obj
     /**
      * An array of used text, used during debugging.
      *
-     * @public array
+     * @var array
      */
     protected $used = [];
 
     /**
      * An array used to store overrides.
      *
-     * @public array
+     * @var array
      */
     protected $override = [];
 
     /**
      * Whether overrides have been merged into strings.
      *
-     * @public boolean
+     * @var boolean
      */
     protected $overridesMerged = false;
 
@@ -141,7 +141,7 @@ class Translator extends Obj
     /**
      * A list of callback functions for this language.
      *
-     * @public array
+     * @var array
      */
     protected $callbacks = [
         'pluralSuffixes'       => null,

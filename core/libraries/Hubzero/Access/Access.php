@@ -21,35 +21,35 @@ class Access
     /**
      * Array of view levels
      *
-     * @public array
+     * @var array
      */
     protected static $viewLevels = [];
 
     /**
      * Array of rules for the asset
      *
-     * @public array
+     * @var array
      */
     protected static $assetRules = [];
 
     /**
      * Array of user groups.
      *
-     * @public array
+     * @var array
      */
     protected static $userGroups = [];
 
     /**
      * Array of user group paths.
      *
-     * @public array
+     * @var array
      */
     protected static $userGroupPaths = [];
 
     /**
      * Array of cached groups by user.
      *
-     * @public array
+     * @var array
      */
     protected static $groupsByUser = [];
 

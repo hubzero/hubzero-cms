@@ -35,21 +35,21 @@ class Rows implements Iterator, Countable
     /**
      * Internal array of iterable data
      *
-     * @public array
+     * @var array
      **/
     private $rows = [];
 
     /**
      * Order by used to retrieve these rows
      *
-     * @public string
+     * @var string
      **/
     public $orderBy = 'id';
 
     /**
      * Order direction used to retrieve these rows
      *
-     * @public string
+     * @var string
      **/
     public $orderDir = 'asc';
 

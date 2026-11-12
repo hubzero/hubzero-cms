@@ -44,7 +44,7 @@ class Form
     /**
      * The form object errors array.
      *
-     * @public array
+     * @var array
      */
     protected $errors = [];
 
@@ -58,7 +58,7 @@ class Form
     /**
      * The form object options for use in rendering and validation.
      *
-     * @public array
+     * @var array
      */
     protected $options = [];
 
@@ -72,7 +72,7 @@ class Form
     /**
      * Form instances.
      *
-     * @public array
+     * @var array
      */
     protected static $forms = [];
 
