@@ -659,7 +659,6 @@ class Ldap
      * Makes changes to a group
      *
      * @param   mixed   $group
-     * @param   array   $members
      * @return  bool|null
      */
     public static function changeGroupMemberships($group, $add, $delete)

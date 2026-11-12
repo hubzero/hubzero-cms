@@ -129,8 +129,6 @@ class Dumper
     /**
      * Adds a message
      *
-     * @param   mixed   $message
-     * @param   string  $label
      * @return  object
      */
     public function addVar($var)

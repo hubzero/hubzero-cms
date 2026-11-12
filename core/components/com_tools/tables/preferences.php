@@ -70,7 +70,6 @@ class Preferences extends Table
     /**
      * Load an entry from the database and bind to $this
      *
-     * @param   string   $user_id
      * @return  boolean  True if data was retrieved and loaded
      */
     public function param($key = '', $default = null)

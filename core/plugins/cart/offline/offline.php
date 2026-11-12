@@ -80,8 +80,6 @@ class Offline extends Plugin
     /**
      * Return a list of filters that can be applied
      *
-     * @param   object  $transaction
-     * @param   object  $user
      * @return  bool
      */
     public function onPostback($postData)

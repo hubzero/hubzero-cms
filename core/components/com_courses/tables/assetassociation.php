@@ -91,7 +91,6 @@ class AssetAssociation extends Table
     /**
      * Get the last page in the ordering
      *
-     * @param      string  $offering_id    Course alias (cn)
      * @return     integer
      */
     public function getHighestOrdering($scope_id, $scope)

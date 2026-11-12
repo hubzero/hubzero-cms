@@ -151,8 +151,6 @@ class Page extends Table
     /**
      * Get pages for a course
      *
-     * @param      string  $offering_id    Course alias (cn)
-     * @param      boolean $active Parameter description (if any) ...
      * @return     array
      */
     public function find($filters = [])
@@ -198,7 +196,6 @@ class Page extends Table
     /**
      * Record a page hit
      *
-     * @param      integer $pid Page ID
      * @return     bool
      */
     public function hit($offering_id = null, $page_id = null)

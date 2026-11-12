@@ -77,7 +77,6 @@ class AssetGroup extends Table
     /**
      * Get the last page in the ordering
      *
-     * @param      string  $offering_id    Course alias (cn)
      * @return     integer
      */
     public function getHighestOrder($unit_id, $parent = 0)

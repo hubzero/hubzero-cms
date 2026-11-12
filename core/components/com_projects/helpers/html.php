@@ -901,11 +901,6 @@ class Html extends Obj
     /**
      * Get suggestions for new project members
      *
-     * @param   object  $project
-     * @param   string  $option
-     * @param   int     $uid
-     * @param   array   $config
-     * @param   array   $params
      * @return  array
      */
     public static function getSuggestions($model)

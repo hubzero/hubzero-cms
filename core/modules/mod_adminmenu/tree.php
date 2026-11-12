@@ -131,8 +131,6 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * Render a menu level
      *
-     * @param   string  $id     Menu ID
-     * @param   string  $class  Menu class
      * @return  void
      */
     public function renderLevel($depth)

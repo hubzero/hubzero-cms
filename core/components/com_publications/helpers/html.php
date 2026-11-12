@@ -1347,7 +1347,6 @@ class Html
     /**
      * Get the MIME types for primary file and support file
      *
-     * @param   object  $pub    publication model
      * @param   int  $role
      * @param   array  $attachments
      * @param   array  $mimeTypes

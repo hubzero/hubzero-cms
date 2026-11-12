@@ -275,7 +275,6 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   integer  $limit
-     * @param   string   $get_uids
      * @param   integer  $show_uid
      * @return  string
      */

@@ -200,7 +200,6 @@ class Gitlab
     /**
      * Generic Get Request
      *
-     * @param   string  $url
      * @return  string
      */
     private function getRequest($resource, $ResourceName)

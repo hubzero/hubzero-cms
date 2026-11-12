@@ -269,8 +269,6 @@ class Auditor
     /**
      * Log results of the check
      *
-     * @param   string  $isSpam  Spam detection result
-     * @param   array   $data    Data being checked
      * @return  void
      */
     protected function log($report)

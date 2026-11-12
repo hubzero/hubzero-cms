@@ -383,8 +383,6 @@ class Tool extends Base
     /**
      * Add/edit attachment
      *
-     * @param   integer  $id
-     * @param   string   $title
      * @param   object   $pub
      * @param   object   $configs
      * @param   integer  $uid

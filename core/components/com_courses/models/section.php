@@ -110,7 +110,6 @@ class Section extends Base
     /**
      * Constructor
      *
-     * @param      integer $id Course offering ID or alias
      * @return     void
      */
     public function __construct($oid = null, $offering_id = null)
@@ -433,7 +432,6 @@ class Section extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
      * @return    void
      */
     public function add($data = [], $role_id = 'student')

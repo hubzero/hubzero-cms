@@ -412,7 +412,6 @@ class Course extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
      * @return    void
      */
     public function add($data = null, $role_id = 0)
@@ -534,8 +533,6 @@ class Course extends Base
      * Short title for 'update'
      * Long title (if any) ...
      *
-     * @param unknown $course_id Parameter title (if any) ...
-     * @param array $data Parameter title (if any) ...
      * @return boolean Return title (if any) ...
      */
     public function store($check = true)

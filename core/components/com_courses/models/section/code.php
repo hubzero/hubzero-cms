@@ -42,7 +42,6 @@ class Code extends Base
     /**
      * Constructor
      *
-     * @param      integer $id Course offering ID or alias
      * @return     void
      */
     public function __construct($oid = null, $section_id = null)

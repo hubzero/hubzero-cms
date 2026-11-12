@@ -153,7 +153,6 @@ class Google extends Obj
      *
      * @param   object   $apiService  Drive API service instance
      * @param   string   $title       File title
-     * @param   string   $data        File content
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
      * @param   array    &$metadata   Collector array
@@ -271,7 +270,6 @@ class Google extends Obj
      * @param   object   $apiService  Drive API service instance
      * @param   string   $id          Remote id
      * @param   string   $title       File title
-     * @param   string   $data        File content
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
      * @param   array    &$metadata   Collector array

@@ -1795,8 +1795,6 @@ class Publication extends Obj
     /**
      * Get wiki page
      *
-     * @param   object  $attachment
-     * @param   object  $publication
      * @param   string  $masterscope
      * @param   string  $versionid
      * @return  mixed

@@ -2798,7 +2798,6 @@ class InformixDriver extends BaseSqlDriver
      *
      * Informix uses MATCHES for pattern matching (similar to LIKE with wildcards).
      *
-     * @param   string  $str      The string expression
      * @param   string  $pattern  The pattern to match
      * @return  string
      */
@@ -3340,7 +3339,6 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   string  $table   Table name
      * @param   string  $column  Column name
-     * @param   string  $type    Column type
      * @return  bool
      */
     public function addColumnLast(string $table, string $column, string $definition, string $comment = ''): bool

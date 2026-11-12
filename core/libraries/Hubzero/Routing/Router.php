@@ -45,7 +45,6 @@ class Router
     /**
      * Class constructor
      *
-     * @param   array  $options  Array of options
      * @return  void
      */
     public function __construct($vars = [], $prefix = '')

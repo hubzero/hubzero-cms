@@ -142,7 +142,6 @@ class Courses extends Obj
      * Get a list of courses
      *   Accepts an array of filters to build query from
      *
-     * @param      array $filters Filters to build query from
      * @return     mixed
      */
     public function userCourses($uid, $type = 'all', $limit = null, $start = 0)

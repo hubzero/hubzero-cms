@@ -140,8 +140,6 @@ class Helper
     /**
      * Parse Confirmation Email & Token to make sure its was a valid combination
      *
-     * @param   string  $email  Confirmation Email Address
-     * @param   string  $token  Confirmation Token
      * @return  array|false
      */
     public static function parseConfirmationToken($confirmationToken)

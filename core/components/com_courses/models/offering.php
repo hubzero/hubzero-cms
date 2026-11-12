@@ -167,7 +167,6 @@ class Offering extends Base
     /**
      * Constructor
      *
-     * @param      integer $id Course offering ID or alias
      * @return     void
      */
     public function __construct($oid, $course_id = null)
@@ -301,7 +300,6 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      mixed $idx Index value
      * @return     int|\Traversable
      */
     public function sections($filters = [], $clear = false)
@@ -374,7 +372,6 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      mixed $idx Index value
      * @return     object|\Traversable
      */
     public function units($filters = [], $clear = false)
@@ -843,7 +840,6 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @param      mixed $idx Index value
      * @return     array
      */
     public function pages($filters = [], $reload = false)
@@ -966,7 +962,6 @@ class Offering extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
      * @return    void
      */
     public function add($data = [], $role_id = 'student')
@@ -1057,7 +1052,6 @@ class Offering extends Base
     /**
      * Create a section linked to this offering
      *
-     * @param   boolean $validate Validate data?
      * @return  boolean True on success, False on error
      */
     public function makeSection($alias = '__default', $is_default = 1)

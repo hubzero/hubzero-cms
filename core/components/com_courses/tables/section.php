@@ -33,8 +33,6 @@ class Section extends Table
     /**
      * Returns a reference to a section object
      *
-     * @param   string  $pagename  The page to load
-     * @param   string  $scope     The page scope
      * @return  object
      */
     public static function getInstance($type, $prefix = 'Table', $config = [])

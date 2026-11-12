@@ -266,8 +266,6 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Set the body of this entity, as a string. (compatability function)
      *
-     * @param mixed  $body
-     * @param string $contentType optional
      *
      * @return $this
      */

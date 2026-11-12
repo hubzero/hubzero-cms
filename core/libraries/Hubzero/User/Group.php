@@ -855,7 +855,6 @@ class Group extends Obj
     /**
      * Get a property's value
      *
-     * @param   string  $property
      * @return  mixed
      */
     public function get($key, $default = null)
