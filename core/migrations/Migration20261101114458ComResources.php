@@ -51,11 +51,21 @@ class Migration20261101114458ComResources extends Base
         }
     }
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->addIndex('#__resources', 'idx_alias', 'alias');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $this->dropIndex('#__resources', 'idx_alias');

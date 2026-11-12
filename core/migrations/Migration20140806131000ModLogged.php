@@ -18,6 +18,8 @@ class Migration20140806131000ModLogged extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20140806131000ModLogged extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

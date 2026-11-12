@@ -13,6 +13,8 @@ class Migration20191017000001ComProjects extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -28,6 +30,8 @@ class Migration20191017000001ComProjects extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

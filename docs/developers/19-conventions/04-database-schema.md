@@ -126,7 +126,7 @@ followed closely.
 Put the whole definition in one `CREATE TABLE`, guarded by `tableExists()` so
 the migration is safe to re-run:
 
-<!--include: core/components/com_blog/migrations/Migration20170901000000ComBlog.php:22-51-->
+<!--include: core/components/com_blog/migrations/Migration20170901000000ComBlog.php:24-53-->
 
 Give every column an explicit `DEFAULT`. A `NOT NULL` column with no default
 makes an insert that omits it fail; `Migration20260129000000Core` exists only to

@@ -18,6 +18,8 @@ class Migration20140108233321PlgGroupsMembers extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -50,6 +52,8 @@ class Migration20140108233321PlgGroupsMembers extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

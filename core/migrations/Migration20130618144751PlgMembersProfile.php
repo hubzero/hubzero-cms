@@ -17,6 +17,8 @@ class Migration20130618144751PlgMembersProfile extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -41,6 +43,8 @@ class Migration20130618144751PlgMembersProfile extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -13,7 +13,7 @@ use Components\Courses\Helpers\QueryAddColumnStatement;
 
 class QueryAddColumnStatementTest extends Basic
 {
-    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
+    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided(): void
     {
         $columnData = ['name' => 'test', 'type' => 'varchar(255)'];
         $addColumnStatement = new QueryAddColumnStatement($columnData);
@@ -24,7 +24,7 @@ class QueryAddColumnStatementTest extends Basic
         $this->assertEquals($expectedStatement, $actualStatement);
     }
 
-    public function testToStringReturnsCorrectStringWhenRestrictionProvided()
+    public function testToStringReturnsCorrectStringWhenRestrictionProvided(): void
     {
         $columnData = [
             'name' => 'test',
@@ -39,7 +39,7 @@ class QueryAddColumnStatementTest extends Basic
         $this->assertEquals($expectedStatement, $actualStatement);
     }
 
-    public function testToStringReturnsCorrectStringWhenDefaultProvided()
+    public function testToStringReturnsCorrectStringWhenDefaultProvided(): void
     {
         $columnData = [
             'name' => 'test',
@@ -54,7 +54,7 @@ class QueryAddColumnStatementTest extends Basic
         $this->assertEquals($expectedStatement, $actualStatement);
     }
 
-    public function testToStringReturnsCorrectWhenRestrictionAndDefaultProvided()
+    public function testToStringReturnsCorrectWhenRestrictionAndDefaultProvided(): void
     {
         $columnData = [
             'name' => 'test',
@@ -70,7 +70,7 @@ class QueryAddColumnStatementTest extends Basic
         $this->assertEquals($expectedStatement, $actualStatement);
     }
 
-    public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultZero()
+    public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultZero(): void
     {
         $columnData = [
             'name' => 'test',

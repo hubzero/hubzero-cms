@@ -18,6 +18,8 @@ class Migration20151118164723ComAnswers extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -84,6 +86,8 @@ class Migration20151118164723ComAnswers extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

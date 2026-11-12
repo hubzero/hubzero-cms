@@ -44,7 +44,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver)
+    public function unionMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
 
@@ -70,7 +70,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionAllMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver)
+    public function unionAllMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
 
@@ -96,7 +96,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function basicUnionCombinesResultSets(string $dbName, BaseSqlDriver $driver)
+    public function basicUnionCombinesResultSets(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -127,7 +127,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionWithQueryObject(string $dbName, BaseSqlDriver $driver)
+    public function unionWithQueryObject(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -156,7 +156,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionRemovesDuplicates(string $dbName, BaseSqlDriver $driver)
+    public function unionRemovesDuplicates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -189,7 +189,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionAllKeepsDuplicates(string $dbName, BaseSqlDriver $driver)
+    public function unionAllKeepsDuplicates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -226,7 +226,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleUnionsInSameQuery(string $dbName, BaseSqlDriver $driver)
+    public function multipleUnionsInSameQuery(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -264,7 +264,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function mixedUnionAndUnionAll(string $dbName, BaseSqlDriver $driver)
+    public function mixedUnionAndUnionAll(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -301,7 +301,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionWithWhereClausesFiltersCorrectly(string $dbName, BaseSqlDriver $driver)
+    public function unionWithWhereClausesFiltersCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -334,7 +334,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionWithParameterBindings(string $dbName, BaseSqlDriver $driver)
+    public function unionWithParameterBindings(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -373,7 +373,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionWithEmptyFirstResultSet(string $dbName, BaseSqlDriver $driver)
+    public function unionWithEmptyFirstResultSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -406,7 +406,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionWithBothEmptyResultSets(string $dbName, BaseSqlDriver $driver)
+    public function unionWithBothEmptyResultSets(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
         $this->seedTestData($driver);
@@ -439,7 +439,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function toStringGeneratesSqlWithUnion(string $dbName, BaseSqlDriver $driver)
+    public function toStringGeneratesSqlWithUnion(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
 
@@ -471,7 +471,7 @@ class UnionQueryTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function toStringGeneratesSqlWithUnionAll(string $dbName, BaseSqlDriver $driver)
+    public function toStringGeneratesSqlWithUnionAll(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver);
 

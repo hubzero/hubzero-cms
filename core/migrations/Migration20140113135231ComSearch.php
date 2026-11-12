@@ -18,6 +18,8 @@ class Migration20140113135231ComSearch extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -89,6 +91,8 @@ class Migration20140113135231ComSearch extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

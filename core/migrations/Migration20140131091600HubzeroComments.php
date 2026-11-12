@@ -17,6 +17,8 @@ class Migration20140131091600HubzeroComments extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -106,6 +108,8 @@ class Migration20140131091600HubzeroComments extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

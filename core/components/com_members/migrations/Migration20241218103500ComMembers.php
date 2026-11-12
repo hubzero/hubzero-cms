@@ -185,6 +185,11 @@ class Migration20241218103500ComMembers extends Base
         $this->db->execute();
     }
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->cleanUnicodeProperNames();
@@ -194,5 +199,10 @@ class Migration20241218103500ComMembers extends Base
         $this->syncProfiles();
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }

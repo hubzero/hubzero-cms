@@ -17,6 +17,11 @@ class Migration20180126160144ComSearch extends Base
 {
     protected static $tableName = '#__solr_search_searchcomponents';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -39,6 +44,11 @@ class Migration20180126160144ComSearch extends Base
         $this->saveParams('com_search', $params);
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

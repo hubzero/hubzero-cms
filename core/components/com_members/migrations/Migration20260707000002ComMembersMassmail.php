@@ -23,6 +23,8 @@ class Migration20260707000002ComMembersMassmail extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -43,6 +45,8 @@ class Migration20260707000002ComMembersMassmail extends Base
      * option=com_massmail menu link -- including the com_massmail component's
      * own admin menu entry -- so we cannot safely distinguish rows this
      * migration changed. Retiring the old screen is forward-only.
+     *
+     * @return  void
      **/
     public function down()
     {

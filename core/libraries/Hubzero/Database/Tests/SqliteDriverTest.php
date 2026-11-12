@@ -87,7 +87,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildForDropColumn(string $dbName, BaseSqlDriver $driver)
+    public function testTableRebuildForDropColumn(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -143,7 +143,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildForModifyColumn(string $dbName, BaseSqlDriver $driver)
+    public function testTableRebuildForModifyColumn(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -195,7 +195,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildCombinedOperations(string $dbName, BaseSqlDriver $driver)
+    public function testTableRebuildCombinedOperations(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -248,7 +248,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCompileAlterTableDetectsRebuildNeed(string $dbName, BaseSqlDriver $driver)
+    public function testCompileAlterTableDetectsRebuildNeed(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -291,7 +291,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSimpleAddColumnDoesNotRebuild(string $dbName, BaseSqlDriver $driver)
+    public function testSimpleAddColumnDoesNotRebuild(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlite($driver)) {
             return;

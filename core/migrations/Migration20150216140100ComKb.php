@@ -18,6 +18,8 @@ class Migration20150216140100ComKb extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -58,6 +60,8 @@ class Migration20150216140100ComKb extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

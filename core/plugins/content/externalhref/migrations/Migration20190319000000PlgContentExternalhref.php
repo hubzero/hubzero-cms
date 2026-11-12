@@ -18,6 +18,8 @@ class Migration20190319000000PlgContentExternalhref extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20190319000000PlgContentExternalhref extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

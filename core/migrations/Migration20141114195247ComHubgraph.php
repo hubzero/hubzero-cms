@@ -18,6 +18,8 @@ class Migration20141114195247ComHubgraph extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

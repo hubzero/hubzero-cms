@@ -18,6 +18,11 @@ class Migration20171115112800ComSupportCriteria extends Base
 {
     protected static $tableName = '#__support_criteria';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -41,6 +46,8 @@ class Migration20171115112800ComSupportCriteria extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

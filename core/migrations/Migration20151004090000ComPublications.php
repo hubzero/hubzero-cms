@@ -17,6 +17,8 @@ class Migration20151004090000ComPublications extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

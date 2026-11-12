@@ -18,6 +18,8 @@ class Migration20140822203559ComPoll extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

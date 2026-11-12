@@ -46,6 +46,8 @@ class Migration20190306000000ModAdminmenu extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -69,6 +71,8 @@ class Migration20190306000000ModAdminmenu extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

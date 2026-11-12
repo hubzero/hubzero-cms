@@ -21,6 +21,8 @@ class Migration20230920000000ComConfig extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -75,6 +77,8 @@ class Migration20230920000000ComConfig extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

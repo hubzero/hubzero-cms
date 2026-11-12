@@ -18,6 +18,8 @@ class Migration20250125150424PlgGeocodeGooglemapsbusiness extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20250125150424PlgGeocodeGooglemapsbusiness extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

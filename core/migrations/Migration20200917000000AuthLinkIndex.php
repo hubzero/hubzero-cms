@@ -13,6 +13,8 @@ class Migration20200917000000AuthLinkIndex extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20200917000000AuthLinkIndex extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

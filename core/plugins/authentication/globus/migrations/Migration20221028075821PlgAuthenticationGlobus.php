@@ -17,6 +17,8 @@ class Migration20221028075821PlgAuthenticationGlobus extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -25,6 +27,8 @@ class Migration20221028075821PlgAuthenticationGlobus extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

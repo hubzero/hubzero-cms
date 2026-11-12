@@ -29,6 +29,8 @@ class Migration20190307114147PlgResourcesSponsors extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -54,6 +56,8 @@ class Migration20190307114147PlgResourcesSponsors extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

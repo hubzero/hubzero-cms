@@ -100,7 +100,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testOrderWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testOrderWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -121,7 +121,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testOrderWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testOrderWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -143,7 +143,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testOrderWhenWithNonBooleanTruthyValue(string $dbName, BaseSqlDriver $driver)
+    public function testOrderWhenWithNonBooleanTruthyValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -165,7 +165,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testOrderUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testOrderUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -186,7 +186,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testOrderUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testOrderUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -208,7 +208,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testLimitWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testLimitWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -229,7 +229,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testLimitWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testLimitWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -250,7 +250,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testLimitUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testLimitUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -272,7 +272,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testLimitUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testLimitUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -294,7 +294,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testStartWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testStartWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -318,7 +318,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testStartWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testStartWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -342,7 +342,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testStartUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testStartUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -365,7 +365,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGroupWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testGroupWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -386,7 +386,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGroupWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testGroupWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -407,7 +407,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGroupUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testGroupUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -430,7 +430,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testJoinWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testJoinWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -452,7 +452,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testJoinWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testJoinWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -474,7 +474,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testJoinWhenWithLeftJoin(string $dbName, BaseSqlDriver $driver)
+    public function testJoinWhenWithLeftJoin(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -495,7 +495,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testJoinUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testJoinUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -516,7 +516,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testSelectWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testSelectWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -537,7 +537,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testSelectWhenWithFalsyConditionAndFallback(string $dbName, BaseSqlDriver $driver)
+    public function testSelectWhenWithFalsyConditionAndFallback(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -558,7 +558,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -580,7 +580,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -602,7 +602,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -624,7 +624,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereUnlessWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -646,7 +646,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereInWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereInWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -668,7 +668,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereInWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereInWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -690,7 +690,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereInUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereInUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -711,7 +711,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereNotInWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereNotInWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -733,7 +733,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereNotInWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereNotInWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -754,7 +754,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWhereNotInUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testWhereNotInUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -775,7 +775,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testHavingWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testHavingWhenWithTruthyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -799,7 +799,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testHavingWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testHavingWhenWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -822,7 +822,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testHavingUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver)
+    public function testHavingUnlessWithFalsyCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -844,7 +844,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testMethodChainingWithMultipleConditionals(string $dbName, BaseSqlDriver $driver)
+    public function testMethodChainingWithMultipleConditionals(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -878,7 +878,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testConditionalMethodsReturnThis(string $dbName, BaseSqlDriver $driver)
+    public function testConditionalMethodsReturnThis(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -947,7 +947,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testConditionalMethodsWithVariousTruthyFalsyValues(string $dbName, BaseSqlDriver $driver)
+    public function testConditionalMethodsWithVariousTruthyFalsyValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);
@@ -978,7 +978,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testRealWorldDynamicFilterScenario(string $dbName, BaseSqlDriver $driver)
+    public function testRealWorldDynamicFilterScenario(string $dbName, BaseSqlDriver $driver): void
     {
         $this->seedUsers($driver);
         $query = new Query($driver);

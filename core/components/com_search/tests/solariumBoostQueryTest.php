@@ -17,7 +17,7 @@ class SolariumBoostQueryTest extends Basic
 {
     use CanMock;
 
-    public function testOneReturnsInstance()
+    public function testOneReturnsInstance(): void
     {
         $expected = new Query(['boost' => []]);
 
@@ -26,7 +26,7 @@ class SolariumBoostQueryTest extends Basic
         $this->assertEquals($expected, $queries);
     }
 
-    public function testToArray()
+    public function testToArray(): void
     {
         $boostMock = $this->mock([
             'class' => 'Boost',

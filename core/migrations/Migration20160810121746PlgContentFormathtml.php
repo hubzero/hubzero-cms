@@ -17,6 +17,8 @@ class Migration20160810121746PlgContentFormathtml extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -35,6 +37,8 @@ class Migration20160810121746PlgContentFormathtml extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

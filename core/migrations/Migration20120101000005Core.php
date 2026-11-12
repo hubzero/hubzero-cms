@@ -17,6 +17,11 @@ use Hubzero\Database\Expression;
 **/
 class Migration20120101000005Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();

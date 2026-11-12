@@ -19,6 +19,8 @@ class Migration20141029192338ComOaipmh extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

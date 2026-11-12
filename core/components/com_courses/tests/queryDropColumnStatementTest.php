@@ -13,7 +13,7 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 
 class QueryDropColumnStatementTest extends Basic
 {
-    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
+    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided(): void
     {
         $columnData = ['name' => 'test'];
         $dropColumnStatement = new QueryDropColumnStatement($columnData);

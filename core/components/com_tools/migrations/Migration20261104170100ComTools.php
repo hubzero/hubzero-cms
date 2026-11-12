@@ -44,6 +44,8 @@ class Migration20261104170100ComTools extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -115,6 +117,8 @@ class Migration20261104170100ComTools extends Base
      * Down
      *
      * IPv6 ranges have no integer form, so leave the columns as they are
+     *
+     * @return  void
      **/
     public function down() {}
 }

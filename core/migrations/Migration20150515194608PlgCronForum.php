@@ -18,6 +18,8 @@ class Migration20150515194608PlgCronForum extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20150515194608PlgCronForum extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

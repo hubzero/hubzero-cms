@@ -18,6 +18,8 @@ class Migration20130812182339ComCart extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -194,6 +196,8 @@ class Migration20130812182339ComCart extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

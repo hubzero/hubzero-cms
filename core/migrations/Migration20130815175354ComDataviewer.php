@@ -17,6 +17,8 @@ class Migration20130815175354ComDataviewer extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -33,6 +35,8 @@ class Migration20130815175354ComDataviewer extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

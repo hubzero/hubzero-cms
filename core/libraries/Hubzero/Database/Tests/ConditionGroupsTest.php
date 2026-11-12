@@ -117,7 +117,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function beginAndGroupCreatesProperlySQLStructure(string $dbName, BaseSqlDriver $driver)
+    public function beginAndGroupCreatesProperlySQLStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -146,7 +146,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function beginOrGroupCreatesProperlySQLStructure(string $dbName, BaseSqlDriver $driver)
+    public function beginOrGroupCreatesProperlySQLStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -174,7 +174,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function conditionGroupsFilterResultsCorrectly(string $dbName, BaseSqlDriver $driver)
+    public function conditionGroupsFilterResultsCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -203,7 +203,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nestedConditionGroups(string $dbName, BaseSqlDriver $driver)
+    public function nestedConditionGroups(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -231,7 +231,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function groupDepthTracking(string $dbName, BaseSqlDriver $driver)
+    public function groupDepthTracking(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -259,7 +259,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function endGroupWithoutBeginGroupThrowsException(string $dbName, BaseSqlDriver $driver)
+    public function endGroupWithoutBeginGroupThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('endGroup() called without matching beginGroup()');
@@ -273,7 +273,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function excessEndGroupThrowsException(string $dbName, BaseSqlDriver $driver)
+    public function excessEndGroupThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $this->expectException(\LogicException::class);
 
@@ -293,7 +293,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function methodChainingReturnsSelf(string $dbName, BaseSqlDriver $driver)
+    public function methodChainingReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -315,7 +315,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function completeFluentQueryWithGroups(string $dbName, BaseSqlDriver $driver)
+    public function completeFluentQueryWithGroups(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -347,7 +347,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function groupsWorkWithWhereIn(string $dbName, BaseSqlDriver $driver)
+    public function groupsWorkWithWhereIn(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -370,7 +370,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function groupsWorkWithWhereRaw(string $dbName, BaseSqlDriver $driver)
+    public function groupsWorkWithWhereRaw(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -392,7 +392,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function groupsWorkWithWhereIsNull(string $dbName, BaseSqlDriver $driver)
+    public function groupsWorkWithWhereIsNull(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -420,7 +420,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function explicitDepthParameterStillWorks(string $dbName, BaseSqlDriver $driver)
+    public function explicitDepthParameterStillWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -443,7 +443,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function queriesWithoutGroupsStillWork(string $dbName, BaseSqlDriver $driver)
+    public function queriesWithoutGroupsStillWork(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -467,7 +467,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function cmsArticleFilteringScenario(string $dbName, BaseSqlDriver $driver)
+    public function cmsArticleFilteringScenario(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -495,7 +495,7 @@ class ConditionGroupsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function userSearchScenario(string $dbName, BaseSqlDriver $driver)
+    public function userSearchScenario(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 

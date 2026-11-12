@@ -18,6 +18,8 @@ class Migration20150428103217ComCategories extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

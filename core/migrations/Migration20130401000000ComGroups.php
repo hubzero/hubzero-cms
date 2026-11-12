@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20130401000000ComGroups extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->deletePluginEntry('groups', 'userenrollment');

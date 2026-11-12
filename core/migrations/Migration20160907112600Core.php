@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20160907112600Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -26,5 +31,10 @@ class Migration20160907112600Core extends Base
         $schema->dropIndex('#__courses_form_respondents', 'jos_pdf_form_responses_respondent_id_idx');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }

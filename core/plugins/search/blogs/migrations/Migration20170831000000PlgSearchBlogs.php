@@ -19,6 +19,8 @@ class Migration20170831000000PlgSearchBlogs extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20170831000000PlgSearchBlogs extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

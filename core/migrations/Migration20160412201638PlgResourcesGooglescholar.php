@@ -17,6 +17,8 @@ class Migration20160412201638PlgResourcesGooglescholar extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20160412201638PlgResourcesGooglescholar extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

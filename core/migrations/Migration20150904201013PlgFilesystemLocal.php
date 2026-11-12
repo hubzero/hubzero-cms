@@ -18,6 +18,8 @@ class Migration20150904201013PlgFilesystemLocal extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20150904201013PlgFilesystemLocal extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

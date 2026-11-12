@@ -219,7 +219,7 @@ so guard every change with the schema checks rather than assuming a starting
 state. `tableExists()`, `tableHasField()` and `tableHasKey()` are the three
 that matter, and a real migration reads like this:
 
-<!--include: core/components/com_blog/migrations/Migration20190221000000ComBlog.php:38-58-->
+<!--include: core/components/com_blog/migrations/Migration20190221000000ComBlog.php:40-60-->
 
 > **Note:** The methods are `tableExists()`, `tableHasField()` and
 > `tableHasKey()`. Older documentation mentions `ifTableExists()`,
@@ -239,7 +239,7 @@ Registering a component, module, plugin or template is common enough that
 [`Hubzero\Content\Migration\Macros`](../../../core/libraries/Hubzero/Content/Migration/Macros).
 The whole of `com_blog`'s first migration is one call each way:
 
-<!--include: core/components/com_blog/migrations/Migration20170831000000ComBlog.php:16-33-->
+<!--include: core/components/com_blog/migrations/Migration20170831000000ComBlog.php:16-37-->
 
 | Macro | Signature |
 |---|---|

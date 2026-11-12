@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20120101000006Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         // Component entries

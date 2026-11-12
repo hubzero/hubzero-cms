@@ -18,6 +18,8 @@ class Migration20131106150723PlgYsearchProjects extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20131106150723PlgYsearchProjects extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

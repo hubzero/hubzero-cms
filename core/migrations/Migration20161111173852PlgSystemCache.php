@@ -18,6 +18,8 @@ class Migration20161111173852PlgSystemCache extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -86,6 +88,8 @@ class Migration20161111173852PlgSystemCache extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

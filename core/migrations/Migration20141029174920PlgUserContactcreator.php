@@ -17,6 +17,8 @@ class Migration20141029174920PlgUserContactcreator extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

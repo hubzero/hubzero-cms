@@ -18,6 +18,8 @@ class Migration20131002133124ComCollections extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20131002133124ComCollections extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -18,6 +18,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

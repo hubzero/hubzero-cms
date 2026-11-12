@@ -18,6 +18,8 @@ class Migration20140110130812ComBanners extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -64,6 +66,8 @@ class Migration20140110130812ComBanners extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

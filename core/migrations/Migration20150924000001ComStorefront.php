@@ -18,6 +18,8 @@ class Migration20150924000001ComStorefront extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

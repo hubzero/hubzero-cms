@@ -19,6 +19,8 @@ class Migration20131113193815ComResources extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

@@ -18,6 +18,8 @@ class Migration20141009205234ComTags extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

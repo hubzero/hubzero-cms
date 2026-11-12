@@ -72,7 +72,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckoutSetsUserIdAndTimestamp(string $dbName, BaseSqlDriver $driver)
+    public function testCheckoutSetsUserIdAndTimestamp(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -106,7 +106,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckinClearsLock(string $dbName, BaseSqlDriver $driver)
+    public function testCheckinClearsLock(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -139,7 +139,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckinOnUnlockedRecordReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function testCheckinOnUnlockedRecordReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -163,7 +163,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckoutFailsWithInvalidUserId(string $dbName, BaseSqlDriver $driver)
+    public function testCheckoutFailsWithInvalidUserId(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -191,7 +191,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIsCheckedOutReturnsFalseForUnlockedRecord(string $dbName, BaseSqlDriver $driver)
+    public function testIsCheckedOutReturnsFalseForUnlockedRecord(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -214,7 +214,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIsCheckedOutReturnsFalseForSameUser(string $dbName, BaseSqlDriver $driver)
+    public function testIsCheckedOutReturnsFalseForSameUser(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -239,7 +239,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIsCheckedOutReturnsTrueForDifferentUser(string $dbName, BaseSqlDriver $driver)
+    public function testIsCheckedOutReturnsTrueForDifferentUser(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -264,7 +264,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckoutFailsWhenLockedByAnotherUser(string $dbName, BaseSqlDriver $driver)
+    public function testCheckoutFailsWhenLockedByAnotherUser(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -289,7 +289,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSameUserCanReCheckout(string $dbName, BaseSqlDriver $driver)
+    public function testSameUserCanReCheckout(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -323,7 +323,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testExpiredLockAllowsCheckoutByOtherUser(string $dbName, BaseSqlDriver $driver)
+    public function testExpiredLockAllowsCheckoutByOtherUser(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -350,7 +350,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIsLockExpiredReturnsCorrectValue(string $dbName, BaseSqlDriver $driver)
+    public function testIsLockExpiredReturnsCorrectValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -390,7 +390,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetCheckedOutUserId(string $dbName, BaseSqlDriver $driver)
+    public function testGetCheckedOutUserId(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -414,7 +414,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetCheckedOutUserIdReturnsNullForUnlockedRecord(string $dbName, BaseSqlDriver $driver)
+    public function testGetCheckedOutUserIdReturnsNullForUnlockedRecord(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -437,7 +437,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetCheckedOutTime(string $dbName, BaseSqlDriver $driver)
+    public function testGetCheckedOutTime(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -465,7 +465,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckinByUserReleasesAllUserLocks(string $dbName, BaseSqlDriver $driver)
+    public function testCheckinByUserReleasesAllUserLocks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -515,7 +515,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCheckinExpiredReleasesOnlyExpiredLocks(string $dbName, BaseSqlDriver $driver)
+    public function testCheckinExpiredReleasesOnlyExpiredLocks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -568,7 +568,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCustomColumnNames(string $dbName, BaseSqlDriver $driver)
+    public function testCustomColumnNames(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -599,7 +599,7 @@ class LockableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetLockTimeoutReturnsCorrectValue(string $dbName, BaseSqlDriver $driver)
+    public function testGetLockTimeoutReturnsCorrectValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 

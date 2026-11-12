@@ -17,6 +17,8 @@ class Migration20160401212121PlgTools extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -82,6 +84,8 @@ iOS, Safari 9999.9');
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down() {}
 }

@@ -17,7 +17,7 @@ class TypeOptionsHelperTest extends Basic
 {
     use CanMock;
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $resourceTypes = ['A', 'B'];
         $rowsMock = $this->mock([
@@ -43,7 +43,7 @@ class TypeOptionsHelperTest extends Basic
         $this->assertEquals($expected, $allTypes);
     }
 
-    public function testGetAllSorted()
+    public function testGetAllSorted(): void
     {
         $resourceTypes = ['D', 'C'];
         $rowsMock = $this->mock([

@@ -18,6 +18,8 @@ class Migration20140224112212PlgWiki extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -74,6 +76,8 @@ class Migration20140224112212PlgWiki extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function down()
     {

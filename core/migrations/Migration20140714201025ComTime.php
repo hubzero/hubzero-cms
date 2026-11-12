@@ -17,6 +17,8 @@ class Migration20140714201025ComTime extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

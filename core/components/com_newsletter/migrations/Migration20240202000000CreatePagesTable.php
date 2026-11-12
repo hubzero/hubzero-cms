@@ -8,6 +8,11 @@ class Migration20240202000000CreatePagesTable extends Base
 {
     public static $tableName = '#__reply_pages';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -25,6 +30,11 @@ class Migration20240202000000CreatePagesTable extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

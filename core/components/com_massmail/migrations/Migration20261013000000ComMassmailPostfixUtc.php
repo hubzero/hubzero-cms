@@ -20,6 +20,8 @@ class Migration20261013000000ComMassmailPostfixUtc extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -41,6 +43,8 @@ class Migration20261013000000ComMassmailPostfixUtc extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

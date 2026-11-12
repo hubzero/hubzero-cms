@@ -18,6 +18,8 @@ class Migration20130501120700PlgCronGroups extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

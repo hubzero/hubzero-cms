@@ -14,6 +14,8 @@ class Migration20170901000000PlgProjectsTodo extends \Hubzero\Content\Migration\
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -46,6 +48,8 @@ class Migration20170901000000PlgProjectsTodo extends \Hubzero\Content\Migration\
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

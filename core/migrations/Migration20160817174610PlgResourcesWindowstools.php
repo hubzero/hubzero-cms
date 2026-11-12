@@ -18,6 +18,8 @@ class Migration20160817174610PlgResourcesWindowstools extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -52,6 +54,8 @@ class Migration20160817174610PlgResourcesWindowstools extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

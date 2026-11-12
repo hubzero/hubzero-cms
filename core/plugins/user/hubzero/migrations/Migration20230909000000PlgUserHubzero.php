@@ -41,6 +41,7 @@ class Migration20230909000000PlgUserHubzero extends Base
      * Note that we have logging callbacks, per
      * https://help.hubzero.org/documentation/22/webdevs/database/migrations
      *
+     * @return  void
      **/
     public function up()
     {
@@ -64,6 +65,7 @@ class Migration20230909000000PlgUserHubzero extends Base
      *
      * No change is made for down migration.
      *
+     * @return  void
      **/
     public function down()
     {

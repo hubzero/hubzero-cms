@@ -19,6 +19,8 @@ class Migration20150126193709ComWishlist extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

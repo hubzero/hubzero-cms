@@ -9,6 +9,11 @@ class Migration20240212000000PopulatePagesTable extends Base
 {
     public static $tableName = '#__reply_pages';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -30,6 +35,11 @@ class Migration20240212000000PopulatePagesTable extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         // manually delete records

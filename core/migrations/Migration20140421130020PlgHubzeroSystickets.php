@@ -18,6 +18,8 @@ class Migration20140421130020PlgHubzeroSystickets extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20140421130020PlgHubzeroSystickets extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

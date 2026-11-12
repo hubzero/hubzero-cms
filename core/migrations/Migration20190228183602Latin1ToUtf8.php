@@ -42,6 +42,8 @@ class Migration20190228183602Latin1ToUtf8 extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -58,6 +60,8 @@ class Migration20190228183602Latin1ToUtf8 extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

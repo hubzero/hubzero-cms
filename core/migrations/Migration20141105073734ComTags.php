@@ -18,6 +18,8 @@ class Migration20141105073734ComTags extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -30,6 +32,8 @@ class Migration20141105073734ComTags extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

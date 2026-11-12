@@ -9,6 +9,11 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20240815000000ComForum extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         // Create table for forum likes.
@@ -27,6 +32,11 @@ class Migration20240815000000ComForum extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $query = "DROP TABLE IF EXISTS `#__forum_posts_like`";

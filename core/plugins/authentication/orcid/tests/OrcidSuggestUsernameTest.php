@@ -17,7 +17,7 @@ use Plugins\Authentication\Orcid\Orcid;
 
 final class OrcidSuggestUsernameTest extends TestCase
 {
-    public function testCanonicalOrcidIdProducesExpectedHint()
+    public function testCanonicalOrcidIdProducesExpectedHint(): void
     {
         $this->assertSame(
             'u0000_0002_6885_6310',
@@ -25,7 +25,7 @@ final class OrcidSuggestUsernameTest extends TestCase
         );
     }
 
-    public function testUppercaseCheckDigitXIsLowercased()
+    public function testUppercaseCheckDigitXIsLowercased(): void
     {
         // ORCID check digit "10" is written as 'X'; the hint must be lowercase.
         $this->assertSame(
@@ -34,7 +34,7 @@ final class OrcidSuggestUsernameTest extends TestCase
         );
     }
 
-    public function testDifferentOrcidsProduceDifferentHints()
+    public function testDifferentOrcidsProduceDifferentHints(): void
     {
         $a = Orcid::suggestUsername('0000-0001-7697-7422');
         $b = Orcid::suggestUsername('0000-0002-6885-6310');
@@ -47,7 +47,7 @@ final class OrcidSuggestUsernameTest extends TestCase
      * regression that reintroduces '+' or '.' from an email local-part would
      * be caught here.
      */
-    public function testResultAlwaysMatchesLoginRegex()
+    public function testResultAlwaysMatchesLoginRegex(): void
     {
         $ids = [
             '0000-0002-6885-6310',
@@ -63,7 +63,7 @@ final class OrcidSuggestUsernameTest extends TestCase
         }
     }
 
-    public function testHintIsDeterministic()
+    public function testHintIsDeterministic(): void
     {
         // Same ORCID iD must always produce the same hint — a user whose
         // account is deleted and reregisters gets the same username back.

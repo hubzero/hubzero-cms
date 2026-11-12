@@ -18,6 +18,8 @@ class Migration20170518102512PlgAuthenticationFacebook extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

@@ -14,6 +14,8 @@ class Migration20170831000000PlgProjectsDatabases extends \Hubzero\Content\Migra
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -22,6 +24,8 @@ class Migration20170831000000PlgProjectsDatabases extends \Hubzero\Content\Migra
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -21,6 +21,8 @@ class Migration20130924000006ComFinder extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

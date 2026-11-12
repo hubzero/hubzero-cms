@@ -18,6 +18,8 @@ class Migration20250125152520PlgGeocodeOpenstreetmap extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20250125152520PlgGeocodeOpenstreetmap extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

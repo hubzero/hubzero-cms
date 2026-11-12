@@ -70,6 +70,8 @@ class Migration20261110130000ComUsage extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

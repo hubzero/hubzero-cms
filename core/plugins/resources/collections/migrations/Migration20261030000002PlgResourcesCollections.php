@@ -18,6 +18,8 @@ class Migration20261030000002PlgResourcesCollections extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

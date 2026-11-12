@@ -14,7 +14,7 @@ use Component;
 
 class ErrorMessageHelperTest extends Basic
 {
-    public function testGenerateErrorMessage()
+    public function testGenerateErrorMessage(): void
     {
         $helper = new ErrorMessageHelper();
         $errors = ['a', 'b', 'c'];

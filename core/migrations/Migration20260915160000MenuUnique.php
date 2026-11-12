@@ -37,6 +37,8 @@ class Migration20260915160000MenuUnique extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -109,6 +111,8 @@ class Migration20260915160000MenuUnique extends Base
      * Back to a plain index. The renamed items keep their new aliases, because
      * nothing routed to them and putting the old ones back would only recreate
      * the collision.
+     *
+     * @return  void
      **/
     public function down()
     {

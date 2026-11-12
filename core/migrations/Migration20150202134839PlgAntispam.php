@@ -18,6 +18,8 @@ class Migration20150202134839PlgAntispam extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -115,6 +117,8 @@ class Migration20150202134839PlgAntispam extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

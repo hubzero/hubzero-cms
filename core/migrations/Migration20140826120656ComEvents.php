@@ -18,6 +18,8 @@ class Migration20140826120656ComEvents extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

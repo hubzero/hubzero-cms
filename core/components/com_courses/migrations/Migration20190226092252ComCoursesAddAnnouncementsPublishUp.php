@@ -25,6 +25,11 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         ['name' => 'sticky', 'type' => 'tinyint(2)', 'default' => '0'],
     ];
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $announcementsTable = self::$announcementsTable;
@@ -32,6 +37,11 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $this->queryIfTableExists($announcementsTable, $query);
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $announcementsTable = self::$announcementsTable;

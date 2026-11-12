@@ -36,7 +36,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         return $method;
     }
 
-    public function testEmptyArrayIsNotAssociative()
+    public function testEmptyArrayIsNotAssociative(): void
     {
         $model = EagerPost::blank();
         $method = $this->getIsAssociativeArrayMethod();
@@ -44,7 +44,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertFalse($method->invoke($model, []));
     }
 
-    public function testIndexedArrayIsNotAssociative()
+    public function testIndexedArrayIsNotAssociative(): void
     {
         $model = EagerPost::blank();
         $method = $this->getIsAssociativeArrayMethod();
@@ -53,7 +53,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertFalse($method->invoke($model, [0 => 'comments', 1 => 'author']));
     }
 
-    public function testArrayWithStringKeysIsAssociative()
+    public function testArrayWithStringKeysIsAssociative(): void
     {
         $model = EagerPost::blank();
         $method = $this->getIsAssociativeArrayMethod();
@@ -62,7 +62,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertTrue($method->invoke($model, ['comments' => [], 'author']));
     }
 
-    public function testOldFormatArrayIsNotAssociative()
+    public function testOldFormatArrayIsNotAssociative(): void
     {
         $model = EagerPost::blank();
         $method = $this->getIsAssociativeArrayMethod();
@@ -83,7 +83,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         return $method;
     }
 
-    public function testBuildEagerConstraintReturnsClosure()
+    public function testBuildEagerConstraintReturnsClosure(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -94,7 +94,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $result);
     }
 
-    public function testBuildEagerConstraintWithSingleScope()
+    public function testBuildEagerConstraintWithSingleScope(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -105,7 +105,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithMultipleScopes()
+    public function testBuildEagerConstraintWithMultipleScopes(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -116,7 +116,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithScopeParameters()
+    public function testBuildEagerConstraintWithScopeParameters(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -127,7 +127,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithConditions()
+    public function testBuildEagerConstraintWithConditions(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -138,7 +138,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithOrder()
+    public function testBuildEagerConstraintWithOrder(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -149,7 +149,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithLimit()
+    public function testBuildEagerConstraintWithLimit(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -160,7 +160,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertInstanceOf(Closure::class, $closure);
     }
 
-    public function testBuildEagerConstraintWithAllOptions()
+    public function testBuildEagerConstraintWithAllOptions(): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -180,7 +180,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     // with() Method Acceptance Tests
     // =========================================================================
 
-    public function testIncludingAcceptsSimpleStrings()
+    public function testIncludingAcceptsSimpleStrings(): void
     {
         $model = EagerPost::blank();
 
@@ -189,7 +189,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertSame($model, $result);
     }
 
-    public function testIncludingAcceptsIndexedArray()
+    public function testIncludingAcceptsIndexedArray(): void
     {
         $model = EagerPost::blank();
 
@@ -198,7 +198,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertSame($model, $result);
     }
 
-    public function testIncludingAcceptsAssociativeArray()
+    public function testIncludingAcceptsAssociativeArray(): void
     {
         $model = EagerPost::blank();
 
@@ -210,7 +210,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertSame($model, $result);
     }
 
-    public function testIncludingAcceptsConditionsArray()
+    public function testIncludingAcceptsConditionsArray(): void
     {
         $model = EagerPost::blank();
 
@@ -223,7 +223,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $this->assertSame($model, $result);
     }
 
-    public function testIncludingAcceptsComplexConfiguration()
+    public function testIncludingAcceptsComplexConfiguration(): void
     {
         $model = EagerPost::blank();
 
@@ -246,7 +246,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[DataProvider('databaseProvider')]
-    public function testConditionsClosureAppliesWhereEquals(string $dbName, BaseSqlDriver $driver)
+    public function testConditionsClosureAppliesWhereEquals(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -267,7 +267,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testNullConditionAppliesWhereIsNull(string $dbName, BaseSqlDriver $driver)
+    public function testNullConditionAppliesWhereIsNull(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -286,7 +286,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testOrderClosureAppliesOrder(string $dbName, BaseSqlDriver $driver)
+    public function testOrderClosureAppliesOrder(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -311,7 +311,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testLimitClosureAppliesLimit(string $dbName, BaseSqlDriver $driver)
+    public function testLimitClosureAppliesLimit(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -329,7 +329,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testScopeClosureCallsScopeMethod(string $dbName, BaseSqlDriver $driver)
+    public function testScopeClosureCallsScopeMethod(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -352,7 +352,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testScopeClosurePassesParameters(string $dbName, BaseSqlDriver $driver)
+    public function testScopeClosurePassesParameters(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -428,7 +428,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithConditionsConstraint(string $dbName, BaseSqlDriver $driver)
+    public function testEagerLoadingWithConditionsConstraint(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new \Hubzero\Database\Query($driver);
         $posts = $query
@@ -458,7 +458,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithOrderConstraint(string $dbName, BaseSqlDriver $driver)
+    public function testEagerLoadingWithOrderConstraint(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -480,7 +480,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithLimitConstraint(string $dbName, BaseSqlDriver $driver)
+    public function testEagerLoadingWithLimitConstraint(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -498,7 +498,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithMultipleConstraints(string $dbName, BaseSqlDriver $driver)
+    public function testEagerLoadingWithMultipleConstraints(string $dbName, BaseSqlDriver $driver): void
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();

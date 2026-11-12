@@ -18,6 +18,8 @@ class Migration20130708082138ComWiki extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

@@ -18,6 +18,8 @@ class Migration20170314214609ComNewsletters extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -37,6 +39,8 @@ class Migration20170314214609ComNewsletters extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

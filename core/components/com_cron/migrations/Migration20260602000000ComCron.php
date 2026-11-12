@@ -24,6 +24,8 @@ class Migration20260602000000ComCron extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -52,6 +54,8 @@ class Migration20260602000000ComCron extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

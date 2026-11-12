@@ -384,6 +384,8 @@ class Migration20140305142845Core extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down() {}
 }

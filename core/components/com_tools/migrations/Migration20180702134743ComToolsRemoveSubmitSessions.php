@@ -20,6 +20,11 @@ class Migration20180702134743ComToolsRemoveSubmitSessions extends Base
     protected static $migrationsTable = '#__migrations';
     protected static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         // drop submit sessions table
@@ -45,6 +50,11 @@ class Migration20180702134743ComToolsRemoveSubmitSessions extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         // stub

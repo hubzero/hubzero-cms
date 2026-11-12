@@ -18,6 +18,8 @@ class Migration20140528145010ComRegister extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -174,6 +176,8 @@ class Migration20140528145010ComRegister extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

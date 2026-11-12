@@ -17,6 +17,8 @@ class Migration20180313000000PlgUsageOverview extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -75,6 +77,8 @@ class Migration20180313000000PlgUsageOverview extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -18,6 +18,8 @@ class Migration20150629100000ComGeosearch extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -39,6 +41,8 @@ class Migration20150629100000ComGeosearch extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

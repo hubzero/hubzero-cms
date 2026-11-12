@@ -17,6 +17,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -143,6 +145,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

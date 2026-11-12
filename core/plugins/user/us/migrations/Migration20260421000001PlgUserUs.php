@@ -17,6 +17,8 @@ class Migration20260421000001PlgUserUs extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -34,6 +36,8 @@ class Migration20260421000001PlgUserUs extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

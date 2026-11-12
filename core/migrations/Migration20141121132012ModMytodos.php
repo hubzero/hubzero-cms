@@ -18,6 +18,8 @@ class Migration20141121132012ModMytodos extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20141121132012ModMytodos extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function down()
     {

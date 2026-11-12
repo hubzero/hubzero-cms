@@ -34,6 +34,8 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -83,6 +85,8 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

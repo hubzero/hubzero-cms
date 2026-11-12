@@ -18,6 +18,8 @@ class Migration20130507170000PlgMembersProfile extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

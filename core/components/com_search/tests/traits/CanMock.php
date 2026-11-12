@@ -97,21 +97,21 @@ trait CanMock
         return $class;
     }
 
-    protected function setProps($args)
+    protected function setProps($args): void
     {
         $props = $this->extractMockInstantiationData($args, 'props');
 
         $this->setPropNamesAndValues($props);
     }
 
-    protected function setPropNamesAndValues($props)
+    protected function setPropNamesAndValues($props): void
     {
         foreach ($props as $name => $value) {
             $this->mock->$name = $value;
         }
     }
 
-    protected function setMethods($args)
+    protected function setMethods($args): void
     {
         $methods = $this->extractMockInstantiationData($args, 'methods');
 
@@ -139,7 +139,7 @@ trait CanMock
         return $mappedInstantiationData;
     }
 
-    protected function mapNameAndValue(&$mappedInstantiationData, $name, $value)
+    protected function mapNameAndValue(&$mappedInstantiationData, $name, $value): void
     {
         if (!is_string($name)) {
             $mappedInstantiationData[$value] = null;
@@ -148,7 +148,7 @@ trait CanMock
         }
     }
 
-    protected function setMethodNames($methods)
+    protected function setMethodNames($methods): void
     {
         // Only declared methods can be stubbed: MockBuilder::addMethods(),
         // which invented missing ones, is deprecated and goes in PHPUnit 12.
@@ -168,7 +168,7 @@ trait CanMock
         $this->mock = $this->mock->getMock();
     }
 
-    protected function setMethodReturnValues($methods)
+    protected function setMethodReturnValues($methods): void
     {
         foreach ($methods as $name => $returnValue) {
             // A bare method name carries no return value and only means "stub

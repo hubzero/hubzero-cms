@@ -23,6 +23,8 @@ class Migration20170322093811ComResources extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -51,6 +53,8 @@ class Migration20170322093811ComResources extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

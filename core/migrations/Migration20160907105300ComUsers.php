@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20160907105300ComUsers extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -24,5 +29,10 @@ class Migration20160907105300ComUsers extends Base
         $schema->setTableEngine('#__users_quotas_classes_groups', 'MyISAM');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }

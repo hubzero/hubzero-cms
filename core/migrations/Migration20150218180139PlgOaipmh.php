@@ -18,6 +18,8 @@ class Migration20150218180139PlgOaipmh extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -31,6 +33,8 @@ class Migration20150218180139PlgOaipmh extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

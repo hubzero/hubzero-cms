@@ -61,6 +61,8 @@ class Migration20260914190000ComponentRoutes extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -139,6 +141,8 @@ class Migration20260914190000ComponentRoutes extends Base
      * The routes are not removed. Which of them this migration added and which
      * a hub has since come to depend on is not something it can tell apart, and
      * taking away an address is worse than leaving one.
+     *
+     * @return  void
      **/
     public function down()
     {

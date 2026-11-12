@@ -9,6 +9,11 @@ class Migration20240207000000AlterEmailSubscriptionsTable extends Base
 {
     public static $tableName = '#__email_subscriptions';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -34,6 +39,11 @@ class Migration20240207000000AlterEmailSubscriptionsTable extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

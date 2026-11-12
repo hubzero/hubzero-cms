@@ -15,6 +15,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20130404000000ComCourses extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -47,6 +52,11 @@ class Migration20130404000000ComCourses extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

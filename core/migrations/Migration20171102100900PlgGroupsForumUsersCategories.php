@@ -18,6 +18,11 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
     protected static $tableName = '#__forum_users_categories';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -38,6 +43,11 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

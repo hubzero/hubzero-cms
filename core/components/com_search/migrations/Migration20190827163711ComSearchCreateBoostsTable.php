@@ -18,6 +18,11 @@ class Migration20190827163711ComSearchCreateBoostsTable extends Base
 {
     protected static $tableName = '#__solr_search_boosts';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -39,6 +44,11 @@ class Migration20190827163711ComSearchCreateBoostsTable extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

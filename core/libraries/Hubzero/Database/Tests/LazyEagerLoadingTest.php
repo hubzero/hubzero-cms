@@ -142,7 +142,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadMethodExists(string $dbName, BaseSqlDriver $driver)
+    public function testLoadMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -155,7 +155,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver)
+    public function testLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -168,7 +168,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadSimpleRelationship(string $dbName, BaseSqlDriver $driver)
+    public function testLoadSimpleRelationship(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -191,7 +191,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadMultipleRelationships(string $dbName, BaseSqlDriver $driver)
+    public function testLoadMultipleRelationships(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -211,7 +211,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver)
+    public function testLoadReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -227,7 +227,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadMissingSkipsLoaded(string $dbName, BaseSqlDriver $driver)
+    public function testLoadMissingSkipsLoaded(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -252,7 +252,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadWithNoArguments(string $dbName, BaseSqlDriver $driver)
+    public function testLoadWithNoArguments(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -271,7 +271,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadMethodExists(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -284,7 +284,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -297,7 +297,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadRelationship(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadRelationship(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -322,7 +322,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -337,7 +337,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadEmptyCollection(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadEmptyCollection(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -352,7 +352,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRowsLoadMissingSkipsLoaded(string $dbName, BaseSqlDriver $driver)
+    public function testRowsLoadMissingSkipsLoaded(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -379,7 +379,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadNestedRelationships(string $dbName, BaseSqlDriver $driver)
+    public function testLoadNestedRelationships(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -406,7 +406,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadWithClosureConstraint(string $dbName, BaseSqlDriver $driver)
+    public function testLoadWithClosureConstraint(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -426,7 +426,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadWithArrayConstraint(string $dbName, BaseSqlDriver $driver)
+    public function testLoadWithArrayConstraint(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -452,7 +452,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadOnBlankModelReturnsSelf(string $dbName, BaseSqlDriver $driver)
+    public function testLoadOnBlankModelReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -467,7 +467,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadUsesEfficientBulkLoading(string $dbName, BaseSqlDriver $driver)
+    public function testLoadUsesEfficientBulkLoading(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 

@@ -23,6 +23,8 @@ class Migration20261104170000ComCart extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -52,6 +54,8 @@ class Migration20261104170000ComCart extends Base
      * Down
      *
      * IPv6 addresses have no integer form, so leave the column as it is
+     *
+     * @return  void
      **/
     public function down() {}
 }

@@ -18,6 +18,8 @@ class Migration20150206191525ComRedirect extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -63,6 +65,8 @@ class Migration20150206191525ComRedirect extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

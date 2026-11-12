@@ -18,6 +18,8 @@ class Migration20170220190109ComTime extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -84,6 +86,8 @@ class Migration20170220190109ComTime extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -46,7 +46,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithInnerJoinUpdatesMatchingRecords(string $dbName, BaseSqlDriver $driver)
+    public function updateWithInnerJoinUpdatesMatchingRecords(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -93,7 +93,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithLeftJoinAndMultipleConditions(string $dbName, BaseSqlDriver $driver)
+    public function updateWithLeftJoinAndMultipleConditions(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -132,7 +132,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithMultipleJoins(string $dbName, BaseSqlDriver $driver)
+    public function updateWithMultipleJoins(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup all tables
         $this->setupTestTables($driver);
@@ -174,7 +174,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithJoinSetsMultipleColumns(string $dbName, BaseSqlDriver $driver)
+    public function updateWithJoinSetsMultipleColumns(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -224,7 +224,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithJoinDoesNotAffectUnmatchedRows(string $dbName, BaseSqlDriver $driver)
+    public function updateWithJoinDoesNotAffectUnmatchedRows(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup tables and data
         $this->setupTestTables($driver);

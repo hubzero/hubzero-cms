@@ -17,6 +17,8 @@ class Migration20150327144022ComStorefront extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -257,6 +259,8 @@ class Migration20150327144022ComStorefront extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

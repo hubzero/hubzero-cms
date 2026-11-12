@@ -18,6 +18,8 @@ class Migration20170405140417ComMembers extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

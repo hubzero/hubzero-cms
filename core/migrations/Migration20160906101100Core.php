@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20160906101100Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -298,5 +303,10 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__answers_questions', 'subject');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }

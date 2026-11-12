@@ -15,6 +15,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20120101000000Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $files = [

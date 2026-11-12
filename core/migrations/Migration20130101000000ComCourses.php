@@ -16,6 +16,11 @@ use Hubzero\Database\Expression;
 **/
 class Migration20130101000000ComCourses extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -519,6 +524,11 @@ class Migration20130101000000ComCourses extends Base
         $this->addPluginEntry('courses', 'offerings');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

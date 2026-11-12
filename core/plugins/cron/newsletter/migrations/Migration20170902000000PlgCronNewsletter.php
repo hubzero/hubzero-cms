@@ -17,6 +17,8 @@ class Migration20170902000000PlgCronNewsletter extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -54,6 +56,8 @@ class Migration20170902000000PlgCronNewsletter extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -31,6 +31,8 @@ class Migration20260915120000MenuRoute extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -54,6 +56,8 @@ class Migration20260915120000MenuRoute extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

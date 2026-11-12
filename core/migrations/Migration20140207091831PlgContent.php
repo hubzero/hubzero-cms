@@ -17,6 +17,8 @@ class Migration20140207091831PlgContent extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20140207091831PlgContent extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

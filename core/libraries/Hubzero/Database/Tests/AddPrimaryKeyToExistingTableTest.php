@@ -48,7 +48,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKey(string $dbName, BaseSqlDriver $driver)
+    public function addAutoIncrementPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('temp_add_pk', true);
@@ -103,7 +103,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKeyCustomColumn(string $dbName, BaseSqlDriver $driver)
+    public function addAutoIncrementPrimaryKeyCustomColumn(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('temp_custom_pk', true);
@@ -157,7 +157,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropPrimaryKeyThenAddAutoIncrement(string $dbName, BaseSqlDriver $driver)
+    public function dropPrimaryKeyThenAddAutoIncrement(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('temp_pk_drop_add', true);
@@ -223,7 +223,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function primaryKeyColumnMigrationScenario(string $dbName, BaseSqlDriver $driver)
+    public function primaryKeyColumnMigrationScenario(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 
@@ -264,7 +264,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addPrimaryKeyToTableWithoutOne(string $dbName, BaseSqlDriver $driver)
+    public function addPrimaryKeyToTableWithoutOne(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 

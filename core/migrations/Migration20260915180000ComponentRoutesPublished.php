@@ -35,6 +35,8 @@ class Migration20260915180000ComponentRoutesPublished extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -77,6 +79,8 @@ class Migration20260915180000ComponentRoutesPublished extends Base
      *
      * Nothing. Switching these back off would only put back a state nobody
      * asked for.
+     *
+     * @return  void
      **/
     public function down()
     {

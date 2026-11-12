@@ -18,6 +18,8 @@ class Migration20141112203625ComHubgraph extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -39,6 +41,8 @@ class Migration20141112203625ComHubgraph extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -17,6 +17,8 @@ class Migration20260421000000PlgUserD1 extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -36,6 +38,8 @@ class Migration20260421000000PlgUserD1 extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

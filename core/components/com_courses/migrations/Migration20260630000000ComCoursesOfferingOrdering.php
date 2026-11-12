@@ -24,6 +24,11 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
 {
     public static $table = '#__courses_offerings';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $table = self::$table;
@@ -50,6 +55,11 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         );
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $table = self::$table;

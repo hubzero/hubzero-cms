@@ -17,7 +17,7 @@ class RecordProcessingHelperTest extends Basic
 {
     use CanMock;
 
-    public function testHandleSaveSuccessInvokesNotifySuccess()
+    public function testHandleSaveSuccessInvokesNotifySuccess(): void
     {
         $message = 'test';
         $appMock = $this->mock([
@@ -42,7 +42,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleSaveSuccess($message, '');
     }
 
-    public function testHandleSaveSuccessInvokesAppRedirect()
+    public function testHandleSaveSuccessInvokesAppRedirect(): void
     {
         $url = 'test';
         $appMock = $this->mock([
@@ -67,7 +67,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleSaveSuccess('', $url);
     }
 
-    public function testHandleSaveFailInvokesNotifyError()
+    public function testHandleSaveFailInvokesNotifyError(): void
     {
         $message = 'test';
         $controllerMock = $this->mock([
@@ -101,7 +101,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleSaveFail($recordMock);
     }
 
-    public function testHandleSaveFailInvokesControllerNewTask()
+    public function testHandleSaveFailInvokesControllerNewTask(): void
     {
         $name = 'test';
         $controllerMock = $this->mock([
@@ -140,7 +140,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleSaveFail($recordMock);
     }
 
-    public function testHandleUpdateSuccessInvokesNotifySuccess()
+    public function testHandleUpdateSuccessInvokesNotifySuccess(): void
     {
         $message = 'test';
         $appMock = $this->mock([
@@ -165,7 +165,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleUpdateSuccess($message, '');
     }
 
-    public function testHandleUpdateSuccessInvokesAppRedirect()
+    public function testHandleUpdateSuccessInvokesAppRedirect(): void
     {
         $url = 'test';
         $appMock = $this->mock([
@@ -190,7 +190,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleUpdateSuccess('', $url);
     }
 
-    public function testHandleUpdateFailInvokesNotifyError()
+    public function testHandleUpdateFailInvokesNotifyError(): void
     {
         $message = 'test';
         $controllerMock = $this->mock([
@@ -224,7 +224,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleUpdateFail($recordMock);
     }
 
-    public function testHandleUpdateFailInvokesControllerEditTask()
+    public function testHandleUpdateFailInvokesControllerEditTask(): void
     {
         $name = 'test';
         $controllerMock = $this->mock([
@@ -263,7 +263,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleUpdateFail($recordMock);
     }
 
-    public function testHandleDestroySuccessInvokesNotifySuccess()
+    public function testHandleDestroySuccessInvokesNotifySuccess(): void
     {
         $message = 'test';
         $appMock = $this->mock([
@@ -288,7 +288,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleDestroySuccess($message, '');
     }
 
-    public function testHandleDestroySuccessInvokesAppRedirect()
+    public function testHandleDestroySuccessInvokesAppRedirect(): void
     {
         $url = 'test';
         $appMock = $this->mock([
@@ -313,7 +313,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleDestroySuccess('', $url);
     }
 
-    public function testHandleDestroyFailInvokesNotifyError()
+    public function testHandleDestroyFailInvokesNotifyError(): void
     {
         $message = 'test';
         $appMock = $this->mock([
@@ -338,7 +338,7 @@ class RecordProcessingHelperTest extends Basic
         $helper->handleDestroyFail($message, '');
     }
 
-    public function testHandleDestroyFailInvokesAppRedirect()
+    public function testHandleDestroyFailInvokesAppRedirect(): void
     {
         $url = 'test';
         $appMock = $this->mock([

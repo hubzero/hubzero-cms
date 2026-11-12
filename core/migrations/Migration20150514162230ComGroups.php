@@ -18,6 +18,8 @@ class Migration20150514162230ComGroups extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -59,6 +61,8 @@ class Migration20150514162230ComGroups extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

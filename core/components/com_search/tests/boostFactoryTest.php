@@ -19,7 +19,7 @@ class BoostFactoryTest extends Basic
 {
     use CanMock;
 
-    public function testOneSetsNonDocumentSpecificData()
+    public function testOneSetsNonDocumentSpecificData(): void
     {
         $now = Date::toSql();
         $strength = 11;
@@ -41,7 +41,7 @@ class BoostFactoryTest extends Basic
         $this->assertEquals($now, $boost->getCreated());
     }
 
-    public function testOneReturnsCorrectBoostForCitationDocuments()
+    public function testOneReturnsCorrectBoostForCitationDocuments(): void
     {
         $userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);
         $factory = new BoostFactory(['user' => $userHelper]);
@@ -54,7 +54,7 @@ class BoostFactoryTest extends Basic
         $this->assertEquals('citation', $boost->getFieldValue());
     }
 
-    public function testOneReturnsCorrectBoostForResourceDocuments()
+    public function testOneReturnsCorrectBoostForResourceDocuments(): void
     {
         $documentType = 'Tools';
         $userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);

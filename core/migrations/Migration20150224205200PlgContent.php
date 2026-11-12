@@ -18,6 +18,8 @@ class Migration20150224205200PlgContent extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

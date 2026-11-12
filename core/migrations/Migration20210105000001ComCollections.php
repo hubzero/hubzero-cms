@@ -12,6 +12,11 @@ use Hubzero\Facades\Component;
 **/
 class Migration20210105000001ComCollections extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -35,6 +40,11 @@ class Migration20210105000001ComCollections extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         // No need to do anything, just leave the unused param.

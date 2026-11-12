@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20130410000000ComCourses extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -24,6 +29,11 @@ class Migration20130410000000ComCourses extends Base
         $schema->addIndex('#__courses_member_notes', 'idx_createdby', 'created_by');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

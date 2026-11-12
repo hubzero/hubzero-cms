@@ -17,7 +17,7 @@ class BoostDocumentTypeMapTest extends Basic
 {
     use CanMock;
 
-    public function testDocumentTypeToFieldDataForCitation()
+    public function testDocumentTypeToFieldDataForCitation(): void
     {
         $expected = ['field' => 'hubtype', 'field_value' => 'citation'];
         $formattedCitationType = 'Citations';
@@ -32,7 +32,7 @@ class BoostDocumentTypeMapTest extends Basic
         $this->assertEquals($expected, $fieldData);
     }
 
-    public function testDocumentTypeToFieldDataForResource()
+    public function testDocumentTypeToFieldDataForResource(): void
     {
         $documentType = 'Tools';
         $expected = ['field' => 'type', 'field_value' => $documentType];
@@ -43,7 +43,7 @@ class BoostDocumentTypeMapTest extends Basic
         $this->assertEquals($expected, $fieldData);
     }
 
-    public function testgetFormattedFieldValueForCitation()
+    public function testgetFormattedFieldValueForCitation(): void
     {
         $fieldValue = 'citation';
         $map = new Map();
@@ -54,7 +54,7 @@ class BoostDocumentTypeMapTest extends Basic
         $this->assertEquals($expected, $formattedFieldValue);
     }
 
-    public function testgetFormattedFieldValueForResource()
+    public function testgetFormattedFieldValueForResource(): void
     {
         $resourceType = 'Tools';
         $map = new Map();
@@ -64,7 +64,7 @@ class BoostDocumentTypeMapTest extends Basic
         $this->assertEquals($resourceType, $formattedFieldValue);
     }
 
-    public function testGetFormattedCitationType()
+    public function testGetFormattedCitationType(): void
     {
         $langMock = $this->mock(['class' => 'Lang', 'methods' => ['txt']]);
         $map = new Map(['lang' => $langMock]);

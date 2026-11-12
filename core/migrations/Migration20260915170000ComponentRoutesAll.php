@@ -36,6 +36,8 @@ class Migration20260915170000ComponentRoutesAll extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -72,6 +74,8 @@ class Migration20260915170000ComponentRoutesAll extends Base
      * Nothing. Taking an address away is how a page stops answering, and these
      * are addresses something may already be linking to - including, by now,
      * whatever a hub has assigned to them.
+     *
+     * @return  void
      **/
     public function down()
     {

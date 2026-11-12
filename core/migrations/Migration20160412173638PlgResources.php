@@ -17,6 +17,8 @@ class Migration20160412173638PlgResources extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20160412173638PlgResources extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

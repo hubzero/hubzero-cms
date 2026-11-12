@@ -29,6 +29,8 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -46,6 +48,8 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
      *
      * Converting back would truncate any 4-byte characters stored since, so
      * leave the tables as they are
+     *
+     * @return  void
      **/
     public function down() {}
 }

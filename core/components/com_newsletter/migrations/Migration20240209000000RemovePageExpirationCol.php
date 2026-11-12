@@ -15,6 +15,11 @@ class Migration20240209000000RemovePageExpirationCol extends Base
     public static $tableName = '#__reply_pages';
 
     // next_expiration column should not be present in core implementation of table
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -32,6 +37,11 @@ class Migration20240209000000RemovePageExpirationCol extends Base
 
     // next_expiration column was previously present in custom implementation of table
     // this is for consistency with the com_reply implementation only. Column is unused.
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

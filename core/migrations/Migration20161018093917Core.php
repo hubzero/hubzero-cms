@@ -18,6 +18,8 @@ class Migration20161018093917Core extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -30,6 +32,8 @@ class Migration20161018093917Core extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

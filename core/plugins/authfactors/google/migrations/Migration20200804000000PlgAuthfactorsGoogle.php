@@ -17,6 +17,8 @@ class Migration20200804000000PlgAuthfactorsGoogle extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -41,6 +43,8 @@ class Migration20200804000000PlgAuthfactorsGoogle extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

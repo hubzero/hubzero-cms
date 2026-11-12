@@ -25,6 +25,8 @@ class Migration20260603000000PlgAuthenticationPucas extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -49,6 +51,8 @@ class Migration20260603000000PlgAuthenticationPucas extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

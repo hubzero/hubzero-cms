@@ -18,6 +18,8 @@ class Migration20140417134640TplKameleonAdmin extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -31,6 +33,8 @@ class Migration20140417134640TplKameleonAdmin extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

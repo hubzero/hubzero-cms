@@ -113,7 +113,7 @@ class PrunableTest extends AbstractDriverTestCase
     /**
      * Log event for testing
      */
-    public static function logEvent($event, $model)
+    public static function logEvent($event, $model): void
     {
         self::$eventLog[] = [
             'event' => $event,
@@ -130,7 +130,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPrunableTraitExists(string $dbName, BaseSqlDriver $driver)
+    public function testPrunableTraitExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
         $this->assertTrue(trait_exists(\Hubzero\Database\Traits\Prunable::class));
@@ -141,7 +141,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPruneAllDeletesOldRecords(string $dbName, BaseSqlDriver $driver)
+    public function testPruneAllDeletesOldRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -183,7 +183,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPruneAllReturnsZeroWhenNoMatches(string $dbName, BaseSqlDriver $driver)
+    public function testPruneAllReturnsZeroWhenNoMatches(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -210,7 +210,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPruneAllWithCustomChunkSize(string $dbName, BaseSqlDriver $driver)
+    public function testPruneAllWithCustomChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -242,7 +242,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPrunableMethodMustBeImplemented(string $dbName, BaseSqlDriver $driver)
+    public function testPrunableMethodMustBeImplemented(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -275,7 +275,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMassPrunableTraitExists(string $dbName, BaseSqlDriver $driver)
+    public function testMassPrunableTraitExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
         $this->assertTrue(trait_exists(\Hubzero\Database\Traits\MassPrunable::class));
@@ -286,7 +286,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMassPrunablePruneAllDeletesInBulk(string $dbName, BaseSqlDriver $driver)
+    public function testMassPrunablePruneAllDeletesInBulk(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -328,7 +328,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMassPrunableHandlesLargeDatasets(string $dbName, BaseSqlDriver $driver)
+    public function testMassPrunableHandlesLargeDatasets(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -364,7 +364,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPrunableWithComplexConditions(string $dbName, BaseSqlDriver $driver)
+    public function testPrunableWithComplexConditions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -419,7 +419,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPrunableFiresStandardEvents(string $dbName, BaseSqlDriver $driver)
+    public function testPrunableFiresStandardEvents(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -455,7 +455,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeletingEventCanCancelPrune(string $dbName, BaseSqlDriver $driver)
+    public function testDeletingEventCanCancelPrune(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -494,7 +494,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPruneAllOnEmptyTable(string $dbName, BaseSqlDriver $driver)
+    public function testPruneAllOnEmptyTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -507,7 +507,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPruningDoesNotAffectOtherRecords(string $dbName, BaseSqlDriver $driver)
+    public function testPruningDoesNotAffectOtherRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 

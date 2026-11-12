@@ -15,6 +15,11 @@ class Migration20240220000000DropTableUsersEmailSubscriptions extends Base
     public static $tableName = '#__users_email_subscriptions';
 
     // users_email_subscriptions table should not be present in core implementation
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -28,6 +33,11 @@ class Migration20240220000000DropTableUsersEmailSubscriptions extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         // no-op

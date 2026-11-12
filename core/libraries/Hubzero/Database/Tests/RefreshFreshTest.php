@@ -113,7 +113,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Update a record directly in the database (simulating external change)
      */
-    protected function updateRecordDirectly(BaseSqlDriver $driver, $id, $field, $value)
+    protected function updateRecordDirectly(BaseSqlDriver $driver, $id, $field, $value): void
     {
         if (is_string($value)) {
             $value = "'" . str_replace("'", "''", $value) . "'";

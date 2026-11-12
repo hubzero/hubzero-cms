@@ -35,6 +35,8 @@ class Migration20260914120000TplWelcome extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -87,6 +89,8 @@ class Migration20260914120000TplWelcome extends Base
      * The entry comes back, but core/templates/welcome does not - it is not in
      * the repository any more. A hub that rolls this back gets a row naming a
      * template with no files, which is why it is not made the default one.
+     *
+     * @return  void
      **/
     public function down()
     {

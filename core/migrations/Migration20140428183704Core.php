@@ -18,6 +18,8 @@ class Migration20140428183704Core extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

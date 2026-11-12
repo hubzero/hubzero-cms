@@ -17,7 +17,7 @@ class BoostTest extends Basic
 {
     use CanMock;
 
-    public function testGetIdReturnsId()
+    public function testGetIdReturnsId(): void
     {
         $id = 96;
         $boost = Boost::blank();
@@ -28,7 +28,7 @@ class BoostTest extends Basic
         $this->assertEquals($id, $boostId);
     }
 
-    public function testGetFieldReturnsField()
+    public function testGetFieldReturnsField(): void
     {
         $field = 'field';
         $boost = Boost::blank();
@@ -39,7 +39,7 @@ class BoostTest extends Basic
         $this->assertEquals($field, $boostField);
     }
 
-    public function testGetFormattedFieldValueReturnsCorrectValueForCitations()
+    public function testGetFormattedFieldValueReturnsCorrectValueForCitations(): void
     {
         $mapMock = $this->mock([
             'class' => 'Map',
@@ -56,7 +56,7 @@ class BoostTest extends Basic
         $boost->getFormattedFieldValue();
     }
 
-    public function testGetFieldValueReturnsFieldValue()
+    public function testGetFieldValueReturnsFieldValue(): void
     {
         $fieldValue = 'value';
         $boost = Boost::blank();
@@ -67,7 +67,7 @@ class BoostTest extends Basic
         $this->assertEquals($fieldValue, $boostFieldValue);
     }
 
-    public function testGetStrengthReturnsStrength()
+    public function testGetStrengthReturnsStrength(): void
     {
         $strength = -23;
         $boost = Boost::blank();
@@ -78,7 +78,7 @@ class BoostTest extends Basic
         $this->assertEquals($strength, $boostStrength);
     }
 
-    public function testGetCreatedReturnsCreated()
+    public function testGetCreatedReturnsCreated(): void
     {
         $created = '1969-01-01 00:00:00';
         $boost = Boost::blank();
@@ -89,7 +89,7 @@ class BoostTest extends Basic
         $this->assertEquals($created, $boostCreated);
     }
 
-    public function testGetCreatedByReturnsCreatedBy()
+    public function testGetCreatedByReturnsCreatedBy(): void
     {
         $createdBy = 1033;
         $boost = Boost::blank();
@@ -100,7 +100,7 @@ class BoostTest extends Basic
         $this->assertEquals($createdBy, $boostCreatedBy);
     }
 
-    public function testGetAuthorInvokesOne()
+    public function testGetAuthorInvokesOne(): void
     {
         $userId = 987;
         $userMock = $this->mock([

@@ -28,7 +28,7 @@ class UnionQuerySingleTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver)
+    public function unionMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver): void
     {
         // Create tables
         $schema = $driver->schema();

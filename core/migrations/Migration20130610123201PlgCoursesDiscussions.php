@@ -18,6 +18,8 @@ class Migration20130610123201PlgCoursesDiscussions extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -33,6 +35,8 @@ class Migration20130610123201PlgCoursesDiscussions extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

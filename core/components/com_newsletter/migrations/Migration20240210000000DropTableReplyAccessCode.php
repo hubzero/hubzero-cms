@@ -15,6 +15,11 @@ class Migration20240210000000DropTableReplyAccessCode extends Base
     public static $tableName = '#__reply_access_codes';
 
     // jos_reply_access_codes table should not be present in core implementation
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -30,6 +35,11 @@ class Migration20240210000000DropTableReplyAccessCode extends Base
 
     // jos_reply_access_codes table was previously present in custom com_reply implementation
     // This is for consistency with the com_reply implementation only. Table is unused.
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

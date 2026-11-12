@@ -15,6 +15,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20120101000003Core extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();

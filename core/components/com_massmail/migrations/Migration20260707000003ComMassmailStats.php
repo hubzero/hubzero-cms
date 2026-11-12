@@ -18,6 +18,8 @@ class Migration20260707000003ComMassmailStats extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -42,6 +44,8 @@ class Migration20260707000003ComMassmailStats extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

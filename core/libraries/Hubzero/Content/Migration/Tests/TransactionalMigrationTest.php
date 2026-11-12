@@ -19,7 +19,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test that Base migration class has useTransaction property
      */
-    public function testBaseHasUseTransactionProperty()
+    public function testBaseHasUseTransactionProperty(): void
     {
         $this->assertTrue(
             property_exists(Base::class, 'useTransaction'),
@@ -30,7 +30,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test that useTransaction defaults to true
      */
-    public function testUseTransactionDefaultsToTrue()
+    public function testUseTransactionDefaultsToTrue(): void
     {
         // Create a mock migration that extends Base
         $migration = new class extends Base {
@@ -49,7 +49,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test that migrations can opt-out of transactions
      */
-    public function testMigrationCanOptOutOfTransactions()
+    public function testMigrationCanOptOutOfTransactions(): void
     {
         // Create a mock migration that opts out
         $migration = new class extends Base {
@@ -70,7 +70,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test that migrations can explicitly enable transactions
      */
-    public function testMigrationCanExplicitlyEnableTransactions()
+    public function testMigrationCanExplicitlyEnableTransactions(): void
     {
         // Create a mock migration that explicitly enables
         $migration = new class extends Base {
@@ -91,7 +91,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test shouldUseTransaction helper method via reflection
      */
-    public function testShouldUseTransactionHelper()
+    public function testShouldUseTransactionHelper(): void
     {
         // We can't easily test the Migration class directly without a real DB,
         // but we can verify the logic by testing property detection
@@ -126,7 +126,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test that useTransaction is a public property
      */
-    public function testUseTransactionIsPublic()
+    public function testUseTransactionIsPublic(): void
     {
         $reflection = new \ReflectionProperty(Base::class, 'useTransaction');
 
@@ -139,7 +139,7 @@ class TransactionalMigrationTest extends TestCase
     /**
      * Test backwards compatibility - existing migrations without useTransaction work
      */
-    public function testBackwardsCompatibilityWithoutProperty()
+    public function testBackwardsCompatibilityWithoutProperty(): void
     {
         // Simulate an old migration that doesn't override useTransaction
         // It should inherit the default true value from Base

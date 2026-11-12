@@ -41,6 +41,7 @@ class Migration20230901000000ComMembers extends Base
      * Note that we have logging callbacks, per
      * https://help.hubzero.org/documentation/22/webdevs/database/migrations
      *
+     * @return  void
      **/
     public function up()
     {
@@ -67,6 +68,7 @@ class Migration20230901000000ComMembers extends Base
      *
      * Drop 'secret' column from jos_users table.
      *
+     * @return  void
      **/
     public function down()
     {

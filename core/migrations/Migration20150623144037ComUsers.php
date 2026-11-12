@@ -17,6 +17,8 @@ class Migration20150623144037ComUsers extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -37,6 +39,8 @@ class Migration20150623144037ComUsers extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -17,6 +17,8 @@ class Migration20160729201752PlgCronSearch extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -25,6 +27,8 @@ class Migration20160729201752PlgCronSearch extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

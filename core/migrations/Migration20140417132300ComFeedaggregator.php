@@ -16,12 +16,22 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20140417132300ComFeedaggregator extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->deleteComponentEntry('feedaggregator');
         $this->addComponentEntry('feedaggregator', null, 1, '', false);
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $this->deleteComponentEntry('feedaggregator');

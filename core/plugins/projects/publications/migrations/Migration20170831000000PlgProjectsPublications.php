@@ -14,6 +14,8 @@ class Migration20170831000000PlgProjectsPublications extends \Hubzero\Content\Mi
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -22,6 +24,8 @@ class Migration20170831000000PlgProjectsPublications extends \Hubzero\Content\Mi
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

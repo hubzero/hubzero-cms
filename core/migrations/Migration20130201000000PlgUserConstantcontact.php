@@ -16,11 +16,21 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20130201000000PlgUserConstantcontact extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->addPluginEntry('user', 'constantcontact');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $this->deletePluginEntry('user', 'constantcontact');

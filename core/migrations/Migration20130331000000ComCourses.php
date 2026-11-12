@@ -15,6 +15,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20130331000000ComCourses extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->addPluginEntry('courses', 'faq');
@@ -22,6 +27,11 @@ class Migration20130331000000ComCourses extends Base
         $this->addPluginEntry('courses', 'store');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $this->deletePluginEntry('courses', 'faq');

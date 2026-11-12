@@ -71,6 +71,8 @@ class Migration20140709174727ModSupportactivity extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -8,6 +8,11 @@ class Migration20240203000000CreateRepliesTable extends Base
 {
     public static $tableName = '#__reply_replies';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -27,6 +32,11 @@ class Migration20240203000000CreateRepliesTable extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = self::$tableName;

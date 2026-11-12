@@ -38,6 +38,11 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         ['name' => 'section_id', 'type' => 'int(11)'],
     ];
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $assetsTable = self::$assetsTable;
@@ -56,6 +61,11 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $this->queryIfTableExists($pagesTable, $pagesTableQuery);
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $assetsTable = self::$assetsTable;

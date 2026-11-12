@@ -46,6 +46,8 @@ class Migration20190307000000ComJobs extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -71,6 +73,8 @@ class Migration20190307000000ComJobs extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

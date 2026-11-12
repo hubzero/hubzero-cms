@@ -16,6 +16,11 @@ use Components\Search\Models\Solr\SearchComponent;
  **/
 class Migration20180806093200ComSearch extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = '#__solr_search_searchcomponents';
@@ -32,6 +37,11 @@ class Migration20180806093200ComSearch extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $tableName = '#__solr_search_searchcomponents';

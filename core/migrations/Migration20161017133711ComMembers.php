@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20161017133711ComMembers extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->db
@@ -30,6 +35,8 @@ class Migration20161017133711ComMembers extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

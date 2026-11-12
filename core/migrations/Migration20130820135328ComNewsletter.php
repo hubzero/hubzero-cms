@@ -18,6 +18,8 @@ class Migration20130820135328ComNewsletter extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

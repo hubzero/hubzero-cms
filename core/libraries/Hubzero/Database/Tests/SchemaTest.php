@@ -122,7 +122,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaReturnsSchemaInstance(string $dbName, BaseSqlDriver $driver)
+    public function schemaReturnsSchemaInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -136,7 +136,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getDriverReturnsDriver(string $dbName, BaseSqlDriver $driver)
+    public function getDriverReturnsDriver(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -150,7 +150,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableReturnsTableInstance(string $dbName, BaseSqlDriver $driver)
+    public function tableReturnsTableInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -165,7 +165,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableReturnsTableBuilder(string $dbName, BaseSqlDriver $driver)
+    public function createTableReturnsTableBuilder(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -180,7 +180,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableReturnsAlterTableBuilder(string $dbName, BaseSqlDriver $driver)
+    public function alterTableReturnsAlterTableBuilder(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -199,7 +199,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableExistsReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function tableExistsReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -214,7 +214,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableExistsReturnsFalse(string $dbName, BaseSqlDriver $driver)
+    public function tableExistsReturnsFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -228,7 +228,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableNotExists(string $dbName, BaseSqlDriver $driver)
+    public function tableNotExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -247,7 +247,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasColumnReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function hasColumnReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -263,7 +263,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasColumnReturnsFalse(string $dbName, BaseSqlDriver $driver)
+    public function hasColumnReturnsFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -277,7 +277,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTableColumnsTypeOnly(string $dbName, BaseSqlDriver $driver)
+    public function getTableColumnsTypeOnly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -294,7 +294,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getColumnListing(string $dbName, BaseSqlDriver $driver)
+    public function getColumnListing(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -316,7 +316,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasKeyReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function hasKeyReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -330,7 +330,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasPrimaryKeyReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function hasPrimaryKeyReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -344,7 +344,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableHasPrimaryKeyReturnsTrue(string $dbName, BaseSqlDriver $driver)
+    public function tableHasPrimaryKeyReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -358,7 +358,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasKeyReturnsFalse(string $dbName, BaseSqlDriver $driver)
+    public function hasKeyReturnsFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -372,7 +372,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTableKeys(string $dbName, BaseSqlDriver $driver)
+    public function getTableKeys(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -388,7 +388,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getIndexNames(string $dbName, BaseSqlDriver $driver)
+    public function getIndexNames(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -404,7 +404,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getPrimaryKey(string $dbName, BaseSqlDriver $driver)
+    public function getPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -419,7 +419,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getPrimaryKeyColumns(string $dbName, BaseSqlDriver $driver)
+    public function getPrimaryKeyColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -447,7 +447,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropTable(string $dbName, BaseSqlDriver $driver)
+    public function dropTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -472,7 +472,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropTableIfExists(string $dbName, BaseSqlDriver $driver)
+    public function dropTableIfExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -489,7 +489,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function renameTable(string $dbName, BaseSqlDriver $driver)
+    public function renameTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -522,7 +522,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addIndex(string $dbName, BaseSqlDriver $driver)
+    public function addIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -552,7 +552,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addIndexMultipleColumns(string $dbName, BaseSqlDriver $driver)
+    public function addIndexMultipleColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -582,7 +582,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addUniqueIndex(string $dbName, BaseSqlDriver $driver)
+    public function addUniqueIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -611,7 +611,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropIndex(string $dbName, BaseSqlDriver $driver)
+    public function dropIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -646,7 +646,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addColumn(string $dbName, BaseSqlDriver $driver)
+    public function addColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -674,7 +674,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropColumn(string $dbName, BaseSqlDriver $driver)
+    public function dropColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -706,7 +706,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function renameColumn(string $dbName, BaseSqlDriver $driver)
+    public function renameColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -755,7 +755,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getAutoIncrement(string $dbName, BaseSqlDriver $driver)
+    public function getAutoIncrement(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -788,7 +788,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function setAutoIncrement(string $dbName, BaseSqlDriver $driver)
+    public function setAutoIncrement(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -835,7 +835,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropPrimaryKey(string $dbName, BaseSqlDriver $driver)
+    public function dropPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -869,7 +869,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTableList(string $dbName, BaseSqlDriver $driver)
+    public function getTableList(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 
@@ -886,7 +886,7 @@ class SchemaTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTableCreate(string $dbName, BaseSqlDriver $driver)
+    public function getTableCreate(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupTempTables($dbName, $driver);
 

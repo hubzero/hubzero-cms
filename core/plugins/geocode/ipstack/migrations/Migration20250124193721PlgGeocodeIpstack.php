@@ -17,6 +17,8 @@ class Migration20250124193721PlgGeocodeIpstack extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -25,6 +27,8 @@ class Migration20250124193721PlgGeocodeIpstack extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

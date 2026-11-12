@@ -17,6 +17,8 @@ class Migration20260707000001PlgCronMassmail extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -47,6 +49,8 @@ class Migration20260707000001PlgCronMassmail extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

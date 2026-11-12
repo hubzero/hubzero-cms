@@ -17,7 +17,7 @@ class BoostQueryHelperTest extends Basic
 {
     use CanMock;
 
-    public function testGetAllQueriesInvokesOne()
+    public function testGetAllQueriesInvokesOne(): void
     {
         $boosts = [1, 1, 1];
         $factoryMock = $this->mock([

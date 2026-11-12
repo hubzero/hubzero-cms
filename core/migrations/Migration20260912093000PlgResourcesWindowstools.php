@@ -28,6 +28,8 @@ class Migration20260912093000PlgResourcesWindowstools extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

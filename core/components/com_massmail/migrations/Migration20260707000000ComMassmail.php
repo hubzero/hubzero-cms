@@ -17,6 +17,8 @@ class Migration20260707000000ComMassmail extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -115,6 +117,8 @@ class Migration20260707000000ComMassmail extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

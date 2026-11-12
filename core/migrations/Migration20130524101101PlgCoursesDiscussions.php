@@ -18,6 +18,8 @@ class Migration20130524101101PlgCoursesDiscussions extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

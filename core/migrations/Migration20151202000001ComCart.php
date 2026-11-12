@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20151202000001ComCart extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -25,6 +30,11 @@ class Migration20151202000001ComCart extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

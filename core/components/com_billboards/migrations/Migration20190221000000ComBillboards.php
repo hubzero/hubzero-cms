@@ -17,6 +17,8 @@ class Migration20190221000000ComBillboards extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -40,6 +42,8 @@ class Migration20190221000000ComBillboards extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

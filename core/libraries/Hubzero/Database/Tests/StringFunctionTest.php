@@ -98,7 +98,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function concatCombinesStrings(string $dbName, BaseSqlDriver $driver)
+    public function concatCombinesStrings(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -129,7 +129,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function replaceSubstitutesText(string $dbName, BaseSqlDriver $driver)
+    public function replaceSubstitutesText(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -160,7 +160,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function lowerConvertsToLowercase(string $dbName, BaseSqlDriver $driver)
+    public function lowerConvertsToLowercase(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -191,7 +191,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function upperConvertsToUppercase(string $dbName, BaseSqlDriver $driver)
+    public function upperConvertsToUppercase(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -222,7 +222,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleStringFunctions(string $dbName, BaseSqlDriver $driver)
+    public function multipleStringFunctions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -255,7 +255,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function concatMultipleArguments(string $dbName, BaseSqlDriver $driver)
+    public function concatMultipleArguments(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -286,7 +286,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function replaceMultipleTimes(string $dbName, BaseSqlDriver $driver)
+    public function replaceMultipleTimes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 
@@ -325,7 +325,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function stringFunctionsInSelect(string $dbName, BaseSqlDriver $driver)
+    public function stringFunctionsInSelect(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTable($driver);
 

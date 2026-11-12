@@ -18,6 +18,8 @@ class Migration20140110132217ComWeblinks extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -63,6 +65,8 @@ class Migration20140110132217ComWeblinks extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

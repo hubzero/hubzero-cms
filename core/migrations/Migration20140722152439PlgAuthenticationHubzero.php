@@ -18,6 +18,8 @@ class Migration20140722152439PlgAuthenticationHubzero extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -33,6 +35,8 @@ class Migration20140722152439PlgAuthenticationHubzero extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

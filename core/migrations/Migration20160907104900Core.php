@@ -25,6 +25,11 @@ class Migration20160907104900Core extends Base
         }
     }
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $this->changeEngine('#__viewlevels', 'MyISAM');
@@ -32,5 +37,10 @@ class Migration20160907104900Core extends Base
         $this->changeEngine('#__associations', 'MyISAM');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }

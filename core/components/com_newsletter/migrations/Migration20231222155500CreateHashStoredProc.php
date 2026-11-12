@@ -11,6 +11,11 @@ class Migration20231222155500CreateHashStoredProc extends Base
     public static $config = '#__config';
     public static $users = '#__users';
 
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $campaign = self::$campaign;
@@ -47,6 +52,11 @@ class Migration20231222155500CreateHashStoredProc extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
 

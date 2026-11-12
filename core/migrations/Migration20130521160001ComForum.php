@@ -19,6 +19,8 @@ class Migration20130521160001ComForum extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

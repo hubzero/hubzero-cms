@@ -18,6 +18,8 @@ class Migration20190305000000Sites extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -30,6 +32,8 @@ class Migration20190305000000Sites extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

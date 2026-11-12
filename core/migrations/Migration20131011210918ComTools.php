@@ -18,6 +18,8 @@ class Migration20131011210918ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

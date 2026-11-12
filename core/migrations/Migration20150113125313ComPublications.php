@@ -18,6 +18,8 @@ class Migration20150113125313ComPublications extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -40,6 +42,11 @@ class Migration20150113125313ComPublications extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

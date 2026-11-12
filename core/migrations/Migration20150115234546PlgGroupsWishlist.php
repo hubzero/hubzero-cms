@@ -18,6 +18,8 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

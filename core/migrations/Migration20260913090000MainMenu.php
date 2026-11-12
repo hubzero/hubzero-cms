@@ -124,6 +124,8 @@ class Migration20260913090000MainMenu extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -572,6 +574,8 @@ class Migration20260913090000MainMenu extends Base
      * Down
      *
      * Only what up() wrote.
+     *
+     * @return  void
      **/
     public function down()
     {

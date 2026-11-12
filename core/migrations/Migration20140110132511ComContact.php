@@ -17,6 +17,8 @@ class Migration20140110132511ComContact extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -42,6 +44,8 @@ class Migration20140110132511ComContact extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

@@ -18,6 +18,8 @@ class Migration20141202211549PlgMembersDashboard extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

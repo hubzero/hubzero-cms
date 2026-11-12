@@ -18,6 +18,8 @@ class Migration20161205000001PlgCronStorefront extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -41,6 +43,8 @@ class Migration20161205000001PlgCronStorefront extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

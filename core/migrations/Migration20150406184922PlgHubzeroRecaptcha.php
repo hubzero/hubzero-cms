@@ -18,6 +18,8 @@ class Migration20150406184922PlgHubzeroRecaptcha extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

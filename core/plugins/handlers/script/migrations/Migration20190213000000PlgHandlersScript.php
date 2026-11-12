@@ -17,6 +17,8 @@ class Migration20190213000000PlgHandlersScript extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -25,6 +27,8 @@ class Migration20190213000000PlgHandlersScript extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

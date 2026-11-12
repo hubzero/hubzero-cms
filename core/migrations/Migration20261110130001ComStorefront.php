@@ -22,6 +22,8 @@ class Migration20261110130001ComStorefront extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

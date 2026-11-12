@@ -18,7 +18,7 @@ use Plugins\User\Hubzero\Hubzero;
 
 final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
 {
-    public function testPlaceholderUsernameIsDetected()
+    public function testPlaceholderUsernameIsDetected(): void
     {
         $this->assertTrue(Hubzero::isThirdPartyPlaceholder([
             'username' => '-2843',
@@ -26,7 +26,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
         ]));
     }
 
-    public function testNormalUsernameIsNotPlaceholder()
+    public function testNormalUsernameIsNotPlaceholder(): void
     {
         $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => 'u0000_0002_6885_6310',
@@ -34,7 +34,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
         ]));
     }
 
-    public function testDashPrefixedButNonNumericIsNotPlaceholder()
+    public function testDashPrefixedButNonNumericIsNotPlaceholder(): void
     {
         // Only "-<digits>" is a placeholder; a leading dash with letters is
         // something else (unlikely, but should not falsely match).
@@ -43,7 +43,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
         ]));
     }
 
-    public function testEmptyOrMissingUsernameIsNotPlaceholder()
+    public function testEmptyOrMissingUsernameIsNotPlaceholder(): void
     {
         $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => '',
@@ -54,7 +54,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
         ]));
     }
 
-    public function testUsernameStartingWithDigitIsNotPlaceholder()
+    public function testUsernameStartingWithDigitIsNotPlaceholder(): void
     {
         // A username that happens to be all digits (unusual but valid on
         // some hubs) is not a placeholder — the dash prefix is required.
@@ -63,7 +63,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
         ]));
     }
 
-    public function testStringifiedNonPlaceholderInputIsHandled()
+    public function testStringifiedNonPlaceholderInputIsHandled(): void
     {
         // Callers pass whatever User::get('username') returned. Coerce to
         // string internally — an integer-shaped username shouldn't crash.

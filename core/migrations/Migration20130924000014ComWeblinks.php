@@ -18,6 +18,8 @@ class Migration20130924000014ComWeblinks extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

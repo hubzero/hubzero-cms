@@ -18,6 +18,8 @@ class Migration20161214180653ComSystem extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -42,6 +44,8 @@ class Migration20161214180653ComSystem extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

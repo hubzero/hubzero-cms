@@ -18,6 +18,8 @@ class Migration20171109000000Tpl extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -28,6 +30,8 @@ class Migration20171109000000Tpl extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

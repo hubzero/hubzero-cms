@@ -18,6 +18,8 @@ class Migration20140730181124PlgSystemHubzero extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

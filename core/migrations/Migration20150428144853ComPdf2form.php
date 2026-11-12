@@ -18,6 +18,8 @@ class Migration20150428144853ComPdf2form extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20150428144853ComPdf2form extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

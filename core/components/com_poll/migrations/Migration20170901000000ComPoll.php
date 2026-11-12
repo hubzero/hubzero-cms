@@ -17,6 +17,8 @@ class Migration20170901000000ComPoll extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -84,6 +86,8 @@ class Migration20170901000000ComPoll extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

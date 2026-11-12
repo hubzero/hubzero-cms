@@ -51,6 +51,8 @@ class Migration20261104160100ComUsage extends Base
 
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -101,6 +103,8 @@ class Migration20261104160100ComUsage extends Base
      *
      * Narrowing the columns again would cut short every IPv6 address stored
      * since, so leave them as they are
+     *
+     * @return  void
      **/
     public function down() {}
 

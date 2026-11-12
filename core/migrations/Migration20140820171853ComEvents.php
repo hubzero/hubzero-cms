@@ -17,6 +17,8 @@ class Migration20140820171853ComEvents extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -30,6 +32,8 @@ class Migration20140820171853ComEvents extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

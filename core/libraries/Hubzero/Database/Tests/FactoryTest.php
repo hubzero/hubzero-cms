@@ -73,7 +73,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function sequenceReturnsIncrementingIntegers()
+    public function sequenceReturnsIncrementingIntegers(): void
     {
         $this->assertEquals(1, Factory::sequence());
         $this->assertEquals(2, Factory::sequence());
@@ -81,7 +81,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function resetSequenceSetsStartingValue()
+    public function resetSequenceSetsStartingValue(): void
     {
         Factory::sequence();
         Factory::sequence();
@@ -92,7 +92,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function resetSequenceDefaultsToOne()
+    public function resetSequenceDefaultsToOne(): void
     {
         Factory::sequence();
         Factory::sequence();
@@ -106,7 +106,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function uuidGeneratesValidFormat()
+    public function uuidGeneratesValidFormat(): void
     {
         $uuid = Factory::uuid();
 
@@ -118,7 +118,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function uuidGeneratesUniqueValues()
+    public function uuidGeneratesUniqueValues(): void
     {
         $uuids = [];
         for ($i = 0; $i < 100; $i++) {
@@ -133,7 +133,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function randomIntReturnsIntegerInRange()
+    public function randomIntReturnsIntegerInRange(): void
     {
         for ($i = 0; $i < 50; $i++) {
             $value = Factory::randomInt(10, 20);
@@ -143,14 +143,14 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function randomIntHandlesSameMinMax()
+    public function randomIntHandlesSameMinMax(): void
     {
         $value = Factory::randomInt(5, 5);
         $this->assertEquals(5, $value);
     }
 
     #[Test]
-    public function randomIntDefaultsToZeroAndPhpIntMax()
+    public function randomIntDefaultsToZeroAndPhpIntMax(): void
     {
         $value = Factory::randomInt();
         $this->assertIsInt($value);
@@ -162,7 +162,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function randomFloatReturnsFloatInRange()
+    public function randomFloatReturnsFloatInRange(): void
     {
         for ($i = 0; $i < 50; $i++) {
             $value = Factory::randomFloat(1.0, 10.0);
@@ -172,7 +172,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function randomFloatRespectsDecimalPlaces()
+    public function randomFloatRespectsDecimalPlaces(): void
     {
         $value = Factory::randomFloat(0, 1, 3);
         $parts = explode('.', (string) $value);
@@ -183,7 +183,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function randomFloatDefaultsToZeroOneRange()
+    public function randomFloatDefaultsToZeroOneRange(): void
     {
         for ($i = 0; $i < 20; $i++) {
             $value = Factory::randomFloat();
@@ -197,7 +197,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function randomElementReturnsElementFromArray()
+    public function randomElementReturnsElementFromArray(): void
     {
         $array = ['a', 'b', 'c', 'd'];
 
@@ -208,14 +208,14 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function randomElementHandlesSingleElementArray()
+    public function randomElementHandlesSingleElementArray(): void
     {
         $array = ['only'];
         $this->assertEquals('only', Factory::randomElement($array));
     }
 
     #[Test]
-    public function randomElementWorksWithMixedTypes()
+    public function randomElementWorksWithMixedTypes(): void
     {
         $array = [1, 'string', true, null, ['nested']];
         $element = Factory::randomElement($array);
@@ -227,14 +227,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function booleanReturnsBooleanType()
+    public function booleanReturnsBooleanType(): void
     {
         $value = Factory::boolean();
         $this->assertIsBool($value);
     }
 
     #[Test]
-    public function booleanWithZeroChanceReturnsFalse()
+    public function booleanWithZeroChanceReturnsFalse(): void
     {
         for ($i = 0; $i < 10; $i++) {
             $this->assertFalse(Factory::boolean(0));
@@ -242,7 +242,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function booleanWithHundredChanceReturnsTrue()
+    public function booleanWithHundredChanceReturnsTrue(): void
     {
         for ($i = 0; $i < 10; $i++) {
             $this->assertTrue(Factory::boolean(100));
@@ -250,7 +250,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function booleanDefaultsToFiftyPercent()
+    public function booleanDefaultsToFiftyPercent(): void
     {
         $trueCount = 0;
         $iterations = 1000;
@@ -272,7 +272,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function timestampReturnsSqlDateTimeFormat()
+    public function timestampReturnsSqlDateTimeFormat(): void
     {
         $timestamp = Factory::timestamp();
 
@@ -283,7 +283,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function timestampReturnsCurrentTime()
+    public function timestampReturnsCurrentTime(): void
     {
         $before = date('Y-m-d H:i:s');
         $timestamp = Factory::timestamp();
@@ -298,7 +298,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function pastDateReturnsSqlDateTimeFormat()
+    public function pastDateReturnsSqlDateTimeFormat(): void
     {
         $date = Factory::pastDate();
 
@@ -309,7 +309,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function pastDateReturnsDateInPast()
+    public function pastDateReturnsDateInPast(): void
     {
         $now = time();
         $date = Factory::pastDate(30);
@@ -319,7 +319,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function pastDateRespectsMaxDaysAgo()
+    public function pastDateRespectsMaxDaysAgo(): void
     {
         $maxDays = 7;
         $minTimestamp = strtotime("-{$maxDays} days");
@@ -339,7 +339,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function futureDateReturnsSqlDateTimeFormat()
+    public function futureDateReturnsSqlDateTimeFormat(): void
     {
         $date = Factory::futureDate();
 
@@ -350,7 +350,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function futureDateReturnsDateInFuture()
+    public function futureDateReturnsDateInFuture(): void
     {
         $now = time();
         $date = Factory::futureDate(30);
@@ -360,7 +360,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function futureDateRespectsMaxDaysAhead()
+    public function futureDateRespectsMaxDaysAhead(): void
     {
         $maxDays = 7;
         $maxTimestamp = strtotime("+{$maxDays} days");
@@ -380,14 +380,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function wordsReturnsStringByDefault()
+    public function wordsReturnsStringByDefault(): void
     {
         $words = Factory::words(3);
         $this->assertIsString($words);
     }
 
     #[Test]
-    public function wordsReturnsCorrectCount()
+    public function wordsReturnsCorrectCount(): void
     {
         $words = Factory::words(5);
         $wordArray = explode(' ', $words);
@@ -395,7 +395,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function wordsCanReturnArray()
+    public function wordsCanReturnArray(): void
     {
         $words = Factory::words(4, true);
         $this->assertIsArray($words);
@@ -403,7 +403,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function wordsUsesLoremIpsumVocabulary()
+    public function wordsUsesLoremIpsumVocabulary(): void
     {
         $loremWords = [
             'lorem',
@@ -481,21 +481,21 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function sentenceStartsWithCapitalLetter()
+    public function sentenceStartsWithCapitalLetter(): void
     {
         $sentence = Factory::sentence();
         $this->assertMatchesRegularExpression('/^[A-Z]/', $sentence);
     }
 
     #[Test]
-    public function sentenceEndsWithPeriod()
+    public function sentenceEndsWithPeriod(): void
     {
         $sentence = Factory::sentence();
         $this->assertStringEndsWith('.', $sentence);
     }
 
     #[Test]
-    public function sentenceContainsCorrectWordCount()
+    public function sentenceContainsCorrectWordCount(): void
     {
         $sentence = Factory::sentence(8);
         // Remove period and count words
@@ -508,7 +508,7 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function paragraphIsNonEmptyString()
+    public function paragraphIsNonEmptyString(): void
     {
         $paragraph = Factory::paragraph();
         $this->assertIsString($paragraph);
@@ -516,7 +516,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function paragraphContainsMultipleSentences()
+    public function paragraphContainsMultipleSentences(): void
     {
         $paragraph = Factory::paragraph(3);
         // Count sentences by periods (approximate)
@@ -529,21 +529,21 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function paragraphsReturnsStringByDefault()
+    public function paragraphsReturnsStringByDefault(): void
     {
         $paragraphs = Factory::paragraphs(2);
         $this->assertIsString($paragraphs);
     }
 
     #[Test]
-    public function paragraphsContainsDoubleNewlines()
+    public function paragraphsContainsDoubleNewlines(): void
     {
         $paragraphs = Factory::paragraphs(3);
         $this->assertStringContainsString("\n\n", $paragraphs);
     }
 
     #[Test]
-    public function paragraphsCanReturnArray()
+    public function paragraphsCanReturnArray(): void
     {
         $paragraphs = Factory::paragraphs(3, true);
         $this->assertIsArray($paragraphs);
@@ -555,14 +555,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function slugContainsOnlyValidCharacters()
+    public function slugContainsOnlyValidCharacters(): void
     {
         $slug = Factory::slug();
         $this->assertMatchesRegularExpression('/^[a-z\-]+$/', $slug);
     }
 
     #[Test]
-    public function slugUsesHyphensAsSeparators()
+    public function slugUsesHyphensAsSeparators(): void
     {
         $slug = Factory::slug(3);
         $parts = explode('-', $slug);
@@ -570,7 +570,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function slugIsLowercase()
+    public function slugIsLowercase(): void
     {
         $slug = Factory::slug(5);
         $this->assertEquals(strtolower($slug), $slug);
@@ -581,14 +581,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function emailHasValidFormat()
+    public function emailHasValidFormat(): void
     {
         $email = Factory::email();
         $this->assertMatchesRegularExpression('/^[a-z0-9]+@[a-z]+\.[a-z]+$/', $email);
     }
 
     #[Test]
-    public function emailUsesKnownTestDomains()
+    public function emailUsesKnownTestDomains(): void
     {
         $validDomains = ['example.com', 'test.com', 'sample.org', 'demo.net'];
 
@@ -600,14 +600,14 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function emailUsesProvidedName()
+    public function emailUsesProvidedName(): void
     {
         $email = Factory::email('JohnDoe');
         $this->assertStringStartsWith('johndoe@', $email);
     }
 
     #[Test]
-    public function emailSanitizesSpecialCharacters()
+    public function emailSanitizesSpecialCharacters(): void
     {
         $email = Factory::email('John.Doe@Test!');
         // Should remove special characters
@@ -619,21 +619,21 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function hexColorIncludesHashByDefault()
+    public function hexColorIncludesHashByDefault(): void
     {
         $color = Factory::hexColor();
         $this->assertStringStartsWith('#', $color);
     }
 
     #[Test]
-    public function hexColorCanExcludeHash()
+    public function hexColorCanExcludeHash(): void
     {
         $color = Factory::hexColor(false);
         $this->assertStringStartsNotWith('#', $color);
     }
 
     #[Test]
-    public function hexColorHasCorrectLength()
+    public function hexColorHasCorrectLength(): void
     {
         $colorWithHash = Factory::hexColor(true);
         $colorWithoutHash = Factory::hexColor(false);
@@ -643,7 +643,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function hexColorContainsOnlyHexCharacters()
+    public function hexColorContainsOnlyHexCharacters(): void
     {
         $color = Factory::hexColor(false);
         $this->assertMatchesRegularExpression('/^[0-9a-f]{6}$/', $color);
@@ -654,14 +654,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function ipAddressHasValidFormat()
+    public function ipAddressHasValidFormat(): void
     {
         $ip = Factory::ipAddress();
         $this->assertMatchesRegularExpression('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $ip);
     }
 
     #[Test]
-    public function ipAddressOctetsAreInValidRange()
+    public function ipAddressOctetsAreInValidRange(): void
     {
         for ($i = 0; $i < 20; $i++) {
             $ip = Factory::ipAddress();
@@ -675,7 +675,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function ipAddressFirstOctetNotZero()
+    public function ipAddressFirstOctetNotZero(): void
     {
         for ($i = 0; $i < 20; $i++) {
             $ip = Factory::ipAddress();
@@ -689,14 +689,14 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function urlStartsWithProtocol()
+    public function urlStartsWithProtocol(): void
     {
         $url = Factory::url();
         $this->assertMatchesRegularExpression('/^https?:\/\//', $url);
     }
 
     #[Test]
-    public function urlHasValidStructure()
+    public function urlHasValidStructure(): void
     {
         $url = Factory::url();
         $parsed = parse_url($url);
@@ -707,7 +707,7 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
-    public function urlUsesKnownTestDomains()
+    public function urlUsesKnownTestDomains(): void
     {
         $validDomains = ['example.com', 'test.com', 'sample.org', 'demo.net'];
 
@@ -723,21 +723,21 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[Test]
-    public function newReturnsFactoryInstance()
+    public function newReturnsFactoryInstance(): void
     {
         $factory = UserFactory::new();
         $this->assertInstanceOf(UserFactory::class, $factory);
     }
 
     #[Test]
-    public function modelClassReturnsConfiguredModel()
+    public function modelClassReturnsConfiguredModel(): void
     {
         $factory = new UserFactory();
         $this->assertEquals(User::class, $factory->modelClass());
     }
 
     #[Test]
-    public function countIsFluentMethod()
+    public function countIsFluentMethod(): void
     {
         $factory = new UserFactory();
         $result = $factory->count(3);

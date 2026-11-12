@@ -17,6 +17,8 @@ class Migration20260220000000ComContent extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      */
     public function up()
     {
@@ -59,6 +61,8 @@ class Migration20260220000000ComContent extends Base
 
     /**
      * Down
+     *
+     * @return  void
      */
     public function down()
     {

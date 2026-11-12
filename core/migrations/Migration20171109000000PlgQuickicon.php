@@ -18,6 +18,8 @@ class Migration20171109000000PlgQuickicon extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -27,6 +29,8 @@ class Migration20171109000000PlgQuickicon extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

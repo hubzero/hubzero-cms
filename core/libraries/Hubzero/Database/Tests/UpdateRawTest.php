@@ -52,7 +52,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rawValueExecutesSqlExpression(string $dbName, BaseSqlDriver $driver)
+    public function rawValueExecutesSqlExpression(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -90,7 +90,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleRawValuesInSameUpdate(string $dbName, BaseSqlDriver $driver)
+    public function multipleRawValuesInSameUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -136,7 +136,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function mixingRawAndBoundValues(string $dbName, BaseSqlDriver $driver)
+    public function mixingRawAndBoundValues(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -182,7 +182,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rawValueWithWhereClause(string $dbName, BaseSqlDriver $driver)
+    public function rawValueWithWhereClause(string $dbName, BaseSqlDriver $driver): void
     {
         // Setup table and data
         $this->setupTestTable($driver);

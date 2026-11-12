@@ -18,6 +18,8 @@ class Migration20250125105029PlgGeocodeCloudmade extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -26,6 +28,8 @@ class Migration20250125105029PlgGeocodeCloudmade extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

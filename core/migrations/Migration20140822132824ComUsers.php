@@ -19,6 +19,8 @@ class Migration20140822132824ComUsers extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

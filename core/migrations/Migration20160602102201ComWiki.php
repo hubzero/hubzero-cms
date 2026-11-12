@@ -19,6 +19,8 @@ class Migration20160602102201ComWiki extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -57,6 +59,8 @@ class Migration20160602102201ComWiki extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

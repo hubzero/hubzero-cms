@@ -17,6 +17,8 @@ class Migration20131112134513PlgCoursesStore extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -25,6 +27,8 @@ class Migration20131112134513PlgCoursesStore extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

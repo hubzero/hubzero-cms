@@ -42,7 +42,7 @@ class ComparatorTest extends TestCase
     /**
      * Test that integer display widths are ignored
      */
-    public function testNormalizeTypeIgnoresIntegerDisplayWidth()
+    public function testNormalizeTypeIgnoresIntegerDisplayWidth(): void
     {
         $comparator = $this->comparator;
 
@@ -56,7 +56,7 @@ class ComparatorTest extends TestCase
     /**
      * Test that VARCHAR lengths are NOT ignored
      */
-    public function testNormalizeTypePreservesVarcharLength()
+    public function testNormalizeTypePreservesVarcharLength(): void
     {
         $comparator = $this->comparator;
 
@@ -67,7 +67,7 @@ class ComparatorTest extends TestCase
     /**
      * Test type alias normalization
      */
-    public function testNormalizeTypeHandlesAliases()
+    public function testNormalizeTypeHandlesAliases(): void
     {
         $comparator = $this->comparator;
 
@@ -81,7 +81,7 @@ class ComparatorTest extends TestCase
     /**
      * Test unsigned handling
      */
-    public function testNormalizeTypeIgnoresUnsigned()
+    public function testNormalizeTypeIgnoresUnsigned(): void
     {
         $comparator = $this->comparator;
 
@@ -97,7 +97,7 @@ class ComparatorTest extends TestCase
     /**
      * Test comparing identical columns returns null
      */
-    public function testCompareIdenticalColumnsReturnsNull()
+    public function testCompareIdenticalColumnsReturnsNull(): void
     {
         $col1 = new ColumnInfo([
             'name' => 'id',
@@ -123,7 +123,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting type change
      */
-    public function testCompareColumnsDetectsTypeChange()
+    public function testCompareColumnsDetectsTypeChange(): void
     {
         $col1 = new ColumnInfo([
             'name' => 'status',
@@ -147,7 +147,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting nullable change
      */
-    public function testCompareColumnsDetectsNullableChange()
+    public function testCompareColumnsDetectsNullableChange(): void
     {
         $col1 = new ColumnInfo([
             'name' => 'email',
@@ -171,7 +171,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting default value change
      */
-    public function testCompareColumnsDetectsDefaultChange()
+    public function testCompareColumnsDetectsDefaultChange(): void
     {
         $col1 = new ColumnInfo([
             'name' => 'status',
@@ -196,7 +196,7 @@ class ComparatorTest extends TestCase
     /**
      * Test getChanges returns list of what changed
      */
-    public function testColumnDiffGetChanges()
+    public function testColumnDiffGetChanges(): void
     {
         $col1 = new ColumnInfo([
             'name' => 'data',
@@ -227,7 +227,7 @@ class ComparatorTest extends TestCase
     /**
      * Test comparing identical tables returns empty diff
      */
-    public function testCompareIdenticalTablesReturnsEmptyDiff()
+    public function testCompareIdenticalTablesReturnsEmptyDiff(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -253,7 +253,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting added column
      */
-    public function testCompareTablesDetectsAddedColumn()
+    public function testCompareTablesDetectsAddedColumn(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -280,7 +280,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting removed column
      */
-    public function testCompareTablesDetectsRemovedColumn()
+    public function testCompareTablesDetectsRemovedColumn(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -307,7 +307,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting changed column
      */
-    public function testCompareTablesDetectsChangedColumn()
+    public function testCompareTablesDetectsChangedColumn(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -339,7 +339,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting multiple changes
      */
-    public function testCompareTablesDetectsMultipleChanges()
+    public function testCompareTablesDetectsMultipleChanges(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -378,7 +378,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting added index
      */
-    public function testCompareTablesDetectsAddedIndex()
+    public function testCompareTablesDetectsAddedIndex(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -403,7 +403,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting removed index
      */
-    public function testCompareTablesDetectsRemovedIndex()
+    public function testCompareTablesDetectsRemovedIndex(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -432,7 +432,7 @@ class ComparatorTest extends TestCase
     /**
      * Test detecting added foreign key
      */
-    public function testCompareTablesDetectsAddedForeignKey()
+    public function testCompareTablesDetectsAddedForeignKey(): void
     {
         $table1 = new TableInfo([
             'name' => 'posts',
@@ -468,7 +468,7 @@ class ComparatorTest extends TestCase
     /**
      * Test hasDestructiveChanges detects dropped columns
      */
-    public function testHasDestructiveChangesDetectsDroppedColumn()
+    public function testHasDestructiveChangesDetectsDroppedColumn(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -494,7 +494,7 @@ class ComparatorTest extends TestCase
     /**
      * Test hasDestructiveChanges detects type changes
      */
-    public function testHasDestructiveChangesDetectsTypeChange()
+    public function testHasDestructiveChangesDetectsTypeChange(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -522,7 +522,7 @@ class ComparatorTest extends TestCase
     /**
      * Test getSummary returns correct counts
      */
-    public function testGetSummaryReturnsCorrectCounts()
+    public function testGetSummaryReturnsCorrectCounts(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',
@@ -553,7 +553,7 @@ class ComparatorTest extends TestCase
     /**
      * Test toArray serialization
      */
-    public function testToArraySerialization()
+    public function testToArraySerialization(): void
     {
         $table1 = new TableInfo([
             'name' => 'users',

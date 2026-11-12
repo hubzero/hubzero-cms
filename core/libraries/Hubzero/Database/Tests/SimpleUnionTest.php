@@ -25,7 +25,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function basicUnionWorks(string $dbName, BaseSqlDriver $driver)
+    public function basicUnionWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $driver->dropTable('TEST_USERS', true);
         $driver->dropTable('TEST_ADMINS', true);
@@ -76,7 +76,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function basicFetchWorks(string $dbName, BaseSqlDriver $driver)
+    public function basicFetchWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $driver->dropTable('TEST_USERS', true);
 

@@ -17,6 +17,8 @@ class Migration20150216135336LibJoomla extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -52,6 +54,8 @@ class Migration20150216135336LibJoomla extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

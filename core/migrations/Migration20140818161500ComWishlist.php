@@ -17,6 +17,8 @@ class Migration20140818161500ComWishlist extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -88,6 +90,8 @@ class Migration20140818161500ComWishlist extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

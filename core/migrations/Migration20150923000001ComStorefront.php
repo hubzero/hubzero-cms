@@ -18,6 +18,8 @@ class Migration20150923000001ComStorefront extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -44,6 +46,11 @@ class Migration20150923000001ComStorefront extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         $schema = $this->db->schema();

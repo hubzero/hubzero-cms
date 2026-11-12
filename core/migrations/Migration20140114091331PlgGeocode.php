@@ -17,6 +17,8 @@ class Migration20140114091331PlgGeocode extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -70,6 +72,8 @@ class Migration20140114091331PlgGeocode extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

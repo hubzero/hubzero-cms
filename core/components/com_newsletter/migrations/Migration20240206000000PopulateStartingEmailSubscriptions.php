@@ -10,6 +10,11 @@ class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
     public static $tableName = '#__email_subscriptions';
 
     // truncate existing table, insert two records according to its current schema
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $tableName = self::$tableName;
@@ -40,6 +45,11 @@ class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
         }
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down()
     {
         // manually delete records

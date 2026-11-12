@@ -18,6 +18,8 @@ class Migration20150218183139ComMenus extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {

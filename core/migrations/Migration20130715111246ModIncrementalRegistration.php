@@ -18,6 +18,8 @@ class Migration20130715111246ModIncrementalRegistration extends Base
 {
     /**
      * Up
+     *
+     * @return  void
      **/
     public function up()
     {
@@ -50,6 +52,8 @@ class Migration20130715111246ModIncrementalRegistration extends Base
 
     /**
      * Down
+     *
+     * @return  void
      **/
     public function down()
     {

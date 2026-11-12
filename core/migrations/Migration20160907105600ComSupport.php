@@ -16,6 +16,11 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20160907105600ComSupport extends Base
 {
+    /**
+     * Up
+     *
+     * @return  void
+     */
     public function up()
     {
         $schema = $this->db->schema();
@@ -23,5 +28,10 @@ class Migration20160907105600ComSupport extends Base
         $schema->setTableEngine('#__support_query_folders', 'MyISAM');
     }
 
+    /**
+     * Down
+     *
+     * @return  void
+     */
     public function down() {}
 }
