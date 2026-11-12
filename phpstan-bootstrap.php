@@ -25,6 +25,12 @@ if (!defined('PATH_APP')) {
 require_once __DIR__ . '/core/vendor/autoload.php';
 require_once __DIR__ . '/core/bootstrap/app.php';
 
+// TCPDF defines its PDF_* constants when its class file is run, not in a file
+// Composer loads up front, and constants cannot be found by name the way
+// classes can. Loading the class here gives every worker what a hub has by
+// the time it builds a PDF.
+class_exists(\TCPDF::class);
+
 // Register the HubZero ClassLoader for Components\*, Plugins\*, etc.
 Hubzero\Base\ClassLoader::addDirectories([__DIR__ . '/app', __DIR__ . '/core']);
 Hubzero\Base\ClassLoader::register();
