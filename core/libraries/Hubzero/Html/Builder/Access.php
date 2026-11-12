@@ -20,7 +20,7 @@ class Access
     /**
      * A cached array of the asset groups
      *
-     * @public array
+     * @var array|null
      */
     protected static $asset_groups = null;
 

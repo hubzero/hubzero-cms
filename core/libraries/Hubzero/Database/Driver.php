@@ -158,14 +158,14 @@ abstract class Driver implements LoggerAwareInterface
      * For prepared statements, this would the be actual statement class, for non-prepared
      * statements, this will simply be the last executed or upcoming query.
      *
-     * @public object|string
+     * @var \PDOStatement|null
      */
     protected $statement;
 
     /**
      * The query the statement was last prepared from
      *
-     * @public string|null
+     * @var string|null
      */
     protected $preparedSql;
 
@@ -234,7 +234,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The name of the database
      *
-     * @public string
+     * @var string|null
      */
     protected $database;
 
@@ -262,7 +262,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The database driver syntax
      *
-     * @public string
+     * @var string|null
      **/
     protected $syntax = null;
 

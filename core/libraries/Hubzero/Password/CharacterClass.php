@@ -16,7 +16,7 @@ class CharacterClass
     /**
      * List of character classes
      *
-     * @public array
+     * @var array|null
      */
     public static $classes = null;
 

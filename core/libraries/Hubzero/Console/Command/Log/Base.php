@@ -23,7 +23,7 @@ class Base
     /**
      * If dates/times are present, how are they formatted
      *
-     * @public string
+     * @var string|null
      **/
     protected static $dateFormat = null;
 

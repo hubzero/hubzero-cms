@@ -23,7 +23,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Store object
      *
-     * @public object
+     * @var object|null
      */
     private $storage;
 
@@ -37,7 +37,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Array to hold client data
      *
-     * @public array
+     * @var array|null
      */
     private $clientData;
 

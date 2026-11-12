@@ -56,7 +56,7 @@ class Rows implements Iterator, Countable
     /**
      * The pagination object based on these rows
      *
-     * @public \Hubzero\Database\Pagination
+     * @var \Hubzero\Database\Pagination|null
      **/
     public $pagination = null;
 

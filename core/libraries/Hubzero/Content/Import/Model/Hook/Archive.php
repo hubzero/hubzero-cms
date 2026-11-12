@@ -21,7 +21,7 @@ class Archive extends Obj
     /**
      * Type
      *
-     * @public string
+     * @var string|null
      */
     private $type = null;
 

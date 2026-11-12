@@ -42,7 +42,7 @@ abstract class Table extends \stdClass
     /**
      * Database connector object.
      *
-     * @public object
+     * @var object|null
      */
     protected $db;
 
@@ -56,7 +56,7 @@ abstract class Table extends \stdClass
     /**
      * The rules associated with this record.
      *
-     * @public object  A Access Rules object.
+     * @var object|null  A Access Rules object.
      */
     protected $assetRules;
 
@@ -70,7 +70,7 @@ abstract class Table extends \stdClass
     /**
      * Cached table field descriptions
      *
-     * @public array
+     * @var array|null
      */
     private $fieldCache = null;
 

@@ -23,28 +23,28 @@ class Paginator extends Obj
     /**
      * The record number to start displaying from.
      *
-     * @public integer
+     * @var integer|null
      */
     public $limitstart = null;
 
     /**
      * Number of rows to display per page.
      *
-     * @public integer
+     * @var integer|null
      */
     public $limit = null;
 
     /**
      * Total number of rows.
      *
-     * @public integer
+     * @var integer|null
      */
     public $total = null;
 
     /**
      * Prefix used for request variables.
      *
-     * @public string
+     * @var string|null
      */
     public $prefix = null;
 

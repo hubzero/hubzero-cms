@@ -71,21 +71,21 @@ class Translator extends Obj
     /**
      * Array holding the language metadata.
      *
-     * @public array
+     * @var array|null
      */
     protected $metadata = null;
 
     /**
      * Array holding the language locale or boolean null if none.
      *
-     * @public array|boolean
+     * @var array|boolean|null
      */
     protected $locale = null;
 
     /**
      * The language to load.
      *
-     * @public string
+     * @var string|null
      */
     protected $lang = null;
 
@@ -106,7 +106,7 @@ class Translator extends Obj
     /**
      * Translations
      *
-     * @public array
+     * @var array|null
      */
     protected $strings = null;
 
@@ -134,7 +134,7 @@ class Translator extends Obj
     /**
      * Name of the transliterator function for this language.
      *
-     * @public string
+     * @var callable|null
      */
     protected $transliterator = null;
 

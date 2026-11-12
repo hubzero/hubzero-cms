@@ -54,7 +54,7 @@ class Item extends Obj
      * Class constructor.
      *
      * @param   string   $text    The link text.
-     * @param   integer  $prefix  The prefix used for request variables.
+     * @param   string   $prefix  The prefix used for request variables.
      * @param   integer  $base    The number of rows as a base offset.
      * @param   string   $link    The link URL.
      * @return  void

@@ -231,14 +231,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This will defined as the static/calling class' name.
      * It's used when building relationships between classes.
      *
-     * @public string
+     * @var string|null
      **/
     private $modelName = null;
 
     /**
      * The database model namespace
      *
-     * @public string
+     * @var string|null
      **/
     private $modelNamespace = null;
 
@@ -256,14 +256,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The database query object
      *
-     * @public \Hubzero\Database\Query
+     * @var \Hubzero\Database\Query|null
      **/
     private $query = null;
 
     /**
      * The database connection used by the query object
      *
-     * @public \Hubzero\Database\Driver|object
+     * @var \Hubzero\Database\Driver|object|null
      **/
     public static $connection = null;
 
@@ -361,7 +361,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * The parent iterator if this model was retrieved as part of a larger rows collection
      *
-     * @public \Hubzero\Database\Rows
+     * @var \Hubzero\Database\Rows|null
      **/
     private $collection = null;
 
@@ -372,14 +372,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @public string
+     * @var string|null
      **/
     protected $table = null;
 
     /**
      * An alias to apply to the table for initial query building
      *
-     * @public string
+     * @var string|null
      **/
     protected $tableAlias = null;
 
@@ -392,7 +392,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @FIXME: could we infer this once our models are properly namespaced?
      *
-     * @public string
+     * @var string|null
      **/
     protected $namespace = null;
 
@@ -462,7 +462,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * This will also get set on the rows object if applicable.
      *
-     * @public \Hubzero\Database\Pagination|null
+     * @var \Hubzero\Database\Pagination|null
      **/
     public $pagination = null;
 
@@ -490,7 +490,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Any associative elements
      *
-     * @public object
+     * @var object|null
      **/
     public $associated = null;
 

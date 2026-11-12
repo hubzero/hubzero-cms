@@ -19,14 +19,14 @@ class Log extends Base implements CommandInterface
     /**
      * Keep track of log class
      *
-     * @public string
+     * @var string|null
      **/
     private $log = null;
 
     /**
      * Keep track of prompt character
      *
-     * @public string
+     * @var string|null
      **/
     private $promptChar = null;
 

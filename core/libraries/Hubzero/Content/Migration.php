@@ -45,14 +45,14 @@ class Migration
      * If an alternate db is given, this db will hold the connection to the
      * primary hub database where the extensions and logs tables are found
      *
-     * @public string
+     * @var \Hubzero\Database\Driver|null
      **/
     private $db = null;
 
     /**
      * Alternate db, passed to migrations if specified
      *
-     * @public string
+     * @var \Hubzero\Database\Driver|null
      **/
     private $runDb = null;
 
@@ -66,7 +66,7 @@ class Migration
     /**
      * Array of callbacks
      *
-     * @public array
+     * @var array|null
      **/
     private $callbacks;
 

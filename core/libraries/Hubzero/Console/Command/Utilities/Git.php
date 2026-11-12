@@ -16,28 +16,28 @@ class Git
     /**
      * Root path of git repository
      *
-     * @public string
+     * @var string|null
      **/
     private $dir;
 
     /**
      * Git working tree directory
      *
-     * @public string
+     * @var string|null
      **/
     private $workTree;
 
     /**
      * Base command for all git calls
      *
-     * @public string
+     * @var string|null
      **/
     private $baseCmd;
 
     /**
      * Get upstream branch name (when needing to compare master with upstream branch)
      *
-     * @public string
+     * @var string|null
      **/
     private $upstream = null;
 

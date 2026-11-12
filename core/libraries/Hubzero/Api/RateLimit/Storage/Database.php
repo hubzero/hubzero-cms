@@ -16,7 +16,7 @@ class Database implements StorageInterface
     /**
      * Database object
      *
-     * @public object
+     * @var object|null
      */
     private $db;
 

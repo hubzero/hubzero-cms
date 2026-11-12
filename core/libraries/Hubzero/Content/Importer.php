@@ -22,14 +22,14 @@ class Importer
     /**
      * Import reader
      *
-     * @public object
+     * @var object|null
      */
     private $adapter;
 
     /**
      * Array of Import Adapters
      *
-     * @public array
+     * @var array|null
      */
     private $adapters;
 

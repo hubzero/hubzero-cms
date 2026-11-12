@@ -21,7 +21,7 @@ class Filesystem
     /**
      * AdapterInterface
      *
-     * @public object
+     * @var object|null
      */
     protected $adapter;
 

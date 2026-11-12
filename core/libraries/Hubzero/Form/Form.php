@@ -37,7 +37,7 @@ class Form
     /**
      * The Registry data store for form fields during display.
      *
-     * @public object
+     * @var object|null
      */
     protected $data;
 
@@ -51,7 +51,7 @@ class Form
     /**
      * The name of the form instance.
      *
-     * @public string
+     * @var string|null
      */
     protected $name;
 
@@ -65,7 +65,7 @@ class Form
     /**
      * The form XML definition.
      *
-     * @public object
+     * @var object|null
      */
     protected $xml;
 
