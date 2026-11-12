@@ -597,7 +597,7 @@ class Repo extends Obj
             $file = $this->getMetadata($item, $type, $params);
             $params['file'] = $file;
         }
-        if ($file->get('type') != 'file') {
+        if (!$file || $file->get('type') != 'file') {
             return false;
         }
 

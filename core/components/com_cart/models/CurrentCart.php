@@ -1898,7 +1898,7 @@ class CurrentCart extends Cart
             // get product type
             $productInfo = $warehouse->getProductInfo($skuInfo['info']->pId);
             // if soft, check if EULA is needed
-            if ($productInfo->ptModel == 'software') {
+            if ($productInfo && $productInfo->ptModel == 'software') {
                 $eulaRequired = Product::getMetaValue($skuInfo['info']->pId, 'eulaRequired');
 
                 // If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same

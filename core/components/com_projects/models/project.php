@@ -1463,7 +1463,8 @@ class Project extends Model
     public function recordFirstJoinActivity()
     {
         if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive()) {
-            if (!$this->member()->lastvisit) {
+            $member = $this->member();
+            if ($member && !$member->lastvisit) {
                 $aid = $this->recordActivity(
                     Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'),
                     $this->get('id'),
@@ -1473,7 +1474,7 @@ class Project extends Model
                     1,
                 );
                 if ($aid) {
-                    $this->member()->saveParam(
+                    $member->saveParam(
                         $this->get('id'),
                         User::get('id'),
                         'join_activityid',

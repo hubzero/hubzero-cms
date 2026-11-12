@@ -374,7 +374,7 @@ class Mailinglists extends SiteController
         $recipient = Helper::parseMailingToken($token);
 
         //make sure mailing recipient email matches email param
-        if ($email != $recipient->email) {
+        if (!$recipient || $email != $recipient->email) {
             App::redirect(
                 Route::url('index.php?option=com_newsletter&task=subscribe'),
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),

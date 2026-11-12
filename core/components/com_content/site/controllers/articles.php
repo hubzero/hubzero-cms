@@ -229,7 +229,8 @@ class Articles extends SiteController
                 'title' => $item->title,
                 'link' => '',
             ]];
-            $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($item->catid);
+            $categories = \Components\Categories\Helpers\Categories::getInstance('Content');
+            $category   = $categories ? $categories->get($item->catid) : false;
 
             // Build the menu route segments for comparison so we can skip
             // category entries already covered by the menu trail
@@ -936,7 +937,7 @@ class Articles extends SiteController
             || !$mparams->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
-        $parent = $categories->get($filters['parentId'], 'root');
+        $parent = $categories ? $categories->get($filters['parentId'], 'root') : false;
 
         if ($parent == false) {
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
@@ -1143,7 +1144,7 @@ class Articles extends SiteController
             || !$params->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
-        $category = $categories->get($filters['category_id'], 'root');
+        $category = $categories ? $categories->get($filters['category_id'], 'root') : false;
 
         if ($category == false) {
             App::abort(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));

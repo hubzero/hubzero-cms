@@ -301,7 +301,7 @@ class Section extends Base
     /**
      * Check if the current user is enrolled
      *
-     * @return     boolean
+     * @return     Member  the user's membership, empty if they have none
      */
     public function member($user_id = null)
     {

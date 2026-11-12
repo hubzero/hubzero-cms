@@ -1807,6 +1807,9 @@ class Connect extends Obj
 
         if ($service == 'google' || $service instanceof Google_Service_Drive) {
             $apiService = $this->getAPI($service, $uid);
+            if (!$apiService) {
+                return false;
+            }
             $response = $apiService->files->get($url, ['alt' => 'media']);
             $content = $response->getBody()->getContents();
             file_put_contents($path, $content);

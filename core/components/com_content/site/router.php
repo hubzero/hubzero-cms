@@ -135,7 +135,7 @@ class Router extends Base
             }
 
             $categories = \Components\Categories\Helpers\Categories::getInstance('Content');
-            $category   = $categories->get($catid);
+            $category   = $categories ? $categories->get($catid) : false;
 
             if (!$category) {
                 // we couldn't find the category we were given.  Bail.
@@ -286,7 +286,8 @@ class Router extends Base
             list($id, $alias) = explode(':', $segments[0], 2);
 
             // first we check if it is a category
-            $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($id);
+            $categories = \Components\Categories\Helpers\Categories::getInstance('Content');
+            $category   = $categories ? $categories->get($id) : false;
 
             if ($category && $category->alias == $alias) {
                 $vars['view'] = 'category';
@@ -332,7 +333,8 @@ class Router extends Base
 
         // we get the category id from the menu item and search from there
         $id = $item->query['id'];
-        $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($id);
+        $categories = \Components\Categories\Helpers\Categories::getInstance('Content');
+        $category   = $categories ? $categories->get($id) : false;
 
         if (!$category) {
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
