@@ -20,7 +20,7 @@ class GroupMacro extends Macro
 {
     /**
      * Group
-     * @var Hubzero\User\Group Object
+     * @var \Hubzero\User\Group Object
      */
     public $group;
 

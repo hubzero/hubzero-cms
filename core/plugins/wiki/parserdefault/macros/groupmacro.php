@@ -20,7 +20,7 @@ class GroupMacro extends WikiMacro
 {
     /**
      * Group
-     * @var Hubzero\User\Group Object
+     * @var \Hubzero\User\Group Object
      */
     public $group;
 

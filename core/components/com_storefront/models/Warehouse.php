@@ -144,7 +144,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get a collection
      *
      * @param   int $cId                         collection ID
-     * @return  StorefrontModelCollection   Instance of a collection
+     * @return  Collection   Instance of a collection
      */
     public function getCollection($cId)
     {
@@ -238,7 +238,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add collection
      *
-     * @param   StorefrontModelCollection $collection
+     * @param   Collection $collection
      * @return  void
      */
     public function addCollection($collection)
@@ -249,7 +249,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Update existing collection
      *
-     * @param   StorefrontModelCollection $collection
+     * @param   Collection $collection
      * @return  void
      */
     public function updateCollection($collection)
@@ -260,7 +260,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Handle collection actions (add, update)
      *
-     * @param   StorefrontModelCollection $collection
+     * @param   Collection $collection
      * @param   string $action
      * @return  string                          category ID
      */
@@ -1273,7 +1273,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get a course
      *
      * @param   int $courseId                         course ID
-     * @return  StorefrontModelCourse   Instance of a product
+     * @return  Course   Instance of a product
      */
     public function getCourse($courseId)
     {
@@ -1294,7 +1294,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get course by alias
      *
      * @param   int $alias                         course ID
-     * @return  StorefrontModelCourse   Instance of a product
+     * @return  Course   Instance of a product
      */
     public function getCourseByAlias($alias)
     {
@@ -1313,7 +1313,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add product coupon
      *
-     * @param   StorefrontModelCoupon $coupon   Instance of a coupon to add
+     * @param   Coupon $coupon   Instance of a coupon to add
      * @return  void
      */
     public function addCoupon($coupon)
@@ -1370,7 +1370,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Handle product coupon (add, update)
      *
-     * @param   StorefrontModelCoupon   Instance of a product
+     * @param   Coupon   Instance of a product
      * @return  int                         coupon ID
      */
     private function doCoupon($coupon, $action)

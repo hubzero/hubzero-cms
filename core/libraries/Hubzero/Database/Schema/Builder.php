@@ -51,7 +51,7 @@ class Builder
     /**
      * DDL grammar for the current database
      *
-     * @var Grammar
+     * @var BaseSchemaGrammar
      */
     protected $grammar;
 

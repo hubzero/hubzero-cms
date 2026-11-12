@@ -38,7 +38,7 @@ abstract class AbstractHelper implements HelperInterface
     /**
      * Get the view object
      *
-     * @return  null|Renderer
+     * @return  \Hubzero\View\View|null
      */
     public function getView()
     {
