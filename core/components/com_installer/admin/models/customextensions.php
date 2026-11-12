@@ -19,6 +19,13 @@ use Hubzero\Facades\Component;
 
 /**
  * Extension model
+ *
+ * @property  string|null  $alias
+ * @property  int|string|null  $enabled
+ * @property  string|null  $folder
+ * @property-read  mixed  $params  What transformParams() gives
+ * @property  string|null  $path
+ * @property  string|null  $type
  */
 class CustomExtensions extends Relational
 {

@@ -22,6 +22,9 @@ use Hubzero\Facades\Component;
 
 /**
  * Wiki model for a page
+ *
+ * @property-read  mixed  $title  What transformTitle() gives
+ * @property-read  mixed  $version  What version() gives
  */
 class Page extends Relational
 {

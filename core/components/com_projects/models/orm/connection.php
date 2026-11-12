@@ -20,6 +20,9 @@ use Hubzero\Facades\User;
  * @property  int|null  $owner_id  Column: the owner of a private connection, empty when shared
  * @property  string    $params    Column: the adapter's parameters, as JSON
  * @property  Provider  $provider  The storage provider, through provider()
+ *
+ * @property  int|string|null  $id
+ * @property-read  mixed  $project  What project() gives
  */
 class Connection extends Relational
 {

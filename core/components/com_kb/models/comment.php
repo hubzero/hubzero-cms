@@ -17,6 +17,8 @@ use Hubzero\Facades\Event;
 
 /**
  * Knowledgebase model for a comment
+ *
+ * @property-read  mixed  $creator  What creator() gives
  */
 class Comment extends Relational
 {

@@ -14,6 +14,9 @@ use Hubzero\Database\Relational;
  * Billboard collections database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $id
+ * @property  string|null  $name
  */
 class Collection extends Relational
 {

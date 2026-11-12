@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Project description model
+ *
+ * @property  int|string|null  $ordering
  */
 class Description extends Relational
 {

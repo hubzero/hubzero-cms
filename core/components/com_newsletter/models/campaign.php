@@ -14,6 +14,8 @@ use Hubzero\Facades\User;
 
 /**
  * Model for a campaign
+ *
+ * @property  string|null  $expire_date
  */
 class Campaign extends Relational
 {

@@ -21,6 +21,8 @@ use Hubzero\Facades\Component;
  * @property  int     $collection_id
  * @property  string  $name
  * @property  string  $alias
+ *
+ * @property  int|string|null  $ordering
  */
 class Billboard extends Relational
 {

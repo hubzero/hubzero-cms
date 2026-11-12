@@ -12,6 +12,9 @@ use Hubzero\Database\Relational;
 
 /**
  * User viewlevel
+ *
+ * @property  int|string|null  $ordering
+ * @property  string|null  $title
  */
 class Viewlevel extends Relational
 {

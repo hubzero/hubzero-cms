@@ -14,6 +14,8 @@ use Hubzero\Database\Relational;
  * Tool file handlers database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $id
  */
 class Handler extends Relational
 {

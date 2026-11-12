@@ -14,6 +14,8 @@ use Hubzero\Database\Relational;
  * Link model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $id
  */
 class Link extends Relational
 {

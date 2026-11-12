@@ -15,6 +15,10 @@ use Hubzero\Facades\Event;
 
 /**
  * Activity log
+ *
+ * @property-read  mixed  $children  What children() gives
+ * @property-read  mixed  $details  What transformDetails() gives
+ * @property-read  mixed  $recipients  What recipients() gives
  */
 class Log extends Relational
 {

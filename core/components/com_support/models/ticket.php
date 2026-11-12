@@ -32,6 +32,8 @@ use Hubzero\Facades\User;
  * @property-read  mixed  $status  What transformStatus() gives
  * @property-read  mixed  $submitter  What submitter() gives
  * @property-read  mixed  $watchers  What watchers() gives
+ *
+ * @property  int|string|null  $group_id
  */
 class Ticket extends Relational
 {

@@ -14,6 +14,9 @@ use Hubzero\Database\Relational;
  * Connection provider model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  string|null  $alias
+ * @property  string|null  $name
  */
 class Provider extends Relational
 {

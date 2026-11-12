@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Carrerplan field option model
+ *
+ * @property  int|string|null  $ordering
  */
 class Option extends Relational
 {
