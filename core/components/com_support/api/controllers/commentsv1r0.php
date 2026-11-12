@@ -537,7 +537,8 @@ class Commentsv1r0 extends ApiController
         $response->ticket = $comment->get('ticket');
 
         // The owner is the assignee of the comment's ticket
-        $owner = $comment->ticket->assignee;
+        // ("ticket" read as a property is the ticket's ID, not the ticket)
+        $owner = \Components\Support\Models\Ticket::oneOrFail($comment->get('ticket'))->assignee;
 
         $response->owner = new stdClass();
         $response->owner->username = $owner->get('username');
