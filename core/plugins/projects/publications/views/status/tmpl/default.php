@@ -66,6 +66,8 @@ $reviewRecord = isset($this->review_record) ? $this->review_record : null;
 $hasReviewRecord = is_object($reviewRecord);
 $reviewUrl = '';
 $showCopy = false;
+$expiryDays = \Component::params('com_publications')->get('review_url_expiry_days', 60);
+$expiryDays = filter_var($expiryDays, FILTER_VALIDATE_INT);
 
 $submitter = $this->pub->submitter();
 
@@ -389,7 +391,11 @@ $confirmMessage = $isRegeneration
 		<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_TITLE'); ?></h4>
 
 		<?php if ($showGenerate): ?>
-			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_INTRO'); ?></p>
+			<?php if ($expiryDays !== false && $expiryDays >= 1): ?>
+				<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_INTRO') . '. ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_EXPIRY_DAYS', $expiryDays); ?></p>
+			<?php else: ?>
+				<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_INTRO'); ?></p>
+			<?php endif; ?>
 
 			<form id="anon-review-form" method="post" action="<?php echo $this->escape(Route::url('index.php?option=com_publications&controller=review&task=generate&format=raw', false)); ?>"
 				data-confirm="<?php echo $this->escape(Lang::txt($confirmMessage)); ?>"
