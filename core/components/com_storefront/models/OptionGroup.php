@@ -258,11 +258,13 @@ class OptionGroup
         return $this->data->options;
     }
 
+    /** @return void */
     public function addOption($option)
     {
         $this->data->options[$option->getId()] = $option;
     }
 
+    /** @return void */
     private function addMessage($msg)
     {
         $this->data->messages[] = $msg;

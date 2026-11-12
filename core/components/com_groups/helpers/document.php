@@ -67,6 +67,7 @@ class Document extends Obj
 
     /**
      * Parse Document Content
+     * @return  $this
      */
     public function parse()
     {

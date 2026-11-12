@@ -13,6 +13,7 @@ use Hubzero\Facades\Request;
 
 class File
 {
+    /** @return void */
     public static function render()
     {
         $hash = Request::getString('hash');

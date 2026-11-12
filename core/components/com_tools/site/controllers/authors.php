@@ -75,6 +75,7 @@ class Authors extends SiteController
         return $resource;
     }
 
+    /** @return void */
     public function saveTask()
     {
         // Check for request forgeries. This is the dispatched task; the

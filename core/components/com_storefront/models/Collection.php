@@ -43,6 +43,7 @@ class Collection
         }
     }
 
+    /** @return void */
     public function load()
     {
         $db = App::get('db');

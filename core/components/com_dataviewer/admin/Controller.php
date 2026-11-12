@@ -15,6 +15,7 @@ use Hubzero\Facades\User;
 
 class Controller
 {
+    /** @return void */
     public static function dispatch()
     {
         if (!static::authorized()) {
@@ -62,6 +63,7 @@ class Controller
         }
     }
 
+    /** @return bool */
     public static function authorized()
     {
         if (DvConfig::$conf['access_limit_to_group'] === false) {

@@ -24,6 +24,7 @@ class Dl
         return $hash;
     }
 
+    /** @return void */
     public static function streamFile($hash)
     {
         $fullpath = '';
@@ -52,6 +53,7 @@ class Dl
         print "Invalid (or Missing) file : $fullpath";
     }
 
+    /** @return void */
     public static function zipFiles($hash_list)
     {
         $hash_list = explode(',', $hash_list);

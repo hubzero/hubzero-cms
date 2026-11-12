@@ -678,6 +678,7 @@ class Create extends SiteController
         return ($row->access('edit') || $row->access('edit-own'));
     }
 
+    /** @return void */
     public function stepComposeProcess()
     {
         // Initiate extended database class

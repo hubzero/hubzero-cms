@@ -334,6 +334,7 @@ class Application extends Container
         return md5($this['config']->get('secret') . $seed);
     }
 
+    /** @return void */
     public function load($client = null, $environments = null)
     {
         if ($this->loaded) {

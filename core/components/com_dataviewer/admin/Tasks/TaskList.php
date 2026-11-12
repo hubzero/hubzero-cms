@@ -15,6 +15,7 @@ use Hubzero\Facades\Toolbar;
 
 class TaskList
 {
+    /** @return void */
     public static function execute()
     {
         Toolbar::title(Lang::txt('Database List'), 'databases');

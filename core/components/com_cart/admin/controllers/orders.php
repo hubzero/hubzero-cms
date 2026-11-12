@@ -263,6 +263,7 @@ class Orders extends AdminController
             ->display();
     }
 
+    /** @return void */
     public function applyTask()
     {
         $this->saveTask(false);

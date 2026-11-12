@@ -56,6 +56,7 @@ class Emailtoken extends Plugin
         $this->onUserAuthenticate($credentials, $options, $response);
     }
 
+    /** @return void */
     public function login(&$credentials, &$options)
     {
         $return = base64_decode(Request::getString('return', ''));

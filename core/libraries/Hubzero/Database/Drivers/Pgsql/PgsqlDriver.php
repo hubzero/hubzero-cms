@@ -1569,6 +1569,7 @@ class PgsqlDriver extends BaseSqlDriver
         $this->regexpRegistered = false;
     }
 
+    /** @return $this */
     public function registerRegexp()
     {
         $this->regexpRegistered = true;

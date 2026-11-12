@@ -25,6 +25,7 @@ class MembershipModelHandler extends ModelHandler
         parent::__construct($item, $crtId, $tId);
     }
 
+    /** @return void */
     public function handle()
     {
         $itemInfo = $this->item['info'];

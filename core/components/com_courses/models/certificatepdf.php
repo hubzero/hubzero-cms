@@ -18,6 +18,7 @@ class CertificatePdf extends \TCPDF
     public $img_file;
 
     //Page header
+    /** @return void */
     public function header()
     {
         // get the current page break margin

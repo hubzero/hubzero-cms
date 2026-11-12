@@ -453,6 +453,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for checking in required for compatibility
+     * @return  bool
      */
     public function checkin($params = [])
     {
@@ -461,6 +462,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for optimizing, required for compatibility
+     * @return  bool
      */
     public function optimize($params = [])
     {
@@ -469,6 +471,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for erasing, required for compatibility
+     * @return  bool
      */
     public function erase($params = [])
     {
@@ -477,6 +480,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for checking if it's git, required for compatibility
+     * @return  bool
      */
     public function isGit()
     {
@@ -484,6 +488,7 @@ class Nogit extends Models\Adapter
     }
     /**
      * Stub for diffing, required for compatibility
+     * @return  bool
      */
     public function diff()
     {
@@ -491,6 +496,7 @@ class Nogit extends Models\Adapter
     }
     /**
      * Stub for restoring a file, required for compatibility
+     * @return  bool
      */
     public function restore()
     {
@@ -498,6 +504,7 @@ class Nogit extends Models\Adapter
     }
     /**
      * Stub for discarding, required for compatibility
+     * @return  bool
      */
     public function discard()
     {
@@ -505,6 +512,7 @@ class Nogit extends Models\Adapter
     }
     /**
      * Stub for getting trash, required for compatibility
+     * @return  bool
      */
     public function getTrash()
     {
@@ -512,6 +520,7 @@ class Nogit extends Models\Adapter
     }
     /**
      * Stub for getting history, required for compatibility
+     * @return  bool
      */
     public function history()
     {

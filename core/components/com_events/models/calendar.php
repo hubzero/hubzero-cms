@@ -213,6 +213,7 @@ class Calendar extends Model
      * Refresh a Specific Group Calendar
      *
      * @param  bool  $force  Force refresh calendar?
+     * @return  bool
      */
     public function refresh($force = false)
     {

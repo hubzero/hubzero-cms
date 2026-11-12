@@ -480,6 +480,7 @@ class Request
         }
     }
 
+    /** @return void */
     public function setHeader($key, $value)
     {
         if (empty($value)) {
@@ -498,6 +499,7 @@ class Request
         return $default;
     }
 
+    /** @return void */
     public function add($property, $key, $value)
     {
         switch ($property) {
@@ -520,6 +522,7 @@ class Request
         }
     }
 
+    /** @return void */
     public function set($key, $value = null)
     {
         switch ($key) {

@@ -962,6 +962,7 @@ class Team extends Plugin
         }
     }
 
+    /** @return void */
     private function sendMemberRequestEmail($email, $subject, $message)
     {
         \Components\Projects\Helpers\Html::sendHUBMessage(

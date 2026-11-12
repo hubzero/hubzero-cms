@@ -256,6 +256,7 @@ class ModeDb
         return $dd;
     }
 
+    /** @return void */
     public static function pathway($dd)
     {
         $document = App::get('document');

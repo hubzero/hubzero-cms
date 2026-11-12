@@ -39,6 +39,7 @@ class Boosts extends AdminController
         parent::execute();
     }
 
+    /** @return void */
     public function listTask()
     {
         $sortField = Request::getState(
@@ -64,6 +65,7 @@ class Boosts extends AdminController
             ->display();
     }
 
+    /** @return void */
     public function newTask($boost = null)
     {
         $boost = $boost ? $boost : Boost::blank();
@@ -75,6 +77,7 @@ class Boosts extends AdminController
             ->display();
     }
 
+    /** @return void */
     public function createTask()
     {
         $boostArray = Request::getArray('boost');
@@ -89,6 +92,7 @@ class Boosts extends AdminController
         }
     }
 
+    /** @return void */
     public function editTask($boost = null)
     {
         $id = Request::getInt('id');
@@ -101,6 +105,7 @@ class Boosts extends AdminController
             ->display();
     }
 
+    /** @return void */
     public function updateTask()
     {
         $id = Request::getInt('id');
@@ -118,6 +123,7 @@ class Boosts extends AdminController
         }
     }
 
+    /** @return void */
     public function destroyTask()
     {
         $id = Request::getInt('id');

@@ -288,6 +288,7 @@ class Coupon
         return $warehouse->addCoupon($this);
     }
 
+    /** @return bool */
     public function verify()
     {
         if (empty($this->data->code)) {

@@ -24,6 +24,7 @@ class CourseTypeHandler extends TypeHandler
         parent::__construct($item, $crtId);
     }
 
+    /** @return void */
     public function handle()
     {
         $ms = new \Components\Storefront\Models\Memberships();

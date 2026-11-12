@@ -10,6 +10,7 @@ namespace Components\Dataviewer\Site\Filter;
 
 class Kmz
 {
+    /** @return void */
     public static function filter($res, &$dd)
     {
         $data = $res['data'];

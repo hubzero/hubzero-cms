@@ -13,6 +13,7 @@ namespace Hubzero\Test;
  */
 class Basic extends \PHPUnit\Framework\TestCase
 {
+    /** @return void */
     public function testExample()
     {
         // setup

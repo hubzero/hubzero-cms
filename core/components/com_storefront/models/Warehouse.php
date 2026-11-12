@@ -1322,6 +1322,7 @@ class Warehouse extends \Hubzero\Base\Obj
         return $this->doCoupon($coupon, 'add');
     }
 
+    /** @return void */
     public function updateCoupon($coupon)
     {
         $this->doCoupon($coupon, 'update');

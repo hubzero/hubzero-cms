@@ -266,6 +266,7 @@ class Option
         }
     }
 
+    /** @return void */
     private function addMessage($msg)
     {
         $this->data->messages[] = $msg;

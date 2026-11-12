@@ -59,6 +59,7 @@ class Api extends ApiController
         }
     }
 
+    /** @return void */
     private function consumerRequestTest()
     {
         if (empty($this->_request->validApiKey)) {
@@ -69,6 +70,7 @@ class Api extends ApiController
         $this->send('Consumer Request Test OK', 200);
     }
 
+    /** @return void */
     private function unsignedRequestTest()
     {
         $this->send('Unsigned Request Test OK', 200);

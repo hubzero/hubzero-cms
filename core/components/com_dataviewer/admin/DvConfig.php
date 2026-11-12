@@ -26,6 +26,7 @@ class DvConfig
     /** @var string  Component path relative to the document root, also the constant DB_PATH */
     public static $com_path = '';
 
+    /** @return void */
     public static function init()
     {
         // Request ID/CSRF prevention

@@ -114,6 +114,7 @@ class Likesv1r0 extends ApiController
     }
 
     // DELETE: Delete a like from a post
+    /** @return void */
     public function deleteLikeFromPostTask()
     {
         $this->requiresAuthentication();

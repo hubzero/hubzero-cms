@@ -10,6 +10,7 @@ namespace Components\Dataviewer\Admin\Libs;
 
 class Messages
 {
+    /** @return void */
     public static function init()
     {
         if (!isset($_SESSION['databases']['notifications'])) {
@@ -17,12 +18,14 @@ class Messages
         }
     }
 
+    /** @return void */
     public static function dbMsg($msg, $type = 'error')
     {
         self::init();
         $_SESSION['databases']['notifications'][] = ['message' => $msg, 'type' => $type];
     }
 
+    /** @return void */
     public static function dbShowMsg()
     {
         self::init();

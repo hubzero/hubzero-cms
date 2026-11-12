@@ -464,6 +464,7 @@ class Checkout extends ComponentController
     }
 
 
+    /** @return void */
     public function paymentTask()
     {
         $cart = new CurrentCart();

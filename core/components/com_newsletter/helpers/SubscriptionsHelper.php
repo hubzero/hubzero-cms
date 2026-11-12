@@ -94,6 +94,7 @@ class SubscriptionsHelper
         }
     }
 
+    /** @return void */
     public function updateSubscriptions($userId, $updatedSubscriptions)
     {
         $userId = (int) $userId;
@@ -103,6 +104,7 @@ class SubscriptionsHelper
         }
     }
 
+    /** @return void */
     private function updateSubscription($userId, $updatedSubscription)
     {
         $updateQuery = $this->buildUpdateQuery($userId, $updatedSubscription);
@@ -163,12 +165,14 @@ class SubscriptionsHelper
 		        values($userId, " . $this->db->quote($profileFieldFk) . ", " . $this->db->quote($preference) . ");";
     }
 
+    /** @return void */
     private function validateSubmittedSubscription($profileFieldFk, $preference)
     {
         $this->validateProfileFieldFk($profileFieldFk);
         $this->validatePreference($preference);
     }
 
+    /** @return void */
     private function validateProfileFieldFk($profileFieldFk)
     {
         $validProfileFieldFks = $this->loadProfileFieldFks();
@@ -188,6 +192,7 @@ class SubscriptionsHelper
         return $this->db->loadColumn();
     }
 
+    /** @return void */
     private function validatePreference($preference)
     {
         $validPreferences = $this->loadProfileOptionValues();

@@ -24,6 +24,7 @@ class ProMembershipCustomHandler extends CustomHandler
         parent::__construct($item, $crtId);
     }
 
+    /** @return void */
     public function handle()
     {
         // Get user ID for the cart

@@ -14,6 +14,7 @@ use Hubzero\Facades\Request;
 
 class ConfigCurrent
 {
+    /** @return void */
     public static function execute()
     {
         $base = DvConfig::$conf['dir_base'];

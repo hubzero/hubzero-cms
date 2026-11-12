@@ -480,6 +480,7 @@ class Assetgroup extends Base
         return true;
     }
 
+    /** @return bool */
     public function copyToSelectedAssetGroup(
         $courseId = null,
         $offeringId = null,

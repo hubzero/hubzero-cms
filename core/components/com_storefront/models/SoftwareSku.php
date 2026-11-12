@@ -61,7 +61,7 @@ class SoftwareSku extends Sku
     /**
      * Verify
      *
-     * @return  void
+     * @return  bool  true, or it throws
      */
     public function verify()
     {
@@ -80,6 +80,8 @@ class SoftwareSku extends Sku
         if (!file_exists($file)) {
             throw new \Exception(Lang::txt('Download file doesn\'t exist'));
         }
+
+        return true;
     }
 
     /**

@@ -16,6 +16,7 @@ use Hubzero\Facades\User;
 
 class DataviewList
 {
+    /** @return void */
     public static function execute()
     {
         $base = DvConfig::$conf['dir_base'];

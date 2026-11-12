@@ -21,6 +21,7 @@ class DefaultSiteController extends SiteController
         parent::execute();
     }
 
+    /** @return void */
     public function __call($name, $arguments)
     {
         if (substr_compare($name, 'Task', -4, 4, true) === 0) {

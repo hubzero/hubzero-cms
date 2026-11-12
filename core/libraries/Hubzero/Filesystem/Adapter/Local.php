@@ -329,6 +329,7 @@ class Local implements AdapterInterface
      * Previously this method only failed on exit code 1 (virus
      * found per clamscan's convention), which meant an unreachable
      * clamd (clamdscan exit 2) silently passed every upload.
+     * @return  bool
      */
     public function isSafe($file)
     {

@@ -58,6 +58,7 @@ class Redirect extends SiteController
         return $host === $hub || substr($host, -strlen('.' . $hub)) === '.' . $hub;
     }
 
+    /** @return void */
     public function displayTask()
     {
         $url =  Request::getString("id", ""); //base64_encode('https://www.google.com/')

@@ -13,6 +13,7 @@ use Hubzero\Facades\Request;
 
 class ConfigUpdate
 {
+    /** @return void */
     public static function execute()
     {
         \Components\Dataviewer\Admin\Libs\Security::checkRid();

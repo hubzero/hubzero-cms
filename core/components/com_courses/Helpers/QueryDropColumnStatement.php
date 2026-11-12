@@ -40,11 +40,13 @@ class QueryDropColumnStatement
         return $this->asString;
     }
 
+    /** @return void */
     protected function generateBaseString()
     {
         $this->asString = 'DROP COLUMN';
     }
 
+    /** @return void */
     protected function addName()
     {
         $this->asString .= " $this->name";

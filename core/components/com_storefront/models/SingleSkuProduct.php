@@ -78,6 +78,7 @@ class SingleSkuProduct extends Product
         $this->getSku()->setTimeToLive($ttl);
     }
 
+    /** @return void */
     public function getTimeToLive()
     {
         $this->getSku()->getTimeToLive();

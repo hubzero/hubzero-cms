@@ -21,6 +21,7 @@ use Hubzero\Facades\User;
 
 class Emailsubscriptions extends SiteController
 {
+    /** @return void */
     public function displayTask()
     {
         $code = Request::getString('code');
@@ -47,6 +48,7 @@ class Emailsubscriptions extends SiteController
         $this->view->display();
     }
 
+    /** @return void */
     public function updateTask()
     {
         Request::checkToken();

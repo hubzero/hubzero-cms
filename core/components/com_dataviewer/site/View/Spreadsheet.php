@@ -14,6 +14,7 @@ use Hubzero\Facades\Request;
 
 class Spreadsheet
 {
+    /** @return void */
     public static function render($dd = false)
     {
         $name = $dd['dv_id'];

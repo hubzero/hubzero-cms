@@ -49,21 +49,25 @@ class QueryAddColumnStatement
         return $this->asString;
     }
 
+    /** @return void */
     protected function generateBaseString()
     {
         $this->asString = 'ADD COLUMN';
     }
 
+    /** @return void */
     protected function addName()
     {
         $this->asString .= " $this->name";
     }
 
+    /** @return void */
     protected function addType()
     {
         $this->asString .= " $this->type";
     }
 
+    /** @return void */
     protected function addRestriction()
     {
         $restriction = rtrim(" $this->restriction");
@@ -71,6 +75,7 @@ class QueryAddColumnStatement
         $this->asString .= $restriction;
     }
 
+    /** @return void */
     protected function addDefault()
     {
         $default = '';

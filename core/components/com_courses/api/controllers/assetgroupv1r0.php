@@ -286,6 +286,7 @@ class Assetgroupv1r0 extends Base
     // Creating that hierachy with an API
     // https://stage.stemedhub.org/api/courses/assetgroup/getAllCourses
     // COURSES - LEVEL 1
+    /** @return void */
     public function getAllCoursesTask()
     {
         // Admin-side pickers: no course in the request, so require component manage rights
@@ -308,6 +309,7 @@ class Assetgroupv1r0 extends Base
 
     // COURSE OFFERING - LEVEL 2
     // https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseOfferings?courseId=8
+    /** @return void */
     public function getAllCourseOfferingsTask()
     {
         // Admin-side pickers: no course in the request, so require component manage rights
@@ -337,6 +339,7 @@ class Assetgroupv1r0 extends Base
 
     // COURSE UNITS - LEVEL 3
     // https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseUnits?offeringId=8
+    /** @return void */
     public function getAllCourseUnitsTask()
     {
         // Admin-side pickers: no course in the request, so require component manage rights
@@ -367,6 +370,7 @@ class Assetgroupv1r0 extends Base
     // ASSET GROUPS - LEVEL 4
     // https://stage.stemedhub.org/api/courses/assetgroup/getAllAssetGroups?unitId=18
     // https://stackoverflow.com/questions/21021863/creating-a-nested-array-form-a-flat-array-trough-parent-id
+    /** @return void */
     public function getAllAssetGroupsTask()
     {
         // Admin-side pickers: no course in the request, so require component manage rights

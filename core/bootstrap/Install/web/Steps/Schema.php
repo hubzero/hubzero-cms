@@ -381,6 +381,7 @@ class Schema implements StepInterface
 
     /**
      * Execute a SQL file
+     * @return  bool
      */
     private function executeSqlFile(ConnectionInterface $connection, $path, $prefix)
     {

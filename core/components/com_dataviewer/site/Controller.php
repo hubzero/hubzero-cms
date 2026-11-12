@@ -14,6 +14,7 @@ use Hubzero\Facades\User;
 
 class Controller
 {
+    /** @return void */
     public static function dispatch()
     {
         $db_id = [];
@@ -63,6 +64,7 @@ class Controller
         }
     }
 
+    /** @return void */
     public static function taskView($db_id)
     {
         $view = 'spreadsheet';
@@ -90,6 +92,7 @@ class Controller
         $viewClass::render($dd);
     }
 
+    /** @return void */
     public static function taskData($db_id)
     {
         $modeClass = DvConfig::$dv_conf['settings']['mode_class'];

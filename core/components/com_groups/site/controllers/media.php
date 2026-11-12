@@ -156,6 +156,7 @@ class Media extends Base
         return $out ? DS . implode(DS, $out) : '';
     }
 
+    /** @return void */
     public function filebrowserTask()
     {
         // set the neeced layout

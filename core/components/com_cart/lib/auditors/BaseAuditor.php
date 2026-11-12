@@ -35,6 +35,7 @@ class BaseAuditor
         $this->response->errors = [];
     }
 
+    /** @return void */
     public function setSku($sId)
     {
         $this->sId = $sId;
@@ -53,22 +54,26 @@ class BaseAuditor
         return $this->getResponse();
     }
 
+    /** @return void */
     protected function setResponseStatus($status)
     {
         $this->response->status = $status;
     }
 
+    /** @return void */
     protected function setResponseMessage($msg)
     {
         $this->response->messages[] = $msg;
     }
 
+    /** @return void */
     protected function setResponseNotice($msg)
     {
         $this->response->notices[] = $msg;
     }
 
     // ok, notice, error
+    /** @return void */
     protected function setResponseError($msg)
     {
         $this->response->errors[] = $msg;

@@ -83,6 +83,7 @@ class D1 extends Plugin
         return true;
     }
 
+    /** @return void */
     public function onAfterDeleteUser($user, $success, $msg)
     {
         $this->onUserAfterDelete($user, $success, $msg);

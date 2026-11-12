@@ -107,6 +107,7 @@ class Media extends SiteController
             || User::authorise('core.manage', 'com_support');
     }
 
+    /** @return void */
     public function ajaxUploadTask()
     {
         // Check for request forgeries

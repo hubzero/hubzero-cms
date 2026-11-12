@@ -63,6 +63,7 @@ class Mentionsv1r0 extends ApiController
 
     // List of all members within a specific group, locked down for privacy issues
     // https://woo.aws.hubzero.org/api/members/mentions/group?gid={gid}&search={search}
+    /** @return void */
     public function groupTask()
     {
         $this->requiresAuthentication();

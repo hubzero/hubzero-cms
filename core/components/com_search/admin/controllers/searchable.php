@@ -137,6 +137,7 @@ class Searchable extends AdminController
         App::redirect(Route::url('index.php?option=' . $this->option . '&controller=searchable', false));
     }
 
+    /** @return void */
     public function addTask()
     {
         $searchComponent = SearchComponent::blank();

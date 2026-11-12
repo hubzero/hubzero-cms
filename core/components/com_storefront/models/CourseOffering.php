@@ -25,12 +25,14 @@ class CourseOffering extends Sku
         $this->setTrackInventory(0);
     }
 
+    /** @return void */
     public function setCourseId($courseId)
     {
         $this->data->courseId = $courseId;
         $this->data->meta['courseId'] = $courseId;
     }
 
+    /** @return void */
     public function setOfferingId($offeringId)
     {
         $this->data->offeringId = $offeringId;
@@ -42,6 +44,7 @@ class CourseOffering extends Sku
         return $this->data->meta['courseId'];
     }
 
+    /** @return bool  true, or it throws */
     public function verify()
     {
         parent::verify();
@@ -50,5 +53,7 @@ class CourseOffering extends Sku
         if (empty($this->data->courseId)) {
             throw new \Exception(Lang::txt('No course id'));
         }
+
+        return true;
     }
 }

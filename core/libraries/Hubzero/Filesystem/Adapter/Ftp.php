@@ -434,6 +434,7 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @return  bool
      */
     public function writeStream($path, $resource)
     {
@@ -653,6 +654,7 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @return  bool
      */
     public function isSafe($file)
     {

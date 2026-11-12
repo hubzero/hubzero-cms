@@ -195,6 +195,7 @@ class SolrIndexAdapter implements IndexInterface
         return $this->bufferAdd;
     }
 
+    /** @return void */
     public function addDocument($document)
     {
         $update = $this->connection->createUpdate();

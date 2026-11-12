@@ -103,6 +103,7 @@ class Sku
         return $this->data->price;
     }
 
+    /** @return bool */
     public function setName($skuName)
     {
         $this->data->name = $skuName;
@@ -117,6 +118,7 @@ class Sku
         return $this->data->name;
     }
 
+    /** @return bool */
     public function setWeight($weight)
     {
         if (!is_numeric($weight)) {
@@ -170,6 +172,7 @@ class Sku
         return $this->data->publishTime;
     }
 
+    /** @return bool */
     public function setCheckoutNotes($checkoutNotes)
     {
         $this->data->checkoutNotes = $checkoutNotes;
@@ -184,6 +187,7 @@ class Sku
         return $this->data->checkoutNotes;
     }
 
+    /** @return void */
     public function setCheckoutNotesRequired($checkoutNotesRequired)
     {
         if (!$checkoutNotesRequired) {
@@ -225,6 +229,7 @@ class Sku
         return $this->data->id;
     }
 
+    /** @return bool */
     public function setProductId($pId)
     {
         if (!is_numeric($pId)) {
@@ -242,6 +247,7 @@ class Sku
         return $this->data->pId;
     }
 
+    /** @return bool */
     public function verify()
     {
         if (!isset($this->data->price) || !is_numeric($this->data->price)) {
@@ -496,6 +502,7 @@ class Sku
         return $this->data->allowMultiple;
     }
 
+    /** @return void */
     public function setTrackInventory($trackInventory)
     {
         if (!$trackInventory) {
@@ -515,6 +522,7 @@ class Sku
         return $this->data->trackInventory;
     }
 
+    /** @return void */
     public function reserveInventory($qty)
     {
         if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT') {
@@ -535,6 +543,7 @@ class Sku
         $this->saveBase();
     }
 
+    /** @return void */
     public function releaseInventory($qty)
     {
         if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT') {
@@ -551,6 +560,7 @@ class Sku
         $this->saveBase();
     }
 
+    /** @return void */
     public function setInventoryLevel($inventoryLevel)
     {
         if (!is_numeric($inventoryLevel) && $inventoryLevel != 'DEFAULT') {
@@ -569,6 +579,7 @@ class Sku
         return $this->data->inventoryLevel;
     }
 
+    /** @return void */
     public function setEnumerable($enumerable)
     {
         if (!$enumerable) {
@@ -604,6 +615,7 @@ class Sku
         return true;
     }
 
+    /** @return void */
     public function unPublish()
     {
         $this->setActiveStatus(false);
@@ -652,6 +664,7 @@ class Sku
         return $this->data->restricted;
     }
 
+    /** @return void */
     public function addMeta($key, $val)
     {
         $this->data->meta[$key] = $val;
@@ -706,6 +719,7 @@ class Sku
     }
 
     // Overwrites all options
+    /** @return void */
     public function setOptions($options)
     {
         $this->data->options = $options;
@@ -757,6 +771,7 @@ class Sku
 
     // Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to
     // speed
+    /** @return void */
     public static function updateReferences($pId)
     {
         $product = new Product($pId);
@@ -764,6 +779,7 @@ class Sku
         self::updateOptions($product);
     }
 
+    /** @return void */
     private static function updateOptions($product)
     {
         $db = App::get('db');

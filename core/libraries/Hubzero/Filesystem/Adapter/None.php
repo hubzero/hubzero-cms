@@ -127,6 +127,7 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @return  string
      */
     public function type($path)
     {
@@ -192,6 +193,7 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @return  bool
      */
     public function isSafe($file)
     {

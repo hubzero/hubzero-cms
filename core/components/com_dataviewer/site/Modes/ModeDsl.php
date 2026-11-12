@@ -253,6 +253,7 @@ class ModeDsl
         return $dd;
     }
 
+    /** @return void */
     public static function pathway($dd)
     {
         $db_id = $dd['db_id'];

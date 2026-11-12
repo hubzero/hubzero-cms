@@ -15,6 +15,7 @@ use Hubzero\Facades\Toolbar;
 
 class DataDefinition
 {
+    /** @return void */
     public static function execute()
     {
         $base = DvConfig::$conf['dir_base'];

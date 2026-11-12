@@ -40,11 +40,13 @@ class RecordProcessingHelper
         );
     }
 
+    /** @return void */
     public function handleSaveSuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
+    /** @return void */
     public function handleSaveFail($record)
     {
         $this->generateErrorNotification($record);
@@ -52,11 +54,13 @@ class RecordProcessingHelper
         $this->controller->newTask($record);
     }
 
+    /** @return void */
     public function handleUpdateSuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
+    /** @return void */
     public function handleUpdateFail($record)
     {
         $this->generateErrorNotification($record);
@@ -64,33 +68,39 @@ class RecordProcessingHelper
         $this->controller->editTask($record);
     }
 
+    /** @return void */
     public function handleDestroySuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
+    /** @return void */
     public function handleDestroyFail($message, $url)
     {
         $this->notifyOfError($message);
         $this->redirectTo($url);
     }
 
+    /** @return void */
     protected function handleSuccess($message, $url)
     {
         $this->notifyOfSuccess($message);
         $this->redirectTo($url);
     }
 
+    /** @return void */
     protected function notifyOfSuccess($message)
     {
         $this->notify->success($message);
     }
 
+    /** @return void */
     protected function redirectTo($url)
     {
         $this->app->redirect($url);
     }
 
+    /** @return void */
     protected function generateErrorNotification($record)
     {
         $errors = $record->getErrors();
@@ -98,6 +108,7 @@ class RecordProcessingHelper
         $this->notifyOfError($message);
     }
 
+    /** @return void */
     protected function notifyOfError($message)
     {
         $this->notify->error($message);

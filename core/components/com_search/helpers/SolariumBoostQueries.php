@@ -42,6 +42,7 @@ class SolariumBoostQueries
         return $queriesAsArrays;
     }
 
+    /** @return void */
     protected function setQueriesIfNeeded()
     {
         if (!$this->queries) {
@@ -62,6 +63,7 @@ class SolariumBoostQueries
         return $queries;
     }
 
+    /** @return void */
     protected function setQueries($queries)
     {
         $this->queries = $queries;

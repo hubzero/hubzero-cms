@@ -18,6 +18,7 @@ use Hubzero\Facades\Component;
 
 class Pages extends SiteController
 {
+    /** @return void */
     public function displayTask()
     {
         $code = Request::getString('code');

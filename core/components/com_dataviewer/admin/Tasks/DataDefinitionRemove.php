@@ -14,6 +14,7 @@ use Hubzero\Facades\User;
 
 class DataDefinitionRemove
 {
+    /** @return void */
     public static function execute()
     {
         \Components\Dataviewer\Admin\Libs\Security::checkRid();

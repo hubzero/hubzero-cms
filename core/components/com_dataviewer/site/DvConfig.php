@@ -25,6 +25,7 @@ class DvConfig
     /** @var string  Absolute filesystem path to the html/ assets, also the constant DV_PATH_HTML */
     public static $html_dir = '';
 
+    /** @return void */
     public static function init()
     {
         static::$html_path = str_replace(PATH_ROOT, '', __DIR__) . '/html';

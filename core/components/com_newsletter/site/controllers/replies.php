@@ -21,6 +21,7 @@ use Hubzero\Facades\Component;
 
 class Replies extends SiteController
 {
+    /** @return void */
     public function createTask()
     {
         Request::checkToken();
