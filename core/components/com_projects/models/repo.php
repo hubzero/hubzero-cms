@@ -52,7 +52,7 @@ class Repo extends Obj
     /**
      * Data management adapter
      *
-     * @var  string|null
+     * @var  object|null
      */
     private $adapter;
 

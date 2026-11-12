@@ -67,12 +67,12 @@ class Discussions extends Plugin
     protected $active = null;
 
     /**
-     * @var string
+     * @var object|null  The unit being discussed
      */
     protected $unit = null;
 
     /**
-     * @var string
+     * @var object|null  The lecture being discussed
      */
     protected $lecture = null;
 
