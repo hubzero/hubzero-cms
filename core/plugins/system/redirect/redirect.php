@@ -40,7 +40,7 @@ class Redirect extends Plugin
     /**
      * Method to handle an error condition.
      *
-     * @param   Exception  &$error  The Exception object to be handled.
+     * @param   \Throwable  $error  The error to be handled.
      * @return  void
      */
     public static function handleError($error)

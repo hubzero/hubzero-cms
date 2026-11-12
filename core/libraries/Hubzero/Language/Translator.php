@@ -480,7 +480,7 @@ class Translator extends Obj
      * Setter for the lowerLimitSearchWordCallback function.
      *
      * @param   mixed  $function  Function name (string) or actual function for PHP 5.3 (function)
-     * @return  string|function   Function name or the actual function for PHP 5.3.
+     * @return  $this
      */
     public function setLowerLimitSearchWordCallback($function)
     {
@@ -507,7 +507,7 @@ class Translator extends Obj
     /**
      * Getter for upperLimitSearchWordCallback function
      *
-     * @return  string|function  Function name or the actual function for PHP 5.3.
+     * @return  string|callable|null  Function name or the actual function.
      */
     public function getUpperLimitSearchWordCallback()
     {

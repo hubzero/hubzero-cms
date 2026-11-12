@@ -24,14 +24,14 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Current cursor position
      *
-     * @var  array
+     * @var  int
      */
     protected $pos = 0;
 
     /**
      * Current array count
      *
-     * @var  array
+     * @var  int
      */
     protected $total = 0;
 

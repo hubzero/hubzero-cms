@@ -64,8 +64,8 @@ class GradeBook extends Base
      * provide a scope, limiting the grades to an array of items, such as unit, course, or asset.
      * The results will be returned as an array with student id as the uppermost key.
      *
-     * @param      int or array $scope, scope for which to pull grades (unit, course, asset)
-     * @param      int or array $member_id, user id for which to pull grades
+     * @param      int|array|null $scope      scope for which to pull grades (unit, course, asset)
+     * @param      int|array|null $member_id  user id for which to pull grades
      * @return     array $grades
      */
     public function grades($scope = null, $member_id = null)

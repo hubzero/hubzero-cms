@@ -280,7 +280,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   int    $oId     Option ID
      * @param   array  $fields  New info
-     * @return  throws exception
+     * @return  object  the saved option
      */
     public function updateOption($oId, $fields)
     {

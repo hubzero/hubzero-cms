@@ -14,9 +14,8 @@ class Audit
 {
     /**
      * Constructor
-     * @param   object  Product info
-     * @param   int     Cart ID
-     * @param   int     User ID
+     * @param   object  $pInfo  Product info
+     * @param   int     $crtId  Cart ID
      * @return  object
      */
     public static function getAuditor($pInfo, $crtId)

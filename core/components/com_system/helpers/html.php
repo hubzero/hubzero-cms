@@ -19,7 +19,7 @@ class Html
      * @param  string  $key    Sort key
      * @param  string  $name   Link name
      * @param  string  $extra  Extra data to append to URL
-     * @param  string
+     * @return string
      */
     public static function sortheader($MYREQUEST, $MY_SELF_WO_SORT, $key, $name, $extra = '')
     {

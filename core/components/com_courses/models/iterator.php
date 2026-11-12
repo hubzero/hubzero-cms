@@ -16,14 +16,14 @@ class Iterator implements \Countable, \Iterator
     /**
      * Container for properties
      *
-     * @var array
+     * @var int
      */
     private $pos = 0;
 
     /**
      * Container for properties
      *
-     * @var array
+     * @var int
      */
     private $total = 0;
 

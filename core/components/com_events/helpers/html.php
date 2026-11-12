@@ -328,7 +328,7 @@ class Html
      *
      * @param      $tzselected - currently selected time zone
      * @param      $args - styles for field
-     * @return     Return - select list of time zones, with current time zone selected (if applicable)
+     * @return     string  select list of time zones, with current time zone selected (if applicable)
      */
     public static function buildTimeZoneSelect($tzselected, $args)
     {

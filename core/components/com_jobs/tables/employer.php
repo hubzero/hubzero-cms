@@ -78,7 +78,7 @@ class Employer extends Table
     /**
      * Get an employer
      *
-     * @param   integer $ uid               User ID
+     * @param   integer  $uid               User ID
      * @param   string   $subscriptionCode  Subscription code
      * @return  mixed    False if errors, Array upon success
      */

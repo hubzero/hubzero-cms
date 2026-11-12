@@ -24,7 +24,7 @@ class ComponentController extends \Hubzero\Component\SiteController
      *
      * @param       mixed $varNames (array of strings or string): Array of names anr single name to map the URL
      *                              parameter(s) to
-     * @return      object: Object with properties named after var names mapped to URL parameters
+     * @return      object  Object with properties named after var names mapped to URL parameters
      */
     protected function getParams($varNames)
     {

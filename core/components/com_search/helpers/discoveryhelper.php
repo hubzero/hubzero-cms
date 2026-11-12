@@ -19,7 +19,7 @@ class DiscoveryHelper
 {
     /**
      * Checks to see if model is searchable
-     * @param class $class  class of object being checked
+     * @param object|string $class  object, or name of the class, being checked
      * @return mixed name of class if it is found, false if not
      */
     public static function isSearchable($class)

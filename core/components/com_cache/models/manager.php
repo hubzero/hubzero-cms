@@ -95,7 +95,7 @@ class Manager extends Obj
      *
      * @param   string  $property  Optional parameter name
      * @param   mixed   $default   Optional default value
-     * @return  object  The property where specified, the state object where omitted
+     * @return  mixed   The property where specified, the state object where omitted
      */
     public function state($property = null, $default = null)
     {

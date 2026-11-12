@@ -428,7 +428,7 @@ class Doi extends Plugin
     /**
      * create relatedIdentifier node
      *
-     * @param   reference   &$xml
+     * @param   string      &$xml
      * @param   object      $dom
      * @param   object      $relatedIdentifiersNodeList
      * @param   array       $citation
@@ -452,7 +452,7 @@ class Doi extends Plugin
     /**
      * Insert relatedIdentifiers node before specific node and create child node relatedIdentifier
      *
-     * @param   reference   &$xml
+     * @param   string      &$xml
      * @param   object      $dom
      * @param   object      $resourceNode
      * @param   object      $specNode

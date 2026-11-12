@@ -2181,7 +2181,7 @@ class Calendar extends Plugin
     /**
      * Get all future events for this group cal
      *
-     * @return  array
+     * @return  string|null  how many there are
      */
     private function getAllFutureEvents()
     {
@@ -2201,7 +2201,7 @@ class Calendar extends Plugin
     /**
      * Get all future events that start or finish this month
      *
-     * @return  array
+     * @return  string|null  how many there are
      */
     private function getFutureEventsThisMonth()
     {

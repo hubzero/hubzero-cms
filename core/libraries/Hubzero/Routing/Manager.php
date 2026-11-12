@@ -139,7 +139,7 @@ class Manager
      *                             1: Make URI secure using global secure site URI.
      *                             0: Leave URI in the same secure state as it was passed to the function.
      *                            -1: Make URI unsecure using the global unsecure site URI.
-     * @return  The translated humanly readible URL.
+     * @return  string   The translated humanly readible URL.
      */
     public function urlForClient($client, $url, $xhtml = true, $ssl = null)
     {

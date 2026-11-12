@@ -100,7 +100,7 @@ class SolrQueryAdapter implements QueryInterface
      * Get MoreLikeThis
      *
      * @access public
-     * @return SolariumQuery
+     * @return object  the result set
      */
     public function getMoreLikeThis($terms)
     {
@@ -123,7 +123,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $terms
      * @access public
-     * @return dictionary
+     * @return mixed  the spellcheck results
      */
     public function spellCheck($terms)
     {
@@ -284,7 +284,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param string $name name provided for the multiFacet set.
      * @access public
-     * @return \Solarium\QueryType\Select\Query\Component\Facet\MultiQuery
+     * @return \Solarium\Component\Facet\MultiQuery
      */
     public function getFacetMultiQuery($name)
     {

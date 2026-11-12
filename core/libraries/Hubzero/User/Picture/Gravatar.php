@@ -122,7 +122,7 @@ class Gravatar implements Resolver
      *
      * @param   string  $email
      * @return  string
-     * @throws  InvalidEmailException
+     * @throws  \InvalidArgumentException
      */
     public function hash($email)
     {

@@ -561,7 +561,7 @@ class Filesystem
      * @param   string  $method
      * @param   array   $arguments
      * @return  mixed
-     * @throws  BadMethodCallException
+     * @throws  \BadMethodCallException
      */
     public function __call($method, array $arguments)
     {

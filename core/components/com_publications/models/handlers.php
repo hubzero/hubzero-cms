@@ -42,14 +42,14 @@ class Handlers extends Obj
     /**
      * Configs
      *
-     * @var
+     * @var  mixed
      */
     protected $configs = null;
 
     /**
      * Editor
      *
-     * @var
+     * @var  mixed
      */
     public $editor = null;
 

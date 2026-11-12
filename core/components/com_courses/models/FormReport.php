@@ -166,7 +166,7 @@ class FormReport extends Model
     /**
      * Get assessment details data
      *
-     * @param  obj   - database connection object
+     * @param  object $db   - database connection object
      * @param  int $asset_id   - asset id for which to retrieve letter counts
      * @param  int $section_id   - section id
      * @return array|false - counts of letter responses
@@ -287,8 +287,8 @@ class FormReport extends Model
     /**
      * Little helper function to get the next letter in the alphabet
      *
-     * @param  $letter - letter after which the next letter should be returned
-     * @return $chr - string: 1 character
+     * @param  string|null $letter - letter after which the next letter should be returned
+     * @return string  1 character
      **/
     private static function getNextLetter($letter)
     {

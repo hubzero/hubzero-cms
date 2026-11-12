@@ -127,7 +127,7 @@ class Event implements ArrayAccess, Countable
      * Remove an event argument.
      *
      * @param   string  $name  The argument name.
-     * @return  se;f
+     * @return  $this
      */
     public function removeArgument($name)
     {

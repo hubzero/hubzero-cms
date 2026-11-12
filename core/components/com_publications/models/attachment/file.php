@@ -1914,7 +1914,7 @@ class File extends Base
      * @param   object  $data
      * @param   object  $params
      * @param   object  $handler
-     * @return  HTML    string
+     * @return  string  HTML
      */
     public function drawAttachment($data, $params, $handler = null)
     {

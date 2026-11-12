@@ -30,7 +30,7 @@ class DayOfMonthField extends AbstractField
      *
      * @param DateTime $date Date object to check
      *
-     * @param return int returns the last day of the month
+     * @return int  the last day of the month
      */
     public static function getLastDayOfMonth(DateTime $date)
     {

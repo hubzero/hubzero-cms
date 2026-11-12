@@ -584,7 +584,7 @@ class Tinymce extends Plugin
     /**
      * TinyMCE WYSIWYG Editor - set the editor content
      *
-     * @param   string  The name of the editor
+     * @param   string  $editor  The name of the editor
      * @return  string
      */
     public function onSetContent($editor, $html)
@@ -644,14 +644,14 @@ class Tinymce extends Plugin
     /**
      * Display the editor area.
      *
-     * @param   string   The name of the editor area.
-     * @param   string   The content of the field.
-     * @param   string   The width of the editor area.
-     * @param   string   The height of the editor area.
-     * @param   int      The number of columns for the editor area.
-     * @param   int      The number of rows for the editor area.
-     * @param   boolean  True and the editor buttons will be displayed.
-     * @param   string   An optional ID for the textarea. If not supplied the name is used.
+     * @param   string   $name     The name of the editor area.
+     * @param   string   $content  The content of the field.
+     * @param   string   $width    The width of the editor area.
+     * @param   string   $height   The height of the editor area.
+     * @param   int      $col      The number of columns for the editor area.
+     * @param   int      $row      The number of rows for the editor area.
+     * @param   boolean  $buttons  True and the editor buttons will be displayed.
+     * @param   string   $id       An optional ID for the textarea. If not supplied the name is used.
      * @return  string
      */
     public function onDisplay(

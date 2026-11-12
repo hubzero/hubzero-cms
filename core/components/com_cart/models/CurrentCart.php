@@ -112,7 +112,7 @@ class CurrentCart extends Cart
     /**
      * Add SKU to cart
      *
-     * @param SKU $sId ID
+     * @param int $sId SKU ID
      * @param int $qty Quantity
      * @return void
      */
@@ -143,7 +143,7 @@ class CurrentCart extends Cart
     /**
      * Delete SKU from cart
      *
-     * @param SKU $sId ID
+     * @param int $sId SKU ID
      * @return void
      */
     public function delete($sId)
@@ -676,7 +676,7 @@ class CurrentCart extends Cart
     /**
      * Gets all transaction related info about current cart transaction
      *
-     * @return object, false on no results
+     * @return object|false  false on no results
      */
     public function getTransactionData()
     {
@@ -801,7 +801,7 @@ class CurrentCart extends Cart
     /**
      * Verify security token
      *
-     * @param       string  token
+     * @param       string  $token  token
      * @return      bool
      */
     public function verifyToken($token, $tId = false)

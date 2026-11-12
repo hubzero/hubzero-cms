@@ -23,7 +23,7 @@ class Zones extends SiteController
     /**
      * Page Not found
      *
-     * @return  exit
+     * @return  never
      */
     public function notFoundTask()
     {
@@ -75,7 +75,7 @@ class Zones extends SiteController
     /**
      * Asset delivery function.
      *
-     * @return  exit
+     * @return  never
      */
     public function assetsTask()
     {

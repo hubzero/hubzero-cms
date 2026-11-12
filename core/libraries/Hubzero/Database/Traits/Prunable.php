@@ -55,7 +55,7 @@ namespace Hubzero\Database\Traits;
  * {
  *     // Delete associated files
  *     foreach ($this->attachments as $attachment) {
- *         @unlink($attachment->path);
+ *         unlink($attachment->path);
  *     }
  * }
  * ```

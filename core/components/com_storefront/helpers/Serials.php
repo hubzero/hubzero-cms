@@ -110,7 +110,7 @@ class Serials
      *
      * @param   array $filters   Filters
      * @param   int $sId  SKU id
-     * @return  object/int
+     * @return  array|int  the serials, or how many there are
      */
     public static function getSkuSerials($filters, $sId)
     {

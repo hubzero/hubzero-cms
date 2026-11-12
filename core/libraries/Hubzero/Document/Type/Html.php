@@ -280,7 +280,7 @@ class Html extends Base
      * @param   string  $type     The type of renderer
      * @param   string  $name     The name of the element to render
      * @param   array   $attribs  Associative array of remaining attributes.
-     * @return  The|null output of the renderer
+     * @return  mixed  output of the renderer, or null
      */
     public function getBuffer($type = null, $name = null, $attribs = [])
     {

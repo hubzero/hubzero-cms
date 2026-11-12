@@ -1798,7 +1798,7 @@ class Profiles extends SiteController
     /**
      * Send a confirmation code to a user's email address
      *
-     * @param   strong   $login    Username
+     * @param   string   $login    Username
      * @param   string   $email    User email address
      * @param   string   $confirm  Confirmation code
      * @return  boolean

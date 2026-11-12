@@ -344,7 +344,7 @@ class Dispatcher implements DispatcherInterface
     /**
      * Count the number of registered listeners for the given event.
      *
-     * @param   EventInterface|string  $event  The event object or name.
+     * @param   Event|string  $event  The event object or name.
      * @return  integer  The number of registered listeners for the given event.
      */
     public function countListeners($event)

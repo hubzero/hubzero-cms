@@ -279,7 +279,7 @@ class Provider extends AbstractService
      *
      * @param    array  $data  Content to test
      * @return   bool   True if the comment is spam, false if not
-     * @throws   Will throw an exception if the API key passed to the constructor is invalid.
+     * @throws   Exception  If the API key passed to the constructor is invalid.
      */
     public function detect($data)
     {

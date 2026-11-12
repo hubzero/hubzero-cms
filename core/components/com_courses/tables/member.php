@@ -20,7 +20,7 @@ class Member extends Table
     /**
      * Contructor method for Table class
      *
-     * @param  database object
+     * @param  object  $db  database object
      * @return void
      */
     public function __construct(&$db)

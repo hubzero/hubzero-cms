@@ -156,7 +156,7 @@ class Handler
     /**
      * API for getting action message
      *
-     * @return message
+     * @return string  the action message
      **/
     public static function getMessage()
     {

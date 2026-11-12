@@ -52,7 +52,7 @@ class Reader implements Iterator
      * Current row position
      * Starts at 1 as row 0
      *
-     * @var  array
+     * @var  int
      */
     private $position = 0;
 

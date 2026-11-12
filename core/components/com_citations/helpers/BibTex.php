@@ -886,7 +886,7 @@ class BibTex
      *
      * @access private
      * @param  string  $value The value in which curly braces to be removed
-     * @param  string  Value  with removed curly braces
+     * @return string  Value with removed curly braces
      */
     public function removeCurlyBraces($value)
     {

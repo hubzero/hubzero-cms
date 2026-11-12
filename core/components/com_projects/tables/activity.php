@@ -301,7 +301,7 @@ class Activity extends Table
      * Save activity preview
      *
      * @param   integer  $aid
-     * @param   text     $preview
+     * @param   string   $preview
      * @return  boolean  true on success
      */
     public function saveActivityPreview($aid = 0, $preview = null)

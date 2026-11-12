@@ -175,7 +175,7 @@ class Courses extends Plugin
      * @param  string $what
      * @param  string $who
      * @param  array  $filters
-     * @return array   Return array of html
+     * @return array|string|null  the rows, or how many there are
      */
     private function getData($what = 'count', $who = null, $filters = [])
     {

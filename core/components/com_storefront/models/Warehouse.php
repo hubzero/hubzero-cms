@@ -217,7 +217,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Check if collection exists
      *
-     * @param   mixed   collection ID or alias
+     * @param   mixed   $cId  collection ID or alias
      * @return  int     cId on success, null if no match found
      */
     public function collectionExists($cId, $showInactive = false)
@@ -327,7 +327,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Check if product exists
      *
-     * @param   int     product ID or alias
+     * @param   int|string  $product  product ID or alias
      * @return  int     pId on success, null if no match found
      */
     public function productExists($product, $showInactive = false)
@@ -354,7 +354,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Check if product exists and can be viewed by the current user
      *
-     * @param   int     product ID or alias
+     * @param   int|string  $product  product ID or alias
      * @return  \stdClass     pId on success, null if no match found
      */
     public function checkProduct($product, $showInactive = false)
@@ -900,7 +900,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all options for the option group (for admin)
      *
-     * @param   int         option group ID
+     * @param   int         $ogId  option group ID
      * @return  array       options IDs
      */
     public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true, $filters = false)
@@ -1016,8 +1016,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all info for SKUs provided, including options
      *
-     * @param   array       SKU IDs
-     * @param   bool        Flag whether to show inactive SKU and product info
+     * @param   array|object  $skus  SKU IDs
+     * @param   bool        $showInactive  Flag whether to show inactive SKU and product info
      * @return  array       info
      */
     public function getSkusInfo($skus, $showInactive = false, $filters = false)
@@ -1143,7 +1143,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all info for SKU provided, including options
      *
-     * @param   int         SKU ID
+     * @param   int         $sId  SKU ID
      * @return  array|false       info
      */
     public function getSkuInfo($sId, $showInactive = true)
@@ -1175,7 +1175,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product SKU IDs
      *
-     * @param   int         product id
+     * @param   int         $pId  product id
      * @return  array       SKU IDs
      */
     public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
@@ -1314,11 +1314,11 @@ class Warehouse extends \Hubzero\Base\Obj
      * Add product coupon
      *
      * @param   Coupon $coupon   Instance of a coupon to add
-     * @return  void
+     * @return  \stdClass  holds the new coupon's ID as cnId
      */
     public function addCoupon($coupon)
     {
-        $this->doCoupon($coupon, 'add');
+        return $this->doCoupon($coupon, 'add');
     }
 
     public function updateCoupon($coupon)
@@ -1370,7 +1370,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Handle product coupon (add, update)
      *
-     * @param   Coupon   Instance of a product
+     * @param   Coupon   $coupon  Instance of a coupon
      * @return  \stdClass                         coupon ID
      */
     private function doCoupon($coupon, $action)

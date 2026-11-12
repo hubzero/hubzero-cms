@@ -2165,7 +2165,7 @@ class Forum extends Plugin
      * @param   object   $memberoptions
      * @param   bool     $categorySubscriptionsEnabled
      * @param   object   $category
-     * @return  array
+     * @return  mixed  1 when the user is to be mailed
      */
     protected function shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
     {

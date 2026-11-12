@@ -53,7 +53,7 @@ class TraceableDispatcher implements DispatcherInterface
      * Constructor.
      *
      * @param   \Hubzero\Events\DispatcherInterface $dispatcher An EventDispatcherInterface instance
-     * @param   Stopwatch                $stopwatch  A Stopwatch instance
+     * @param   object|null              $stopwatch  A Stopwatch instance
      * @param   \Hubzero\Log\Writer|null $logger     A LoggerInterface instance
      * @return  void
      */

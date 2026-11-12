@@ -301,7 +301,7 @@ class Ftp implements AdapterInterface
     /**
      * Get the connection.
      *
-     * @return  resource|Net_SFTP
+     * @return  mixed  The FTP connection
      */
     public function getConnection()
     {

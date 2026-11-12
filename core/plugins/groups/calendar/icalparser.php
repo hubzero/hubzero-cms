@@ -15,7 +15,7 @@ class IcalParser
     /**
      * Var to hold calendar timezone
      *
-     * @var DateTimezone
+     * @var \DateTimeZone
      */
     public $timezone;
 

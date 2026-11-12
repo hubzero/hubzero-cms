@@ -44,7 +44,7 @@ class Sql extends SearchResult
      * Return results as associative array
      *
      * @return  object
-     * @throws  SearchPluginError
+     * @throws  Exception
      */
     public function toAssociative()
     {

@@ -125,7 +125,7 @@ class Solr extends Plugin
 
     /**
      *
-     * @param Components\Search\Models\Solr\SearchComponent $searchComponent
+     * @param SearchComponent $searchComponent
      * @param mixed $table
      * @param mixed $model
      * @return mixed

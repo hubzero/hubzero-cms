@@ -1299,7 +1299,7 @@ class Html
      * @param   int  $publication_id    publication id
      * @param   int  $publication_version_id    publication version id
      * @param   string  $secret publication secret
-     * @param   object array  $attachments  publication attachments
+     * @param   array  $attachments  publication attachments
      *
      * @return  array
      */

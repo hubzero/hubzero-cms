@@ -122,7 +122,7 @@ class Gravatar
      *
      * @param   string  $email
      * @return  string
-     * @throws  InvalidEmailException
+     * @throws  Exception
      */
     public function hash($email)
     {

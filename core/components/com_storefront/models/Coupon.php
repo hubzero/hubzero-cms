@@ -157,7 +157,7 @@ class Coupon
     /**
      * Set expiration date (if needed)
      *
-     * @param   char    date
+     * @param   string  $expires  date
      * @return  bool    true on success
      */
     public function setExpiration($expires)
@@ -209,7 +209,7 @@ class Coupon
     /**
      * Set code action
      *
-     * @param   string      object action
+     * @param   string      $action  object action
      * @return  bool        true on success
      */
     public function setAction($action, $actionValue)
