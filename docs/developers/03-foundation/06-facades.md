@@ -143,7 +143,7 @@ for a matching file and finds none. Then the alias autoloader that
 match whole names — it takes the **last segment** of the name and looks that
 up too:
 
-<!--include: core/libraries/Hubzero/Facades/Facade.php:120-135-->
+<!--include: core/libraries/Hubzero/Facades/Facade.php:120-137-->
 
 `Route` is in the alias map, so it aliases the namespaced name to the facade
 and the call proceeds. Most of the time, on a site request, an unimported

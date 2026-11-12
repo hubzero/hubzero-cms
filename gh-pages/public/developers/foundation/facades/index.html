@@ -303,6 +303,8 @@ up too:</p>
         if (array_key_exists($classAlt, $aliases)) {
             return class_alias($aliases[$classAlt], $class);
         }
+
+        return null;
     }
 </code></pre>
 <p><code>Route</code> is in the alias map, so it aliases the namespaced name to the facade

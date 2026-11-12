@@ -56,7 +56,7 @@ Fired from:
 
 - [`core/components/com_projects/site/controllers/projects.php:615`](../../../core/components/com_projects/site/controllers/projects.php#L615) with `$plugin_params`
 - [`core/components/com_projects/site/controllers/setup.php:928`](../../../core/components/com_projects/site/controllers/setup.php#L928) with `[ $this->model, 'save', ['team'], ]`
-- [`core/components/com_projects/site/controllers/setup.php:1029`](../../../core/components/com_projects/site/controllers/setup.php#L1029) with `[ $this->model, $this->task, ['team'], ]`
+- [`core/components/com_projects/site/controllers/setup.php:1031`](../../../core/components/com_projects/site/controllers/setup.php#L1031) with `[ $this->model, $this->task, ['team'], ]`
 - [`core/components/com_publications/site/controllers/publications.php:1453`](../../../core/components/com_publications/site/controllers/publications.php#L1453) with `$plugin_params`
 - [`core/plugins/cron/projects/projects.php:138`](../../../core/plugins/cron/projects/projects.php#L138) with `$plugin_params`
 
