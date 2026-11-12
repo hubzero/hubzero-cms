@@ -168,7 +168,7 @@ class Opensearch extends Base
     /**
      * Adds an URL to the OpenSearch description.
      *
-     * @param   object  $url  The url to add to the description.
+     * @param   \Hubzero\Document\Type\Opensearch\Url $url  The url to add to the description.
      * @return  object  Supports chaining
      */
     public function addUrl(Url $url)
@@ -181,7 +181,7 @@ class Opensearch extends Base
     /**
      * Adds an image to the OpenSearch description.
      *
-     * @param   object  $image  The image to add to the description.
+     * @param   \Hubzero\Document\Type\Opensearch\Image $image  The image to add to the description.
      * @return  object  Supports chaining
      */
     public function addImage(Image $image)

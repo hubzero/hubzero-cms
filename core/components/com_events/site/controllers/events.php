@@ -2302,7 +2302,7 @@ class Events extends SiteController
     /**
      * Authorize
      *
-     * @param   string   $id
+     * @param   string|int $id
      * @return  boolean
      */
     protected function authorize($action = 'core.manage', $id = 0)

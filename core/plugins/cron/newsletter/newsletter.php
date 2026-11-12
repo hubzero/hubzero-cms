@@ -49,7 +49,7 @@ class Newsletter extends Plugin
     /**
      * Processes any queued newsletter mailings.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function processMailings(\Components\Cron\Models\Job $job)
@@ -268,7 +268,7 @@ class Newsletter extends Plugin
     /**
      * Processes newsletter mailing actions (clicks, opens, etc) IP addresses into location data for stats
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function processIps(\Components\Cron\Models\Job $job)

@@ -2320,7 +2320,7 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
+     * @param   array  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */

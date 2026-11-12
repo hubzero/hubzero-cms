@@ -54,7 +54,7 @@ class Project extends Table
      * @param   array    $filters
      * @param   boolean  $admin
      * @param   integer  $uid
-     * @param   boolean  $showall
+     * @param   boolean|int $showall
      * @param   integer  $setup_complete
      * @return  string
      */
@@ -373,7 +373,7 @@ class Project extends Table
      * @param   array    $filters
      * @param   boolean  $admin
      * @param   integer  $uid
-     * @param   boolean  $showall
+     * @param   boolean|int $showall
      * @param   integer  $setup_complete
      * @return  integer
      */
@@ -395,7 +395,7 @@ class Project extends Table
      * @param   array    $filters
      * @param   boolean  $admin
      * @param   integer  $uid
-     * @param   boolean  $showall
+     * @param   boolean|int $showall
      * @param   integer  $setup_complete
      * @return  object
      */
@@ -759,7 +759,7 @@ class Project extends Table
      *
      * @param   integer  $projectid
      * @param   string   $param
-     * @param   string   $value
+     * @param   string|int $value
      * @return  void
      */
     public function saveParam($projectid = null, $param = '', $value = 0)

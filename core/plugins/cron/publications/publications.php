@@ -72,7 +72,7 @@ class Publications extends Plugin
     /**
      * Send emails to authors with the monthly stats
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function sendAuthorStats(\Components\Cron\Models\Job $job)
@@ -210,7 +210,7 @@ class Publications extends Plugin
     /**
      * Compute unique user stats from text logs
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function rollUserStats(\Components\Cron\Models\Job $job)
@@ -246,7 +246,7 @@ class Publications extends Plugin
     /**
      * Archive publications beyond grace period
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function runMkAip(\Components\Cron\Models\Job $job)
@@ -368,7 +368,7 @@ class Publications extends Plugin
     /**
      * Issue master DOI for publications if does not exist
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function issueMasterDoi(\Components\Cron\Models\Job $job)
@@ -436,7 +436,7 @@ class Publications extends Plugin
     /**
      * Create/Remove ftp links based on embargo date range
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function updateFtpLinks(\Components\Cron\Models\Job $job)
@@ -493,7 +493,7 @@ class Publications extends Plugin
      * Gated by the bundle_async component flag, so the job can be scheduled
      * before cutover and stays inert until the flag is turned on.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function buildPublicationBundles(\Components\Cron\Models\Job $job)

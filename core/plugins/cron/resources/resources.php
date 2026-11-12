@@ -59,7 +59,7 @@ class Resources extends Plugin
     /**
      * Issue master DOI for tool resources if does not exist
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function issueResourceMasterDoi(\Components\Cron\Models\Job $job)
@@ -136,7 +136,7 @@ class Resources extends Plugin
     /**
      * Audit resource data
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function auditResourceData(\Components\Cron\Models\Job $job)
@@ -221,7 +221,7 @@ class Resources extends Plugin
      * should not be set to run more than once daily, otherwise it will continue to send out the
      * same digest to people over and over again.
      *
-     * @param   object  $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  bool
      */
     public function emailMemberResources(\Components\Cron\Models\Job $job)

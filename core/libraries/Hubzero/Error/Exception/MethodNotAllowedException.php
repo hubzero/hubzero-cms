@@ -19,7 +19,7 @@ class MethodNotAllowedException extends \Exception
      *
      * @param   string   $message   The Exception message to throw.
      * @param   integer  $code      The Exception code.
-     * @param   object   $previous  The previous exception used for the exception chaining.
+     * @param   \Exception|null $previous  The previous exception used for the exception chaining.
      * @return  void
      */
     public function __construct($message = '', $code = 405, ?\Exception $previous = null)

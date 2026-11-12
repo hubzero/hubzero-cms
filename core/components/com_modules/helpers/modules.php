@@ -124,7 +124,7 @@ abstract class Modules
      * Get a list of templates
      *
      * @param   integer  $clientId
-     * @param   integer  $state
+     * @param   integer|string $state
      * @param   string   $template
      * @return  array
      */

@@ -50,7 +50,7 @@ class Massmail extends Plugin
      * Collect Postfix outbound volume into hourly/daily rollups for the
      * dashboard. Read-only monitoring -- runs regardless of the send switch.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function collectPostfixVolume(\Components\Cron\Models\Job $job)
@@ -65,7 +65,7 @@ class Massmail extends Plugin
     /**
      * Feed a rate-limited batch of queued mass-mail messages.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function processMassmailQueue(\Components\Cron\Models\Job $job)

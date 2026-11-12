@@ -204,7 +204,7 @@ class Asset
      * @param   string   $file       The relative or absolute URL to use for the src attribute
      * @param   string   $alt        The alt text.
      * @param   string   $attribs    The target attribute to use
-     * @param   array    $relative   An associative array of attributes to add
+     * @param   array|false $relative   An associative array of attributes to add
      * @param   boolean  $path_only  If set to true, it tries to find an override for the file in the template
      * @return  string
      */
@@ -349,7 +349,7 @@ class Asset
      * Load an icon's SVG representation
      *
      * @param   string  $symbol
-     * @param   array   $ariahidden
+     * @param   array|bool $ariahidden
      * @return  string
      */
     public static function icon($symbol, $ariahidden = true)

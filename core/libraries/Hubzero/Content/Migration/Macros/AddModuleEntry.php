@@ -20,7 +20,7 @@ class AddModuleEntry extends Macro
      *
      * @param   string  $element  Plugin element
      * @param   int     $enabled  Whether or not the plugin should be enabled
-     * @param   array   $params   Plugin params (if already known)
+     * @param   array|string $params   Plugin params (if already known)
      * @param   int     $client   Client (site=0, admin=1)
      * @return  bool
      **/

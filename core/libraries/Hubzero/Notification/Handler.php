@@ -23,7 +23,7 @@ class Handler
     /**
      * Create a new flash notifier instance.
      *
-     * @param   object  $storage
+     * @param   \Hubzero\Notification\MessageStore $storage
      * @return  void
      * @codeCoverageIgnore
      */

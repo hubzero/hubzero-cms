@@ -547,7 +547,7 @@ class Log extends Table
      * Get totals for publication(s) in a project/for an author
      *
      * @param   integer  $id
-     * @param   integer  $type
+     * @param   integer|string $type
      * @return  mixed
      */
     public function getTotals($id = 0, $type = 'author')

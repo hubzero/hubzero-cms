@@ -50,7 +50,7 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
     /**
      * Seed users table with deterministic data for functional tests
      *
-     * @param  Driver  $driver
+     * @param  \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver
      * @return void
      */
     private function seedUsers(BaseSqlDriver $driver): void

@@ -378,7 +378,7 @@ class Google extends Obj
      * Untrash remote item
      *
      * @param   object   $apiService  Drive API service instance
-     * @param   string   $id          Remote id
+     * @param   string|int $id          Remote id
      * @return  boolean
      */
     public static function untrashItem($apiService, $id = 0)
@@ -401,7 +401,7 @@ class Google extends Obj
      * Delete parent
      *
      * @param   object   $apiService  Drive API service instance
-     * @param   string   $id          Remote id
+     * @param   string|int $id          Remote id
      * @return  boolean
      */
     public static function deleteParent($apiService, $id = 0, $folderId = 0)
@@ -424,7 +424,7 @@ class Google extends Obj
      * Delete all parents
      *
      * @param   object   $apiService  Drive API service instance
-     * @param   string   $id          Remote id
+     * @param   string|int $id          Remote id
      * @return  boolean
      */
     public static function deleteAllParents($apiService, $id = 0)
@@ -459,7 +459,7 @@ class Google extends Obj
      * Delete remote item
      *
      * @param   object   $apiService  Drive API service instance
-     * @param   string   $id          Remote id
+     * @param   string|int $id          Remote id
      * @param   boolean  $permanent   Delete permanently? (or trash)
      * @return  boolean
      */
@@ -1297,7 +1297,7 @@ class Google extends Obj
     /**
      * Get file name for import
      *
-     * @param   array   $name
+     * @param   array|string $name
      * @param   string  $importExt
      * @return  string
      */

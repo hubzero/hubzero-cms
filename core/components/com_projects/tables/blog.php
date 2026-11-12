@@ -164,7 +164,7 @@ class Blog extends Table
      * Delete item
      *
      * @param   integer  $id
-     * @param   boolean  $permanent
+     * @param   boolean|int $permanent
      * @return  boolean  True on success
      */
     public function deletePost($id = 0, $permanent = 0)
@@ -191,7 +191,7 @@ class Blog extends Table
      * Delete items
      *
      * @param   integer  $projectid
-     * @param   boolean  $permanent
+     * @param   boolean|int $permanent
      * @return  boolean  True on success
      */
     public function deletePosts($projectid = 0, $permanent = 0)

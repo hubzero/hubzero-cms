@@ -29,7 +29,7 @@ class Product
     /**
      * Constructor
      *
-     * @param   int   $pId  Product ID
+     * @param   int|false $pId  Product ID
      * @return  void
      */
     public function __construct($pId = false)

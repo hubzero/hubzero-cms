@@ -58,7 +58,7 @@ class Checker
     /**
      * Set string processor
      *
-     * @param   object  $stringProcessor
+     * @param   \Hubzero\Spam\StringProcessor\StringProcessorInterface $stringProcessor
      * @return  void
      */
     public function setStringProcessor(StringProcessorInterface $stringProcessor)
@@ -124,7 +124,7 @@ class Checker
     /**
      * Registers a Spam Detector
      *
-     * @param   object  $spamDetector  SpamDetectorInterface
+     * @param   \Hubzero\Spam\Detector\DetectorInterface $spamDetector  SpamDetectorInterface
      * @return  object  SpamDetector
      * @throws  RuntimeException
      */

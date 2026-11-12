@@ -26,7 +26,7 @@ abstract class Base implements MacroInterface
     /**
      * Set the Filesystem object.
      *
-     * @param   object  $filesystem  Filesystem
+     * @param   \Hubzero\Filesystem\Filesystem $filesystem  Filesystem
      * @return  void
      */
     public function setFilesystem(Filesystem $filesystem)

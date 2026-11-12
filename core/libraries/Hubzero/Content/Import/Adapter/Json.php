@@ -58,7 +58,7 @@ class Json implements Adapter
     /**
      * Count Import data
      *
-     * @param   object  $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @return  int
      */
     public function count(Import $import)
@@ -76,7 +76,7 @@ class Json implements Adapter
     /**
      * Get a list of headers
      *
-     * @param   object  $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @return  array
      */
     public function headers(Import $import)
@@ -99,7 +99,7 @@ class Json implements Adapter
     /**
      * Process Import data
      *
-     * @param   object  $import     Import record
+     * @param   \Hubzero\Content\Import\Model\Import $import     Import record
      * @param   array   $callbacks  Array of Callbacks
      * @param   bool    $dryRun     Dry Run mode?
      * @return  object

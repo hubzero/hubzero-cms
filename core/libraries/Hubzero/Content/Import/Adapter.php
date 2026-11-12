@@ -25,14 +25,14 @@ interface Adapter
     /**
      * Count import records
      *
-     * @param  object   $import
+     * @param  \Hubzero\Content\Import\Model\Import $import
      */
     public function count(Import $import);
 
     /**
      * Process an import
      *
-     * @param  object   $import
+     * @param  \Hubzero\Content\Import\Model\Import $import
      * @param  array    $callbacks
      * @param  integer  $dryRun
      */

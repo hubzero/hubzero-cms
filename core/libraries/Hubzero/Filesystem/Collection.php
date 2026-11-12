@@ -38,7 +38,7 @@ class Collection extends ItemList
      * Sorts items by a given field and direction
      *
      * @param   string  $key  The key to sort by
-     * @param   string  $asc  Whether or not to sort asc or descending
+     * @param   string|bool $asc  Whether or not to sort asc or descending
      * @return  static
      **/
     public function sort($key, $asc = true)

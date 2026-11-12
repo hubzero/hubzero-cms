@@ -56,7 +56,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
     /**
      * Create a test table with id + name columns using schema builder
      *
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @param   string  $name    Table name
      * @param   array   $extraColumns  Extra columns to add: ['colname' => 'type', ...]
      * @return  void
@@ -85,7 +85,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
     /**
      * Drop a test table if it exists
      *
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @param   string  $name    Table name
      * @return  void
      */
@@ -106,7 +106,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a nullable column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -135,7 +135,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test that AlterTableBuilder returns fluent interface
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -161,7 +161,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * and could trigger a table rebuild.
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -188,7 +188,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding an index
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -227,7 +227,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test dropping an index
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -260,7 +260,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test that alterTable() returns AlterTableBuilder instance
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -278,7 +278,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * This tests the legacy API for backwards compatibility.
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -298,7 +298,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a string column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -320,7 +320,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding an integer column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -342,7 +342,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a text column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -364,7 +364,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a datetime column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -386,7 +386,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a boolean column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -412,7 +412,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a column with default value
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -438,7 +438,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a column with IF NOT EXISTS check
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -465,7 +465,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test dropping multiple columns at once
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -497,7 +497,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test modifying a column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -522,7 +522,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test modifying a column with IF EXISTS check
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -551,7 +551,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test renaming a column
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -581,7 +581,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test that addIndex returns fluent builder
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -598,7 +598,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a unique index
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -637,7 +637,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test that dropIndex returns fluent builder
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -654,7 +654,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding a fulltext index
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -683,7 +683,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test dropping primary key
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]
@@ -700,7 +700,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * Test adding primary key
      *
      * @param   string  $dbName  Database name
-     * @param   Driver  $driver  Database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Database driver
      * @return  void
      */
     #[Test]

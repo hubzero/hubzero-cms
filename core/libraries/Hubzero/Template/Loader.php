@@ -54,7 +54,7 @@ class Loader
     /**
      * Constructor
      *
-     * @param   object  $app
+     * @param   \Hubzero\Container\Container $app
      * @param   array   $options
      * @return  void
      */

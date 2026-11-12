@@ -276,7 +276,7 @@ abstract class Field
     /**
      * Method to attach a Form object to the field.
      *
-     * @param   object  $form  The Form object to attach to the form field.
+     * @param   \Hubzero\Form\Form $form  The Form object to attach to the form field.
      * @return  object  The form field object so that the method can be used in a chain.
      */
     public function setForm(Form $form)

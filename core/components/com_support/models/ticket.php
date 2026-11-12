@@ -195,7 +195,7 @@ class Ticket extends Relational
     /**
      * Is the user the owner of the ticket?
      *
-     * @param   integer  $id
+     * @param   integer|string $id
      * @return  boolean
      */
     public function isOwner($id = '')

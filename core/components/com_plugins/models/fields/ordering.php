@@ -72,7 +72,7 @@ class Ordering extends Field
      * Returns an array of options
      *
      * @param   string   $sql   SQL with 'ordering' AS value and 'name field' AS text
-     * @param   integer  $chop  The length of the truncated headline
+     * @param   integer|string $chop  The length of the truncated headline
      * @return  array    An array of objects formatted for JHtml list processing
      */
     public static function genericordering($sql, $chop = '30')

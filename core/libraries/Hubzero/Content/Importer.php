@@ -86,7 +86,7 @@ class Importer
     /**
      * Method to set adapater
      *
-     * @param   object  $adapter
+     * @param   \Hubzero\Content\Import\Adapter $adapter
      * @return  void
      */
     public function setAdapter(Adapter $adapter)
@@ -107,7 +107,7 @@ class Importer
     /**
      * Method auto detect adapter based on mime type
      *
-     * @param   object  $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @return  void
      */
     private function autoDetectAdapter(Import $import)
@@ -147,7 +147,7 @@ class Importer
     /**
      * Count import data
      *
-     * @param   object   $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @return  integer
      */
     public function count(Import $import)
@@ -162,7 +162,7 @@ class Importer
     /**
      * Count import data
      *
-     * @param   object   $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @return  integer
      */
     public function headers(Import $import)
@@ -177,7 +177,7 @@ class Importer
     /**
      * Process import data
      *
-     * @param   object   $import
+     * @param   \Hubzero\Content\Import\Model\Import $import
      * @param   array    $callbacks  Array of Closure Objects
      * @param   integer  $dryRun     Dry run?
      * @return  void

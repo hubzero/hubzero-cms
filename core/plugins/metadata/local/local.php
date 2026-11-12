@@ -18,7 +18,7 @@ class Local extends Plugin
     /**
      * Responds to events for saving file metadata
      *
-     * @param   Hubzero\Filesystem\File  $file      The file to which the metadata pertains
+     * @param   \Hubzero\Filesystem\File $file      The file to which the metadata pertains
      * @param   array                    $metadata  The metadata itself
      * @return  void
      **/
@@ -38,7 +38,7 @@ class Local extends Plugin
     /**
      * Responds to events for getting the latest metadata annotation set
      *
-     * @param   Hubzero\Filesystem\File  $file        The file to which the metadata pertains
+     * @param   \Hubzero\Filesystem\File $file        The file to which the metadata pertains
      * @param   int                      $maxEntries  The maximum number of entries to return
      * @return  array
      **/

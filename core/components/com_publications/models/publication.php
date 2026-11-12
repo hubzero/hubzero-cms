@@ -1754,7 +1754,7 @@ class Publication extends Obj
     /**
      * Get tag cloud
      *
-     * @param   boolean  $admin
+     * @param   boolean|int $admin
      * @return  string   HTML
      */
     public function getTagCloud($admin = 0)

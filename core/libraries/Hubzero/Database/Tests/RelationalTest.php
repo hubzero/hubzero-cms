@@ -62,7 +62,7 @@ class RelationalTest extends AbstractDriverTestCase
     /**
      * Set up test tables for a database (once per database)
      *
-     * @param   Driver  $driver  Driver instance
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Driver instance
      * @param   string  $dbName  Database name
      * @return  void
      */
@@ -125,7 +125,7 @@ class RelationalTest extends AbstractDriverTestCase
     /**
      * Seed test data
      *
-     * @param   Driver  $driver  Driver instance
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Driver instance
      * @param   string  $dbName  Database name
      * @return  void
      */
@@ -194,7 +194,7 @@ class RelationalTest extends AbstractDriverTestCase
     /**
      * Clean up test data
      *
-     * @param   Driver  $driver  Driver instance
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  Driver instance
      * @param   string  $dbName  Database name
      * @return  void
      */

@@ -113,7 +113,7 @@ class Service extends Obj
     /**
      * Set the database connection
      *
-     * @param   object  $db    Database connection
+     * @param   \Hubzero\Database\Driver $db    Database connection
      * @return  object  $this
      */
     public function setDbo(Driver $db)
@@ -206,7 +206,7 @@ class Service extends Obj
     /**
      * Set the response object
      *
-     * @param   object  $response
+     * @param   \Components\Oaipmh\Models\Xml\Response $response
      * @return  object  $this
      */
     public function setResponse(Response $response)
@@ -246,7 +246,7 @@ class Service extends Obj
      * Register a provider
      *
      * @param   string  $key
-     * @param   object  $provider
+     * @param   \Components\Oaipmh\Models\Provider $provider
      * @return  object
      */
     public function register($key, Provider $provider)

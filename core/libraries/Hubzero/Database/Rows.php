@@ -76,7 +76,7 @@ class Rows implements Iterator, Countable
     /**
      * Pushes a new model on to the stack
      *
-     * @param   \Hubzero\Database\Relational|static  $model  The model to add
+     * @param   \Hubzero\Database\Relational  $model  The model to add
      * @return  void
      **/
     public function push(Relational $model)

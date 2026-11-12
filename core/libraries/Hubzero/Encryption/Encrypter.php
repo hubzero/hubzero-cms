@@ -33,8 +33,8 @@ class Encrypter
      * Object Constructor takes an optional key to be used for encryption/decryption. If no key is given then the
      * secret word from the configuration object is used.
      *
-     * @param   object  $cipher  The encryption cipher object.
-     * @param   object  $key     The encryption key[/pair)].
+     * @param   \Hubzero\Encryption\Cipher|null $cipher  The encryption cipher object.
+     * @param   \Hubzero\Encryption\Key|null $key     The encryption key[/pair)].
      * @return  void
      */
     public function __construct(?Cipher $cipher = null, ?Key $key = null)
@@ -82,7 +82,7 @@ class Encrypter
     /**
      * Method to set the encryption key[/pair] object.
      *
-     * @param   object  $key  The key object to set.
+     * @param   \Hubzero\Encryption\Key $key  The key object to set.
      * @return  object
      */
     public function setKey(Key $key)

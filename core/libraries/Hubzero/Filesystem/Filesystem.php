@@ -35,7 +35,7 @@ class Filesystem
     /**
      * Constructor.
      *
-     * @param   object  $adapter  AdapterInterface
+     * @param   \Hubzero\Filesystem\AdapterInterface $adapter  AdapterInterface
      * @return  void
      */
     public function __construct(AdapterInterface $adapter)
@@ -56,7 +56,7 @@ class Filesystem
     /**
      * Set the Adapter.
      *
-     * @param   object  $adapter  AdapterInterface
+     * @param   \Hubzero\Filesystem\AdapterInterface $adapter  AdapterInterface
      * @return  object
      */
     public function setAdapter(AdapterInterface $adapter)
@@ -526,7 +526,7 @@ class Filesystem
     /**
      * Register a macro.
      *
-     * @param   object  $macro  MacroInterface
+     * @param   \Hubzero\Filesystem\MacroInterface $macro  MacroInterface
      * @return  $this
      */
     public function addMacro(MacroInterface $macro)

@@ -52,9 +52,9 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Constructor.
      *
-     * @param   EventDispatcherInterface $dispatcher An EventDispatcherInterface instance
+     * @param   \Hubzero\Events\DispatcherInterface $dispatcher An EventDispatcherInterface instance
      * @param   Stopwatch                $stopwatch  A Stopwatch instance
-     * @param   LoggerInterface          $logger     A LoggerInterface instance
+     * @param   \Hubzero\Log\Writer|null $logger     A LoggerInterface instance
      * @return  void
      */
     public function __construct(DispatcherInterface $dispatcher, $stopwatch = null, ?Logger $logger = null)
@@ -232,7 +232,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Called after dispatching the event.
      *
-     * @param   object  $event  The event
+     * @param   \Hubzero\Events\Event $event  The event
      * @return  void
      */
     protected function postTrigger(Event $event) {}
@@ -240,7 +240,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Called before preTrigger
      *
-     * @param   object  $event  The event
+     * @param   \Hubzero\Events\Event $event  The event
      * @return  void
      */
     private function preProcess(Event $event)
@@ -270,7 +270,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Called after postTrigger
      *
-     * @param   object  $event  The event
+     * @param   \Hubzero\Events\Event $event  The event
      * @return  void
      */
     private function postProcess(Event $event)

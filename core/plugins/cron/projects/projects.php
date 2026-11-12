@@ -57,7 +57,7 @@ class Projects extends Plugin
     /**
      * Compute and log overall projects usage stats
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function computeStats(\Components\Cron\Models\Job $job)
@@ -80,7 +80,7 @@ class Projects extends Plugin
     /**
      * Auto sync project repositories connected with GDrive
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function googleSync(\Components\Cron\Models\Job $job)
@@ -144,7 +144,7 @@ class Projects extends Plugin
     /**
      * Optimize project repos
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function gitGc(\Components\Cron\Models\Job $job)

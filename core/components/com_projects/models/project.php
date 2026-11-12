@@ -705,7 +705,7 @@ class Project extends Model
     /**
      * Check a reviewer's authorization
      *
-     * @param   string   $reviewer  Action to check
+     * @param   string|false $reviewer  Action to check
      * @return  boolean  True if authorized, false if not
      */
     public function reviewerAccess($reviewer = false)

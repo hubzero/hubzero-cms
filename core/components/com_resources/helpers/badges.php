@@ -50,7 +50,7 @@ class Badges
      *
      * @param   string   $newBadgesString  String of comma-separated tags
      * @param   integer  $taggerId         ID of user who associated tag w/ record
-     * @param   boolean  $admin            Mark tags as admin?
+     * @param   boolean|int $admin            Mark tags as admin?
      * @param   integer  $strength         Badge strength
      * @return  void
      */

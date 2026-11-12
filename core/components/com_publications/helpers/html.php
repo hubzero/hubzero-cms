@@ -31,7 +31,7 @@ class Html
      * @param   string   $vid
      * @param   string   $base
      * @param   string   $filedir
-     * @param   boolean  $root
+     * @param   boolean|int $root
      * @return  string
      */
     public static function buildPubPath($pid = null, $vid = null, $base = '', $filedir = '', $root = 0)

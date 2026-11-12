@@ -156,7 +156,7 @@ class Manager
      * Register a custom driver creator Closure.
      *
      * @param   string  $driver
-     * @param   object  $callback
+     * @param   \Closure $callback
      * @return  object
      */
     public function extend($driver, Closure $callback)

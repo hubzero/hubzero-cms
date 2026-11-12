@@ -53,7 +53,7 @@ class Remote extends Plugin
      * Triggers when the plugin is marked as diabled
      *
      * @param   string  $extension  the type of extension
-     * @param   Components\Plugins\Models\Plugin    $model  the model of the plugin being deactivated
+     * @param   \Components\Plugins\Models\Plugin   $model  the model of the plugin being deactivated
      * @return  void
      */
     public function onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)

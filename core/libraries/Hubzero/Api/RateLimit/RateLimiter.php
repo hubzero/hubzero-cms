@@ -34,7 +34,7 @@ class RateLimiter
     /**
      * New rate limiter instance
      *
-     * @param   object  $storage  Storage object
+     * @param   \Hubzero\Api\RateLimit\Storage\StorageInterface $storage  Storage object
      * @param   array   $config   Options
      * @return  void
      */

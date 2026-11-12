@@ -67,7 +67,7 @@ class Grid
      * @param   string  $title          The link title
      * @param   string  $order          The order field for the column
      * @param   string  $direction      The current direction
-     * @param   string  $selected       The selected ordering
+     * @param   string|int $selected       The selected ordering
      * @param   string  $task           An optional task override
      * @param   string  $new_direction  An optional direction for the new column
      * @return  string
@@ -314,7 +314,7 @@ class Grid
      * Method to create a checked out icon with optional overlib in a grid.
      *
      * @param   object   &$row     The row object
-     * @param   boolean  $tooltip  True if an overlib with checkout information should be created.
+     * @param   boolean|int $tooltip  True if an overlib with checkout information should be created.
      * @return  string   HTML for the icon and tooltip
      */
     protected static function checkedOutIcon(&$row, $tooltip = 1)

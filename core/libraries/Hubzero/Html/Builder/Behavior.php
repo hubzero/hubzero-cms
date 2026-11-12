@@ -29,7 +29,7 @@ class Behavior
      *
      * If debugging mode is on an uncompressed version of MooTools is included for easier debugging.
      *
-     * @param   string   $extras  MooTools file to load
+     * @param   string|false $extras  MooTools file to load
      * @param   boolean  $debug   Is debugging mode on? [optional]
      * @return  void
      */

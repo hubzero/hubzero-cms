@@ -56,8 +56,8 @@ class Cli implements ClientInterface
      *
      * @param   string  $class      The command to call
      * @param   string  $task       The command task to call
-     * @param   object  $arguments  The command arguments
-     * @param   object  $output     The command output
+     * @param   \Hubzero\Console\Arguments $arguments  The command arguments
+     * @param   \Hubzero\Console\Output $output     The command output
      * @return  void
      */
     public function call($class, $task, Arguments $arguments, Output $output)

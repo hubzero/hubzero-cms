@@ -45,8 +45,8 @@ class Mark
      * Constructor.
      *
      * @param  string   $label   The label or identifier for a mark
-     * @param  integer  $start   The relative time of the start of the period (in milliseconds)
-     * @param  integer  $end     The relative time of the end of the period (in milliseconds)
+     * @param  integer|float $start   The relative time of the start of the period (in milliseconds)
+     * @param  integer|float $end     The relative time of the end of the period (in milliseconds)
      * @param  integer  $memory  The memory usage (in bytes)
      */
     public function __construct($label, $start = 0.0, $end = 0.0, $memory = 0)

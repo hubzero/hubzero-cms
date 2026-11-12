@@ -265,7 +265,7 @@ class Feed extends Base
     /**
      * Adds an Item to the feed.
      *
-     * @param   object  &$item  The feeditem to add to the feed.
+     * @param   \Hubzero\Document\Type\Feed\Item &$item  The feeditem to add to the feed.
      * @return  object  instance of $this to allow chaining
      */
     public function addItem(Item $item)

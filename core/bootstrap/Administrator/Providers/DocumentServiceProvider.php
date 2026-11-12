@@ -54,7 +54,7 @@ class DocumentServiceProvider extends Middleware
     /**
      * Handle request in HTTP stack
      *
-     * @param   object  $request  HTTP Request
+     * @param   \Hubzero\Http\Request $request  HTTP Request
      * @return  mixed
      */
     public function handle(Request $request)

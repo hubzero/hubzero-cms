@@ -3733,7 +3733,7 @@ END';
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   array  $columns  Column name(s)
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */

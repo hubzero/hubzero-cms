@@ -128,7 +128,7 @@ class Help extends Output
      * @param   string  $argument  Actual argument
      * @param   string  $details   Description of what it does
      * @param   string  $example   Usage example
-     * @param   string  $required  If it's required, we'll style a bit differently
+     * @param   string|false $required  If it's required, we'll style a bit differently
      * @return  $this
      **/
     public function addArgument($argument, $details = null, $example = null, $required = false)

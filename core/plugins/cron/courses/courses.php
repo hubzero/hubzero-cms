@@ -52,7 +52,7 @@ class Courses extends Plugin
     /**
      * Sync claimed/denied passport badges
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function syncPassportBadgeStatus(\Components\Cron\Models\Job $job)
@@ -126,7 +126,7 @@ class Courses extends Plugin
     /**
      * Email instructor course digest
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function emailInstructorDigest(\Components\Cron\Models\Job $job)

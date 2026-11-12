@@ -43,7 +43,7 @@ class AuthorizationCode implements GrantTypeInterface
     /**
      * Constructor
      *
-     * @param   object  $storage  Storage object
+     * @param   \OAuth2\Storage\AuthorizationCodeInterface $storage  Storage object
      * @return  void
      */
     public function __construct(AuthorizationCodeInterface $storage)
@@ -64,8 +64,8 @@ class AuthorizationCode implements GrantTypeInterface
     /**
      * Validate request via client
      *
-     * @param   object  $request   Request object
-     * @param   object  $response  Response object
+     * @param   \OAuth2\RequestInterface $request   Request object
+     * @param   \OAuth2\ResponseInterface $response  Response object
      * @return  bool    Result of auth
      */
     public function validateRequest(RequestInterface $request, ResponseInterface $response)
@@ -153,7 +153,7 @@ class AuthorizationCode implements GrantTypeInterface
     /**
      * Create access token
      *
-     * @param   object  $accessToken  Access token object
+     * @param   \OAuth2\ResponseType\AccessTokenInterface $accessToken  Access token object
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope

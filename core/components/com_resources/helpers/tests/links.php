@@ -32,7 +32,7 @@ class Links implements Test
     /**
      * Constructor
      *
-     * @param   string  $verify
+     * @param   string|false $verify
      * @return  void
      */
     public function __construct($verify = false)
@@ -57,7 +57,7 @@ class Links implements Test
     /**
      * Checks if a string is spam or not
      *
-     * @param   mixed   $data     string|array
+     * @param   array   $data     string|array
      * @param   array   $options
      * @return  object
      */

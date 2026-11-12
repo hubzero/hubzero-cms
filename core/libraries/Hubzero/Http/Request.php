@@ -107,7 +107,7 @@ class Request extends BaseRequest
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @param   string   $type     Return type for the variable. [!] Deprecated. Joomla legacy support.
-     * @param   string   $mask     Filter mask for the variable. [!] Deprecated. Joomla legacy support.
+     * @param   string|int $mask     Filter mask for the variable. [!] Deprecated. Joomla legacy support.
      * @return  mixed  Request variable
      */
     public function getVar($key, $default = null, $hash = 'input', $type = 'none', $mask = 0)

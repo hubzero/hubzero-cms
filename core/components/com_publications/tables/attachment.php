@@ -101,7 +101,7 @@ class Attachment extends Table
      *
      * @param   object  $record
      * @param   string  $param
-     * @param   string  $value
+     * @param   string|int $value
      * @return  void
      */
     public function saveParam($record = null, $param = '', $value = 0)

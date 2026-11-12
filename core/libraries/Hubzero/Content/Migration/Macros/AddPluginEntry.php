@@ -21,7 +21,7 @@ class AddPluginEntry extends Macro
      * @param   string  $folder   Plugin folder
      * @param   string  $element  Plugin element
      * @param   int     $enabled  Whether or not the plugin should be enabled
-     * @param   array   $params   Plugin params (if already known)
+     * @param   array|string $params   Plugin params (if already known)
      * @return  bool
      **/
     public function __invoke($folder, $element, $enabled = 1, $params = '')

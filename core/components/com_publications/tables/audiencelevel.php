@@ -31,7 +31,7 @@ class AudienceLevel extends Table
      *
      * @param   integer  $numlevels     Number of levels to return
      * @param   array    $levels        Array to populate
-     * @param   array    $return_array  Return as array?
+     * @param   array|int $return_array  Return as array?
      * @return  array
      */
     public function getLevels($numlevels = 4, $levels = [], $return_array = 1)

@@ -61,8 +61,8 @@ class Application extends Container
     /**
      * Create a new application instance.
      *
-     * @param   object  $request   Request object
-     * @param   object  $response  Response object
+     * @param   \Hubzero\Http\Request|null $request   Request object
+     * @param   \Hubzero\Http\Response|null $response  Response object
      * @return  void
      */
     public function __construct(?Request $request = null, ?Response $response = null)
@@ -290,7 +290,7 @@ class Application extends Container
      *
      * @param   string  $url      Url to redirect to
      * @param   string  $message  Message to display on redirect.
-     * @param   array   $type     Message type.
+     * @param   array|string $type     Message type.
      * @return  never
      */
     public function redirect($url, $message = null, $type = 'success')
@@ -404,7 +404,7 @@ class Application extends Container
     /**
      * Boot the given service provider.
      *
-     * @param   object  $provider
+     * @param   \Hubzero\Base\ServiceProvider $provider
      * @return  void
      */
     protected function bootProvider(ServiceProvider $provider)
@@ -430,7 +430,7 @@ class Application extends Container
     /**
      * Application layer is responsible for dispatching request
      *
-     * @param   object  $request  Request object
+     * @param   \Hubzero\Http\Request $request  Request object
      * @return  object  Response object
      */
     public function handle(Request $request)

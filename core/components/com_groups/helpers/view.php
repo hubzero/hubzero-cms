@@ -609,7 +609,7 @@ class View
     /**
      * Custom Error Callback, Builds custom error page for super groups
      *
-     * @param   object  $error
+     * @param   \Exception $error
      * @return  void
      */
     public static function handleCustomError(Exception $error)

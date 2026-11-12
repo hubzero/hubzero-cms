@@ -63,7 +63,7 @@ class Review extends Table
      *
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|string $versionid  Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function loadUserReview($pid, $uid, $versionid = '')
@@ -94,7 +94,7 @@ class Review extends Table
      *
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|string $versionid  Pub version ID
      * @return  mixed
      */
     public function loadUserRating($pid, $uid, $versionid = '')
@@ -119,7 +119,7 @@ class Review extends Table
      *
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|string $versionid  Pub version ID
      * @return  array|false  The matching reviews, or false without a publication ID
      */
     public function getRatings($pid = null, $uid = null, $versionid = '')
@@ -155,7 +155,7 @@ class Review extends Table
      *
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|string $versionid  Pub version ID
      * @return  object
      */
     public function countRatings($pid = null, $uid = null, $versionid = '')
@@ -186,7 +186,7 @@ class Review extends Table
      *
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|string $versionid  Pub version ID
      * @return  array|false  The matching reviews, or false without a publication ID
      */
     public function getRating($pid = null, $uid = null, $versionid = '')

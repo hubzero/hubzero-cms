@@ -31,7 +31,7 @@ class Stamp extends Table
     /**
      * Load item
      *
-     * @param   integer  $stamp  Project ID
+     * @param   integer|string $stamp  Project ID
      * @return  mixed    False if error, Object on success
      */
     public function loadItem($stamp = '')

@@ -381,7 +381,7 @@ class Cloud extends \Hubzero\Base\Obj
      * Remove all tags from an item
      * Option User ID to remove tags added by just that user.
      *
-     * @param   string  $tagger  User ID to remove tags for
+     * @param   string|int $tagger  User ID to remove tags for
      * @return  mixed   False if errors, integer on success
      */
     public function removeAll($tagger = 0)
@@ -475,7 +475,7 @@ class Cloud extends \Hubzero\Base\Obj
      *
      * @param   string   $tag_string  String of comma-separated tags
      * @param   integer  $tagger_id   Tagger ID
-     * @param   boolean  $admin       Mark tags as admin?
+     * @param   boolean|int $admin       Mark tags as admin?
      * @param   integer  $strength    Tag strength
      * @param   string   $label       Label to attach
      * @return  boolean  True on success, false if errors

@@ -87,7 +87,7 @@ class MasterType extends Table
     /**
      * Get record alias by id
      *
-     * @param   integer  $id
+     * @param   integer|string $id
      * @return  integer
      */
     public function getTypeAlias($id = '')

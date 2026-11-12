@@ -300,7 +300,7 @@ class Batchcreate extends AdminController
      * Parse loaded data for further processing
      *
      * @param   integer  $dryRun
-     * @param   string   $api
+     * @param   string|int $api
      * @return  string
      */
     public function parse($dryRun = 1, $api = 0)

@@ -1232,7 +1232,7 @@ class Team extends Plugin
      * @param   string   $email
      * @param   string   $code
      * @param   integer  $role
-     * @param   object   $model
+     * @param   object|string $model
      * @param   string   $option
      * @return  boolean  True on success
      */

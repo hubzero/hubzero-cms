@@ -46,7 +46,7 @@ class Storefront extends Plugin
     /**
      * Email SKUs and Products publish down notifications
      *
-     * @param   object  $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  bool
      */
     public function emailPublishDownNotifications(\Components\Cron\Models\Job $job)

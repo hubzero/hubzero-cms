@@ -503,7 +503,7 @@ class Imports extends AdminController
     /**
      * Method to create import filespace if needed
      *
-     * @param   object   $import  Models\Import
+     * @param   \Components\Resources\Models\Import $import  Models\Import
      * @return  boolean
      */
     private function createImportFilespace(\Components\Resources\Models\Import $import)

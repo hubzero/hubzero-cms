@@ -109,7 +109,7 @@ class Processor extends Obj
     /**
      * Check if a required package is installed
      *
-     * @param   integer  $package  Package name
+     * @param   integer|string $package  Package name
      * @return  boolean  True on success
      */
     private function checkPackageRequirements($package = '')

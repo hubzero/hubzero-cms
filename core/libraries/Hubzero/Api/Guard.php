@@ -39,7 +39,7 @@ class Guard
     /**
      * Constructor
      *
-     * @param   object  $app  Container
+     * @param   \Hubzero\Container\Container $app  Container
      * @return  void
      */
     public function __construct(Container $app)

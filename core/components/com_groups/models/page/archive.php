@@ -143,7 +143,7 @@ class Archive extends Obj
      * Reset all pages with new value for key
      *
      * @param      string  $key         Page key to reset
-     * @param      string  $value       New value to set
+     * @param      string|int $value       New value to set
      * @param      array   $filters     Filters passed to pages() method
      * @return     mixed
      */

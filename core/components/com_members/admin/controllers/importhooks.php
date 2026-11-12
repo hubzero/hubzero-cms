@@ -287,7 +287,7 @@ class ImportHooks extends AdminController
     /**
      * Method to create import filespace if needed
      *
-     * @param   object   $hook  \Hubzero\Content\Import\Model\Hook
+     * @param   \Hubzero\Content\Import\Model\Hook $hook  \Hubzero\Content\Import\Model\Hook
      * @return  boolean
      */
     private function createImportFilespace(Hook $hook)

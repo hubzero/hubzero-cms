@@ -391,7 +391,7 @@ class Version extends Table
      * Remove main flag
      *
      * @param   integer  $vid       Pub version ID
-     * @param   boolean  $unpublish
+     * @param   boolean|int $unpublish
      * @return  void
      */
     public function removeMainFlag($vid = null, $unpublish = 0)
@@ -506,7 +506,7 @@ class Version extends Table
      *
      * @param   integer  $id
      * @param   string   $param
-     * @param   string   $value
+     * @param   string|int $value
      * @return  void
      */
     public function saveParam($id = null, $param = '', $value = 0)

@@ -21,7 +21,7 @@ interface ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param  object  $container  A Container instance
+     * @param  \Hubzero\Container\Container $container  A Container instance
      */
     public function register(Container $container);
 }

@@ -27,7 +27,7 @@ class Notification implements RendererInterface
     /**
      * Create a new Notification exception displayer.
      *
-     * @param   object  $notifier
+     * @param   \Hubzero\Notification\Handler $notifier
      * @return  void
      */
     public function __construct(Handler $notifier)

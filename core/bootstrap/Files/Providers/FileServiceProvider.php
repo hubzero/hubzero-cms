@@ -20,7 +20,7 @@ class FileServiceProvider extends Middleware
     /**
      * Handle request in stack
      *
-     * @param   object  $request  Request
+     * @param   \Hubzero\Http\Request $request  Request
      * @return  mixed
      */
     public function handle(Request $request)

@@ -52,8 +52,8 @@ class Writer
     /**
      * Create a new log writer instance.
      *
-     * @param   object  $monolog
-     * @param   object  $dispatcher
+     * @param   \Monolog\Logger $monolog
+     * @param   \Hubzero\Events\DispatcherInterface|null $dispatcher
      * @return  void
      */
     public function __construct(MonologLogger $monolog, ?DispatcherInterface $dispatcher = null)

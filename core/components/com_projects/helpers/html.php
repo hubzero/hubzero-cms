@@ -192,7 +192,7 @@ class Html extends Obj
      * @param   int     $file_size
      * @param   string  $from
      * @param   string  $to
-     * @param   string  $round
+     * @param   string|int $round
      * @return  string
      */
     public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
@@ -533,7 +533,7 @@ class Html extends Obj
     /**
      * Covert param to array of values
      *
-     * @param   string  $array
+     * @param   string|array $array
      * @return  array
      */
     public static function getCountArray($array = [])
@@ -810,7 +810,7 @@ class Html extends Obj
      *
      * @param   string   $note
      * @param   string   $reviewer
-     * @param   boolean  $showmeta
+     * @param   boolean|int $showmeta
      * @param   int      $shorten
      * @return  string
      */

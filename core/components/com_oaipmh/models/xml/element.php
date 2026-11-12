@@ -30,7 +30,7 @@ class Element
     /**
      * Constructor
      *
-     * @param   object  $element  DOMElement
+     * @param   \DOMElement $element  DOMElement
      * @return  void
      * @throws  LogicException
      */

@@ -23,7 +23,7 @@ class Simple implements Cipher
      * Method to decrypt a data string.
      *
      * @param   string  $data  The encrypted string to decrypt.
-     * @param   object  $key   The key[/pair] object to use for decryption.
+     * @param   \Hubzero\Encryption\Key $key   The key[/pair] object to use for decryption.
      * @return  string  The decrypted data string.
      * @throws  InvalidArgumentException
      */
@@ -59,7 +59,7 @@ class Simple implements Cipher
      * Method to encrypt a data string.
      *
      * @param   string  $data  The data string to encrypt.
-     * @param   object  $key   The key[/pair] object to use for encryption.
+     * @param   \Hubzero\Encryption\Key $key   The key[/pair] object to use for encryption.
      * @return  string  The encrypted data string.
      * @throws  InvalidArgumentException
      */

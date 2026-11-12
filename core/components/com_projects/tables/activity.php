@@ -88,7 +88,7 @@ class Activity extends Table
      *
      * @param   integer  $projectid
      * @param   array    $filters
-     * @param   boolean  $count
+     * @param   boolean|int $count
      * @param   integer  $uid
      * @param   array    $projects
      * @return  mixed    object or integer or false
@@ -243,7 +243,7 @@ class Activity extends Table
      * Delete activity by reference
      *
      * @param   integer  $projectid
-     * @param   string   $refid
+     * @param   string|int $refid
      * @param   string   $class
      * @param   boolean  $permanent
      * @return  boolean  true on success

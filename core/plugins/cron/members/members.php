@@ -54,7 +54,7 @@ class Members extends Plugin
     /**
      * Calculate point royalties for members
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function onPointRoyalties(\Components\Cron\Models\Job $job)
@@ -256,7 +256,7 @@ class Members extends Plugin
      * members_expireinactive_exempt_group parameter. An interrupted run is
      * completed by the next one.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function expireInactiveAccounts(\Components\Cron\Models\Job $job)

@@ -279,7 +279,7 @@ class HtmlMenu
      * @param   array    &$children  The children of the current item
      * @param   integer  $maxlevel   The maximum number of levels in the tree
      * @param   integer  $level      The starting level
-     * @param   string   $type       Type of link: component, URL, alias, separator
+     * @param   string|int $type       Type of link: component, URL, alias, separator
      * @return  array
      */
     public static function treerecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1)

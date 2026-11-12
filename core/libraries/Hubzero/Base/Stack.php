@@ -54,7 +54,7 @@ class Stack
     /**
      * Send request through stack
      *
-     * @param   object  $request  Request object
+     * @param   \Hubzero\Http\Request $request  Request object
      * @return  object
      */
     public function send(Request $request)
@@ -100,7 +100,7 @@ class Stack
     /**
      * Final callback
      *
-     * @param   object  $callback  Callback after stack is run
+     * @param   \Closure $callback  Callback after stack is run
      * @return  void    Result of callback
      */
     public function then(\Closure $callback)
@@ -113,7 +113,7 @@ class Stack
     /**
      * Call next layer in stack
      *
-     * @param   object  $request  Request object
+     * @param   \Hubzero\Http\Request $request  Request object
      * @return  object
      */
     public function next(Request $request)

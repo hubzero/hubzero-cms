@@ -927,7 +927,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string        $table
      * @param   string        $name
-     * @param   string|array  $columns
+     * @param   array  $columns
      * @param   bool          $unique
      * @return  bool
      */

@@ -266,7 +266,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     private $type = null;
 
     /**
-     * @param HttpAdapterInterface $adapter An HTTP adapter.
+     * @param \Psr\Http\Client\ClientInterface $adapter An HTTP adapter.
      * @param string               $type    Data to lookup
      */
     public function __construct(\Psr\Http\Client\ClientInterface $adapter, $type = 'countries')

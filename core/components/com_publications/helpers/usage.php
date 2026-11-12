@@ -84,7 +84,7 @@ class Usage
      *
      * @param   object   &$db       Database
      * @param   integer  $pubid     Publication ID
-     * @param   integer  $type      Publication type
+     * @param   integer|string $type      Publication type
      * @param   integer  $rating    Publication rating
      * @param   integer  $cites     Number of citations
      * @param   string   $lastcite  Last citation date

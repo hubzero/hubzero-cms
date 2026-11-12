@@ -71,7 +71,7 @@ class Exception extends \Exception
      * - used to set up the error with all needed error details.
      *
      * @param   string   $msg        The error message
-     * @param   string   $code       The error code from the application
+     * @param   string|int $code       The error code from the application
      * @param   integer  $level      The error level (use the PHP constants E_ALL, E_NOTICE etc.).
      * @param   string   $info       Optional: The additional error information.
      * @param   boolean  $backtrace  True if backtrace information is to be collected

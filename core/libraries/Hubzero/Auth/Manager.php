@@ -29,7 +29,7 @@ class Manager
     /**
      * Constructor
      *
-     * @param   object  $app
+     * @param   \Hubzero\Container\Container $app
      * @return  void
      */
     public function __construct(Container $app)

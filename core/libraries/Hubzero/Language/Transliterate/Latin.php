@@ -17,7 +17,7 @@ class Latin
      * Returns strings transliterated from UTF-8 to Latin
      *
      * @param   string   $string  String to transliterate
-     * @param   boolean  $case    Optionally specify upper or lower case.
+     * @param   boolean|int $case    Optionally specify upper or lower case.
      * @return  string   Transliterated string
      */
     public static function toAscii($string, $case = 0)

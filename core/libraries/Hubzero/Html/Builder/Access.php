@@ -31,7 +31,7 @@ class Access
      * @param   string  $selected  The name of the selected section.
      * @param   string  $attribs   Additional attributes to add to the select field.
      * @param   mixed   $params    True to add "All Sections" option or and array of options
-     * @param   string  $id        The form field id
+     * @param   string|false $id        The form field id
      * @return  string  The required HTML for the SELECT tag.
      */
     public static function level($name, $selected, $attribs = '', $params = true, $id = false)

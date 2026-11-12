@@ -822,7 +822,7 @@ class Data extends Base
      * Get data as CSV file
      *
      * @param   string   $db_name
-     * @param   integer  $version
+     * @param   integer|string $version
      * @param   string   $tmpFile
      * @return  string   data
      */

@@ -122,7 +122,7 @@ class Auditor
     /**
      * Register a test
      *
-     * @param   object  $test  TestInterface
+     * @param   \Hubzero\Content\Auditor\Test $test  TestInterface
      * @return  object  Test
      * @throws  RuntimeException
      */

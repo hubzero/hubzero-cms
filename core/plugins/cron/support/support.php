@@ -66,7 +66,7 @@ class Support extends Plugin
     /**
      * Close tickets in a pending state for a specific amount of time
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  void
      */
     public function cleanTempUploads(\Components\Cron\Models\Job $job)
@@ -100,7 +100,7 @@ class Support extends Plugin
     /**
      * Close tickets in a pending state for a specific amount of time
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function onClosePending(\Components\Cron\Models\Job $job)
@@ -418,7 +418,7 @@ class Support extends Plugin
     /**
      * Send emails reminding people of their open tickets
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function sendTicketsReminder(\Components\Cron\Models\Job $job)
@@ -564,7 +564,7 @@ class Support extends Plugin
     /**
      * Send emails reminding people of their open tickets
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function sendTicketList(\Components\Cron\Models\Job $job)

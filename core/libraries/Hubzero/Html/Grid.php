@@ -35,7 +35,7 @@ class Grid
      * @param   string  $title          The link title
      * @param   string  $order          The order field for the column
      * @param   string  $direction      The current direction
-     * @param   string  $selected       The selected ordering
+     * @param   string|int $selected       The selected ordering
      * @param   string  $task           An optional task override
      * @param   string  $new_direction  An optional direction for the new column
      * @return  string

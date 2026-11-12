@@ -46,7 +46,7 @@ class Mediatrackingdetailed extends Relational
      *
      * @param   string  $object_id    Object ID
      * @param   string  $object_type  Object type
-     * @param   string  $user_id      User ID
+     * @param   string|int $user_id      User ID
      * @return  object
      */
     public static function oneByUserAndObject($object_id, $object_type, $user_id = 0)

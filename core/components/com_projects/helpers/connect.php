@@ -705,7 +705,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @param   string   $id       Remote ID
+     * @param   string|int $id       Remote ID
      * @return  string
      */
     public function loadRemoteResource($service = 'google', $uid = 0, $id = 0)
@@ -1325,7 +1325,7 @@ class Connect extends Obj
     /**
      * Get remote file history
      *
-     * @param   string   $id       Remote ID
+     * @param   string|int $id       Remote ID
      * @param   integer  $uid      User ID
      * @param   string   $service  Service name (google)
      * @return  array
@@ -1371,7 +1371,7 @@ class Connect extends Obj
     /**
      * Get remote file revision
      *
-     * @param   string   $id        Remote ID
+     * @param   string|int $id        Remote ID
      * @param   integer  $revision  remote revision ID
      * @param   integer  $uid       User ID
      * @param   string   $service   Service name (google)

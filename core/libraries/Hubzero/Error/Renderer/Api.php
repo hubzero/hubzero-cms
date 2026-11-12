@@ -34,7 +34,7 @@ class Api implements RendererInterface
     /**
      * Create a new exception renderer.
      *
-     * @param   object  $response
+     * @param   \Hubzero\Http\Response $response
      * @param   bool    $debug
      * @return  void
      */

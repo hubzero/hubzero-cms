@@ -52,7 +52,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
     /**
      * Constructor
      *
-     * @param   object  $storage  Storage object
+     * @param   \Hubzero\Oauth\Storage\SessionTokenInterface $storage  Storage object
      * @return  void
      */
     public function __construct(SessionTokenInterface $storage)
@@ -65,8 +65,8 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      *
      * This is used for internal requests via ajax
      *
-     * @param   object  $request   Request object
-     * @param   object  $response  Response object
+     * @param   \OAuth2\RequestInterface $request   Request object
+     * @param   \OAuth2\ResponseInterface $response  Response object
      * @return  bool    Result of auth
      */
     public function validateRequest(RequestInterface $request, ResponseInterface $response)
@@ -128,7 +128,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
     /**
      * Create access token
      *
-     * @param   object  $accessToken  Access token object
+     * @param   \OAuth2\ResponseType\AccessTokenInterface $accessToken  Access token object
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope

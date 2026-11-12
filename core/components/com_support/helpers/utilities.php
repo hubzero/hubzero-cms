@@ -25,7 +25,7 @@ class Utilities
      * @param   string   $subject            Message subject
      * @param   mixed    $contents           Message to send
      * @param   array    $from               Who the message is from
-     * @param   array    $replyto            Reply to information
+     * @param   array|string $replyto            Reply to information
      * @param   array    $additionalHeaders  More headers to apply
      * @return  boolean
      */

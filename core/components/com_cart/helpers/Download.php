@@ -36,7 +36,7 @@ class Download
      * Cound downloads for a SKU
      *
      * @param   int  $sId
-     * @param   int  $uId
+     * @param   int|false $uId
      * @return  int
      */
     public static function countSkuDownloads($sId, $uId = false)

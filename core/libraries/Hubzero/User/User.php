@@ -842,7 +842,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Pass through method to the table for setting the last visit date
      *
-     * @param   integer  $timestamp  The timestamp, defaults to 'now'.
+     * @param   integer|string $timestamp  The timestamp, defaults to 'now'.
      * @return  boolean  True on success.
      * @since   2.1.0
      */

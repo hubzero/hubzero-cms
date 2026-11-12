@@ -68,7 +68,7 @@ class Groups extends Plugin
      * read it with raw SQL, stops seeing the user without having to know that
      * expiry exists.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function expireGroupMemberships(\Components\Cron\Models\Job $job)
@@ -93,7 +93,7 @@ class Groups extends Plugin
      * Thresholds come from the component's warning-days param; each one fires
      * once per term, and extending a term restarts the cycle.
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function notifyExpiringMemberships(\Components\Cron\Models\Job $job)
@@ -184,7 +184,7 @@ class Groups extends Plugin
     /**
      * Remove unused group folders
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function cleanGroupFolders(\Components\Cron\Models\Job $job)
@@ -218,7 +218,7 @@ class Groups extends Plugin
     /**
      * Send scheduled group announcements
      *
-     * @param   object   $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  boolean
      */
     public function sendGroupAnnouncements(\Components\Cron\Models\Job $job)

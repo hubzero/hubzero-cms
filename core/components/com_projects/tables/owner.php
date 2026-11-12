@@ -152,7 +152,7 @@ class Owner extends Table
      * Get ids of project owners
      *
      * @param   integer  $projectid
-     * @param   string   $role       get owners in specific role or all
+     * @param   string|int $role       get owners in specific role or all
      * @param   integer  $get_uids   get user ids (1) or owner ids (0)
      * @param   integer  $active     get only active users (1) or any
      * @return  mixed    False or array
@@ -545,7 +545,7 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   string   $what
-     * @param   boolean  $native
+     * @param   boolean|int $native
      * @param   integer  $join     verify if group exists
      * @return  array|false
      */
@@ -784,10 +784,10 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   array    $users      user or owner ids to remove
-     * @param   boolean  $byownerid  owner ids in users array?
-     * @param   boolean  $remove     permanently remove if true
+     * @param   boolean|int $byownerid  owner ids in users array?
+     * @param   boolean|int $remove     permanently remove if true
      * @param   integer  $status     what status to set
-     * @param   boolean  $all        if true delete all owners of a project
+     * @param   boolean|int $all        if true delete all owners of a project
      * @return  mixed    false if errors, integer - number of deleted members
      */
     public function removeOwners($projectid = null, $users = [], $byownerid = 0, $remove = 0, $status = 2, $all = 0)
@@ -843,7 +843,7 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   array    $users      user or owner ids to remove
-     * @param   boolean  $byownerid  owner ids in users array?
+     * @param   boolean|int $byownerid  owner ids in users array?
      * @param   integer  $role       new role
      * @return  mixed    false if errors, integer - number of members with role changed
      */
@@ -1226,7 +1226,7 @@ class Owner extends Table
      * @param   integer  $projectid
      * @param   integer  $owner  owner user id
      * @param   string   $param
-     * @param   string   $value
+     * @param   string|int $value
      * @return  void
      */
     public function saveParam($projectid = null, $owner = 0, $param = '', $value = 0)

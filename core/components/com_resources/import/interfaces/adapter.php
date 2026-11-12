@@ -24,7 +24,7 @@ interface Adapter
     /**
      * Count Import data
      *
-     * @param   object  $import
+     * @param   \Components\Resources\Models\Import $import
      * @return  int
      */
     public function count(\Components\Resources\Models\Import $import);
@@ -32,7 +32,7 @@ interface Adapter
     /**
      * Process Import data
      *
-     * @param   object   $import
+     * @param   \Components\Resources\Models\Import $import
      * @param   array    $callbacks
      * @param   integer  $dryRun
      * @return  array

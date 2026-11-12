@@ -2627,7 +2627,7 @@ class Files extends Plugin
      *
      * @param   object   $model     Project model
      * @param   string   $repoName
-     * @param   integer  $by
+     * @param   integer|string $by
      * @return  string
      */
     public function diskspace($model, $repoName = 'local', $by = '')

@@ -538,7 +538,7 @@ class Imports extends AdminController
     /**
      * Method to create import filespace if needed
      *
-     * @param   object  $import  \Hubzero\Content\Import\Model\Import
+     * @param   \Hubzero\Content\Import\Model\Import $import  \Hubzero\Content\Import\Model\Import
      * @return  boolean
      */
     private function createImportFilespace(\Hubzero\Content\Import\Model\Import $import)

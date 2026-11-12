@@ -118,8 +118,8 @@ class Access extends Table
      * Save groups
      *
      * @param   integer  $vid       pub version id
-     * @param   array    $groups
-     * @param   string   $sysgroup  name of system group
+     * @param   array|string $groups
+     * @param   string|int $sysgroup  name of system group
      * @return  integer
      */
     public function saveGroups($vid = null, $groups = '', $sysgroup = 0)
@@ -171,7 +171,7 @@ class Access extends Table
      * Delete groups
      *
      * @param   integer  $vid       pub version id
-     * @param   string   $sysgroup  name of system group
+     * @param   string|int $sysgroup  name of system group
      * @return  boolean
      */
     public function deleteGroups($vid = null, $sysgroup = 0)

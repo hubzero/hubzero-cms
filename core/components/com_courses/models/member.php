@@ -48,9 +48,9 @@ class Member extends Base
      * Constructor
      *
      * @param   string $uid User ID
-     * @param   string $cid Course ID
-     * @param   string $oid Offering ID
-     * @param   string $sid Section ID
+     * @param   string|int $cid Course ID
+     * @param   string|int $oid Offering ID
+     * @param   string|int $sid Section ID
      * @return  void
      */
     public function __construct($uid, $cid = 0, $oid = 0, $sid = 0)
@@ -79,9 +79,9 @@ class Member extends Base
      * Returns a reference to a member object
      *
      * @param   string $uid User ID
-     * @param   string $cid Course ID
-     * @param   string $oid Offering ID
-     * @param   string $sid Section ID
+     * @param   string|int $cid Course ID
+     * @param   string|int $oid Offering ID
+     * @param   string|int $sid Section ID
      * @return  object \Components\Courses\Models\Member
      */
     public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)

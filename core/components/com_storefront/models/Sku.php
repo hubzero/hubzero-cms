@@ -29,7 +29,7 @@ class Sku
     /**
      * Contructor
      *
-     * @param   int   $sId
+     * @param   int|false $sId
      * @return  void
      */
     public function __construct($sId = false)

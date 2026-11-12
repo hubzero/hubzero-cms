@@ -50,7 +50,7 @@ class Activity extends Plugin
      * should not be set to run more than once daily, otherwise it will continue to send out the
      * same digest to people over and over again.
      *
-     * @param   object  $job  \Components\Cron\Models\Job
+     * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
      * @return  bool
      */
     public function emailMemberDigest(\Components\Cron\Models\Job $job)

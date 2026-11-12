@@ -200,8 +200,8 @@ class Todo extends Table
      *
      * @param   integer  $projectid
      * @param   string   $color
-     * @param   boolean  $all
-     * @param   boolean  $permanent
+     * @param   boolean|int $all
+     * @param   boolean|int $permanent
      * @return  boolean  True on success
      */
     public function deleteList($projectid = null, $color = '', $all = 0, $permanent = 0)
@@ -252,7 +252,7 @@ class Todo extends Table
      *
      * @param   integer  $projectid
      * @param   string   $todolist
-     * @param   boolean  $permanent
+     * @param   boolean|int $permanent
      * @return  void
      */
     public function deleteTodos($projectid, $todolist = '', $permanent = 0)
@@ -276,7 +276,7 @@ class Todo extends Table
      *
      * @param   integer  $projectid
      * @param   integer  $todoid
-     * @param   boolean  $permanent
+     * @param   boolean|int $permanent
      * @return  boolean  True if success
      */
     public function deleteTodo($projectid, $todoid = 0, $permanent = 0)

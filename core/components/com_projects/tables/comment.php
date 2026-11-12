@@ -78,7 +78,7 @@ class Comment extends Table
      * @param   integer  $itemid
      * @param   string   $tbl
      * @param   integer  $activityid
-     * @param   string   $lastvisit
+     * @param   string|int $lastvisit
      * @param   integer  $parent_activity
      * @return  object
      */
@@ -206,7 +206,7 @@ class Comment extends Table
      * Store comment activity id
      *
      * @param   integer  $id
-     * @param   string   $activityid
+     * @param   string|int $activityid
      * @return  mixed
      */
     public function storeCommentActivityId($id = 0, $activityid = 0)
@@ -281,7 +281,7 @@ class Comment extends Table
      * Delete all comments from project
      *
      * @param   integer  $projectid
-     * @param   boolean  $permanent
+     * @param   boolean|int $permanent
      * @return  boolean  True on success
      */
     public function deleteProjectComments($projectid = 0, $permanent = 0)

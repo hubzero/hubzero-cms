@@ -36,7 +36,7 @@ class Handler
     /**
      * Create a new error handler instance.
      *
-     * @param   object  $renderer
+     * @param   \Hubzero\Error\RendererInterface $renderer
      * @param   object  $logger
      * @return  void
      */
@@ -62,7 +62,7 @@ class Handler
     /**
      * Set the render,
      *
-     * @param   object  $renderer
+     * @param   \Hubzero\Error\RendererInterface $renderer
      * @return  object  Chainable.
      */
     public function setRenderer(RendererInterface $renderer)

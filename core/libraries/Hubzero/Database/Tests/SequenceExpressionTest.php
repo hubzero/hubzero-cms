@@ -49,7 +49,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     /**
      * Create test tables
      *
-     * @param   Driver  $driver  The database driver
+     * @param   \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver  The database driver
      * @return  void
      */
     protected static function setUpDatabase(BaseSqlDriver $driver): void

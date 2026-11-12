@@ -725,7 +725,7 @@ class Offering extends Base
     /**
      * Get a list of memerships for a user
      *
-     * @param      array   $user_id Filters to build query from
+     * @param      array|int $user_id Filters to build query from
      * @return     mixed
      */
     public function membership($user_id = 0)

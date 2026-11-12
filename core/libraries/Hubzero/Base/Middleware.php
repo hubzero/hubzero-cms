@@ -28,7 +28,7 @@ abstract class Middleware extends ServiceProvider
      * each service doesnt have to know anything about what comes before
      * or after it.
      *
-     * @param   object  $request  Request object
+     * @param   \Hubzero\Http\Request $request  Request object
      * @return  mixed   Result of next runnable service
      */
     public function next(Request $request)
@@ -42,7 +42,7 @@ abstract class Middleware extends ServiceProvider
      * Each runnable service must implement this method and do what it wants
      * and then MUST pass the request along to the next service after its done.
      *
-     * @param   object  $request  Request object
+     * @param   \Hubzero\Http\Request $request  Request object
      * @return  mixed   Result
      */
     abstract public function handle(Request $request);

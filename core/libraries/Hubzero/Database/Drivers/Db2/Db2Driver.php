@@ -2018,7 +2018,7 @@ class Db2Driver extends BaseSqlDriver
      *
      * @param   string        $table    Table name
      * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
+     * @param   array  $columns  Column name(s)
      * @param   bool          $unique   Whether this is a unique index
      * @return  bool
      */

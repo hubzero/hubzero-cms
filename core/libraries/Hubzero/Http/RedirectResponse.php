@@ -80,7 +80,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Set the request instance.
      *
-     * @param   object  $request
+     * @param   \Hubzero\Http\Request $request
      * @return  void
      */
     public function setRequest(Request $request)
@@ -101,7 +101,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Set the session store implementation.
      *
-     * @param   object  $session
+     * @param   \Hubzero\Session\Manager $session
      * @return  void
      */
     public function setSession(SessionStore $session)
