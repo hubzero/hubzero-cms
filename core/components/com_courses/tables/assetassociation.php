@@ -106,7 +106,7 @@ class AssetAssociation extends Table
      * Build query method
      *
      * @param  array $filters
-     * @return $query database query
+     * @return string  Database query
      */
     private function buildQuery($filters = [])
     {

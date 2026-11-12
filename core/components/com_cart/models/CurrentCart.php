@@ -184,7 +184,6 @@ class CurrentCart extends Cart
     /**
      * Get any changes to cart items' inventory or pricing since last visit.
      * Works like a flash variable -- gets messages once and then resets the state
-     * @param false
      * @return array of change messages
      */
     private function getCartChanges()
@@ -267,7 +266,6 @@ class CurrentCart extends Cart
 
     /**
      * Check if there are any changes to cart items' inventory or pricing since last visit
-     * @param false
      * @return bool
      */
     private function cartChanged()
@@ -474,7 +472,6 @@ class CurrentCart extends Cart
     /**
      * Checks if transaction shipping info is correct and saves it
      *
-     * @param void (gets info from POST)
      * @return \stdClass status and messages
      */
     public function setTransactionShippingInfo()

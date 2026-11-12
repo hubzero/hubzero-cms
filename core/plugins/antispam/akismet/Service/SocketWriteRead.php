@@ -30,49 +30,49 @@ class SocketWriteRead
     /**
      * The host to send/receive data.
      *
-     * @param string
+     * @var string
      */
     private $host;
 
     /**
      * The port on the remote host.
      *
-     * @param integer
+     * @var integer
      */
     private $port;
 
     /**
      * The data to send.
      *
-     * @param string
+     * @var string
      */
     private $request;
 
     /**
      * Response
      *
-     * @param string
+     * @var string
      */
     private $response;
 
     /**
      * The amount of data to read.  Defaults to 1160 bytes.
      *
-     * @param integer
+     * @var integer
      */
     private $responseLength;
 
     /**
      * The error number.
      *
-     * @param integer
+     * @var integer
      */
     private $errorNumber;
 
     /**
      * The error message.
      *
-     * @param string
+     * @var string
      */
     private $errorString;
 

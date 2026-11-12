@@ -132,7 +132,7 @@ class Wiki extends Content
      * Edit method for this handler
      *
      * @param  object $asset - asset
-     * @return array((string) type, (string) text)
+     * @return array  (string) type, (string) text
      **/
     public function edit($asset)
     {

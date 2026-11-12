@@ -34,7 +34,6 @@ class Archive extends Model
     /**
      * Constructor
      *
-     * @param      mixed     Object Id
      * @return     void
      */
     public function __construct()

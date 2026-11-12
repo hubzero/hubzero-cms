@@ -180,7 +180,6 @@ class Orcid extends SiteController
     /**
      * Get ORCID record searching access token
      *
-     * @param   None
      * @return  string|false
      */
     private function getAccessToken()

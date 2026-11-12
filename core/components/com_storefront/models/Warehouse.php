@@ -1243,7 +1243,6 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product types
      *
-     * @param   int                 product type ID
      * @return  array               info
      */
     public function getProductTypes()

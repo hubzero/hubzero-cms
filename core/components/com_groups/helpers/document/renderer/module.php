@@ -16,7 +16,6 @@ class Module extends Renderer
     /**
      * Render Module to group template or page
      *
-     * @param    string
      */
     public function render()
     {

@@ -38,14 +38,14 @@ class PdfFormRespondent
     /**
      * Bool indicating whether the form has been started
      *
-     * @var date/time
+     * @var string|null  Date and time
      **/
     private $started;
 
     /**
      * Bool indicating whether the form has been finished
      *
-     * @var date/time
+     * @var string|null  Date and time
      **/
     private $finished;
 
@@ -314,7 +314,7 @@ class PdfFormRespondent
     /**
      * Get date/time form was started
      *
-     * @return date/time
+     * @return string|null  Date and time
      **/
     public function getStartTime()
     {
@@ -324,7 +324,7 @@ class PdfFormRespondent
     /**
      * Get date/time form was ended
      *
-     * @return date/time
+     * @return string|null  Date and time
      **/
     public function getEndTime()
     {

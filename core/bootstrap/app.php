@@ -102,7 +102,6 @@ function ddie($var)
 /**
  * Dump the passed variables to the debug bar.
  *
- * @param   mixed
  * @return  void
  */
 function dlog()

@@ -65,7 +65,6 @@ if (! function_exists('dlog')) {
     /**
      * Dump the passed variables to the debug bar.
      *
-     * @param   mixed
      * @return  void
      */
     function dlog()

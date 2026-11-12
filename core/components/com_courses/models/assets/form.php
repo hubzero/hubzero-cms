@@ -163,7 +163,7 @@ class Form extends Content
      * Preview method for this handler
      *
      * @param  object $asset - asset
-     * @return array((string) type, (string) text)
+     * @return array  (string) type, (string) text
      **/
     public function preview($asset)
     {

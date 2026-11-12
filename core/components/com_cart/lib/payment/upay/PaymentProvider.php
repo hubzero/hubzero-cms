@@ -29,10 +29,6 @@ class PaymentProvider
     /**
      * Constructor
      *
-     * @param   object transaction info
-     * @param   string payment gateway provider
-     * @param   object payment gateway credentials
-     * @param   object payment options
      * @return  void
      */
     public function __construct()

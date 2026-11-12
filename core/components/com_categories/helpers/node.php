@@ -258,7 +258,7 @@ class Node extends Obj
     /**
      * Constructor of this tree
      *
-     * @var
+     * @var object|null
      */
     protected $constructor = null;
 
