@@ -304,7 +304,7 @@ class Manage extends AdminController
         foreach ($ids as $id) {
             $model = Extension::oneOrFail($id);
 
-            if (!$model->remove()) {
+            if (!$model->destroy()) {
                 Notify::error($model->getError());
                 continue;
             }

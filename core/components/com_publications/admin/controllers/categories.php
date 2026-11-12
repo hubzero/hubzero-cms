@@ -341,7 +341,7 @@ class Categories extends AdminController
             // Remove the profile
             $row = Category::oneOrFail($id);
 
-            if (!$row->delete()) {
+            if (!$row->destroy()) {
                 Notify::error($row->getError());
                 continue;
             }
