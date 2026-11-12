@@ -259,7 +259,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      *
      * @param   string   $file  Path to file to load
      * @return  boolean  True on success
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function read($file)
     {

@@ -159,7 +159,7 @@ class Select
      *                            of selected options. Default: none.
      *                            list.translate: Boolean. If set, text and labels are translated.
      * @return  string  HTML for the select list
-     * @throws  Exception If a group has unprocessable contents.
+     * @throws  \Exception If a group has unprocessable contents.
      */
     public static function groupedlist($data, $name, $options = [])
     {

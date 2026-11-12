@@ -32,7 +32,7 @@ class Lessc extends \LesserPHP\Lessc
      * @param mixed $in Input
      * @param bool $force Force rebuild?
      * @return array|null lessphp cache structure
-     * @throws Exception
+     * @throws \Exception
      */
     public function cachedCompile($in, $force = false)
     {

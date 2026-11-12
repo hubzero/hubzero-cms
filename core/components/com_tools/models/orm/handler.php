@@ -44,7 +44,7 @@ class Handler extends Relational
     /**
      * Defines the relationship between a handler and it's rules
      *
-     * @return \Hubzero\Database\Relationship\oneToMany
+     * @return \Hubzero\Database\Relationship\OneToMany
      **/
     public function rules()
     {
@@ -54,7 +54,7 @@ class Handler extends Relational
     /**
      * Defines the inverse relationship between a handler and a tool
      *
-     * @return \Hubzero\Database\Relationship\belongsToOne
+     * @return \Hubzero\Database\Relationship\BelongsToOne
      **/
     public function tool()
     {

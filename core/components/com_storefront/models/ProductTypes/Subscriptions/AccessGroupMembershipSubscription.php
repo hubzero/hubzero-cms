@@ -26,7 +26,7 @@ class AccessGroupMembershipSubscription extends BaseSubscription
      * Get expiration info.
      *
      * @return  void
-     * @throws  Exception
+     * @throws  \Exception
      */
     public function getAccessGroupExpiration()
     {

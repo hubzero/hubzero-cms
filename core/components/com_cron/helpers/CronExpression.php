@@ -157,7 +157,7 @@ class CronExpression
      *   current date if it matches the cron expression
      *
      * @return DateTime
-     * @throws RuntimeExpression on too many iterations
+     * @throws \RuntimeException on too many iterations
      */
     public function getNextRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
     {
@@ -173,7 +173,7 @@ class CronExpression
      *   current date if it matches the cron expression
      *
      * @return DateTime
-     * @throws RuntimeExpression on too many iterations
+     * @throws \RuntimeException on too many iterations
      * @see Cron\CronExpression::getNextRunDate
      */
     public function getPreviousRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
@@ -259,7 +259,7 @@ class CronExpression
      *   current date if it matches the cron expression
      *
      * @return DateTime
-     * @throws RuntimeExpression on too many iterations
+     * @throws \RuntimeException on too many iterations
      */
     protected function getRunDate($currentTime = null, $nth = 0, $invert = false, $allowCurrentDate = false)
     {

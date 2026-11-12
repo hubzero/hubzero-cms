@@ -114,7 +114,7 @@ class Date extends DateTime
      * @param   mixed   $timezone  Time zone to be used for the date.
      * @param   bool    $ignoreDst
      * @return  void
-     * @throws  Exception
+     * @throws  \Exception
      */
     #[\ReturnTypeWillChange]
     public function __construct($datetime = 'now', $timezone = null, $ignoreDst = false)
@@ -590,7 +590,7 @@ class Date extends DateTime
     /**
      * Calculate how long ago a date was
      *
-     * @param   number  $timestamp  Date to convert
+     * @param   int|float  $timestamp  Date to convert
      * @return  string
      */
     protected function ago($timestamp, $current_time = null)

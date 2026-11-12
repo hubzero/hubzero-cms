@@ -72,7 +72,7 @@ class Ordering extends Field
      * Returns an array of options
      *
      * @param   string   $sql   SQL with 'ordering' AS value and 'name field' AS text
-     * @param   integer|string $chop  The length of the truncated headline
+     * @param   int|string $chop  The length of the truncated headline
      * @return  array    An array of objects formatted for JHtml list processing
      */
     public static function genericordering($sql, $chop = '30')
@@ -114,11 +114,11 @@ class Ordering extends Field
     /**
      * Build the select list for Ordering derived from a query
      *
-     * @param   integer  $name      The scalar value
+     * @param   int      $name      The scalar value
      * @param   string   $query     The query
      * @param   string   $attribs   HTML tag attributes
      * @param   string   $selected  The selected item
-     * @param   integer  $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
+     * @param   int      $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
      * @param   string   $chop      The length of the truncated headline
      * @return  string   Html for the select list
      */

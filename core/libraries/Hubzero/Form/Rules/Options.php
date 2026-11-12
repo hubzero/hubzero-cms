@@ -29,7 +29,7 @@ class Options extends Rule
      * validate against the entire form.
      * @param   object   &$form     The form object for which the field is being tested.
      * @return  bool     True if the value is valid, false otherwise.
-     * @throws  Exception on invalid rule.
+     * @throws  \Exception on invalid rule.
      */
     public function test(&$element, $value, $group = null, &$input = null, &$form = null)
     {

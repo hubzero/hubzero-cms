@@ -541,7 +541,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @param   string  $column
      * @param   string  $definition
      * @param   string  $comment
-     * @return  bool
+     * @return  string
      */
     protected function buildModifyColumnSql(
         string $table,
@@ -670,7 +670,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @param   string  $column
      * @param   string  $definition
      * @param   string  $comment
-     * @return  bool
+     * @return  string
      */
     protected function buildAddColumnSql(
         string $table,
@@ -812,7 +812,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $table
      * @param   string  $column
-     * @return  bool
+     * @return  string
      */
     protected function buildDropColumnSql(string $table, string $column): string
     {
@@ -929,7 +929,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @param   string        $name
      * @param   array  $columns
      * @param   bool          $unique
-     * @return  bool
+     * @return  string
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {

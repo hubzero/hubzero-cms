@@ -2066,7 +2066,7 @@ class SqliteDriver extends BaseSqlDriver
      * @param   string  $column      Column name
      * @param   string  $definition  Column definition
      * @param   string  $comment     Optional column comment (ignored on SQLite)
-     * @return  bool
+     * @return  string
      */
     protected function buildAddColumnSql(
         string $table,
@@ -2775,7 +2775,7 @@ class SqliteDriver extends BaseSqlDriver
      * @param   string        $name     Index name
      * @param   array  $columns  Column name(s) to index
      * @param   bool          $unique   Whether to create a unique index
-     * @return  bool
+     * @return  string
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {

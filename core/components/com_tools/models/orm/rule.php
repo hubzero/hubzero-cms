@@ -38,7 +38,7 @@ class Rule extends Relational
     /**
      * Defines the inverse relationship between a handler and a tool
      *
-     * @return \Hubzero\Database\Relationship\belongsToOne
+     * @return \Hubzero\Database\Relationship\BelongsToOne
      **/
     public function handler()
     {

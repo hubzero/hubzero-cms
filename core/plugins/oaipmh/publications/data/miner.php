@@ -57,7 +57,7 @@ class Miner extends Obj implements Provider
      *
      * @param   object  $db
      * @return  void
-     * @throws  Exception
+     * @throws  \Exception
      */
     public function __construct($db = null)
     {

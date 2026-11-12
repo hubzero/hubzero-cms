@@ -44,7 +44,7 @@ class Link extends Relational
     /**
      * Defines the inverse relationship between a record and a task
      *
-     * @return  \Hubzero\Database\Relationship\belongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function citation()
     {

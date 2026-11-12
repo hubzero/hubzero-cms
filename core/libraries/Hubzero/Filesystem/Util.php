@@ -74,7 +74,7 @@ class Util
      *
      * @param   mixed   $path  The path: a string, or nothing. Anything else is refused.
      * @return  string
-     * @throws  InvalidArgumentException
+     * @throws  \InvalidArgumentException
      */
     public static function normalizePath($path, $ds = DIRECTORY_SEPARATOR)
     {

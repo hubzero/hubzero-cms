@@ -30,7 +30,7 @@ abstract class Processor
      *
      * @param   string  $type  The format to load
      * @return  object  Registry format handler
-     * @throws  Exception
+     * @throws  \Exception
      */
     public static function instance($type)
     {

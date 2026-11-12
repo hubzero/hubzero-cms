@@ -27,7 +27,7 @@ class Base extends ApiController
      * Checks to ensure appropriate authorization
      *
      * @return  bool
-     * @throws  Exception
+     * @throws  \Exception
      */
     protected function authorizeOrFail($action = 'manage')
     {

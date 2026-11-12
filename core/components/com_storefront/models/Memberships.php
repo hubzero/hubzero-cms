@@ -148,7 +148,7 @@ class Memberships
      *
      * @param   string  $ttl  Time To Live
      * @return  void
-     * @throws  Exception
+     * @throws  \Exception
      */
     public static function checkTtl($ttl)
     {

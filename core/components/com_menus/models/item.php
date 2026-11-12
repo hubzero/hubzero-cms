@@ -1036,7 +1036,7 @@ class Item extends Nested
     /**
      * @param   \Hubzero\Form\Form $form  A form object.
      * @param   mixed   $data  The data expected for the form.
-     * @throws  Exception if there is an error in the form event.
+     * @throws  \Exception if there is an error in the form event.
      */
     protected function preprocessForm(Form $form, $data, $group = 'content')
     {

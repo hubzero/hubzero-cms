@@ -317,7 +317,7 @@ abstract class AbstractDriverTestCase extends TestCase
      *
      * @param  string $dbName Database name (config key)
      * @param  array  $config Database configuration (must include 'driver')
-     * @return Driver
+     * @return \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @throws \RuntimeException If driver is unknown or unavailable
      */
     protected static function createDriver(string $dbName, array $config): BaseSqlDriver

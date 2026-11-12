@@ -1022,7 +1022,7 @@ class ApiController implements ControllerInterface
      * Get the model
      *
      * @return  object
-     * @throws  Exception
+     * @throws  \Exception
      */
     protected function resolveModel()
     {
