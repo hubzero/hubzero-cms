@@ -17,6 +17,8 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Forum model for a section
+ *
+ * @property  int|string|null  $ordering
  */
 class Section extends Relational
 {

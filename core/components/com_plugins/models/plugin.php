@@ -22,6 +22,8 @@ use Hubzero\Facades\Date;
  * Read through __get():
  *
  * @property  Registry  $params  The params column as a registry, through transformParams()
+ *
+ * @property  string|null  $name
  */
 class Plugin extends Relational
 {

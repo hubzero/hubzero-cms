@@ -27,6 +27,13 @@ use Hubzero\Facades\Request;
  * @property  \Hubzero\Database\Rows                          $votes         The votes, through votes()
  * @property  \Hubzero\Database\Rows                          $comments      The top-level comments, through comments()
  * @property  \Components\Wishlist\Models\Plan                $plan          The plan, through plan()
+ *
+ * @property  int|string|null  $assigned
+ * @property-read  mixed  $content  What transformContent() gives
+ * @property  int|string|null  $proposed_by
+ * @property-read  mixed  $proposer  What proposer() gives
+ * @property  int|string|null  $ranking
+ * @property  int|string|null  $wishlist
  */
 class Wish extends Relational
 {

@@ -14,6 +14,8 @@ use Hubzero\Database\Relational;
  * Resource license model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $ordering
  */
 class License extends Relational
 {

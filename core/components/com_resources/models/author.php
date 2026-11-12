@@ -19,6 +19,10 @@ use Components\Members\Models\Member;
  * Read through __get():
  *
  * @property  \Hubzero\User\User  $profile  The author's account, through profile()
+ *
+ * @property-read  mixed  $name  What transformName() gives
+ * @property  int|string|null  $ordering
+ * @property-read  mixed  $organization  What transformOrganization() gives
  */
 class Author extends Relational
 {

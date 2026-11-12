@@ -16,6 +16,12 @@ use Hubzero\Config\Registry;
  * Resource type model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  string|null  $alias
+ * @property  string|null  $customFields
+ * @property  int|string|null  $id
+ * @property-read  mixed  $roles  What roles() gives
+ * @property  string|null  $type
  */
 class Type extends Relational
 {

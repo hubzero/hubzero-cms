@@ -13,6 +13,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Model class for publication block
+ *
+ * @property  int|string|null  $ordering
  */
 class Block extends Relational
 {

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Model class for a frontpage entry
+ *
+ * @property  int|string|null  $ordering
  */
 class Frontpage extends Relational
 {

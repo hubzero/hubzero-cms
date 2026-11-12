@@ -108,6 +108,8 @@ use Hubzero\Facades\Lang;
  * @property  null  $journaltitle   {JOURNAL TITLE}
  * @property  null  $issn           {ISSN}
  * @property  null  $search_string  {SECONDARY LINK}
+ *
+ * @property-read  mixed  $sponsors  What sponsors() gives
  */
 class Citation extends Relational implements \Hubzero\Search\Searchable
 {

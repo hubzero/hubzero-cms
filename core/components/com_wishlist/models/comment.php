@@ -19,6 +19,8 @@ use Hubzero\Facades\Lang;
  * Not columns, read and set through __get() and __set():
  *
  * @property  string  $_base  The link base, cached by link()
+ *
+ * @property-read  mixed  $creator  What creator() gives
  */
 class Comment extends ItemComment
 {

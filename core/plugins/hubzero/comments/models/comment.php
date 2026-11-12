@@ -12,6 +12,9 @@ use Hubzero\Item\Comment as ItemComment;
 
 /**
  * Model for a comment
+ *
+ * @property  string|null  $content
+ * @property-read  mixed  $creator  What creator() gives
  */
 class Comment extends ItemComment
 {

@@ -16,6 +16,9 @@ use Hubzero\Facades\User;
 
 /**
  * Comment model
+ *
+ * @property  int|string|null  $id
+ * @property  int|string|null  $item_id
  */
 class Comment extends Relational
 {

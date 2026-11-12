@@ -13,6 +13,8 @@ use Components\Courses\Models\Course;
 
 /**
  * Courses model for a comment
+ *
+ * @property-read  mixed  $creator  What creator() gives
  */
 class Comment extends ItemComment
 {

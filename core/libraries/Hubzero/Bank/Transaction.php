@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Table class for bak transactions
+ *
+ * @property  int|string|null  $amount
  */
 class Transaction extends Relational
 {

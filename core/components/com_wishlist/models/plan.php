@@ -19,6 +19,8 @@ use Hubzero\Facades\Html;
  * Not columns, read and set through __get() and __set():
  *
  * @property  string  $_aboutParsed  The parsed text, cached by transformContent()
+ *
+ * @property-read  mixed  $content  What transformContent() gives
  */
 class Plan extends Relational
 {

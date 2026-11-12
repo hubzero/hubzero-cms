@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Newsletter model for a template
+ *
+ * @property  int|string|null  $editable
  */
 class Template extends Relational
 {

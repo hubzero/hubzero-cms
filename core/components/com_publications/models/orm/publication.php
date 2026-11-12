@@ -17,6 +17,11 @@ use Hubzero\Facades\Component;
  *
  * @property  \Hubzero\Database\Rows  $versions  Its versions, through versions()
  * @property  \Hubzero\Database\Rows  $ratings   Its ratings, through ratings()
+ *
+ * @property  int|string|null  $category
+ * @property  int|string|null  $id
+ * @property-read  mixed  $project  What project() gives
+ * @property-read  mixed  $type  What type() gives
  */
 class Publication extends Relational
 {

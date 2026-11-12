@@ -22,6 +22,16 @@ use Hubzero\Facades\User;
  *
  * @property  \Components\Support\Helpers\ACL  $_acl      The user's permissions, cached by access()
  * @property  \Hubzero\Database\Rows           $comments  The comments, through comments()
+ *
+ * @property-read  mixed  $assignee  What assignee() gives
+ * @property-read  mixed  $attachments  What attachments() gives
+ * @property  int|string|null  $id
+ * @property  string|null  $login
+ * @property  string|null  $name
+ * @property  int|string|null  $owner
+ * @property-read  mixed  $status  What transformStatus() gives
+ * @property-read  mixed  $submitter  What submitter() gives
+ * @property-read  mixed  $watchers  What watchers() gives
  */
 class Ticket extends Relational
 {

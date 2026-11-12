@@ -12,6 +12,10 @@ use Hubzero\Database\Relational;
 
 /**
  * Table class for bank accounts
+ *
+ * @property  int|string|null  $balance
+ * @property  int|string|null  $earnings
+ * @property  int|string|null  $uid
  */
 class Account extends Relational
 {

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Abuse Report model
+ *
+ * @property  int|string|null  $id
  */
 class Report extends Relational
 {

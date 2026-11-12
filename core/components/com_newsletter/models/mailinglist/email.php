@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Newsletter model for a mailinglist email
+ *
+ * @property  string|null  $email
  */
 class Email extends Relational
 {

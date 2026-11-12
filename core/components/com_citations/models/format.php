@@ -15,6 +15,10 @@ use Hubzero\Facades\Component;
  * Citation format model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  string|null  $format
+ * @property  int|string|null  $id
+ * @property  string|null  $style
  */
 class Format extends Relational
 {

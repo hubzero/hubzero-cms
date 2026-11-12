@@ -13,6 +13,8 @@ use Hubzero\Config\Registry;
 
 /**
  * Model class for publication category
+ *
+ * @property-read  mixed  $params  What transformParams() gives
  */
 class Category extends Relational
 {

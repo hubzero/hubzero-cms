@@ -22,6 +22,8 @@ use Hubzero\Facades\Component;
  * @property  \Components\Wishlist\Models\Adapters\Base|null  $adapter      The scope's adapter, cached by adapter()
  * @property  \Hubzero\Database\Rows                          $wishes       The wishes, through wishes()
  * @property  \Hubzero\Database\Rows                          $ownergroups  The owner groups, through ownergroups()
+ *
+ * @property  int|string|null  $referenceid
  */
 class Wishlist extends Relational
 {

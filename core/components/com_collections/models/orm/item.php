@@ -15,6 +15,9 @@ use Hubzero\Facades\Date;
 
 /**
  * Collection item model
+ *
+ * @property  int|string|null  $state
+ * @property  string|null  $title
  */
 class Item extends Relational
 {

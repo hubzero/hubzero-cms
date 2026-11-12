@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * User profile model
+ *
+ * @property  int|string|null  $ordering
  */
 class Profile extends Relational
 {

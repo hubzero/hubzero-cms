@@ -28,6 +28,9 @@ use Hubzero\Facades\Route;
  * @property  Publication             $publication  The publication, through publication()
  * @property  \Hubzero\Database\Rows  $authors      Its authors, through authors()
  * @property  \Hubzero\Database\Rows  $attachments  Its attachments, through attachments()
+ *
+ * @property-read  mixed  $license  What license() gives
+ * @property-read  mixed  $metadata  What transformMetadata() gives
  */
 class Version extends Relational implements \Hubzero\Search\Searchable
 {

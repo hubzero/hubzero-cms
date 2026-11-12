@@ -16,6 +16,22 @@ use Hubzero\Facades\Date;
  * Subscription model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  string|null  $added
+ * @property  string|null  $code
+ * @property  string|null  $contact
+ * @property  string|null  $expires
+ * @property  int|string|null  $id
+ * @property  string|null  $notes
+ * @property  float|string|null  $pendingpayment
+ * @property  int|string|null  $pendingunits
+ * @property-read  mixed  $service  What service() gives
+ * @property  int|string|null  $serviceid
+ * @property  int|string|null  $status
+ * @property  float|string|null  $totalpaid
+ * @property  int|string|null  $uid
+ * @property  int|string|null  $units
+ * @property  string|null  $updated
  */
 class Subscription extends Relational
 {

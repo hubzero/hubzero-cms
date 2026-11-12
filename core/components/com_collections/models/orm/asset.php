@@ -16,6 +16,8 @@ use Hubzero\Facades\Date;
 
 /**
  * Collection item asset model
+ *
+ * @property  int|string|null  $ordering
  */
 class Asset extends Relational
 {

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Language model
+ *
+ * @property  int|string|null  $ordering
  */
 class Language extends Relational
 {

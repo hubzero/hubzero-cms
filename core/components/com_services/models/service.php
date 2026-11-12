@@ -18,6 +18,10 @@ use Hubzero\Facades\User;
  * Service model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $maxunits
+ * @property  float|string|null  $unitprice
+ * @property  int|string|null  $unitsize
  */
 class Service extends Relational
 {

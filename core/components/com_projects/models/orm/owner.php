@@ -16,6 +16,8 @@ use Hubzero\User\Group;
  * Projects owner model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property-read  mixed  $user  What user() gives
  */
 class Owner extends Relational
 {

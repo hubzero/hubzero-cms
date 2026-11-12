@@ -14,6 +14,9 @@ use Hubzero\Facades\Date;
 
 /**
  * Support ticket message model
+ *
+ * @property  int|string|null  $id
+ * @property  int|string|null  $ordering
  */
 class QueryFolder extends Relational
 {

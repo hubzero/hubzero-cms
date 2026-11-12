@@ -30,6 +30,8 @@ use Hubzero\Facades\Plugin;
  * @property  \Hubzero\Database\Rows    $connections   Its storage connections, through connections()
  * @property  \Hubzero\Database\Rows    $descriptions  Its description values, through descriptions()
  * @property  \Hubzero\Database\Rows    $team          Its team members, through team()
+ *
+ * @property-read  mixed  $group  What group() gives
  */
 class Project extends Relational implements \Hubzero\Search\Searchable
 {

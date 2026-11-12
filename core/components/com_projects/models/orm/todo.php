@@ -16,6 +16,8 @@ use Hubzero\Facades\Lang;
  * Projects ToDo model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $priority
  */
 class Todo extends Relational
 {

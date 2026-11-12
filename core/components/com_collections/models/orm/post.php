@@ -24,6 +24,8 @@ use Hubzero\Facades\Route;
  * @property  \Components\Collections\Models\Orm\Item  $item         The item posted, through item()
  * @property  \Hubzero\User\User                       $creator      The poster, through creator()
  * @property  string                                   $description  As plain text, through transformDescription()
+ *
+ * @property  int|string|null  $ordering
  */
 class Post extends Relational implements \Hubzero\Search\Searchable
 {

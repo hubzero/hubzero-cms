@@ -12,6 +12,11 @@ use Hubzero\Database\Relational;
 
 /**
  * Newsletter model for a mailinglist
+ *
+ * @property  int|string|null  $deleted
+ * @property-read  mixed  $emails  What emails() gives
+ * @property  string|null  $name
+ * @property  int|string|null  $private
  */
 class Mailinglist extends Relational
 {

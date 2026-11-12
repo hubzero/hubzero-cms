@@ -14,6 +14,8 @@ use Hubzero\Database\Relational;
  * Resource screenshots model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $ordering
  */
 class Screenshot extends Relational
 {

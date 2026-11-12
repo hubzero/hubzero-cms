@@ -14,6 +14,8 @@ use User;
 
 /**
  * Newsletter model for secondary story
+ *
+ * @property  int|string|null  $order
  */
 class Secondary extends Relational
 {

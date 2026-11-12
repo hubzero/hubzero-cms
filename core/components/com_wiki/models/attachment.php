@@ -16,6 +16,11 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Wiki model for page attachments
+ *
+ * @property  string|null  $created
+ * @property  int|string|null  $created_by
+ * @property  string|null  $description
+ * @property  string|null  $filename
  */
 class Attachment extends Relational
 {

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Support ticket status model
+ *
+ * @property  int|string|null  $open
  */
 class Status extends Relational
 {

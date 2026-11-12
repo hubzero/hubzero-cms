@@ -13,6 +13,9 @@ use Hubzero\Facades\Date;
 
 /**
  * Poll model
+ *
+ * @property  string|null  $title
+ * @property  int|string|null  $voters
  */
 class Poll extends Relational
 {

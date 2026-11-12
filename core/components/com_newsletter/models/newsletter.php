@@ -17,6 +17,11 @@ use Hubzero\Facades\Event;
 
 /**
  * Newsletter model
+ *
+ * @property  string|null  $alias
+ * @property  int|string|null  $deleted
+ * @property  string|null  $name
+ * @property  int|string|null  $published
  */
 class Newsletter extends Relational
 {

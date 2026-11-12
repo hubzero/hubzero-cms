@@ -16,6 +16,8 @@ use Hubzero\Facades\Date;
  * Event Page model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $ordering
  */
 class Page extends Relational
 {

@@ -18,6 +18,11 @@ use Hubzero\Facades\Event;
 
 /**
  * Support ticket comment model
+ *
+ * @property-read  mixed  $attachments  What attachments() gives
+ * @property  string|null  $changelog
+ * @property-read  mixed  $creator  What creator() gives
+ * @property  int|string|null  $ticket
  */
 class Comment extends Relational
 {

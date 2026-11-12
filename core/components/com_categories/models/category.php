@@ -27,6 +27,9 @@ use Hubzero\Facades\Filesystem;
  * @property  Registry  $params    The params column as a registry, through transformParams()
  * @property  Registry  $metadata  The metadata column as a registry, through transformMetadata()
  * @property  Category  $parent    The parent category, through parent()
+ *
+ * @property  string|null  $path
+ * @property  string|null  $title
  */
 class Category extends Nested
 {

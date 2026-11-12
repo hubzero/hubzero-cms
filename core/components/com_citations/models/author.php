@@ -15,6 +15,8 @@ use Hubzero\Geocode\Geocode;
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $ordering
  */
 class Author extends Relational
 {

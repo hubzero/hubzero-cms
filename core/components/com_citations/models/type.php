@@ -14,6 +14,9 @@ use Hubzero\Database\Relational;
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  string|null  $type
+ * @property  string|null  $type_desc
  */
 class Type extends Relational
 {

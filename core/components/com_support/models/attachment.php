@@ -17,6 +17,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Support ticket attachment model
+ *
+ * @property  int|string|null  $ticket
  */
 class Attachment extends Relational
 {

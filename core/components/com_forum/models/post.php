@@ -20,6 +20,8 @@ use Hubzero\Facades\User;
 
 /**
  * Forum model for a post
+ *
+ * @property-read  mixed  $creator  What creator() gives
  */
 class Post extends Relational
 {

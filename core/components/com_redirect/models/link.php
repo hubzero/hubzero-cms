@@ -14,6 +14,8 @@ use Hubzero\Facades\Date;
 
 /**
  * Model class for a redirect entry
+ *
+ * @property  string|null  $new_url
  */
 class Link extends Relational
 {

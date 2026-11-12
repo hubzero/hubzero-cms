@@ -14,6 +14,8 @@ use Hubzero\Facades\App;
 
 /**
  * Support query model
+ *
+ * @property  int|string|null  $ordering
  */
 class Query extends Relational
 {

@@ -14,6 +14,8 @@ use Hubzero\Database\Relational;
  * Resource association model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $ordering
  */
 class Association extends Relational
 {

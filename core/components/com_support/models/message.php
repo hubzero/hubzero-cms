@@ -13,6 +13,8 @@ use Hubzero\Facades\Config;
 
 /**
  * Support ticket message model
+ *
+ * @property-read  mixed  $message  What transformMessage() gives
  */
 class Message extends Relational
 {

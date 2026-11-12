@@ -28,6 +28,8 @@ use Hubzero\Facades\Event;
  * Read through __get():
  *
  * @property  \Hubzero\User\User|null  $creator  The user who asked, through creator()
+ *
+ * @property-read  mixed  $responses  What responses() gives
  */
 class Question extends Relational
 {
