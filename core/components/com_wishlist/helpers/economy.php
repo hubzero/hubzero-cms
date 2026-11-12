@@ -107,6 +107,8 @@ class Economy extends Obj
             // Delete holds
             Transaction::deleteRecords('wish', 'hold', $wishid);
         }
+
+        return null;
     }
 
     /**
@@ -209,5 +211,7 @@ class Economy extends Obj
                 $BTLA->deposit($wish->ranking, $msg, 'wish', $wishid);
             }
         }
+
+        return null;
     }
 }

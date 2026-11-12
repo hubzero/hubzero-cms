@@ -639,6 +639,8 @@ class Pages extends Plugin
 
         // Push through to the media view
         $this->files();
+
+        return null;
     }
 
     /**

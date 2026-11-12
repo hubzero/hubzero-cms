@@ -617,6 +617,8 @@ class Version extends Table
 
         $this->db->setQuery($query);
         $this->db->query();
+
+        return null;
     }
 
     /**

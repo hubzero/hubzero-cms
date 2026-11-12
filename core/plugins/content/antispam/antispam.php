@@ -143,6 +143,8 @@ class Antispam extends Plugin
                 false,
             ]);
         }
+
+        return null;
     }
 
     /**

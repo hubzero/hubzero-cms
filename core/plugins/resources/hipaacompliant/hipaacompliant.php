@@ -54,5 +54,7 @@ class Hipaacompliant extends Plugin
         $params->set('hipaacompliant', $compliant);
 
         $resource->params = $params->toString();
+
+        return null;
     }
 }

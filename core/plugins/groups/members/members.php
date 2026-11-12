@@ -1329,6 +1329,8 @@ class Members extends Plugin
         }
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**
@@ -2097,6 +2099,8 @@ class Members extends Plugin
                 ($this->getError() ? 'error' : 'message'),
             );
         }
+
+        return null;
     }
 
     /**

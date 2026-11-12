@@ -1460,6 +1460,8 @@ class Doi extends Obj
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_EZID_DOI_METADATA'));
             }
         }
+
+        return null;
     }
 
     /**

@@ -86,6 +86,8 @@ class DayOfMonthField extends AbstractField
                 }
             }
         }
+
+        return null;
     }
 
     /**

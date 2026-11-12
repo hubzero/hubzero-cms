@@ -441,6 +441,8 @@ class Media extends SiteController
 
         // Push through to the image view
         $this->displayTask($file, $id);
+
+        return null;
     }
 
     /**
@@ -500,6 +502,8 @@ class Media extends SiteController
 
         // Push through to the image view
         $this->displayTask($file, $id);
+
+        return null;
     }
 
     /**

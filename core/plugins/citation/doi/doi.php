@@ -149,6 +149,8 @@ class Doi extends Plugin
                 }
             }
         }
+
+        return null;
     }
 
     /**

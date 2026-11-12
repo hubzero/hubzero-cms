@@ -422,6 +422,8 @@ class Processor extends Obj
 
         imagedestroy($this->resource);
         $this->resource = $resource;
+
+        return null;
     }
 
     /**

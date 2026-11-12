@@ -69,5 +69,7 @@ class Factor extends Relational
 
         $factor->set('enrolled', '1');
         $factor->save();
+
+        return null;
     }
 }

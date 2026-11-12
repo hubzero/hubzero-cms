@@ -89,6 +89,8 @@ class Xhubtags extends Plugin
                 }
             }
         }
+
+        return null;
     }
 
     /**

@@ -930,6 +930,8 @@ class Projects extends Base
 
         $this->task = 'view';
         $this->viewTask();
+
+        return null;
     }
 
     /**

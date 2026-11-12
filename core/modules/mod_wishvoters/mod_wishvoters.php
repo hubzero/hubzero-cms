@@ -60,5 +60,7 @@ class Wishvoters extends Module
         }
 
         require $this->getLayoutPath();
+
+        return null;
     }
 }

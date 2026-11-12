@@ -439,5 +439,7 @@ class Media extends Base
                 Route::url('index.php?option=' . $this->option, false),
             );
         }
+
+        return null;
     }
 }

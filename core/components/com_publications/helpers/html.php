@@ -1391,6 +1391,8 @@ class Html
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -1444,5 +1446,7 @@ class Html
             }
         }
         closedir($dirHandle);
+
+        return null;
     }
 }

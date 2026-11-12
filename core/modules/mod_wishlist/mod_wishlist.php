@@ -67,5 +67,7 @@ class Wishlist extends Module
 
         // Get the view
         parent::display();
+
+        return null;
     }
 }
