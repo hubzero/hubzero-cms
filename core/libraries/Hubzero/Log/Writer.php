@@ -16,6 +16,17 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Class for writing logs
+ *
+ * The level names are answered by __call(), which hands them to Monolog.
+ *
+ * @method mixed debug(string $message, array $context = [])
+ * @method mixed info(string $message, array $context = [])
+ * @method mixed notice(string $message, array $context = [])
+ * @method mixed warning(string $message, array $context = [])
+ * @method mixed error(string $message, array $context = [])
+ * @method mixed critical(string $message, array $context = [])
+ * @method mixed alert(string $message, array $context = [])
+ * @method mixed emergency(string $message, array $context = [])
  */
 class Writer
 {

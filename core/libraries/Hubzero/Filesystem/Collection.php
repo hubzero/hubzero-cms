@@ -15,9 +15,9 @@ use Hubzero\Base\ItemList;
  *
  * This is not necessarily a directory.  It could simply be a list of files
  * from multiple locations...maybe even multiple filesystems?
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Collection extends ItemList
 {
     /**

@@ -13,9 +13,9 @@ use Hubzero\Content\Import\Model\Hook;
 
 /**
  * Import Hook archive model
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Archive extends Obj
 {
     /**

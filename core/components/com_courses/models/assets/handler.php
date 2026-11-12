@@ -13,9 +13,9 @@ use Components\Courses\Models\Asset;
 
 /**
  * Courses asset handler
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Handler
 {
     /**

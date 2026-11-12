@@ -38,6 +38,11 @@ namespace Hubzero\Database\Relationship;
  *
  * These operations are backwards-compatible: existing code continues to work
  * unchanged. You must explicitly opt-in to cascade behavior.
+ *
+ * Calls a relationship does not define are passed to the related model,
+ * constrained to the related rows.
+ *
+ * @mixin \Hubzero\Database\Relational
  */
 class Relationship
 {

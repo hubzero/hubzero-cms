@@ -16,9 +16,9 @@ use Hubzero\Facades\Lang;
 
 /**
  * Iterator class
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class ItemList implements SeekableIterator, Countable, ArrayAccess
 {
     /**

@@ -14,9 +14,9 @@ use Hubzero\Facades\Lang;
 
 /**
  * Content Importer class
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Importer
 {
     /**

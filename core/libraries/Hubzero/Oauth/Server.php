@@ -19,6 +19,10 @@ use Hubzero\Oauth\GrantType\AuthorizationCode as AuthorizationCodeGrantType;
 
 /**
  * Hubzero OAuth2 Server
+ *
+ * Calls it does not define are passed to the OAuth2 server it wraps.
+ *
+ * @mixin \OAuth2\Server
  */
 class Server
 {

@@ -19,9 +19,9 @@ use Hubzero\Facades\User;
 
 /**
  * Project Tool model
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Tool extends Model
 {
     protected $actor;
