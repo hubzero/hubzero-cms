@@ -157,7 +157,7 @@ class CurrentCart extends Cart
     /**
      * Get session info about cart
      *
-     * @param bool $updateDb Flag whether the session cart should be synced with DB first
+     * @param bool $sync Flag whether the session cart should be synced with DB first
      * @return array of items in the cart
      */
     public function getCartInfo($sync = false)
@@ -997,7 +997,7 @@ class CurrentCart extends Cart
 
     /**
      * Checks if coupon is applied to the cart
-     * @param   string      $couponCode coupon code
+     * @param   string      $cnCode coupon code
      * @return  bool
      */
     private function isCouponApplied($cnCode)
@@ -1020,8 +1020,6 @@ class CurrentCart extends Cart
      * Do the maintenance of coupons -- make sure all coupons are valid and in order, remove unnecessary coupons...
      * Return all perks available for the cart
      *
-     * @param   object      $cartInfo
-     * @param   object      $cartCoupons
      * @return  array       perks
      */
     public function getCouponPerks()
@@ -1344,8 +1342,6 @@ class CurrentCart extends Cart
     /**
      * Handle memberships
      *
-     * @param   object      $cartInfo
-     * @param   object      $cartCoupons
      * @return  array      membership info
      */
     public function getMembershipInfo()

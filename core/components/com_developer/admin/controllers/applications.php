@@ -267,7 +267,6 @@ class Applications extends AdminController
     /**
      * Sets the state of one or more entries
      *
-     * @param   integer  $state  The state to set entries to
      * @return  void
      */
     public function stateTask()

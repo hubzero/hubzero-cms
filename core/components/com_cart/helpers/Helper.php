@@ -77,7 +77,7 @@ class Helper
      * Check if the number is a non negative integer
      *
      * @param   mixed   $x       Value to check
-     * @param   bool    $notZero Flag if zero should be accepted (by default zero is ok)
+     * @param   bool    $zeroAccepted Flag if zero should be accepted (by default zero is ok)
      * @return  bool
      */
     public static function isNonNegativeInt($x, $zeroAccepted = true)

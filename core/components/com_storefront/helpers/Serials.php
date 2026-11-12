@@ -34,7 +34,7 @@ class Serials
     /**
      * Mark serials as reserved for the SKU
      *
-     * @param   integer  $sID    SKU ID
+     * @param   integer  $sId    SKU ID
      * @param   integer $qty  Number of serials to mark
      * @return  true
      */
@@ -53,7 +53,7 @@ class Serials
     /**
      * Mark reserved serials as available for the SKU
      *
-     * @param   integer  $sID    SKU ID
+     * @param   integer  $sId    SKU ID
      * @param   integer $qty  Number of serials to mark
      * @return  array|bool
      */
@@ -72,7 +72,7 @@ class Serials
     /**
      * Get serials and mark the as used for the SKU
      *
-     * @param   integer  $sID    SKU ID
+     * @param   integer  $sId    SKU ID
      * @param   integer $qty  Number of serials to get
      * @return  array
      */

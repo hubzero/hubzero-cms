@@ -415,7 +415,6 @@ class Quotas extends AdminController
     /**
      * Save quota class
      *
-     * @param   integer  $redirect  Whether or not to redirect after save
      * @return  void
      */
     public function saveClassTask()

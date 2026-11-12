@@ -557,7 +557,6 @@ class Plugins extends AdminController
     /**
      * Method to cancel an edit.
      *
-     * @param   string   $key  The name of the primary key of the URL variable.
      *
      * @return  void
      */

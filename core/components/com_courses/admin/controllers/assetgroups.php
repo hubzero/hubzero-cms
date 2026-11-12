@@ -422,7 +422,6 @@ class Assetgroups extends AdminController
     /**
      * Reorder a plugin
      *
-     * @param      integer $access Access level to set
      * @return     void
      */
     public function orderTask()
