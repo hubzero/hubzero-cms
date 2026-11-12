@@ -1083,7 +1083,7 @@ class AlterTableBuilder
      * Modify an existing column in the table
      *
      * @param  string $name      Column name
-     * @param  string $type      Column type
+     * @param  string|\Closure|null $type  Column type, or a closure that describes the column
      * @param  array  $modifiers Column modifiers
      * @return $this
      */

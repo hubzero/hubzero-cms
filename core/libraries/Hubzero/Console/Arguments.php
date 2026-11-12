@@ -87,7 +87,7 @@ class Arguments
     /**
      * Getter for those additional options that a given command may use
      *
-     * @param   string  $key      Option name to retieve value for
+     * @param   string|int  $key  Option name, or position, to retieve value for
      * @param   mixed   $default  Default value for option
      * @return  mixed   The option's value, else $default
      **/

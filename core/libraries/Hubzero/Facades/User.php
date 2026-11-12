@@ -81,7 +81,7 @@ class User extends Facade
      * Sets the value of a user state variable.
      *
      * @param   string  $key    The path of the state.
-     * @param   string  $value  The value of the variable.
+     * @param   mixed   $value  The value of the variable.
      * @return  mixed   The previous state, if one existed.
      */
     public static function setState($key, $value)

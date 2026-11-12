@@ -496,7 +496,7 @@ class View extends Obj
     /**
      * Load a template file -- first look in the templates folder for an override
      *
-     * @param   string  $tpl  The name of the template source file; automatically searches the template paths and
+     * @param   string|false|null  $tpl  The name of the template source file; searches the template paths and
      *                        compiles as needed.
      * @return  string  The output of the the template script.
      */

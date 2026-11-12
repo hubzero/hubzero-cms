@@ -120,7 +120,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Sets a default value if not already assigned.
      *
      * @param   string  $key      The name of the parameter.
-     * @param   string  $default  An optional value for the parameter.
+     * @param   mixed   $default  An optional value for the parameter; it is stored as a string.
      * @return  string  The value set, or the default if the value was not previously set (or null).
      */
     public function def($key, $default = '')
