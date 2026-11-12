@@ -120,6 +120,8 @@ class Types extends AdminController
 
     /**
      * Edit a type
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

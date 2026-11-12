@@ -47,7 +47,9 @@ class Collect extends Module
         }
 
         if (Request::getWord('tryto', '') == 'collect') {
-            return $this->collect();
+            $this->collect();
+
+            return;
         }
 
         require $this->getLayoutPath($this->params->get('layout', 'default'));
@@ -55,6 +57,8 @@ class Collect extends Module
 
     /**
      * Collect an item
+     *
+     * @return  void
      */
     public function collect()
     {

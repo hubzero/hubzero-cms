@@ -277,6 +277,8 @@ class Admin implements StepInterface
 
     /**
      * Check if admin user already exists
+     *
+     * @return  void
      */
     private function checkExistingAdmin()
     {

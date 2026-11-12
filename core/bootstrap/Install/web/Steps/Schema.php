@@ -109,6 +109,8 @@ class Schema implements StepInterface
 
     /**
      * Check current database status
+     *
+     * @return  void
      */
     private function checkStatus()
     {
@@ -186,6 +188,8 @@ class Schema implements StepInterface
 
     /**
      * Check migration status
+     *
+     * @return  void
      */
     private function checkMigrationStatus(ConnectionInterface $connection, $prefix)
     {

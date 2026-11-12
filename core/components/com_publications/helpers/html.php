@@ -778,7 +778,9 @@ class Html
     public static function showPubTitle($pub, $tabtitle = '', $append = '')
     {
         if ($pub->project()->isProvisioned()) {
-            return self::showPubTitleProvisioned($pub, $append);
+            self::showPubTitleProvisioned($pub, $append);
+
+            return;
         }
         $typetitle = self::writePubCategory($pub->category()->alias, $pub->category()->name);
         $tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
@@ -807,6 +809,8 @@ class Html
      *
      * @param   object  $pub
      * @param   string  $append
+     *
+     * @return  void
      */
     public static function showPubTitleProvisioned($pub, $append = '')
     {

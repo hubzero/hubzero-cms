@@ -1058,6 +1058,8 @@ class Membership extends Base
 
     /**
      * Show request membership form
+     *
+     * @return  void
      */
     public function requestTask()
     {

@@ -152,12 +152,13 @@ class Solr extends AdminController
 
         Notify::success(Lang::txt('COM_SEARCH_SOLR_CONFIGURATION_MADE'));
 
-        return $this->displayTask();
+        $this->displayTask();
     }
 
     /**
      * Display the overview
      *
+     * @return  void
      */
     public function displayTask()
     {

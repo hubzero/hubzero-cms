@@ -129,6 +129,8 @@ class Database implements StepInterface
 
     /**
      * Load existing configuration if available
+     *
+     * @return  void
      */
     private function loadExistingConfig()
     {

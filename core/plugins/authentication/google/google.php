@@ -187,6 +187,8 @@ class Google extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
+     *
+     * @return  void
      */
     public function onAuthenticate($credentials, $options, &$response)
     {
@@ -199,6 +201,8 @@ class Google extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
+     *
+     * @return  void
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {

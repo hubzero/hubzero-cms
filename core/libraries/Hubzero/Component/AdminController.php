@@ -15,6 +15,8 @@ class AdminController extends SiteController
 {
     /**
      * Cancels a task and redirects to default view
+     *
+     * @return  void
      */
     public function cancelTask()
     {

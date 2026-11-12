@@ -121,6 +121,8 @@ class Modules extends AdminController
 
     /**
      * Edit Page Module
+     *
+     * @return  void
      */
     public function editTask()
     {

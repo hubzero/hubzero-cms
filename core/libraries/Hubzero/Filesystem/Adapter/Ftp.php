@@ -699,6 +699,8 @@ class Ftp implements AdapterInterface
      * Ensure a directory exists.
      *
      * @param  string  $dirname
+     *
+     * @return  void
      */
     public function ensureDirectory($dirname)
     {

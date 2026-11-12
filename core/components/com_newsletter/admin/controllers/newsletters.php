@@ -166,6 +166,8 @@ class Newsletters extends AdminController
      * Edit newsletter task
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {
@@ -569,7 +571,9 @@ class Newsletters extends AdminController
         // make sure we have an id
         if (!$id) {
             Notify::error(Lang::txt('COM_NEWSLETTER_SELECT_NEWSLETTER_FOR_MAILING'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // get the newsletter

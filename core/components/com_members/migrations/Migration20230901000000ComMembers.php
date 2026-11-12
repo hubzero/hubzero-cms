@@ -91,6 +91,7 @@ class Migration20230901000000ComMembers extends Base
      * logged in during the last year, but have no secret set. Each secret is a
      * unique, random 32-character string.
      *
+     * @return  void
      **/
     private function generateUserSecrets()
     {

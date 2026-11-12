@@ -213,6 +213,8 @@ class Media extends AdminController
      *
      * @param   string   $file  File name
      * @param   integer  $id    User ID
+     *
+     * @return  void
      */
     public function displayTask($file = '', $id = 0)
     {

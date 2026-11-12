@@ -31,14 +31,18 @@ class Whosonline extends Module
     public function display()
     {
         if (App::isAdmin()) {
-            return $this->displayAdmin();
+            $this->displayAdmin();
+
+            return;
         }
 
-        return $this->displaySite();
+        $this->displaySite();
     }
 
     /**
      * Display module contents
+     *
+     * @return  void
      */
     public function displaySite()
     {
@@ -72,6 +76,8 @@ class Whosonline extends Module
 
     /**
      * Display module contents for Admin
+     *
+     * @return  void
      */
     public function displayAdmin()
     {

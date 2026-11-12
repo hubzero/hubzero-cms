@@ -84,7 +84,9 @@ class Publications extends SiteController
 
         // Resource map
         if (strrpos(strtolower($this->_alias), '.rdf') > 0) {
-            return $this->resourceMap();
+            $this->resourceMap();
+
+            return;
         }
 
         // Set the default task
@@ -318,6 +320,7 @@ class Publications extends SiteController
     /**
      * Login view
      *
+     * @return  void
      */
     protected function login()
     {
@@ -524,6 +527,7 @@ class Publications extends SiteController
     /**
      * Retrieves the data from database and compose the RDF file for download.
      *
+     * @return  void
      */
     protected function resourceMap()
     {
@@ -1233,6 +1237,7 @@ class Publications extends SiteController
      * Call a plugin method
      * NOTE: This view should normally only be called through AJAX
      *
+     * @return  void
      */
     public function pluginTask()
     {
@@ -2329,7 +2334,9 @@ class Publications extends SiteController
         // Instantiate a new view
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         Notify::error(Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'));

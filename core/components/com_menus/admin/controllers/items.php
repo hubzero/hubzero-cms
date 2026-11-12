@@ -433,7 +433,9 @@ class Items extends AdminController
         // Fail if checked out not by 'me'
         if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) {
             Notify::warning(Lang::txt('JLIB_HTML_CHECKED_OUT'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!$row->isNew()) {
@@ -1052,6 +1054,8 @@ class Items extends AdminController
 
     /**
      * Cancels a task and redirects to default view
+     *
+     * @return  void
      */
     public function cancelTask()
     {

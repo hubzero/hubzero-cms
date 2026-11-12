@@ -88,7 +88,9 @@ class BillBoards extends AdminController
         // Fail if not checked out by current user
         if ($billboard->isCheckedOut()) {
             Notify::warning(Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Are we editing an existing entry?
@@ -328,6 +330,8 @@ class BillBoards extends AdminController
     /**
      * Cancels out of the billboard edit view, makes sure to
      * check the billboard back in for other people to edit
+     *
+     * @return  void
      */
     public function cancelTask()
     {

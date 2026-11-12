@@ -506,6 +506,8 @@ class Collections extends Plugin
 
     /**
      * Redirect to the login form
+     *
+     * @return  void
      */
     private function login()
     {
@@ -788,7 +790,9 @@ class Collections extends Plugin
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -854,7 +858,9 @@ class Collections extends Plugin
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -1052,7 +1058,9 @@ class Collections extends Plugin
     private function edit($entry = null)
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
@@ -1174,7 +1182,9 @@ class Collections extends Plugin
 
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Access check
@@ -1412,7 +1422,9 @@ class Collections extends Plugin
     private function repost()
     {
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Deliberately not gated on access-create-item: a repost writes into a
@@ -1615,7 +1627,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Check for request forgeries
@@ -1727,7 +1741,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Access check
@@ -1787,7 +1803,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Access check
@@ -1961,7 +1979,9 @@ class Collections extends Plugin
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Incoming
@@ -2094,7 +2114,9 @@ class Collections extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -2200,7 +2222,9 @@ class Collections extends Plugin
         // its de-duplication row on the user id, which is 0 for a guest: every
         // guest would share one row and toggle it against the others.
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -2318,7 +2342,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Access check
@@ -2376,7 +2402,9 @@ class Collections extends Plugin
         Request::checkToken();
 
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) {
@@ -2487,7 +2515,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Access check
@@ -2606,7 +2636,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -2635,7 +2667,9 @@ class Collections extends Plugin
     {
         // Login check
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {

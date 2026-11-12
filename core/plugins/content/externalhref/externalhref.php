@@ -29,7 +29,7 @@ class Externalhref extends Plugin
      */
     public function onContentBeforeSave($context, &$article, $isNew)
     {
-        return $this->prepareLinks($context, $article);
+        $this->prepareLinks($context, $article);
     }
 
     /**
@@ -43,7 +43,7 @@ class Externalhref extends Plugin
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
-        return $this->prepareLinks($context, $article);
+        $this->prepareLinks($context, $article);
     }
 
     /**
@@ -51,6 +51,8 @@ class Externalhref extends Plugin
      *
      * @param   string  $context  The context of the content being passed to the plugin.
      * @param   object  $article  The article object.  Note $article->text is also available
+     *
+     * @return  void
      */
     public function prepareLinks($context, &$article)
     {

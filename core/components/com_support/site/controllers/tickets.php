@@ -503,6 +503,7 @@ class Tickets extends SiteController
     /**
      * Displays a list of support tickets
      *
+     * @return  void
      */
     public function displayTask()
     {
@@ -719,6 +720,8 @@ class Tickets extends SiteController
 
     /**
      * Displays a form for creating a new support ticket
+     *
+     * @return  void
      */
     public function newTask($row = null)
     {
@@ -1452,6 +1455,8 @@ class Tickets extends SiteController
      * Display a ticket and associated comments
      *
      * @param   mixed  $comment
+     *
+     * @return  void
      */
     public function ticketTask($comment = null)
     {

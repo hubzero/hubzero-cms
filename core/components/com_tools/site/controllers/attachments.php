@@ -375,6 +375,8 @@ class Attachments extends SiteController
      * Display a list of attachments
      *
      * @param   integer  $id  Resource ID
+     *
+     * @return  void
      */
     public function displayTask($id = null)
     {

@@ -67,7 +67,9 @@ class Groups extends Base
 
         // If we have a file
         if (isset($file)) {
-            return $this->downloadTask($file);
+            $this->downloadTask($file);
+
+            return;
         }
 
         // Check in for user
@@ -419,7 +421,9 @@ class Groups extends Base
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
+            $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
+
+            return;
         }
 
         if (!User::authorise('core.edit', $this->option)) {
@@ -1008,7 +1012,9 @@ class Groups extends Base
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
+            $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
+
+            return;
         }
 
         // Check to make sure we have  cname
@@ -1298,6 +1304,8 @@ class Groups extends Base
 
     /**
      * Group is Unapproved
+     *
+     * @return  void
      */
     public function unapprovedGroupTask()
     {
@@ -1314,6 +1322,8 @@ class Groups extends Base
 
     /**
      * Return data for the autocompleter
+     *
+     * @return  void
      */
     public function autocompleteTask()
     {
@@ -1453,6 +1463,8 @@ class Groups extends Base
      * Download a file
      *
      * @param   string  $filename  File name
+     *
+     * @return  void
      */
     public function downloadTask($filename = '')
     {

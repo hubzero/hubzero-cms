@@ -123,7 +123,9 @@ class Share extends Plugin
                 exit();
             }
 
-            return $this->share($sharewith, $url, $model);
+            $this->share($sharewith, $url, $model);
+
+            return;
         }
 
         // Build the HTML meant for the "about" tab's metadata overview
@@ -150,6 +152,8 @@ class Share extends Plugin
      * @param   string  $with      Social site to share with
      * @param   string  $url       The URL to share
      * @param   object  $resource  Resource to share
+     *
+     * @return  void
      */
     public function share($with, $url, $resource)
     {

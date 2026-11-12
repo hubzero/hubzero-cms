@@ -496,6 +496,8 @@ class Pages
      * Checkout Page
      *
      * @param    $pageid    Id of page to get info
+     *
+     * @return  void
      */
     public static function checkout($pageid)
     {
@@ -518,6 +520,8 @@ class Pages
      * Checkin Page
      *
      * @param    $pageid    Id of page to get info
+     *
+     * @return  void
      */
     public static function checkin($pageid)
     {

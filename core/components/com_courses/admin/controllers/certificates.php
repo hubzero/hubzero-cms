@@ -135,6 +135,8 @@ class Certificates extends AdminController
 
     /**
      * Create a new course
+     *
+     * @return  void
      */
     public function addTask($model = null)
     {
@@ -143,6 +145,8 @@ class Certificates extends AdminController
 
     /**
      * Displays an edit form
+     *
+     * @return  void
      */
     public function editTask($model = null)
     {

@@ -281,7 +281,9 @@ class Members extends AdminController
             && !User::authorise('core.create', $this->option)
             && !User::authorise('core.edit', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         Request::setVar('hidemainmenu', 1);
@@ -1164,7 +1166,9 @@ class Members extends AdminController
         // No Id, throw up a warning
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through the array of user Ids
@@ -1212,7 +1216,9 @@ class Members extends AdminController
                 $this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
             } else {
                 Notify::warning("Could not deidentify several user id");
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
         }
 

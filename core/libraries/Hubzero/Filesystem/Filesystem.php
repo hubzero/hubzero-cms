@@ -502,6 +502,8 @@ class Filesystem
      *
      * @param   string  $path  Path to file
      * @throws  FileNotFoundException
+     *
+     * @return  void
      */
     public function assertPresent($path)
     {
@@ -515,6 +517,8 @@ class Filesystem
      *
      * @param   string  $path  Path to file
      * @throws  FileExistsException
+     *
+     * @return  void
      */
     public function assertAbsent($path)
     {

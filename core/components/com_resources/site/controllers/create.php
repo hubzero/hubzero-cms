@@ -150,6 +150,7 @@ class Create extends SiteController
     /**
      * Redirect to the login page with the return set
      *
+     * @return  void
      */
     public function loginTask()
     {
@@ -296,6 +297,8 @@ class Create extends SiteController
      * Display a form for composing the title, abstract, etc.
      *
      * @param   object  $row  Resource
+     *
+     * @return  void
      */
     public function stepCompose($row = null)
     {
@@ -396,6 +399,8 @@ class Create extends SiteController
 
     /**
      * Show form for adding authors to a resource
+     *
+     * @return  void
      */
     public function stepAuthors()
     {
@@ -492,6 +497,8 @@ class Create extends SiteController
      * Show form for adding tags to an entry
      *
      * @param   array  $existing
+     *
+     * @return  void
      */
     public function stepTags($existing = [])
     {
@@ -558,6 +565,8 @@ class Create extends SiteController
 
     /**
      * Show final review form for setting license and agreeing to terms of submission
+     *
+     * @return  void
      */
     public function stepReview()
     {
@@ -822,7 +831,9 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('compose');
-            return $this->stepCompose($row);
+            $this->stepCompose($row);
+
+            return;
         }
 
         // reset id
@@ -836,7 +847,9 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('compose');
-            return $this->stepCompose($row);
+            $this->stepCompose($row);
+
+            return;
         }
 
         // build path to temp upload folder and future permanent folder
@@ -948,7 +961,9 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('authors');
-            return $this->stepAuthors();
+            $this->stepAuthors();
+
+            return;
         }
 
         // Store new content
@@ -957,7 +972,9 @@ class Create extends SiteController
             $this->step--;
             $this->view->set('step', $this->step);
             $this->view->setLayout('authors');
-            return $this->stepAuthors();
+            $this->stepAuthors();
+
+            return;
         }
 
         // Supporting documents follow the resource's access and group
@@ -1180,7 +1197,9 @@ class Create extends SiteController
                 --$this->step;
                 $this->view->set('step', $this->step);
                 $this->view->setLayout('tags');
-                return $this->stepTags($push);
+                $this->stepTags($push);
+
+                return;
             }
         }
 
@@ -1326,7 +1345,9 @@ class Create extends SiteController
         if (!$authorized && !$published) {
             $this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
             $this->checkProgress($id);
-            return $this->stepReview();
+            $this->stepReview();
+
+            return;
         }
 
         // Allow for any other validation
@@ -1336,7 +1357,9 @@ class Create extends SiteController
             if ($result) {
                 $this->setError($result);
                 $this->checkProgress($id);
-                return $this->stepReview();
+                $this->stepReview();
+
+                return;
             }
         }
 
@@ -1351,7 +1374,9 @@ class Create extends SiteController
                 if ($this->config->get('autoapprove_content_check') == 1) {
                     if ($resource->children()->total() < 1) {
                         $this->setError(Lang::txt('COM_CONTRIBUTE_NO_CONTENT'));
-                        return $this->stepReview();
+                        $this->stepReview();
+
+                        return;
                     }
                 }
 
@@ -1381,7 +1406,9 @@ class Create extends SiteController
             if ($authors->count() <= 0) {
                 $this->setError(Lang::txt('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
                 $this->checkProgress($id);
-                return $this->stepReview();
+                $this->stepReview();
+
+                return;
             }
 
             // Get any set emails that should be notified of ticket submission
@@ -1483,7 +1510,9 @@ class Create extends SiteController
                 if ($licenseText == '[ENTER LICENSE HERE]') {
                     $this->setError(Lang::txt('Please enter a license.'));
                     $this->checkProgress($id);
-                    return $this->stepReview();
+                    $this->stepReview();
+
+                    return;
                 }
 
                 $rl = License::oneOrNew($license);

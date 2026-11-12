@@ -17,6 +17,8 @@ class Stylesheet extends Renderer
      * Render content to group template
      *
      * @param    string
+     *
+     * @return  void
      */
     public function render()
     {

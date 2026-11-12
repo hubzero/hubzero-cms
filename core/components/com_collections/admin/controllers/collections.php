@@ -130,6 +130,8 @@ class Collections extends AdminController
      * Edit a collection
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {
@@ -309,7 +311,9 @@ class Collections extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_COLLECTIONS_ERROR_SELECT_ITEMS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load the entry

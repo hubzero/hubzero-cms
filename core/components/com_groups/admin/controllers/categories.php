@@ -100,6 +100,8 @@ class Categories extends AdminController
      * Edit Page Category
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

@@ -130,6 +130,8 @@ class Hosts extends AdminController
      * Display host entries for a member
      *
      * @param   object  $profile
+     *
+     * @return  void
      */
     public function displayTask($profile = null)
     {

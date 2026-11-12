@@ -210,7 +210,9 @@ class Plugins extends AdminController
         // Fail if checked out not by 'me'
         if ($model->get('checked_out') && $model->get('checked_out') != User::get('id')) {
             Notify::warning(Lang::txt('COM_PLUGINS_CHECKED_OUT'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!$model->isNew()) {
@@ -556,6 +558,8 @@ class Plugins extends AdminController
      * Method to cancel an edit.
      *
      * @param   string   $key  The name of the primary key of the URL variable.
+     *
+     * @return  void
      */
     public function cancelTask()
     {

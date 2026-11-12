@@ -290,7 +290,9 @@ class Notes extends Plugin
         if (!$model->save()) {
             $this->setError($model->getError());
             if (!$this->view->no_html) {
-                return $this->edit($model);
+                $this->edit($model);
+
+                return;
             }
         }
 

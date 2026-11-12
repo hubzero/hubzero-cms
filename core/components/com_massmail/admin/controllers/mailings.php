@@ -1050,7 +1050,9 @@ class Mailings extends AdminController
 
         if (!in_array($row->get('status'), $from)) {
             Notify::warning(Lang::txt('COM_MASSMAIL_INVALID_TRANSITION'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row->set('status', $to);

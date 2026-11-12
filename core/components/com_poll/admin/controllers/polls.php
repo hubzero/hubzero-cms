@@ -177,7 +177,9 @@ class Polls extends AdminController
         if ($poll->isCheckedOut(User::get('id'))) {
             Notify::warning(Lang::txt('DESCBEINGEDITTED', Lang::txt('The poll'), $poll->get('title')));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if ($poll->isNew()) {
@@ -382,6 +384,8 @@ class Polls extends AdminController
 
     /**
      * Cancels a task and redirects to listing
+     *
+     * @return  void
      */
     public function cancelTask()
     {

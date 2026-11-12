@@ -72,7 +72,7 @@ class Us extends Plugin
 
     public function onAfterDeleteUser($user, $success, $msg)
     {
-        return $this->onUserAfterDelete($user, $success, $msg);
+        $this->onUserAfterDelete($user, $success, $msg);
     }
 
     /**
@@ -81,6 +81,8 @@ class Us extends Plugin
      * @param   array   $user     holds the user data
      * @param   bool    $success  true if user was successfully stored in the database
      * @param   string  $msg      message
+     *
+     * @return  void
      */
     public function onUserAfterDelete($user, $success, $msg)
     {

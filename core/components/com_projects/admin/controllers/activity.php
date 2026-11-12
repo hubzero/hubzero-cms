@@ -160,6 +160,8 @@ class Activity extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

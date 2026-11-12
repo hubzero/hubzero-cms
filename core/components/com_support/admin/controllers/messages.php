@@ -74,6 +74,8 @@ class Messages extends AdminController
      * Display a form for adding/editing a record
      *
      * @param   mixed  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

@@ -192,6 +192,8 @@ class Server extends Obj
      * Set Content Type
      *
      * @param  string  $contentType
+     *
+     * @return  void
      */
     public function setContentType($contentType = null)
     {

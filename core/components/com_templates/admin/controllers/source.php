@@ -51,6 +51,8 @@ class Source extends AdminController
      * Edit an entry
      *
      * @param   object  $file
+     *
+     * @return  void
      */
     public function editTask($file = null)
     {

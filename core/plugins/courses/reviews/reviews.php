@@ -224,6 +224,8 @@ class Reviews extends Plugin
      * @param   string  $url      URL
      * @param   string  $msg      The message to add
      * @param   string  $msgType  Type of message
+     *
+     * @return  void
      */
     public function redirect($url, $msg = '', $msgType = '')
     {
@@ -236,6 +238,8 @@ class Reviews extends Plugin
 
     /**
      * Redirect to login page
+     *
+     * @return  void
      */
     protected function login()
     {
@@ -259,7 +263,9 @@ class Reviews extends Plugin
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->setError(Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -365,7 +371,9 @@ class Reviews extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Check for request forgeries

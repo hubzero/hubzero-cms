@@ -115,6 +115,8 @@ class Questions extends AdminController
      * Displays a question for editing
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

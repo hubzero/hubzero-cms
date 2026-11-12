@@ -50,6 +50,8 @@ class Geo extends Plugin
      * @param array  $user   holds the user data
      * @param bool   $succes true if user was succesfully stored in the database
      * @param string $msg    message
+     *
+     * @return  void
      */
     public function onUserAfterDelete($user, $succes, $msg)
     {

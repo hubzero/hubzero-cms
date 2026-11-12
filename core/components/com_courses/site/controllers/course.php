@@ -178,6 +178,8 @@ class Course extends SiteController
 
     /**
      * Show a form for editing a course
+     *
+     * @return  void
      */
     public function newTask()
     {
@@ -188,6 +190,8 @@ class Course extends SiteController
      * Show a form for editing a course
      *
      * @param   object  $model
+     *
+     * @return  void
      */
     public function editTask($model = null)
     {

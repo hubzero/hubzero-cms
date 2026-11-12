@@ -139,6 +139,8 @@ class Posts extends AdminController
 
     /**
      * Edit a post
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

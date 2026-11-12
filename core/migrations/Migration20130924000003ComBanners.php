@@ -30,6 +30,8 @@ class Migration20130924000003ComBanners extends Base
 
     /**
      * Migrate the banners table
+     *
+     * @return  void
      */
     protected function migrateBannersTable()
     {
@@ -211,6 +213,8 @@ class Migration20130924000003ComBanners extends Base
 
     /**
      * Migrate the banner_clients table
+     *
+     * @return  void
      */
     protected function migrateBannerClientsTable()
     {
@@ -331,6 +335,8 @@ class Migration20130924000003ComBanners extends Base
 
     /**
      * Migrate the banner_tracks table
+     *
+     * @return  void
      */
     protected function migrateBannerTracksTable()
     {

@@ -138,6 +138,8 @@ class Settings implements StepInterface
 
     /**
      * Load existing configuration
+     *
+     * @return  void
      */
     private function loadExistingConfig()
     {

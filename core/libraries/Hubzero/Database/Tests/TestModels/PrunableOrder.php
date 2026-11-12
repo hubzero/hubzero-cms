@@ -37,6 +37,8 @@ class PrunableOrder extends Relational
 
     /**
      * Cleanup before pruning
+     *
+     * @return  void
      */
     protected function pruningCleanup()
     {

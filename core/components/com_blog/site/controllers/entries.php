@@ -63,6 +63,8 @@ class Entries extends SiteController
 
     /**
      * Display a list of entries
+     *
+     * @return  void
      */
     public function displayTask()
     {
@@ -106,6 +108,8 @@ class Entries extends SiteController
 
     /**
      * Display an entry
+     *
+     * @return  void
      */
     public function entryTask()
     {
@@ -173,6 +177,8 @@ class Entries extends SiteController
      * Show a form for editing an entry
      *
      * @param   object  $entry
+     *
+     * @return  void
      */
     public function editTask($entry = null)
     {

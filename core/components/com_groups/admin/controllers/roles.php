@@ -121,6 +121,8 @@ class Roles extends AdminController
      * Edit an entry
      *
      * @param   object  $model
+     *
+     * @return  void
      */
     public function editTask($model = null)
     {
@@ -346,6 +348,8 @@ class Roles extends AdminController
 
     /**
      * Cancel task
+     *
+     * @return  void
      */
     public function cancelTask()
     {

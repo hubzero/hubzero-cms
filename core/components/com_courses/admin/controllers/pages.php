@@ -45,6 +45,8 @@ class Pages extends AdminController
 
     /**
      * Manage course pages
+     *
+     * @return  void
      */
     public function displayTask()
     {
@@ -122,6 +124,8 @@ class Pages extends AdminController
 
     /**
      * Edit a course page
+     *
+     * @return  void
      */
     public function editTask($model = null)
     {
@@ -304,6 +308,8 @@ class Pages extends AdminController
 
     /**
      * Upload a file to the wiki via AJAX
+     *
+     * @return  void
      */
     public function ajaxUploadTask()
     {

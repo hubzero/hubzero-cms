@@ -55,6 +55,8 @@ class Collections extends AdminController
      * Edit a collection
      *
      * @param  object $collection
+     *
+     * @return  void
      */
     public function editTask($collection = null)
     {

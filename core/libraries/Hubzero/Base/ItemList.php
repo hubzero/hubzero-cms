@@ -60,6 +60,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * Add item to the array
      *
      * @param   mixed  $value
+     *
+     * @return  void
      */
     public function add($value)
     {
@@ -70,6 +72,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * Remove item from the array
      *
      * @param   mixed  $offset
+     *
+     * @return  void
      */
     public function remove($offset)
     {

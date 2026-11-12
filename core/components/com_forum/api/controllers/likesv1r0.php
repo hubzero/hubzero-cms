@@ -56,6 +56,8 @@ class Likesv1r0 extends ApiController
 
     /**
      * POST: Create a like for a forum post
+     *
+     * @return  void
      */
     public function addLikeToPostTask()
     {

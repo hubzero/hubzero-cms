@@ -243,6 +243,8 @@ class Middleware extends Plugin
      * Method is called after the deidentify function that deletes and updates in main CMS tables
      *
      * @param   string   $user_id      User Id
+     *
+     * @return  void
      */
     public function onUserDeidentify($user_id)
     {

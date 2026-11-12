@@ -153,6 +153,8 @@ class Container implements ArrayAccess
      * @param  string            $id    The unique identifier for the parameter or object
      * @param  mixed             $value The value of the parameter or a closure to define an object
      * @throws \RuntimeException Prevent override of a frozen service
+     *
+     * @return  void
      */
     public function set($id, $value)
     {
@@ -187,6 +189,8 @@ class Container implements ArrayAccess
      * Checks if a parameter or an object is set.
      *
      * @param string $id The unique identifier for the parameter or object
+     *
+     * @return  void
      */
     public function forget($id)
     {

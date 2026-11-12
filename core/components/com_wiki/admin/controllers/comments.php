@@ -175,6 +175,8 @@ class Comments extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {
@@ -383,6 +385,8 @@ class Comments extends AdminController
 
     /**
      * Cancels a task and redirects to listing
+     *
+     * @return  void
      */
     public function cancelTask()
     {

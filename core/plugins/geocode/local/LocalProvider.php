@@ -408,6 +408,8 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
 
     /**
      * {@inheritDoc}
+     *
+     * @return  void
      */
     public function getReversedData(array $coordinates)
     {

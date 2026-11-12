@@ -147,6 +147,8 @@ class Searchable extends AdminController
      * Edit a search category
      *
      * @param   integer  $obj
+     *
+     * @return  void
      */
     public function editTask($obj = null)
     {

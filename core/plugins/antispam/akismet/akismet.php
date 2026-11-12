@@ -44,6 +44,8 @@ class Akismet extends Plugin
      * @param  string   $content  The content to train on
      * @param  boolean  $isSpam   If the content is spam or not
      * @since  1.3.2
+     *
+     * @return  void
      */
     public function onAntispamTrain($content, $isSpam)
     {

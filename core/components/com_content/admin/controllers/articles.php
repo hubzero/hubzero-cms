@@ -459,7 +459,9 @@ class Articles extends AdminController
             if ($checkedOut) {
                 if ($checkedOut != User::getInstance()->get('id')) {
                     Notify::error(Lang::txt('COM_CONTENT_CHECKED_IN_ERROR', $article->id));
-                    return $this->cancelTask();
+                    $this->cancelTask();
+
+                    return;
                 }
             }
             if (!User::authorise('core.edit', $assetId)) {
@@ -784,6 +786,8 @@ class Articles extends AdminController
 
     /**
      * Cancel a task
+     *
+     * @return  void
      */
     public function cancelTask()
     {

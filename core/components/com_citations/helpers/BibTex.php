@@ -923,6 +923,8 @@ class BibTex
      * @param  string  $type       The type of the warning
      * @param  string  $entry      The line of the entry where the warning occurred
      * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
+     *
+     * @return  void
      */
     public function generateWarning($type, $entry, $wholeentry = '')
     {
@@ -936,6 +938,8 @@ class BibTex
      * Cleares all warnings
      *
      * @access public
+     *
+     * @return  void
      */
     public function clearWarnings()
     {

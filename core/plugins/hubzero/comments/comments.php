@@ -219,6 +219,8 @@ class Comments extends Plugin
 
     /**
      * Show a list of comments
+     *
+     * @return  void
      */
     protected function login()
     {
@@ -238,7 +240,9 @@ class Comments extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Require POST
@@ -353,7 +357,9 @@ class Comments extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Check for request forgeries
@@ -494,7 +500,9 @@ class Comments extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
+
+            return;
         }
 
         // Check for request forgeries

@@ -83,7 +83,9 @@ class Templates extends AdminController
         // check to see if tempalte is editable
         if ($row->editable == 0 && $row->editable != null) {
             Notify::warning(Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Output the HTML

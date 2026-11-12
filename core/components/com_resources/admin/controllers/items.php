@@ -464,7 +464,9 @@ class Items extends AdminController
         // Make sure we have both parent and child IDs
         if (!$pid) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!$id) {
@@ -591,6 +593,8 @@ class Items extends AdminController
      * Edit form for a resource
      *
      * @param   integer  $isnew  Flag for editing (0) or creating new (1)
+     *
+     * @return  void
      */
     public function editTask($isnew = 0)
     {
@@ -1429,6 +1433,7 @@ class Items extends AdminController
     /**
      * Checks in a checked-out resource and redirects
      *
+     * @return  void
      */
     public function cancelTask()
     {
@@ -1710,6 +1715,7 @@ class Items extends AdminController
     /**
      * Gets the full name of a user from their ID #
      *
+     * @return  void
      */
     public function authorTask()
     {

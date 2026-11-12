@@ -95,6 +95,8 @@ class Queries extends AdminController
      * Display a form for adding/editing a record
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {
@@ -191,6 +193,8 @@ class Queries extends AdminController
 
     /**
      * Build the query list
+     *
+     * @return  void
      */
     public function listTask()
     {
@@ -272,6 +276,8 @@ class Queries extends AdminController
      * Display a form for adding/editing a folder
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editfolderTask($row = null)
     {

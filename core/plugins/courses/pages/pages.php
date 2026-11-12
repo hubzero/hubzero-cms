@@ -544,7 +544,9 @@ class Pages extends Plugin
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         if (Request::getInt('no_html', 0)) {
@@ -557,21 +559,27 @@ class Pages extends Plugin
         // Only a section manager may upload page files
         if (!$this->view->offering->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE'));
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Ensure we have an ID to work with
         $listdir = Request::getInt('listdir', 0, 'post');
         if (!$listdir) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Build the upload path if it doesn't exist
@@ -580,7 +588,9 @@ class Pages extends Plugin
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
-                return $this->files();
+                $this->files();
+
+                return;
             }
         }
 
@@ -595,7 +605,9 @@ class Pages extends Plugin
             $this->setError(
                 Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
             );
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Make the filename safe
@@ -609,7 +621,9 @@ class Pages extends Plugin
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Upload new files
@@ -624,7 +638,7 @@ class Pages extends Plugin
         }
 
         // Push through to the media view
-        return $this->files();
+        $this->files();
     }
 
     /**
@@ -690,7 +704,9 @@ class Pages extends Plugin
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -708,13 +724,17 @@ class Pages extends Plugin
                 ]);
                 exit();
             }
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Only a section manager may delete page files
         if (!$this->view->offering->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
-            return $this->files();
+            $this->files();
+
+            return;
         }
 
         // Keep the target within the page directory
@@ -735,7 +755,9 @@ class Pages extends Plugin
                 ]);
                 exit();
             }
-            return $this->files();
+            $this->files();
+
+            return;
         } else {
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
@@ -757,11 +779,13 @@ class Pages extends Plugin
         }
 
         // Push through to the media view
-        return $this->files();
+        $this->files();
     }
 
     /**
      * Display a form for uploading files
+     *
+     * @return  void
      */
     public function files()
     {

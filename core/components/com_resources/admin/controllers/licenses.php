@@ -87,6 +87,8 @@ class Licenses extends AdminController
      * Edit a record
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

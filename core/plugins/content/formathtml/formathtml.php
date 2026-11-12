@@ -93,6 +93,8 @@ class Formathtml extends Plugin
      * @param  object  $article  The article object.  Note $article->text is also available
      * @param  object  $params   The article params
      * @param  int     $page     The 'page' number
+     *
+     * @return  void
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {

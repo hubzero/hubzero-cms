@@ -104,7 +104,9 @@ class Watch extends Plugin
 
         switch ($this->action) {
             case 'save':
-                return $this->save();
+                $this->save();
+
+                return;
 
             case 'manage':
                 return ['html' => $this->manage()];
@@ -178,6 +180,8 @@ class Watch extends Plugin
 
     /**
      * Subscribe
+     *
+     * @return  void
      */
     private function save()
     {

@@ -773,6 +773,8 @@ class Batchcreate extends AdminController
      * @param   integer  $ordering
      * @param   integer  $uid
      * @param   object   $item
+     *
+     * @return  void
      */
     public function collectAuthorData($author, $ordering, $uid, &$item)
     {

@@ -74,6 +74,8 @@ class Posts extends SiteController
 
     /**
      * Display a post
+     *
+     * @return  void
      */
     public function displayTask()
     {

@@ -67,6 +67,8 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  void
      */
     public function addListener($listener, $events = [])
     {
@@ -226,6 +228,8 @@ class TraceableDispatcher implements DispatcherInterface
      * Called before dispatching the event.
      *
      * @param Event  $event     The event
+     *
+     * @return  void
      */
     protected function preTrigger(Event $event) {}
 

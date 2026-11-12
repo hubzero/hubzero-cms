@@ -574,6 +574,8 @@ class Assetgroups extends AdminController
     /**
      * Upon saving the duplicate asset form
      * Task is ran through the toolbar
+     *
+     * @return  void
      */
     public function duplicateassetsTask()
     {
@@ -583,6 +585,8 @@ class Assetgroups extends AdminController
 
     /**
      * Upon saving the duplicate asset form with button underneath the form
+     *
+     * @return  void
      */
     public function dupassetsTask()
     {

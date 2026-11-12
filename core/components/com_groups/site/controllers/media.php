@@ -74,7 +74,9 @@ class Media extends Base
         if (User::isGuest()) {
             // If not everyone can view files, kick them to the login page
             if ($this->pluginAccess['files'] != 'anyone') {
-                return $this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
+                $this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
+
+                return;
             }
         }
 

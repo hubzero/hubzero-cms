@@ -128,7 +128,9 @@ class Register extends SiteController
         } else {
             // Load data from the user object
             $xregistration->loadProfile($xprofile);
-            return $this->showRegistrationForm($xregistration, 'edit');
+            $this->showRegistrationForm($xregistration, 'edit');
+
+            return;
         }
 
         if ($username != $xregistration->get('login')) {
@@ -136,7 +138,9 @@ class Register extends SiteController
         }
 
         if (!$xregistration->check('edit')) {
-            return $this->showRegistrationForm($xregistration, 'edit');
+            $this->showRegistrationForm($xregistration, 'edit');
+
+            return;
         }
 
         $xprofile->loadRegistration($xregistration);
@@ -718,7 +722,7 @@ class Register extends SiteController
             return true;
         }
 
-        return $this->showRegistrationForm($xregistration, 'update');
+        $this->showRegistrationForm($xregistration, 'update');
     }
 
     /**
@@ -1007,7 +1011,7 @@ class Register extends SiteController
         // Set the page title
         $this->buildTitle();
 
-        return $this->showRegistrationForm($xregistration, 'create');
+        $this->showRegistrationForm($xregistration, 'create');
     }
 
     /**
@@ -1015,6 +1019,8 @@ class Register extends SiteController
      *
      * @param   object  &$xregistration
      * @param   string  $task
+     *
+     * @return  void
      */
     private function showRegistrationForm(&$xregistration = null, $task = 'create')
     {

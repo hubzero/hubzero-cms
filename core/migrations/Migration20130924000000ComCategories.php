@@ -147,6 +147,8 @@ class Migration20130924000000ComCategories extends Base
 
     /**
      * Migrate data from sections to categories
+     *
+     * @return  void
      */
     protected function migrateDataFromSections()
     {

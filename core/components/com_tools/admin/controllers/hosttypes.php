@@ -103,6 +103,8 @@ class Hosttypes extends AdminController
      * Edit a record
      *
      * @param   mixed  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

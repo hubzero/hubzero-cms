@@ -125,7 +125,9 @@ class Pipeline extends AdminController
 
             // Do we have an ID?
             if (!$id) {
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
 
             $row = Tool::getInstance($id);

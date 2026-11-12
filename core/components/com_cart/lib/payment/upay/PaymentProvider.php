@@ -57,6 +57,7 @@ class PaymentProvider
     /**
      * Set transaction details
      *
+     * @return  void
      */
     public function setTransactionDetails($transactionDetails)
     {

@@ -154,7 +154,9 @@ class Articles extends AdminController
         // Fail if checked out not by 'me'
         if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) {
             Notify::warning(Lang::txt('COM_KB_CHECKED_OUT'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if ($row->isNew()) {
@@ -347,6 +349,8 @@ class Articles extends AdminController
 
     /**
      * Cancels a task and redirects to listing
+     *
+     * @return  void
      */
     public function cancelTask()
     {

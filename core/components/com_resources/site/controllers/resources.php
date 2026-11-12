@@ -194,6 +194,8 @@ class Resources extends SiteController
 
     /**
      * Browse entries
+     *
+     * @return  void
      */
     public function browseTask()
     {

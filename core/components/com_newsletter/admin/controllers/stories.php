@@ -44,6 +44,8 @@ class Stories extends AdminController
      * Edit Newsletter Story Task
      *
      * @param   object  $story
+     *
+     * @return  void
      */
     public function editTask($story = null)
     {
@@ -217,7 +219,9 @@ class Stories extends AdminController
         // Save the story
         if (!$story->save()) {
             Notify::error($story->getError());
-            return $this->editTask($story);
+            $this->editTask($story);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS'));
@@ -394,6 +398,8 @@ class Stories extends AdminController
 
     /**
      * Cancel task
+     *
+     * @return  void
      */
     public function cancelTask()
     {

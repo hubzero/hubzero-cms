@@ -148,6 +148,8 @@ class Attachments extends SiteController
 
     /**
      * Create a URL attachment via AJAX
+     *
+     * @return  void
      */
     public function ajaxCreateTask()
     {
@@ -290,6 +292,8 @@ class Attachments extends SiteController
 
     /**
      * Upload a file via AJAX
+     *
+     * @return  void
      */
     public function ajaxUploadTask()
     {
@@ -996,6 +1000,8 @@ class Attachments extends SiteController
      * Display a list of attachments
      *
      * @param   integer  $id  Resource ID
+     *
+     * @return  void
      */
     public function displayTask($id = null)
     {

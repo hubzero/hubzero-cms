@@ -129,7 +129,9 @@ class Subscriptions extends AdminController
 
         if (!$subscription->get('id')) {
             Notify::warning(Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $customer = $subscription->user;

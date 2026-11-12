@@ -147,7 +147,9 @@ class Versions extends AdminController
 
         // Do we have an ID?
         if (!$id || !$version) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $parent = Tool::getInstance($id);

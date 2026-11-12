@@ -677,6 +677,8 @@ class Tags extends SiteController
      * Show a form for editing a tag
      *
      * @param   object  $tag
+     *
+     * @return  void
      */
     public function editTask($tag = null)
     {
@@ -715,6 +717,8 @@ class Tags extends SiteController
 
     /**
      * Cancel a task and redirect to the main listing
+     *
+     * @return  void
      */
     public function cancelTask()
     {

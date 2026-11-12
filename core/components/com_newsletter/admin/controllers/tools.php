@@ -29,6 +29,8 @@ class Tools extends AdminController
 {
     /**
      * Display Newsletter Tools
+     *
+     * @return  void
      */
     public function displayTask()
     {

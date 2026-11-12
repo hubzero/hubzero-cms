@@ -31,6 +31,8 @@ class Migration20131108095500ComAnswers extends Base
 
     /**
      * Migrate answers_questions table
+     *
+     * @return  void
      */
     protected function migrateQuestionsTable()
     {
@@ -56,6 +58,8 @@ class Migration20131108095500ComAnswers extends Base
 
     /**
      * Migrate answers_responses table
+     *
+     * @return  void
      */
     protected function migrateResponsesTable()
     {
@@ -82,6 +86,8 @@ class Migration20131108095500ComAnswers extends Base
 
     /**
      * Migrate answers_questions_log table
+     *
+     * @return  void
      */
     protected function migrateQuestionsLogTable()
     {
@@ -105,6 +111,8 @@ class Migration20131108095500ComAnswers extends Base
 
     /**
      * Migrate answers_log table
+     *
+     * @return  void
      */
     protected function migrateLogTable()
     {

@@ -158,7 +158,9 @@ class Links extends AdminController
         // Access check.
         if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!is_object($row)) {

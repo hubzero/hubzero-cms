@@ -200,6 +200,8 @@ class Wishes extends AdminController
      * Edit an entry
      *
      * @param   object  $row
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {
@@ -554,6 +556,8 @@ class Wishes extends AdminController
 
     /**
      * Cancel a task (redirects to default task)
+     *
+     * @return  void
      */
     public function cancelTask()
     {

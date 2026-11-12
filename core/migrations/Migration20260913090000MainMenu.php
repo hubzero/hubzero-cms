@@ -179,6 +179,8 @@ class Migration20260913090000MainMenu extends Base
      * nobody has set core.access already. Turning it on everywhere would be
      * changing who can read what on hubs that have been running for years, and
      * that is not a migration's decision to make.
+     *
+     * @return  void
      **/
     protected function openForum()
     {
@@ -243,6 +245,8 @@ class Migration20260913090000MainMenu extends Base
 
     /**
      * The two menutypes, if they are not there already
+     *
+     * @return  void
      **/
     protected function addMenuTypes()
     {
@@ -341,6 +345,8 @@ class Migration20260913090000MainMenu extends Base
      *
      * @param   integer  $root
      * @param   array    $ids
+     *
+     * @return  void
      **/
     protected function addNavigation($root, $ids)
     {
@@ -490,6 +496,8 @@ class Migration20260913090000MainMenu extends Base
      * user3 is the position every HUBzero site template renders its primary
      * navigation into. The module the base data ships sits in position-7,
      * which is Joomla's own and which no template here has ever drawn.
+     *
+     * @return  void
      **/
     protected function placeModule()
     {

@@ -265,6 +265,8 @@ class Threads extends SiteController
      * Show a form for editing an entry
      *
      * @param   mixed  $post
+     *
+     * @return  void
      */
     public function editTask($post = null)
     {

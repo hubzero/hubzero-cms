@@ -312,7 +312,7 @@ abstract class Model extends Obj
      */
     protected function logError($message)
     {
-        return $this->writeLog('error', $message);
+        $this->writeLog('error', $message);
     }
 
     /**
@@ -323,7 +323,7 @@ abstract class Model extends Obj
      */
     protected function logDebug($message)
     {
-        return $this->writeLog('debug', $message);
+        $this->writeLog('debug', $message);
     }
 
     /**
@@ -331,6 +331,8 @@ abstract class Model extends Obj
      *
      * @param   string  $message  Message type to log
      * @param   string  $message  Message to log
+     *
+     * @return  void
      */
     protected function writeLog($type, $message)
     {

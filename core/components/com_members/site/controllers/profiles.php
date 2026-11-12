@@ -780,6 +780,8 @@ class Profiles extends SiteController
 
     /**
      * Display a user profile
+     *
+     * @return  void
      */
     public function viewTask()
     {
@@ -1405,6 +1407,8 @@ class Profiles extends SiteController
      * Show a form for editing a profile
      *
      * @param   object  $profile  Profile
+     *
+     * @return  void
      */
     public function editTask($profile = null)
     {

@@ -652,6 +652,8 @@ class Questions extends SiteController
      * Create a new question
      *
      * @param   object  $question
+     *
+     * @return  void
      */
     public function newTask($question = null)
     {

@@ -75,6 +75,8 @@ class Requirements implements StepInterface
 
     /**
      * Check all requirements (mirrors CLI Preflight::check())
+     *
+     * @return  void
      */
     private function checkRequirements()
     {
@@ -107,6 +109,8 @@ class Requirements implements StepInterface
 
     /**
      * Check PHP version meets minimum requirement
+     *
+     * @return  void
      */
     private function checkPhpVersion()
     {
@@ -115,6 +119,8 @@ class Requirements implements StepInterface
 
     /**
      * Check all required PHP extensions are loaded
+     *
+     * @return  void
      */
     private function checkExtensions()
     {
@@ -123,6 +129,8 @@ class Requirements implements StepInterface
 
     /**
      * Check required system commands are available
+     *
+     * @return  void
      */
     private function checkSystemCommands()
     {
@@ -131,6 +139,8 @@ class Requirements implements StepInterface
 
     /**
      * Check composer vendor dependencies are installed
+     *
+     * @return  void
      */
     private function checkVendor()
     {
@@ -139,6 +149,8 @@ class Requirements implements StepInterface
 
     /**
      * Check required directories are writable
+     *
+     * @return  void
      */
     private function checkWritePermissions()
     {

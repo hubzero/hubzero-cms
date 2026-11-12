@@ -24,6 +24,7 @@ class Images extends AdminController
     /**
      * Upload a file to the wiki via AJAX
      *
+     * @return  void
      */
     public function ajaxUploadTask()
     {
@@ -298,6 +299,7 @@ class Images extends AdminController
     /**
      * Upload a file to the wiki via AJAX
      *
+     * @return  void
      */
     public function ajaxRemoveTask()
     {

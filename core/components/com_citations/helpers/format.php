@@ -115,6 +115,8 @@ class Format
      * Function to set the formatters template to use
      *
      * @param  string  Template string that will be used to format the citation
+     *
+     * @return  void
      */
     public function setTemplate($template)
     {
@@ -139,6 +141,8 @@ class Format
      * Function to set the template keys the formatter will use
      *
      * @param  string  Template keys that will be used to format the citation
+     *
+     * @return  void
      */
     public function setTemplateKeys($template_keys)
     {

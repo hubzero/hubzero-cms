@@ -127,6 +127,8 @@ class Imports extends AdminController
      * Edit an Import
      *
      * @param   object  $import
+     *
+     * @return  void
      */
     public function editTask($import = null)
     {

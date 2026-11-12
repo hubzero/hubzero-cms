@@ -264,7 +264,9 @@ class Activity extends Plugin
     protected function removeAction()
     {
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
+
+            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -394,7 +396,9 @@ class Activity extends Plugin
     protected function starAction()
     {
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
+
+            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -455,7 +459,9 @@ class Activity extends Plugin
     protected function settingsAction()
     {
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
+
+            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -487,7 +493,9 @@ class Activity extends Plugin
     protected function savesettingsAction()
     {
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
+
+            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -539,6 +547,8 @@ class Activity extends Plugin
 
     /**
      * Redirect to the login page
+     *
+     * @return  void
      */
     protected function loginAction()
     {

@@ -118,6 +118,8 @@ class Tags extends AdminController
 
     /**
      * Cancel a task (redirects to default task)
+     *
+     * @return  void
      */
     public function cancelTask()
     {

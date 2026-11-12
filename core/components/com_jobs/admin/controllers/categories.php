@@ -111,6 +111,8 @@ class Categories extends AdminController
 
     /**
      * Edit a category
+     *
+     * @return  void
      */
     public function editTask($row = null)
     {

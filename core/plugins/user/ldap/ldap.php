@@ -28,7 +28,7 @@ class Ldap extends Plugin
      */
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
-        return $this->onAfterStoreUser($user, $isnew, $success, $msg);
+        $this->onAfterStoreUser($user, $isnew, $success, $msg);
     }
 
     /**
@@ -38,6 +38,8 @@ class Ldap extends Plugin
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
+     *
+     * @return  void
      */
     public function onAfterStoreUser($user, $isnew, $success, $msg)
     {
