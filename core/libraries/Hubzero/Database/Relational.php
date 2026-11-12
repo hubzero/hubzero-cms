@@ -187,6 +187,8 @@ use Hubzero\Facades\User;
  * @method static static unorder()
  * @method static static start(int $start)
  * @method static static limit(int $limit)
+ * @method static static joinRaw(string $table, string $raw, string $type = 'inner')
+ * @method static static resetDepth(int $depth = 0)
  *
  * Lifecycle listeners are registered by event name through __callStatic():
  *
@@ -972,7 +974,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   array|string  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
-     * @return  self
+     * @return  static
      */
     public function __set($key, $value)
     {
@@ -1944,7 +1946,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Disables query caching
      *
-     * @return  self
+     * @return  static
      **/
     public function disableCaching()
     {
@@ -1956,7 +1958,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Enables query caching
      *
-     * @return  self
+     * @return  static
      **/
     public function enableCaching()
     {
@@ -1968,7 +1970,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Purges the query cache
      *
-     * @return  self
+     * @return  static
      **/
     public function purgeCache()
     {
@@ -1997,7 +1999,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   int     $minutes  Number of minutes to cache (default 60)
      * @param   string  $prefix   Optional custom cache key prefix
-     * @return  self
+     * @return  static
      **/
     public function remember(int $minutes = 60, ?string $prefix = null)
     {
@@ -2020,7 +2022,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *   // Configuration data cached indefinitely
      *
      * @param   string  $prefix  Optional custom cache key prefix
-     * @return  self
+     * @return  static
      **/
     public function rememberForever(?string $prefix = null)
     {
@@ -2086,7 +2088,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   array|string  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
-     * @return  self
+     * @return  static
      **/
     public function set($key, $value = null)
     {
@@ -2162,7 +2164,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Copies the current model (likely used to maintain query parameters between multiple queries)
      *
-     * @return  self
+     * @return  static
      **/
     public function copy()
     {
@@ -2959,7 +2961,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Resets the current model, likely for another query to be performed on it
      *
-     * @return  self
+     * @return  static
      **/
     private function reset()
     {
@@ -3122,7 +3124,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This method also boots the model (if not already booted) and applies any
      * registered global scopes to the query.
      *
-     * @return  self
+     * @return  static
      **/
     public function newQuery()
     {
@@ -3316,7 +3318,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Called after a successful save to reset the dirty tracking state.
      * Stores current dirty values in $changes before syncing.
      *
-     * @return  self
+     * @return  static
      **/
     public function syncOriginal(): self
     {
@@ -3329,7 +3331,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Syncs only a specific attribute to its original value
      *
      * @param   string  $attribute  The attribute to sync
-     * @return  self
+     * @return  static
      **/
     public function syncOriginalAttribute(string $attribute): self
     {
@@ -3346,7 +3348,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Useful for undoing unsaved modifications to a model.
      *
      * @param   string|array|null  $attributes  Specific attribute(s) to revert, or null for all
-     * @return  self
+     * @return  static
      **/
     public function discardChanges($attributes = null): self
     {
@@ -3370,7 +3372,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Removes an attribute
      *
      * @param   string  $key  The attribute to remove
-     * @return  self
+     * @return  static
      **/
     public function removeAttribute($key)
     {
@@ -3403,7 +3405,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Sets an interator parent on the model
      *
      * @param   \Hubzero\Database\Rows  $rows  The iterator to set
-     * @return  self
+     * @return  static
      **/
     public function setIterator($rows)
     {
@@ -3621,7 +3623,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ```
      *
      * @param   string  $scenario  The scenario name
-     * @return  self
+     * @return  static
      */
     public function setScenario(string $scenario)
     {
@@ -3714,7 +3716,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $key   The field to which the rule applies
      * @param   mixed   $rule  The rule to add
-     * @return  self
+     * @return  static
      **/
     public function addRule($key, $rule)
     {
@@ -3806,7 +3808,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Not quite the same as rows, in that we're assuming an intentional
      * call to only get one row wouldn't want any pagination info included.
      *
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      **/
     public function row()
     {
@@ -4090,7 +4092,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves one row by primary key value provided
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      **/
     public static function one($id)
     {
@@ -4122,7 +4124,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves one row by primary key, throwing a new exception if not found
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      * @throws  Hubzero\Database\Exception\RuntimeException
      **/
     public static function oneOrFail($id)
@@ -4141,7 +4143,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves one row by primary key, returning an empty row if not found
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      **/
     public static function oneOrNew($id)
     {
@@ -4171,7 +4173,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Returns all rows (unless otherwise limited)
      *
      * @param   string|array  $columns  The columns to select
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      **/
     public static function all($columns = null)
     {
@@ -4346,7 +4348,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * It by default assumes you want to order by created date.
      *
      * @param   string  $limiter  The column name to use to determine the latest row
-     * @return  \Hubzero\Database\Relational|static
+     * @return  static
      **/
     public function latest($limiter = 'created')
     {
@@ -4830,7 +4832,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Parses for automatically fillable fields
      *
      * @param   string  $scope  The scope of rules to parse and run
-     * @return  self
+     * @return  static
      **/
     private function parseAutomatics($scope = 'always')
     {
@@ -5058,7 +5060,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   string   $relationship  The relationship name
      * @param   Closure  $constraint    The constraint to apply to the related query
      * @param   int      $depth         The depth level of the clause, for sub clauses
-     * @return  self
+     * @return  static
      **/
     public function whereRelatedHas($relationship, $constraint, $depth = 0)
     {
@@ -5078,7 +5080,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   string   $relationship  The relationship name
      * @param   Closure  $constraint    The constraint to apply to the related query
      * @param   int      $depth         The depth level of the clause, for sub clauses
-     * @return  self
+     * @return  static
      **/
     public function orWhereRelatedHas($relationship, $constraint, $depth = 0)
     {
@@ -5099,7 +5101,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   int     $count         The minimum number of rows required
      * @param   int     $depth         The depth level of the clause, for sub clauses
      * @param   string  $operator      The comparison operator used between the column and the count
-     * @return  self
+     * @return  static
      **/
     public function whereRelatedHasCount($relationship, $count = 1, $depth = 0, $operator = '>=')
     {
@@ -5125,7 +5127,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param \Hubzero\Database\Relationship\Relationship $relationsip
      * @param Closure $constraint
-     * @return  self
+     * @return  static
      **/
     /*
     private function whereRelated($relationship, $constraint)
@@ -5171,7 +5173,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * directly to the model itself.
      *
      * @param   string  $column  The field to use for ownership, defaulting to 'created_by'
-     * @return  self
+     * @return  static
      **/
     public function whereIsMine($column = 'created_by')
     {
@@ -5200,7 +5202,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Chunks the retrieved data based on a given chunk limit
      *
      * @param   int    $size  The chunk size
-     * @return  self
+     * @return  static
      **/
     public function paginate($size)
     {
@@ -5213,7 +5215,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $start  The request variable used to denote limit start
      * @param   string  $limit  The request variable used to denote limit of results to return
-     * @return  self
+     * @return  static
      **/
     public function paginated($start = 'start', $limit = 'limit')
     {
@@ -5231,7 +5233,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $orderBy   The request variable used to denote ordering column
      * @param   string  $orderDir  The request variable used to denote ordering direction
-     * @return  self
+     * @return  static
      **/
     public function ordered($orderBy = 'orderby', $orderDir = 'orderdir')
     {
@@ -5263,7 +5265,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Unsets the ordering
      *
-     * @return  self
+     * @return  static
      **/
     public function unordered()
     {
@@ -5892,7 +5894,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string        $relationship  The relationship to invoke
      * @param   array|object  $models        The model or models to attach
-     * @return  self
+     * @return  static
      **/
     public function attach($relationship, $models)
     {
@@ -6019,7 +6021,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ]);
      * ```
      *
-     * @return  self
+     * @return  static
      **/
     public function with()
     {
@@ -6035,7 +6037,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * This is an alias for backward compatibility. New code should use with().
      *
-     * @return  self
+     * @return  static
      * @see     with()
      **/
     public function including()
@@ -6120,7 +6122,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ]);
      * ```
      *
-     * @return  self
+     * @return  static
      **/
     public function load()
     {
@@ -6157,7 +6159,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * $user->loadMissing('posts', 'comments', 'profile');
      * ```
      *
-     * @return  self
+     * @return  static
      **/
     public function loadMissing()
     {
@@ -6382,7 +6384,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   string        $relation  The relationship method name
      * @param   callable|null $callback  Optional callback to add constraints to the join
      * @param   string        $type      Join type ('left', 'inner', 'right')
-     * @return  self
+     * @return  static
      * @throws  \Hubzero\Database\Exception\RuntimeException  If relationship doesn't exist or isn't supported
      **/
     public function joinWith($relation, $callback = null, $type = 'left')
@@ -6422,7 +6424,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string        $relation  The relationship method name
      * @param   callable|null $callback  Optional callback to add constraints
-     * @return  self
+     * @return  static
      **/
     public function innerJoinWith($relation, $callback = null)
     {
@@ -6437,7 +6439,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string        $relation  The relationship method name
      * @param   callable|null $callback  Optional callback to add constraints
-     * @return  self
+     * @return  static
      **/
     public function leftJoinWith($relation, $callback = null)
     {
@@ -6449,7 +6451,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string        $relation  The relationship method name
      * @param   callable|null $callback  Optional callback to add constraints
-     * @return  self
+     * @return  static
      **/
     public function rightJoinWith($relation, $callback = null)
     {
@@ -6717,7 +6719,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * method above for the code that actually checks for a
      * valid attribute on the forwarding model.
      *
-     * @return  self
+     * @return  static
      **/
     public function forwardTo()
     {
@@ -6733,7 +6735,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $name   The name of the relationship
      * @param   object  $model  The model or rows to add
-     * @return  self
+     * @return  static
      **/
     public function addRelationship($name, $model)
     {
@@ -6756,7 +6758,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Gets the defined relationship
      *
      * @param   string  $name  The relationship to return
-     * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|static|null  Null if it is not loaded
+     * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|null  Null if it is not loaded
      **/
     public function getRelationship($name)
     {
@@ -7071,7 +7073,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Establishes a relationship, fetching the rows as needed
      *
      * @param   string  $name  The name of the relationship
-     * @return  self
+     * @return  static
      **/
     public function makeRelationship($name)
     {
@@ -7089,7 +7091,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Establishes a relationship, based on the acquaintances, fetching the rows as needed
      *
      * @param   string  $name  The name of the relationship
-     * @return  self
+     * @return  static
      **/
     public function makeAcquaintance($name)
     {
@@ -7254,7 +7256,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   int  $page     The page number (1-based)
      * @param   int  $perPage  The number of results per page
-     * @return  self
+     * @return  static
      **/
     public function forPage(int $page, int $perPage): self
     {
