@@ -117,13 +117,13 @@ class Helper
             $dtmonth = floor(substr($enddate, 5, 2));
             $dtyear = floor(substr($enddate, 0, 4));
             $dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
-            $dtmonthnext = floor(substr($enddate, 5, 2) + 1);
+            $dtmonthnext = floor((int) substr($enddate, 5, 2) + 1);
 
             if ($dtmonthnext > 12) {
                 $dtmonthnext = 1;
             }
 
-            $dtyearprior = substr($enddate, 0, 4) - 1;
+            $dtyearprior = (int) substr($enddate, 0, 4) - 1;
             $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $startMonth  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear));

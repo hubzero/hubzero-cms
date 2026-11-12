@@ -181,7 +181,7 @@ $this
 
                 $ts = explode(':', $this->row->start_time);
                 if (intval($ts[0]) > 12) {
-                    $ts[0] = ($ts[0] - 12);
+                    $ts[0] = ((int) $ts[0] - 12);
                     $this->row->start_time = implode(':', $ts);
                     $this->row->start_time .= ' <small>PM</small>';
                 } else {
@@ -191,7 +191,7 @@ $this
                 }
                 $te = explode(':', $this->row->stop_time);
                 if (intval($te[0]) > 12) {
-                    $te[0] = ($te[0] - 12);
+                    $te[0] = ((int) $te[0] - 12);
                     $this->row->stop_time = implode(':', $te);
                     $this->row->stop_time .= ' <small>PM</small>';
                 } else {

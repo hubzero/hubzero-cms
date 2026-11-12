@@ -419,7 +419,7 @@ class Request extends BaseRequest
     /**
      * Get a segment from the URI (1 based index).
      *
-     * @param   string  $index
+     * @param   int     $index
      * @param   mixed   $default
      * @return  string
      */

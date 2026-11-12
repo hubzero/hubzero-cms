@@ -150,7 +150,7 @@ class EventsLatest extends Module
                 //$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y'))) . ' 23:59:59';
                 // end of this year
                 //$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 0, date('Y') + 1)) . ' 23:59:59';
-                $endDate = gmdate('Y-m-d', mktime(0, 0, 0, gmdate('m') + 1, 0, gmdate('Y'))) . ' 23:59:59';
+                $endDate = gmdate('Y-m-d', mktime(0, 0, 0, (int) gmdate('m') + 1, 0, gmdate('Y'))) . ' 23:59:59';
                 break;
         }
 

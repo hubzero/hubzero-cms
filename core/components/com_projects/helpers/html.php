@@ -104,7 +104,7 @@ class Html extends Obj
     /**
      * Get time difference
      *
-     * @param   string  $difference
+     * @param   int     $difference  seconds
      * @return  string
      */
     public static function timeDifference($difference)
