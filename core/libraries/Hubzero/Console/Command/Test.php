@@ -228,7 +228,7 @@ class Test extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'A custom PHPUnit testing wrapper. This helps with setting up the
 				environment and allowing for specialized options related to testing.',

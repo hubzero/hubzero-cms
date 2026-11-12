@@ -59,7 +59,7 @@ class Authorizationcodes extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Api authorization codes related commands.',
             );

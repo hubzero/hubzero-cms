@@ -145,7 +145,7 @@ class Group extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Super group management commands.',
             );

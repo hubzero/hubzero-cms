@@ -89,7 +89,7 @@ class SearchMigration extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Run a solr search migration. Searches for and indexes models with the searcable interface.',
             )

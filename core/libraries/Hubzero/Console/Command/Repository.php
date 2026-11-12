@@ -507,7 +507,7 @@ class Repository extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Repository management functions.',
             )

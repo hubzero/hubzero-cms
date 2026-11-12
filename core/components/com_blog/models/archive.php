@@ -16,6 +16,8 @@ use Hubzero\Facades\Date;
 
 /**
  * Blog archive model class
+ *
+ * @method string filespace()  The upload path, answered by the scope's adapter
  */
 
 /** @phpstan-consistent-constructor */

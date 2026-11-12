@@ -61,6 +61,6 @@ class Aliases extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output->addOverview('Add and remove user-specific command line aliases.');
+        $this->helpOutput()->addOverview('Add and remove user-specific command line aliases.');
     }
 }

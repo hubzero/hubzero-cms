@@ -1356,7 +1356,7 @@ class Schema extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Schema management tools for comparing database structures,
                 generating diffs, producing migration SQL, and managing snapshots.

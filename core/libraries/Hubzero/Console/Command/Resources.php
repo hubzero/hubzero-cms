@@ -323,7 +323,7 @@ class Resources extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Resource component export commands.',
             );

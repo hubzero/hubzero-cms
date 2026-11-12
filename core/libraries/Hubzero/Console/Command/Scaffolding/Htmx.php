@@ -143,7 +143,7 @@ class Htmx extends Scaffolding
      */
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview('Create HTMX + Alpine boilerplate inside an existing component.')
             ->addArgument(
                 '-c, --component: component name',

@@ -84,7 +84,7 @@ class Inertia extends Base implements CommandInterface
      */
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview('Inertia developer tooling. Includes scaffold and template lint commands.')
             ->addArgument(
                 'scaffold [component]',

@@ -61,7 +61,7 @@ class Documentation extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Api documentation related commands.',
             );

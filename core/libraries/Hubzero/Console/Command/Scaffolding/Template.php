@@ -111,7 +111,7 @@ class Template extends Scaffolding
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Scaffolding for templates',
             );

@@ -27,6 +27,8 @@ use Hubzero\Facades\User;
 
 /**
  * Events controller for entries
+ *
+ * @property  \Components\Events\Tables\Configs  $config  The calendar's settings, set by execute()
  */
 class Events extends AdminController
 {

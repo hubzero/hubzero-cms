@@ -84,7 +84,7 @@ class Htmx extends Base implements CommandInterface
      */
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview('HTMX developer tooling. Includes scaffold and template lint commands.')
             ->addArgument(
                 'scaffold [component]',

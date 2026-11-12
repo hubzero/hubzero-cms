@@ -73,7 +73,7 @@ class Configuration extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Store shared configuration variables used by the command line tool.
 				These will, for example, be used to fill in docblock stubs when

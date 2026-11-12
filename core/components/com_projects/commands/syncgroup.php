@@ -139,7 +139,7 @@ class Syncgroup extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Re-sync deleted projects\' pr-<alias> login groups so SFTP/LDAP access is revoked (ticket 2802).',
             )

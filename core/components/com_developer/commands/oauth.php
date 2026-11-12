@@ -398,7 +398,7 @@ class Oauth extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview('Register and manage OAuth client applications.')
             ->addTasks($this)
             ->addArgument(

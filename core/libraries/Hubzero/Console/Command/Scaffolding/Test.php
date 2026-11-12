@@ -91,7 +91,7 @@ class Test extends Scaffolding
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Scaffolding for PHPUnit tests',
             );

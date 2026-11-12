@@ -42,4 +42,21 @@ class Base
         $this->output    = $output;
         $this->arguments = $arguments;
     }
+
+    /**
+     * The output as a help renderer
+     *
+     * A help task is handed one already. A help() reached some other way
+     * is given one here, in place of the plain output it was built with.
+     *
+     * @return  \Hubzero\Console\Output\Help
+     **/
+    protected function helpOutput()
+    {
+        if (!$this->output instanceof Output\Help) {
+            $this->output = $this->output->getHelpOutput();
+        }
+
+        return $this->output;
+    }
 }

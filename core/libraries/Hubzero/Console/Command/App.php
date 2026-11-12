@@ -37,7 +37,7 @@ class App extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Helper for the app directory',
             )

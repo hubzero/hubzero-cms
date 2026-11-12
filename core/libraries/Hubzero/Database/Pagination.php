@@ -14,6 +14,10 @@ use Hubzero\Facades\User;
 
 /**
  * Pagination class
+ *
+ * Calls it does not know are passed to the paginator.
+ *
+ * @mixin \Hubzero\Pagination\Paginator
  */
 class Pagination
 {

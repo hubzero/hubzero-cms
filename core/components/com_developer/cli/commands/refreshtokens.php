@@ -59,7 +59,7 @@ class Refreshtokens extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Api refresh tokens related commands.',
             );

@@ -80,7 +80,7 @@ class SearchPlugin extends Scaffolding
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Create a migration script from the default template. An
 				extension must be provided.',

@@ -72,7 +72,7 @@ class Component extends Scaffolding
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Create a new component.',
             )

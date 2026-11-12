@@ -40,6 +40,6 @@ class Environment extends Base implements CommandInterface
      **/
     public function help()
     {
-        $this->output->addOverview('Environment display/management functions');
+        $this->helpOutput()->addOverview('Environment display/management functions');
     }
 }

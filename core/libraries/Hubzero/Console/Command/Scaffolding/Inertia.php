@@ -142,7 +142,7 @@ class Inertia extends Scaffolding
      */
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview('Create Inertia boilerplate inside an existing component.')
             ->addArgument(
                 '-c, --component: component name',

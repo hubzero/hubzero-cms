@@ -1024,7 +1024,7 @@ class Migration extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Run a migration. This includes searching for migration files,
 				depending on the options provided.',

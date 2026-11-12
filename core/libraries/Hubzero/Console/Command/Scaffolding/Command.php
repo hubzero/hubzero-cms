@@ -69,7 +69,7 @@ class Command extends Scaffolding
      **/
     public function help()
     {
-        $this->output
+        $this->helpOutput()
             ->addOverview(
                 'Create a new console command.',
             )

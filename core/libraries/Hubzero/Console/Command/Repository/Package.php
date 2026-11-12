@@ -150,7 +150,7 @@ class Package extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Repository management functions for composer packages.',
             )

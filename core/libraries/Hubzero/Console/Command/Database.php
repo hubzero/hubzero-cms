@@ -546,7 +546,7 @@ class Database extends Base implements CommandInterface
     public function help()
     {
         $this
-            ->output
+            ->helpOutput()
             ->addOverview(
                 'Database utility functions for migrating and restoring database backups.
 				The necessity for this function arose primarily from the need to copy

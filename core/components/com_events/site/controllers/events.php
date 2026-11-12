@@ -55,6 +55,7 @@ use Hubzero\Facades\Session;
  * @property  string                           $_title           The page title, set by buildTitle()
  * @property  \Components\Events\Tables\Event  $event            The event registered for, set by processTask()
  * @property  string                           $tags             The tags typed in, kept by saveTask() for the form
+ * @property  \Components\Events\Tables\Configs  $config        The calendar's settings, set by setup()
  */
 class Events extends SiteController
 {
