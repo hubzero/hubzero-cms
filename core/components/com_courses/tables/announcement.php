@@ -21,7 +21,7 @@ class Announcement extends Table
     /**
      * Constructor method for Table class
      *
-     * @param   object  database
+     * @param   object $db  database
      * @return  void
      */
     public function __construct(&$db)

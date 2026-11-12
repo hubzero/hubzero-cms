@@ -578,8 +578,6 @@ class Git
 
     /**
      * Stash local changes
-     *
-     * @return
      **/
     public function stash()
     {

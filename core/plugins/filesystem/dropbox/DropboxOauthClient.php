@@ -63,7 +63,7 @@ class DropboxOauthClient
     /**
      * Retrieves API authorization code
      *
-     * @param   string   Dropbox authorization code URL
+     * @param   string $authUrl   Dropbox authorization code URL
      * @return  string
      **/
     public function getAuthorizationCode($authUrl)

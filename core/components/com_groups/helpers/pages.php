@@ -106,7 +106,7 @@ class Pages
     /**
      * Is page Active based on current segment
      *
-     * @param  [type]  $page [description]
+     * @param  mixed  $page
      * @return boolean       [description]
      */
     public static function isPageActive($page)
@@ -117,8 +117,6 @@ class Pages
 
     /**
      * Get Current Route Segments
-     *
-     * @return [type] [description]
      */
     private static function getCurrentPathSegments()
     {
@@ -692,7 +690,7 @@ class Pages
     /**
      * Function to determine if content contains wiki syntax
      *
-     * @param  [type]  $content [description]
+     * @param  mixed  $content
      * @return boolean          [description]
      */
     private static function isWiki($content)

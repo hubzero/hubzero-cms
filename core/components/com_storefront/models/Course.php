@@ -38,7 +38,7 @@ class Course extends SingleSkuProduct
     /**
      * Set the course ID associated with product
      *
-     * @param  string       courseId (alias)
+     * @param  string $courseId       courseId (alias)
      * @return bool         true on success
      */
     public function setCourseId($courseId)
@@ -50,7 +50,7 @@ class Course extends SingleSkuProduct
     /**
      * Set the course ID associated with product
      *
-     * @param  string       offeringId (alias)
+     * @param  string $offeringId       offeringId (alias)
      * @return bool         true on success
      */
     public function setOfferingId($offeringId)
@@ -72,7 +72,7 @@ class Course extends SingleSkuProduct
     /**
      * Verify course
      *
-     * @param  string       action (optional)
+     * @param  string $action       action (optional)
      * @return void
      */
     public function verify($action = null)

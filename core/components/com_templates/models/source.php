@@ -105,7 +105,7 @@ class Source extends Obj
     /**
      * Method to store the source file contents.
      *
-     * @param   array   The souce data to save.
+     * @param   array $data   The souce data to save.
      * @return  boolean True on success, false otherwise and internal error set.
      */
     public function save($data)

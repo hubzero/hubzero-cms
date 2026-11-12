@@ -680,7 +680,7 @@ class Credentials extends SiteController
      * Checks to see if the current user has exceeded the site
      * password reset request limit for a given time period
      *
-     * @param   object \Hubzero\User\User
+     * @param   object $user \Hubzero\User\User
      *
      * @return  bool
      */

@@ -102,7 +102,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add access level scope for entities having access property (currently products only)
      *
-     * @param  array Access levels IDs
+     * @param  array $accessLevels Access levels IDs
      * @return void
      */
     public function addAccessLevels($accessLevels)
@@ -113,7 +113,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add access group scope for entities (currently products only)
      *
-     * @param   array  Access group IDs
+     * @param   array $accessGroups  Access group IDs
      * @return  void
      */
     public function addAccessGroups($accessGroups)
@@ -130,7 +130,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add user level scope for entities having user permission property (currently SKUs only)
      *
-     * @param  int user ID
+     * @param  int $uId user ID
      * @return void
      */
     public function addUserScope($uId)
@@ -143,7 +143,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get a collection
      *
-     * @param   int                         collection ID
+     * @param   int $cId                         collection ID
      * @return  StorefrontModelCollection   Instance of a collection
      */
     public function getCollection($cId)
@@ -166,8 +166,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get collection information
      *
-     * @param   int         Collection ID
-     * @param   bool        Flag whether to show inactive collection info
+     * @param   int $cId         Collection ID
+     * @param   bool $showInactive        Flag whether to show inactive collection info
      * @return  object      Collection info
      */
     public function getCollectionInfo($cId, $showInactive = false)
@@ -189,8 +189,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all non-empty (those that have at least one active product) root (no parents) product 'category' collections
      *
-     * @param   string  What to return (count or rows)
-     * @param   array   Filters
+     * @param   string $return  What to return (count or rows)
+     * @param   array $filters   Filters
      * @return  void
      */
     public function getRootCategories($return = 'rows', $filters = false)
@@ -238,7 +238,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add collection
      *
-     * @param   StorefrontModelCollection
+     * @param   StorefrontModelCollection $collection
      * @return  void
      */
     public function addCollection($collection)
@@ -249,7 +249,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Update existing collection
      *
-     * @param   StorefrontModelCollection
+     * @param   StorefrontModelCollection $collection
      * @return  void
      */
     public function updateCollection($collection)
@@ -260,8 +260,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Handle collection actions (add, update)
      *
-     * @param   StorefrontModelCollection
-     * @param   string
+     * @param   StorefrontModelCollection $collection
+     * @param   string $action
      * @return  string                          category ID
      */
     private function doCollection($collection, $action)
@@ -464,7 +464,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Check if coupon exists
      *
-     * @param   string      coupon code
+     * @param   string $code      coupon code
      * @return  int         coupon ID on success, null if no match found
      */
     public function couponExists($code)
@@ -649,8 +649,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product information TODO: phase out the legacy format
      *
-     * @param   int         Product ID
-     * @param   bool        Flag whether to show inactive product info
+     * @param   int $pId         Product ID
+     * @param   bool $showInactive        Flag whether to show inactive product info
      * @return  object      Product info
      */
     public function getProductInfo($pId, $showInactive = false)
@@ -1257,7 +1257,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product type info
      *
-     * @param   int                 product type ID
+     * @param   int $ptId                 product type ID
      * @return  array               info
      */
     public function getProductTypeInfo($ptId)
@@ -1272,7 +1272,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get a course
      *
-     * @param   int                         course ID
+     * @param   int $courseId                         course ID
      * @return  StorefrontModelCourse   Instance of a product
      */
     public function getCourse($courseId)
@@ -1293,7 +1293,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get course by alias
      *
-     * @param   int                         course ID
+     * @param   int $alias                         course ID
      * @return  StorefrontModelCourse   Instance of a product
      */
     public function getCourseByAlias($alias)
@@ -1313,7 +1313,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add product coupon
      *
-     * @param   StorefrontModelCoupon   Instance of a coupon to add
+     * @param   StorefrontModelCoupon $coupon   Instance of a coupon to add
      * @return  void
      */
     public function addCoupon($coupon)
@@ -1329,7 +1329,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Delete coupon
      *
-     * @param   string      coupon code
+     * @param   string $code      coupon code
      * @return  void
      */
     public function deleteCoupon($code)
@@ -1590,7 +1590,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product collections -- collections product is included in
      *
-     * @param   int         product id
+     * @param   int $pId         product id
      * @return  array       collections
      */
     public function getProductCollections($pId)

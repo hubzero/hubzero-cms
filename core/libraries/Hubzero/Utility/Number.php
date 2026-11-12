@@ -89,8 +89,8 @@ class Number
      * </code>
      *
      * @link    http://snippets.symfony-project.org/snippet/157
-     * @param   string     the string to format
-     * @param   string     the format to apply
+     * @param   string $string     the string to format
+     * @param   string $format     the format to apply
      * @return  string
      */
     public static function format($string = '', $format = '')

@@ -667,8 +667,9 @@ class Elements
     /**
      * Loads an element type.
      *
-     * @param   string   The element type.
-     * @param   boolean  False (default) to reuse parameter elements; true to load the parameter element type again.
+     * @param   string $type   The element type.
+     * @param   boolean $new  False (default) to reuse parameter elements; true to load the parameter element type
+     *                        again.
      * @return  object
      */
     public function loadElement($type, $new = false)

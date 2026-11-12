@@ -35,7 +35,7 @@ class Serials
      * Mark serials as reserved for the SKU
      *
      * @param   integer  $sID    SKU ID
-     * @param   integer  Number of serials to mark
+     * @param   integer $qty  Number of serials to mark
      * @return  true
      */
     public static function reserveSerials($sId, $qty = 1)
@@ -54,7 +54,7 @@ class Serials
      * Mark reserved serials as available for the SKU
      *
      * @param   integer  $sID    SKU ID
-     * @param   integer  Number of serials to mark
+     * @param   integer $qty  Number of serials to mark
      * @return  array
      */
     public static function releaseSerials($sId, $qty = 1)
@@ -73,7 +73,7 @@ class Serials
      * Get serials and mark the as used for the SKU
      *
      * @param   integer  $sID    SKU ID
-     * @param   integer  Number of serials to get
+     * @param   integer $qty  Number of serials to get
      * @return  object
      */
     public static function issueSerials($sId, $qty = 1)
@@ -108,8 +108,8 @@ class Serials
     /**
      * Get a list or count of the serials for the SKU.
      *
-     * @param   array   Filters
-     * @param   int  SKU id
+     * @param   array $filters   Filters
+     * @param   int $sId  SKU id
      * @return  object/int
      */
     public static function getSkuSerials($filters, $sId)

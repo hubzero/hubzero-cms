@@ -267,8 +267,7 @@ class Subtitle extends Handler
 
     /**
      * [parseSubtitleFile description]
-     * @param  [type] $file [description]
-     * @return [type]       [description]
+     * @param  mixed $file
      */
     private function parseSubtitleFile($file)
     {

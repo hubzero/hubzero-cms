@@ -65,7 +65,7 @@ class Calendar extends Model
     /**
      * Constructor
      *
-     * @param      mixed     Object Id
+     * @param      mixed $oid     Object Id
      * @return     void
      */
     public function __construct($oid = null)

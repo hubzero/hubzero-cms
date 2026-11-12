@@ -112,8 +112,8 @@ class CurrentCart extends Cart
     /**
      * Add SKU to cart
      *
-     * @param SKU ID
-     * @param int Quantity
+     * @param SKU $sId ID
+     * @param int $qty Quantity
      * @return void
      */
     public function add($sId, $qty = 1)
@@ -127,9 +127,9 @@ class CurrentCart extends Cart
     /**
      * Update/set SKU in cart
      *
-     * @param int   SKU ID
-     * @param int   Quantity
-     * @param bool  Retain old value
+     * @param int $sId   SKU ID
+     * @param int $qty   Quantity
+     * @param bool $retainOldValue  Retain old value
      * @return void
      */
     public function update($sId, $qty = 1, $retainOldValue = false)
@@ -143,7 +143,7 @@ class CurrentCart extends Cart
     /**
      * Delete SKU from cart
      *
-     * @param SKU ID
+     * @param SKU $sId ID
      * @return void
      */
     public function delete($sId)
@@ -288,8 +288,8 @@ class CurrentCart extends Cart
 
     /**
      * Set a cart message
-     * @param   string  Message
-     * @param   string  Message type, used to set the CSS class name
+     * @param   string $msg  Message
+     * @param   string $type  Message type, used to set the CSS class name
      * @return  void
      */
     public function setMessage($msg, $type = 'info')
@@ -334,7 +334,7 @@ class CurrentCart extends Cart
     /**
      * Redirect to cart different cart pages
      *
-     * @param string Where to redirect
+     * @param string $where Where to redirect
      * @return void
      */
     public function redirect($where)
@@ -604,7 +604,7 @@ class CurrentCart extends Cart
     /**
      * Saves transaction notes
      *
-     * @param   string      notes
+     * @param   string $notes      notes
      * @return  bool        true
      */
     public function setTransactionNotes($notes)
@@ -623,8 +623,8 @@ class CurrentCart extends Cart
     /**
      * Set the meta information for a given transaction item
      *
-     * @param int       sId     SKU id of the item that needs to e updated
-     * @param mixed     meta    Meta info
+     * @param int $sId       sId     SKU id of the item that needs to e updated
+     * @param mixed $meta     meta    Meta info
      * @return void
      */
     private function setTransactionItemMeta($sId, $meta)
@@ -641,8 +641,8 @@ class CurrentCart extends Cart
     /**
      * Add the meta information for a given transaction item
      *
-     * @param int       sId     SKU id of the item that needs to e updated
-     * @param mixed     meta    Meta info
+     * @param int $sId       sId     SKU id of the item that needs to e updated
+     * @param mixed $meta     meta    Meta info
      * @return void
      */
     public function addTransactionItemMeta($sId, $meta)
@@ -662,7 +662,7 @@ class CurrentCart extends Cart
     /**
      * Get the meta information for a given transaction item
      *
-     * @param int       sId     SKU id of the item that needs to e updated
+     * @param int $sId       sId     SKU id of the item that needs to e updated
      * @return mixed    meta    Meta info
      */
     private function getTransactionItemMeta($sId)
@@ -753,7 +753,7 @@ class CurrentCart extends Cart
     /**
      * Set selected saved shipping addresses for this user
      *
-     * @param int saved address ID
+     * @param int $saId saved address ID
      * @return bool
      */
     public function setSavedShippingAddress($saId)
@@ -846,10 +846,11 @@ class CurrentCart extends Cart
     /**
      * Mark step for current transaction as completed (default) or not-completed
      *
-     * @param   string Step
-     * @param   mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA
+     * @param   string $step Step
+     * @param   mixed $meta Meta key to match the step among multiple of the same type (eg transaction can have
+     *                      multiple EULA
      *          steps for each SKU)
-     * @param   bool Completed (true) or not completed (false)
+     * @param   bool $status Completed (true) or not completed (false)
      * @return  bool
      */
     public function setStepStatus($step, $meta = '', $status = true)

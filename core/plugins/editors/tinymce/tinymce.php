@@ -573,7 +573,7 @@ class Tinymce extends Plugin
     /**
      * TinyMCE WYSIWYG Editor - get the editor content
      *
-     * @param  string  The name of the editor
+     * @param  string $editor  The name of the editor
      * @return string
      */
     public function onGetContent($editor)
@@ -595,7 +595,7 @@ class Tinymce extends Plugin
     /**
      * TinyMCE WYSIWYG Editor - copy editor content to form field
      *
-     * @param   string  The name of the editor
+     * @param   string $editor  The name of the editor
      * @return  string
      */
     public function onSave($editor)

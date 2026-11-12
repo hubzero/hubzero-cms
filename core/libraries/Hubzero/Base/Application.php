@@ -234,7 +234,7 @@ class Application extends Container
     /**
      * Mark the given provider as registered.
      *
-     * @param   object  \Hubzero\Base\ServiceProvider
+     * @param   object $provider  \Hubzero\Base\ServiceProvider
      * @return  void
      */
     protected function markAsRegistered($provider)

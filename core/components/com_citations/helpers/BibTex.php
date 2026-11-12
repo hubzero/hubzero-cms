@@ -481,7 +481,7 @@ class BibTex
      *
      * @access private
      * @param  string  $entry The text of the whole remaining entry
-     * @param  int     the    current used place of the '='
+     * @param  int $position     the    current used place of the '='
      * @return bool    true if the '=' is correct, false if it contains to an equation
      */
     public function checkEqualSign($entry, $position)

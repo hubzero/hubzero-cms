@@ -35,7 +35,7 @@ class Excel implements Adapter
     /**
      * Does this adapter respond to a mime type
      *
-     * @param   string  Mime type
+     * @param   string $mime  Mime type
      * @return  bool
      */
     public static function accepts($mime)

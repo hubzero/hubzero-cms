@@ -292,7 +292,7 @@ class Toolbar extends Obj
      *
      * @param  string  $name  Name of the menu item.
      * @param  string  $link  URL of the menu item.
-     * @param  bool    True if the item is active, false otherwise.
+     * @param  bool $active    True if the item is active, false otherwise.
      *
      * @return  void
      */

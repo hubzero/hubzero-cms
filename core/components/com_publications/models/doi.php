@@ -1523,8 +1523,6 @@ class Doi extends Obj
      * @param   string    $doi
      * @param   integer   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from
      *                                   draft to published
-     *
-     * @return
      */
     public function revert($doi, $stateSwitch)
     {

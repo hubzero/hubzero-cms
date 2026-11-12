@@ -43,7 +43,7 @@ class Sku
     /**
      * Load existing SKU
      *
-     * @param   int         SKU ID
+     * @param   int $sId         SKU ID
      * @return  void
      */
     public function load($sId)
@@ -81,7 +81,7 @@ class Sku
     /**
      * Set price
      *
-     * @param   double      price
+     * @param   double $price      price
      * @return  bool        true on success, exception otherwise
      */
     public function setPrice($price)
@@ -138,8 +138,8 @@ class Sku
     /**
      * Set publishing times
      *
-     * @param   string      publish up time
-     * @param   string      publish down time
+     * @param   string $publishUp      publish up time
+     * @param   string $publishDown      publish down time
      * @return  bool        true
      */
     public function setPublishTime($publishUp = '', $publishDown = '')
@@ -208,7 +208,7 @@ class Sku
     /**
      * Set ID
      *
-     * @param   int     sku ID
+     * @param   int $sId     sku ID
      * @return  bool    true on success, exception otherwise
      */
     public function setId($sId)
@@ -591,7 +591,7 @@ class Sku
     /**
      * Set SKU active status
      *
-     * @param   bool        SKU status
+     * @param   bool $activeStatus        SKU status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)
@@ -626,7 +626,7 @@ class Sku
     /**
      * Set restricted flag
      *
-     * @param   bool        SKU restricted flag
+     * @param   bool $activeStatus        SKU restricted flag
      * @return  bool        true
      */
     public function setRestricted($activeStatus)

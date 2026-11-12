@@ -152,7 +152,7 @@ class RestrictionsHelper
     /**
      * Delete users
      *
-     * @param   array  permissions IDs
+     * @param   array $ids  permissions IDs
      * @return  void
      */
     public static function removeUsers($ids)

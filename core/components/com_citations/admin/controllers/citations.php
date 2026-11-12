@@ -100,7 +100,7 @@ class Citations extends AdminController
     /**
      * Edit a citation
      *
-     * @param   object
+     * @param   object $row
      *
      * @return  void
      */

@@ -88,7 +88,7 @@ function config($key = null, $default = null)
 /**
  * Dump the passed variables and end the script.
  *
- * @param   mixed
+ * @param   mixed $var
  * @return  void
  */
 function ddie($var)
@@ -116,7 +116,7 @@ if (!function_exists('dump')) {
     /**
      * Dump the passed variables.
      *
-     * @param   mixed
+     * @param   mixed $var
      * @return  void
      */
     function dump($var)

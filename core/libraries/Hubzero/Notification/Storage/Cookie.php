@@ -26,7 +26,7 @@ class Cookie implements MessageStore
     /**
      * Constructor
      *
-     * @param   integer  lifetime
+     * @param   integer $lifetime  lifetime
      * @return  void
      */
     public function __construct($lifetime)

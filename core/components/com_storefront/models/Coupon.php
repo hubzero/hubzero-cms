@@ -40,7 +40,7 @@ class Coupon
     /**
      * Set code
      *
-     * @param   string  coupon code
+     * @param   string $code  coupon code
      * @return  bool    true on success
      */
     public function setCode($code)
@@ -60,7 +60,7 @@ class Coupon
     /**
      * Set code description
      *
-     * @param   string  coupon description
+     * @param   string $description  coupon description
      * @return  bool    true on success
      */
     public function setDescription($description)
@@ -80,7 +80,7 @@ class Coupon
     /**
      * Set code use limit
      *
-     * @param   int     use limit
+     * @param   int $limit     use limit
      * @return  bool    true on success
      */
     public function setUseLimit($limit)
@@ -104,7 +104,7 @@ class Coupon
     /**
      * Set the limit of objects coupon can be applied to
      *
-     * @param   int     object limit
+     * @param   int $limit     object limit
      * @return  bool    true on success
      */
     public function setObjectLimit($limit)
@@ -128,7 +128,7 @@ class Coupon
     /**
      * Set active status
      *
-     * @param   bool        status
+     * @param   bool $activeStatus        status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)
@@ -183,7 +183,7 @@ class Coupon
     /**
      * Set code object
      *
-     * @param   string      object type
+     * @param   string $objectType      object type
      * @return  bool        true on success
      */
     public function setObjectType($objectType = 'product')
@@ -247,8 +247,8 @@ class Coupon
     /**
      * Add object
      *
-     * @param   int   object ID
-     * @param   int   limit of object coupon will be applied to
+     * @param   int $object   object ID
+     * @param   int $objectLimit   limit of object coupon will be applied to
      *                (when purchasing multiple quantities of the same object)
      * @return  bool  true on success
      */

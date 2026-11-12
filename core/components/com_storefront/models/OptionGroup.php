@@ -40,7 +40,7 @@ class OptionGroup
     /**
      * Load existing option group
      *
-     * @param   int         option group ID
+     * @param   int $ogId         option group ID
      * @return  void
      */
     public function load($ogId)
@@ -61,7 +61,7 @@ class OptionGroup
     /**
      * Set ID
      *
-     * @param   int         option group ID
+     * @param   int $ogId         option group ID
      * @return  bool        true
      */
     public function setId($ogId)
@@ -86,7 +86,7 @@ class OptionGroup
     /**
      * Set option group name
      *
-     * @param   string      collection name
+     * @param   string $ogName      collection name
      * @return  bool        true
      */
     public function setName($ogName)
@@ -111,7 +111,7 @@ class OptionGroup
     /**
      * Set option group status
      *
-     * @param   bool        collection status
+     * @param   bool $activeStatus        collection status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)

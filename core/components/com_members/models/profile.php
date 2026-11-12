@@ -120,7 +120,7 @@ class Profile extends Relational
     /**
      * Helper method to collect multi-value fields
      *
-     * @param   mixed
+     * @param   mixed $data
      * @return  array
      */
     public static function collect($data)

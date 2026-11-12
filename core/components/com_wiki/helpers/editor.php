@@ -37,7 +37,7 @@ class Editor extends Obj
     /**
      * Constructor
      *
-     * @param  string  The parser name
+     * @param  string $editor  The parser name
      */
     public function __construct($editor = '')
     {

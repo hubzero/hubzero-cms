@@ -217,7 +217,7 @@ class Endnote extends Downloadable
     /**
      * Convert to UTF8 if needed
      *
-     * @param string
+     * @param string $str
      * @return string
      */
     private function toUtf8($str)

@@ -27,7 +27,7 @@ class Collection
     /**
      * Constructor
      *
-     * @param  int      Optional: Collection ID
+     * @param  int $cId      Optional: Collection ID
      * @return void
      */
     public function __construct($cId = false)
@@ -68,7 +68,7 @@ class Collection
     /**
      * Set collection type
      *
-     * @param   string      Collection type
+     * @param   string $cType      Collection type
      * @return  bool        true on success, exception otherwise
      */
     public function setType($cType)
@@ -99,7 +99,7 @@ class Collection
     /**
      * Set collection id
      *
-     * @param   int         collection ID
+     * @param   int $cId         collection ID
      * @return  bool        true
      */
     public function setId($cId)
@@ -124,7 +124,7 @@ class Collection
     /**
      * Set collection name
      *
-     * @param   string      collection name
+     * @param   string $cName      collection name
      * @return  bool        true
      */
     public function setName($cName)
@@ -149,7 +149,7 @@ class Collection
     /**
      * Set collection alias
      *
-     * @param   string      collection alias
+     * @param   string $cAlias      collection alias
      * @return  bool        true
      */
     public function setAlias($cAlias)
@@ -184,7 +184,7 @@ class Collection
     /**
      * Set product collection status
      *
-     * @param   bool        collection status
+     * @param   bool $activeStatus        collection status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)
@@ -399,7 +399,7 @@ class Collection
     /**
      * Set collection image
      *
-     * @param   array       Product images
+     * @param   array $img       Product images
      * @return  bool        true
      */
     public function setImage($img)
@@ -417,7 +417,7 @@ class Collection
     /**
      * Remove image
      *
-     * @param   int         Image ID
+     * @param   int $imgId         Image ID
      * @return  bool        Success of Failure
      */
     public function removeImage($imgId)

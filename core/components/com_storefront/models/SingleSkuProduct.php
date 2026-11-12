@@ -42,7 +42,7 @@ class SingleSkuProduct extends Product
     /**
      * Set SKU price
      *
-     * @param   double      price
+     * @param   double $productPrice      price
      * @return  bool        true on success, exception otherwise
      */
     public function setPrice($productPrice)

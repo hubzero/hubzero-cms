@@ -45,7 +45,7 @@ class Event extends Model
     /**
      * Constructor
      *
-     * @param      mixed     Object Id
+     * @param      mixed $oid     Object Id
      * @return     void
      */
     public function __construct($oid = null)
@@ -164,8 +164,6 @@ class Event extends Model
 
     /**
      * Generate Human Readable Repeating Info
-     *
-     * @return [type] [description]
      */
     public function humanReadableRepeatingRule()
     {
@@ -203,8 +201,6 @@ class Event extends Model
 
     /**
      * Export Event in iCal Format
-     *
-     * @return [type] [description]
      */
     public function export()
     {

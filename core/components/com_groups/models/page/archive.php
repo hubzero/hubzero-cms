@@ -162,8 +162,7 @@ class Archive extends Obj
     /**
      * Build Multi Dimensional Tree of Pages
      *
-     * @param  [type] $results [description]
-     * @return [type]          [description]
+     * @param  mixed $results
      */
     private function buildTree($pages)
     {

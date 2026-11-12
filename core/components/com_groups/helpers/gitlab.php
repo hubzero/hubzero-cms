@@ -189,7 +189,6 @@ class Gitlab
      * Protect Branch
      *
      * @param  array  $params [description]
-     * @return [type]         [description]
      */
     public function protectBranch($params = [])
     {
@@ -217,9 +216,8 @@ class Gitlab
     /**
      * Generic Post request
      *
-     * @param  [type] $resource [description]
+     * @param  mixed $resource
      * @param  array  $params   [description]
-     * @return [type]           [description]
      */
     private function postRequest($resource, $params = [])
     {
@@ -234,9 +232,8 @@ class Gitlab
     /**
      * Generic Put Request
      *
-     * @param  [type] $resource [description]
+     * @param  mixed $resource
      * @param  array  $params   [description]
-     * @return [type]           [description]
      */
     public function putRequest($resource, $params = [])
     {

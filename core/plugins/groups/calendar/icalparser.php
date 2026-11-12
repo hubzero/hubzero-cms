@@ -137,7 +137,7 @@ class IcalParser
      * New instance of ical parser
      *
      * @param  object  $file      [description]
-     * @param  [type]  $callback  [description]
+     * @param  mixed  $callback
      */
     public function __construct($file, $callback = null)
     {
@@ -151,9 +151,8 @@ class IcalParser
     /**
      * Parse File
      *
-     * @param  [type] $file     [description]
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
+     * @param  mixed $file
+     * @param  mixed $callback
      */
     public function parseFile($file, $callback = null)
     {
@@ -167,9 +166,8 @@ class IcalParser
     /**
      * Parse String
      *
-     * @param  [type] $string   [description]
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
+     * @param  mixed $string
+     * @param  mixed $callback
      */
     public function parseString($string, $callback = null)
     {
@@ -236,8 +234,7 @@ class IcalParser
     /**
      * Parse each row of ical file
      *
-     * @param  [type] $row [description]
-     * @return [type]      [description]
+     * @param  mixed $row
      */
     private function parseRow($row)
     {

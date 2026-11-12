@@ -382,12 +382,12 @@ abstract class Cart
     /**
      * Update/add SKU/quantity to cart, update the price in the cart, save old price and inventory level (if requested)
      *
-     * @param   int       SKU ID
-     * @param   string    Update Method:  add - adds to the existing quantity,
+     * @param   int $sId       SKU ID
+     * @param   string $mode    Update Method:  add - adds to the existing quantity,
      *                                  set - ignores existing quantity and sets a new value,
      *                                  sync - simply checks/updates inventory and pricing
-     * @param   int       Quantity
-     * @param   bool      Flag determining whether the old qty should be saved (only when it goes down);
+     * @param   int $qty       Quantity
+     * @param   bool $retainOldValue      Flag determining whether the old qty should be saved (only when it goes down);
      *                    price get saved in either case
      * @return  void
      */

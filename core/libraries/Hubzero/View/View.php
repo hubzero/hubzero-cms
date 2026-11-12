@@ -409,7 +409,7 @@ class View extends Obj
     /**
      * Set the name
      *
-     * @param   string  The name to set
+     * @param   string $name  The name to set
      * @return  object
      */
     public function setName($name)

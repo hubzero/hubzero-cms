@@ -114,7 +114,7 @@ class Format
     /**
      * Function to set the formatters template to use
      *
-     * @param  string  Template string that will be used to format the citation
+     * @param  string $template  Template string that will be used to format the citation
      *
      * @return  void
      */
@@ -140,7 +140,7 @@ class Format
     /**
      * Function to set the template keys the formatter will use
      *
-     * @param  string  Template keys that will be used to format the citation
+     * @param  string $template_keys  Template keys that will be used to format the citation
      *
      * @return  void
      */

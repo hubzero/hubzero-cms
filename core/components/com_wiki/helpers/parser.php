@@ -38,7 +38,7 @@ class Parser extends Obj
     /**
      * Constructor
      *
-     * @param  string  The parser name
+     * @param  string $parser  The parser name
      */
     public function __construct($parser = '')
     {
