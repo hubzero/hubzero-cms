@@ -71,7 +71,7 @@ class Version extends Model
      *
      * @param   boolean  $check           Run the Table Check Method
      * @param   boolean  $trustedContent  Is content trusted
-     * @return  void
+     * @return  bool
      */
     public function store($check = true, $trustedContent = false)
     {

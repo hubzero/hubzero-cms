@@ -22,7 +22,7 @@ class Hipaacompliant extends Plugin
      * Event call before a resource is submitted
      *
      * @param   object  $resource
-     * @return  void
+     * @return  string|null
      */
     public function onResourceBeforeSubmit(&$resource)
     {

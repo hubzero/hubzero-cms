@@ -603,7 +603,7 @@ class Course extends Base
     /**
      * Check if the current user is enrolled
      *
-     * @return     boolean
+     * @return     object
      */
     public function page($url = null)
     {
@@ -669,7 +669,7 @@ class Course extends Base
     /**
      * Check if the current user is enrolled
      *
-     * @return     boolean
+     * @return     array|string
      */
     public function tags($as = 'cloud', $admin = 0)
     {
@@ -708,7 +708,7 @@ class Course extends Base
      * Link will vary depending upon action desired, such as edit, delete, etc.
      *
      * @param      string $type The type of link to return
-     * @return     boolean
+     * @return     string
      */
     public function link($type = '')
     {

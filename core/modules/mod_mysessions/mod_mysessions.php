@@ -72,7 +72,7 @@ class Mysessions extends Module
     /**
      * Display module content
      *
-     * @return  void
+     * @return  bool|null
      */
     public function display()
     {
@@ -126,5 +126,7 @@ class Mysessions extends Module
 
         // Output module
         require $this->getLayoutPath();
+
+        return null;
     }
 }

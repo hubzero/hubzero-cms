@@ -80,7 +80,7 @@ class Economy extends Obj
      * Adjust credits for a wish with a bonus assigned
      *
      * @param   integer  $wishid  Wish ID
-     * @return  void
+     * @return  null
      */
     public function cleanupBonus($wishid)
     {
@@ -115,7 +115,7 @@ class Economy extends Obj
      * @param   integer  $wishid  Wish ID
      * @param   string   $type    Transaction type
      * @param   number   $points  Points to distribute
-     * @return  void
+     * @return  null
      */
     public function distributePoints($wishid, $type = 'grant', $points = 0)
     {

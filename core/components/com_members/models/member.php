@@ -550,7 +550,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Get a record
      *
-     * @return  array
+     * @return  bool|\stdClass
      */
     public function searchResult()
     {

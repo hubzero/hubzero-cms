@@ -34,7 +34,7 @@ class Media
      * Checks if the file is an image
      *
      * @param   string   $fileName  The filename
-     * @return  boolean
+     * @return  string
      */
     public static function getTypeIcon($fileName)
     {

@@ -70,7 +70,7 @@ class Mark
     /**
      * Gets the relative time of the start of the period.
      *
-     * @return  integer  The time (in milliseconds)
+     * @return  float  The time (in milliseconds)
      */
     public function started()
     {
@@ -80,7 +80,7 @@ class Mark
     /**
      * Gets the relative time of the end of the period.
      *
-     * @return  integer  The time (in milliseconds)
+     * @return  float  The time (in milliseconds)
      */
     public function ended()
     {
@@ -90,7 +90,7 @@ class Mark
     /**
      * Gets the time spent in this period.
      *
-     * @return  integer  The period duration (in milliseconds)
+     * @return  float  The period duration (in milliseconds)
      */
     public function duration()
     {

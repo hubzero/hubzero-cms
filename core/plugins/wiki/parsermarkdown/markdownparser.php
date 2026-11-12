@@ -144,7 +144,7 @@ class MarkdownParser
     /**
      * Generate a unique prefix
      *
-     * @return     integer
+     * @return     string
      */
     private function randomString()
     {
@@ -297,7 +297,7 @@ class MarkdownParser
      * Returns a unique ID as a placeholder for content retrieval later on
      *
      * @param      array   $matches Content to store
-     * @return     integer Unique ID
+     * @return     string Unique ID
      */
     private function dataPush($matches)
     {

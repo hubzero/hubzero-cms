@@ -47,7 +47,7 @@ class Popular extends Module
      * Get a list of the most popular articles
      *
      * @param   object  $params  The module parameters.
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public static function getList($params)
     {

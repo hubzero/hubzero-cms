@@ -193,7 +193,7 @@ class Html extends Obj
      * @param   string  $from
      * @param   string  $to
      * @param   string|int $round
-     * @return  string
+     * @return  float
      */
     public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
     {
@@ -791,7 +791,7 @@ class Html extends Obj
      *
      * @param   string  $notes
      * @param   string  $reviewer
-     * @return  string
+     * @return  int
      */
     public static function getAdminNoteCount($notes = '', $reviewer = '')
     {
@@ -1179,7 +1179,7 @@ class Html extends Obj
      * @param   string  $layout
      * @param   string  $message
      * @param   string  $reviewer
-     * @return  void
+     * @return  bool|null
      */
     public static function sendHUBMessage(
         $option,
@@ -1242,6 +1242,8 @@ class Html extends Obj
                 $option,
             ],
         );
+
+        return null;
     }
 
     /**

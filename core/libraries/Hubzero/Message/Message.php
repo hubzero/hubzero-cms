@@ -77,7 +77,7 @@ class Message extends Relational
      * Get records based on filters passed
      *
      * @param   array  $filters  Filters to build query from
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public function getRecords($filters = [])
     {
@@ -89,7 +89,7 @@ class Message extends Relational
      * Builds a query string based on filters passed
      *
      * @param   array   $filters  Filters to build query from
-     * @return  string  SQL
+     * @return  static  SQL
      */
     private function buildQuery($filters = [])
     {
@@ -132,7 +132,7 @@ class Message extends Relational
      * Get sent messages
      *
      * @param   array    $filters  Filters to build query from
-     * @return  integer
+     * @return  \Hubzero\Database\Rows
      */
     public function getSentMessages($filters = [])
     {

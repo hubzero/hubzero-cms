@@ -90,7 +90,7 @@ class Publication extends Table
      *
      * @param   array  $filters
      * @param   bool   $admin
-     * @return  query  string
+     * @return  string  string
      */
     public function buildQuery($filters = [], $admin = false)
     {
@@ -374,7 +374,7 @@ class Publication extends Table
      *
      * @param   array    $filters
      * @param   boolean  $admin
-     * @return  object
+     * @return  int
      */
     public function getCount($filters = [], $admin = false)
     {

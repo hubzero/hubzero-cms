@@ -165,7 +165,7 @@ class Iterator implements \Countable, \Iterator
     /**
      * Return the array count
      *
-     * @return int
+     * @return array
      */
     public function total()
     {
@@ -175,7 +175,7 @@ class Iterator implements \Countable, \Iterator
     /**
      * Return the array count
      *
-     * @return int
+     * @return array
      */
 
     #[\ReturnTypeWillChange]

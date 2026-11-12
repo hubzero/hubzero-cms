@@ -370,7 +370,7 @@ class Wiki extends Plugin
      * Get a list of page IDs associated with this group
      *
      * @param   integer  $gid
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public function getPages($gid = null)
     {

@@ -140,7 +140,7 @@ class Toolsv1r0 extends ApiController
      *
      * @param   array $a
      * @param   array $b
-     * @return  array
+     * @return  int
      */
     private function idSortDesc($a, $b)
     {
@@ -152,7 +152,7 @@ class Toolsv1r0 extends ApiController
      *
      * @param   array $a
      * @param   array $b
-     * @return  array
+     * @return  int
      */
     private function startedDateSortDesc($a, $b)
     {
@@ -164,7 +164,7 @@ class Toolsv1r0 extends ApiController
      *
      * @param   array $a
      * @param   array $b
-     * @return  array
+     * @return  int
      */
     private function accessedDateSortAsc($a, $b)
     {
@@ -176,7 +176,7 @@ class Toolsv1r0 extends ApiController
      *
      * @param   array $a
      * @param   array $b
-     * @return  array
+     * @return  int
      */
     private function accessedDateSortDesc($a, $b)
     {

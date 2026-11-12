@@ -326,7 +326,7 @@ class Relationship
      * @param   array   $rows  The rows that we'll be seeding
      * @param   string  $data  The data to seed
      * @param   string  $name  The name of the relationship
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      **/
     public function seedWithData($rows, $data, $name)
     {
@@ -343,7 +343,7 @@ class Relationship
      * @param   string   $name        The relationship name that we'll use to attach to the rows
      * @param   \Closure  $constraint  The constraint function to limit related items
      * @param   string   $subs        The nested relationships that should be passed on to the child
-     * @return  object
+     * @return  array
      **/
     public function seedWithRelation($rows, $name, $constraint = null, $subs = null)
     {
@@ -370,7 +370,7 @@ class Relationship
      *
      * @param   array    $keys        The keys for which to fetch related items
      * @param   \Closure  $constraint  The constraint function to limit related items
-     * @return  array
+     * @return  \Hubzero\Database\Relational
      **/
     protected function getRelations($keys, $constraint = null)
     {
@@ -402,7 +402,7 @@ class Relationship
      * @param   \Hubzero\Database\Rows  $rows  The rows to seed on to
      * @param   \Hubzero\Database\Rows  $data  The data from which to seed
      * @param   string                  $name  The relationship name
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     protected function seed($rows, $data, $name)
     {

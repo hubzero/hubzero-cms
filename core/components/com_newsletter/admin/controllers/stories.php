@@ -120,7 +120,7 @@ class Stories extends AdminController
     /**
      * Fetch AutoContent (from plugin) Task
      *
-     * @return  void
+     * @return  bool
      */
     public function fetchAutoContentTask()
     {

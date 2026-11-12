@@ -26,7 +26,7 @@ class Featuredmember extends Module
     /**
      * Generate module contents
      *
-     * @return  void
+     * @return  string|null
      */
     public function run()
     {
@@ -76,6 +76,8 @@ class Featuredmember extends Module
 
             require $this->getLayoutPath();
         }
+
+        return null;
     }
 
     /**

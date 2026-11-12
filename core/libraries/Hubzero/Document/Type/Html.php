@@ -345,7 +345,7 @@ class Html extends Base
      *
      * @param   boolean  $caching  If true, cache the output
      * @param   array    $params   Associative array of attributes
-     * @return  object   The rendered data
+     * @return  string   The rendered data
      */
     public function render($caching = false, $params = [])
     {

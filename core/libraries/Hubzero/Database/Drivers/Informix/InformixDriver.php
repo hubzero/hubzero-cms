@@ -1462,7 +1462,7 @@ class InformixDriver extends BaseSqlDriver
      * @param   string  $table   The table name
      * @param   string  $column  The column name
      * @param   string  $type    The new column type
-     * @return  $this
+     * @return  bool
      */
     public function alterColumn($table, $column, $type)
     {
@@ -3319,7 +3319,7 @@ class InformixDriver extends BaseSqlDriver
     /**
      * Get schema grammar object
      *
-     * @return  \Hubzero\Database\Drivers\Informix\InformixGrammar
+     * @return  \Hubzero\Database\Drivers\Base\BaseSchemaGrammar
      */
     public function getSchemaGrammar()
     {

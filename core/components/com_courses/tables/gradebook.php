@@ -472,7 +472,7 @@ class GradeBook extends Table
      *
      * @param      array $member_id
      * @param      object $course
-     * @return     void
+     * @return     bool|null
      */
     public function clearGrades($member_id, $course)
     {
@@ -499,6 +499,8 @@ class GradeBook extends Table
             $this->db->setQuery($query);
             $this->db->query();
         }
+
+        return null;
     }
 
     /**

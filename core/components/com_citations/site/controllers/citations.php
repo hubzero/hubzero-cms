@@ -933,7 +933,7 @@ class Citations extends SiteController
     /**
      * Download a batch of entries
      *
-     * @return  void
+     * @return  string|bool|null
      */
     public function downloadbatchTask()
     {

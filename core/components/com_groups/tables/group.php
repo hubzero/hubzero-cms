@@ -242,7 +242,7 @@ class Group extends Table
      * Get an object list of members
      *
      * @param   array   $filters
-     * @return  object  Return course units
+     * @return  array  Return course units
      */
     public function findMembers($filters = [])
     {

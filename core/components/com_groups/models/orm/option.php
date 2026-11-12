@@ -84,7 +84,7 @@ class Option extends Relational
      * Generates automatic checked field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticChecked($data)
     {

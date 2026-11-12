@@ -57,7 +57,7 @@ class Type extends Relational
     /**
      * Transform params
      *
-     * @return  string
+     * @return  object
      */
     public function transformParams()
     {

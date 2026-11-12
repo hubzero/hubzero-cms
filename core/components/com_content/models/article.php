@@ -757,7 +757,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for Solr
      *
-     * @return  array
+     * @return  \stdClass
      */
     public function searchResult()
     {

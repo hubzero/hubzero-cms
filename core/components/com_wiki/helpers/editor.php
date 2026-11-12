@@ -160,7 +160,7 @@ class Editor extends Obj
      * Save the editor content
      *
      * @param   string  $editor  The name of the editor control
-     * @return  void
+     * @return  string|null
      */
     public function save($editor)
     {

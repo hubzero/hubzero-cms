@@ -194,7 +194,7 @@ class Field extends Relational
      * @param   string  $name     Property name
      * @param   string  $default  Default property value
      * @param   string  $task     Task to look up value for
-     * @return  string
+     * @return  int
      */
     public static function state($name, $default = 'OOOO', $task = 'create')
     {

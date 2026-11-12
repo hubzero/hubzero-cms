@@ -964,7 +964,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Get the schema grammar instance for this driver
      *
-     * @return  \Hubzero\Database\Drivers\Cubrid\CubridGrammar
+     * @return  \Hubzero\Database\Drivers\Base\BaseSchemaGrammar
      */
     public function getSchemaGrammar()
     {

@@ -28,7 +28,7 @@ class Wishlist extends Module
     /**
      * Display module contents
      *
-     * @return  void
+     * @return  bool|null
      */
     public function display()
     {

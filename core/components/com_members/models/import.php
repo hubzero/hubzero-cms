@@ -462,7 +462,7 @@ class Import extends Base
      * Map headers to fields
      *
      * @param   array   $headers  List of columns from import file
-     * @return  object
+     * @return  array
      */
     public function autoDetectFields(array $headers)
     {

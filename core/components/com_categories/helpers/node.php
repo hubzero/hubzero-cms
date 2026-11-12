@@ -267,7 +267,7 @@ class Node extends Obj
      *
      * @param   array    $category      The category data.
      * @param   object   &$constructor  The tree constructor.
-     * @return  boolean
+     * @return  bool
      */
     public function __construct($category = null, &$constructor = null)
     {

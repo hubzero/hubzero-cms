@@ -243,7 +243,7 @@ class Helper
      * ex: 123 -> 00123
      *
      * @param   integer  $someid
-     * @return  integer
+     * @return  string
      */
     public static function niceidformat($someid)
     {

@@ -97,7 +97,7 @@ class Comment extends Relational
      * Generates automatic state field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticState($data)
     {
@@ -111,7 +111,7 @@ class Comment extends Relational
      * Generates automatic state field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticAnonymous($data)
     {
@@ -125,7 +125,7 @@ class Comment extends Relational
      * Generates automatic state field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticParent($data)
     {

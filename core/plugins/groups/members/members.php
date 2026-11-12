@@ -476,7 +476,7 @@ class Members extends Plugin
     /**
      * Approve membership for one or more users
      *
-     * @return  void
+     * @return  bool|null
      */
     private function approve()
     {
@@ -609,12 +609,14 @@ class Members extends Plugin
             'action'    => 'membership_approved',
             'comments'  => $users,
         ]);
+
+        return null;
     }
 
     /**
      * Promote one or more users
      *
-     * @return  void
+     * @return  bool
      */
     private function promote()
     {
@@ -742,7 +744,7 @@ class Members extends Plugin
     /**
      * Demote one or more users
      *
-     * @return  void
+     * @return  bool|null
      */
     private function demote()
     {
@@ -1024,7 +1026,7 @@ class Members extends Plugin
     /**
      * Display a form for sending a message to users being removed
      *
-     * @return  void
+     * @return  bool|null
      */
     private function remove()
     {
@@ -1062,12 +1064,14 @@ class Members extends Plugin
         }
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**
      * Remove one or more users
      *
-     * @return  void
+     * @return  bool|null
      */
     private function confirmremove()
     {
@@ -1223,7 +1227,7 @@ class Members extends Plugin
     /**
      * Display a form for a message to send to users that are denied membership
      *
-     * @return  void
+     * @return  bool|null
      */
     private function deny()
     {
@@ -1262,6 +1266,8 @@ class Members extends Plugin
         }
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**
@@ -1328,7 +1334,7 @@ class Members extends Plugin
     /**
      * Save the group's canned deny responses
      *
-     * @return  void
+     * @return  bool|null
      */
     private function savedenyresponses()
     {
@@ -1402,7 +1408,7 @@ class Members extends Plugin
     /**
      * Deny one or more users membership
      *
-     * @return  void
+     * @return  bool|null
      */
     private function confirmdeny()
     {
@@ -1503,12 +1509,14 @@ class Members extends Plugin
             'action'    => 'membership_denied',
             'comments'  => $users,
         ]);
+
+        return null;
     }
 
     /**
      * Display a form for confirming canceling membership
      *
-     * @return     void
+     * @return     bool|null
      */
     private function cancel()
     {
@@ -1540,12 +1548,14 @@ class Members extends Plugin
         }
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**
      * Cancel membership of one or more users
      *
-     * @return  void
+     * @return  bool
      */
     private function confirmcancel()
     {
@@ -1897,7 +1907,7 @@ class Members extends Plugin
     /**
      * Remove a member role
      *
-     * @return  void
+     * @return  bool
      */
     private function removerole()
     {
@@ -1974,7 +1984,7 @@ class Members extends Plugin
     /**
      * Show a form for assigning a role to a member
      *
-     * @return  void
+     * @return  bool|null
      */
     private function assignrole()
     {
@@ -2017,12 +2027,14 @@ class Members extends Plugin
         }
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**
      * Assign a role to a member
      *
-     * @return  void
+     * @return  bool|null
      */
     private function submitrole()
     {
@@ -2090,7 +2102,7 @@ class Members extends Plugin
     /**
      * Delete a role
      *
-     * @return  void
+     * @return  bool
      */
     private function deleterole()
     {

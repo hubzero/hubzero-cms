@@ -1406,7 +1406,7 @@ class Items extends AdminController
      * @param   string  $message
      * @param   array   $authors
      * @param   string  $action
-     * @return  void
+     * @return  bool|null
      */
     private function emailContributors($subject = '', $message = '', $authors = [], $action = 'publish')
     {
@@ -1472,6 +1472,8 @@ class Items extends AdminController
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
             }
         }
+
+        return null;
     }
 
     /**
@@ -1667,7 +1669,7 @@ class Items extends AdminController
      *
      * @param   integer  $vid
      * @param   integer  $pid
-     * @return  void
+     * @return  bool
      */
     public function deleteVersionExistence($vid, $pid)
     {

@@ -38,7 +38,7 @@ class Post extends Base
     /**
      * Parses
      *
-     * @return  void
+     * @return  string|bool
      **/
     public static function parseData($value)
     {

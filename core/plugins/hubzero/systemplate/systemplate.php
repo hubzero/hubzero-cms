@@ -21,7 +21,7 @@ class Systemplate extends Plugin
      * Return information about this hub
      *
      * @param   string  $values
-     * @return  array
+     * @return  \stdClass|null
      */
     public function onSystemOverview($values = 'all')
     {

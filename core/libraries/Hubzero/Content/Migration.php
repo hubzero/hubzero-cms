@@ -99,7 +99,7 @@ class Migration
      *
      * @param   object  $docroot  Defaults to null, which should then resolve to the hub docroot
      * @param   object  $runDb    The db that migrations will actually run against
-     * @return  void
+     * @return  bool
      **/
     public function __construct($docroot = null, $runDb = null)
     {

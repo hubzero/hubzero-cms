@@ -101,7 +101,7 @@ class Preference extends Relational
     /**
      * Transform params
      *
-     * @return string
+     * @return object
      */
     public function transformPreferences()
     {

@@ -237,7 +237,7 @@ class Passport implements ProviderInterface
      * Return a URL
      *
      * @param   string  $type
-     * @return  bool
+     * @return  string
      */
     public function getUrl($type = 'Claim')
     {

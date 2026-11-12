@@ -381,7 +381,7 @@ class Owner extends Table
      * @param   integer  $projectid
      * @param   string   $service
      * @param   array    $exclude
-     * @return  object
+     * @return  bool|array
      */
     public function getConnected($projectid = null, $service = 'google', $exclude = [])
     {
@@ -1227,7 +1227,7 @@ class Owner extends Table
      * @param   integer  $owner  owner user id
      * @param   string   $param
      * @param   string|int $value
-     * @return  void
+     * @return  bool|null
      */
     public function saveParam($projectid = null, $owner = 0, $param = '', $value = 0)
     {
@@ -1266,6 +1266,8 @@ class Owner extends Table
             $this->params = $in;
             $this->store();
         }
+
+        return null;
     }
 
     /**

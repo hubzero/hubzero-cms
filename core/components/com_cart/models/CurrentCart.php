@@ -301,7 +301,7 @@ class CurrentCart extends Cart
     /**
      * Get all cart messages, both changes and set messages
      * Works like a flash variable -- gets messages once and then resets the state/messages
-     * @return  void
+     * @return  bool|array
      */
     public function getMessages()
     {
@@ -355,7 +355,7 @@ class CurrentCart extends Cart
      *
      * Shipping (if shippable) -> Registration info (if needed) -> Summary page
      *
-     * @return string method name
+     * @return \stdClass method name
      */
     public function getNextCheckoutStep()
     {
@@ -415,7 +415,7 @@ class CurrentCart extends Cart
     /**
      * Check if transaction is still valid and get transaction details and items
      *
-     * @return array of items in the transaction or false on failed attempt
+     * @return bool|\stdClass of items in the transaction or false on failed attempt
      */
     public function liftTransaction($resetStatus = false)
     {
@@ -475,7 +475,7 @@ class CurrentCart extends Cart
      * Checks if transaction shipping info is correct and saves it
      *
      * @param void (gets info from POST)
-     * @return array status and messages
+     * @return \stdClass status and messages
      */
     public function setTransactionShippingInfo()
     {
@@ -720,7 +720,7 @@ class CurrentCart extends Cart
      *
      * @param   string  $status new status
      * @param   int     $tId transaction ID
-     * @return  void
+     * @return  bool
      */
     public function updateTransactionCustomerStatus($status, $tId = null)
     {
@@ -1346,7 +1346,7 @@ class CurrentCart extends Cart
      *
      * @param   object      $cartInfo
      * @param   object      $cartCoupons
-     * @return  object      membership info
+     * @return  array      membership info
      */
     public function getMembershipInfo()
     {
@@ -2020,7 +2020,7 @@ class CurrentCart extends Cart
     /**
      * Kill all cart pending transactions
      *
-     * @return void
+     * @return bool|null
      */
     private function cleanOldTransactions()
     {
@@ -2041,5 +2041,7 @@ class CurrentCart extends Cart
             }
         }
         $this->cart->tId = null;
+
+        return null;
     }
 }

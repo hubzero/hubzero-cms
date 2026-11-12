@@ -1157,7 +1157,7 @@ class Links extends Plugin
      *
      * @param   array  $data
      * @param   array  $metadata
-     * @return  string
+     * @return  array
      */
     public function parseDoiData($data, $metadata)
     {

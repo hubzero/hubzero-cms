@@ -115,7 +115,7 @@ abstract class Facade
      * Load aliases
      *
      * @param   string  $class  The class being loaded
-     * @return  void
+     * @return  bool|null
      */
     public static function loadAliases($class)
     {
@@ -132,6 +132,8 @@ abstract class Facade
         if (array_key_exists($classAlt, $aliases)) {
             return class_alias($aliases[$classAlt], $class);
         }
+
+        return null;
     }
 
     /**

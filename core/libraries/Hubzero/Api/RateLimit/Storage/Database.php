@@ -61,7 +61,7 @@ class Database implements StorageInterface
      * @param   string  $expiresShort   Short expiration date string
      * @param   string  $expiresLong    Long expiration date string
      * @param   string  $created        Created date string
-     * @return  void
+     * @return  object|null
      */
     public function createRateLimitData(
         $applicationId,

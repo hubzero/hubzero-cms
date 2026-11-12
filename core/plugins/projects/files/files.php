@@ -3142,7 +3142,7 @@ class Files extends Plugin
      * @param   string  $file
      * @param   bool    $append
      * @param   string  $appendMessage
-     * @return  void
+     * @return  bool
      */
     public function registerUpdate($type = '', $file = '', $append = true, $appendMessage = '')
     {
@@ -3173,7 +3173,7 @@ class Files extends Plugin
      *
      * @param   object  $model
      * @param   array   $changes
-     * @return  void
+     * @return  bool|null
      */
     public function onAfterUpdate($model = null, $changes = [])
     {
@@ -3347,6 +3347,8 @@ class Files extends Plugin
                 1,
             );
         }
+
+        return null;
     }
 
     /**

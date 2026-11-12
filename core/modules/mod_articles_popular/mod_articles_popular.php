@@ -40,7 +40,7 @@ class ArticlesPopular extends Module
      * Display module contents
      *
      * @param   object  $params  Registry
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public static function getList(&$params)
     {

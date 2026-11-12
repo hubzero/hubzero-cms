@@ -356,7 +356,7 @@ class IdPBindingTest extends Basic
      * @param   string  $method
      * @param   string  $url
      * @param   array   $post
-     * @return  ServerRequest
+     * @return  \Psr\Http\Message\ServerRequestInterface
      */
     private function arrive($method, $url, array $post = [])
     {

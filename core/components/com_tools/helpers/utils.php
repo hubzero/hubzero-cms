@@ -254,7 +254,7 @@ class Utils
      * @param   $resourceId     Resource ID
      * @param   $versionId      Resource Version ID
      *
-     * @return     path
+     * @return     string
      */
     public static function getResourcePath($createdDate, $resourceId, $versionId)
     {
@@ -281,7 +281,7 @@ class Utils
      * @param   $tool   Tool name we are getting access rights to
      * @param   $login  User Login name
      *
-     * @return     BOOL
+     * @return     \stdClass
      */
     public static function getToolAccess($tool, $login = '')
     {
@@ -429,7 +429,7 @@ class Utils
      *
      * @param   $export_control     Export control level for tool
      *
-     * @return     BOOL
+     * @return     \stdClass
      */
     public static function getToolExportAccess($export_control)
     {

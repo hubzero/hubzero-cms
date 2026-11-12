@@ -36,7 +36,7 @@ class Collection extends Relational
     /**
      * Defines a one to many relationship with billboards
      *
-     * @return $this
+     * @return \Hubzero\Database\Relationship\OneToMany
      * @since  1.3.2
      **/
     public function billboards()

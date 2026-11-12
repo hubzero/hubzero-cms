@@ -103,7 +103,7 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Get product types
      *
-     * @return  types
+     * @return  array
      */
     public function getProductTypes()
     {
@@ -166,7 +166,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   int    $sku     SKU
      * @param   array  $fields  New info
-     * @return  throws exception
+     * @return  int exception
      */
     public function updateSku($sku, $fields)
     {
@@ -432,7 +432,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   int    $ogId    Option Group ID
      * @param   array  $fields  New info
-     * @return  throws exception
+     * @return  \Components\Storefront\Models\OptionGroup exception
      */
     public function updateOptionGroup($ogId, $fields)
     {

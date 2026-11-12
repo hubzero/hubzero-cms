@@ -426,7 +426,7 @@ class PdfFormDeployment
     /**
      * Get form time limit
      *
-     * @return int
+     * @return string
      **/
     public function getTimeLimit()
     {
@@ -450,7 +450,7 @@ class PdfFormDeployment
     /**
      * Get number of allowed attempts
      *
-     * @return string
+     * @return int
      **/
     public function getAllowedAttempts()
     {

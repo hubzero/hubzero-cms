@@ -319,7 +319,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform params
      *
-     * @return  string
+     * @return  object
      */
     public function transformParams()
     {

@@ -31,7 +31,7 @@ class Billboards extends Module
     /**
      * Get the list of billboads in the selected collection
      *
-     * @return array
+     * @return \Hubzero\Database\Rows
      */
     private function getList()
     {

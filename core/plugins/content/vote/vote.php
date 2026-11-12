@@ -33,7 +33,7 @@ class Vote extends Plugin
      * @param   object   $row      The row object.
      * @param   object   $params   The article params.
      * @param   integer  $page     The 'page' number.
-     * @return  void
+     * @return  string
      */
     public function onContentBeforeDisplay($context, &$row, &$params, $page = 0)
     {

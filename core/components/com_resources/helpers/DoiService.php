@@ -148,7 +148,7 @@ class DoiService extends Obj
      * Map data to DOI fields
      *
      * @param   array  $pub
-     * @return  void
+     * @return  bool|null
      */
     public function mapData($pub = null)
     {
@@ -210,6 +210,8 @@ class DoiService extends Obj
         {
             $this->set('relatedDoi', $lastPub->doi);
         }*/
+
+        return null;
     }
 
     /**
@@ -315,7 +317,7 @@ class DoiService extends Obj
      * Build XML - DOI is not required when register metadata using DataCite MDS API
      *
      * @param  string $doi
-     * @return xml string
+     * @return bool|string string
      */
     public function buildXml($doi = null)
     {

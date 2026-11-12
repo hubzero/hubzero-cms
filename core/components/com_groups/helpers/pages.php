@@ -29,7 +29,7 @@ class Pages
      *
      * @param    object    $group    \Hubzero\User\Group Object
      * @param    array     $pages    \Hubzero\Base\ItemList
-     * @return   object
+     * @return   array|null
      */
     public static function addHomePage($group, $pages = null)
     {

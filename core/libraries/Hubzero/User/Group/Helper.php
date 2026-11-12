@@ -168,7 +168,7 @@ class Helper
      *
      * @param   string   $email
      * @param   integer  $user_id
-     * @return  void
+     * @return  bool
      */
     public function convertInviteEmails($email, $user_id)
     {

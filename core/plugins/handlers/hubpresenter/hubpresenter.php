@@ -95,7 +95,7 @@ class Hubpresenter extends Plugin
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
      * @param   int     $entityId    The entity id being loaded (if applicable)
      * @param   string  $entityType  The entity type being loaded (if applicable)
-     * @return  void
+     * @return  bool|\Hubzero\Plugin\View
      **/
     public function onHandleView(\Hubzero\Filesystem\Collection $collection, $entityId = null, $entityType = null)
     {

@@ -50,7 +50,7 @@ class Facet extends Relational
     /**
      * toplevel
      *
-     * @return void
+     * @return \Hubzero\Database\Rows
      */
     public function toplevel()
     {

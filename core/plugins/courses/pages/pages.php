@@ -538,7 +538,7 @@ class Pages extends Plugin
     /**
      * Upload a file to the wiki
      *
-     * @return  void
+     * @return  string|null
      */
     public function fileUpload()
     {

@@ -368,7 +368,7 @@ class Log extends Relational
      *
      * @param   string   $scope
      * @param   integer  $scope_id
-     * @return  boolean
+     * @return  static
      */
     public static function allForRecipient($scope, $scope_id = 0)
     {

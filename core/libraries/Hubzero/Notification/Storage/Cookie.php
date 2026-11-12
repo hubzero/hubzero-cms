@@ -53,7 +53,7 @@ class Cookie implements MessageStore
      * Return a list of messages
      *
      * @param   string  $domain
-     * @return  array
+     * @return  object
      */
     public function retrieve($domain)
     {

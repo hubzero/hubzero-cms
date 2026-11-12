@@ -1844,7 +1844,7 @@ class Members extends AdminController
     /**
      * Perform querying of research organization based on the input value
      *
-     * @return  void
+     * @return  bool|null
      */
     public function getOrganizationsTask()
     {
@@ -1901,6 +1901,8 @@ class Members extends AdminController
             echo json_encode($organizations);
             exit();
         }
+
+        return null;
     }
 
     /**

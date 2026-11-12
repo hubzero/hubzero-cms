@@ -460,7 +460,7 @@ class Image extends Plugin
      * Converts HEX color to RGB
      *
      * @param   string  $hex  Hex value to convert
-     * @return  string
+     * @return  array
      */
     private function hexToRgb($hex)
     {

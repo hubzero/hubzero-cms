@@ -156,7 +156,7 @@ class Handlers extends Obj
      * @param   object   $pub
      * @param   integer  $elementId
      * @param   string   $action
-     * @return  void
+     * @return  bool|null
      */
     public function update($handler, $pub, $elementId = 0, $action = '')
     {

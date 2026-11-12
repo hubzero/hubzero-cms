@@ -644,7 +644,7 @@ class Filefsv1r0 extends ApiController
      *              "default":       "",
      *      "allowedValues": ""
      * }
-     * @return  void
+     * @return  string
      */
     public function downloadTask()
     {
@@ -1219,7 +1219,7 @@ class Filefsv1r0 extends ApiController
     /**
      * Sorts incoming file/folder data
      *
-     * @return  array
+     * @return  \Hubzero\Filesystem\Collection
      */
     protected function getCollection()
     {

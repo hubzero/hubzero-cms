@@ -760,7 +760,7 @@ class Project extends Table
      * @param   integer  $projectid
      * @param   string   $param
      * @param   string|int $value
-     * @return  void
+     * @return  bool|null
      */
     public function saveParam($projectid = null, $param = '', $value = 0)
     {
@@ -799,6 +799,8 @@ class Project extends Table
             $this->params = $in;
             $this->store();
         }
+
+        return null;
     }
 
     /**

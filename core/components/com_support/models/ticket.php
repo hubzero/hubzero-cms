@@ -588,7 +588,7 @@ class Ticket extends Relational
      *
      * @param   string  $action  The action to check
      * @param   string  $item    The item to check the action against
-     * @return  boolean
+     * @return  int
      */
     public function access($action = 'view', $item = 'tickets')
     {

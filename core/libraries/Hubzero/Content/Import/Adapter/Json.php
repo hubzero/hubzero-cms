@@ -102,7 +102,7 @@ class Json implements Adapter
      * @param   \Hubzero\Content\Import\Model\Import $import     Import record
      * @param   array   $callbacks  Array of Callbacks
      * @param   bool    $dryRun     Dry Run mode?
-     * @return  object
+     * @return  array
      */
     public function process(Import $import, array $callbacks, $dryRun)
     {

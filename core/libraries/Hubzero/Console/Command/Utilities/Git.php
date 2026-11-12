@@ -270,7 +270,7 @@ class Git
      * @param   bool    $installed  Whether or not to include installed entries
      * @param   bool    $upcoming   Whether or not to include upcoming entries
      * @param   string  $search     A search filter to apply
-     * @return  int
+     * @return  string
      **/
     private function countLogs($installed = true, $upcoming = false, $search = null)
     {
@@ -306,7 +306,7 @@ class Git
      * @param   bool    $dryRun      Whether or not to do the run, or just check what's incoming
      * @param   bool    $allowNonFf  Whether or not to allow non fast forward pulls (i.e. merges)
      * @param   string  $source      Where this repository should pull from (this should be a valid git remote/branch)
-     * @return  string
+     * @return  array
      **/
     public function update($dryRun = true, $allowNonFf = false, $source = null)
     {

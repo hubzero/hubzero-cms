@@ -592,7 +592,7 @@ class Migration20160510121901ComMembers extends Base
      * @param   string  $configured     Property name
      * @param   string  $default  Default property value
      * @param   string  $task     Task to look up value for
-     * @return  string
+     * @return  int
      */
     public static function state($configured, $default = 'OOOO', $task = 'create')
     {

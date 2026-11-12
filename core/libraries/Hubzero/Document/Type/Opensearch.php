@@ -97,7 +97,7 @@ class Opensearch extends Base
      *
      * @param   boolean  $cache   If true, cache the output
      * @param   array    $params  Associative array of attributes
-     * @return  The rendered data
+     * @return  string|bool rendered data
      */
     public function render($cache = false, $params = [])
     {

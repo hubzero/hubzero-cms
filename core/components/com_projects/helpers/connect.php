@@ -530,7 +530,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @return  void
+     * @return  bool
      */
     public function afterConnect($service = 'google', $uid = 0)
     {
@@ -739,7 +739,7 @@ class Connect extends Obj
      * @param   integer  $uid        User ID
      * @param   object   $file       Models\File
      * @param   boolean  $convert    Convert for remote editing? (Google only)
-     * @return  array
+     * @return  bool|string|null
      */
     public function addRemoteFile(
         $projectid = null,
@@ -1132,7 +1132,7 @@ class Connect extends Obj
      * @param      string   $remoteid   Remote resource ID
      * @param      boolean  $permanent  Delete permanently? (or trash)
      *
-     * @return     array
+     * @return     bool|int
      */
     public function deleteRemoteItem(
         $projectid = null,
@@ -1550,7 +1550,7 @@ class Connect extends Obj
      * @param   string   $action    Action
      * @param   string   $newdir    New directory path
      * @param   string   $parentId  Parent ID
-     * @return  void
+     * @return  bool|null
      */
     public function fixConvertedItems(
         $service = 'google',
@@ -1592,6 +1592,8 @@ class Connect extends Obj
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -2032,7 +2034,7 @@ class Connect extends Obj
      * @param   string  $url
      * @param   string  $method
      * @param   array   $postvals
-     * @return  response string
+     * @return  bool|string string
      */
     public function runCurl($url, $method = 'GET', $postvals = null)
     {

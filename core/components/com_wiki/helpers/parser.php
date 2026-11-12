@@ -204,7 +204,7 @@ class Parser extends Obj
      * @param   bool    $fullparse  Do a full parse or not
      * @param   bool    $getnew     Use the existing parser or get new
      * @param   array   $params     Params for the plugin
-     * @return  void
+     * @return  string|null
      */
     public function parse($text, $config, $fullparse = true, $getnew = false, $params = [])
     {

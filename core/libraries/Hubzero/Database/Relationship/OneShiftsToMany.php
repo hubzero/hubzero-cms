@@ -78,7 +78,7 @@ class OneShiftsToMany extends OneToMany
      *
      * @param   array    $keys        The keys for which to fetch related items
      * @param   \Closure  $constraint  The constraint function to limit related items
-     * @return  array
+     * @return  \Hubzero\Database\Relational
      **/
     protected function getRelations($keys, $constraint = null)
     {

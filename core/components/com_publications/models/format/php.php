@@ -64,7 +64,7 @@ class PHP extends Base
      * Method to get an array as an exported string.
      *
      * @param   array  $a  The array to get as a string.
-     * @return  array
+     * @return  string
      */
     protected function getArrayString($a)
     {

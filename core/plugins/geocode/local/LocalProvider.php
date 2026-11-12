@@ -296,7 +296,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * Get the full name for a country based on country code
      *
      * @param  string $code Two letter country code
-     * @return array
+     * @return \Geocoder\Model\AddressCollection
      */
     protected function getCountry($code)
     {
@@ -321,7 +321,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * Get a list of countries and their two-letter codes
      *
      * @param  string $address Address
-     * @return array
+     * @return \Geocoder\Model\AddressCollection
      */
     protected function getCountries($address)
     {
@@ -380,7 +380,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * Get the continent for a country based on name or code
      *
      * @param  string $address
-     * @return string
+     * @return \Geocoder\Model\AddressCollection
      */
     protected function getContinent($address)
     {

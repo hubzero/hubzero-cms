@@ -20,7 +20,7 @@ class Local extends Plugin
      *
      * @param   \Hubzero\Filesystem\File $file      The file to which the metadata pertains
      * @param   array                    $metadata  The metadata itself
-     * @return  void
+     * @return  bool|null
      **/
     public function onMetadataSave(\Hubzero\Filesystem\File $file, $metadata)
     {
@@ -33,6 +33,8 @@ class Local extends Plugin
 
             $metadata->set('value', (string) $value)->save();
         }
+
+        return null;
     }
 
     /**

@@ -18,7 +18,7 @@ class Legacy
      * Attach an observer object
      *
      * @param   object  $observer  An observer object to attach
-     * @return  void
+     * @return  null
      */
     public function attach($observer)
     {

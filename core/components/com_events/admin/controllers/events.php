@@ -33,7 +33,7 @@ class Events extends AdminController
     /**
      * Determine task and attempt to execute it
      *
-     * @return     void
+     * @return     bool|null
      */
     public function execute()
     {
@@ -67,6 +67,8 @@ class Events extends AdminController
         define('_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
 
         parent::execute();
+
+        return null;
     }
 
     /**

@@ -157,7 +157,7 @@ class Loader
      *
      * @param   string  $option  The component option.
      * @param   array   $params  The component parameters
-     * @return  object
+     * @return  string
      */
     public function render($option, $params = [])
     {

@@ -24,7 +24,7 @@ class Wishvoters extends Module
     /**
      * Display module contents
      *
-     * @return  void
+     * @return  string|null
      */
     public function display()
     {

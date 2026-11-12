@@ -167,7 +167,7 @@ class Detector implements DetectorInterface
      * Get token probability
      *
      * @param   array  $words
-     * @return  array
+     * @return  \Hubzero\Database\Rows|null
      */
     protected function getTokensProb($words)
     {

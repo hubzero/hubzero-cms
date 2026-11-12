@@ -41,7 +41,7 @@ class Entriesv1r0 extends ApiController
      *      "required":      false,
      *      "default":       0
      * }
-     * @return    void
+     * @return    bool|null
      */
     public function listTask()
     {
@@ -107,5 +107,7 @@ class Entriesv1r0 extends ApiController
             $response->success = false;
             $this->send($response);
         }
+
+        return null;
     }
 }

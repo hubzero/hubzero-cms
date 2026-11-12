@@ -444,7 +444,7 @@ abstract class Model extends Obj
     /**
      * Import a set of plugins
      *
-     * @return  object
+     * @return  array
      */
     public function trigger($event = '', $params = [])
     {

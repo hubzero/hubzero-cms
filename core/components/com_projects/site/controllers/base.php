@@ -188,7 +188,7 @@ class Base extends SiteController
     /**
      * Build the title for this component
      *
-     * @return  void
+     * @return  string
      */
     protected function buildTitle()
     {
@@ -393,7 +393,7 @@ class Base extends SiteController
      * @param  string  $layout   Plugin or layout name
      * @param  string  $action   Task name
      * @param  int     $owner    Project owner ID if project owner
-     * @return void
+     * @return bool|null
      */
     protected function logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
     {
@@ -422,13 +422,15 @@ class Base extends SiteController
         $objLog->request_uri = Request::getString('REQUEST_URI', Request::base(), 'server');
         $objLog->ajax        = $ajax;
         $objLog->store();
+
+        return null;
     }
 
     /**
      * Notify project team
      *
      * @param   integer  $managers_only
-     * @return  void
+     * @return  bool|null
      */
     protected function notifyTeam($managers_only = 0)
     {
@@ -520,5 +522,7 @@ class Base extends SiteController
                 Helpers\Html::email($member->invited_email, $subject, $message, $from);
             }
         }
+
+        return null;
     }
 }

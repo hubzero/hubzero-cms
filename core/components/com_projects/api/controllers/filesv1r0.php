@@ -1283,7 +1283,7 @@ class Filesv1r0 extends ApiController
     /**
      * Sorts incoming file/folder data
      *
-     * @return  array
+     * @return  \Hubzero\Filesystem\Collection
      */
     protected function getCollection()
     {

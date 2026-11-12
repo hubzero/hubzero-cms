@@ -153,7 +153,7 @@ class Collection extends Base
      * Get a link
      *
      * @param   string  $what
-     * @return  object
+     * @return  string
      */
     public function link($what = 'base')
     {

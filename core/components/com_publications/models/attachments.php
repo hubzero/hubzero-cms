@@ -412,7 +412,7 @@ class Attachments extends Obj
      * @param   string   $type
      * @param   string   $role
      * @param   boolean  $includeUnattached
-     * @return  object
+     * @return  array
      */
     public function getElementAttachments(
         $elementId = 0,

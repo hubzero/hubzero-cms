@@ -970,7 +970,7 @@ class Translator extends Obj
      * Set the Debug property.
      *
      * @param   boolean  $debug  The debug setting.
-     * @return  boolean  Previous value.
+     * @return  static  Previous value.
      */
     public function setDebug($debug)
     {

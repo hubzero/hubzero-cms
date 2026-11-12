@@ -84,7 +84,7 @@ class PaymentProvider
      * Set post back info ($_POST)
      *
      * @param   array  $postMessage
-     * @return  int    associated transaction ID if $_POST data is valid, false otherwise
+     * @return  string    associated transaction ID if $_POST data is valid, false otherwise
      */
     public function setPostBack($postMessage)
     {

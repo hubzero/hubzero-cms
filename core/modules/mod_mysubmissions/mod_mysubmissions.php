@@ -108,7 +108,7 @@ class Mysubmissions extends Module
     /**
      * Display module content
      *
-     * @return  void
+     * @return  bool|null
      */
     public function display()
     {
@@ -133,5 +133,7 @@ class Mysubmissions extends Module
             ->rows();
 
         require $this->getLayoutPath();
+
+        return null;
     }
 }

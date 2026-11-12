@@ -36,7 +36,7 @@ class Loadmodule extends Plugin
      * @param   object   $article  The article object.  Note $article->text is also available
      * @param   object   $params   The article params
      * @param   integer  $page     The 'page' number
-     * @return  void
+     * @return  bool|null
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
@@ -119,6 +119,8 @@ class Loadmodule extends Plugin
                 $article->text = preg_replace("|$matchmod[0]|", addcslashes($output, '\\$'), $article->text, 1);
             }
         }
+
+        return null;
     }
 
     /**

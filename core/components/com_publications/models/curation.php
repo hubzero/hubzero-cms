@@ -273,7 +273,7 @@ class Curation extends Obj
     /**
      * Returns the Blocks of this curation flow
      *
-     * @return  void
+     * @return  object
      */
     public function getBlockSchema()
     {
@@ -283,7 +283,7 @@ class Curation extends Obj
     /**
      * Get schema for metadata elements
      *
-     * @return  array
+     * @return  bool|string
      */
     public function getMetaSchema()
     {
@@ -797,7 +797,7 @@ class Curation extends Obj
     /**
      * Set curation progress for publication
      *
-     * @return  void
+     * @return  bool|null
      */
     public function setProgress()
     {
@@ -880,6 +880,8 @@ class Curation extends Obj
         $result->complete  = $i == $k ? 1 : 0;
 
         $this->progress = $result;
+
+        return null;
     }
 
     /**
@@ -2501,7 +2503,7 @@ class Curation extends Obj
     /**
      * Draw publication draft status bar
      *
-     * @return  void
+     * @return  bool|null
      */
     public function drawStatusBar()
     {
@@ -2521,6 +2523,8 @@ class Curation extends Obj
         $view->set('activenum', $this->blockorder);
         $view->set('database', $this->db);
         $view->display();
+
+        return null;
     }
 
     /**

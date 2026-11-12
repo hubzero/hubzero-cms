@@ -142,7 +142,7 @@ class Reader implements Iterator
     /**
      * Get our current position while iterating
      *
-     * @return  integer  Current position
+     * @return  array  Current position
      */
 
     #[\ReturnTypeWillChange]

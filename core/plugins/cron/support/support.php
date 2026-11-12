@@ -28,7 +28,7 @@ class Support extends Plugin
     /**
      * Return a list of events
      *
-     * @return  array
+     * @return  \stdClass
      */
     public function onCronEvents()
     {

@@ -125,7 +125,7 @@ class Wiki extends Plugin
      *
      * @param   mixed   $type
      * @access  public
-     * @return  void
+     * @return  string|null
      */
     public function onGetTypes($type = null)
     {
@@ -137,6 +137,8 @@ class Wiki extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return null;
     }
 
     /**

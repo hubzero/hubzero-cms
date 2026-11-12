@@ -343,7 +343,7 @@ class Page extends Model
      *
      * @param   object  $page
      * @param   string  $sort
-     * @return  array
+     * @return  \Hubzero\Base\ItemList
      */
     public function getRecursiveParents($page, $sort = 'ASC')
     {

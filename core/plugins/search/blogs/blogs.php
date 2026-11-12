@@ -121,7 +121,7 @@ class Blogs extends Plugin
      *
      * @param mixed $type
      * @access public
-     * @return void
+     * @return string|null
      */
     public function onGetTypes($type = null)
     {
@@ -133,6 +133,8 @@ class Blogs extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return null;
     }
 
     /**

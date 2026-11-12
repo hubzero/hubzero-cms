@@ -199,7 +199,7 @@ class Sponsors extends Plugin
     /**
      * Add a new type
      *
-     * @return  void
+     * @return  string
      */
     public function addTask()
     {
@@ -238,7 +238,7 @@ class Sponsors extends Plugin
     /**
      * Save a type
      *
-     * @return  void
+     * @return  string
      */
     public function saveTask()
     {

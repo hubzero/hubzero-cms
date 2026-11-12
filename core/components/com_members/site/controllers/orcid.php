@@ -298,7 +298,7 @@ class Orcid extends SiteController
      * Parse response headers
      *
      * @param   string  $header
-     * @return  string
+     * @return  array
      */
     private function httpParseHeaders($header)
     {

@@ -679,7 +679,7 @@ class GradeBook extends Base
      * Check whether or not the student is passing the course and has completed all items
      *
      * @param      int $member_id
-     * @return     bool
+     * @return     array
      **/
     public function isEligibleForRecognition($member_id = null)
     {
@@ -806,7 +806,7 @@ class GradeBook extends Base
      * Check whether or not the student(s) have earned a badge
      *
      * @param      int $member_id
-     * @return     void
+     * @return     bool|null
      **/
     public function hasEarnedBadge($member_id = null)
     {
@@ -866,6 +866,8 @@ class GradeBook extends Base
         } else {
             return false;
         }
+
+        return null;
     }
 
     /**

@@ -235,7 +235,7 @@ class Nested extends Relational
     /**
      * Establishes the query for the immediate children of the current model
      *
-     * @return  array
+     * @return  static
      **/
     public function children()
     {
@@ -245,7 +245,7 @@ class Nested extends Relational
     /**
      * Grabs the immediate children of the current model
      *
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     public function getChildren()
     {
@@ -256,7 +256,7 @@ class Nested extends Relational
      * Establishes the query for all of the descendants of the current model
      *
      * @param   int  $level  The level to limit to
-     * @return  array
+     * @return  static
      **/
     public function descendants($level = null)
     {
@@ -279,7 +279,7 @@ class Nested extends Relational
      * Grabs all of the descendants of the current model
      *
      * @param   int  $level  The level to limit to
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     public function getDescendants($level = null)
     {

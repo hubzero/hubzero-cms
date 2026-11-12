@@ -263,7 +263,7 @@ class Category extends Nested
     /**
      * Get the published state as a text string
      *
-     * @return  object
+     * @return  string
      */
     public function transformPublished()
     {

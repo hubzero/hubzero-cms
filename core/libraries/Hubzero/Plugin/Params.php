@@ -65,7 +65,7 @@ class Params extends Relational
      * @param   integer  $oid      Object ID (eg, group ID)
      * @param   string   $folder   Plugin folder
      * @param   string   $element  Plugin name
-     * @return  boolean  True on success
+     * @return  static  True on success
      */
     public static function oneByPluginOrNew($oid = null, $folder = null, $element = null)
     {

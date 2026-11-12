@@ -537,7 +537,7 @@ class Uri
      * Set the URI path string.
      *
      * @param   string  $path  The URI path string.
-     * @return  void
+     * @return  static
      */
     public function setPath($path)
     {

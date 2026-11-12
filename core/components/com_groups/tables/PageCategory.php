@@ -30,7 +30,7 @@ class PageCategory extends Table
     /**
      * Check method overload
      *
-     * @return  void
+     * @return  bool
      */
     public function check()
     {

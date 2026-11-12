@@ -455,7 +455,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * Sorts resulted citations sorted by year and then separated by affiliated/non-affilated.
      *
      * @param array $filters contains all the values included for filtering the results returned
-     * @return Citation object
+     * @return array object
      */
     public static function getYearlyStats($filters = [])
     {
@@ -763,7 +763,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   array   $config
      * @param   string  $highlight
-     * @return  object
+     * @return  string
      */
     public function formatted($config = ['format' => 'apa'], $highlight = null)
     {
@@ -1588,7 +1588,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for search
      *
-     * @return  array
+     * @return  \stdClass
      */
     public function searchResult()
     {

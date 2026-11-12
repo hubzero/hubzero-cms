@@ -190,7 +190,7 @@ class Unit extends Base
      *
      * @param   mixed $idx     Index value
      * @param   array $filters Filters to apply to results query
-     * @return  void
+     * @return  array
      */
     public function resetAssetgroups($idx = null, $filters = [])
     {

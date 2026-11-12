@@ -52,7 +52,7 @@ class Viewperm extends Table
     /**
      * Update View perm
      *
-     * @return  void
+     * @return  bool|null
      */
     public function updateViewPerm()
     {
@@ -75,6 +75,8 @@ class Viewperm extends Table
             . " AND `viewuser`=" . $this->db->quote($this->viewuser);
         $this->db->setQuery($sql);
         $this->db->query();
+
+        return null;
     }
 
     /**

@@ -23,7 +23,7 @@ class Index
      *
      * @param mixed $config - Configuration object
      * @access public
-     * @return void
+     * @return static
      */
     public function __construct($config)
     {

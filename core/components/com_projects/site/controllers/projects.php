@@ -363,7 +363,7 @@ class Projects extends Base
     /**
      * Project view
      *
-     * @return     void
+     * @return     bool|null
      */
     public function viewTask()
     {
@@ -810,7 +810,7 @@ class Projects extends Base
     /**
      * Change project status
      *
-     * @return  void
+     * @return  bool|null
      */
     public function changestateTask()
     {

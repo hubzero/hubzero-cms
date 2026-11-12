@@ -199,7 +199,7 @@ class SearchComponent extends Relational
     /**
      * Get total number of batches to index
      *
-     * @return  int  number of batches to retrieve
+     * @return  float  number of batches to retrieve
      */
     public function getBatchSize()
     {

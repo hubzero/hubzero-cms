@@ -81,7 +81,7 @@ class Content extends Plugin
      *
      * @param mixed $type
      * @access public
-     * @return void
+     * @return string|null
      */
     public function onGetTypes($type = null)
     {
@@ -93,6 +93,8 @@ class Content extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return null;
     }
 
     /**

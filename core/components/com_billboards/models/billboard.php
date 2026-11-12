@@ -91,7 +91,7 @@ class Billboard extends Relational
     /**
      * Defines a belongs to one relationship with collection
      *
-     * @return $this
+     * @return \Hubzero\Database\Relationship\BelongsToOne
      * @since  1.3.2
      **/
     public function collection()

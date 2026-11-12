@@ -62,7 +62,7 @@ class TagObject extends Relational
     /**
      * Defines a one to one relationship with citation
      *
-     * @return $this
+     * @return \Hubzero\Database\Relationship\BelongsToOne
      * @since  1.3.2
      **/
     public function tag()

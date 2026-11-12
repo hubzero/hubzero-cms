@@ -91,7 +91,7 @@ class Resources extends GroupMacro
      *
      * @param   string   $type
      * @param   integer  $limit
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     private function getResources($type = 'all', $limit = 5)
     {

@@ -70,7 +70,7 @@ class CharacterClass
      * Match character class
      *
      * @param   string  $char
-     * @return  object
+     * @return  array
      */
     public static function match($char = '')
     {

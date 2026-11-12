@@ -1505,7 +1505,7 @@ class Profiles extends SiteController
      * Save changes to a profile
      * Outputs JSON when called via AJAX, redirects to profile otherwise
      *
-     * @return  void
+     * @return  bool|null
      */
     public function saveTask()
     {
@@ -2028,7 +2028,7 @@ class Profiles extends SiteController
     /**
      * Perform querying of research organization based on the input value
      *
-     * @return  void
+     * @return  bool|null
      */
     public function getOrganizationsTask()
     {
@@ -2086,6 +2086,8 @@ class Profiles extends SiteController
             echo json_encode($organizations);
             exit();
         }
+
+        return null;
     }
 
     /**

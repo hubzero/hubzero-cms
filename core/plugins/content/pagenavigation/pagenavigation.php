@@ -29,7 +29,7 @@ class Pagenavigation extends Plugin
      * @param   object   $row      The article object.  Note $article->text is also available
      * @param   object   $params   The article params
      * @param   integer  $page     The 'page' number
-     * @return  void
+     * @return  bool|null
      */
     public function onContentBeforeDisplay($context, &$row, &$params, $page = 0)
     {
@@ -222,5 +222,7 @@ class Pagenavigation extends Plugin
                 $row->paginationrelative = $this->params->get('relative', 0);
             }
         }
+
+        return null;
     }
 }

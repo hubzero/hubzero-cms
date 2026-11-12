@@ -141,7 +141,7 @@ class Component extends Relational
     /**
      * Get all records
      *
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public function getComponents()
     {

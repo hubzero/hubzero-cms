@@ -65,7 +65,7 @@ class Reader implements Iterator
     /**
      * Get the first row of headers
      *
-     * @return  object  Row as a stdClass
+     * @return  array  Row as a stdClass
      */
     public function headers()
     {

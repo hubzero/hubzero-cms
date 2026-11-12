@@ -140,7 +140,7 @@ class Memcached extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  void
+     * @return  bool
      */
     public function forever($key, $value)
     {

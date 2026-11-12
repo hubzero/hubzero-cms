@@ -31,7 +31,7 @@ class Antispam extends Plugin
      * @param   string   $context  The context of the content passed to the plugin (added in 1.6)
      * @param   object   $article  Model
      * @param   boolean  $isNew    If the content is just about to be created
-     * @return  void
+     * @return  bool|null
      * @since   2.5
      */
     public function onContentBeforeSave($context, $article, $isNew)

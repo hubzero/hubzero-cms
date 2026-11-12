@@ -37,7 +37,7 @@ class Sync extends \Hubzero\Base\Obj
      * Constructor
      *
      * @param   object  $connect
-     * @return  void
+     * @return  bool
      */
     public function __construct($connect = null)
     {
@@ -85,7 +85,7 @@ class Sync extends \Hubzero\Base\Obj
      * @param   string   $service  Remote service name
      * @param   boolean  $queue
      * @param   boolean  $auto
-     * @return  void
+     * @return  bool
      */
     public function sync($service = 'google', $queue = false, $auto = false)
     {

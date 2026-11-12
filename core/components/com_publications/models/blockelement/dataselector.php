@@ -47,7 +47,7 @@ class Dataselector extends Base
      * @param   string   $status
      * @param   object   $master
      * @param   integer  $order
-     * @return  object
+     * @return  string
      */
     public function render(
         $elementid,
@@ -118,7 +118,7 @@ class Dataselector extends Base
      * @param   string   $status
      * @param   object   $master
      * @param   string   $viewname
-     * @return  object
+     * @return  string
      */
     public function drawItem($elementId, $manifest, $pub = null, $status = null, $master = null, $viewname = 'freeze')
     {
@@ -177,7 +177,7 @@ class Dataselector extends Base
      * @param   integer  $total
      * @param   object   $master
      * @param   integer  $order
-     * @return  object
+     * @return  string
      */
     public function drawSelector(
         $elementId,

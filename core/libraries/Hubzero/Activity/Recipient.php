@@ -174,7 +174,7 @@ class Recipient extends Relational
      *
      * @param   string   $scope
      * @param   integer  $scope_id
-     * @return  boolean
+     * @return  static
      */
     public static function allForScope($scope, $scope_id = 0)
     {

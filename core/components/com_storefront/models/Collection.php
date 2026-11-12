@@ -249,7 +249,7 @@ class Collection
      * TODO: Something tells me that this is not used. Check and kill this
      * and the $warehouse->addCollection($this) method
      *
-     * @return object|null   info
+     * @return int   info
      */
     public function add()
     {
@@ -264,7 +264,7 @@ class Collection
      * Update collection info
      * TODO: remove it and use save()
      *
-     * @return object   info
+     * @return int|bool   info
      */
     public function update()
     {

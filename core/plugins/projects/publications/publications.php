@@ -969,7 +969,7 @@ class Publications extends Plugin
      * Actions after publication draft is saved
      *
      * @param   object  $pub
-     * @return  void
+     * @return  bool|null
      */
     public function onAfterSave($pub)
     {
@@ -1006,6 +1006,8 @@ class Publications extends Plugin
                 1,
             );
         }
+
+        return null;
     }
 
     /**
@@ -2882,7 +2884,7 @@ class Publications extends Plugin
      * @param   string   $type
      * @param   integer  $projectid
      * @param   string   $query
-     * @return  void
+     * @return  bool
      */
     public function serve($type = '', $projectid = 0, $query = '')
     {

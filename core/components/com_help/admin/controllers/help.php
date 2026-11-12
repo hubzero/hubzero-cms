@@ -209,7 +209,7 @@ class Help extends AdminController
      *
      * @param   array   $componentAndPages  Component info and corresponding help pages
      * @param   string  $headingLevel       Leading level for component separation
-     * @return  array
+     * @return  string
      */
     private function displayHelpPageIndexForPages($componentAndPages, $headingLevel = 'h1')
     {

@@ -171,7 +171,7 @@ class Geocode
      * Geo-locate an address
      *
      * @param   string  $address
-     * @return  array
+     * @return  string|\Geocoder\Collection
      */
     public static function locate($address)
     {
@@ -214,7 +214,7 @@ class Geocode
      * Get the address (reverse locate)
      *
      * @param   array  $coordinates  array(latitude, longitude)
-     * @return  array
+     * @return  string|\Geocoder\Collection
      */
     public static function address($coordinates)
     {

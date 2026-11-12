@@ -2019,7 +2019,7 @@ class Forum extends Plugin
     /**
      * Email the mentioned users with a PHP html template
      *
-     * @return  void
+     * @return  bool|null
      */
     public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle)
     {

@@ -302,7 +302,7 @@ class Offering extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param      mixed $idx Index value
-     * @return     array
+     * @return     int|\Traversable
      */
     public function sections($filters = [], $clear = false)
     {
@@ -375,7 +375,7 @@ class Offering extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param      mixed $idx Index value
-     * @return     array
+     * @return     object|\Traversable
      */
     public function units($filters = [], $clear = false)
     {

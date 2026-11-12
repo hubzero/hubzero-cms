@@ -1361,7 +1361,7 @@ class Projects extends AdminController
     /**
      * Querying the grant agency name based on the input value
      *
-     * @return  void
+     * @return  bool|null
      */
     public function getGrantAgencyTask()
     {
@@ -1408,6 +1408,8 @@ class Projects extends AdminController
             echo json_encode($agencies);
             exit();
         }
+
+        return null;
     }
 
     /**

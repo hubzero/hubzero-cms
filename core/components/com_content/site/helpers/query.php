@@ -49,7 +49,7 @@ class Query
      *
      * @param   string  $orderby    The ordering code.
      * @param   string  $orderDate  The ordering code for the date.
-     * @return  string  The SQL field(s) to order by.
+     * @return  array  The SQL field(s) to order by.
      */
     public static function orderbySecondary($orderby, $orderDate = 'created')
     {

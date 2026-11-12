@@ -38,7 +38,7 @@ class Article extends Plugin
      * Display the button
      *
      * @param  string  $name  Editor name?
-     * @return array A four element array of (article_id, article_title, category_id, object)
+     * @return \Hubzero\Base\Obj A four element array of (article_id, article_title, category_id, object)
      */
     public function onDisplay($name)
     {

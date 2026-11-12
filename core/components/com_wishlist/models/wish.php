@@ -229,7 +229,7 @@ class Wish extends Relational
      * Return a formatted timestamp for the proposed datetime
      *
      * @param   string   $rtrn  What data to return
-     * @return  boolean
+     * @return  string
      */
     public function proposed($rtrn = '')
     {
@@ -240,7 +240,7 @@ class Wish extends Relational
      * Return a formatted timestamp for the granted datetime
      *
      * @param   string   $rtrn  What data to return
-     * @return  boolean
+     * @return  string
      */
     public function granted($rtrn = '')
     {
@@ -251,7 +251,7 @@ class Wish extends Relational
      * Return a formatted timestamp for the due datetime
      *
      * @param   string   $rtrn  What data to return
-     * @return  boolean
+     * @return  string
      */
     public function due($rtrn = '')
     {

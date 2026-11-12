@@ -548,7 +548,7 @@ class Project
      *
      * @param   string  $user
      * @param   string  $action
-     * @return  void
+     * @return  bool|null
      */
     public function addUserPermission($user, $action)
     {
@@ -588,6 +588,8 @@ class Project
 
         $db->setQuery($query);
         $db->query();
+
+        return null;
     }
 
     /**
@@ -595,7 +597,7 @@ class Project
      *
      * @param   string  $group
      * @param   string  $action
-     * @return  void
+     * @return  bool|null
      */
     public function addGroupPermission($group, $action)
     {
@@ -636,6 +638,8 @@ class Project
 
         $db->setQuery($query);
         $db->query();
+
+        return null;
     }
 
     /**
@@ -643,7 +647,7 @@ class Project
      *
      * @param   string  $user
      * @param   string  $action
-     * @return  void
+     * @return  bool|null
      */
     public function removeUserPermission($user, $action)
     {
@@ -688,6 +692,8 @@ class Project
 
         $db->setQuery($query);
         $db->query();
+
+        return null;
     }
 
     /**
@@ -695,7 +701,7 @@ class Project
      *
      * @param   string  $group
      * @param   string  $action
-     * @return  void
+     * @return  bool|null
      */
     public function removeGroupPermission($group, $action)
     {
@@ -741,6 +747,8 @@ class Project
 
         $db->setQuery($query);
         $db->query();
+
+        return null;
     }
 
     /**

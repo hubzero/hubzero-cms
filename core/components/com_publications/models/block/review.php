@@ -189,7 +189,7 @@ class Review extends Base
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $aid
-     * @return  void
+     * @return  bool
      */
     public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
     {

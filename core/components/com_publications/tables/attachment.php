@@ -102,7 +102,7 @@ class Attachment extends Table
      * @param   object  $record
      * @param   string  $param
      * @param   string|int $value
-     * @return  void
+     * @return  bool|null
      */
     public function saveParam($record = null, $param = '', $value = 0)
     {
@@ -140,6 +140,8 @@ class Attachment extends Table
 
         $record->params = $in;
         $record->store();
+
+        return null;
     }
 
     /**
@@ -733,7 +735,7 @@ class Attachment extends Table
      * Get the record directly before or after this record
      *
      * @param   string   $dir  Direction to look
-     * @return  boolean  True on success
+     * @return  \Components\Publications\Tables\Attachment  True on success
      */
     public function getNeighbor($dir = 'down')
     {

@@ -26,7 +26,7 @@ class UpdateTimezoneDatabase extends Base
     /**
      * Execute hook
      *
-     * @return void
+     * @return bool|array|null
      **/
     public function fire()
     {
@@ -143,6 +143,8 @@ class UpdateTimezoneDatabase extends Base
         if (is_dir(PATH_APP . DS . 'site' . DS . 'protected')) {
             file_put_contents($tz_dat_file, $content);
         }
+
+        return null;
     }
 
     /**

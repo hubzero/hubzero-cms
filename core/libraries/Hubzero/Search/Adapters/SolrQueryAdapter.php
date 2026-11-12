@@ -216,7 +216,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $terms
      * @access public
-     * @return void
+     * @return static
      */
     public function query($terms)
     {
@@ -228,7 +228,7 @@ class SolrQueryAdapter implements QueryInterface
      * run
      *
      * @access public
-     * @return void
+     * @return static
      */
     public function run()
     {
@@ -298,7 +298,7 @@ class SolrQueryAdapter implements QueryInterface
      * @param mixed $name
      * @param array $query
      * @access public
-     * @return void
+     * @return static
      */
     public function addFacet($name, $query = [])
     {
@@ -316,7 +316,7 @@ class SolrQueryAdapter implements QueryInterface
      * @param mixed $name
      * @param mixed $query
      * @access public
-     * @return void
+     * @return static
      */
     public function addFilter($name, $query = [], $tag = 'root_type')
     {
@@ -346,7 +346,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $fieldArray
      * @access public
-     * @return void
+     * @return static
      */
     public function fields($fieldArray)
     {
@@ -360,7 +360,7 @@ class SolrQueryAdapter implements QueryInterface
      * @param mixed $field
      * @param mixed $direction
      * @access public
-     * @return void
+     * @return static
      */
     public function sortBy($field, $direction)
     {
@@ -373,7 +373,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $limit
      * @access public
-     * @return void
+     * @return static
      */
     public function limit($limit)
     {
@@ -386,7 +386,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $offset
      * @access public
-     * @return void
+     * @return static
      */
     public function start($offset)
     {

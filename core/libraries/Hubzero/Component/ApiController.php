@@ -221,7 +221,7 @@ class ApiController implements ControllerInterface
      *
      * @param   string  $task    The task.
      * @param   string  $method  The name of the method in the derived class to perform for this task.
-     * @return  void
+     * @return  static
      */
     public function registerTask($task, $method)
     {

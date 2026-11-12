@@ -47,7 +47,7 @@ class Xml extends Base
      *
      * @param   boolean  $cache   If true, cache the output
      * @param   array    $params  Associative array of attributes
-     * @return  The rendered data
+     * @return  string rendered data
      */
     public function render($cache = false, $params = [])
     {

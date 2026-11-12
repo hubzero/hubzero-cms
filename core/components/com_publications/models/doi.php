@@ -253,7 +253,7 @@ class Doi extends Obj
      * Map publication object to DOI fields
      *
      * @param   object  $pub  Instance of Components\Publications\Models\Publication
-     * @return  void
+     * @return  bool|null
      */
     public function mapPublication($pub = null)
     {
@@ -456,6 +456,8 @@ class Doi extends Obj
         if (!empty($fosTag)) {
             $this->set('fosTag', $fosTag);
         }
+
+        return null;
     }
 
     /**
@@ -574,7 +576,7 @@ class Doi extends Obj
      * Build XML - DOI is not required when register metadata using DataCite MDS API
      *
      * @param  string $doi
-     * @return xml string
+     * @return bool|string string
      */
     public function buildXml($doi = null)
     {

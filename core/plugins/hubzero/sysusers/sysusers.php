@@ -21,7 +21,7 @@ class Sysusers extends Plugin
      * Return information about this hub
      *
      * @param   string  $values
-     * @return  array
+     * @return  \stdClass
      */
     public function onSystemOverview($values = 'all')
     {

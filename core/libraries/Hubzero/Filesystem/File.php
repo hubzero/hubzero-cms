@@ -27,7 +27,7 @@ class File extends Entity
      *
      * @param   string  $path     The path to use to build a new entity from
      * @param   object  $adapter  The filesystem adapter to use for interaction with the entity
-     * @return  static
+     * @return  object
      **/
     public static function fromPath($path, $adapter = null)
     {

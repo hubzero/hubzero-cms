@@ -237,7 +237,7 @@ class Todo extends Plugin
      * @param   array    $projects
      * @param   integer  $uid
      * @param   array    $filters    Query filters
-     * @return  array
+     * @return  string|null
      */
     public function onShared($area, $model, $projects, $uid, $filters)
     {

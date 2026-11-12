@@ -2325,7 +2325,7 @@ class Collections extends Plugin
      * @param   boolean  $isnew    True if a new user is stored.
      * @param   boolean  $success  True if user was succesfully stored in the database.
      * @param   string   $msg      Message.
-     * @return  void
+     * @return  bool|null
      */
     public function onMemberAfterSave($user, $isnew, $success, $msg)
     {
@@ -2367,6 +2367,8 @@ class Collections extends Plugin
                 return false;
             }
         }
+
+        return null;
     }
 
     /**

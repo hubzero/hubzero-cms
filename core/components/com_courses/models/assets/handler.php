@@ -93,7 +93,7 @@ class Handler
     /**
      * Constructs a new object without scanning for handlers
      *
-     * @return void
+     * @return static
      **/
     public static function newWithoutHandlers($db)
     {

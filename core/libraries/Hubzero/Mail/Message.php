@@ -40,7 +40,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Check if message needs to be sent as multipart
      * MIME message or if it has only one part.
      *
-     * @return  bool
+     * @return  static
      */
     public function addHeader($headerFieldNameOrLine, $fieldValue = null)
     {
@@ -252,7 +252,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Get an embed string for an attachment
      *
      * @param   mixed  $attachment  File path (string)
-     * @return  object
+     * @return  string
      */
     public function getEmbed($attachment)
     {

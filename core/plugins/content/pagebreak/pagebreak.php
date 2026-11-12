@@ -38,7 +38,7 @@ class Pagebreak extends Plugin
      * @param   object   $row      The article object.  Note $article->text is also available
      * @param   object   $params   The article params
      * @param   integer  $page     The 'page' number
-     * @return  void
+     * @return  bool
      */
     public function onContentPrepare($context, &$row, &$params, $page = 0)
     {

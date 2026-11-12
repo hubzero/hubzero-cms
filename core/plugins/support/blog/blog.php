@@ -97,7 +97,7 @@ class Blog extends Plugin
      * @param      string $refid    ID of the database table row
      * @param      string $parent   If the element has a parent element
      * @param      string $category Element type (determines table to look in)
-     * @return     array
+     * @return     string|null
      */
     public function releaseReportedItem($refid, $parent, $category)
     {

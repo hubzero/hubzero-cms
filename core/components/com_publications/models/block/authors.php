@@ -312,7 +312,7 @@ class Authors extends Base
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  void
+     * @return  bool
      */
     public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0)
     {
@@ -486,7 +486,7 @@ class Authors extends Base
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $aid
-     * @return  void
+     * @return  bool
      */
     public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
     {

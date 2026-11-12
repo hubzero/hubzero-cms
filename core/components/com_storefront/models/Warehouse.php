@@ -191,7 +191,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   string $return  What to return (count or rows)
      * @param   array|false $filters   Filters
-     * @return  void
+     * @return  array
      */
     public function getRootCategories($return = 'rows', $filters = false)
     {
@@ -201,7 +201,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all root (no parents) product 'category' collections
      *
-     * @return void
+     * @return array|int
      */
     public function getCategories($rtrn = 'list', $filters = [])
     {
@@ -239,7 +239,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Add collection
      *
      * @param   Collection $collection
-     * @return  void
+     * @return  int
      */
     public function addCollection($collection)
     {
@@ -250,7 +250,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Update existing collection
      *
      * @param   Collection $collection
-     * @return  void
+     * @return  int
      */
     public function updateCollection($collection)
     {
@@ -262,7 +262,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   Collection $collection
      * @param   string $action
-     * @return  string                          category ID
+     * @return  int                          category ID
      */
     private function doCollection($collection, $action)
     {
@@ -355,7 +355,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if product exists and can be viewed by the current user
      *
      * @param   int     product ID or alias
-     * @return  int     pId on success, null if no match found
+     * @return  \stdClass     pId on success, null if no match found
      */
     public function checkProduct($product, $showInactive = false)
     {
@@ -702,7 +702,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product option groups and options
      *
      * @param  $pId Product ID
-     * @return array
+     * @return \stdClass
      */
     public function getProductOptions($pId)
     {
@@ -1372,7 +1372,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Handle product coupon (add, update)
      *
      * @param   Coupon   Instance of a product
-     * @return  int                         coupon ID
+     * @return  \stdClass                         coupon ID
      */
     private function doCoupon($coupon, $action)
     {

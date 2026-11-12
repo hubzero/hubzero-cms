@@ -224,7 +224,7 @@ class Attachment extends Obj
     /**
      * File path
      *
-     * @return  integer
+     * @return  string
      */
     public function path()
     {

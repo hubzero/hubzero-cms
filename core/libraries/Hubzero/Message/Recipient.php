@@ -94,7 +94,7 @@ class Recipient extends Relational
      *
      * @param   integer  $mid  Message ID
      * @param   integer  $uid  User ID
-     * @return  boolean  True on success
+     * @return  static  True on success
      */
     public static function oneByMessageAndUser($mid, $uid)
     {
@@ -108,7 +108,7 @@ class Recipient extends Relational
      * Builds a query string based on filters passed
      *
      * @param   array   $filters  Filters to build query from
-     * @return  string  SQL
+     * @return  static  SQL
      */
     private function buildQuery($uid, $filters = [])
     {

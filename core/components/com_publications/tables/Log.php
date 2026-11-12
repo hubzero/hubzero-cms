@@ -291,7 +291,7 @@ class Log extends Table
      * @param   integer  $vid      Publication version ID
      * @param   string   $type     view, primary or support
      * @param   string   $logPath
-     * @return  void
+     * @return  bool
      */
     public function logAccess($pid = 0, $vid = 0, $type = 'view', $logPath = '')
     {

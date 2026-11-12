@@ -1330,7 +1330,7 @@ class Resources extends SiteController
     /**
      * View a resource
      *
-     * @return  void
+     * @return  object|null
      */
     public function viewTask()
     {
@@ -1675,6 +1675,8 @@ class Resources extends SiteController
         $this->view
             ->setName('view')
             ->display();
+
+        return null;
     }
 
     /**

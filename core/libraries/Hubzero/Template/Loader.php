@@ -194,7 +194,7 @@ class Loader
      * Load a template by client
      *
      * @param   integer  $client_id  The client to load the tmeplate for
-     * @return  string
+     * @return  object
      */
     public function load($client_id = null)
     {

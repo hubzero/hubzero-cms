@@ -57,7 +57,7 @@ class ContributionSorter
      *
      * @param   object  $a
      * @param   object  $b
-     * @return  object
+     * @return  int
      */
     public static function sortTitle($a, $b)
     {

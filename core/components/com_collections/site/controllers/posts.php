@@ -766,7 +766,7 @@ class Posts extends SiteController
     /**
      * Repost an entry
      *
-     * @return  void
+     * @return  string|null
      */
     public function collectTask()
     {

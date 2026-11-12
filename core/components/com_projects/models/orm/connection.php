@@ -101,7 +101,7 @@ class Connection extends Relational
     /**
      * Gets the connections that are mine or are public to my project
      *
-     * @return  $this
+     * @return  static
      **/
     public function thatICanView()
     {

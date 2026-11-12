@@ -171,7 +171,7 @@ class Checker
     /**
      * Get IP address
      *
-     * @return  string
+     * @return  array
      */
     public function getReport()
     {
@@ -183,7 +183,7 @@ class Checker
      * it to detectors
      *
      * @param   array   $data
-     * @return  string
+     * @return  array
      */
     protected function prepareData(array $data)
     {

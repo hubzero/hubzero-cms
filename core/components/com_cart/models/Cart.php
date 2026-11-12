@@ -658,7 +658,7 @@ abstract class Cart
      * Get main transaction facts (total, other verification info)
      *
      * @param   int    $tId
-     * @return  array  List of items in the transaction or false on failed attempt
+     * @return  bool|\stdClass  List of items in the transaction or false on failed attempt
      */
     public static function getTransactionFacts($tId)
     {
@@ -1158,7 +1158,7 @@ abstract class Cart
      * Releases locked transaction items back to inventory and marks the transaction status as 'released'
      *
      * @param   int   $tId  Transaction ID
-     * @return  void
+     * @return  bool|null
      */
     public static function releaseTransaction($tId)
     {
@@ -1189,6 +1189,8 @@ abstract class Cart
         }
         // update status
         self::updateTransactionStatus('released', $tId);
+
+        return null;
     }
 
     /**

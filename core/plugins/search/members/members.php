@@ -25,7 +25,7 @@ class Members extends Plugin
      *
      * @param   mixed   $type
      * @access  public
-     * @return  void
+     * @return  string|null
      */
     public function onGetTypes($type = null)
     {
@@ -37,6 +37,8 @@ class Members extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return null;
     }
 
     /**
@@ -178,7 +180,7 @@ class Members extends Plugin
      *
      * @param   object  $request   \Components\Search\Models\Basic\Request
      * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
-     * @return  void
+     * @return  bool|null
      */
     public static function onSearchCustom($request, &$results)
     {

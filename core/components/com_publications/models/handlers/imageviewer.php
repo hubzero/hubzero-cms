@@ -133,7 +133,7 @@ class ImageViewer extends Base
      * @param   object  $row
      * @param   object  $pub
      * @param   array   $configs
-     * @return  void
+     * @return  bool
      */
     public function makeDefault($row, $pub, $configs)
     {
@@ -303,7 +303,7 @@ class ImageViewer extends Base
      * @param   object   $pub
      * @param   boolean  $authorized
      * @param   integer  $elementId
-     * @return  void
+     * @return  bool|string
      */
     public function drawList($attachments, $attConfigs, $pub, $authorized, $elementId)
     {
@@ -390,7 +390,7 @@ class ImageViewer extends Base
      * @param   object  $row
      * @param   object  $pub
      * @param   object  $configs
-     * @return  void
+     * @return  bool|null
      */
     public function makeThumbnail($row, $pub, $configs)
     {

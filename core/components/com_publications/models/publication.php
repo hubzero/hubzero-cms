@@ -1717,7 +1717,7 @@ class Publication extends Obj
      * @param   int     $tagger_id
      * @param   int     $strength
      * @param   int     $admin
-     * @return  string  HTML
+     * @return  bool|array  HTML
      */
     public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
     {

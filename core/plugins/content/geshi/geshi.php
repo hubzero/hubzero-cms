@@ -39,7 +39,7 @@ class Geshi extends Plugin
      * @param   object   $article  The row object
      * @param   object   $params   The article params
      * @param   integer  $page     The 'page' number
-     * @return  void
+     * @return  bool
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {

@@ -73,7 +73,7 @@ class Mysql implements
      * @param   string  $user_id       User identifier
      * @param   string  $expires       Access token expiration date/time
      * @param   string  $scope         Access token granted scope
-     * @return  void
+     * @return  bool
      */
     public function setAccessToken($access_token, $client_id, $user_id, $expires, $scope = null)
     {
@@ -384,7 +384,7 @@ class Mysql implements
      * @param   int     $user_id        User identifier
      * @param   string  $expires        Expires timestamp
      * @param   string  $scope          Token scope
-     * @return  void
+     * @return  bool
      */
     public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)
     {
@@ -487,7 +487,7 @@ class Mysql implements
     /**
      * Get tool data from request
      *
-     * @return  bool  Result of test
+     * @return  array  Result of test
      */
     public function getToolSessionDataFromRequest(RequestInterface $request)
     {

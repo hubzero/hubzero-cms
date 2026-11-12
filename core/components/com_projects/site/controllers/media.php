@@ -366,7 +366,7 @@ class Media extends Base
     /**
      * Show images within projects
      *
-     * @return  void
+     * @return  bool|null
      */
     public function mediaTask()
     {

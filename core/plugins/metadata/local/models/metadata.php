@@ -38,7 +38,7 @@ class Metadata extends Relational
      * Loads all metadata entries for a given path
      *
      * @param   string  $path  The path to the file being annotated
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      * @since   2.0.0
      **/
     public static function loadAllByPath($path)
@@ -50,7 +50,7 @@ class Metadata extends Relational
      * Retrieves one row by path, returning an empty row if not found
      *
      * @param   string  $path  The path to the file being loaded
-     * @return  array
+     * @return  static
      * @since   2.0.0
      **/
     public static function oneOrNewByPathAndKey($path, $key)

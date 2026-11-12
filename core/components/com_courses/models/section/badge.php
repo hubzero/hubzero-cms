@@ -71,7 +71,7 @@ class Badge extends Base
      * Load by section id
      *
      * @param      integer $id  Section id
-     * @return     static
+     * @return     \Components\Courses\Models\Section\Badge
      */
     public static function loadBySectionId($id)
     {
@@ -86,7 +86,7 @@ class Badge extends Base
      * Load by provider badge id
      *
      * @param      integer $id  Provider badge id
-     * @return     static
+     * @return     \Components\Courses\Models\Section\Badge
      */
     public static function loadByProviderBadgeId($id)
     {
@@ -102,7 +102,7 @@ class Badge extends Base
      * Store
      *
      * @param      bool $check
-     * @return     void
+     * @return     bool
      */
     public function store($check = true)
     {
@@ -123,7 +123,7 @@ class Badge extends Base
     /**
      * Get badge claim url
      *
-     * @return     void
+     * @return     string
      */
     public function getClaimUrl()
     {
@@ -133,7 +133,7 @@ class Badge extends Base
     /**
      * Get badge denied url
      *
-     * @return     void
+     * @return     string
      */
     public function getDeniedUrl()
     {
@@ -143,7 +143,7 @@ class Badge extends Base
     /**
      * Get badges url
      *
-     * @return     void
+     * @return     string
      */
     public function getBadgesUrl()
     {

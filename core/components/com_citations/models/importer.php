@@ -184,7 +184,7 @@ class Importer extends Obj
     /**
      * Get a list of citations requiring attention
      *
-     * @return  array
+     * @return  string
      */
     public function getTmpPath()
     {

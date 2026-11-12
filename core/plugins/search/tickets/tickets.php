@@ -24,7 +24,7 @@ class Tickets extends Plugin
      *
      * @param   mixed   $type
      * @access  public
-     * @return  void
+     * @return  string|null
      */
     public function onGetTypes($type = null)
     {
@@ -36,6 +36,8 @@ class Tickets extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return null;
     }
 
     /**

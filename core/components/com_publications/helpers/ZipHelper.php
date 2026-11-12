@@ -87,7 +87,7 @@ class ZipHelper
      *
      * @param   array  $entry
      * @param   array  $contents
-     * @return  void
+     * @return  bool|null
      */
     protected static function addEntryToContents($entry, &$contents)
     {
@@ -108,6 +108,8 @@ class ZipHelper
 
             $contents[$directory]['contents'][] = $entry;
         }
+
+        return null;
     }
 
     /**

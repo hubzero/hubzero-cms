@@ -475,7 +475,7 @@ class Imports extends AdminController
      *
      * @param   string  $event   Hook we want
      * @param   object  $import  Import Model
-     * @return  object  Closure
+     * @return  array  Closure
      */
     private function getHooks($event, $import)
     {

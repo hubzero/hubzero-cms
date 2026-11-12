@@ -27,7 +27,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
     /**
      * Handle
      *
-     * @return  void
+     * @return  bool|null
      */
     public function handle()
     {
@@ -58,5 +58,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
             // Error
             return false;
         }
+
+        return null;
     }
 }

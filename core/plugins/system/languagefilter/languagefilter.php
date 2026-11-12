@@ -215,7 +215,7 @@ class Languagefilter extends Plugin
      * Build rule
      *
      * @param   object  $uri
-     * @return  void
+     * @return  object
      */
     public function buildRule($uri)
     {
@@ -658,7 +658,7 @@ class Languagefilter extends Plugin
     /**
      * Getting the Language Cookie settings
      *
-     * @return  string  The cookie time.
+     * @return  int  The cookie time.
      */
     private function getLangCookieTime()
     {

@@ -25,7 +25,7 @@ class InstallModule extends Macro
      * @param   array|string $params    Params (if already known)
      * @param   int     $client    Client (site=0, admin=1)
      * @param   mixed   $menus     (int, array) menus to install to (0=all)
-     * @return  void
+     * @return  bool
      **/
     public function __invoke($module, $position, $always = true, $params = '', $client = 0, $menus = 0)
     {

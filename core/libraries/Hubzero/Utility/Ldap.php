@@ -660,7 +660,7 @@ class Ldap
      *
      * @param   mixed   $group
      * @param   array   $members
-     * @return  void
+     * @return  bool|null
      */
     public static function changeGroupMemberships($group, $add, $delete)
     {
@@ -768,6 +768,8 @@ class Ldap
 
             ldap_mod_del($conn, $dn, $deletes);
         }
+
+        return null;
     }
 
     /**

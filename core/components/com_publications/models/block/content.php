@@ -342,7 +342,7 @@ class Content extends Base
     /**
      * Update attachment record
      *
-     * @return  void
+     * @return  bool
      */
     public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
     {
@@ -390,7 +390,7 @@ class Content extends Base
     /**
      * Delete attachment record
      *
-     * @return  void
+     * @return  bool
      */
     public function deleteItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
     {

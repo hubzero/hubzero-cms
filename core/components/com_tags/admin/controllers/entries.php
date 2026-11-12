@@ -291,7 +291,7 @@ class Entries extends AdminController
      * Clean cached tags data
      *
      * @param   boolean  $redirect  Redirect after?
-     * @return  void
+     * @return  bool|null
      */
     public function cleancacheTask($redirect = true)
     {
@@ -302,6 +302,8 @@ class Entries extends AdminController
         }
 
         $this->cancelTask();
+
+        return null;
     }
 
     /**

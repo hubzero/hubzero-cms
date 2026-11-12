@@ -224,7 +224,7 @@ class Manager extends Obj
     /**
      * Method to get client data
      *
-     * @return  array
+     * @return  object
      */
     public function client()
     {
@@ -248,7 +248,7 @@ class Manager extends Obj
     /**
      * Method to get a pagination object for the cache
      *
-     * @return  integer
+     * @return  object
      */
     public function pagination()
     {

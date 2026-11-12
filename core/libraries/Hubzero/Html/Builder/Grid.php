@@ -215,7 +215,7 @@ class Grid
      *                           This array can contain a list of key/value pairs where values are boolean
      *                           and keys can be taken from 'published', 'unpublished', 'archived', 'trash', 'all'.
      *                           These pairs determine which values are displayed.
-     * @return  string  The HTML code for the select tag
+     * @return  array  The HTML code for the select tag
      */
     public static function publishedOptions($config = [])
     {

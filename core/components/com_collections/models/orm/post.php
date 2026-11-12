@@ -246,7 +246,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for Solr
      *
-     * @return  array
+     * @return  bool|\stdClass
      */
     public function searchResult()
     {

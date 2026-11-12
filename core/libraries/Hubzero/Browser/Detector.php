@@ -849,7 +849,7 @@ class Detector
      * to let us tell what line breaks to send, so it's good enough
      * for its purpose.
      *
-     * @return  void
+     * @return  static
      */
     protected function setPlatform()
     {

@@ -43,7 +43,7 @@ class Publication extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @return  boolean
+     * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
     {

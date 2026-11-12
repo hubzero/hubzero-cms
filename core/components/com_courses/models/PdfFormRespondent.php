@@ -103,7 +103,7 @@ class PdfFormRespondent
     /**
      * Get confirmation code
      *
-     * @return MD5 hash of confirmation code
+     * @return string hash of confirmation code
      **/
     public function getConfirmationCode($crumb)
     {

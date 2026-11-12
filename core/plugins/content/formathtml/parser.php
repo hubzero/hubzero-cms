@@ -208,7 +208,7 @@ class Parser
     /**
      * Generate a unique prefix
      *
-     * @return  integer
+     * @return  string
      */
     private function randomString()
     {
@@ -293,7 +293,7 @@ class Parser
      * Returns a unique ID as a placeholder for content retrieval later on
      *
      * @param   array    $matches
-     * @return  integer  Unique ID
+     * @return  string  Unique ID
      */
     private function dataPush($matches)
     {

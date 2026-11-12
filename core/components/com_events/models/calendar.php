@@ -433,7 +433,7 @@ class Calendar extends Model
      * Delete a calendars events
      *
      * @param  boolean $force Force delete events (event if not subscription)
-     * @return void
+     * @return bool
      */
     public function deleteEvents($force = false)
     {

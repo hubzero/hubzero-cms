@@ -83,7 +83,7 @@ class File extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function add($key, $value, $minutes)
     {
@@ -120,7 +120,7 @@ class File extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  void
+     * @return  bool
      */
     public function forever($key, $value)
     {

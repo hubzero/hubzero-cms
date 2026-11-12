@@ -882,7 +882,7 @@ class Tags extends SiteController
      * Clean cached tags data
      *
      * @param   boolean  $redirect  Redirect after?
-     * @return  void
+     * @return  bool|null
      */
     public function cleancacheTask($redirect = true)
     {
@@ -893,6 +893,8 @@ class Tags extends SiteController
         }
 
         $this->cancelTask();
+
+        return null;
     }
 
     /**

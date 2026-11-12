@@ -167,7 +167,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Generates automatic owned by field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticAllowComments($data)
     {
@@ -558,7 +558,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform params
      *
-     * @return  string
+     * @return  object
      */
     public function transformParams()
     {
@@ -796,7 +796,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for Solr
      *
-     * @return  array
+     * @return  bool|\stdClass
      */
     public function searchResult()
     {

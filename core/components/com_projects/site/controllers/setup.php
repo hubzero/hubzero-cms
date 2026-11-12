@@ -609,7 +609,7 @@ class Setup extends Base
     /**
      * Process data
      *
-     * @return  void
+     * @return  bool|null
      */
     protected function process()
     {
@@ -1016,6 +1016,8 @@ class Setup extends Base
                 }
                 break;
         }
+
+        return null;
     }
 
     /**
@@ -1202,7 +1204,7 @@ class Setup extends Base
     /**
      * Querying the grant agency name based on the input value
      *
-     * @return  void
+     * @return  bool|array|null
      */
     public function getGrantAgencyTask()
     {
@@ -1255,6 +1257,8 @@ class Setup extends Base
             echo json_encode($agencies);
             exit();
         }
+
+        return null;
     }
 
     /**

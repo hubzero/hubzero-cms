@@ -47,7 +47,7 @@ class Memory extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function add($key, $value, $minutes)
     {
@@ -82,7 +82,7 @@ class Memory extends None
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  void
+     * @return  bool
      */
     public function forever($key, $value)
     {
@@ -147,7 +147,7 @@ class Memory extends None
      * Remove all items from the cache.
      *
      * @param   string  $group
-     * @return  void
+     * @return  bool
      */
     public function clean($group = null)
     {

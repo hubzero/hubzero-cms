@@ -72,7 +72,7 @@ class Type extends Relational
     /**
      * Defines a one to Many relationship with citation
      *
-     * @return $this
+     * @return \Hubzero\Database\Relationship\OneToMany
      **/
     public function citations()
     {

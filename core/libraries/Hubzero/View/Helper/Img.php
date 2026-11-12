@@ -23,7 +23,7 @@ class Img extends AbstractHelper
      * @param   string  $asset      Image to get path for
      * @param   string  $extension  Extension name, e.g.: com_example, mod_example, plg_example_test
      * @param   string  $element    Plugin element. Only used for plugins and if first argument is folder name.
-     * @return  object
+     * @return  string
      */
     public function __invoke($asset = '', $extension = null, $element = null)
     {

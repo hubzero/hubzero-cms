@@ -1104,7 +1104,7 @@ class Databases extends Plugin
      * Save updated CSV file with headers
      *
      * @param   integer  $id  Database ID
-     * @return  void
+     * @return  bool|null
      */
     public function saveCsv($id)
     {
@@ -1208,6 +1208,8 @@ class Databases extends Plugin
             );
             ob_clean();
         }
+
+        return null;
     }
 
     /**

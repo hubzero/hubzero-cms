@@ -182,7 +182,7 @@ class Reviews extends Plugin
      * @param   string   $category  Item type
      * @param   integer  $level     Depth
      * @param   boolean  $abuse     Abuse flag
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public function getComments($id, $item, $category, $level, $abuse = false)
     {

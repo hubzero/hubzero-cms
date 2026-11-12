@@ -300,7 +300,7 @@ class Media extends SiteController
     /**
      * Upload a file to the wiki
      *
-     * @return  void
+     * @return  bool|null
      */
     public function uploadTask()
     {
@@ -446,7 +446,7 @@ class Media extends SiteController
     /**
      * Delete a file in the wiki
      *
-     * @return  void
+     * @return  bool|null
      */
     public function deleteTask()
     {

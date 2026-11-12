@@ -661,7 +661,7 @@ class Batchcreate extends AdminController
      * @param   array   $fileRecord
      * @param   object  $pub
      * @param   object  $version
-     * @return  void
+     * @return  bool|null
      */
     public function processFileData($fileRecord, $pub, $version)
     {
@@ -732,6 +732,8 @@ class Batchcreate extends AdminController
                 $configs->handler->makeDefault($attachment, $pub, $configs);
             }
         }
+
+        return null;
     }
 
     /**

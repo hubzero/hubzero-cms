@@ -94,7 +94,7 @@ class Manager
     /**
      * Get the current type
      *
-     * @return  string
+     * @return  static
      */
     public function setType($type)
     {

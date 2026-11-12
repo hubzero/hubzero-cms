@@ -32,7 +32,7 @@ class Form extends Content
     /**
      * Create method for this handler
      *
-     * @return string - javascript to be run
+     * @return array - javascript to be run
      **/
     public function create()
     {

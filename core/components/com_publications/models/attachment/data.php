@@ -52,7 +52,7 @@ class Data extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   array    $blockParams
-     * @return  boolean
+     * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
     {
@@ -262,7 +262,7 @@ class Data extends Base
      * @param   array    $attachments
      * @param   object   $oldVersion
      * @param   object   $newVersion
-     * @return  void
+     * @return  bool
      */
     public function transferData($elementparams, $elementId, $pub, $blockParams, $attachments, $oldVersion, $newVersion)
     {

@@ -216,7 +216,7 @@ class Citations extends Base
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $cid
-     * @return  void
+     * @return  bool
      */
     public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
     {
@@ -308,7 +308,7 @@ class Citations extends Base
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $cid
-     * @return  void
+     * @return  bool
      */
     public function deleteItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
     {

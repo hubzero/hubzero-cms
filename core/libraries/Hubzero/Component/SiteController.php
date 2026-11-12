@@ -412,7 +412,7 @@ class SiteController extends Obj implements ControllerInterface
      *
      * When default task disabled the controller will give a 404 error if the method called doesn't exist
      *
-     * @return  void
+     * @return  object
      */
     public function disableDefaultTask()
     {

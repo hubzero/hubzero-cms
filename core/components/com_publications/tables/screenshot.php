@@ -262,7 +262,7 @@ class Screenshot extends Table
      * Get array of screenshots
      *
      * @param   integer  $versionid  Pub version ID
-     * @return  object
+     * @return  bool|array
      */
     public function getScreenshotArray($versionid = null)
     {

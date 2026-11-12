@@ -163,7 +163,7 @@ class Collection extends ItemList
      * Finds all items with the given extension
      *
      * @param   string|array  $extensions  The extension(s) to look for
-     * @return  \Hubzero\Filesystem\File
+     * @return  array
      **/
     public function findAllWithExtension($extensions)
     {

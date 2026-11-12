@@ -132,7 +132,7 @@ class OneToMany extends Relationship
      * @param   array   $rows  The rows that we'll be seeding
      * @param   string  $data  The data to seed
      * @param   string  $name  The name of the relationship
-     * @return  object
+     * @return  array
      **/
     public function seedWithData($rows, $data, $name)
     {

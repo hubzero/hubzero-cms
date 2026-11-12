@@ -183,7 +183,7 @@ class Connections
     /**
      * Creates a new connection
      *
-     * @return  void
+     * @return  string
      **/
     public function newconnection()
     {
@@ -670,7 +670,7 @@ class Connections
     /**
      * Save prefix
      *
-     * @return void
+     * @return string
      */
     public function setprefix()
     {
@@ -812,7 +812,7 @@ class Connections
     /**
      * Uploads file(s) and adds them to repository
      *
-     * @return  void
+     * @return  string|bool
      */
     public function save()
     {
@@ -1002,7 +1002,7 @@ class Connections
      * Uploads file chunk(s) and combines them before adding the
      * final file to repository
      *
-     * @return  void
+     * @return  string|bool
      */
     public function chunkedSave()
     {
@@ -1216,7 +1216,7 @@ class Connections
     /**
      * Renders delete view
      *
-     * @return  stromg
+     * @return  string
      */
     public function delete()
     {
@@ -1518,7 +1518,7 @@ class Connections
     /**
      * Displays the file annotation form
      *
-     * @return  void
+     * @return  string
      **/
     public function annotate()
     {
@@ -1665,7 +1665,7 @@ class Connections
     /**
      * Sorts incoming file/folder data
      *
-     * @return  array
+     * @return  \Hubzero\Filesystem\Collection
      */
     private function getCollection()
     {

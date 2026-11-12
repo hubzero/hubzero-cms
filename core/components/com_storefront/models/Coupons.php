@@ -191,7 +191,7 @@ class Coupons
      * Use up one coupon application
      *
      * @param   int         $cnId coupon ID
-     * @return  void
+     * @return  bool
      */
     public function apply($cnId)
     {
@@ -208,7 +208,7 @@ class Coupons
      * Return coupon back to the coupons pool to be available for future use
      *
      * @param   int         $cnId coupon ID
-     * @return  void
+     * @return  bool
      */
     public function recycle($cnId)
     {

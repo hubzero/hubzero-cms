@@ -555,7 +555,7 @@ class Module extends Relational
     /**
      * Determine how the assignment
      *
-     * @return  array
+     * @return  int|string
      */
     public function menuAssignment()
     {

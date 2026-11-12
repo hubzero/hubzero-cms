@@ -84,7 +84,7 @@ class Repo extends Obj
     /**
      * Initialize repo
      *
-     * @return  void
+     * @return  bool|null
      */
     private function ini()
     {
@@ -132,12 +132,14 @@ class Repo extends Obj
                 false,
             ));
         }
+
+        return null;
     }
 
     /**
      * Return the adapter for this repo
      *
-     * @return  void
+     * @return  \Components\Projects\Models\Adapters\Git|\Components\Projects\Models\Adapters\Nogit|string
      */
     private function adapter()
     {

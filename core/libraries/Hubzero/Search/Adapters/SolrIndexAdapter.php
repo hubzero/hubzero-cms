@@ -79,7 +79,7 @@ class SolrIndexAdapter implements IndexInterface
      * getLogs - Returns an array of search engine query log entries
      *
      * @access public
-     * @return void
+     * @return array
      */
     public function getLogs()
     {
@@ -122,7 +122,7 @@ class SolrIndexAdapter implements IndexInterface
      * status - Checks whether or not the search engine is responding
      *
      * @access public
-     * @return void
+     * @return bool|null
      */
     public function status()
     {
@@ -138,6 +138,8 @@ class SolrIndexAdapter implements IndexInterface
         } catch (\Exception $e) {
             return false;
         }
+
+        return null;
     }
 
     /**

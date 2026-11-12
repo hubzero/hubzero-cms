@@ -193,7 +193,7 @@ class Processor extends Obj
     /**
      * Image Rotation
      *
-     * @return  void
+     * @return  bool|null
      */
     public function autoRotate()
     {
@@ -245,6 +245,8 @@ class Processor extends Obj
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -252,7 +254,7 @@ class Processor extends Obj
      *
      * @param   integer  $rotation    Degrees to rotate
      * @param   integer  $background  Point to rotate from
-     * @return  void
+     * @return  bool|null
      */
     public function rotate($rotation = 0, $background = 0)
     {
@@ -262,6 +264,8 @@ class Processor extends Obj
         $resource = imagerotate($this->resource, $rotation, $background);
         imagedestroy($this->resource);
         $this->resource = $resource;
+
+        return null;
     }
 
     /**
@@ -269,7 +273,7 @@ class Processor extends Obj
      *
      * @param   boolean  $flip_horizontal  Flip the image horizontally?
      * @param   boolean  $flip_vertical    Flip the image vertically?
-     * @return  void
+     * @return  bool|null
      */
     public function flip($flip_horizontal, $flip_vertical = false)
     {
@@ -295,6 +299,8 @@ class Processor extends Obj
 
         $this->resource = $new_resource;
         imagedestroy($resource);
+
+        return null;
     }
 
     /**
@@ -304,7 +310,7 @@ class Processor extends Obj
      * @param   integer  $right   Right point to crop from
      * @param   integer  $bottom  Bottom point to crop from
      * @param   integer  $left    Left point to crop from
-     * @return  void
+     * @return  bool|null
      */
     public function crop($top, $right = 0, $bottom = 0, $left = 0)
     {
@@ -321,6 +327,8 @@ class Processor extends Obj
 
         imagedestroy($this->resource);
         $this->resource = $resource;
+
+        return null;
     }
 
     /**
@@ -330,7 +338,7 @@ class Processor extends Obj
      * @param   boolean  $use_height     Use the height as the baseline? (uses width by default)
      * @param   boolean  $squared        Make the image square?
      * @param   boolean  $resample       Resample the image?
-     * @return  void
+     * @return  bool|null
      */
     public function resize($new_dimension, $use_height = false, $squared = false, $resample = true)
     {
@@ -419,7 +427,7 @@ class Processor extends Obj
     /**
      * Image Geo Location Data
      *
-     * @return  void
+     * @return  bool|array
      */
     public function getGeoLocation()
     {

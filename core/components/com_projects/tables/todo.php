@@ -253,7 +253,7 @@ class Todo extends Table
      * @param   integer  $projectid
      * @param   string   $todolist
      * @param   boolean|int $permanent
-     * @return  void
+     * @return  bool|null
      */
     public function deleteTodos($projectid, $todolist = '', $permanent = 0)
     {
@@ -269,6 +269,8 @@ class Todo extends Table
 
         $this->db->setQuery($query);
         $this->db->query();
+
+        return null;
     }
 
     /**

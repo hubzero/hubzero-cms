@@ -92,7 +92,7 @@ class Field extends Relational
      * Generates automatic option_other field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticOptionOther($data)
     {
@@ -107,7 +107,7 @@ class Field extends Relational
      * Generates automatic option_blank field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticOptionBlank($data)
     {
@@ -122,7 +122,7 @@ class Field extends Relational
      * Generates automatic required field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticRequired($data)
     {
@@ -137,7 +137,7 @@ class Field extends Relational
      * Generates automatic readonly field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticReadonly($data)
     {
@@ -152,7 +152,7 @@ class Field extends Relational
      * Generates automatic disabled field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticDisabled($data)
     {
@@ -167,7 +167,7 @@ class Field extends Relational
      * Generates automatic multiple field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticMultiple($data)
     {
@@ -182,7 +182,7 @@ class Field extends Relational
      * Generates automatic parent_option field value
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  int
      */
     public function automaticParentOption($data)
     {
@@ -322,7 +322,7 @@ class Field extends Relational
      * save all custom fields provided for the group
      *
      * @param   integer  $group_id
-     * @return  void
+     * @return  bool
      */
     public function saveGroupAnswers($group_id)
     {

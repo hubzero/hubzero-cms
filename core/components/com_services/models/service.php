@@ -75,7 +75,7 @@ class Service extends Relational
     /**
      * Transform params
      *
-     * @return  string
+     * @return  object
      */
     public function transformParams()
     {

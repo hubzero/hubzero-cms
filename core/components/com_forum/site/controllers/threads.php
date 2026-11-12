@@ -742,7 +742,7 @@ class Threads extends SiteController
     /**
      * Email the mentioned user with a PHP mail template
      *
-     * @return  void
+     * @return  bool
      */
     public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor)
     {

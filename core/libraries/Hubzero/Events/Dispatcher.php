@@ -46,7 +46,7 @@ class Dispatcher implements DispatcherInterface
     /**
      * Count the number of registered event.
      *
-     * @return  integer  The numer of registered events.
+     * @return  static  The numer of registered events.
      */
     public function addListenerLoader(LoaderInterface $loader)
     {
@@ -210,7 +210,7 @@ class Dispatcher implements DispatcherInterface
      * [!] Compatibility
      *
      * @param   object  $listener  The listener.
-     * @return  void
+     * @return  \Hubzero\Events\Dispatcher
      */
     public function attach($listener)
     {

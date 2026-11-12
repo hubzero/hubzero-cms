@@ -97,7 +97,7 @@ class Profiler
      * with a CSS class of 'profiler'.
      *
      * @param   string  $label  A label for the time mark
-     * @return  string  Mark enclosed in <div> tags
+     * @return  static  Mark enclosed in <div> tags
      */
     public function mark($label)
     {

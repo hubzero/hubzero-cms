@@ -76,7 +76,7 @@ class Auditor
      * Process data against a series of tests
      *
      * @param   string|array  $data
-     * @return  object
+     * @return  array
      */
     public function check($data)
     {
@@ -186,7 +186,7 @@ class Auditor
     /**
      * Get summations
      *
-     * @return  string
+     * @return  array
      */
     public function getReport()
     {
@@ -240,7 +240,7 @@ class Auditor
      * it to detectors
      *
      * @param   array   $data
-     * @return  string
+     * @return  array
      */
     protected function prepareData($data)
     {

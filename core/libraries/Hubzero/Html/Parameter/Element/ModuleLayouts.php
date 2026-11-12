@@ -29,7 +29,7 @@ class ModuleLayouts extends Select
      * Get the options for the list.
      *
      * @param   object  &$node  XMLElement node object containing the settings for the element
-     * @return  string
+     * @return  array
      */
     protected function getOptions(&$node)
     {

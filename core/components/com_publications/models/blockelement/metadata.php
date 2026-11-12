@@ -82,7 +82,7 @@ class Metadata extends Base
     /**
      * Render
      *
-     * @return  object
+     * @return  string
      */
     public function render(
         $elementid,
@@ -133,7 +133,7 @@ class Metadata extends Base
     /**
      * Draw element with no editing capabilities
      *
-     * @return  object
+     * @return  string
      */
     public function drawItem(
         $elementId,
@@ -163,7 +163,7 @@ class Metadata extends Base
     /**
      * Draw element
      *
-     * @return  object
+     * @return  string
      */
     public function drawFormField(
         $elementId,

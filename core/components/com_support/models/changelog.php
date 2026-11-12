@@ -160,7 +160,7 @@ class Changelog extends Obj
     /**
      * Get the whole log
      *
-     * @return  array
+     * @return  object
      */
     public function lists()
     {
@@ -228,7 +228,7 @@ class Changelog extends Obj
     /**
      * Return a formatted timestamp
      *
-     * @return  boolean
+     * @return  string
      */
     public function render()
     {

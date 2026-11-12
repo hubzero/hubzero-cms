@@ -199,7 +199,7 @@ class Page extends Table
      * Record a page hit
      *
      * @param      integer $pid Page ID
-     * @return     void
+     * @return     bool
      */
     public function hit($offering_id = null, $page_id = null)
     {

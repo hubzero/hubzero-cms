@@ -162,7 +162,7 @@ class Rule extends Relational
      *
      * @param   integer  $restore  Whether or not to force restoration of default values (even if
      *                             other values are present)
-     * @return  void
+     * @return  bool
      */
     public static function defaultContent($restore = 0)
     {

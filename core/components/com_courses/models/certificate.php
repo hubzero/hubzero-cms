@@ -132,7 +132,7 @@ class Certificate extends Base
     /**
      * Create images
      *
-     * @return void
+     * @return bool
      */
     public function renderPageImages()
     {

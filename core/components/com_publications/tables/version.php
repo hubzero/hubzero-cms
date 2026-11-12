@@ -73,7 +73,7 @@ class Version extends Table
      * @param   string   $new      Update to
      * @param   string   $where    Where
      * @param   string   $version  Version number or name
-     * @return  void
+     * @return  bool|null
      */
     public function updateVersion($pid = null, $update = '', $new = '', $where = '', $version = 'dev')
     {
@@ -103,6 +103,8 @@ class Version extends Table
         $query .= "LIMIT 1";
         $this->db->setQuery($query);
         $this->db->query();
+
+        return null;
     }
 
     /**
@@ -392,7 +394,7 @@ class Version extends Table
      *
      * @param   integer  $vid       Pub version ID
      * @param   boolean|int $unpublish
-     * @return  void
+     * @return  bool
      */
     public function removeMainFlag($vid = null, $unpublish = 0)
     {
@@ -414,7 +416,7 @@ class Version extends Table
      *
      * @param   integer  $projectid  Project ID
      * @param   string   $title
-     * @return  void
+     * @return  bool|string
      */
     public function getDefaultTitle($projectid = 0, $title = '')
     {
@@ -507,7 +509,7 @@ class Version extends Table
      * @param   integer  $id
      * @param   string   $param
      * @param   string|int $value
-     * @return  void
+     * @return  bool
      */
     public function saveParam($id = null, $param = '', $value = 0)
     {
