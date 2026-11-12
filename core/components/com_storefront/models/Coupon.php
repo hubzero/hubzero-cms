@@ -248,7 +248,7 @@ class Coupon
      * Add object
      *
      * @param   int $object   object ID
-     * @param   int $objectLimit   limit of object coupon will be applied to
+     * @param   int|string $objectLimit   limit of object coupon will be applied to
      *                (when purchasing multiple quantities of the same object)
      * @return  bool  true on success
      */

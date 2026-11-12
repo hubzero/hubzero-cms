@@ -190,7 +190,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all non-empty (those that have at least one active product) root (no parents) product 'category' collections
      *
      * @param   string $return  What to return (count or rows)
-     * @param   array $filters   Filters
+     * @param   array|false $filters   Filters
      * @return  void
      */
     public function getRootCategories($return = 'rows', $filters = false)
@@ -307,7 +307,8 @@ class Warehouse extends \Hubzero\Base\Obj
 				`cType` = " . $this->database->quote($collection->getType());
 
         // Set pId if needed if adding new product
-        if ($action == 'add' && !empty($cId)) {
+        // An add without an ID was refused above
+        if ($action == 'add') {
             $sql .= ",
 				`cId` = " . $this->database->quote($collection->getId());
         }

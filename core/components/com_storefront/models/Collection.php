@@ -27,7 +27,7 @@ class Collection
     /**
      * Constructor
      *
-     * @param  int $cId      Optional: Collection ID
+     * @param  int|false $cId      Optional: Collection ID
      * @return void
      */
     public function __construct($cId = false)
@@ -37,7 +37,7 @@ class Collection
 
         $this->data = new \stdClass();
 
-        if (isset($cId) && $cId && is_numeric($cId)) {
+        if ($cId && is_numeric($cId)) {
             $this->setId($cId);
             $this->load();
         }

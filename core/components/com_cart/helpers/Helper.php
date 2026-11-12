@@ -76,7 +76,7 @@ class Helper
     /**
      * Check if the number is a non negative integer
      *
-     * @param   int $x     Integer
+     * @param   mixed   $x       Value to check
      * @param   bool    $notZero Flag if zero should be accepted (by default zero is ok)
      * @return  bool
      */
