@@ -39,7 +39,7 @@ class Index
      * getLogs - Returns an array of search engine query log entries
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function getLogs()
     {
@@ -50,7 +50,7 @@ class Index
     /**
      * defragment search index
      *
-     * @return void
+     * @return mixed
      */
     public function optimize()
     {
@@ -61,7 +61,7 @@ class Index
      * lastInsert - Returns the timestamp of the last document indexed
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function lastInsert()
     {
@@ -73,7 +73,7 @@ class Index
      * status - Checks whether or not the search engine is responding
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function status()
     {
@@ -97,7 +97,7 @@ class Index
      *
      * @param mixed $document
      * @access public
-     * @return void
+     * @return mixed
      */
     public function updateIndex($document, $commitWithin = 3000)
     {
@@ -109,7 +109,7 @@ class Index
      *
      * @param string $id
      * @access public
-     * @return void
+     * @return mixed
      */
     public function delete($id)
     {

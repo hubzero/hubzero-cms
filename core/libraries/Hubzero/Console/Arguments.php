@@ -73,7 +73,7 @@ class Arguments
      * Throws invalid property exception if property isn't found
      *
      * @param   string  $var  The property to retrieve
-     * @return  void
+     * @return  mixed
      **/
     public function get($var)
     {

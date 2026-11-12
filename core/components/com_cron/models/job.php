@@ -332,7 +332,7 @@ class Job extends Relational
     /**
      * Get the next run timestamp
      *
-     * @return  void
+     * @return  string
      */
     public function nextRun($format = 'Y-m-d H:i:s')
     {

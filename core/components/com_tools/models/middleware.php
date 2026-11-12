@@ -79,7 +79,7 @@ class Middleware extends Obj
     /**
      * Set and get a specific zone
      *
-     * @return     void
+     * @return     mixed
      */
     public function zone($id = null)
     {

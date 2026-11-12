@@ -144,7 +144,7 @@ class Importer
      * Count import data
      *
      * @param   \Components\Resources\Models\Import $import
-     * @return  void
+     * @return  mixed
      */
     public function count(\Components\Resources\Models\Import $import)
     {

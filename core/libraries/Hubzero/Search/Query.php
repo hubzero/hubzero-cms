@@ -191,7 +191,7 @@ class Query
     /**
      * Performs the query, does not return results.
      *
-     * @return void
+     * @return mixed
      */
     public function run()
     {

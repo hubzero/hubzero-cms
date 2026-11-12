@@ -180,7 +180,7 @@ class Importer
      * @param   \Hubzero\Content\Import\Model\Import $import
      * @param   array    $callbacks  Array of Closure Objects
      * @param   integer  $dryRun     Dry run?
-     * @return  void
+     * @return  mixed
      */
     public function process(Import $import, array $callbacks, $dryRun = 1)
     {

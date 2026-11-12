@@ -481,7 +481,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get the products within the given scope
      *
-     * @return void
+     * @return array|int
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
     {

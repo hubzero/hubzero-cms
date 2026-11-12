@@ -284,7 +284,7 @@ class Rows implements Iterator, Countable
     /**
      * Fast-forwards to the end of the iterable list
      *
-     * @return  void
+     * @return  mixed
      **/
     public function last()
     {

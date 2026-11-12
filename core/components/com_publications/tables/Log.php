@@ -408,7 +408,7 @@ class Log extends Table
      * @param   integer  $uid        User ID
      * @param   integer  $limit      Num of entries
      * @param   boolean  $lastmonth
-     * @return  void
+     * @return  array|false
      */
     public function getAuthorStats($uid = null, $limit = 0, $lastmonth = true)
     {
@@ -529,7 +529,7 @@ class Log extends Table
     /**
      * Get date when logs table was created (= date of first log)
      *
-     * @return  void
+     * @return  string|null
      */
     public function getFirstLogDate()
     {
@@ -541,6 +541,8 @@ class Log extends Table
         if ($first) {
             return Date::of(strtotime($first))->format('Y-m-01 00:00:00');
         }
+
+        return null;
     }
 
     /**
@@ -586,7 +588,7 @@ class Log extends Table
      * @param   string  $to       Date to
      * @param   array   $exclude  Data to exclude
      * @param   string  $filter   Tag name to match
-     * @return  void
+     * @return  array
      */
     public function getCustomStats($from = null, $to = null, $exclude = [], $filter = null)
     {
@@ -673,7 +675,7 @@ class Log extends Table
      *
      * @param      integer  $projectid  Project ID
      * @param      integer  $pubid      Publication ID
-     * @return     void
+     * @return     array|false
      */
     public function getPubStats($projectid = null, $pubid = 0)
     {
