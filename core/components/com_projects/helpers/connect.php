@@ -859,9 +859,9 @@ class Connect extends Obj
      * @param   integer  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
-     * @param   string   $remoteid   Remote resource ID
+     * @param   string|int $remoteid   Remote resource ID
      * @param   array    $local      Array of local file info
-     * @param   string   $parentId   Parent folder ID
+     * @param   string|int $parentId   Parent folder ID
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  array|false
      */
@@ -972,9 +972,9 @@ class Connect extends Obj
      * @param   integer  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
-     * @param   string   $remoteid   Remote resource ID
+     * @param   string|int $remoteid   Remote resource ID
      * @param   array    $local      Array of local file info
-     * @param   string   $parentId   Parent folder ID
+     * @param   string|int $parentId   Parent folder ID
      * @return  array|false
      */
     public function renameRemoteItem(
@@ -1056,9 +1056,9 @@ class Connect extends Obj
      * @param   integer  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
-     * @param   string   $remoteid   Remote resource ID
+     * @param   string|int $remoteid   Remote resource ID
      * @param   array    $local      Array of local file info
-     * @param   string   $parentId   Parent folder ID
+     * @param   string|int $parentId   Parent folder ID
      * @return  array|false
      */
     public function moveRemoteItem(
@@ -1129,7 +1129,7 @@ class Connect extends Obj
      * @param      integer  $projectid  Project ID
      * @param      string   $service    Service name (google or dropbox)
      * @param      integer  $uid        User ID
-     * @param      string   $remoteid   Remote resource ID
+     * @param      string|int $remoteid   Remote resource ID
      * @param      boolean  $permanent  Delete permanently? (or trash)
      *
      * @return     bool|int
@@ -1179,7 +1179,7 @@ class Connect extends Obj
      * @param   integer  $uid             User ID
      * @param   string   $title           Folder name
      * @param   string   $path            Path to folder
-     * @param   string   $parentId        Parent folder ID
+     * @param   string|int $parentId        Parent folder ID
      * @param   array    &$remoteFolders  Collector array
      * @return  integer|false|null (folder ID)
      */

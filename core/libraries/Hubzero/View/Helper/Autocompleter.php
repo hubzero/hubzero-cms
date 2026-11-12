@@ -25,9 +25,9 @@ class Autocompleter extends AbstractHelper
      * @param   string  $id     ID of the input field
      * @param   string  $class  CSS class(es) for the input field
      * @param   string  $size   The size of the input field
-     * @param   string  $wsel   AC autopopulates a select list based on choice?
+     * @param   string|false $wsel   AC autopopulates a select list based on choice?
      * @param   string  $type   Allow single or multiple entries
-     * @param   string  $dsabl  Readonly input
+     * @param   string|false $dsabl  Readonly input
      * @return  string
      * @throws  \InvalidArgumentException  If wrong type passed
      */

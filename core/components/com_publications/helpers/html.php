@@ -97,7 +97,7 @@ class Html
     /**
      * Show contributors
      *
-     * @param   array    $contributors
+     * @param   array|string $contributors
      * @param   boolean  $showorgs
      * @param   boolean  $showaslist
      * @param   boolean  $incSubmitter

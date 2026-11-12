@@ -178,13 +178,13 @@ class Activity extends Table
      * @param   integer  $projectid
      * @param   integer  $by
      * @param   string   $activity
-     * @param   string   $referenceid
+     * @param   string|int $referenceid
      * @param   string   $highlighted
      * @param   string   $url
      * @param   string   $class
-     * @param   boolean  $commentable
-     * @param   boolean  $admin
-     * @param   boolean  $managers_only
+     * @param   boolean|int $commentable
+     * @param   boolean|int $admin
+     * @param   boolean|int $managers_only
      * @return  integer|false  (activity id) or false
      */
     public function recordActivity(

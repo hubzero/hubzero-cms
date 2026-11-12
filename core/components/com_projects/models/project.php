@@ -1147,7 +1147,7 @@ class Project extends Model
      * Record activity
      *
      * @param   string   $activity
-     * @param   integer  $refid
+     * @param   integer|string $refid
      * @param   string   $underline
      * @param   string   $url
      * @param   string   $class

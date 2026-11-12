@@ -422,8 +422,8 @@ class Toolbar extends Facade
      * Writes a configuration button and invokes a cancel operation (eg a checkin).
      *
      * @param   string  $component  The name of the component, eg, com_content.
-     * @param   int     $height     The height of the popup.
-     * @param   int     $width      The width of the popup.
+     * @param   int|string $height     The height of the popup.
+     * @param   int|string $width      The width of the popup.
      * @param   string  $alt        The name of the button.
      * @param   string  $path       An alternative path for the configuation xml relative to PATH_ROOT.
      * @param   string  $onClose    Called on close

@@ -402,9 +402,9 @@ class Html extends Obj
      *
      * @param   int      $minlength
      * @param   int      $maxlength
-     * @param   boolean  $usespecial
-     * @param   boolean  $usenumbers
-     * @param   boolean  $useletters
+     * @param   boolean|int $usespecial
+     * @param   boolean|int $usenumbers
+     * @param   boolean|int $useletters
      * @return  string   HTML
      */
     public static function generateCode(

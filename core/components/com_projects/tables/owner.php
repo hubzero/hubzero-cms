@@ -1005,14 +1005,14 @@ class Owner extends Table
      * Save invitation
      *
      * @param   integer  $projectid
-     * @param   string   $actor             user id of person adding new member
+     * @param   string|int $actor             user id of person adding new member
      * @param   integer  $userid
      * @param   integer  $groupid
      * @param   integer  $role
      * @param   integer  $status
      * @param   integer  $native
      * @param   string   $invited_email
-     * @param   boolean  $split_group_roles  preserve group roles when adding to a project (manager/member)
+     * @param   boolean|int $split_group_roles  preserve group roles when adding to a project (manager/member)
      * @return  mixed    false if error, integer on success (number of saved records)
      */
     public function saveOwners(

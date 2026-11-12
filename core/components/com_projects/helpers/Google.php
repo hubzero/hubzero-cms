@@ -1213,7 +1213,7 @@ class Google extends Obj
      * @param   string   $mimeType
      * @param   boolean  $getAll
      * @param   boolean  $getExt
-     * @param   boolean  $getPaired
+     * @param   boolean|int $getPaired
      * @param   string   $original_ext
      * @return  mixed    string or array
      */

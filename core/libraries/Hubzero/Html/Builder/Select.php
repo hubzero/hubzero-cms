@@ -45,7 +45,7 @@ class Select
      * @param   string  $selected  The key that is selected
      * @param   string  $yes       Language key for Yes
      * @param   string  $no        Language key for no
-     * @param   string  $id        The id for the field
+     * @param   string|false $id        The id for the field
      * @return  string  HTML for the radio list
      */
     public static function booleanlist(
