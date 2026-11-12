@@ -42,7 +42,7 @@ class Migration20130924000002Core extends Base
                 ->index('idx_parent_id', 'parent_id')
                 ->engine('MyISAM')
                 ->charset('utf8')
-                ->collate('utf8_general_ci')
+                ->collation('utf8_general_ci')
                 ->execute();
 
             // Insert some default values
