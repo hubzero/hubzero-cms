@@ -579,7 +579,6 @@ class Field extends Relational
      * Helper method to convert list of fields and field options to XML
      *
      * @param   mixed   $fields  Iterable object or array
-     * @param   string  $action
      * @param   array   $data
      * @return  string
      */

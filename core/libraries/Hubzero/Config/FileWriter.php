@@ -99,7 +99,7 @@ class FileWriter
     /**
      * Turn contents into a string of the correct format
      *
-     * @param   mixed   $content
+     * @param   mixed   $contents
      * @param   string  $format
      * @param   array   $options
      * @return  string
@@ -116,7 +116,7 @@ class FileWriter
     /**
      * Write the contents of a file.
      *
-     * @param   string   $path
+     * @param   string   $file
      * @param   string   $contents
      * @param   mixed    $mode
      * @return  boolean

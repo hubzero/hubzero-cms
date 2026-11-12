@@ -219,7 +219,6 @@ class Quotes extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (!count($ids)) {

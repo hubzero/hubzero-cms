@@ -100,7 +100,7 @@ class CronExpression
     /**
      * Set or change the CRON expression
      *
-     * @param string $schedule CRON expression (e.g. 8 * * * *)
+     * @param string $value CRON expression (e.g. 8 * * * *)
      *
      * @return CronExpression
      * @throws InvalidArgumentException if not a valid CRON expression

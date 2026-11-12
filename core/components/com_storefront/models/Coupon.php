@@ -25,7 +25,6 @@ class Coupon
     /**
      * Contructor
      *
-     * @param  void
      * @return void
      */
     public function __construct($code = false)
@@ -145,7 +144,6 @@ class Coupon
     /**
      * Get active status
      *
-     * @param   void
      * @return  bool        status
      */
     public function getActiveStatus()
@@ -279,7 +277,6 @@ class Coupon
     /**
      * Add coupon to the warehouse
      *
-     * @param  void
      * @return object   info
      */
     public function add()

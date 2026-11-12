@@ -582,7 +582,6 @@ class Attachment extends Table
      *
      * @param   integer  $pid
      * @param   integer  $vid
-     * @param   string   $base
      * @return  mixed
      */
     public function getVersionAttachments($pid = null, $vid = null)
@@ -819,7 +818,7 @@ class Attachment extends Table
     /**
      * Get array of series that the publication belongs to
      *
-     * @param   integer  $versionID  Publication version ID
+     * @param   integer  $versionId  Publication version ID
      *
      * @return  mixed    series  or false
      */

@@ -368,7 +368,7 @@ class Member extends Table
     /**
      * Get a count of course offerings
      *
-     * @param  array $filters
+     * @param  array $section_id
      * @return object Return course units
      */
     public function deleteBySection($section_id)

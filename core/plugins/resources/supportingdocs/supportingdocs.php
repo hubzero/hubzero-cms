@@ -68,7 +68,7 @@ class Supportingdocs extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object  $resource  Current resource
+     * @param   object  $model  Current resource
      * @param   string  $option    Name of the component
      * @param   array   $areas     Active area(s)
      * @param   string  $rtrn      Data to be returned

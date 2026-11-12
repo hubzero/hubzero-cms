@@ -711,7 +711,6 @@ class Modules extends AdminController
 
         // Incoming
         $ids = Request::getArray('cid', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -756,7 +755,6 @@ class Modules extends AdminController
 
         // Incoming
         $ids = Request::getArray('cid', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -807,7 +805,6 @@ class Modules extends AdminController
 
         // Incoming
         $ids = Request::getArray('cid', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 

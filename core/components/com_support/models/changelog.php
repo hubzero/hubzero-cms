@@ -228,7 +228,6 @@ class Changelog extends Obj
     /**
      * Return a formatted timestamp
      *
-     * @param   string  $as  What format to return
      * @return  boolean
      */
     public function render()

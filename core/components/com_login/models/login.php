@@ -174,7 +174,7 @@ class Login extends Obj
      * This is put in as a failsafe to avoid super user lock out caused by an unpublished
      * login module or by a module set to have a viewing access level that is not Public.
      *
-     * @param   string  $name   The name of the module
+     * @param   string  $module   The name of the module
      * @return  array
      */
     protected static function load($module)

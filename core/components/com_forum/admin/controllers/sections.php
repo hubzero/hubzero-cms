@@ -258,7 +258,6 @@ class Sections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -299,7 +298,6 @@ class Sections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = ($this->getTask() == 'publish' ? Section::STATE_PUBLISHED : Section::STATE_UNPUBLISHED);
 
@@ -361,7 +359,6 @@ class Sections extends AdminController
         // Incoming
         $state = Request::getInt('access', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

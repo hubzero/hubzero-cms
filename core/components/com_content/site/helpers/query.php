@@ -134,7 +134,7 @@ class Query
     /**
      * Get join information for the voting query.
      *
-     * @param   object  $param  An options object for the article.
+     * @param   object  $params  An options object for the article.
      * @return  array   A named array with "select" and "join" keys.
      */
     public static function buildVotingQuery($params = null)

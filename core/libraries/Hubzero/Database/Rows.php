@@ -520,7 +520,6 @@ class Rows implements Iterator, Countable
      * ]);
      * ```
      *
-     * @param   mixed  ...$relations  Relationship names to load (same format as with())
      * @return  self
      **/
     public function load()
@@ -562,7 +561,6 @@ class Rows implements Iterator, Countable
      * $users->loadMissing('posts', 'comments', 'profile');
      * ```
      *
-     * @param   mixed  ...$relations  Relationship names to load if missing
      * @return  self
      **/
     public function loadMissing()

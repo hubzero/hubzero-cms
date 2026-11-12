@@ -16,7 +16,7 @@ class Grid extends AbstractHelper
     /**
      * Display the editor area.
      *
-     * @param   string  $name  The control name.
+     * @param   string  $method  The control name.
      * @return  string
      */
     public function __invoke($method)

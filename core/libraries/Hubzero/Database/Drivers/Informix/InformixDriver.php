@@ -2834,7 +2834,7 @@ class InformixDriver extends BaseSqlDriver
      * Returns the SQL for adding an interval to a date
      *
      * @param   string  $date      The date column or expression
-     * @param   int     $interval  The interval value
+     * @param   int     $value  The interval value
      * @param   string  $unit      The interval unit (DAY, MONTH, YEAR, etc.)
      * @return  string
      */
@@ -2848,7 +2848,7 @@ class InformixDriver extends BaseSqlDriver
      * Returns the SQL for subtracting an interval from a date
      *
      * @param   string  $date      The date column or expression
-     * @param   int     $interval  The interval value
+     * @param   int     $value  The interval value
      * @param   string  $unit      The interval unit (DAY, MONTH, YEAR, etc.)
      * @return  string
      */

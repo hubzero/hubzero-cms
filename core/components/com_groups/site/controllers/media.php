@@ -1380,7 +1380,7 @@ class Media extends Base
      *
      * @param   string   $action
      * @param   mixed    $item
-     * @param   boolean  $isfile  Is the action on a file or a directory?
+     * @param   boolean  $isFile  Is the action on a file or a directory?
      * @return  void
      */
     private function logActivity($action, $item, $isFile = true)

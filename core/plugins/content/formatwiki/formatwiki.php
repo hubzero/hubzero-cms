@@ -41,7 +41,7 @@ class Formatwiki extends Plugin
      * Article is passed by reference, but after the save, so no changes will be saved.
      * Method is called right after the content is saved
      *
-     * @param  string  $content The context of the content passed to the plugin
+     * @param  string  $context The context of the content passed to the plugin
      * @param  object  $article
      * @param  boolean $isNew Unnecessary?
      * @return void

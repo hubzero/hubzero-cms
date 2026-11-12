@@ -224,7 +224,6 @@ class Collections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         if (count($ids) > 0) {
@@ -344,7 +343,6 @@ class Collections extends AdminController
         $state = $this->getTask() == 'publish' ? Collection::STATE_PUBLISHED : Collection::STATE_UNPUBLISHED;
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {

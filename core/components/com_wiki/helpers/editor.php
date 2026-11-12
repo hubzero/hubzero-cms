@@ -60,7 +60,7 @@ class Editor extends Obj
      * This method must be invoked as:
      *     $parser = WikiHelperParser::getInstance($parsername);
      *
-     * @param   string  $parser  The name of the parser to use.
+     * @param   string  $editor  The name of the parser to use.
      * @return  object  The Parser object.
      */
     public static function &getInstance($editor = '')

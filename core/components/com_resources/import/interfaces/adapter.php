@@ -34,7 +34,7 @@ interface Adapter
      *
      * @param   object   $import
      * @param   array    $callbacks
-     * @param   integer  $dryrun
+     * @param   integer  $dryRun
      * @return  array
      */
     public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun);

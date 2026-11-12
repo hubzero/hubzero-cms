@@ -27,7 +27,6 @@ class SingleSkuProduct extends Product
     /**
      * Contructor
      *
-     * @param  void
      * @return void
      */
     public function __construct($pId = false)
@@ -55,7 +54,6 @@ class SingleSkuProduct extends Product
     /**
      * Get SKU price
      *
-     * @param   void
      * @return  double      price
      */
     public function getPrice()
@@ -88,7 +86,6 @@ class SingleSkuProduct extends Product
     /**
      * Update product info
      *
-     * @param  void
      * @return object   info
      */
     public function update()

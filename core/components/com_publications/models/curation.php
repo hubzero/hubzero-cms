@@ -1880,7 +1880,7 @@ class Curation extends Obj
     /**
      * Get bundle package name
      *
-     * @param   boolean $includeVersionNum
+     * @param   boolean $linkName
      * @return  mixed  False on error, string on success
      */
     public function getBundleName($linkName = false)

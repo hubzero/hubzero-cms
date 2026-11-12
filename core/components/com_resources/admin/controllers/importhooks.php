@@ -250,7 +250,6 @@ class ImportHooks extends AdminController
 
         // get request vars
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // loop through all ids posted
         $removed = 0;

@@ -116,7 +116,6 @@ class RedirectResponse extends BaseRedirectResponse
      * compliant with RFC 2616. Most of the changes are based on
      * the Request that is "associated" with this Response.
      *
-     * @param   object  $request  A Request instance
      * @return  object  The current response.
      */
     public function send()

@@ -99,7 +99,6 @@ class Sessions extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

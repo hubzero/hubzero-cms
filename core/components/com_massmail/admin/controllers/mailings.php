@@ -1129,7 +1129,6 @@ class Mailings extends AdminController
         if (empty($ids)) {
             $ids = Request::getArray('id', []);
         }
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
         $skipped = 0;

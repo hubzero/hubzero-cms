@@ -294,7 +294,7 @@ class Composer
     /**
      * Unrequire a package by manipulating the composer.json file
      *
-     * @param       string  $apackageName   The package name in the form of vendor/pacakage
+     * @param       string  $packageName   The package name in the form of vendor/pacakage
      * @return  boolean Indicates if the operation succeeded
      */
     private static function unrequirePackage($packageName)
@@ -317,7 +317,7 @@ class Composer
     /**
      * Update a package or list of packages
      *
-     * @param       array   $packages   List of packages to be updated
+     * @param       array   $packageName   List of packages to be updated
      * @return  boolean Indicates success or failure
      */
     private static function runUpdate($packageName)

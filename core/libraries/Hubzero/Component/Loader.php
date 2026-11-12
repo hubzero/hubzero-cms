@@ -311,7 +311,7 @@ class Loader
     /**
      * Start component without explicit entrypoint file
      *
-     * @param   string  $namespace  The namespace of the component to start
+     * @param   string  $option  The namespace of the component to start
      * @return  void
      */
     private function executeDefault($option = '')

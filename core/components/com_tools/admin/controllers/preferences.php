@@ -105,7 +105,7 @@ class Preferences extends AdminController
     /**
      * Edit a member quota
      *
-     * @param   integer  $id  ID of user to edit
+     * @param   integer  $row  ID of user to edit
      */
     public function editTask($row = null)
     {
@@ -176,7 +176,6 @@ class Preferences extends AdminController
     /**
      * Save user quota
      *
-     * @param   integer  $redirect  Whether or not to redirect after save
      * @return  void
      */
     public function saveTask()
@@ -245,7 +244,6 @@ class Preferences extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {

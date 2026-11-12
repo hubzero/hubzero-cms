@@ -357,7 +357,7 @@ class Links extends Plugin
     /**
      * Remove citation
      *
-     * @param   integer  $pid
+     * @param   integer  $vid
      * @param   integer  $cid
      * @param   boolean  $returnStatus
      * @return  boolean
@@ -412,7 +412,7 @@ class Links extends Plugin
     /**
      * Attach citation
      *
-     * @param   integer  $pid
+     * @param   integer  $vid
      * @param   string   $doi
      * @param   string   $format
      * @param   integer  $actor

@@ -297,7 +297,6 @@ class Pages extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             App::redirect(

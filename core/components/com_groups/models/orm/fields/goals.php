@@ -332,7 +332,7 @@ class Goals extends Radio
     /**
      * Render the supplied value
      *
-     * @param   string  $value
+     * @param   string  $careerplan_id
      * @return  string
      */
     public function getValue($careerplan_id)

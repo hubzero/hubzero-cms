@@ -253,7 +253,6 @@ class Entries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -298,7 +297,6 @@ class Entries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {
@@ -361,7 +359,6 @@ class Entries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $state = Request::getInt('state', 0);
 
         // Check for a resource

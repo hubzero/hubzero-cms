@@ -25,7 +25,6 @@ class Honeypot
      * Displays a hidden token field to reduce the risk of CSRF exploits
      *
      * @param   string   $name
-     * @param   integer  $delay
      * @return  string
      */
     public static function generate($name = null)

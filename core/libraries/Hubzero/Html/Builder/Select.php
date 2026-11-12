@@ -684,7 +684,7 @@ class Select
     /**
      * Escape text
      *
-     * @param   string  $text
+     * @param   string  $str
      * @return  string
      */
     protected static function escape($str)

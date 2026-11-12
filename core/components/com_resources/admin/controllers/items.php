@@ -1326,7 +1326,6 @@ class Items extends AdminController
         // Incoming
         $pid = Request::getInt('pid', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {

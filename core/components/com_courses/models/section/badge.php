@@ -36,7 +36,7 @@ class Badge extends Base
     /**
      * Constructor
      *
-     * @param      integer $id  Resource ID or alias
+     * @param      integer $oid  Resource ID or alias
      * @return     void
      */
     public function __construct($oid = null)

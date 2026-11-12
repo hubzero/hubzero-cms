@@ -19,7 +19,7 @@ class GetParams extends Macro
     /**
      * Get element params
      *
-     * @param   string  $option     com_xyz
+     * @param   string  $element     com_xyz
      * @param   bool    $returnRaw  whether or not to return jregistry object or raw param string
      * @return  object|string
      **/

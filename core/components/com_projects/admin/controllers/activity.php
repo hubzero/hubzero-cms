@@ -283,7 +283,6 @@ class Activity extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -326,7 +325,6 @@ class Activity extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $published = \Hubzero\Activity\Recipient::STATE_PUBLISHED;
         $unpublished = \Hubzero\Activity\Recipient::STATE_UNPUBLISHED;
@@ -377,7 +375,6 @@ class Activity extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

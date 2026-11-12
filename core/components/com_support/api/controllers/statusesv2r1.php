@@ -348,7 +348,6 @@ class Statusesv2r1 extends ApiController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('No ID provided'), 500);

@@ -77,7 +77,7 @@ class Database extends Table
      * Get items
      *
      * @param   integer  $projectid
-     * @param   array    $filters
+     * @param   array    $id
      * @return  mixed    object, integer or null
      */
     public function getResource($projectid = null, $id = null)

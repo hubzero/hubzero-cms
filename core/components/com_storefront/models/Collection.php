@@ -86,7 +86,6 @@ class Collection
     /**
      * Get collection type
      *
-     * @param   void
      * @return  int     Collection type
      */
     public function getType()
@@ -112,7 +111,6 @@ class Collection
     /**
      * Get collection id (if set)
      *
-     * @param   void
      * @return  int     collection ID
      */
     public function getId()
@@ -138,7 +136,6 @@ class Collection
     /**
      * Get collection name
      *
-     * @param   void
      * @return  string      collection name
      */
     public function getName()
@@ -174,7 +171,6 @@ class Collection
     /**
      * Get collection alias
      *
-     * @param   void
      * @return  string      collection alias
      */
     public function getAlias()
@@ -209,7 +205,6 @@ class Collection
     /**
      * Get collection active status
      *
-     * @param   void
      * @return  bool        collection status
      */
     public function getActiveStatus()
@@ -223,7 +218,6 @@ class Collection
     /**
      * Check if everything checks out and the collection is ready to go
      *
-     * @param  void
      * @return bool     true on success, throws exception on failure
      */
     public function verify()
@@ -255,7 +249,6 @@ class Collection
      * TODO: Something tells me that this is not used. Check and kill this
      * and the $warehouse->addCollection($this) method
      *
-     * @param  void
      * @return object   info
      */
     public function add()
@@ -271,7 +264,6 @@ class Collection
      * Update collection info
      * TODO: remove it and use save()
      *
-     * @param  void
      * @return object   info
      */
     public function update()
@@ -283,7 +275,6 @@ class Collection
     /**
      * Save collection info
      *
-     * @param  void
      * @return object   info
      */
     public function save()
@@ -355,7 +346,6 @@ class Collection
     /**
      * Delete the collection
      *
-     * @param   void
      * @return  bool    true on success, exception otherwise
      */
     public function delete()
@@ -380,7 +370,6 @@ class Collection
     /**
      * Get collection image
      *
-     * @param   void
      * @return  object|false|null  Collection image, or false or null when there is none
      */
     public function getImage($forceReload = false)
@@ -460,7 +449,6 @@ class Collection
     /**
      * Delete the collection
      *
-     * @param   void
      * @return  bool    true on success, exception otherwise
      */
     public static function findActiveCollectionByAlias($cAlias)

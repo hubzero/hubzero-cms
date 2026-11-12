@@ -223,7 +223,6 @@ class Languages extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -269,7 +268,6 @@ class Languages extends AdminController
         $section = Request::getInt('section_id', 0);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = ($this->getTask() == 'publish' ? Language::STATE_PUBLISHED : Language::STATE_UNPUBLISHED);
 

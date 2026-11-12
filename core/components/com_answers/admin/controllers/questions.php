@@ -236,7 +236,6 @@ class Questions extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             $this->cancelTask();
@@ -284,7 +283,6 @@ class Questions extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $publish = ($this->task == 'close') ? 1 : 0;
 

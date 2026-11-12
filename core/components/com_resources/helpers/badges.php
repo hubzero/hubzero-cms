@@ -75,7 +75,7 @@ class Badges
     /**
      * Convert string of raw_tag names into formatted array
      *
-     * @param   string   $rawTagNames   Comma separated list of raw_tag names
+     * @param   string   $newBadgesString   Comma separated list of raw_tag names
      * @return  array
      */
     protected function parseBadgesString($newBadgesString)

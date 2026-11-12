@@ -39,7 +39,6 @@ class CurrentCart extends Cart
     /**
      * Cart constructor
      *
-     * @param void
      * @return void
      */
     public function __construct()
@@ -169,7 +168,6 @@ class CurrentCart extends Cart
     /**
      * Check if the cart is empty
      *
-     * @param void
      * @return bool
      */
     public function isEmpty()
@@ -273,7 +271,6 @@ class CurrentCart extends Cart
 
     /**
      * Check if there are any messages to display (cart changes or other set messages)
-     * @param   void
      * @return  bool
      */
     public function hasMessages()
@@ -298,7 +295,6 @@ class CurrentCart extends Cart
     /**
      * Get all cart messages, both changes and set messages
      * Works like a flash variable -- gets messages once and then resets the state/messages
-     * @param   void
      * @return  void
      */
     public function getMessages()
@@ -353,7 +349,6 @@ class CurrentCart extends Cart
      *
      * Shipping (if shippable) -> Registration info (if needed) -> Summary page
      *
-     * @param void
      * @return string method name
      */
     public function getNextCheckoutStep()
@@ -380,7 +375,6 @@ class CurrentCart extends Cart
     /**
      * Get steps for a transaction
      *
-     * @param void
      * @return string method name
      */
     private function getCheckoutSteps()
@@ -397,7 +391,6 @@ class CurrentCart extends Cart
     /**
      * Get existing or create a new transaction (if doesn't exist)
      *
-     * @param void
      * @return array of items in the transaction, FALSE on failed attempt
      */
     public function getTransaction()
@@ -416,7 +409,6 @@ class CurrentCart extends Cart
     /**
      * Check if transaction is still valid and get transaction details and items
      *
-     * @param void
      * @return array of items in the transaction or false on failed attempt
      */
     public function liftTransaction($resetStatus = false)
@@ -681,7 +673,6 @@ class CurrentCart extends Cart
     /**
      * Gets all transaction related info about current cart transaction
      *
-     * @param void
      * @return object, false on no results
      */
     public function getTransactionData()
@@ -794,7 +785,6 @@ class CurrentCart extends Cart
     /**
      * Generate unique security token to verify the place order calls
      *
-     * @param       void
      * @return      string  token
      */
     public function getToken()
@@ -826,7 +816,6 @@ class CurrentCart extends Cart
     /**
      * Finalizes transaction in the DB
      *
-     * @param       void
      * @return      void
      */
     public function finalizeTransaction()
@@ -982,7 +971,6 @@ class CurrentCart extends Cart
 
     /**
      * Get coupons applied to the cart
-     * @param   void
      * @return  array       coupons
      */
     public function getCoupons()
@@ -1414,7 +1402,6 @@ class CurrentCart extends Cart
      * Get all items in the cart if cart exists, if cart doesn't exist reset session data and create a new cart
      * This is primarily for cases when session cart doesn't exist anymore. In most cases cart will be there.
      *
-     * @param void
      * @return array of items in the cart
      */
     private function getItems()
@@ -1433,7 +1420,6 @@ class CurrentCart extends Cart
      * Update cart based on current availability (and pricing) and return all items in the cart, update cart's
      * 'lastUpdated' field
      *
-     * @param void
      * @return array of items in the cart
      */
     private function getUpdatedItems()
@@ -1535,7 +1521,6 @@ class CurrentCart extends Cart
     /**
      * Get cart info from session, no DB call, simply use session data
      *
-     * @param void
      * @return bool
      */
     private function liftSessionCart()
@@ -1558,7 +1543,6 @@ class CurrentCart extends Cart
     /**
      * Sync session cart with the latest info from DB
      *
-     * @param void
      * @return void
      */
     private function syncSessionCart()
@@ -1601,7 +1585,6 @@ class CurrentCart extends Cart
     /**
      * Update session with instance cart info (no product syncing)
      *
-     * @param void
      * @return void
      */
     private function updateSession()
@@ -1613,7 +1596,6 @@ class CurrentCart extends Cart
     /**
      * Clear session cart
      *
-     * @param void
      * @return void
      */
     private function clearSessionCart()
@@ -1625,7 +1607,6 @@ class CurrentCart extends Cart
     /**
      * Get cart info from cookie
      *
-     * @param void
      * @return bool
      */
     private function liftCookie()
@@ -1686,7 +1667,6 @@ class CurrentCart extends Cart
     /**
      * Create a new cart
      *
-     * @param void
      * @return void
      */
     private function createCart()
@@ -1732,7 +1712,6 @@ class CurrentCart extends Cart
      * Link a session cart with user's cart. If these carts are different -- merge them.
      * If there is only a session cart -- make it the user's cart
      *
-     * @param void
      * @return bool
      */
     private function linkCarts()
@@ -1851,7 +1830,6 @@ class CurrentCart extends Cart
     /**
      * Create new transaction
      *
-     * @param void
      * @return bool
      */
     private function createTransaction()
@@ -1885,7 +1863,6 @@ class CurrentCart extends Cart
     /**
      * Populate transaction items and required steps -- cart must be synced.
      *
-     * @param void
      * @return void
      */
     private function populateTransaction()
@@ -1998,7 +1975,6 @@ class CurrentCart extends Cart
     /**
      * Attempts to rebuild a transaction if there is enough inventory and prices have not changed
      *
-     * @param void
      * @return bool Success or failure
      */
     private function rebuildTransaction()
@@ -2037,7 +2013,6 @@ class CurrentCart extends Cart
     /**
      * Kill all cart pending transactions
      *
-     * @param void
      * @return void
      */
     private function cleanOldTransactions()

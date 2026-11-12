@@ -215,7 +215,7 @@ class Item extends Base
     /**
      * Get a count or list of the comments on an item
      *
-     * @param   string  $rtrn    Data format to return
+     * @param   string  $what    Data format to return
      * @param   array   $filters Filters to apply to data fetch
      * @param   boolean $clear   Clear cached data?
      * @return  mixed
@@ -267,7 +267,7 @@ class Item extends Base
      * Get a count or a list of the assets on this entry
      *
      * @param   array    $filters  Filters to apply to data fetch
-     * @param   boolean  $clear    Reset internal cahce?
+     * @param   boolean  $reset    Reset internal cahce?
      * @return  mixed
      */
     public function assets($filters = [], $reset = false)
@@ -630,7 +630,7 @@ class Item extends Base
     /**
      * Get the item type
      *
-     * @param   string  $as  Return type as?
+     * @param   string  $type  Return type as?
      * @return  string
      */
     public function is($type)

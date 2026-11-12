@@ -18,7 +18,7 @@ class DeleteTemplateEntry extends Macro
     /**
      * Remove template entires from the appropriate tables
      *
-     * @param   string  $name    Template element name
+     * @param   string  $element    Template element name
      * @param   int     $client  Client id
      * @return  bool
      **/

@@ -55,7 +55,7 @@ class Emailcloak extends Plugin
     /**
      * Adds an attributes to the js cloaked email.
      *
-     * @param   string  $jsEmail  Js cloaked email.
+     * @param   string  $email  Js cloaked email.
      * @param   string  $before   Attributes before email.
      * @param   string  $after    Attributes after email.
      * @return  string  Js cloaked email with attributes.

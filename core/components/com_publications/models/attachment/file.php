@@ -1686,7 +1686,7 @@ class File extends Base
     /**
      * Unpublish file attachment
      *
-     * @param   object   $objPA
+     * @param   object   $row
      * @param   object   $pub
      * @param   object   $configs
      * @return  boolean
@@ -1723,7 +1723,7 @@ class File extends Base
      * Check completion status
      *
      * @param   object  $element
-     * @param   array   $formats
+     * @param   array   $attachments
      * @return  object
      */
     public function getStatus($element, $attachments)

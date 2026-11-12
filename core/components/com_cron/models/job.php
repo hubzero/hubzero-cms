@@ -366,7 +366,7 @@ class Job extends Relational
     /**
      * Return data about this job, icluding profile info as an array
      *
-     * @param   boolean  $vebose
+     * @param   boolean  $verbose
      * @return  array
      */
     public function toArray($verbose = false)

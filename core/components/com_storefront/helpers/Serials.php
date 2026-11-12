@@ -15,7 +15,7 @@ class Serials
     /**
      * Gets a count of serial numbers available for the SKU
      *
-     * @param   integer  $sID    SKU ID.
+     * @param   integer  $sId    SKU ID.
      * @return  int             number of serials available
      */
     public static function countAvailableSerials($sId)

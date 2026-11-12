@@ -27,7 +27,7 @@ class Archive extends Obj
     /**
      * Constructor
      *
-     * @param   object  $db
+     * @param   object  $type
      * @return  void
      */
     public function __construct($type = null)
@@ -61,7 +61,7 @@ class Archive extends Obj
      *
      * @param   string   $rtrn     What data to return
      * @param   array    $filters  Filters to apply to data retrieval
-     * @param   boolean  $boolean  Clear cached data?
+     * @param   boolean  $clear  Clear cached data?
      * @return  mixed
      */
     public function imports($rtrn = 'list', $filters = [], $clear = false)

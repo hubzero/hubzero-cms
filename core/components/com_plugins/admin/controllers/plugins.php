@@ -330,7 +330,6 @@ class Plugins extends AdminController
         // Incoming
         $cid = Request::getInt('cid', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 

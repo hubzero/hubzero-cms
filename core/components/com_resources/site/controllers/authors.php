@@ -58,9 +58,6 @@ class Authors extends SiteController
     /**
      * Save one or more authors
      *
-     * @param   integer  $show        Display author list when done?
-     * @param   integer  $id          Resource ID
-     * @param   array    $authorsNew  Authors to add
      * @return  void
      */
     public function saveTask()

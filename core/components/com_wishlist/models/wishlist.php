@@ -183,7 +183,7 @@ class Wishlist extends Relational
      * If no item is provided, it will build the trail up to the list
      *
      * @param   string  $title  Breadcrumb title
-     * @param   string  $url    Breadcrumb URL
+     * @param   string  $pathway    Breadcrumb URL
      * @return  string
      */
     public function pathway($title = null, $pathway = null)

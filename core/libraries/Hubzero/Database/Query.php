@@ -276,7 +276,7 @@ class Query
     /**
      * Constructs a new query instance
      *
-     * @param   object  $connect  The database connection to use in the query builder
+     * @param   object  $connection  The database connection to use in the query builder
      * @return  void
      **/
     public function __construct($connection)
@@ -1410,7 +1410,7 @@ class Query
      * Internal helper for where in subquery clauses
      *
      * @param   string    $column    The column to which the clause will apply
-     * @param   callable  $callback  Closure that builds the subquery
+     * @param   callable  $source  Closure that builds the subquery
      * @param   string    $logical   The logical operator (and/or)
      * @param   bool      $not       Whether to use NOT IN
      * @param   int       $depth     The depth level of the clause

@@ -26,8 +26,6 @@ class Plain implements RendererInterface
     /**
      * Create a new exception renderer.
      *
-     * @param   object  $document  Document instance
-     * @param   string  $template  Template name
      * @param   bool    $debug     Debugging turned on?
      * @return  void
      */
@@ -39,7 +37,7 @@ class Plain implements RendererInterface
     /**
      * Display the given exception to the user.
      *
-     * @param   object  $exception
+     * @param   object  $error
      * @return  void
      */
     public function render($error)

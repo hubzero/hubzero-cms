@@ -386,7 +386,7 @@ class Geocode
     /**
      * Get country based on short code
      *
-     * @param   string  $code  Short code (ex: us, de, fr, jp)
+     * @param   string  $name  Short code (ex: us, de, fr, jp)
      * @return  string
      */
     public static function getCodeByName($name = '')

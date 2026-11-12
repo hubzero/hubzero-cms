@@ -255,7 +255,6 @@ class Input
      * Use in conjunction with Request::checkHoneypot()
      *
      * @param   string   $name
-     * @param   integer  $delay
      * @return  string
      */
     public static function honeypot($name = null)

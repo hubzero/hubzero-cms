@@ -1420,7 +1420,7 @@ class Filesv1r0 extends ApiController
      * @param   string  $chunkSize    Each chunk size (in bytes)
      * @param   string  $totalSize    Original file size (in bytes)
      * @param   int     $total_files  The total number of chunks for this file
-     * @param   int     $expand       Whether to automatically expand zip,tar,gz files
+     * @param   int     $subdir       Whether to automatically expand zip,tar,gz files
      * @return  array
      */
     protected function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $subdir)

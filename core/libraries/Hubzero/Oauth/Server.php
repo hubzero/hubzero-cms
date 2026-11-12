@@ -40,7 +40,7 @@ class Server
      * Constructor to setup setup server
      *
      * @param   object  $storage
-     * @param   array   $config
+     * @param   array   $options
      * @return  void
      */
     public function __construct($storage, $options = [])

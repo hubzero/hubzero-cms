@@ -259,7 +259,6 @@ class Attachments extends Obj
      *
      * @param   string   $name
      * @param   object   $pub
-     * @param   integer  $actor
      * @param   object   $element
      * @param   array    $elements
      * @param   boolean  $authorized

@@ -367,7 +367,6 @@ class Jobs extends AdminController
 
         // Incoming (expecting an array)
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

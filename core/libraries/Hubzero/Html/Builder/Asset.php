@@ -348,8 +348,8 @@ class Asset
     /**
      * Load an icon's SVG representation
      *
-     * @param   string  $method
-     * @param   array   $parameters
+     * @param   string  $symbol
+     * @param   array   $ariahidden
      * @return  string
      */
     public static function icon($symbol, $ariahidden = true)

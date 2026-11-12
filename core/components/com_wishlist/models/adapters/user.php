@@ -35,7 +35,7 @@ class User extends Base
     /**
      * Constructor
      *
-     * @param   integer  $scope_id  Scope ID (group, course, etc.)
+     * @param   integer  $referenceid  Scope ID (group, course, etc.)
      * @return  void
      */
     public function __construct($referenceid = 0)

@@ -81,7 +81,7 @@ class Compiler extends Obj
      *
      * @param   string   $fullpath
      * @param   string   $data
-     * @param   string   $textpath
+     * @param   string   $texpath
      * @param   string   $outputDir
      * @param   integer  $getPath
      * @param   string   &$tempBase

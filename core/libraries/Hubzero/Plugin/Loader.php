@@ -47,7 +47,6 @@ class Loader implements LoaderInterface
      * otherwise only the specific plugin data is returned.
      *
      * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
-     * @param   string  $plugin  The plugin name.
      * @return  mixed   An array of plugin data objects, or a plugin data object.
      */
     public function loadListeners($type)

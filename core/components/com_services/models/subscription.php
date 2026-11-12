@@ -137,7 +137,6 @@ class Subscription extends Relational
      * Get remaining
      *
      * @param   string   $type          Type
-     * @param   object   $subscription  Subscription object
      * @param   integer  $maxunits      Maximum units
      * @param   mixed    $unitsize      Unit size
      * @return  mixed

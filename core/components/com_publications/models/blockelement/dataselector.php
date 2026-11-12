@@ -112,7 +112,7 @@ class Dataselector extends Base
     /**
      * Draw element without editing capabilities
      *
-     * @param   integer  $elementid
+     * @param   integer  $elementId
      * @param   object   $manifest
      * @param   object   $pub
      * @param   string   $status
@@ -168,7 +168,7 @@ class Dataselector extends Base
     /**
      * Draw file selector
      *
-     * @param   integer  $elementid
+     * @param   integer  $elementId
      * @param   object   $manifest
      * @param   object   $pub
      * @param   string   $status

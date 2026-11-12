@@ -49,7 +49,7 @@ class Html extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array  $messages
+     * @param   array  $item
      * @return  string
      */
     public function line(array $item)

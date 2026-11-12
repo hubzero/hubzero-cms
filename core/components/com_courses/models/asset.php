@@ -526,7 +526,7 @@ class Asset extends Base
     /**
      * Duplicate an asset and it's associated data
      *
-     * @param  bool $forms whether or not to duplicate forms as well
+     * @param  bool $courseId whether or not to duplicate forms as well
      * @return bool
      */
     public function duplicate($courseId)

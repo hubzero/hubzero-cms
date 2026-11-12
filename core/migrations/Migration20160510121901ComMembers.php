@@ -585,7 +585,7 @@ class Migration20160510121901ComMembers extends Base
     /**
      * Return if a field is required, option, read only, or hidden
      *
-     * @param   string  $name     Property name
+     * @param   string  $configured     Property name
      * @param   string  $default  Default property value
      * @param   string  $task     Task to look up value for
      * @return  string

@@ -256,7 +256,7 @@ class Project extends Model
     /**
      * Get project member
      *
-     * @param   boolean  $refresh
+     * @param   boolean  $reload
      * @return  object|false
      */
     public function member($reload = false)
@@ -705,7 +705,7 @@ class Project extends Model
     /**
      * Check a reviewer's authorization
      *
-     * @param   string   $action  Action to check
+     * @param   string   $reviewer  Action to check
      * @return  boolean  True if authorized, false if not
      */
     public function reviewerAccess($reviewer = false)

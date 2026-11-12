@@ -84,7 +84,7 @@ class Archive extends Obj
      *
      * @param   string  $rtrn    What data to return
      * @param   array   $filters Filters to apply to data retrieval
-     * @param   boolean $boolean Clear cached data?
+     * @param   boolean $clear Clear cached data?
      * @return  mixed
      */
     public function modules($rtrn = 'list', $filters = [], $clear = false)

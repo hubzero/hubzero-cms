@@ -206,7 +206,7 @@ class Migration
     /**
      * Getter for class private variables
      *
-     * @param   string  $public the public to retrieve
+     * @param   string  $var the public to retrieve
      * @return  mixed
      **/
     public function get($var)

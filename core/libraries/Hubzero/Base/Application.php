@@ -156,7 +156,6 @@ class Application extends Container
      *
      * @param  mixed   $provider  \Hubzero\Base\ServiceProvider|string
      * @param  array   $options
-     * @param  bool    $force
      * @return object
      */
     public function register($provider, $options = []) //, $force = false)
@@ -418,7 +417,7 @@ class Application extends Container
     /**
      * Get only runnable services
      *
-     * @param   array  $layers  Unfiltered services
+     * @param   array  $services  Unfiltered services
      * @return  array  Filtered runnable services
      */
     protected function middleware($services)

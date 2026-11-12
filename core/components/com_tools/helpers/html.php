@@ -279,7 +279,7 @@ class Html
      * Get the CSS class name for a status
      *
      * @param   integer  $statusNum
-     * @param   string   &$statusName
+     * @param   string   &$statusClass
      * @return  string
      */
     public static function getStatusClass($statusNum, &$statusClass)

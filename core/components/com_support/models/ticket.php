@@ -389,7 +389,7 @@ class Ticket extends Relational
      * Tag the entry
      *
      * @param   string   $tags
-     * @param   integer  $useR_id
+     * @param   integer  $user_id
      * @param   integer  $admin
      * @return  boolean
      */

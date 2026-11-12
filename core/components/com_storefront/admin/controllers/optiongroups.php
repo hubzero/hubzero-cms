@@ -329,7 +329,6 @@ class Optiongroups extends AdminController
     public function stateTask($state = 0)
     {
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

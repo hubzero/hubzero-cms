@@ -339,7 +339,6 @@ class Jobs extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -390,7 +389,6 @@ class Jobs extends AdminController
         $state = $this->task == 'publish' ? 1 : 0;
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -444,7 +442,6 @@ class Jobs extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

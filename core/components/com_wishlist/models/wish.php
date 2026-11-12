@@ -818,9 +818,6 @@ class Wish extends Relational
     /**
      * Get a list or count of ranks
      *
-     * @param   string   $rtrn     Data format to return
-     * @param   array    $filters  Filters to apply to data fetch
-     * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
     public function rankings()

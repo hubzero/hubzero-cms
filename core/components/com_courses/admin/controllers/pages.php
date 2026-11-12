@@ -218,7 +218,6 @@ class Pages extends AdminController
 
         // Incoming (expecting an array)
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $url = 'index.php?option=' . $this->option
             . '&controller=' . $this->controller
@@ -808,7 +807,6 @@ class Pages extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $num = 0;

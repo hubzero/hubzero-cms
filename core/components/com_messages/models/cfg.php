@@ -82,8 +82,8 @@ class Cfg extends Relational
     /**
      * Retrieves one row loaded by an alias field
      *
-     * @param   string  $path       The path to load by
-     * @param   string  $extension  The extnsion type
+     * @param   string  $user_id       The path to load by
+     * @param   string  $name  The extnsion type
      * @return  object
      */
     public static function oneByUserAndName($user_id, $name)

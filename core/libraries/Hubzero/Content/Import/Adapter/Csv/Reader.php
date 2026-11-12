@@ -50,7 +50,7 @@ class Reader implements Iterator
      * CSV Iterator Constructor
      *
      * @param   string  $file  CSV file we want to use
-     * @param   string  $key   CSV field delimiter
+     * @param   string  $delimiter   CSV field delimiter
      * @return  void
      */
     public function __construct($file, $delimiter)

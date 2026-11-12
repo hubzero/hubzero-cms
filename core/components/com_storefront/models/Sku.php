@@ -160,7 +160,6 @@ class Sku
     /**
      * Get publishing times
      *
-     * @param   void
      * @return  object
      */
     public function getPublishTime()
@@ -418,7 +417,6 @@ class Sku
     /**
      * Delete a SKU and everything related to it
      *
-     * @param   void
      * @return  bool    true on success, exception otherwise
      */
     public function delete()
@@ -615,7 +613,6 @@ class Sku
     /**
      * Get SKU active status
      *
-     * @param   void
      * @return  mixed       SKU status
      */
     public function getActiveStatus()
@@ -645,7 +642,6 @@ class Sku
     /**
      * Get restricted flag
      *
-     * @param   void
      * @return  bool    Restricted flag
      */
     public function getRestricted()

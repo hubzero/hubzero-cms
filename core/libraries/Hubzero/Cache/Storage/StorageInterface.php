@@ -18,7 +18,7 @@ interface StorageInterface
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $ttl
+     * @param   int     $minutes
      * @return  bool
      */
     public function add($key, $value, $minutes);
@@ -28,7 +28,7 @@ interface StorageInterface
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @param   int     $ttl
+     * @param   int     $minutes
      * @return  bool
      */
     public function put($key, $value, $minutes);

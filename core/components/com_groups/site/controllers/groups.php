@@ -1654,7 +1654,7 @@ class Groups extends Base
     /**
      * Check if a group alias is valid
      *
-     * @param   integer  $cname        Group alias
+     * @param   integer  $cn        Group alias
      * @param   boolean  $allowDashes  Allow dashes in cn
      * @return  boolean  True if valid, false if not
      */

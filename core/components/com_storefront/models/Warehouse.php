@@ -53,7 +53,6 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Constructor method
      *
-     * @param  void
      * @return void
      */
     public function __construct()
@@ -81,7 +80,6 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Reset instance lookup scope
      *
-     * @param  void
      * @return void
      */
     public function resetLookupCollections()
@@ -191,7 +189,6 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all root (no parents) product 'category' collections
      *
-     * @param  void
      * @return void
      */
     public function getCategories($rtrn = 'list', $filters = [])
@@ -471,7 +468,6 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get the products within the given scope
      *
-     * @param  void
      * @return void
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)

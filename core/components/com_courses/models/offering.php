@@ -725,7 +725,7 @@ class Offering extends Base
     /**
      * Get a list of memerships for a user
      *
-     * @param      array   $filters Filters to build query from
+     * @param      array   $user_id Filters to build query from
      * @return     mixed
      */
     public function membership($user_id = 0)
@@ -1010,7 +1010,7 @@ class Offering extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
+     * @param     array $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = [])

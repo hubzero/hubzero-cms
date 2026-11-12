@@ -159,7 +159,7 @@ class Base
      * Helper function for calling a given callback
      *
      * @param   string  $callback  Name of callback to use
-     * @param   string  $fund      Name of callback function to call
+     * @param   string  $func      Name of callback function to call
      * @param   array   $args      Args to pass to callback function
      * @return  mixed
      **/

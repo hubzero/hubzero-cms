@@ -242,7 +242,6 @@ class Asset extends Table
      * Rename a file and mark the record as "deleted"
      *
      * @param   integer  $id    Entry ID
-     * @param   string   $path  File path
      * @return  boolean  True on success, false on error
      */
     public function remove($id = null)

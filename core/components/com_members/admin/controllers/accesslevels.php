@@ -199,7 +199,6 @@ class Accesslevels extends AdminController
 
         // Incoming
         $ids = Request::getArray('cid', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

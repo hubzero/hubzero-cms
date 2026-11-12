@@ -3358,9 +3358,7 @@ class Files extends Plugin
     {
         // Clean up empty values
         $checked = Request::getArray('asset', []);
-        $checked = (!is_array($checked) ? [$checked] : $checked);
         $folders = Request::getArray('folder', []);
-        $folders = (!is_array($folders) ? [$folders] : $folders);
 
         foreach ($checked as $key => $value) {
             $safe = trim($value) == '' ? false : \Hubzero\Filesystem\SafePath::relative(urldecode((string) $value));

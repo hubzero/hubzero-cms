@@ -176,7 +176,7 @@ class Permissions extends Obj
     /**
      * Check if the current user is enrolled
      *
-     * @param   integer $user_ID
+     * @param   integer $user_id
      * @return  boolean
      */
     public function manager($user_id = null)

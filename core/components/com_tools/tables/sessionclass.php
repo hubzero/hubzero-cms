@@ -138,7 +138,7 @@ class SessionClass extends Table
     /**
      * Get a count of, single entry, or list of entries
      *
-     * @param   string   $rtrn     Data to return
+     * @param   string   $what     Data to return
      * @param   array    $filters  Filters to apply to data retrieval
      * @param   array    $select   List of fields to select
      * @return  mixed
@@ -215,7 +215,7 @@ class SessionClass extends Table
     /**
      * Get the an object list of quotas classes
      *
-     * @param   array  $filters  Start and limit, needed for pagination
+     * @param   array  $id  Start and limit, needed for pagination
      * @return  array  Return password rule records
      */
     public function getGroupIds($id = null)
@@ -239,7 +239,7 @@ class SessionClass extends Table
     /**
      * Get the an object list of quotas classes
      *
-     * @param   array  $filters  Start and limit, needed for pagination
+     * @param   array  $groups  Start and limit, needed for pagination
      * @return  array  Return password rule records
      */
     public function setGroupIds($groups = [])

@@ -24,7 +24,6 @@ class Coupons
     /**
      * Contructor
      *
-     * @param  void
      * @return void
      */
     public function __construct()

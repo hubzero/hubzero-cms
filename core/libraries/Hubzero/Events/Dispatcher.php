@@ -62,7 +62,7 @@ class Dispatcher implements DispatcherInterface
     /**
      * Remove a listener laoder from this dispatcher.
      *
-     * @param   LoaderInterface|string  $event  The event object or name.
+     * @param   LoaderInterface|string  $loader  The event object or name.
      * @return  Dispatcher  This method is chainable.
      */
     public function removeListenerLoader($loader)

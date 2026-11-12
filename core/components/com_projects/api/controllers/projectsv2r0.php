@@ -1170,7 +1170,6 @@ class Projectsv2r0 extends ApiController
         $this->requiresAuthentication();
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_PROJECTS_ERROR_MISSING_ID'), 500);

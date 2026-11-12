@@ -169,7 +169,7 @@ class Tags extends \Hubzero\Base\Obj
      * Get all tags with a publication association
      *
      * @param      integer $id   Publication ID
-     * @param      integer $cat  Publication category (optional)
+     * @param      integer $category  Publication category (optional)
      * @param      string  $tag  Parameter description (if any) ...
      * @return     array
      */
@@ -446,7 +446,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      string  $tag      Tag to find data for
      * @param      integer $id       Resource ID
-     * @param      integer $type     Publication category
+     * @param      integer $category     Publication category
      * @param      string  $sortby   Sort data by
      * @param      string  $tag2     Secondary tag
      * @param      array   $filterby Extra, optional filters

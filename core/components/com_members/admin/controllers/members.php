@@ -811,7 +811,6 @@ class Members extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $i = 0;
@@ -879,7 +878,6 @@ class Members extends AdminController
 
         // Incoming user ID
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {
@@ -946,7 +944,6 @@ class Members extends AdminController
 
         // Incoming user ID
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {
@@ -1163,7 +1160,6 @@ class Members extends AdminController
 
         // Incoming user ID
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // No Id, throw up a warning
         if (empty($ids)) {
@@ -1247,7 +1243,6 @@ class Members extends AdminController
 
         // Incoming user ID
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {

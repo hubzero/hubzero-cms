@@ -680,9 +680,9 @@ class Html
     /**
      * Generate the primary resources button
      *
-     * @param   string   $class     Class to add
-     * @param   string   $href      Link url
-     * @param   string   $msg       Link text
+     * @param   string   $icon     Class to add
+     * @param   string   $pub      Link url
+     * @param   string   $url       Link text
      * @param   string   $xtra      Extra parameters to add (deprecated)
      * @param   string   $title     Link title
      * @param   string   $action    Link action
@@ -1392,8 +1392,8 @@ class Html
     /**
      * Get the MIME type for gallery files
      *
-     * @param   object  $pub    publication model
-     * @param   int  $role
+     * @param   object  $publication_id    publication model
+     * @param   int  $publication_version_id
      * @param   array  $attachments
      * @param   array  $mimeTypes
      *

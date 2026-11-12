@@ -483,7 +483,7 @@ class Section extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
+     * @param     array $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = [])
@@ -574,7 +574,6 @@ class Section extends Base
     /**
      * Store changes to this offering
      *
-     * @param     boolean $check Perform data validation check?
      * @return    boolean False if error, True on success
      */
     public function delete()

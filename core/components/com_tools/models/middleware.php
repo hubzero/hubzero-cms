@@ -46,7 +46,7 @@ class Middleware extends Obj
     /**
      * Constructor
      *
-     * @param      mixed $oid Integer (ID), string (alias), object or array
+     * @param      mixed $db Integer (ID), string (alias), object or array
      * @return     void
      */
     public function __construct($db = null)

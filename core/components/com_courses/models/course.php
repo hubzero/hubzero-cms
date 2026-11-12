@@ -113,7 +113,7 @@ class Course extends Base
     /**
      * Constructor
      *
-     * @param      integer $id Course ID or alias
+     * @param      integer $oid Course ID or alias
      * @return     void
      */
     public function __construct($oid)
@@ -456,7 +456,7 @@ class Course extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array $value List of IDs or usernames
+     * @param     array $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = null)

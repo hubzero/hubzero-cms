@@ -455,7 +455,6 @@ class Membership extends AdminController
 
         // Incoming array of users to promote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -537,7 +536,6 @@ class Membership extends AdminController
 
         // Incoming array of users to promote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -624,7 +622,6 @@ class Membership extends AdminController
 
         // Incoming array of users to demote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -704,7 +701,6 @@ class Membership extends AdminController
 
         // Incoming array of users to demote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -792,7 +788,6 @@ class Membership extends AdminController
 
         // Incoming array of users to demote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             //check to see if we are uninviting email
@@ -870,7 +865,6 @@ class Membership extends AdminController
 
         // Incoming array of users to demote
         $mbrs = Request::getArray('id', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info

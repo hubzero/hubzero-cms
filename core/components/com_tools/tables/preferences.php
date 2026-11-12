@@ -151,7 +151,7 @@ class Preferences extends Table
     /**
      * Get a count of, single entry, or list of entries
      *
-     * @param   string  $rtrn     Data to return
+     * @param   string  $what     Data to return
      * @param   array   $filters  Filters to apply to data retrieval
      * @param   array   $select   List of fields to select
      * @return  mixed

@@ -684,7 +684,6 @@ class Entriesv1r0 extends ApiController
         $this->requiresAuthentication();
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_ID'), 500);

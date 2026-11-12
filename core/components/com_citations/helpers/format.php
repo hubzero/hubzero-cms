@@ -796,8 +796,8 @@ class Format
     /**
      * Output a tagcloud of tags associated with a citation
      *
-     * @param   object  $citation  Citation
-     * @param   object  $database  Database
+     * @param   object  $cite  Citation
+     * @param   object  $includeHtml  Database
      * @return  string  HTML
      */
     public static function citationTags(&$cite, $includeHtml = true)

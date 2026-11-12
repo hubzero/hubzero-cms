@@ -588,7 +588,6 @@ class Threads extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each ID
         $i = 0;
@@ -629,7 +628,6 @@ class Threads extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;
@@ -679,7 +677,6 @@ class Threads extends AdminController
         $sticky = Request::getInt('sticky', 0);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;
@@ -729,7 +726,6 @@ class Threads extends AdminController
         $access = Request::getInt('access', 0);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;

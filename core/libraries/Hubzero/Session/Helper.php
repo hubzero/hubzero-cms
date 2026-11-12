@@ -48,7 +48,7 @@ class Helper
     /**
      * Get Session by User Id
      *
-     * @param   integer  $id  User ID
+     * @param   integer  $userid  User ID
      * @return  mixed
      */
     public static function getSessionWithUserId($userid)

@@ -327,7 +327,6 @@ class Assetgroups extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $num = 0;
 
@@ -372,7 +371,6 @@ class Assetgroups extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

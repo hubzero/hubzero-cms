@@ -2760,7 +2760,7 @@ class OciDriver extends BaseSqlDriver
     /**
      * Override setQuery to capture the table name from INSERT statements
      *
-     * @param   string  $sql  The SQL statement
+     * @param   string  $query  The SQL statement
      * @return  $this
      */
     public function setQuery($query)

@@ -485,7 +485,6 @@ class FirebirdDriver extends BaseSqlDriver
      * This override adds FROM RDB$DATABASE when needed.
      *
      * @param   string  $query     The SQL statement to set
-     * @param   array   $bindings  Optional bindings to bind to the query
      * @return  $this
      */
     public function setQuery($query)

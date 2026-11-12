@@ -523,7 +523,7 @@ class Project
     /**
      * Property accessor
      *
-     * @param   string  $property
+     * @param   string  $key
      * @return  string
      */
     public function get($key)
@@ -534,7 +534,7 @@ class Project
     /**
      * Property setter
      *
-     * @param   string  $property
+     * @param   string  $key
      * @param   mixed   $value
      * @return  void
      */

@@ -330,7 +330,6 @@ class Serviceproviders extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -374,7 +373,6 @@ class Serviceproviders extends AdminController
         $state = $this->getTask() == 'publish' ? ServiceProvider::STATE_ENABLED : ServiceProvider::STATE_DISABLED;
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SAML_SELECT_ITEM'));

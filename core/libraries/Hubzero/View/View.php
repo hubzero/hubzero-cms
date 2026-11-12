@@ -460,7 +460,7 @@ class View extends Obj
     /**
      * Set a path to the site template
      *
-     * @param   string  $template
+     * @param   string  $path
      * @return  object
      */
     public function setOverridePath($path)

@@ -260,7 +260,6 @@ class Types extends AdminController
 
         // Incoming (expecting an array)
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -327,7 +326,6 @@ class Types extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {

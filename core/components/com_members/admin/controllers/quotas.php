@@ -123,7 +123,7 @@ class Quotas extends AdminController
     /**
      * Edit a member quota
      *
-     * @param   integer  $id  ID of entry to edit
+     * @param   integer  $row  ID of entry to edit
      */
     public function editTask($row = null)
     {
@@ -260,7 +260,6 @@ class Quotas extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         // Do we have any IDs?
@@ -473,7 +472,6 @@ class Quotas extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {

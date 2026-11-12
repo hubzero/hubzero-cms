@@ -203,7 +203,6 @@ class Roles extends AdminController
         Request::checkToken();
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -244,7 +243,6 @@ class Roles extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
         $roleid = Request::getInt('roleid', 0);
 
@@ -284,7 +282,6 @@ class Roles extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
 
         if (!$gid) {
@@ -321,7 +318,6 @@ class Roles extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
         $roleid = Request::getInt('roleid', 0);
 

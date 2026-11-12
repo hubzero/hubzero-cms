@@ -176,7 +176,7 @@ class Owner extends Relational
      *
      * @param   integer  $projectid
      * @param   string   $role       get owners in specific role or all
-     * @param   integer  $get_uids   get user ids (1) or owner ids (0)
+     * @param   integer  $uids   get user ids (1) or owner ids (0)
      * @param   integer  $active     get only active users (1) or any
      * @return  array
      */

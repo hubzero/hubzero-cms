@@ -39,7 +39,6 @@ class UserCart extends Cart
     /**
      * Get SKUs from the database
      *
-     * @param void
      * @return array of SKU IDs in the cart
      */
     public function getCartItems()

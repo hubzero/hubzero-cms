@@ -37,7 +37,7 @@ class Member extends Base
     /**
      * Constructor
      *
-     * @param   integer  $id  Member ID
+     * @param   integer  $oid  Member ID
      * @return  void
      */
     public function __construct($oid = null)

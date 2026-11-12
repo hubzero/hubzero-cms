@@ -329,7 +329,7 @@ class TraceableDispatcher implements DispatcherInterface
      * Returns information about the listener
      *
      * @param   object  $listener   The listener
-     * @param   string  $eventName  The event name
+     * @param   string  $event  The event name
      * @return  array   Information about the listener
      */
     private function getListenerInfo($listener, $event)

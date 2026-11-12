@@ -184,7 +184,6 @@ class Tagged extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {

@@ -372,7 +372,7 @@ class Filesystem
      *
      * @param   string   $path     The path of the folder to read.
      * @param   string   $filter   A filter for file names.
-     * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to
+     * @param   mixed    $recursive  True to recursively search into sub-folders, or an integer to
      *                             specify the maximum depth.
      * @param   boolean  $full     True to return the full path to the file.
      * @param   array    $exclude  Array with names of files which should not be shown in the result.
@@ -526,7 +526,7 @@ class Filesystem
     /**
      * Register a macro.
      *
-     * @param   object  $plugin  MacroInterface
+     * @param   object  $macro  MacroInterface
      * @return  $this
      */
     public function addMacro(MacroInterface $macro)
@@ -543,7 +543,7 @@ class Filesystem
     /**
      * Checks if macro is registered.
      *
-     * @param   string  $name
+     * @param   string  $method
      * @return  bool
      */
     public function hasMacro($method)

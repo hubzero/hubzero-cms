@@ -361,7 +361,7 @@ class Comment extends Relational
     /**
      * Get the recipient list
      *
-     * @param   string  $to
+     * @param   string  $who
      * @return  array
      */
     public function to($who = '')

@@ -139,7 +139,7 @@ class CartMessenger
     /**
      * Email completeed order
      *
-     * @param   object  $transactionInfo
+     * @param   object  $transaction
      * @return  void
      */
     public function emailOrderComplete($transaction)

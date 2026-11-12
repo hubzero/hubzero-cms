@@ -352,7 +352,7 @@ class Usage extends Plugin
      * (1 = country, 2 = domain, 3 = org)
      *
      * @param   integer  $id        Resource ID
-     * @param   string   $datetime  Timestamp YYYY-MM-DD
+     * @param   string   $period  Timestamp YYYY-MM-DD
      * @return  void
      */
     public function getValues($id, $period)

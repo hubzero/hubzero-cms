@@ -119,8 +119,6 @@ class Note extends \Components\Wiki\Models\Book
     /**
      * Get default project note
      *
-     * @param      string $group cn of project group
-     * @param      string $masterscope
      * @param      string $prefix
      * @return     void
      */

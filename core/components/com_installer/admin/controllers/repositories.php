@@ -193,7 +193,6 @@ class Repositories extends AdminController
 
         // Incoming aliases as repos
         $repos = Request::getArray('repositories', []);
-        $repos = (!is_array($repos) ? [$repos] : $repos);
 
         if (count($repos) <= 0) {
             $this->cancelTask();

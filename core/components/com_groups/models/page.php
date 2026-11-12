@@ -342,7 +342,7 @@ class Page extends Model
      * Get Parents Recursively
      *
      * @param   object  $page
-     * @param   string  $direction
+     * @param   string  $sort
      * @return  array
      */
     public function getRecursiveParents($page, $sort = 'ASC')

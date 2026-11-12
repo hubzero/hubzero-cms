@@ -262,7 +262,6 @@ class Articles extends AdminController
         // Incoming
         $cid = Request::getInt('cid', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -306,7 +305,6 @@ class Articles extends AdminController
         // Incoming
         $cid = Request::getInt('cid', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

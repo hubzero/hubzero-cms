@@ -274,7 +274,6 @@ class Versions extends AdminController
         $pageid = Request::getInt('pageid', 0);
 
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));

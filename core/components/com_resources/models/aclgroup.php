@@ -75,7 +75,7 @@ class AclGroup extends Relational
      * Load a record by resource and user IDs
      *
      * @param   integer  $resource_id  Resource ID
-     * @param   integer  $user_id      User ID
+     * @param   integer  $group_id      User ID
      * @return  object
      */
     public static function oneByResourceAndUser($resource_id, $group_id)

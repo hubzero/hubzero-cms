@@ -210,7 +210,7 @@ class SolrIndexAdapter implements IndexInterface
     /**
      * deleteById - Removes a single document from the search index
      *
-     * @param string $id
+     * @param string $query
      * @access public
      * @return mixed string if error caught
      */
@@ -239,7 +239,7 @@ class SolrIndexAdapter implements IndexInterface
      * updateIndex - Updates a document existing in the search index
      *
      * @param mixed $document
-     * @param mixed $id
+     * @param mixed $commitWithin
      * @access public
      * @return void
      */

@@ -390,7 +390,7 @@ class Link extends Base
     /**
      * Add/edit file attachment
      *
-     * @param   integer  $id
+     * @param   integer  $path
      * @param   string   $title
      * @param   object   $pub
      * @param   object   $configs

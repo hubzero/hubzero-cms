@@ -192,7 +192,7 @@ class Usage
     /**
      * Push database results to $this for internal use
      *
-     * @param   array    $result  Database records
+     * @param   array    $results  Database records
      * @return  boolean  False if errors, true on success
      */
     public function process($results)

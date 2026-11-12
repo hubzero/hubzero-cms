@@ -380,7 +380,6 @@ class Entriesv1r0 extends ApiController
         }
 
         $ids = Request::getArray('extension_id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             App::abort(500, Lang::txt('COM_PLUGINS_ERROR_MISSING_ID'));

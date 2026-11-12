@@ -5275,7 +5275,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Retrieves state vars set in the model namespace
      *
-     * @param   string  $public The public to attempt to retrieve
+     * @param   string  $var The public to attempt to retrieve
      * @param   mixed   $default  The default to return, should the public be unknown
      * @return  mixed
      **/
@@ -5357,7 +5357,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves a one to many model relationship
      *
      * @param   string       $model       The name of the model to relate to the current one
-     * @param   string|null  $foreignKey  The foreign key used to associate the many back to the model
+     * @param   string|null  $relatedKey  The foreign key used to associate the many back to the model
      * @param   string|null  $thisKey     The local key used to associate the many back to the model
      * @return  \Hubzero\Database\Relationship\OneToMany
      **/
@@ -6120,7 +6120,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ]);
      * ```
      *
-     * @param   mixed  ...$relations  Relationship names to load (same format as with())
      * @return  self
      **/
     public function load()
@@ -6158,7 +6157,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * $user->loadMissing('posts', 'comments', 'profile');
      * ```
      *
-     * @param   mixed  ...$relations  Relationship names to load if missing
      * @return  self
      **/
     public function loadMissing()

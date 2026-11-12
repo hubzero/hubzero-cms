@@ -214,7 +214,6 @@ class Languagefilter extends Plugin
     /**
      * Build rule
      *
-     * @param   object  $router
      * @param   object  $uri
      * @return  void
      */
@@ -287,7 +286,6 @@ class Languagefilter extends Plugin
     /**
      * Parse rule
      *
-     * @param   object  $router
      * @param   object  $uri
      * @return  void
      */

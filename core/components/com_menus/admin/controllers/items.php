@@ -393,7 +393,6 @@ class Items extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $row
      * @return  void
      */
     public function addTask()
@@ -707,7 +706,6 @@ class Items extends AdminController
 
         // Incoming
         $ids = Request::getArray('cid', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

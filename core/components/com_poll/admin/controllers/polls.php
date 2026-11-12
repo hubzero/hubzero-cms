@@ -305,7 +305,6 @@ class Polls extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = (Request::getCmd('task') == 'publish' ? 1 : 0);
 
@@ -351,7 +350,6 @@ class Polls extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $publish = ($this->getTask() == 'open' ? Poll::STATE_PUBLISHED : Poll::STATE_UNPUBLISHED);
 

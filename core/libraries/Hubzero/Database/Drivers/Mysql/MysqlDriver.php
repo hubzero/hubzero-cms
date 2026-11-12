@@ -1258,7 +1258,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Retrieves key information about the given tables
      *
-     * @param   string|array  $tables  A table name or a list of table names
+     * @param   string|array  $table  A table name or a list of table names
      * @return  array
      */
     public function getTableKeys($table)
@@ -1342,7 +1342,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Locks a table in the database
      *
-     * @param   string  $tableName  The name of the table to lock
+     * @param   string  $table  The name of the table to lock
      * @return  $this
      */
     public function lockTable($table)

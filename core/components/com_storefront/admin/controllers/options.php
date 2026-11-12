@@ -337,7 +337,6 @@ class Options extends AdminController
     public function stateTask($state = 0)
     {
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $ogId = Request::getInt('ogId', 0);
 

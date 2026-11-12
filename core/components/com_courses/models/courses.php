@@ -48,7 +48,6 @@ class Courses extends Obj
     /**
      * Constructor
      *
-     * @param      integer $id Course ID or alias
      * @return     void
      */
     public function __construct()

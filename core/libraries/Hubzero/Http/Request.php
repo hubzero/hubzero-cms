@@ -195,7 +195,7 @@ class Request extends BaseRequest
     /**
      * Get unsigned integer
      *
-     * @param   string   $key      Request key
+     * @param   string   $name      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  integer  Request variable
@@ -209,7 +209,7 @@ class Request extends BaseRequest
     /**
      * Get float
      *
-     * @param   string   $key      Request key
+     * @param   string   $name      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  integer  Request variable
@@ -310,7 +310,7 @@ class Request extends BaseRequest
     /**
      * Fetches and returns a given variable as a string.
      *
-     * @param   string  $key      Request key
+     * @param   string  $name      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  string  Request variable

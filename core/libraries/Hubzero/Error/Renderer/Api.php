@@ -47,7 +47,7 @@ class Api implements RendererInterface
     /**
      * Display the given exception to the user.
      *
-     * @param   object  $exception
+     * @param   object  $error
      * @return  void
      */
     public function render($error)

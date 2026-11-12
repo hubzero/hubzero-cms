@@ -1109,7 +1109,7 @@ class Profile extends Obj
      * Get a property's value
      *
      * @param   string  $property  Name of the property to retrieve
-     * @param   mixed   $value     Default value
+     * @param   mixed   $default     Default value
      * @return  mixed
      */
     public function get($property, $default = null)

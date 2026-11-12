@@ -52,7 +52,6 @@ class Cookie implements MessageStore
     /**
      * Return a list of messages
      *
-     * @param   array   $data
      * @param   string  $domain
      * @return  array
      */

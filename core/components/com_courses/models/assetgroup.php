@@ -89,7 +89,7 @@ class Assetgroup extends Base
     /**
      * Returns a property of the params
      *
-     * @param   string $property The name of the property
+     * @param   string $key The name of the property
      * @param   mixed  $default  The default value
      * @return  mixed  The value of the property
   */

@@ -825,7 +825,7 @@ class Project extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string  $identifier   project id or alias name
+     * @param   string  $pid   project id or alias name
      * @return  mixed   object or false
      */
     public function loadProvisionedProject($pid = null)

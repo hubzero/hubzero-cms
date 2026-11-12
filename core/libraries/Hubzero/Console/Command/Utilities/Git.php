@@ -592,7 +592,7 @@ class Git
      * Call a git command
      *
      * @param   string  $cmd   Git command being called
-     * @param   array   $args  Arguments for the specific command
+     * @param   array   $arguments  Arguments for the specific command
      * @return  string|false|null  The output, as shell_exec() returns it
      **/
     private function call($cmd, $arguments = [])

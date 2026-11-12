@@ -265,7 +265,6 @@ class Units extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $num = 0;
 
@@ -322,7 +321,6 @@ class Units extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         $url = 'index.php?option=' . $this->option

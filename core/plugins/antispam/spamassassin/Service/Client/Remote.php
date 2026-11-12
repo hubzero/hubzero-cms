@@ -39,7 +39,7 @@ class Remote
     /**
      * Parses SpamAssassin output ($header and $message)
      *
-     * @param  string $header  Output headers
+     * @param  string $report  Output headers
      * @param  string $message Output message
      * @return Result Object containing the result
      */

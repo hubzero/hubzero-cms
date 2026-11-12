@@ -353,7 +353,7 @@ class Version extends Table
      * Get previous version publication
      *
      * @param   integer $pid    Pub ID
-     * @param   integer $verNum version number
+     * @param   integer $version_number version number
      * @return  object
      */
     public function getPrevPublication($pid, $version_number)
@@ -372,7 +372,7 @@ class Version extends Table
      * Get next version publication
      *
      * @param   integer $pid    Pub ID
-     * @param   integer $verNum version number
+     * @param   integer $version_number version number
      * @return  object
      */
     public function getNextPublication($pid, $version_number)

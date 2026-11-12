@@ -336,7 +336,7 @@ class Application extends Obj
     /**
      * Method to write the configuration to a file.
      *
-     * @param   object  $config  A Registry object containing all global config data.
+     * @param   object  $data  A Registry object containing all global config data.
      * @return  bool    True on success, false on failure.
      * @since   2.5.4
      */

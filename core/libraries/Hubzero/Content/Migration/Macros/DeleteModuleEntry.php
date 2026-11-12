@@ -18,7 +18,7 @@ class DeleteModuleEntry extends Macro
     /**
      * Remove module entries from the appropriate table, depending on the CMS version
      *
-     * @param   string  $name    Plugin name
+     * @param   string  $element    Plugin name
      * @param   int     $client  Client (site=0, admin=1)
      * @return  bool
      **/

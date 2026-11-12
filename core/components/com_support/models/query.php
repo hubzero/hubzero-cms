@@ -200,7 +200,7 @@ class Query extends Relational
     /**
      * Remove entries by folder ID
      *
-     * @param   integer  $user_id
+     * @param   integer  $folder_id
      * @return  bool
      */
     public static function destroyByFolder($folder_id)

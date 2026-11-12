@@ -140,7 +140,6 @@ class Sponsors extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 

@@ -254,7 +254,6 @@ class Items extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         if (count($ids) > 0) {

@@ -533,7 +533,7 @@ class Html extends Obj
     /**
      * Covert param to array of values
      *
-     * @param   string  $param
+     * @param   string  $array
      * @return  array
      */
     public static function getCountArray($array = [])

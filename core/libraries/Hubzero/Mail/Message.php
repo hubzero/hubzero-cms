@@ -351,7 +351,6 @@ class Message extends \Symfony\Component\Mime\Email
      * If $name is passed this name will be associated with the address.
      *
      * @param string $address
-     * @param string $name  optional
      *
      * @return $this
      */
@@ -419,7 +418,6 @@ class Message extends \Symfony\Component\Mime\Email
      * If $name is passed this name will be associated with the address.
      *
      * @param string $address
-     * @param string $name  optional
      *
      * @return $this
      */
@@ -485,7 +483,6 @@ class Message extends \Symfony\Component\Mime\Email
      * If $name is passed this name will be associated with the address.
      *
      * @param string $address
-     * @param string $name  optional
      *
      * @return $this
      */
@@ -551,7 +548,6 @@ class Message extends \Symfony\Component\Mime\Email
      * If $name is passed this name will be associated with the address.
      *
      * @param string $address
-     * @param string $name  optional
      *
      * @return $this
      */

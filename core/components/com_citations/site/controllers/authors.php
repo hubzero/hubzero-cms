@@ -163,7 +163,6 @@ class Authors extends SiteController
         }
 
         $mbrs = Request::getArray('author', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $i => $mbr) {
             $author = Author::one($mbr);
@@ -203,7 +202,6 @@ class Authors extends SiteController
 
 
         $mbrs = Request::getArray('author', []);
-        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
         $authors = Author::all()
             ->whereIn('id', $mbrs)
             ->whereEquals('cid', (int) $this->citation->get('id'))

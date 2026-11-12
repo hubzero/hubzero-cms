@@ -193,7 +193,6 @@ class Windows extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         // Do we have any IDs?
@@ -400,7 +399,6 @@ class Windows extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) > 0) {
             // Loop through each ID

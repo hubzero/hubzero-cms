@@ -21,8 +21,8 @@ class Remote extends Plugin
     /**
      * onContentSave
      *
-     * @param   mixed  $table
-     * @param   mixed  $model
+     * @param   mixed  $results
+     * @param   mixed  $method
      * @return  void
      */
     public function sendSolrRequest($results, $method)

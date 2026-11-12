@@ -231,7 +231,6 @@ class Services extends AdminController
 
         // get the request vars
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 

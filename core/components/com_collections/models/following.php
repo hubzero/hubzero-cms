@@ -124,7 +124,7 @@ class Following extends Model
     /**
      * Get an adapter
      *
-     * @param   string  $what  Key name [following, follower]
+     * @param   string  $key  Key name [following, follower]
      * @return  object
      */
     private function adapter($key = 'following')

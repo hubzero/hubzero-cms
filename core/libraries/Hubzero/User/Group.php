@@ -859,7 +859,7 @@ class Group extends Obj
     /**
      * Set a property's value
      *
-     * @param   string  $property
+     * @param   string  $key
      * @param   mixed   $value
      * @return  void
      */

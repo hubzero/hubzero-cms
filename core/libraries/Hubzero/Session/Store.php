@@ -117,8 +117,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
     /**
      * Write session data to the SessionHandler backend.
      *
-     * @param   string   $id    The session identifier.
-     * @param   string   $ata  The session data.
+     * @param   string   $d    The session identifier.
+     * @param   string   $data  The session data.
      * @return  boolean  True on success, false otherwise.
      */
 

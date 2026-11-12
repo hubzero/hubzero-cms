@@ -30,7 +30,7 @@ class Certificate extends Table
      * Populate the current object with a database record if found
      * Accepts either an alias or an ID
      *
-     * @param      mixed $oid Unique ID or alias of object to retrieve
+     * @param      mixed $course_id Unique ID or alias of object to retrieve
      * @return     boolean True on success
      */
     public function loadByCourse($course_id)

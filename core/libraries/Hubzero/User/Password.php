@@ -502,7 +502,7 @@ class Password
     /**
      * Get a property's value
      *
-     * @param   string  $property
+     * @param   string  $key
      * @return  mixed
      */
     public function get($key)
@@ -513,7 +513,7 @@ class Password
     /**
      * Set a property's value
      *
-     * @param   string  $property
+     * @param   string  $key
      * @param   mixed   $value
      * @return  void
      */
@@ -680,7 +680,7 @@ class Password
      * Change a user's pass hash
      *
      * @param   mixed   $user
-     * @param   string  $password
+     * @param   string  $passhash
      * @return  bool
      */
     public static function changePasshash($user, $passhash)

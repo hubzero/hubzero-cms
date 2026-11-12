@@ -252,7 +252,7 @@ class Question extends Relational
     /**
      * Add a single tag to the entry
      *
-     * @param   string   $tags     Comma-separated list of tags to apply
+     * @param   string   $tag     Comma-separated list of tags to apply
      * @param   integer  $user_id  Tagger ID
      * @param   integer  $admin    Include amdin tags? (defaults to no)
      * @return  boolean

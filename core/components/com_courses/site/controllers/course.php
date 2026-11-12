@@ -658,9 +658,6 @@ class Course extends SiteController
     /**
      * Change the status of an item
      *
-     * @param   string  $type    Item being changed
-     * @param   string  $status  Status to set
-     * @param   string  $id      Item ID
      * @return  void
      */
     public function savepageTask()

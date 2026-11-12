@@ -25,7 +25,6 @@ class Option
     /**
      * Constructor
      *
-     * @param  void
      * @return void
      */
     public function __construct($oId = false)
@@ -74,7 +73,6 @@ class Option
     /**
      * Get ID
      *
-     * @param   void
      * @return  int     option ID
      */
     public function getId()
@@ -100,7 +98,6 @@ class Option
     /**
      * Get Option Group ID
      *
-     * @param   void
      * @return  int     option group ID
      */
     public function getOptionGroupId()
@@ -126,7 +123,6 @@ class Option
     /**
      * Get name
      *
-     * @param   void
      * @return  string      collection name
      */
     public function getName()
@@ -159,7 +155,6 @@ class Option
     /**
      * Get option group active status
      *
-     * @param   void
      * @return  bool        collection status
      */
     public function getActiveStatus()
@@ -173,7 +168,6 @@ class Option
     /**
      * Check if everything checks out and the option group is ready to go
      *
-     * @param  void
      * @return bool     true on success, throws exception on failure
      */
     public function verify()
@@ -191,7 +185,6 @@ class Option
     /**
      * Update option group info
      *
-     * @param  void
      * @return void
      */
     public function save()
@@ -228,7 +221,6 @@ class Option
     /**
      * Delete an option and everything related to it
      *
-     * @param   void
      * @return  void
      */
     public function delete()

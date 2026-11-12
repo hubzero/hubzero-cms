@@ -241,7 +241,6 @@ class Messages extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', [0]);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through all the IDs
         $success = 0;

@@ -61,7 +61,7 @@ class Archive extends Model
      *
      * @param   string  $rtrn    What data to return
      * @param   array   $filters Filters to apply to data retrieval
-     * @param   boolean $boolean Clear cached data?
+     * @param   boolean $clear Clear cached data?
      * @return  object
      */
     public function logs($rtrn = 'list', $filters = [], $clear = false)

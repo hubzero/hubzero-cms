@@ -544,7 +544,6 @@ class Sections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
         $offering_id = Request::getInt('offering', 0);
 
         $num = 0;
@@ -646,7 +645,6 @@ class Sections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $num = 0;

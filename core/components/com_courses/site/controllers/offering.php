@@ -92,7 +92,6 @@ class Offering extends SiteController
     /**
      * Method to set the document path
      *
-     * @param      array $course_pages List of roup pages
      * @return     void
      */
     public function buildPathway()

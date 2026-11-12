@@ -235,7 +235,6 @@ class Lists extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID to work with
         if (!count($ids)) {
@@ -340,7 +339,6 @@ class Lists extends AdminController
         // Incoming
         $cid = Request::getInt('cid', 0);
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

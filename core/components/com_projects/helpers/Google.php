@@ -48,10 +48,10 @@ class Google extends Obj
      * Insert permission
      *
      * @param   object  $apiService  Drive API service instance
-     * @param   string  $id          Remote id
-     * @param   string  $title       File title
-     * @param   string  $parentId    Parent id
-     * @param   array   &$metadata   Collector array
+     * @param   string  $fileId          Remote id
+     * @param   string  $value       File title
+     * @param   string  $type    Parent id
+     * @param   array   &$role   Collector array
      * @return  mixed   string (id) or false
      */
     public static function insertPermission($apiService, $fileId, $value, $type, $role)
@@ -1297,7 +1297,7 @@ class Google extends Obj
     /**
      * Get file name for import
      *
-     * @param   array   $remote
+     * @param   array   $name
      * @param   string  $importExt
      * @return  string
      */

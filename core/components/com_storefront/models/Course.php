@@ -20,7 +20,6 @@ class Course extends SingleSkuProduct
     /**
      * Contructor
      *
-     * @param  void
      * @return void
      */
     public function __construct($pId = false)
@@ -63,7 +62,6 @@ class Course extends SingleSkuProduct
     /**
      * Get the course ID associated with product
      *
-     * @param   void
      * @return  string          course id/alias
      */
     public function getCourseId()

@@ -33,7 +33,7 @@ class GradePolicies extends Base
     /**
      * Constructor
      *
-     * @param      integer $id  Resource ID
+     * @param      integer $oid  Resource ID
      * @param      integer $sid Section ID
      * @return     void
      */

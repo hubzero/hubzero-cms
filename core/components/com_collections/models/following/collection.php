@@ -42,7 +42,7 @@ class Collection extends Base
     /**
      * Constructor
      *
-     * @param   integer  $id  Collection ID
+     * @param   integer  $oid  Collection ID
      * @return  void
      */
     public function __construct($oid = null)

@@ -392,7 +392,6 @@ class Newsletters extends AdminController
 
         // Get the request vars
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have ids
         $success = 0;

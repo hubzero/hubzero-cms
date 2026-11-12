@@ -62,7 +62,7 @@ class Handler
     /**
      * Set the render,
      *
-     * @param   object  $exception
+     * @param   object  $renderer
      * @return  object  Chainable.
      */
     public function setRenderer(RendererInterface $renderer)

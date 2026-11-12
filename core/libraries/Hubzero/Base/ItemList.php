@@ -337,7 +337,6 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Merge Item Lists
      *
-     * @param   object  $data  ItemList
      * @return  ItemList
      */
     public function merge()

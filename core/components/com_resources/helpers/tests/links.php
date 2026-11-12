@@ -32,7 +32,7 @@ class Links implements Test
     /**
      * Constructor
      *
-     * @param   string  $rooturl
+     * @param   string  $verify
      * @return  void
      */
     public function __construct($verify = false)

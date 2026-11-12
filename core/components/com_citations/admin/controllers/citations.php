@@ -204,7 +204,6 @@ class Citations extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -248,7 +247,6 @@ class Citations extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -289,7 +287,6 @@ class Citations extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -462,7 +459,6 @@ class Citations extends AdminController
 
         // Incoming (we're expecting an array)
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 

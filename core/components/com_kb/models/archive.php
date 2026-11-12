@@ -37,9 +37,7 @@ class Archive
     /**
      * Get a count or list of categories
      *
-     * @param      string  $rtrn    What data to return
      * @param      array   $filters Filters to apply to data retrieval
-     * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
     public function categories($filters = [])
@@ -90,9 +88,6 @@ class Archive
     /**
      * Get a count or list of articles
      *
-     * @param      string  $rtrn    What data to return
-     * @param      array   $filters Filters to apply to data retrieval
-     * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
     public function articles()

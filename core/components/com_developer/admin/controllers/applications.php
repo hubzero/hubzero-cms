@@ -234,7 +234,6 @@ class Applications extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -282,7 +281,6 @@ class Applications extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {
@@ -354,7 +352,6 @@ class Applications extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {
@@ -409,7 +406,6 @@ class Applications extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {

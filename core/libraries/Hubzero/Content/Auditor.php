@@ -101,7 +101,7 @@ class Auditor
     /**
      * Run the tests against a single data point
      *
-     * @param   array  $data
+     * @param   array  $datum
      * @return  array
      */
     public function process(array $datum)

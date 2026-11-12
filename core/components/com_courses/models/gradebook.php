@@ -45,7 +45,7 @@ class GradeBook extends Base
     /**
      * Constructor
      *
-     * @param      integer $id  Resource ID or alias
+     * @param      integer $oid  Resource ID or alias
      * @param      object  $course
      * @return     void
      */

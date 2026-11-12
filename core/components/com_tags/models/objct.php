@@ -222,7 +222,7 @@ class Objct extends Relational
     /**
      * Checks if a particular objct has a tag
      *
-     * @param   integer  $tagid  ID of tag to check
+     * @param   integer  $tagAssocData  ID of tag to check
      * @return  boolean  True if Objct has tag
      */
     public static function associationExists($tagAssocData)

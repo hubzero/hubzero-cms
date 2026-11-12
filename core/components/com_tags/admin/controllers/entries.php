@@ -257,7 +257,6 @@ class Entries extends AdminController
         }
 
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -320,7 +319,6 @@ class Entries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $step = Request::getInt('step', 1);
         $step = ($step) ? $step : 1;
@@ -444,7 +442,6 @@ class Entries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $step = Request::getInt('step', 1);
         $step = ($step) ? $step : 1;
@@ -543,7 +540,6 @@ class Entries extends AdminController
     public function calculateTask()
     {
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {

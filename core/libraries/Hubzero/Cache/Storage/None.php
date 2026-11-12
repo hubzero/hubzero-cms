@@ -154,7 +154,7 @@ class None implements StorageInterface
     /**
      * Get a cache_id string from an id/group pair
      *
-     * @param   string  $id  The cache data id
+     * @param   string  $key  The cache data id
      * @return  string  The cache id string
      */
     protected function id($key)

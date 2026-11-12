@@ -16,7 +16,6 @@ class SavePluginParams extends SaveParams
     /**
      * Save plugin params
      *
-     * @param   string  $folder   Plugin folder
      * @param   string  $element  Plugin element
      * @param   array   $params   Plugin params (if already known)
      * @return  bool

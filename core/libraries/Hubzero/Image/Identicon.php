@@ -167,7 +167,7 @@ class Identicon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $hexaColor
+     * @param   string   $color
      * @return  void
      */
     private function generateImage($string, $size, $color)

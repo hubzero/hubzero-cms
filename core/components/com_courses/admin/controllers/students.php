@@ -317,7 +317,6 @@ class Students extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $offering_id = Request::getInt('offering', 0);
         $section_id  = Request::getInt('section', 0);

@@ -30,8 +30,8 @@ class Permissions
     /**
      * Gets a list of the actions that can be performed.
      *
-     * @param   string   $extension   The extension.
-     * @param   integer  $categoryId  The category ID.
+     * @param   string   $assetType   The extension.
+     * @param   integer  $assetId  The category ID.
      * @return  object
      */
     public static function getActions($assetType = 'component', $assetId = 0)

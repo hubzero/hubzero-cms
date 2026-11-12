@@ -352,7 +352,6 @@ class Git extends Obj
     /**
      * Diff revisions
      *
-     * @param   string  $path
      * @param   array   $old
      * @param   array   $new
      * @return  mixed
@@ -515,7 +514,7 @@ class Git extends Obj
     /**
      * Show logs in subdir
      *
-     * @param   string   $file   file path
+     * @param   string   $subdir   file path
      * @param   integer  $limit  limit results
      * @return  mixed
      */

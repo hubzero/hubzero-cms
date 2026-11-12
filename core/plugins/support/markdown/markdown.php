@@ -35,7 +35,6 @@ class Markdown extends Plugin
      *
      * @param   string  $context
      * @param   object  $comment
-     * @param   string  $text
      * @return  void
      */
     public function onCommentPrepare($context, &$comment)

@@ -173,7 +173,7 @@ class DublinCore implements Schema
     /**
      * Process a list of sets
      *
-     * @param   array   $iterator
+     * @param   array   $set
      * @return  object  $this
      */
     public function set($set) //$iterator)
