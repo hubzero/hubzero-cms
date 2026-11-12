@@ -100,6 +100,22 @@ class Import extends Relational
     }
 
     /**
+     * Make a record from one raw entry
+     *
+     * The adapters call this for every entry read. A component's import
+     * model overrides it to hand back its own kind of record.
+     *
+     * @param   mixed   $raw      The entry as read
+     * @param   array   $options  Import options
+     * @param   string  $mode     UPDATE or PATCH
+     * @return  Record
+     */
+    public function getRecord($raw, $options = [], $mode = 'UPDATE')
+    {
+        return new Record($raw, $options, $mode);
+    }
+
+    /**
      * Get most current run
      *
      * @return  object

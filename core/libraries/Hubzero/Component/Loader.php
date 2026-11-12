@@ -399,6 +399,11 @@ class Loader
         $head = $heads->item(0);
 
         foreach ($head->childNodes as $node) {
+            // Text and comments between the tags are nodes too; only elements carry attributes
+            if (!$node instanceof \DOMElement) {
+                continue;
+            }
+
             if ($node->nodeName == 'meta') {
                 if ($node->hasAttribute('charset')) {
                     Document::setCharset($node->getAttribute('charset'));

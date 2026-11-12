@@ -134,13 +134,13 @@ class Metadata
 
         $entity = $xpath->query('//md:EntityDescriptor')->item(0);
 
-        if (!$entity || !$entity->getAttribute('entityID')) {
+        if (!$entity instanceof \DOMElement || !$entity->getAttribute('entityID')) {
             return false;
         }
 
         $descriptor = $xpath->query('.//md:SPSSODescriptor', $entity)->item(0);
 
-        if (!$descriptor) {
+        if (!$descriptor instanceof \DOMElement) {
             return false;
         }
 
@@ -192,6 +192,10 @@ class Metadata
         // fails rather than registering an address we would never reach.
         $best = null;
         foreach ($xpath->query('.//md:AssertionConsumerService', $descriptor) as $acs) {
+            if (!$acs instanceof \DOMElement) {
+                continue;
+            }
+
             if ($acs->getAttribute('Binding') != self::BINDING_HTTP_POST) {
                 continue;
             }
@@ -217,6 +221,10 @@ class Metadata
         // over. Storing a SOAP or POST endpoint here would look configured
         // while every logout response silently went nowhere.
         foreach ($xpath->query('.//md:SingleLogoutService', $descriptor) as $slo) {
+            if (!$slo instanceof \DOMElement) {
+                continue;
+            }
+
             if ($slo->getAttribute('Binding') == self::BINDING_HTTP_REDIRECT) {
                 $fields['slo_url'] = $slo->getAttribute('Location');
                 break;
@@ -225,6 +233,10 @@ class Metadata
 
         // Signing certificate: use="signing" wins, use-less descriptors apply to both
         foreach ($xpath->query('.//md:KeyDescriptor', $descriptor) as $key) {
+            if (!$key instanceof \DOMElement) {
+                continue;
+            }
+
             $use = $key->getAttribute('use');
 
             if ($use && $use != 'signing') {
