@@ -35,7 +35,7 @@ class Collections extends Plugin
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
         if (!$resource->type->params->get('plg_collections', 0)) {
-            return;
+            return null;
         }
         $pparams = \Plugin::params('resources', 'collections');
         $collectionType = $pparams->get('collection_alias');

@@ -78,7 +78,7 @@ class Coins extends Plugin
     public function coins($model)
     {
         if (!is_object($model)) {
-            return;
+            return null;
         }
 
         $genre = 'article';

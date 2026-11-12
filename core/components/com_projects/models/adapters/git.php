@@ -503,7 +503,7 @@ class Git extends Models\Adapter
                 // Provision new folder in Git
                 $this->git->makeEmptyFolder($file->get('localPath'));
             }
-            return;
+            return null;
         }
 
         // Git add

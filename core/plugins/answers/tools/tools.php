@@ -67,7 +67,7 @@ class Tools extends Plugin
         $tags = preg_split("/[,;]/", $tags);
 
         if (!count($tags)) {
-            return;
+            return null;
         }
 
         $recipients = [];

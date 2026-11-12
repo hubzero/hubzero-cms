@@ -44,13 +44,13 @@ class Guide extends Plugin
     {
         $member = $offering->member(User::get('id'));
         if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00') {
-            return;
+            return null;
         } elseif (
             !$member->get('id')
             && is_object(\Hubzero\Utility\Cookie::eat('plugin.courses.guide'))
             && isset(\Hubzero\Utility\Cookie::eat('plugin.courses.guide')->first_visit)
         ) {
-            return;
+            return null;
         }
 
         $this->view = with($this->view('overlay', $this->pluginName))

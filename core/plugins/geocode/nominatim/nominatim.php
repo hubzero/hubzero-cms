@@ -31,11 +31,11 @@ class Nominatim extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate' && $context != 'geocode.address') {
-            return;
+            return null;
         }
 
         if (!$this->params->get('rootUrl')) {
-            return;
+            return null;
         }
 
         return new \Geocoder\Provider\Nominatim\Nominatim(

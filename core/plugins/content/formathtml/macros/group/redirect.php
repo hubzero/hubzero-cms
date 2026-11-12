@@ -57,7 +57,7 @@ class Redirect extends GroupMacro
 
         // No arguments passed? Can't do anything.
         if (empty($args)) {
-            return;
+            return null;
         }
 
         // Clean up the args

@@ -362,7 +362,7 @@ abstract class Driver implements LoggerAwareInterface
     {
         // We have to have args
         if (empty($args)) {
-            return;
+            return null;
         }
 
         switch ($method) {

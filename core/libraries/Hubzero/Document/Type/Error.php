@@ -98,7 +98,7 @@ class Error extends Base
     {
         // If no error object is set return null
         if (!isset($this->error)) {
-            return;
+            return null;
         }
 
         $file = 'error.php';

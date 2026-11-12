@@ -66,7 +66,7 @@ class Review extends Base
 
         if ($viewname == 'curator') {
             // Do not show
-            return;
+            return null;
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 

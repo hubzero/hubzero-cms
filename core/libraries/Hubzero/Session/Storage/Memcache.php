@@ -158,7 +158,7 @@ class Memcache extends Store
             $this->engine->set($key, $data, $this->compress);
         }
 
-        return;
+        return null;
     }
 
     /**

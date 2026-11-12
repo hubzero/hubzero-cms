@@ -40,7 +40,7 @@ class Local extends Plugin
                 break;
 
             default:
-                return;
+                return null;
         }
 
         return new \Plugins\Geocode\Local\LocalProvider(

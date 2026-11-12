@@ -50,7 +50,7 @@ class DefaultHandler extends Plugin
 
         // Only process acceptable files
         if (!in_array($extension, $acceptable)) {
-            return;
+            return null;
         }
 
         // Get the file contents, uses temporary file

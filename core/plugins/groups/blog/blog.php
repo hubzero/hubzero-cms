@@ -851,7 +851,7 @@ class Blog extends Plugin
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->group->published != 1 || !$this->authorized || !$this->getPostingPermissions()) {
@@ -1071,7 +1071,7 @@ class Blog extends Plugin
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         // Require POST to prevent accidental deletion by crawlers
@@ -1162,7 +1162,7 @@ class Blog extends Plugin
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->group->published != 1 || ($this->authorized != 'manager' && $this->authorized != 'admin')) {

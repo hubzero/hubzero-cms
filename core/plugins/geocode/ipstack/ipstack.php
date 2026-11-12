@@ -27,15 +27,15 @@ class Ipstack extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate') {
-            return;
+            return null;
         }
 
         if (!$this->params->get('apiKey')) {
-            return;
+            return null;
         }
 
         if (!$ip) {
-            return;
+            return null;
         }
 
         $geocoder = new \Geocoder\Provider\Ipstack\Ipstack(

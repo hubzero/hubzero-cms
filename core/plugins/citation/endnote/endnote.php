@@ -52,7 +52,7 @@ class Endnote extends Plugin
 
         // Only process more in this file if it matches endnote format
         if ($active != $extension) {
-            return;
+            return null;
         }
 
         // Get the file contents
@@ -72,7 +72,7 @@ class Endnote extends Plugin
     {
         // Make sure we have some citation data to process
         if (empty($raw_citations_text)) {
-            return;
+            return null;
         }
 
         $raw_citation = [];

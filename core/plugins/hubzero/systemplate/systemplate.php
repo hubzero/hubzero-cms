@@ -26,7 +26,7 @@ class Systemplate extends Plugin
     public function onSystemOverview($values = 'all')
     {
         if ($values != 'all') {
-            return;
+            return null;
         }
 
         $response = new \stdClass();

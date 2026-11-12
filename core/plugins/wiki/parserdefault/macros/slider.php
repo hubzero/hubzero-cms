@@ -49,7 +49,7 @@ class Slider extends WikiMacro
 
         // args will be null if the macro is called without parenthesis.
         if (!$content) {
-            return;
+            return null;
         }
 
         //generate a unique id for the slider
@@ -63,7 +63,7 @@ class Slider extends WikiMacro
 
         //check to make sure we have a valid group
         if (!is_object($group)) {
-            return;
+            return null;
         }
 
         //define a base url

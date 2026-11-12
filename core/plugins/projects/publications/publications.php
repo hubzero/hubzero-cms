@@ -156,7 +156,7 @@ class Publications extends Plugin
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
             if (empty($this->area) || !in_array($this->area['name'], $areas)) {
-                return;
+                return null;
             }
         }
 
@@ -2393,7 +2393,7 @@ class Publications extends Plugin
             Notify::message($this->msg, 'success', 'projects');
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -2755,7 +2755,7 @@ class Publications extends Plugin
         if (!is_dir(PATH_APP . $path)) {
             if (!Filesystem::makeDirectory(PATH_APP . $path)) {
                 $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return;
+                return null;
             }
         }
 
@@ -2772,7 +2772,7 @@ class Publications extends Plugin
     {
         if (!$this->model->exists()) {
             $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
-            return;
+            return null;
         }
 
         // Get member files path
@@ -2781,7 +2781,7 @@ class Publications extends Plugin
         // Create and initialize local repo
         if (!$this->model->repo()->iniLocal()) {
             $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
-            return;
+            return null;
         }
 
         // Copy files from member directory

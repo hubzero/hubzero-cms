@@ -192,7 +192,7 @@ class Api extends ApiController
             $this->view->set('oauth_token', $oauth_token);
             $this->view->set('form_action', '/api/oauth/authorize');
             $this->view->display();
-            return;
+            return null;
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

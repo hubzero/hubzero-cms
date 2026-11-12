@@ -60,11 +60,11 @@ class Novnc extends Plugin
             (isset($session->rendered) && $session->rendered)
             || ($viewer && $viewer != $this->pluginName)
         ) {
-            return;
+            return null;
         }
 
         if (!$this->canRender()) {
-            return;
+            return null;
         }
 
         $session->rendered = $this->pluginName;

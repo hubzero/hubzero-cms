@@ -51,7 +51,7 @@ class GroupMacro extends Macro
      */
     public function description()
     {
-        return;
+        return null;
     }
 
     /**

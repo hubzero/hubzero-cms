@@ -1441,7 +1441,7 @@ class Groups extends Base
         $group = trim($group);
 
         if ($group == '') {
-            return;
+            return null;
         }
 
         // Ensure the data passed is valid
@@ -1453,7 +1453,7 @@ class Groups extends Base
 
         if (Request::getInt('no_html', 0) == 1) {
             echo json_encode(['available' => $availability]);
-            return;
+            return null;
         }
 
         return $availability;

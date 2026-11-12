@@ -1717,7 +1717,7 @@ class Citations extends Plugin
      */
     public function onGroupMemberAfter($group, $profile)
     {
-        return;
+        return null;
 
         $view = $this->view('default', 'member');
         $view->group    = $group;

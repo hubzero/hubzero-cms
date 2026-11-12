@@ -128,15 +128,15 @@ class Usage extends Plugin
                     $dtm = '0000-00-00 00:00:00';
                 }
                 $this->getTopValues($model->id, $dtm);
-                return;
+                return null;
             }
             if ($action == 'overview') {
                 $this->getValues($model->id, Request::getInt('period', 13));
-                return;
+                return null;
             }
             if ($action == 'download') {
                 $this->downloadData($model->id, Request::getInt('period', $period));
-                return;
+                return null;
             }
 
             $types = [];

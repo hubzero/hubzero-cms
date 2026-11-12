@@ -131,7 +131,7 @@ class Html extends Base
     public function setHeadData($data)
     {
         if (empty($data) || !is_array($data)) {
-            return;
+            return null;
         }
 
         $this->title        = (isset($data['title']) && !empty($data['title'])) ? $data['title'] : $this->title;
@@ -161,7 +161,7 @@ class Html extends Base
     public function mergeHeadData($data)
     {
         if (empty($data) || !is_array($data)) {
-            return;
+            return null;
         }
 
         $this->title = (isset($data['title']) && !empty($data['title']) && !stristr($this->title, $data['title']))

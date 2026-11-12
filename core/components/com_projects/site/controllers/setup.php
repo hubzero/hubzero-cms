@@ -1143,7 +1143,7 @@ class Setup extends Base
                 'error'   => $this->model->getError(),
                 'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED'),
             ]);
-            return;
+            return null;
         }
 
         if ($this->model->getError()) {

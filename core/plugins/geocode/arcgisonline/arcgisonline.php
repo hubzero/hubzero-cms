@@ -33,11 +33,11 @@ class Arcgisonline extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate' && $context != 'geocode.address') {
-            return;
+            return null;
         }
 
         if ($ip) {
-            return;
+            return null;
         }
 
         return new \Geocoder\Provider\ArcGISOnline\ArcGISOnline(

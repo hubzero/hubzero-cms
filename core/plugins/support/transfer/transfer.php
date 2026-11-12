@@ -230,7 +230,7 @@ class Transfer extends Plugin
         // Save new information
         if (!$newrow->save()) {
             $this->setError($newrow->getError());
-            return;
+            return null;
         } else {
             // Checkin ticket
             // $newrow->checkin();

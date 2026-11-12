@@ -56,7 +56,7 @@ class Xcache extends Store
     {
         // Check if id exists
         if (!xcache_isset($this->key($id))) {
-            return;
+            return null;
         }
 
         return (string) xcache_get($this->key($id));

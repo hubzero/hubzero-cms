@@ -30,7 +30,7 @@ class Googlemaps extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate' && $context != 'geocode.address') {
-            return;
+            return null;
         }
 
         return new \Geocoder\Provider\GoogleMaps\GoogleMaps(

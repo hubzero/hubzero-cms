@@ -792,7 +792,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Require POST
@@ -860,7 +860,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Require POST
@@ -1060,7 +1060,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
@@ -1424,7 +1424,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Deliberately not gated on access-create-item: a repost writes into a
@@ -1981,7 +1981,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Incoming
@@ -2116,7 +2116,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Require POST
@@ -2344,7 +2344,7 @@ class Collections extends Plugin
         if (User::isGuest()) {
             $this->login();
 
-            return;
+            return null;
         }
 
         // Access check

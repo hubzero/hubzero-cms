@@ -292,7 +292,7 @@ class ImageViewer extends Base
             return $view->loadTemplate();
         }
 
-        return;
+        return null;
     }
 
     /**

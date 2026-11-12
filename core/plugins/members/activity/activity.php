@@ -461,7 +461,7 @@ class Activity extends Plugin
         if (User::isGuest()) {
             $this->loginAction();
 
-            return;
+            return null;
         }
 
         if (User::get('id') != $this->member->get('id')) {

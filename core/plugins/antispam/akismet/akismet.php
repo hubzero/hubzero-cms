@@ -25,7 +25,7 @@ class Akismet extends Plugin
     {
 
         if (!$this->params->get('apiKey')) {
-            return;
+            return null;
         }
 
         $akismet = new \Plugins\Antispam\Akismet\Service\Provider();

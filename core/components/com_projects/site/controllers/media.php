@@ -60,13 +60,13 @@ class Media extends Base
             $size = (int) $_FILES['qqfile']['size'];
         } else {
             echo json_encode(['error' => Lang::txt('Please select a file to upload')]);
-            return;
+            return null;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
             echo json_encode(['error' => Lang::txt('File is empty')]);
-            return;
+            return null;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace(
@@ -75,7 +75,7 @@ class Media extends Base
                 \Hubzero\Utility\Number::formatBytes($sizeLimit),
             );
             echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is ') . $max]);
-            return;
+            return null;
         }
 
         //check to make sure we have an allowable extension
@@ -87,7 +87,7 @@ class Media extends Base
             echo json_encode(
                 ['error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')],
             );
-            return;
+            return null;
         }
 
         // Make the filename safe
@@ -96,7 +96,7 @@ class Media extends Base
         // Check project exists
         if (!$this->model->exists()) {
             echo json_encode(['error' => Lang::txt('Error loading project')]);
-            return;
+            return null;
         }
 
         // Make sure user is authorized (project manager)
@@ -105,7 +105,7 @@ class Media extends Base
             && !($this->model->access('content') && $this->config->get('edit_description'))
         ) {
             echo json_encode(['error' => Lang::txt('Unauthorized action')]);
-            return;
+            return null;
         }
 
         // Build project image path
@@ -115,7 +115,7 @@ class Media extends Base
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path, 0755, true, true)) {
                 echo json_encode(['error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')]);
-                return;
+                return null;
             }
         }
 
@@ -134,7 +134,7 @@ class Media extends Base
 
             if (Helpers\Html::virusCheck($temp)) {
                 echo json_encode(['error' => Lang::txt('Virus detected, refusing to upload')]);
-                return;
+                return null;
             }
 
             //move from temp location to target location which is user folder
@@ -149,7 +149,7 @@ class Media extends Base
         // Perform the upload
         if (!is_file($path . DS . $file)) {
             echo json_encode(['error' => Lang::txt('COM_PROJECTS_ERROR_UPLOADING')]);
-            return;
+            return null;
         } else {
             //resize image to max 200px and rotate in case user didnt before uploading
             $hi = new \Hubzero\Image\Processor($path . DS . $file);
@@ -173,7 +173,7 @@ class Media extends Base
                         // Ignore. Let's just move on.
                     } else {
                         echo json_encode(['error' => $e->getMessage()]);
-                        return;
+                        return null;
                     }
                 }
 
@@ -183,11 +183,11 @@ class Media extends Base
                     $hi->save($path . DS . 'master.png');// $file);
                 } catch (\Exception $e) {
                     echo json_encode(['error' => $e->getMessage()]);
-                    return;
+                    return null;
                 }
             } else {
                 echo json_encode(['error' => $hi->getError()]);
-                return;
+                return null;
             }
 
             // Delete previous thumb
@@ -203,18 +203,18 @@ class Media extends Base
                     $hi->save($path . DS . 'thumb.png');
                 } catch (\Exception $e) {
                     echo json_encode(['error' => $e->getMessage()]);
-                    return;
+                    return null;
                 }
             } else {
                 echo json_encode(['error' => $hi->getError()]);
-                return;
+                return null;
             }
 
             // Save picture name
             $this->model->set('picture', $file);
             if (!$this->model->store()) {
                 echo json_encode(['error' => $this->model->getError()]);
-                return;
+                return null;
             } elseif (!$this->model->inSetup()) {
                 // Record activity
                 $this->model->recordActivity(Lang::txt('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
@@ -224,7 +224,7 @@ class Media extends Base
         echo json_encode([
             'success' => true,
         ]);
-        return;
+        return null;
     }
 
     /**

@@ -74,7 +74,7 @@ class Storefront extends Plugin
             }
         }
         if (!$days) {
-            return;
+            return null;
         }
 
         // Database connection
@@ -228,7 +228,7 @@ class Storefront extends Plugin
     {
         // Make sure there is something to send
         if (!$skusInfo && !$productsInfo) {
-            return;
+            return null;
         }
 
         $eview = new \Hubzero\Component\View([
@@ -296,7 +296,7 @@ class Storefront extends Plugin
             }
         }
         if (! $values) {
-            return;
+            return null;
         }
         $db = App::get('db');
         $sql = "INSERT INTO `#__notifications` (scope, scope_id, notified, meta) VALUES" . $values;

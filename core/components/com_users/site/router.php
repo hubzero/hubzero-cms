@@ -205,7 +205,7 @@ class Router extends Base
 
         // Only run routine if there are segments to parse.
         if (count($segments) < 1) {
-            return;
+            return null;
         }
 
         // Get the package from the route segments.

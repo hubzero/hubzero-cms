@@ -30,11 +30,11 @@ class Geoplugin extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate') {
-            return;
+            return null;
         }
 
         if (!$ip) {
-            return;
+            return null;
         }
 
         return new \Geocoder\Provider\GeoPlugin\GeoPlugin(

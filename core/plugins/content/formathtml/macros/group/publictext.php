@@ -66,7 +66,7 @@ class Publictext extends GroupMacro
         $arg = strtolower($this->getArgument(0));
 
         if (!$arg && !$this->open) {
-            return;
+            return null;
         }
 
         if (in_array($arg, ['start', 'open', 'begin'])) {

@@ -97,7 +97,7 @@ class Links extends Plugin
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
             if (empty($this->area) || !in_array($this->area['name'], $areas)) {
-                return;
+                return null;
             }
         }
 
@@ -121,7 +121,7 @@ class Links extends Plugin
             // These actions read/write citation data and fetch URLs on behalf of
             // the project; require project content access.
             if (!$this->model->access('content')) {
-                return;
+                return null;
             }
 
             // Set vars
@@ -1117,13 +1117,13 @@ class Links extends Plugin
         // Error
         if ($status != 200) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
-            return;
+            return null;
         }
 
         // Error - redirected instead of printing metadata
         if (strpos($contenttype, 'text/html;') !== false) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
-            return;
+            return null;
         }
 
         // Error - redirected instead of printing metadata

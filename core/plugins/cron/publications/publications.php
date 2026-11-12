@@ -256,13 +256,13 @@ class Publications extends Plugin
 
         // Check that mkAIP script exists
         if (!\Components\Publications\Helpers\Utilities::archiveOn()) {
-            return;
+            return null;
         }
         // Check for grace period
         $gracePeriod = $config->get('graceperiod', 0);
         if (!$gracePeriod) {
             // If no grace period, this cron is unnecessary (archived as approval)
-            return;
+            return null;
         }
 
         $aipBasePath = trim($config->get('aip_path', null), '/');
@@ -271,7 +271,7 @@ class Publications extends Plugin
         // Check for base path
         if (!$aipBasePath) {
             $this->setError('Missing archival base directory');
-            return;
+            return null;
         }
 
         // Get all unarchived publication versions

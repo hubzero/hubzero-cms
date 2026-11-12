@@ -51,7 +51,7 @@ class Slider extends Macro
 
         // args will be null if the macro is called without parenthesis.
         if (!$content) {
-            return;
+            return null;
         }
 
         //generate a unique id for the slider

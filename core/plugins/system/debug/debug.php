@@ -601,7 +601,7 @@ class Debug extends Plugin
         $log = $db->getLog();
 
         if (!$log) {
-            return;
+            return null;
         }
 
         $html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED', $db->getCount())

@@ -52,7 +52,7 @@ class Bibtex extends Plugin
 
         // Make sure we have a .bib file
         if ($active != $extension) {
-            return;
+            return null;
         }
 
         // Include bibtex file

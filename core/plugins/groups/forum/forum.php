@@ -2571,7 +2571,7 @@ class Forum extends Plugin
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {

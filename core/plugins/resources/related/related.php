@@ -148,7 +148,7 @@ class Related extends Plugin
 
         // No data found. Nothing to display.
         if (!count($rows)) {
-            return;
+            return null;
         }
 
         // Instantiate a view

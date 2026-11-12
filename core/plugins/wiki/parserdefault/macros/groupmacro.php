@@ -51,7 +51,7 @@ class GroupMacro extends WikiMacro
      */
     public function description()
     {
-        return;
+        return null;
     }
 
     /**

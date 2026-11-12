@@ -177,7 +177,7 @@ class MathRenderer
             return ('$ ' . htmlspecialchars($this->tex) . ' $');
         }
         if ($this->tex == '') {
-            return;
+            return null;
         }
 
         if (!$this->recall()) {

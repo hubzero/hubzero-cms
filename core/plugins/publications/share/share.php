@@ -113,7 +113,7 @@ class Share extends Plugin
 
             $this->share($sharewith, $url, $mediaUrl, $publication, $version);
 
-            return;
+            return null;
         }
 
         // Build the HTML meant for the "about" tab's metadata overview

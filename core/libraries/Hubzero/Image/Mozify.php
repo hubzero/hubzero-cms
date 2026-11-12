@@ -102,7 +102,7 @@ class Mozify extends Obj
     public function mozify()
     {
         if ($this->imageUrl == '') {
-            return;
+            return null;
         }
 
         $html  = $this->mozifyCss() . PHP_EOL;
@@ -125,7 +125,7 @@ class Mozify extends Obj
     public function mosaic()
     {
         if ($this->imageUrl == '') {
-            return;
+            return null;
         }
 
         return $this->mozifyMosaic();

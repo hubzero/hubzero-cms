@@ -59,7 +59,7 @@ class Share extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         if (!$model->type->params->get('plg_share')) {
-            return;
+            return null;
         }
 
         $arr = [
@@ -125,7 +125,7 @@ class Share extends Plugin
 
             $this->share($sharewith, $url, $model);
 
-            return;
+            return null;
         }
 
         // Build the HTML meant for the "about" tab's metadata overview

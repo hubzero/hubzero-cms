@@ -114,13 +114,13 @@ class Batchcreate extends AdminController
     {
         if (!isset($this->reader)) {
             $this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR'));
-            return;
+            return null;
         }
 
         if (!$this->reader->isValid()) {
             $this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR'));
             $this->reader->close();
-            return;
+            return null;
         }
 
         // Collect all errors

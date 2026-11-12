@@ -171,18 +171,18 @@ class ArticlesCategory extends Module
                                 }
                             } else {
                                 // Return right away if show_on_article_page option is off
-                                return;
+                                return null;
                             }
                             break;
 
                         case 'featured':
                         default:
                             // Return right away if not on the category or article views
-                            return;
+                            return null;
                     }
                 } else {
                     // Return right away if not on a com_content page
-                    return;
+                    return null;
                 }
 
                 break;

@@ -66,7 +66,7 @@ class Watch extends Plugin
 
         // Only show for logged-in users
         if (User::isGuest()) {
-            return;
+            return null;
         }
 
         $this->resource = $resource;

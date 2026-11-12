@@ -30,11 +30,11 @@ class Geonames extends Plugin
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {
         if ($context != 'geocode.locate') {
-            return;
+            return null;
         }
 
         if (!$this->params->get('username') || $ip) {
-            return;
+            return null;
         }
 
         return new \Geocoder\Provider\Geonames\Geonames(

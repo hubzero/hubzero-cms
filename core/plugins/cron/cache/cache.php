@@ -75,7 +75,7 @@ class Cache extends Plugin
     public function trashExpiredData(\Components\Cron\Models\Job $job)
     {
         if (!is_dir($this->path)) {
-            return;
+            return null;
         }
 
         \Cache::gc();
@@ -92,7 +92,7 @@ class Cache extends Plugin
     public function cleanSystemCss(\Components\Cron\Models\Job $job)
     {
         if (!is_dir($this->path)) {
-            return;
+            return null;
         }
 
         $docs = [];

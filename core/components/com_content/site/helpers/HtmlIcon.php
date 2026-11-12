@@ -97,12 +97,12 @@ class HtmlIcon
 
         // Ignore if in a popup window.
         if ($params && $params->get('popup')) {
-            return;
+            return null;
         }
 
         // Ignore if the state is negative (trashed).
         if ($article->state < 0) {
-            return;
+            return null;
         }
 
         Html::behavior('tooltip');

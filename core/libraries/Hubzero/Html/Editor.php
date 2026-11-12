@@ -203,7 +203,7 @@ class Editor extends Obj
 
         // Check whether editor is already loaded
         if (is_null($this->editor)) {
-            return;
+            return null;
         }
 
         // Backwards compatibility. Width and height should be passed without a semicolon from now on.
@@ -250,7 +250,7 @@ class Editor extends Obj
 
         // Check whether editor is already loaded
         if (is_null($this->editor)) {
-            return;
+            return null;
         }
 
         $return = '';

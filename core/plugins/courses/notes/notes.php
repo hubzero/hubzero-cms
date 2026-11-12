@@ -137,7 +137,7 @@ class Notes extends Plugin
 
                 ob_clean();
                 echo json_encode($note);
-                return;
+                return null;
             }
 
             $response->set('html', $this->view->loadTemplate());
@@ -158,7 +158,7 @@ class Notes extends Plugin
     public function onCourseAfterLecture($course, $unit, $lecture)
     {
         if (!$course->offering()->section()->access('view')) {
-            return;
+            return null;
         }
 
         $this->view = $this

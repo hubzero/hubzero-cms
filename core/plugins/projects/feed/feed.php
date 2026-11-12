@@ -114,7 +114,7 @@ class Feed extends Plugin
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
             if (empty($this->area) || !in_array($this->area['name'], $areas)) {
-                return;
+                return null;
             }
         }
         // Check that project exists

@@ -222,13 +222,13 @@ class Captcha extends Plugin
     public function onGetCaptcha($ext = 'com')
     {
         if ($this->verified) {
-            return;
+            return null;
         }
 
         $ext = strtolower($ext);
 
         if ($ext != 'com' && $ext != 'mod') {
-            return;
+            return null;
         }
 
         $type = $this->params->get($ext . 'Captcha', 'image');

@@ -858,7 +858,7 @@ class Course extends SiteController
         $course = strtolower(trim($course));
 
         if ($course == '') {
-            return;
+            return null;
         }
 
         // Ensure the data passed is valid
@@ -871,7 +871,7 @@ class Course extends SiteController
 
         if (Request::getInt('no_html', 0) == 1) {
             echo json_encode(['available' => $availability]);
-            return;
+            return null;
         }
 
         return $availability;

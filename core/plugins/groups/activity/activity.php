@@ -115,7 +115,7 @@ class Activity extends Plugin
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
                 $this->loginRedirect();
-                return;
+                return null;
             }
 
             $siteAdmin = User::authorise('core.admin', 'com_groups');

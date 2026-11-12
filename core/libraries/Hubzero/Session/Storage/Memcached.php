@@ -158,7 +158,7 @@ class Memcached extends Store
             $this->engine->set($key, $data);
         }
 
-        return;
+        return null;
     }
 
     /**

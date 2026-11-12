@@ -34,7 +34,7 @@ class ModuleMenu extends Table
     public function getMenu($filters = [])
     {
         if (!isset($filters['moduleid'])) {
-            return;
+            return null;
         }
 
         $sql = "SELECT * FROM {$this->tableName} as m WHERE m.`moduleid`=" . $this->db->quote($filters['moduleid']);

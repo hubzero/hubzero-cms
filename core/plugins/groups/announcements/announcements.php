@@ -786,7 +786,7 @@ class Announcements extends Plugin
     public function onGroupsApiCreate($group, $active)
     {
         if ($active != $this->pluginName) {
-            return;
+            return null;
         }
 
         // Only admins and group managers. (This was ||, which demanded both, so a
@@ -866,7 +866,7 @@ class Announcements extends Plugin
     public function onGroupsApiRead($group, $active, $id)
     {
         if ($active != $this->pluginName) {
-            return;
+            return null;
         }
 
         // Load the record
@@ -892,7 +892,7 @@ class Announcements extends Plugin
     public function onGroupsApiUpdate($group, $active, $id)
     {
         if ($active != $this->pluginName) {
-            return;
+            return null;
         }
 
         // Only admins and group managers. (This was ||, which demanded both, so a
@@ -979,7 +979,7 @@ class Announcements extends Plugin
     public function onGroupsApiDelete($group, $active, $id)
     {
         if ($active != $this->pluginName) {
-            return;
+            return null;
         }
 
         // Only admins and group managers. (This was ||, which demanded both, so a
