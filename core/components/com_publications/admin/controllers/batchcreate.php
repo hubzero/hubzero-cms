@@ -194,6 +194,20 @@ class Batchcreate extends AdminController
         $mt = new Tables\MasterType($this->database);
         $this->mastertype = $mt->getType($mtid);
 
+        // The master type asked for must exist
+        if (!$this->mastertype) {
+            echo json_encode([
+                'result'  => 'error',
+                'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_MASTER_TYPE_ID'),
+                'records' => null,
+            ]);
+            if (!$api) {
+                exit();
+            } else {
+                return;
+            };
+        }
+
         // Check for file
         if (!is_array($file) || $file['size'] == 0 || $file['error'] != 0) {
             echo json_encode([
@@ -689,6 +703,9 @@ class Batchcreate extends AdminController
             // Get attachment type model
             $attModel = new \Components\Publications\Models\Attachments($this->database);
             $fileAttach = $attModel->loadAttach('file');
+            if (!$fileAttach) {
+                return false;
+            }
 
             // Get element manifest
             $elements = $this->curationModel->getElements($attachment->role);

@@ -94,6 +94,9 @@ class ResourceMapGenerator
         $database = App::get('db');
         $pub = new \Components\Publications\Tables\Publication($database);
         $publication = $pub->getPublication($this->id);
+        if (!$publication) {
+            App::abort(404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+        }
         $this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath(
             $this->id,
             $publication->version_id,
@@ -185,6 +188,9 @@ class ResourceMapGenerator
         // Load the $types variable. In the form of array([type_id] => [type_name]).
         $resource = new \Components\Publications\Tables\Publication($database);
         $pub = $resource->getPublication($this->id);
+        if (!$pub) {
+            App::abort(404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+        }
 
         $type_id = $pub->category;
         $typesData = new \Components\Publications\Tables\Category($database);

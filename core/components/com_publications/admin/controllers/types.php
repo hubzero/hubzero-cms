@@ -334,6 +334,9 @@ class Types extends AdminController
 
             // Get new block default manifest
             $defaultManifest = $blocksModel->getManifest($newblock, true);
+            if (!$defaultManifest) {
+                App::redirect($url, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 'error');
+            }
 
             // Determine IDs for new block (must be unique)
             $nextBlockId   = $maxBlockId + 1;

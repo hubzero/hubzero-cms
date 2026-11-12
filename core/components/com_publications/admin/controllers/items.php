@@ -472,6 +472,9 @@ class Items extends AdminController
         // Save via block
         $blocksModel = new Models\Blocks($this->database);
         $block = $blocksModel->loadBlock('authors');
+        if (!$block) {
+            App::redirect($url, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 'error');
+        }
 
         $block->reorder(null, 0, $model, User::get('id'));
         if ($block->getError()) {
@@ -552,6 +555,9 @@ class Items extends AdminController
         // Save via block
         $blocksModel = new Models\Blocks($this->database);
         $block = $blocksModel->loadBlock('authors');
+        if (!$block) {
+            App::redirect($url, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 'error');
+        }
 
         if ($author) {
             $block->saveItem(null, 0, $model, User::get('id'), 0, $author);

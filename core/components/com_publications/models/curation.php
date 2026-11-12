@@ -828,6 +828,11 @@ class Curation extends Obj
             $autoStatus   = self::getStatus($block->name, $this->pub, $blockId);
             $reviewStatus = self::getReviewStatus($block->name, $blockId);
 
+            // A block that cannot be loaded has no status to report
+            if (!$autoStatus) {
+                continue;
+            }
+
             $result->blocks->$blockId = new stdClass();
             $result->blocks->$blockId->name         = $block->name;
             $result->blocks->$blockId->manifest     = $block;
@@ -2332,6 +2337,9 @@ class Curation extends Obj
             // Get attachment type model
             $attModel = new Attachments($this->db);
             $fileAttach = $attModel->loadAttach('file');
+            if (!$fileAttach) {
+                return false;
+            }
 
             // Set configs
             $configs = $fileAttach->getConfigs(
