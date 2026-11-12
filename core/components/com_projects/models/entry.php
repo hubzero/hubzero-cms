@@ -250,7 +250,7 @@ class Entry extends Model
         if ($property) {
             $property = ($property == 'uidNumber') ? 'id' : $property;
             if ($property == 'picture') {
-                return $this->creator->pcture();
+                return $this->creator->picture();
             }
             return $this->creator->get($property, $default);
         }

@@ -138,7 +138,8 @@ class Poll extends Relational
             return false;
         }
 
-        $dt = new Date();
+        // The poll's own Date model: plain "Date" here is the date facade
+        $dt = new \Components\Poll\Models\Date();
         $dt->set([
             'date'    => \Date::toSql(),
             'vote_id' => (int) $option_id,
