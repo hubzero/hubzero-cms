@@ -177,7 +177,7 @@ class Permissions extends Obj
      * Check if the current user is enrolled
      *
      * @param   integer $user_id
-     * @return  boolean
+     * @return  object|null  The course manager record for the user, if there is one
      */
     public function manager($user_id = null)
     {
@@ -296,7 +296,7 @@ class Permissions extends Obj
      * Check if the current user is enrolled
      *
      * @param   integer $user_id
-     * @return  boolean
+     * @return  object|null  The student record for the user, if there is one
      */
     public function student($user_id = null)
     {

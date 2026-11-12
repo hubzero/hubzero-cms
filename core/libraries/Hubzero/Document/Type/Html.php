@@ -50,9 +50,9 @@ class Html extends Base
     public $baseurl = null;
 
     /**
-     * Array of template parameters
+     * The template's parameters
      *
-     * @var  array
+     * @var  \Hubzero\Config\Registry|null
      */
     public $params = null;
 
