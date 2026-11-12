@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\BackendRegistry;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Expression;
 use Hubzero\Database\Exception\UnsupportedSyntaxException;
@@ -35,9 +35,9 @@ class QueryTest extends AbstractDriverTestCase
     /**
      * Setup test tables with data
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
         $query = new Query($driver);
@@ -172,10 +172,10 @@ class QueryTest extends AbstractDriverTestCase
     /**
      * Seed posts table for join tests.
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @param array  $rows
      */
-    private function seedPosts(Driver $driver, array $rows): void
+    private function seedPosts(BaseSqlDriver $driver, array $rows): void
     {
         $query = new Query($driver);
         $query->insertMany('posts', $rows);
@@ -184,10 +184,10 @@ class QueryTest extends AbstractDriverTestCase
     /**
      * Seed groups table for join tests.
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @param array  $rows
      */
-    private function seedGroups(Driver $driver, array $rows): void
+    private function seedGroups(BaseSqlDriver $driver, array $rows): void
     {
         $query = new Query($driver);
         $query->insertMany('groups', $rows);
@@ -196,7 +196,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can run a basic select statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBasicFetch(string $dbName, Driver $driver)
+    public function testBasicFetch(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -215,7 +215,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test percent expression in a functional query
      */
     #[DataProvider('databaseProvider')]
-    public function testPercentExpressionFunctional(string $dbName, Driver $driver)
+    public function testPercentExpressionFunctional(string $dbName, BaseSqlDriver $driver)
     {
         $seed = new Query($driver);
         $seed->insertMany('posts', [
@@ -243,7 +243,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test select with array of columns
      */
     #[DataProvider('databaseProvider')]
-    public function testSelectArrayColumns(string $dbName, Driver $driver)
+    public function testSelectArrayColumns(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
         $rows = $query
@@ -261,7 +261,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can run a basic insert statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBasicPush(string $dbName, Driver $driver)
+    public function testBasicPush(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -284,7 +284,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can run a basic update statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBasicAlter(string $dbName, Driver $driver)
+    public function testBasicAlter(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -308,7 +308,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can set a basic value on update
      */
     #[DataProvider('databaseProvider')]
-    public function testSetWithBasicValue(string $dbName, Driver $driver)
+    public function testSetWithBasicValue(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -328,7 +328,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can run a basic delete statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBasicRemove(string $dbName, Driver $driver)
+    public function testBasicRemove(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -350,7 +350,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with aliased from statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithAliasedFrom(string $dbName, Driver $driver)
+    public function testBuildQueryWithAliasedFrom(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -372,7 +372,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with a raw WHERE statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithRawWhere(string $dbName, Driver $driver)
+    public function testBuildQueryWithRawWhere(string $dbName, BaseSqlDriver $driver)
     {
         // Use driver's quoteName to handle database-specific casing
         $nameCol = $driver->quoteName('name');
@@ -408,7 +408,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with where like statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithWhereLike(string $dbName, Driver $driver)
+    public function testBuildQueryWithWhereLike(string $dbName, BaseSqlDriver $driver)
     {
         // Test whereLike - match users with 'Sam' or 'Sally' in name
         $query = new Query($driver);
@@ -445,7 +445,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with where IS NULL statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithWhereIsNull(string $dbName, Driver $driver)
+    public function testBuildQueryWithWhereIsNull(string $dbName, BaseSqlDriver $driver)
     {
         // Insert a test user with NULL email for testing
         $q = new Query($driver);
@@ -494,7 +494,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with where IS NOT NULL statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithWhereIsNotNull(string $dbName, Driver $driver)
+    public function testBuildQueryWithWhereIsNotNull(string $dbName, BaseSqlDriver $driver)
     {
         // Test whereIsNotNull - all original users have non-null names
         $query = new Query($driver);
@@ -527,7 +527,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with where IN statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithWhereIn(string $dbName, Driver $driver)
+    public function testBuildQueryWithWhereIn(string $dbName, BaseSqlDriver $driver)
     {
         // Test whereIn with actual user names
         $query = new Query($driver);
@@ -600,7 +600,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with complex nested where statements
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithNestedWheres(string $dbName, Driver $driver)
+    public function testBuildQueryWithNestedWheres(string $dbName, BaseSqlDriver $driver)
     {
         // Test nested where: (name = Sam OR name = Sally) AND (email LIKE %example% OR email LIKE %gmail%)
         $query = new Query($driver);
@@ -629,7 +629,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with JOIN clauses
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithJoinClause(string $dbName, Driver $driver)
+    public function testBuildQueryWithJoinClause(string $dbName, BaseSqlDriver $driver)
     {
         // Insert test posts for join testing
         $qInsert = new Query($driver);
@@ -683,7 +683,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test FULL JOIN
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithFullJoin(string $dbName, Driver $driver)
+    public function testBuildQueryWithFullJoin(string $dbName, BaseSqlDriver $driver)
     {
         // Insert test posts if not already present
         $qInsert = new Query($driver);
@@ -707,7 +707,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test FULL JOIN emulation with multiple joins and edge clauses
      */
     #[DataProvider('databaseProvider')]
-    public function testFullJoinEmulationWithMultipleJoins(string $dbName, Driver $driver)
+    public function testFullJoinEmulationWithMultipleJoins(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(UnsupportedSyntaxException::class);
 
@@ -728,7 +728,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test FULL JOIN with additional LEFT/INNER joins (safe subset)
      */
     #[DataProvider('databaseProvider')]
-    public function testFullJoinWithAdditionalJoins(string $dbName, Driver $driver)
+    public function testFullJoinWithAdditionalJoins(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 31, 'title' => 'Post 31', 'user_id' => 1],
@@ -756,7 +756,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test FULL JOIN with unqualified keys resolved via schema lookup
      */
     #[DataProvider('databaseProvider')]
-    public function testFullJoinWithUnqualifiedKeys(string $dbName, Driver $driver)
+    public function testFullJoinWithUnqualifiedKeys(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'hello', 'user_id' => 1],
@@ -778,7 +778,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with multiple predicates
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnMultiplePredicates(string $dbName, Driver $driver)
+    public function testJoinOnMultiplePredicates(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -808,7 +808,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinBuilder fluent chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinBuilderChaining(string $dbName, Driver $driver)
+    public function testJoinBuilderChaining(string $dbName, BaseSqlDriver $driver)
     {
         $seed = new Query($driver);
         $seed->insertMany('posts', [
@@ -839,7 +839,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinBuilder with grouped predicates
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinBuilderGroup(string $dbName, Driver $driver)
+    public function testJoinBuilderGroup(string $dbName, BaseSqlDriver $driver)
     {
         $seed = new Query($driver);
         $seed->insertMany('posts', [
@@ -875,7 +875,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test join with a closure (Laravel-style)
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinWithClosure(string $dbName, Driver $driver)
+    public function testJoinWithClosure(string $dbName, BaseSqlDriver $driver)
     {
         $seed = new Query($driver);
         $seed->insertMany('posts', [
@@ -907,7 +907,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with literal predicates (join-where style)
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithLiteralPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithLiteralPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -933,7 +933,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with NULL literal predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithNullLiteralPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithNullLiteralPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -957,7 +957,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with left-side literal predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithLeftLiteralPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithLeftLiteralPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -983,7 +983,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with IN predicate list
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithInPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithInPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1009,7 +1009,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with BETWEEN predicate range
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithBetweenPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithBetweenPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1035,7 +1035,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with LIKE predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithLikePredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithLikePredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1061,7 +1061,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with IS DISTINCT FROM predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithIsDistinctFromPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithIsDistinctFromPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'sam@example.com', 'user_id' => 1],
@@ -1087,7 +1087,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with EXISTS predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithExistsPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithExistsPredicate(string $dbName, BaseSqlDriver $driver)
     {
         // Some engines may rewrite non-correlated EXISTS predicates from JOIN ON
         // into WHERE while preserving result semantics.
@@ -1115,7 +1115,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with NOT EXISTS predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithNotExistsPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithNotExistsPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1139,7 +1139,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with IS NOT DISTINCT FROM predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithIsNotDistinctFromPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithIsNotDistinctFromPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'sam@example.com', 'user_id' => 1],
@@ -1165,7 +1165,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with NOT LIKE predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithNotLikePredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithNotLikePredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1191,7 +1191,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with NOT IN predicate list
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithNotInPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithNotInPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1218,7 +1218,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with NOT BETWEEN predicate range
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithNotBetweenPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithNotBetweenPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 2],
@@ -1244,7 +1244,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with IS NOT NULL literal predicate
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithIsNotNullLiteralPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithIsNotNullLiteralPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1269,7 +1269,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with empty IN list
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithEmptyInPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithEmptyInPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1293,7 +1293,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with empty NOT IN list
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithEmptyNotInPredicate(string $dbName, Driver $driver)
+    public function testJoinOnWithEmptyNotInPredicate(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1318,7 +1318,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn with EXISTS subquery built by Query
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnWithExistsSubquery(string $dbName, Driver $driver)
+    public function testJoinOnWithExistsSubquery(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedPosts($driver, [
             ['id' => 1, 'title' => 'post-1', 'user_id' => 1],
@@ -1353,7 +1353,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn rejects invalid condition formats
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnInvalidConditionFormatThrows(string $dbName, Driver $driver)
+    public function testJoinOnInvalidConditionFormatThrows(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1371,7 +1371,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn rejects BETWEEN with incorrect value count
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnBetweenInvalidRangeThrows(string $dbName, Driver $driver)
+    public function testJoinOnBetweenInvalidRangeThrows(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1391,7 +1391,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn rejects EXISTS without a subquery
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnExistsWithoutSubqueryThrows(string $dbName, Driver $driver)
+    public function testJoinOnExistsWithoutSubqueryThrows(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1409,7 +1409,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test joinOn rejects array left-side literal
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinOnLeftLiteralArrayThrows(string $dbName, Driver $driver)
+    public function testJoinOnLeftLiteralArrayThrows(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1427,7 +1427,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test fullJoinOn rejects multiple predicates
      */
     #[DataProvider('databaseProvider')]
-    public function testFullJoinOnMultiplePredicatesThrows(string $dbName, Driver $driver)
+    public function testFullJoinOnMultiplePredicatesThrows(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(UnsupportedSyntaxException::class);
 
@@ -1447,7 +1447,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with JOIN and complex conditions
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryWithComplexJoinConditions(string $dbName, Driver $driver)
+    public function testBuildQueryWithComplexJoinConditions(string $dbName, BaseSqlDriver $driver)
     {
         // Insert test posts for join testing
         $qInsert = new Query($driver);
@@ -1479,7 +1479,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build an INSERT statement
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildInsert(string $dbName, Driver $driver)
+    public function testBuildInsert(string $dbName, BaseSqlDriver $driver)
     {
         // Test basic INSERT - execute and verify
         $query = new Query($driver);
@@ -1511,7 +1511,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure that fetch properly caches a query
      */
     #[DataProvider('databaseProvider')]
-    public function testFetchCachesQueriesByDefault(string $dbName, Driver $driver)
+    public function testFetchCachesQueriesByDefault(string $dbName, BaseSqlDriver $driver)
     {
         Query::purgeCache();
 
@@ -1542,7 +1542,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure that fetch does not cache when explicitly disabled
      */
     #[DataProvider('databaseProvider')]
-    public function testFetchDoesNotCacheQueries(string $dbName, Driver $driver)
+    public function testFetchDoesNotCacheQueries(string $dbName, BaseSqlDriver $driver)
     {
         Query::purgeCache();
 
@@ -1571,7 +1571,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can clear query parts and rebuild
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryClear(string $dbName, Driver $driver)
+    public function testBuildQueryClear(string $dbName, BaseSqlDriver $driver)
     {
         // Test clearing multiple parts and rebuilding
         $query = new Query($driver);
@@ -1661,7 +1661,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with LIMIT and START
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryLimitStart(string $dbName, Driver $driver)
+    public function testBuildQueryLimitStart(string $dbName, BaseSqlDriver $driver)
     {
         // Insert some test groups for pagination testing
         $qInsert = new Query($driver);
@@ -1702,7 +1702,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test that START is an integer
      */
     #[DataProvider('databaseProvider')]
-    public function testNonNumericStart(string $dbName, Driver $driver)
+    public function testNonNumericStart(string $dbName, BaseSqlDriver $driver)
     {
         // Test that non-numeric start is ignored at Query level (casts to 0)
         $query = new Query($driver);
@@ -1730,7 +1730,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test that START is greater than or equal to zero
      */
     #[DataProvider('databaseProvider')]
-    public function testNegativeStart(string $dbName, Driver $driver)
+    public function testNegativeStart(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -1746,7 +1746,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test that LIMIT is an integer
      */
     #[DataProvider('databaseProvider')]
-    public function testNonNumericLimit(string $dbName, Driver $driver)
+    public function testNonNumericLimit(string $dbName, BaseSqlDriver $driver)
     {
         // Test that non-numeric limit is ignored at Query level (casts to 0)
         $query = new Query($driver);
@@ -1774,7 +1774,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test that LIMIT is greater than or equal to zero
      */
     #[DataProvider('databaseProvider')]
-    public function testNegativeLimit(string $dbName, Driver $driver)
+    public function testNegativeLimit(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
 
@@ -1790,7 +1790,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test to make sure we can build a query with ORDER BY
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildQueryOrder(string $dbName, Driver $driver)
+    public function testBuildQueryOrder(string $dbName, BaseSqlDriver $driver)
     {
         // Test ORDER BY ASC - users should be ordered by id ascending
         $query = new Query($driver);
@@ -1842,7 +1842,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test convenience helpers: first, value, pluck, keyBy, exists
      */
     #[DataProvider('databaseProvider')]
-    public function testConvenienceHelpers(string $dbName, Driver $driver)
+    public function testConvenienceHelpers(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
         $first = $query
@@ -1895,7 +1895,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test exists()/doesntExist() with scoped selects and conditions
      */
     #[DataProvider('databaseProvider')]
-    public function testExistsAndDoesntExist(string $dbName, Driver $driver)
+    public function testExistsAndDoesntExist(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
         $this->assertTrue(
@@ -1914,7 +1914,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test pluck/keyBy for mapping usage patterns
      */
     #[DataProvider('databaseProvider')]
-    public function testPluckAndKeyBy(string $dbName, Driver $driver)
+    public function testPluckAndKeyBy(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
         $map = $query->from('users')->pluck('email', 'id');
@@ -1930,7 +1930,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test insertOrIgnore and insertManyIgnore insert new rows
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreHelpers(string $dbName, Driver $driver)
+    public function testInsertIgnoreHelpers(string $dbName, BaseSqlDriver $driver)
     {
         $query = new Query($driver);
         $query
@@ -1954,7 +1954,7 @@ class QueryTest extends AbstractDriverTestCase
      * Test insertUsing (INSERT ... SELECT) helper
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertUsing(string $dbName, Driver $driver)
+    public function testInsertUsing(string $dbName, BaseSqlDriver $driver)
     {
         // Insert groups from users (map id -> id, name -> cn/name)
         $select = new Query($driver)
@@ -1989,7 +1989,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPaginatedSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ) {
         // Insert 15 groups for pagination testing
         $qInsert = new Query($driver);
@@ -2074,7 +2074,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUnionAllWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ) {
         // Insert users (already seeded: 4 users with ids 1-4)
         // Insert groups for the union
@@ -2117,7 +2117,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUnionWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ) {
         // Insert groups with some names matching users
         $qInsert = new Query($driver);
@@ -2157,7 +2157,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFromSubUnionPatternWithOuterFilterOrderAndLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ) {
         // Add group rows with high IDs for deterministic ordering.
         $this->seedGroups($driver, [
@@ -2223,7 +2223,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFromSubUnionPatternWithOptionalOuterStartFilter(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ) {
         $this->seedGroups($driver, [
             ['id' => 100, 'cn' => 'group-100', 'name' => 'Group 100'],
@@ -2302,7 +2302,7 @@ class QueryTest extends AbstractDriverTestCase
      * Mirrors module patterns that use explicit join conditions with aliases.
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinRawWithAliasedTables(string $dbName, Driver $driver)
+    public function testJoinRawWithAliasedTables(string $dbName, BaseSqlDriver $driver)
     {
         $this->seedGroups($driver, [
             ['id' => 1, 'cn' => 'g1', 'name' => 'Group 1', 'created_by' => 1],
@@ -2329,7 +2329,7 @@ class QueryTest extends AbstractDriverTestCase
      * Mirrors module patterns that group by computed domain expressions.
      */
     #[DataProvider('databaseProvider')]
-    public function testGroupByExpressionUsingSqlSubstringIndex(string $dbName, Driver $driver)
+    public function testGroupByExpressionUsingSqlSubstringIndex(string $dbName, BaseSqlDriver $driver)
     {
         new Query($driver)->insert('users')->values([
             'id'    => 5,
@@ -2372,7 +2372,7 @@ class QueryTest extends AbstractDriverTestCase
      * Mirrors module patterns that inject portable relative-date expressions.
      */
     #[DataProvider('databaseProvider')]
-    public function testSqlDateSubExpressionInWhereRaw(string $dbName, Driver $driver)
+    public function testSqlDateSubExpressionInWhereRaw(string $dbName, BaseSqlDriver $driver)
     {
         $quotedNow = $driver->quote('2026-02-16 00:00:00');
         $dateSubExpr = $driver->sqlDateSub($quotedNow, 30, 'DAY');
@@ -2397,7 +2397,7 @@ class QueryTest extends AbstractDriverTestCase
      * ->order($driver->sqlRand(), 'asc')->limit(1)->value('id')
      */
     #[DataProvider('databaseProvider')]
-    public function testSqlRandOrderWithLimitAndValue(string $dbName, Driver $driver)
+    public function testSqlRandOrderWithLimitAndValue(string $dbName, BaseSqlDriver $driver)
     {
         if ($dbName === 'mock') {
             $this->assertStringContainsStringIgnoringCase(

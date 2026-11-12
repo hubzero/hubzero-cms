@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relationship\MorphTo;
@@ -41,7 +41,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         return ['poly_taggables', 'poly_activity_logs', 'poly_images', 'poly_tags', 'poly_videos', 'poly_posts'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('poly_taggables', true);
         $driver->dropTable('poly_activity_logs', true);
@@ -95,7 +95,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function prepareModels(Driver $driver): void
+    private function prepareModels(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         PolyVideo::clearBootedModels();
@@ -111,7 +111,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         ]);
     }
 
-    private function cleanAllData(Driver $driver): void
+    private function cleanAllData(BaseSqlDriver $driver): void
     {
         $driver->truncateTable('poly_taggables');
         $driver->truncateTable('poly_activity_logs');
@@ -354,7 +354,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphOneReturnsRelatedModel(string $dbName, Driver $driver): void
+    public function morphOneReturnsRelatedModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -388,7 +388,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphManyReturnsRelatedCollection(string $dbName, Driver $driver): void
+    public function morphManyReturnsRelatedCollection(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -428,7 +428,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphToResolvesVideoParent(string $dbName, Driver $driver): void
+    public function morphToResolvesVideoParent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -457,7 +457,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphToResolvesPostParent(string $dbName, Driver $driver): void
+    public function morphToResolvesPostParent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -486,7 +486,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphToReturnsNullForMissingParent(string $dbName, Driver $driver): void
+    public function morphToReturnsNullForMissingParent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -512,7 +512,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphToManyReturnsTags(string $dbName, Driver $driver): void
+    public function morphToManyReturnsTags(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -560,7 +560,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphedByManyReturnsVideos(string $dbName, Driver $driver): void
+    public function morphedByManyReturnsVideos(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -600,7 +600,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphToManyIsolatesByType(string $dbName, Driver $driver): void
+    public function morphToManyIsolatesByType(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);
@@ -647,7 +647,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function morphOneAssociateSetsCorrectColumns(string $dbName, Driver $driver): void
+    public function morphOneAssociateSetsCorrectColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->prepareModels($driver);
         $this->cleanAllData($driver);

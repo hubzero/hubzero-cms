@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\TableDefinition;
 use Hubzero\Database\Schema\Column;
 use Hubzero\Database\Query;
@@ -25,7 +25,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
     /**
      * No tables created upfront - all created/dropped in individual tests
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created and dropped in individual test methods
     }
@@ -176,7 +176,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableWithTypes(string $dbName, Driver $driver): void
+    public function createTableWithTypes(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('test_schema_types', true);
@@ -216,7 +216,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableWithIndexes(string $dbName, Driver $driver): void
+    public function createTableWithIndexes(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('test_schema_indexes', true);
@@ -248,7 +248,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function insertAndQueryData(string $dbName, Driver $driver): void
+    public function insertAndQueryData(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('test_schema_integration', true);
@@ -298,7 +298,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function modifyTableAddColumn(string $dbName, Driver $driver): void
+    public function modifyTableAddColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 
@@ -352,7 +352,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function timestampsHelper(string $dbName, Driver $driver): void
+    public function timestampsHelper(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('test_schema_timestamps', true);
@@ -395,7 +395,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropIfExists(string $dbName, Driver $driver): void
+    public function dropIfExists(string $dbName, BaseSqlDriver $driver): void
     {
         // Should not throw even if table doesn't exist
         $driver->dropTable('nonexistent_table_xyz', true);
@@ -419,7 +419,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableIntrospection(string $dbName, Driver $driver): void
+    public function tableIntrospection(string $dbName, BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('test_introspect', true);
@@ -461,7 +461,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createAndDropTable(string $dbName, Driver $driver): void
+    public function createAndDropTable(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 
@@ -504,7 +504,7 @@ class SchemaBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function modifyTable(string $dbName, Driver $driver): void
+    public function modifyTable(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 

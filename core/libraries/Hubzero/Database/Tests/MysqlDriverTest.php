@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Mysql\MysqlDriver as Mysql;
 
 /**
@@ -32,7 +33,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
         return ['my_items', 'my_categories'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!static::isMysqlOnly($driver)) {
             return;
@@ -107,12 +108,12 @@ class MysqlDriverTest extends AbstractDriverTestCase
     /**
      * Check if driver is exactly Mysql
      */
-    private static function isMysqlOnly(Driver $driver): bool
+    private static function isMysqlOnly(BaseSqlDriver $driver): bool
     {
         return strtolower((string) $driver->getDriverType()) === 'mysql';
     }
 
-    private function requiresMysql(Driver $driver): bool
+    private function requiresMysql(BaseSqlDriver $driver): bool
     {
         if (!static::isMysqlOnly($driver)) {
             $this->assertTrue(true);
@@ -179,7 +180,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsMysqlInstance(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -192,7 +193,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -204,7 +205,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetVersion(string $dbName, Driver $driver): void
+    public function canGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -219,7 +220,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -235,7 +236,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function serverInfoDriverVersionIsNormalized(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -253,7 +254,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getVersionMatchesServerInfoVersion(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -269,7 +270,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sqlHelpersEmitExpectedMysqlFamilyExpressions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -299,7 +300,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -312,7 +313,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -327,7 +328,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -342,7 +343,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -359,7 +360,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsFullInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -377,7 +378,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -391,7 +392,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -410,7 +411,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAll(string $dbName, Driver $driver): void
+    public function canSelectAll(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -427,7 +428,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -443,7 +444,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -469,7 +470,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -498,7 +499,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -527,7 +528,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -555,7 +556,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -595,7 +596,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseLimitOffset(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -614,7 +615,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseIfNull(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -630,7 +631,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseConcat(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -646,7 +647,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -665,7 +666,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function hasInnoDBEngine(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -678,7 +679,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -703,7 +704,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canManageViews(string $dbName, Driver $driver): void
+    public function canManageViews(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -730,7 +731,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -759,7 +760,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -791,7 +792,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function autoIncrementWorksCorrectly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -825,7 +826,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -846,7 +847,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -875,7 +876,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -898,7 +899,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;

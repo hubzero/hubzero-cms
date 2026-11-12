@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\AlterTableBuilder;
 
 /**
@@ -35,7 +36,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
     /**
      * Tables created and dropped in individual test methods
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created and dropped in individual test methods
     }
@@ -60,7 +61,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * @param   array   $extraColumns  Extra columns to add: ['colname' => 'type', ...]
      * @return  void
      */
-    protected function createTestTable(Driver $driver, string $name, array $extraColumns = []): void
+    protected function createTestTable(BaseSqlDriver $driver, string $name, array $extraColumns = []): void
     {
         $builder = $driver->createTable($name)->id()->string('name', 255);
 
@@ -88,7 +89,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      * @param   string  $name    Table name
      * @return  void
      */
-    protected function dropTestTable(Driver $driver, string $name): void
+    protected function dropTestTable(BaseSqlDriver $driver, string $name): void
     {
         try {
             $driver->dropTable($name, true);
@@ -110,7 +111,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddColumnNullable(string $dbName, Driver $driver): void
+    public function testAddColumnNullable(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_alter_nullable';
         $this->dropTestTable($driver, $table);
@@ -139,7 +140,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddColumnFluent(string $dbName, Driver $driver): void
+    public function testAddColumnFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_alter_fluent';
         $this->dropTestTable($driver, $table);
@@ -165,7 +166,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropColumn(string $dbName, Driver $driver): void
+    public function testDropColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_drop_col';
         $this->dropTestTable($driver, $table);
@@ -192,7 +193,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddIndex(string $dbName, Driver $driver): void
+    public function testAddIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_idx';
         $this->dropTestTable($driver, $table);
@@ -231,7 +232,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropIndex(string $dbName, Driver $driver): void
+    public function testDropIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_drop_idx';
 
@@ -264,7 +265,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAlterTableReturnsFluent(string $dbName, Driver $driver): void
+    public function testAlterTableReturnsFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->alterTable('test_fluent_return');
 
@@ -282,7 +283,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableAlterReturnsFluent(string $dbName, Driver $driver): void
+    public function testTableAlterReturnsFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->table('test_table_alter')->alter();
 
@@ -302,7 +303,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddStringColumn(string $dbName, Driver $driver): void
+    public function testAddStringColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_string';
         $this->dropTestTable($driver, $table);
@@ -324,7 +325,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddIntegerColumn(string $dbName, Driver $driver): void
+    public function testAddIntegerColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_integer';
         $this->dropTestTable($driver, $table);
@@ -346,7 +347,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddTextColumn(string $dbName, Driver $driver): void
+    public function testAddTextColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_text';
         $this->dropTestTable($driver, $table);
@@ -368,7 +369,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddDatetimeColumn(string $dbName, Driver $driver): void
+    public function testAddDatetimeColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_datetime';
         $this->dropTestTable($driver, $table);
@@ -390,7 +391,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddBooleanColumn(string $dbName, Driver $driver): void
+    public function testAddBooleanColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_boolean';
         $this->dropTestTable($driver, $table);
@@ -416,7 +417,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddColumnWithDefault(string $dbName, Driver $driver): void
+    public function testAddColumnWithDefault(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_default';
         $this->dropTestTable($driver, $table);
@@ -442,7 +443,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddColumnIfNotExists(string $dbName, Driver $driver): void
+    public function testAddColumnIfNotExists(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_add_if_not_exists';
         $this->dropTestTable($driver, $table);
@@ -469,7 +470,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropMultipleColumns(string $dbName, Driver $driver): void
+    public function testDropMultipleColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_drop_multi';
         $this->dropTestTable($driver, $table);
@@ -501,7 +502,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModifyColumn(string $dbName, Driver $driver): void
+    public function testModifyColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_modify_col';
         $this->dropTestTable($driver, $table);
@@ -526,7 +527,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModifyColumnIfExists(string $dbName, Driver $driver): void
+    public function testModifyColumnIfExists(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_modify_if_exists';
 
@@ -555,7 +556,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRenameColumn(string $dbName, Driver $driver): void
+    public function testRenameColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_rename_col';
         $this->dropTestTable($driver, $table);
@@ -585,7 +586,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddIndexFluent(string $dbName, Driver $driver): void
+    public function testAddIndexFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->alterTable('test_idx_fluent');
         $result = $builder->addIndex('idx_test', 'name');
@@ -602,7 +603,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddUniqueIndexFluent(string $dbName, Driver $driver): void
+    public function testAddUniqueIndexFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_uidx_fluent';
         $this->dropTestTable($driver, $table);
@@ -641,7 +642,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropIndexFluent(string $dbName, Driver $driver): void
+    public function testDropIndexFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->alterTable('test_drop_idx_fluent');
         $result = $builder->dropIndex('idx_test');
@@ -658,7 +659,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddFulltextIndex(string $dbName, Driver $driver): void
+    public function testAddFulltextIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $table = 'test_fulltext_idx';
         $this->dropTestTable($driver, $table);
@@ -687,7 +688,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropPrimaryKeyFluent(string $dbName, Driver $driver): void
+    public function testDropPrimaryKeyFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->alterTable('test_drop_pk');
         $result = $builder->dropPrimaryKey();
@@ -704,7 +705,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAddPrimaryKeyFluent(string $dbName, Driver $driver): void
+    public function testAddPrimaryKeyFluent(string $dbName, BaseSqlDriver $driver): void
     {
         $builder = $driver->alterTable('test_add_pk');
         $result = $builder->addPrimaryKey('id');

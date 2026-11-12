@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\ObserverTestItem;
@@ -32,7 +32,7 @@ class ObserverTest extends AbstractDriverTestCase
         return ['observer_test_items'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('observer_test_items', true);
 
@@ -51,7 +51,7 @@ class ObserverTest extends AbstractDriverTestCase
     /**
      * Reset test state for each test method
      */
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         Query::purgeCache();
@@ -65,7 +65,7 @@ class ObserverTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      */
-    protected function insertTestRecord(Driver $driver, $title = 'Test Item')
+    protected function insertTestRecord(BaseSqlDriver $driver, $title = 'Test Item')
     {
         $now = date('Y-m-d H:i:s');
         $query = new Query($driver);
@@ -88,7 +88,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that observe() accepts a class name
      */
     #[DataProvider('databaseProvider')]
-    public function testObserveAcceptsClassName(string $dbName, Driver $driver): void
+    public function testObserveAcceptsClassName(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -106,7 +106,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that observe() accepts an instance
      */
     #[DataProvider('databaseProvider')]
-    public function testObserveAcceptsInstance(string $dbName, Driver $driver): void
+    public function testObserveAcceptsInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -128,7 +128,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that creating event fires before insert
      */
     #[DataProvider('databaseProvider')]
-    public function testCreatingEventFires(string $dbName, Driver $driver): void
+    public function testCreatingEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -146,7 +146,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that created event fires after insert
      */
     #[DataProvider('databaseProvider')]
-    public function testCreatedEventFires(string $dbName, Driver $driver): void
+    public function testCreatedEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -164,7 +164,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that updating event fires before update
      */
     #[DataProvider('databaseProvider')]
-    public function testUpdatingEventFires(string $dbName, Driver $driver): void
+    public function testUpdatingEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -182,7 +182,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that updated event fires after update
      */
     #[DataProvider('databaseProvider')]
-    public function testUpdatedEventFires(string $dbName, Driver $driver): void
+    public function testUpdatedEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -200,7 +200,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that saving event fires on both create and update
      */
     #[DataProvider('databaseProvider')]
-    public function testSavingEventFiresOnCreateAndUpdate(string $dbName, Driver $driver): void
+    public function testSavingEventFiresOnCreateAndUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -224,7 +224,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that saved event fires on both create and update
      */
     #[DataProvider('databaseProvider')]
-    public function testSavedEventFiresOnCreateAndUpdate(string $dbName, Driver $driver): void
+    public function testSavedEventFiresOnCreateAndUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -248,7 +248,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that deleting event fires before delete
      */
     #[DataProvider('databaseProvider')]
-    public function testDeletingEventFires(string $dbName, Driver $driver): void
+    public function testDeletingEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -265,7 +265,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that deleted event fires after delete
      */
     #[DataProvider('databaseProvider')]
-    public function testDeletedEventFires(string $dbName, Driver $driver): void
+    public function testDeletedEventFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -286,7 +286,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that returning false from creating cancels insert
      */
     #[DataProvider('databaseProvider')]
-    public function testCreatingCanCancelInsert(string $dbName, Driver $driver): void
+    public function testCreatingCanCancelInsert(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -310,7 +310,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that returning false from updating cancels update
      */
     #[DataProvider('databaseProvider')]
-    public function testUpdatingCanCancelUpdate(string $dbName, Driver $driver): void
+    public function testUpdatingCanCancelUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -334,7 +334,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that returning false from saving cancels operation
      */
     #[DataProvider('databaseProvider')]
-    public function testSavingCanCancelOperation(string $dbName, Driver $driver): void
+    public function testSavingCanCancelOperation(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -352,7 +352,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that returning false from deleting cancels delete
      */
     #[DataProvider('databaseProvider')]
-    public function testDeletingCanCancelDelete(string $dbName, Driver $driver): void
+    public function testDeletingCanCancelDelete(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -379,7 +379,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that multiple observers can be registered
      */
     #[DataProvider('databaseProvider')]
-    public function testMultipleObserversCanBeRegistered(string $dbName, Driver $driver): void
+    public function testMultipleObserversCanBeRegistered(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -398,7 +398,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that observers are called in registration order
      */
     #[DataProvider('databaseProvider')]
-    public function testObserversCalledInOrder(string $dbName, Driver $driver): void
+    public function testObserversCalledInOrder(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -429,7 +429,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that observer can modify model during creating
      */
     #[DataProvider('databaseProvider')]
-    public function testObserverCanModifyModelDuringCreating(string $dbName, Driver $driver): void
+    public function testObserverCanModifyModelDuringCreating(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -451,7 +451,7 @@ class ObserverTest extends AbstractDriverTestCase
      * Test that observer only needs to implement desired events
      */
     #[DataProvider('databaseProvider')]
-    public function testPartialObserverWorks(string $dbName, Driver $driver): void
+    public function testPartialObserverWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

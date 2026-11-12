@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\SchemaManager;
 use Hubzero\Database\Schema\DatabaseInfo;
@@ -29,7 +29,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         return [];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created/dropped in individual test methods
     }
@@ -37,9 +37,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
     /**
      * Clean up test tables
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      */
-    protected function cleanupTables(Driver $driver): void
+    protected function cleanupTables(BaseSqlDriver $driver): void
     {
         $tables = [
             'dbdiff_users',
@@ -66,7 +66,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test comparing full database schemas
      */
     #[DataProvider('databaseProvider')]
-    public function testCompareFullDatabaseSchemas(string $dbName, Driver $driver)
+    public function testCompareFullDatabaseSchemas(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -141,7 +141,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test generateSchemaDiffSql returns valid SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateSchemaDiffSql(string $dbName, Driver $driver)
+    public function testGenerateSchemaDiffSql(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -197,7 +197,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test compareToSchema convenience method
      */
     #[DataProvider('databaseProvider')]
-    public function testCompareToSchema(string $dbName, Driver $driver)
+    public function testCompareToSchema(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -253,7 +253,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test schema comparison with table removal detection
      */
     #[DataProvider('databaseProvider')]
-    public function testSchemaComparisonDetectsRemovedTable(string $dbName, Driver $driver)
+    public function testSchemaComparisonDetectsRemovedTable(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -299,7 +299,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test filtering schema diff by prefix
      */
     #[DataProvider('databaseProvider')]
-    public function testFilterSchemaDiffByPrefix(string $dbName, Driver $driver)
+    public function testFilterSchemaDiffByPrefix(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -374,7 +374,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test summary of schema changes
      */
     #[DataProvider('databaseProvider')]
-    public function testSchemaDiffSummary(string $dbName, Driver $driver)
+    public function testSchemaDiffSummary(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();
@@ -436,7 +436,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test column rename hints are detected
      */
     #[DataProvider('databaseProvider')]
-    public function testColumnRenameHints(string $dbName, Driver $driver)
+    public function testColumnRenameHints(string $dbName, BaseSqlDriver $driver)
     {
         $comparator = new Comparator();
 
@@ -488,7 +488,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test table rename hints are detected
      */
     #[DataProvider('databaseProvider')]
-    public function testTableRenameHints(string $dbName, Driver $driver)
+    public function testTableRenameHints(string $dbName, BaseSqlDriver $driver)
     {
         $comparator = new Comparator();
 
@@ -535,7 +535,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test heuristic rename detection (opt-in)
      */
     #[DataProvider('databaseProvider')]
-    public function testHeuristicRenameDetection(string $dbName, Driver $driver)
+    public function testHeuristicRenameDetection(string $dbName, BaseSqlDriver $driver)
     {
         $comparator = new Comparator();
 
@@ -583,7 +583,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test heuristic detection is off by default
      */
     #[DataProvider('databaseProvider')]
-    public function testHeuristicDetectionOffByDefault(string $dbName, Driver $driver)
+    public function testHeuristicDetectionOffByDefault(string $dbName, BaseSqlDriver $driver)
     {
         $comparator = new Comparator();
 
@@ -628,7 +628,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test column rename with additional changes
      */
     #[DataProvider('databaseProvider')]
-    public function testColumnRenameWithTypeChange(string $dbName, Driver $driver)
+    public function testColumnRenameWithTypeChange(string $dbName, BaseSqlDriver $driver)
     {
         $comparator = new Comparator();
         $comparator->addColumnRenameHint('users', 'fname', 'first_name');
@@ -679,7 +679,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
      * Test DiffSqlGenerator produces RENAME COLUMN SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testDiffSqlGeneratorProducesRenameColumnSql(string $dbName, Driver $driver)
+    public function testDiffSqlGeneratorProducesRenameColumnSql(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanupTables($driver);
         $schema = $driver->schema();

@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\HookTestItem;
@@ -37,7 +37,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
         return ['hook_test_items'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('hook_test_items', true);
         $driver
@@ -50,7 +50,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         // Register Event stub for SoftDeletes trait (requires global Event class)
         if (!class_exists('Event')) {
@@ -83,7 +83,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
     /**
      * Helper to create a test record directly (without hooks)
      */
-    private function createTestRecord(Driver $driver, string $title, ?string $deletedAt = null): int
+    private function createTestRecord(BaseSqlDriver $driver, string $title, ?string $deletedAt = null): int
     {
         $query = new Query($driver);
         $query->insertMany('hook_test_items', [
@@ -110,7 +110,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCreatingEventFiresBeforeInsert(string $dbName, Driver $driver)
+    public function testCreatingEventFiresBeforeInsert(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -138,7 +138,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCreatingEventCanCancelOperation(string $dbName, Driver $driver)
+    public function testCreatingEventCanCancelOperation(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -164,7 +164,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCreatedEventFiresAfterInsert(string $dbName, Driver $driver)
+    public function testCreatedEventFiresAfterInsert(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -193,7 +193,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdatingEventFiresBeforeUpdate(string $dbName, Driver $driver)
+    public function testUpdatingEventFiresBeforeUpdate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -216,7 +216,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdatingEventCanCancelOperation(string $dbName, Driver $driver)
+    public function testUpdatingEventCanCancelOperation(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -244,7 +244,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdatedEventFiresAfterUpdate(string $dbName, Driver $driver)
+    public function testUpdatedEventFiresAfterUpdate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -271,7 +271,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSavingEventFiresForBothCreateAndUpdate(string $dbName, Driver $driver)
+    public function testSavingEventFiresForBothCreateAndUpdate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -298,7 +298,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSavingEventCanCancelOperation(string $dbName, Driver $driver)
+    public function testSavingEventCanCancelOperation(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -319,7 +319,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSavedEventFiresForBothCreateAndUpdate(string $dbName, Driver $driver)
+    public function testSavedEventFiresForBothCreateAndUpdate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -350,7 +350,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeletingEventFiresBeforeDelete(string $dbName, Driver $driver)
+    public function testDeletingEventFiresBeforeDelete(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -372,7 +372,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeletingEventCanCancelOperation(string $dbName, Driver $driver)
+    public function testDeletingEventCanCancelOperation(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -399,7 +399,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeletedEventFiresAfterDelete(string $dbName, Driver $driver)
+    public function testDeletedEventFiresAfterDelete(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -425,7 +425,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCorrectEventOrderForCreate(string $dbName, Driver $driver)
+    public function testCorrectEventOrderForCreate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -447,7 +447,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCorrectEventOrderForUpdate(string $dbName, Driver $driver)
+    public function testCorrectEventOrderForUpdate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -475,7 +475,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMultipleCallbacksForSameEvent(string $dbName, Driver $driver)
+    public function testMultipleCallbacksForSameEvent(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -496,7 +496,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFirstCallbackReturningFalseStopsChain(string $dbName, Driver $driver)
+    public function testFirstCallbackReturningFalseStopsChain(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -534,7 +534,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeletingDeletedLifecycleHooksFireForSoftDelete(string $dbName, Driver $driver)
+    public function testDeletingDeletedLifecycleHooksFireForSoftDelete(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -569,7 +569,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRestoringRestoredLifecycleHooksFire(string $dbName, Driver $driver)
+    public function testRestoringRestoredLifecycleHooksFire(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -604,7 +604,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRestoringLifecycleHookCanCancelRestore(string $dbName, Driver $driver)
+    public function testRestoringLifecycleHookCanCancelRestore(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -643,7 +643,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetModelEventsReturnsRegisteredEvents(string $dbName, Driver $driver)
+    public function testGetModelEventsReturnsRegisteredEvents(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -664,7 +664,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHasModelEventReturnsCorrectResult(string $dbName, Driver $driver)
+    public function testHasModelEventReturnsCorrectResult(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -679,7 +679,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testClearBootedModelsClearsEvents(string $dbName, Driver $driver)
+    public function testClearBootedModelsClearsEvents(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 

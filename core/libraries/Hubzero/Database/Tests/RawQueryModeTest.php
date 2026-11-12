@@ -9,6 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Test\ExternalCallerHelper;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -31,9 +32,9 @@ class RawQueryModeTest extends AbstractDriverTestCase
     }
 
     /**
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
 
@@ -79,7 +80,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testDefaultModeIsPermissive(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->assertSame(
             'permissive',
@@ -91,7 +92,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSetAndGetMode(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
 
@@ -117,7 +118,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSetModeReturnsSelf(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
 
@@ -131,7 +132,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testInvalidModeThrows(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->expectException(
             \InvalidArgumentException::class,
@@ -151,7 +152,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPermissiveModeAllowsSetQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->setRawQueryMode('permissive');
 
@@ -172,7 +173,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testStrictModeAllowsQueryBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $driver->setRawQueryMode('strict');
@@ -198,7 +199,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testStrictModeAllowsInsertViaQueryBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $driver->setRawQueryMode('strict');
@@ -227,7 +228,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testLogModeAllowsQueryBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $logger = new SpyLogger();
@@ -262,7 +263,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testLogModeSkipsInternalCalls(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $logger = new SpyLogger();
@@ -292,7 +293,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testStrictModeSkipsInternalCalls(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $driver->setRawQueryMode('strict');
@@ -322,7 +323,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testLogModeLogsExternalCalls(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $logger = new SpyLogger();
@@ -363,7 +364,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testStrictModeThrowsForExternalCalls(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $driver->setRawQueryMode('strict');
@@ -385,7 +386,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPermissiveModeDoesNotLogExternalCalls(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $logger = new SpyLogger();
         $driver->setLogger($logger);
@@ -441,7 +442,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testLogModeTruncatesSqlPreview(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $original = $driver->getRawQueryMode();
         $logger = new SpyLogger();
@@ -481,7 +482,7 @@ class RawQueryModeTest extends AbstractDriverTestCase
      * Build a simple SELECT that works on any backend.
      */
     private function simpleSelectSql(
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): string {
         return 'SELECT 1 FROM '
             . $driver->quoteName('rqm_test')

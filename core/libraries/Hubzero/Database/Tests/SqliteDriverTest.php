@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Sqlite\SqliteDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Schema\AlterTableBuilder;
@@ -42,7 +43,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
         ];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof SqliteDriver)) {
             return;
@@ -54,7 +55,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
     /**
      * Check if the driver is exactly Sqlite; if not, pass with a no-op assertion.
      */
-    private function requiresSqlite(Driver $driver): bool
+    private function requiresSqlite(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof SqliteDriver)) {
             $this->assertTrue(true);
@@ -66,7 +67,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
     /**
      * Drop test tables before each test to ensure clean state
      */
-    protected function cleanupTables(Driver $driver): void
+    protected function cleanupTables(BaseSqlDriver $driver): void
     {
         foreach (static::getTestTables() as $table) {
             try {
@@ -86,7 +87,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildForDropColumn(string $dbName, Driver $driver)
+    public function testTableRebuildForDropColumn(string $dbName, BaseSqlDriver $driver)
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -142,7 +143,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildForModifyColumn(string $dbName, Driver $driver)
+    public function testTableRebuildForModifyColumn(string $dbName, BaseSqlDriver $driver)
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -194,7 +195,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableRebuildCombinedOperations(string $dbName, Driver $driver)
+    public function testTableRebuildCombinedOperations(string $dbName, BaseSqlDriver $driver)
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -247,7 +248,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCompileAlterTableDetectsRebuildNeed(string $dbName, Driver $driver)
+    public function testCompileAlterTableDetectsRebuildNeed(string $dbName, BaseSqlDriver $driver)
     {
         if (!$this->requiresSqlite($driver)) {
             return;
@@ -290,7 +291,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSimpleAddColumnDoesNotRebuild(string $dbName, Driver $driver)
+    public function testSimpleAddColumnDoesNotRebuild(string $dbName, BaseSqlDriver $driver)
     {
         if (!$this->requiresSqlite($driver)) {
             return;

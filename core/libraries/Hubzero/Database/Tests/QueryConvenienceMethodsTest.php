@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 
@@ -36,10 +36,10 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     /**
      * Set up test tables using schema builder
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('conv_orders', true);
         $driver->dropTable('conv_products', true);
@@ -82,10 +82,10 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     /**
      * Seed test data into all tables
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function seedTestData(Driver $driver): void
+    private function seedTestData(BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -146,10 +146,10 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     /**
      * Reset test state: purge cache, clean tables, reset auto-increment, re-seed data
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Query::purgeCache();
 
@@ -179,7 +179,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test exists() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testExistsMethodExists(string $dbName, Driver $driver): void
+    public function testExistsMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -191,7 +191,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test doesntExist() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testDoesntExistMethodExists(string $dbName, Driver $driver): void
+    public function testDoesntExistMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -203,7 +203,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test exists() returns true when rows exist
      */
     #[DataProvider('databaseProvider')]
-    public function testExistsReturnsTrueWhenRowsExist(string $dbName, Driver $driver): void
+    public function testExistsReturnsTrueWhenRowsExist(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -221,7 +221,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test exists() returns false when no rows exist
      */
     #[DataProvider('databaseProvider')]
-    public function testExistsReturnsFalseWhenNoRowsExist(string $dbName, Driver $driver): void
+    public function testExistsReturnsFalseWhenNoRowsExist(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -240,7 +240,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test doesntExist() returns true when no rows exist
      */
     #[DataProvider('databaseProvider')]
-    public function testDoesntExistReturnsTrueWhenNoRowsExist(string $dbName, Driver $driver): void
+    public function testDoesntExistReturnsTrueWhenNoRowsExist(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -259,7 +259,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test doesntExist() returns false when rows exist
      */
     #[DataProvider('databaseProvider')]
-    public function testDoesntExistReturnsFalseWhenRowsExist(string $dbName, Driver $driver): void
+    public function testDoesntExistReturnsFalseWhenRowsExist(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -277,7 +277,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test exists() with WHERE clause
      */
     #[DataProvider('databaseProvider')]
-    public function testExistsWithWhereClause(string $dbName, Driver $driver): void
+    public function testExistsWithWhereClause(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -296,7 +296,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test doesntExist() on empty table
      */
     #[DataProvider('databaseProvider')]
-    public function testDoesntExistOnEmptyTable(string $dbName, Driver $driver): void
+    public function testDoesntExistOnEmptyTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -322,7 +322,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnMethodExists(string $dbName, Driver $driver): void
+    public function testWhereColumnMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -334,7 +334,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereColumn() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereColumnMethodExists(string $dbName, Driver $driver): void
+    public function testOrWhereColumnMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -346,7 +346,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() returns self for chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnReturnsSelfForChaining(string $dbName, Driver $driver): void
+    public function testWhereColumnReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -362,7 +362,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() with equality comparison
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnEquality(string $dbName, Driver $driver): void
+    public function testWhereColumnEquality(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -383,7 +383,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() with explicit operator
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnWithOperator(string $dbName, Driver $driver): void
+    public function testWhereColumnWithOperator(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -404,7 +404,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() with > operator
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnGreaterThan(string $dbName, Driver $driver): void
+    public function testWhereColumnGreaterThan(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -424,7 +424,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() with < operator
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnLessThan(string $dbName, Driver $driver): void
+    public function testWhereColumnLessThan(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -444,7 +444,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereColumn()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereColumn(string $dbName, Driver $driver): void
+    public function testOrWhereColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -466,7 +466,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() combined with regular where
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnCombinedWithWhere(string $dbName, Driver $driver): void
+    public function testWhereColumnCombinedWithWhere(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -488,7 +488,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereColumn() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereColumnGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereColumnGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -512,7 +512,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementMethodExists(string $dbName, Driver $driver): void
+    public function testIncrementMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -524,7 +524,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementMethodExists(string $dbName, Driver $driver): void
+    public function testDecrementMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -536,7 +536,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() by default amount (1)
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementByDefault(string $dbName, Driver $driver): void
+    public function testIncrementByDefault(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -569,7 +569,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() by custom amount
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementByCustomAmount(string $dbName, Driver $driver): void
+    public function testIncrementByCustomAmount(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -595,7 +595,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() with extra columns
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementWithExtraColumns(string $dbName, Driver $driver): void
+    public function testIncrementWithExtraColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -625,7 +625,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() affects multiple rows
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementMultipleRows(string $dbName, Driver $driver): void
+    public function testIncrementMultipleRows(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -650,7 +650,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() by default amount (1)
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementByDefault(string $dbName, Driver $driver): void
+    public function testDecrementByDefault(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -676,7 +676,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() by custom amount
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementByCustomAmount(string $dbName, Driver $driver): void
+    public function testDecrementByCustomAmount(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -702,7 +702,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() with extra columns
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementWithExtraColumns(string $dbName, Driver $driver): void
+    public function testDecrementWithExtraColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -730,7 +730,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() affects zero rows when condition not met
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementAffectsZeroRows(string $dbName, Driver $driver): void
+    public function testDecrementAffectsZeroRows(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -749,7 +749,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() throws exception without table
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementThrowsExceptionWithoutTable(string $dbName, Driver $driver): void
+    public function testIncrementThrowsExceptionWithoutTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -764,7 +764,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() throws exception without table
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementThrowsExceptionWithoutTable(string $dbName, Driver $driver): void
+    public function testDecrementThrowsExceptionWithoutTable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -779,7 +779,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test increment() returns int type
      */
     #[DataProvider('databaseProvider')]
-    public function testIncrementReturnsInt(string $dbName, Driver $driver): void
+    public function testIncrementReturnsInt(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -797,7 +797,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test decrement() returns int type
      */
     #[DataProvider('databaseProvider')]
-    public function testDecrementReturnsInt(string $dbName, Driver $driver): void
+    public function testDecrementReturnsInt(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -819,7 +819,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenMethodExists(string $dbName, Driver $driver): void
+    public function testWhereBetweenMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -831,7 +831,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotBetween() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenMethodExists(string $dbName, Driver $driver): void
+    public function testWhereNotBetweenMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -843,7 +843,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() filters correctly
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenFiltersCorrectly(string $dbName, Driver $driver): void
+    public function testWhereBetweenFiltersCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -863,7 +863,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() with numeric values
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenWithNumericValues(string $dbName, Driver $driver): void
+    public function testWhereBetweenWithNumericValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -884,7 +884,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() with dates
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenWithDates(string $dbName, Driver $driver): void
+    public function testWhereBetweenWithDates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -905,7 +905,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereBetween()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereBetween(string $dbName, Driver $driver): void
+    public function testOrWhereBetween(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -927,7 +927,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotBetween() filters correctly
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenFiltersCorrectly(string $dbName, Driver $driver): void
+    public function testWhereNotBetweenFiltersCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -948,7 +948,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNotBetween()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNotBetween(string $dbName, Driver $driver): void
+    public function testOrWhereNotBetween(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -970,7 +970,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() throws exception with wrong number of values
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenThrowsExceptionWithWrongValues(string $dbName, Driver $driver): void
+    public function testWhereBetweenThrowsExceptionWithWrongValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -989,7 +989,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereBetweenGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1008,7 +1008,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotBetween() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereNotBetweenGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1032,7 +1032,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotLike() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotLikeMethodExists(string $dbName, Driver $driver): void
+    public function testWhereNotLikeMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1044,7 +1044,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNotLike() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNotLikeMethodExists(string $dbName, Driver $driver): void
+    public function testOrWhereNotLikeMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1056,7 +1056,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotLike() filters correctly
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotLikeFiltersCorrectly(string $dbName, Driver $driver): void
+    public function testWhereNotLikeFiltersCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1077,7 +1077,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNotLike()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNotLike(string $dbName, Driver $driver): void
+    public function testOrWhereNotLike(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1099,7 +1099,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotLike() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotLikeGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereNotLikeGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1118,7 +1118,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetween() combined with other clauses
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenCombinedWithOtherClauses(string $dbName, Driver $driver): void
+    public function testWhereBetweenCombinedWithOtherClauses(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1144,7 +1144,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetweenColumns() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsMethodExists(string $dbName, Driver $driver): void
+    public function testWhereBetweenColumnsMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1156,7 +1156,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotBetweenColumns() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenColumnsMethodExists(string $dbName, Driver $driver): void
+    public function testWhereNotBetweenColumnsMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1168,7 +1168,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetweenColumns() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereBetweenColumnsGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1187,7 +1187,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNotBetweenColumns() generates correct SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenColumnsGeneratesCorrectSql(string $dbName, Driver $driver): void
+    public function testWhereNotBetweenColumnsGeneratesCorrectSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1206,7 +1206,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetweenColumns() filters correctly
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsFiltersCorrectly(string $dbName, Driver $driver): void
+    public function testWhereBetweenColumnsFiltersCorrectly(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1235,7 +1235,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereBetweenColumns()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereBetweenColumns(string $dbName, Driver $driver): void
+    public function testOrWhereBetweenColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1255,7 +1255,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNotBetweenColumns()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNotBetweenColumns(string $dbName, Driver $driver): void
+    public function testOrWhereNotBetweenColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1275,7 +1275,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetweenColumns() throws exception with wrong number of columns
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsThrowsExceptionWithWrongColumns(string $dbName, Driver $driver): void
+    public function testWhereBetweenColumnsThrowsExceptionWithWrongColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1294,7 +1294,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereBetweenColumns() returns self for chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsReturnsSelfForChaining(string $dbName, Driver $driver): void
+    public function testWhereBetweenColumnsReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1314,7 +1314,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotMethodExists(string $dbName, Driver $driver): void
+    public function testWhereNotMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1326,7 +1326,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNot() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNotMethodExists(string $dbName, Driver $driver): void
+    public function testOrWhereNotMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1338,7 +1338,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() generates SQL with NOT wrapper
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotGeneratesSqlWithNotWrapper(string $dbName, Driver $driver): void
+    public function testWhereNotGeneratesSqlWithNotWrapper(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1359,7 +1359,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() filters correctly with single condition
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotFiltersSingleCondition(string $dbName, Driver $driver): void
+    public function testWhereNotFiltersSingleCondition(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1382,7 +1382,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() filters correctly with multiple conditions
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotFiltersMultipleConditions(string $dbName, Driver $driver): void
+    public function testWhereNotFiltersMultipleConditions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1407,7 +1407,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereNot()
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereNot(string $dbName, Driver $driver): void
+    public function testOrWhereNot(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1432,7 +1432,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() returns self for chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotReturnsSelfForChaining(string $dbName, Driver $driver): void
+    public function testWhereNotReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1450,7 +1450,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereNot() combined with other where clauses
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereNotCombinedWithOtherClauses(string $dbName, Driver $driver): void
+    public function testWhereNotCombinedWithOtherClauses(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1478,7 +1478,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextMethodExists(string $dbName, Driver $driver): void
+    public function testWhereFullTextMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1490,7 +1490,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereFullText() method exists on Query
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereFullTextMethodExists(string $dbName, Driver $driver): void
+    public function testOrWhereFullTextMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1502,7 +1502,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() with single column executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextSingleColumn(string $dbName, Driver $driver): void
+    public function testWhereFullTextSingleColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1521,7 +1521,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() with multiple columns executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextMultipleColumns(string $dbName, Driver $driver): void
+    public function testWhereFullTextMultipleColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1539,7 +1539,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() with boolean mode executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextBooleanMode(string $dbName, Driver $driver): void
+    public function testWhereFullTextBooleanMode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1557,7 +1557,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() with expansion mode executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextExpansionMode(string $dbName, Driver $driver): void
+    public function testWhereFullTextExpansionMode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1575,7 +1575,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() natural mode executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextNaturalMode(string $dbName, Driver $driver): void
+    public function testWhereFullTextNaturalMode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1593,7 +1593,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test orWhereFullText() executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereFullTextExecutes(string $dbName, Driver $driver): void
+    public function testOrWhereFullTextExecutes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -1612,7 +1612,7 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
      * Test whereFullText() returns self for chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereFullTextReturnsSelfForChaining(string $dbName, Driver $driver): void
+    public function testWhereFullTextReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

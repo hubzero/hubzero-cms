@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Schema\ColumnDefinitionTrait;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * Functional tests for schema builder column types and modifiers
@@ -45,7 +45,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
     /**
      * Tables are created per-test
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // No shared setup - tables created and dropped per-test
     }
@@ -69,7 +69,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function integerTypesStoreAndRetrieveValues(string $dbName, Driver $driver)
+    public function integerTypesStoreAndRetrieveValues(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_integers', true);
 
@@ -99,7 +99,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function autoIncrementGeneratesSequentialIds(string $dbName, Driver $driver)
+    public function autoIncrementGeneratesSequentialIds(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_integers', true);
 
@@ -134,7 +134,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function stringTypesStoreAndRetrieveValues(string $dbName, Driver $driver)
+    public function stringTypesStoreAndRetrieveValues(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_strings', true);
 
@@ -176,7 +176,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function booleanTypeStoresAndRetrievesValues(string $dbName, Driver $driver)
+    public function booleanTypeStoresAndRetrievesValues(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_booleans', true);
 
@@ -204,7 +204,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function decimalTypePreservesPrecision(string $dbName, Driver $driver)
+    public function decimalTypePreservesPrecision(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_decimals', true);
 
@@ -232,7 +232,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeTypesStoreAndRetrieveValues(string $dbName, Driver $driver)
+    public function dateTimeTypesStoreAndRetrieveValues(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_dates', true);
 
@@ -261,7 +261,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function timestampDefaultCurrentTimestamp(string $dbName, Driver $driver)
+    public function timestampDefaultCurrentTimestamp(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_dates', true);
 
@@ -289,7 +289,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function specialTypesStoreAndRetrieveValues(string $dbName, Driver $driver)
+    public function specialTypesStoreAndRetrieveValues(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_special', true);
 
@@ -330,7 +330,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function notNullColumnRejectsNull(string $dbName, Driver $driver)
+    public function notNullColumnRejectsNull(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_notnull', true);
 
@@ -367,7 +367,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function defaultValueAppliedWhenOmitted(string $dbName, Driver $driver)
+    public function defaultValueAppliedWhenOmitted(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_defaults', true);
 
@@ -397,7 +397,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nullableColumnAcceptsNull(string $dbName, Driver $driver)
+    public function nullableColumnAcceptsNull(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_nullable', true);
 
@@ -425,7 +425,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function uniqueColumnRejectsDuplicates(string $dbName, Driver $driver)
+    public function uniqueColumnRejectsDuplicates(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_unique', true);
 
@@ -468,7 +468,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function booleanDefaultValuesWork(string $dbName, Driver $driver)
+    public function booleanDefaultValuesWork(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_booleans', true);
 
@@ -498,7 +498,7 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function combinedModifiersWork(string $dbName, Driver $driver)
+    public function combinedModifiersWork(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('coltest_combined', true);
 

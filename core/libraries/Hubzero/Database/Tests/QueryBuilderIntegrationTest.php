@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -60,10 +61,10 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
     /**
      * Set up test tables using the schema builder (database-agnostic)
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing tables (order matters for foreign key dependencies)
         try {
@@ -97,7 +98,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBasicSelect(string $dbName, Driver $driver): void
+    public function testBasicSelect(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -118,7 +119,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithWhere(string $dbName, Driver $driver): void
+    public function testSelectWithWhere(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -139,7 +140,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithOrderBy(string $dbName, Driver $driver): void
+    public function testSelectWithOrderBy(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -175,7 +176,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithLimit(string $dbName, Driver $driver): void
+    public function testSelectWithLimit(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -196,7 +197,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithOffset(string $dbName, Driver $driver): void
+    public function testSelectWithOffset(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -225,7 +226,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInsert(string $dbName, Driver $driver): void
+    public function testInsert(string $dbName, BaseSqlDriver $driver): void
     {
         // Test insert using Query builder (push is a convenience method)
         $query = new Query($driver);
@@ -255,7 +256,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdate(string $dbName, Driver $driver): void
+    public function testUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -291,7 +292,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDelete(string $dbName, Driver $driver): void
+    public function testDelete(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);
@@ -338,7 +339,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testJoin(string $dbName, Driver $driver): void
+    public function testJoin(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
         $relatedTable = self::$relatedTable;
@@ -375,7 +376,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGroupBy(string $dbName, Driver $driver): void
+    public function testGroupBy(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data with duplicate ages
         $query = new Query($driver);
@@ -401,7 +402,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHaving(string $dbName, Driver $driver): void
+    public function testHaving(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert test data
         $query = new Query($driver);

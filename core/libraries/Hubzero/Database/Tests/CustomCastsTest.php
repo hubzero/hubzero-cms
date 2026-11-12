@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Casts\CastsAttributes;
 use Hubzero\Database\Casts\AsJson;
 use Hubzero\Database\Casts\AsCollection;
@@ -38,7 +38,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         return ['cast_test'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('cast_test', true);
         $driver
@@ -54,7 +54,7 @@ class CustomCastsTest extends AbstractDriverTestCase
     /**
      * Reset model column cache and set connection
      */
-    private function prepareModels(Driver $driver): void
+    private function prepareModels(BaseSqlDriver $driver): void
     {
         CastTestModelJson::setDefaultConnection($driver);
         CastTestModelDateTime::setDefaultConnection($driver);
@@ -69,7 +69,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function castClassesImplementInterface(string $dbName, Driver $driver)
+    public function castClassesImplementInterface(string $dbName, BaseSqlDriver $driver)
     {
         $this->assertInstanceOf(CastsAttributes::class, new AsJson());
         $this->assertInstanceOf(CastsAttributes::class, new AsDateTime());
@@ -83,7 +83,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isCustomCastClassDetection(string $dbName, Driver $driver)
+    public function isCustomCastClassDetection(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
         $model = CastTestModelMixed::blank();
@@ -100,7 +100,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastStoresAndRetrievesArray(string $dbName, Driver $driver)
+    public function jsonCastStoresAndRetrievesArray(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -118,7 +118,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastHandlesNull(string $dbName, Driver $driver)
+    public function jsonCastHandlesNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -132,7 +132,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastPreservesUnicode(string $dbName, Driver $driver)
+    public function jsonCastPreservesUnicode(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -148,7 +148,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastGetReturnsNullForEmptyString(string $dbName, Driver $driver)
+    public function jsonCastGetReturnsNullForEmptyString(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -161,7 +161,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastSetEncodesArray(string $dbName, Driver $driver)
+    public function jsonCastSetEncodesArray(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -177,7 +177,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function jsonCastSetReturnsNullForNull(string $dbName, Driver $driver)
+    public function jsonCastSetReturnsNullForNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -194,7 +194,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastStoresAndRetrievesDate(string $dbName, Driver $driver)
+    public function dateTimeCastStoresAndRetrievesDate(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -210,7 +210,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastHandlesNull(string $dbName, Driver $driver)
+    public function dateTimeCastHandlesNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -224,7 +224,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastStoresTimestamp(string $dbName, Driver $driver)
+    public function dateTimeCastStoresTimestamp(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -239,7 +239,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastStoresStringDate(string $dbName, Driver $driver)
+    public function dateTimeCastStoresStringDate(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -254,7 +254,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastGetReturnsNullForEmptyString(string $dbName, Driver $driver)
+    public function dateTimeCastGetReturnsNullForEmptyString(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -267,7 +267,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastGetReturnsNullForZeroDate(string $dbName, Driver $driver)
+    public function dateTimeCastGetReturnsNullForZeroDate(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -280,7 +280,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastSetWithDateTimeObject(string $dbName, Driver $driver)
+    public function dateTimeCastSetWithDateTimeObject(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -294,7 +294,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dateTimeCastSetReturnsNullForNull(string $dbName, Driver $driver)
+    public function dateTimeCastSetReturnsNullForNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -311,7 +311,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastStoresAndRetrievesList(string $dbName, Driver $driver)
+    public function collectionCastStoresAndRetrievesList(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -328,7 +328,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastHandlesNull(string $dbName, Driver $driver)
+    public function collectionCastHandlesNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -343,7 +343,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastStoresArrayObject(string $dbName, Driver $driver)
+    public function collectionCastStoresArrayObject(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -359,7 +359,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastGetReturnsEmptyForEmptyString(string $dbName, Driver $driver)
+    public function collectionCastGetReturnsEmptyForEmptyString(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -373,7 +373,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastSetEncodesArray(string $dbName, Driver $driver)
+    public function collectionCastSetEncodesArray(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -387,7 +387,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastSetReturnsNullForNull(string $dbName, Driver $driver)
+    public function collectionCastSetReturnsNullForNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -404,7 +404,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringGetReturnsRawWithoutEncrypter(string $dbName, Driver $driver)
+    public function encryptedStringGetReturnsRawWithoutEncrypter(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -417,7 +417,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringSetReturnsRawWithoutEncrypter(string $dbName, Driver $driver)
+    public function encryptedStringSetReturnsRawWithoutEncrypter(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -430,7 +430,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringGetReturnsNullForNull(string $dbName, Driver $driver)
+    public function encryptedStringGetReturnsNullForNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -443,7 +443,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringGetReturnsNullForEmptyString(string $dbName, Driver $driver)
+    public function encryptedStringGetReturnsNullForEmptyString(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -456,7 +456,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringSetReturnsNullForNull(string $dbName, Driver $driver)
+    public function encryptedStringSetReturnsNullForNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -469,7 +469,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringEncryptsWithInjectedEncrypter(string $dbName, Driver $driver)
+    public function encryptedStringEncryptsWithInjectedEncrypter(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -500,7 +500,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringFlushClearsEncrypter(string $dbName, Driver $driver)
+    public function encryptedStringFlushClearsEncrypter(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 
@@ -529,7 +529,7 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function encryptedStringGetReturnsRawOnDecryptFailure(string $dbName, Driver $driver)
+    public function encryptedStringGetReturnsRawOnDecryptFailure(string $dbName, BaseSqlDriver $driver)
     {
         $this->prepareModels($driver);
 

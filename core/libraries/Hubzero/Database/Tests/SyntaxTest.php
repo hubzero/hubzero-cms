@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Exception\UnsupportedSyntaxException;
 
@@ -48,7 +48,7 @@ class SyntaxTest extends AbstractDriverTestCase
         return [self::$testTable, self::$testTable2, self::$testTable3];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing table if it exists
         try {
@@ -106,10 +106,10 @@ class SyntaxTest extends AbstractDriverTestCase
     /**
      * Seed test data into table
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private static function seedTestData(Driver $driver): void
+    private static function seedTestData(BaseSqlDriver $driver): void
     {
         // Insert using Query builder for database-agnostic inserts
         $query = new Query($driver);
@@ -146,7 +146,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSimpleSelect(string $dbName, Driver $driver): void
+    public function testSimpleSelect(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -167,7 +167,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithWhere(string $dbName, Driver $driver): void
+    public function testSelectWithWhere(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -183,7 +183,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithOrderBy(string $dbName, Driver $driver): void
+    public function testSelectWithOrderBy(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -201,7 +201,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithLimit(string $dbName, Driver $driver): void
+    public function testSelectWithLimit(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -220,7 +220,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSelectWithLimitAndOffset(string $dbName, Driver $driver): void
+    public function testSelectWithLimitAndOffset(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -241,7 +241,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBuildInsert(string $dbName, Driver $driver): void
+    public function testBuildInsert(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -256,7 +256,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInsertExecution(string $dbName, Driver $driver): void
+    public function testInsertExecution(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -285,7 +285,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreDoesNotFailOnDuplicate(string $dbName, Driver $driver): void
+    public function testInsertIgnoreDoesNotFailOnDuplicate(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert a row
         $query = new Query($driver);
@@ -332,7 +332,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBuildUpdate(string $dbName, Driver $driver): void
+    public function testBuildUpdate(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -350,7 +350,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdateExecution(string $dbName, Driver $driver): void
+    public function testUpdateExecution(string $dbName, BaseSqlDriver $driver): void
     {
         // Get the first user's ID
         $query = new Query($driver);
@@ -398,7 +398,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBuildDelete(string $dbName, Driver $driver): void
+    public function testBuildDelete(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -415,7 +415,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeleteExecution(string $dbName, Driver $driver): void
+    public function testDeleteExecution(string $dbName, BaseSqlDriver $driver): void
     {
         // Insert a test row
         $query = new Query($driver);
@@ -453,7 +453,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInnerJoin(string $dbName, Driver $driver): void
+    public function testInnerJoin(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -470,7 +470,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLeftJoin(string $dbName, Driver $driver): void
+    public function testLeftJoin(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -487,7 +487,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRightJoinSupport(string $dbName, Driver $driver): void
+    public function testRightJoinSupport(string $dbName, BaseSqlDriver $driver): void
     {
         // RIGHT JOIN syntax_test (3 rows) with syntax_test_2 (2 rows)
         // All rows from syntax_test_2 (right side) should be preserved
@@ -508,7 +508,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWhereMultipleConditions(string $dbName, Driver $driver): void
+    public function testWhereMultipleConditions(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -525,7 +525,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWhereIn(string $dbName, Driver $driver): void
+    public function testWhereIn(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -542,7 +542,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGroupBy(string $dbName, Driver $driver): void
+    public function testGroupBy(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -560,7 +560,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHaving(string $dbName, Driver $driver): void
+    public function testHaving(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -582,7 +582,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFullJoinSqlGeneration(string $dbName, Driver $driver): void
+    public function testFullJoinSqlGeneration(string $dbName, BaseSqlDriver $driver): void
     {
         // Functional test: Execute FULL JOIN on existing seed data
         // This tests that the SQL generation works and executes without error
@@ -602,7 +602,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFullJoinMultipleSqlGeneration(string $dbName, Driver $driver): void
+    public function testFullJoinMultipleSqlGeneration(string $dbName, BaseSqlDriver $driver): void
     {
         $this->expectException(UnsupportedSyntaxException::class);
 
@@ -620,7 +620,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFullJoinReversedKeysAllowed(string $dbName, Driver $driver): void
+    public function testFullJoinReversedKeysAllowed(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
         $query
@@ -634,7 +634,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFullJoinUnqualifiedAmbiguousResolved(string $dbName, Driver $driver): void
+    public function testFullJoinUnqualifiedAmbiguousResolved(string $dbName, BaseSqlDriver $driver): void
     {
         // Smart resolution: left key prefers FROM table, right key prefers JOIN table
         $query = new Query($driver);
@@ -656,7 +656,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRightJoinReturnsCorrectRows(string $dbName, Driver $driver): void
+    public function testRightJoinReturnsCorrectRows(string $dbName, BaseSqlDriver $driver): void
     {
         // syntax_test has ids 1,2,3; syntax_test_2 has ids 1,2
         // RIGHT JOIN preserves all rows from the right table (syntax_test_2)
@@ -679,7 +679,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNormalizeColumns(string $dbName, Driver $driver): void
+    public function testNormalizeColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $columns = $driver->getTableColumns(self::$testTable);
 
@@ -696,7 +696,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQuoteName(string $dbName, Driver $driver): void
+    public function testQuoteName(string $dbName, BaseSqlDriver $driver): void
     {
         $quoted = $driver->quoteName('test_table');
 
@@ -710,7 +710,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQuoteString(string $dbName, Driver $driver): void
+    public function testQuoteString(string $dbName, BaseSqlDriver $driver): void
     {
         $quoted = $driver->quote("test'value");
 
@@ -722,7 +722,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPreparedStatements(string $dbName, Driver $driver): void
+    public function testPreparedStatements(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -738,7 +738,7 @@ class SyntaxTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNamedPlaceholders(string $dbName, Driver $driver): void
+    public function testNamedPlaceholders(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 

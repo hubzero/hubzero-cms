@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * Cross-driver text field behavior tests.
@@ -27,7 +27,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
         return ['text_field_behavior'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('text_field_behavior', true);
     }
@@ -50,7 +50,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     /**
      * Create baseline table for text behavior tests.
      */
-    private function createTextTable(Driver $driver): void
+    private function createTextTable(BaseSqlDriver $driver): void
     {
         $driver->dropTable('text_field_behavior', true);
         $driver
@@ -65,7 +65,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     /**
      * Max payload expected to round-trip for this backend's text mapping.
      */
-    private function maxPayloadForDriver(Driver $driver): int
+    private function maxPayloadForDriver(BaseSqlDriver $driver): int
     {
         return 32768;
     }
@@ -92,7 +92,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function textColumnsRoundTrip32kPayload(string $dbName, Driver $driver): void
+    public function textColumnsRoundTrip32kPayload(string $dbName, BaseSqlDriver $driver): void
     {
         $this->createTextTable($driver);
 
@@ -127,7 +127,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function textColumnsRoundTripMixedPayloadSizes(string $dbName, Driver $driver): void
+    public function textColumnsRoundTripMixedPayloadSizes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->createTextTable($driver);
 
@@ -176,7 +176,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function textColumnsEmptyStringSemantics(string $dbName, Driver $driver): void
+    public function textColumnsEmptyStringSemantics(string $dbName, BaseSqlDriver $driver): void
     {
         $this->createTextTable($driver);
 
@@ -226,7 +226,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function textColumnsSqlNullSemanticsDistinguishNullAndEmpty(string $dbName, Driver $driver): void
+    public function textColumnsSqlNullSemanticsDistinguishNullAndEmpty(string $dbName, BaseSqlDriver $driver): void
     {
         $this->createTextTable($driver);
 

@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\ApcuCacheStore;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\MockCacheStore;
 
@@ -34,7 +35,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         return ['users'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('users', true);
 
@@ -93,7 +94,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function setAndGetCacheStore(string $dbName, Driver $driver): void
+    public function setAndGetCacheStore(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertNull(Query::getCacheStore(), 'Cache store should be null initially');
 
@@ -106,7 +107,7 @@ class QueryCachingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function persistentCacheKeyIncludesNamespaceWhenSet(string $dbName, Driver $driver): void
+    public function persistentCacheKeyIncludesNamespaceWhenSet(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
         Query::setCacheNamespace('tenant_a');
@@ -123,7 +124,7 @@ class QueryCachingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function queryFlushClearsNamespaceByDefault(string $dbName, Driver $driver): void
+    public function queryFlushClearsNamespaceByDefault(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheNamespace('tenant_a');
         $this->assertSame('tenant_a', Query::getCacheNamespace());
@@ -135,7 +136,7 @@ class QueryCachingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function apcuCacheStoreIsExplicitOptIn(string $dbName, Driver $driver): void
+    public function apcuCacheStoreIsExplicitOptIn(string $dbName, BaseSqlDriver $driver): void
     {
         if (ApcuCacheStore::isAvailable()) {
             Query::setCacheStore('apcu');
@@ -155,7 +156,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rememberIsChainable(string $dbName, Driver $driver): void
+    public function rememberIsChainable(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -171,7 +172,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rememberForeverIsChainable(string $dbName, Driver $driver): void
+    public function rememberForeverIsChainable(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -187,7 +188,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rememberUsesInjectedCacheStore(string $dbName, Driver $driver): void
+    public function rememberUsesInjectedCacheStore(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -212,7 +213,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rememberForeverStoresWithZeroTtl(string $dbName, Driver $driver): void
+    public function rememberForeverStoresWithZeroTtl(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -237,7 +238,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function cachedResultsAreReturned(string $dbName, Driver $driver): void
+    public function cachedResultsAreReturned(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -274,7 +275,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function customCachePrefix(string $dbName, Driver $driver): void
+    public function customCachePrefix(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -302,7 +303,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function forgetCachedRemovesFromCache(string $dbName, Driver $driver): void
+    public function forgetCachedRemovesFromCache(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -325,7 +326,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function fallsBackToInMemoryCache(string $dbName, Driver $driver): void
+    public function fallsBackToInMemoryCache(string $dbName, BaseSqlDriver $driver): void
     {
         // Don't set any cache store - ensure APCu fallback is also avoided
         Query::setCacheStore(null);
@@ -357,7 +358,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function noCacheBypassesCache(string $dbName, Driver $driver): void
+    public function noCacheBypassesCache(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 
@@ -394,7 +395,7 @@ class QueryCachingTest extends AbstractDriverTestCase
      **/
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function differentQueriesGetDifferentKeys(string $dbName, Driver $driver): void
+    public function differentQueriesGetDifferentKeys(string $dbName, BaseSqlDriver $driver): void
     {
         Query::setCacheStore($this->mockCache);
 

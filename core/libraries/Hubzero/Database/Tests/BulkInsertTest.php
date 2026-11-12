@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\BulkTestUser;
@@ -35,7 +35,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         return ['bulk_test_users'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('bulk_test_users', true);
 
@@ -60,10 +60,10 @@ class BulkInsertTest extends AbstractDriverTestCase
     /**
      * Clean up test data before each test
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function cleanupData(Driver $driver): void
+    private function cleanupData(BaseSqlDriver $driver): void
     {
         try {
             $driver->exec("DELETE FROM " . $driver->quoteName(self::$testTable));
@@ -86,7 +86,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyBasic(string $dbName, Driver $driver): void
+    public function testQueryInsertManyBasic(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -115,7 +115,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyEmptyArray(string $dbName, Driver $driver): void
+    public function testQueryInsertManyEmptyArray(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -132,7 +132,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyValidatesRowStructure(string $dbName, Driver $driver): void
+    public function testQueryInsertManyValidatesRowStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -155,7 +155,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyWithChunking(string $dbName, Driver $driver): void
+    public function testQueryInsertManyWithChunking(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -189,7 +189,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyPreservesData(string $dbName, Driver $driver): void
+    public function testQueryInsertManyPreservesData(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -229,7 +229,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManyWithNullValues(string $dbName, Driver $driver): void
+    public function testQueryInsertManyWithNullValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -259,7 +259,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQueryInsertManySingleRow(string $dbName, Driver $driver): void
+    public function testQueryInsertManySingleRow(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -284,7 +284,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRelationalInsertMany(string $dbName, Driver $driver): void
+    public function testRelationalInsertMany(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -308,7 +308,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRelationalInsertManyEmpty(string $dbName, Driver $driver): void
+    public function testRelationalInsertManyEmpty(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -323,7 +323,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRelationalInsertManyWithChunking(string $dbName, Driver $driver): void
+    public function testRelationalInsertManyWithChunking(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -347,7 +347,7 @@ class BulkInsertTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRelationalInsertManyValidatesStructure(string $dbName, Driver $driver): void
+    public function testRelationalInsertManyValidatesStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);

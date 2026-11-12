@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Nested;
 use Hubzero\Database\Relational;
@@ -29,7 +29,7 @@ class NestedTest extends AbstractDriverTestCase
         return ['nested_discussions'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('nested_discussions', true);
 
@@ -124,7 +124,7 @@ class NestedTest extends AbstractDriverTestCase
         ];
     }
 
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         NestedDiscussion::clearBootedModels();
@@ -142,11 +142,11 @@ class NestedTest extends AbstractDriverTestCase
      *
      * Checks the nested set columns (lft, rgt, parent_id, level) for each row.
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @param array $expectedRows Array of expected row data keyed by position
      * @param string $dbName Database name for error messages
      */
-    private function assertNestedState(Driver $driver, array $expectedRows, string $dbName): void
+    private function assertNestedState(BaseSqlDriver $driver, array $expectedRows, string $dbName): void
     {
         $tableName = $driver->quoteName('nested_discussions');
         $idCol = $driver->quoteName('id');
@@ -185,7 +185,7 @@ class NestedTest extends AbstractDriverTestCase
      * Tests object construction and variable initialization
      */
     #[DataProvider('databaseProvider')]
-    public function testConstruct(string $dbName, Driver $driver): void
+    public function testConstruct(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -213,7 +213,7 @@ class NestedTest extends AbstractDriverTestCase
      * New node (id=6) added as last child of root (id=1)
      */
     #[DataProvider('databaseProvider')]
-    public function testCanAddNewChildNodeFromParentModel(string $dbName, Driver $driver): void
+    public function testCanAddNewChildNodeFromParentModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -243,7 +243,7 @@ class NestedTest extends AbstractDriverTestCase
      * New node (id=6) added as child of node 3
      */
     #[DataProvider('databaseProvider')]
-    public function testCanAddNewChildNodeFromParentId(string $dbName, Driver $driver): void
+    public function testCanAddNewChildNodeFromParentId(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -271,7 +271,7 @@ class NestedTest extends AbstractDriverTestCase
      * New node (id=6) inserted as first child of root, pushing others right
      */
     #[DataProvider('databaseProvider')]
-    public function testCanAddNewFirstChildNode(string $dbName, Driver $driver): void
+    public function testCanAddNewFirstChildNode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -303,7 +303,7 @@ class NestedTest extends AbstractDriverTestCase
      * New root (id=6) in scope=group, scope_id=2
      */
     #[DataProvider('databaseProvider')]
-    public function testCanAddNewRootNode(string $dbName, Driver $driver): void
+    public function testCanAddNewRootNode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -333,7 +333,7 @@ class NestedTest extends AbstractDriverTestCase
      * Tests getting the children of a given parent
      */
     #[DataProvider('databaseProvider')]
-    public function testCanGetChildren(string $dbName, Driver $driver): void
+    public function testCanGetChildren(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -351,7 +351,7 @@ class NestedTest extends AbstractDriverTestCase
      * Tests getting all descendants of a given parent
      */
     #[DataProvider('databaseProvider')]
-    public function testCanGetDescendants(string $dbName, Driver $driver): void
+    public function testCanGetDescendants(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -369,7 +369,7 @@ class NestedTest extends AbstractDriverTestCase
      * Tests getting a limited set of descendants
      */
     #[DataProvider('databaseProvider')]
-    public function testCanGetLimitedDescendants(string $dbName, Driver $driver): void
+    public function testCanGetLimitedDescendants(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -391,7 +391,7 @@ class NestedTest extends AbstractDriverTestCase
      * Node 5 removed, lft/rgt values adjusted
      */
     #[DataProvider('databaseProvider')]
-    public function testCanDeleteLeafNode(string $dbName, Driver $driver): void
+    public function testCanDeleteLeafNode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -411,7 +411,7 @@ class NestedTest extends AbstractDriverTestCase
      * Node 3 and its child node 4 both removed
      */
     #[DataProvider('databaseProvider')]
-    public function testCanDeleteParentNode(string $dbName, Driver $driver): void
+    public function testCanDeleteParentNode(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

@@ -8,7 +8,7 @@
 
 namespace Hubzero\Database\Tests;
 
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\SchemaSnapshot;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DatabaseInfo;
@@ -61,7 +61,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         parent::tearDownAfterClass();
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing test tables
         $driver->dropTable('snapshot_users', true);
@@ -115,7 +115,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function validSnapshotNames(string $dbName, Driver $driver): void
+    public function validSnapshotNames(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'test_');
 
@@ -144,7 +144,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function invalidSnapshotNamesThrowException(string $dbName, Driver $driver): void
+    public function invalidSnapshotNamesThrowException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'test_');
 
@@ -179,7 +179,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function emptySnapshotNameThrowsException(string $dbName, Driver $driver): void
+    public function emptySnapshotNameThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'test_');
 
@@ -198,7 +198,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function snapshotNameLengthLimit(string $dbName, Driver $driver): void
+    public function snapshotNameLengthLimit(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'test_');
 
@@ -221,7 +221,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function saveCreatesFileWithRealSchema(string $dbName, Driver $driver): void
+    public function saveCreatesFileWithRealSchema(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
         $name = 'test-save-' . $dbName;
@@ -251,7 +251,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function loadRawReturnsMetadata(string $dbName, Driver $driver): void
+    public function loadRawReturnsMetadata(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
         $name = 'test-load-raw-' . $dbName;
@@ -278,7 +278,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function loadReturnsDatabaseInfo(string $dbName, Driver $driver): void
+    public function loadReturnsDatabaseInfo(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
         $name = 'test-load-' . $dbName;
@@ -298,7 +298,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function loadNonExistentThrowsException(string $dbName, Driver $driver): void
+    public function loadNonExistentThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
 
@@ -315,7 +315,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function existsMethod(string $dbName, Driver $driver): void
+    public function existsMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
         $name = 'test-exists-' . $dbName;
@@ -335,7 +335,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function deleteSnapshot(string $dbName, Driver $driver): void
+    public function deleteSnapshot(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
         $name = 'test-delete-' . $dbName;
@@ -352,7 +352,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function deleteNonExistentReturnsFalse(string $dbName, Driver $driver): void
+    public function deleteNonExistentReturnsFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
 
@@ -368,7 +368,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function listSnapshots(string $dbName, Driver $driver): void
+    public function listSnapshots(string $dbName, BaseSqlDriver $driver): void
     {
         // Use unique directory for this test to avoid seeing files from other tests
         $testDir = self::$testDir . '/list_' . $dbName . '_' . uniqid();
@@ -405,7 +405,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function listEmptyDirectory(string $dbName, Driver $driver): void
+    public function listEmptyDirectory(string $dbName, BaseSqlDriver $driver): void
     {
         // Use unique directory for this test
         $testDir = self::$testDir . '/empty_' . $dbName . '_' . uniqid();
@@ -426,7 +426,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function listSortByName(string $dbName, Driver $driver): void
+    public function listSortByName(string $dbName, BaseSqlDriver $driver): void
     {
         // Use unique directory for this test
         $testDir = self::$testDir . '/sort_' . $dbName . '_' . uniqid();
@@ -458,7 +458,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createFromFile(string $dbName, Driver $driver): void
+    public function createFromFile(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'import_test_' . $dbName . '_');
 
@@ -493,7 +493,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createFromNonExistentFileThrowsException(string $dbName, Driver $driver): void
+    public function createFromNonExistentFileThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
 
@@ -510,7 +510,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function renameSnapshot(string $dbName, Driver $driver): void
+    public function renameSnapshot(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'rename_test_' . $dbName . '_');
 
@@ -539,7 +539,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function renameNonExistentThrowsException(string $dbName, Driver $driver): void
+    public function renameNonExistentThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
 
@@ -552,7 +552,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function renameToExistingThrowsException(string $dbName, Driver $driver): void
+    public function renameToExistingThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'rename_conflict_' . $dbName . '_');
 
@@ -579,7 +579,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function driftSummaryStructure(string $dbName, Driver $driver): void
+    public function driftSummaryStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'drift_test_' . $dbName . '_');
 
@@ -603,7 +603,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function driftDetectionWithChanges(string $dbName, Driver $driver): void
+    public function driftDetectionWithChanges(string $dbName, BaseSqlDriver $driver): void
     {
         // Use a unique prefix just for this drift test to avoid contamination
         $driftPrefix = 'drift_test_' . uniqid() . '_';
@@ -659,7 +659,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function noDriftWhenUnchanged(string $dbName, Driver $driver): void
+    public function noDriftWhenUnchanged(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'no_drift_' . $dbName . '_');
 
@@ -685,7 +685,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function setPrefix(string $dbName, Driver $driver): void
+    public function setPrefix(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir);
         $result = $snapshot->setPrefix('custom_');
@@ -703,7 +703,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getSnapshotDir(string $dbName, Driver $driver): void
+    public function getSnapshotDir(string $dbName, BaseSqlDriver $driver): void
     {
         $snapshot = new SchemaSnapshot($driver, self::$testDir, 'snapshot_');
 
@@ -715,7 +715,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function directoryCreatedOnSave(string $dbName, Driver $driver): void
+    public function directoryCreatedOnSave(string $dbName, BaseSqlDriver $driver): void
     {
         $newDir = self::$testDir . '/subdir_' . $dbName;
         $this->assertDirectoryDoesNotExist($newDir, "[$dbName]");

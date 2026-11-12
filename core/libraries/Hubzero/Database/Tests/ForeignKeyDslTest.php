@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\TableBuilder;
 use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Schema\ForeignKeyBuilder;
@@ -20,7 +21,7 @@ use Hubzero\Database\Schema\ForeignKeyBuilder;
  */
 class ForeignKeyDslTest extends AbstractDriverTestCase
 {
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('fkdsl_products', true);
         $driver->dropTable('fkdsl_orders', true);
@@ -44,7 +45,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
     /**
      * Clean up child tables created by individual tests
      */
-    protected function cleanUpChildTables(Driver $driver): void
+    protected function cleanUpChildTables(BaseSqlDriver $driver): void
     {
         $driver->dropTable('fkdsl_products', true);
         $driver->dropTable('fkdsl_orders', true);
@@ -59,7 +60,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testForeignKeyBuilderFluentSyntax(string $dbName, Driver $driver)
+    public function testForeignKeyBuilderFluentSyntax(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -75,7 +76,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testForeignKeyBuilderConstrainedAutoDeriveTable(string $dbName, Driver $driver)
+    public function testForeignKeyBuilderConstrainedAutoDeriveTable(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -88,7 +89,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testForeignKeyBuilderConstrainedExplicitTable(string $dbName, Driver $driver)
+    public function testForeignKeyBuilderConstrainedExplicitTable(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -101,7 +102,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableDerivationFromColumnName(string $dbName, Driver $driver)
+    public function testTableDerivationFromColumnName(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -128,7 +129,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testConvenienceActionMethods(string $dbName, Driver $driver)
+    public function testConvenienceActionMethods(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -150,7 +151,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCustomConstraintName(string $dbName, Driver $driver)
+    public function testCustomConstraintName(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -162,7 +163,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testToArray(string $dbName, Driver $driver)
+    public function testToArray(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -181,7 +182,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testForeignKeyDefaultActions(string $dbName, Driver $driver)
+    public function testForeignKeyDefaultActions(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -194,7 +195,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testActionUppercasing(string $dbName, Driver $driver)
+    public function testActionUppercasing(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_test');
 
@@ -214,7 +215,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderForeignFluent(string $dbName, Driver $driver)
+    public function testTableBuilderForeignFluent(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $result = $builder->foreign('user_id');
@@ -224,7 +225,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderForeignLegacy(string $dbName, Driver $driver)
+    public function testTableBuilderForeignLegacy(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $result = $builder->foreign('user_id', 'fkdsl_users', 'id', 'CASCADE', 'CASCADE');
@@ -234,7 +235,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderForeignId(string $dbName, Driver $driver)
+    public function testTableBuilderForeignId(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $result = $builder->foreignId('user_id');
@@ -244,7 +245,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderCreateWithFluentFk(string $dbName, Driver $driver)
+    public function testTableBuilderCreateWithFluentFk(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
@@ -266,7 +267,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderCreateWithConstrained(string $dbName, Driver $driver)
+    public function testTableBuilderCreateWithConstrained(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
@@ -285,7 +286,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderCreateWithCustomFkName(string $dbName, Driver $driver)
+    public function testTableBuilderCreateWithCustomFkName(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_posts');
         $builder
@@ -303,7 +304,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableBuilderExecuteWithFk(string $dbName, Driver $driver)
+    public function testTableBuilderExecuteWithFk(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanUpChildTables($driver);
 
@@ -347,7 +348,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAlterTableBuilderForeign(string $dbName, Driver $driver)
+    public function testAlterTableBuilderForeign(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new AlterTableBuilder($driver, 'fkdsl_comments');
         $result = $builder->foreign('user_id');
@@ -357,7 +358,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAlterTableBuilderForeignId(string $dbName, Driver $driver)
+    public function testAlterTableBuilderForeignId(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new AlterTableBuilder($driver, 'fkdsl_comments');
         $result = $builder->foreignId('user_id');
@@ -367,7 +368,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAlterTableBuilderAddForeignLegacy(string $dbName, Driver $driver)
+    public function testAlterTableBuilderAddForeignLegacy(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new AlterTableBuilder($driver, 'fkdsl_comments');
         $result = $builder->addForeign('user_id', 'fkdsl_users', 'id', 'CASCADE', 'CASCADE');
@@ -377,7 +378,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testAlterTableBuilderAddFluentFk(string $dbName, Driver $driver)
+    public function testAlterTableBuilderAddFluentFk(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanUpChildTables($driver);
 
@@ -407,7 +408,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMethodChainingBackToTableBuilder(string $dbName, Driver $driver)
+    public function testMethodChainingBackToTableBuilder(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'fkdsl_orders');
 
@@ -428,7 +429,7 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMultipleForeignKeys(string $dbName, Driver $driver)
+    public function testMultipleForeignKeys(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanUpChildTables($driver);
 

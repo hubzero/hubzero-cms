@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Expression;
 
@@ -51,7 +52,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
      * @param   Driver  $driver  The database driver
      * @return  void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         try {
             $driver->dropTable(self::$testTable);
@@ -107,7 +108,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSupportsSequencesReturnsTrue(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->assertTrue(
             $driver->supportsSequences(),
@@ -122,7 +123,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCreateAndDropSequence(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -146,7 +147,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testNextSequenceValueReturnsIncrementingValues(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -166,7 +167,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSequenceStartValue(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqStart, 100);
 
@@ -186,7 +187,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCurrentSequenceValue(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -241,7 +242,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testNextValInInsert(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqInsert, 500);
 
@@ -263,7 +264,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequencesListsCreatedSequences(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -290,7 +291,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testEmulationTableCreatedAutomatically(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$driver->usesSequenceEmulation()) {
             $this->assertTrue(true, "$dbName: native sequences, no emulation table");

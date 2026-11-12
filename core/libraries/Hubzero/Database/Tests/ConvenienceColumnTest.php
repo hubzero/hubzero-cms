@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\TableBuilder;
 use Hubzero\Database\Schema\AlterTableBuilder;
 
@@ -22,7 +22,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
     /**
      * No tables needed upfront - all created/dropped in individual tests
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created and dropped in individual test methods
     }
@@ -44,7 +44,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderUuid(string $dbName, Driver $driver)
+    public function tableBuilderUuid(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_uuid', true);
 
@@ -62,7 +62,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderUlid(string $dbName, Driver $driver)
+    public function tableBuilderUlid(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_ulid', true);
 
@@ -80,7 +80,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderRememberToken(string $dbName, Driver $driver)
+    public function tableBuilderRememberToken(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_token', true);
 
@@ -98,7 +98,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderSoftDeletes(string $dbName, Driver $driver)
+    public function tableBuilderSoftDeletes(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_soft', true);
 
@@ -116,7 +116,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderSoftDeletesCustomColumn(string $dbName, Driver $driver)
+    public function tableBuilderSoftDeletesCustomColumn(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_soft_custom', true);
 
@@ -134,7 +134,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderMorphs(string $dbName, Driver $driver)
+    public function tableBuilderMorphs(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_morphs', true);
 
@@ -153,7 +153,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderNullableMorphs(string $dbName, Driver $driver)
+    public function tableBuilderNullableMorphs(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_nullable_morphs', true);
 
@@ -172,7 +172,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderUuidMorphs(string $dbName, Driver $driver)
+    public function tableBuilderUuidMorphs(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_uuid_morphs', true);
 
@@ -191,7 +191,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderIpAddress(string $dbName, Driver $driver)
+    public function tableBuilderIpAddress(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_ip', true);
 
@@ -209,7 +209,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderMacAddress(string $dbName, Driver $driver)
+    public function tableBuilderMacAddress(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_mac', true);
 
@@ -227,7 +227,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderYear(string $dbName, Driver $driver)
+    public function tableBuilderYear(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_year', true);
 
@@ -245,7 +245,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderSet(string $dbName, Driver $driver)
+    public function tableBuilderSet(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_set', true);
 
@@ -263,7 +263,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderNullableTimestamps(string $dbName, Driver $driver)
+    public function tableBuilderNullableTimestamps(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_timestamps', true);
 
@@ -282,7 +282,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderExecuteWithConvenienceColumns(string $dbName, Driver $driver)
+    public function tableBuilderExecuteWithConvenienceColumns(string $dbName, BaseSqlDriver $driver)
     {
         // Cleanup
         $driver->dropTable('convtest_users', true);
@@ -317,7 +317,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddUuidColumn(string $dbName, Driver $driver)
+    public function alterTableBuilderAddUuidColumn(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_users', true);
@@ -349,7 +349,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddSoftDeletes(string $dbName, Driver $driver)
+    public function alterTableBuilderAddSoftDeletes(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_posts', true);
@@ -375,7 +375,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddRememberToken(string $dbName, Driver $driver)
+    public function alterTableBuilderAddRememberToken(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_accounts', true);
@@ -401,7 +401,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddTimestamps(string $dbName, Driver $driver)
+    public function alterTableBuilderAddTimestamps(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_items', true);
@@ -430,7 +430,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddNetworkColumns(string $dbName, Driver $driver)
+    public function alterTableBuilderAddNetworkColumns(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_sessions', true);
@@ -461,7 +461,7 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableBuilderAddMorphs(string $dbName, Driver $driver)
+    public function alterTableBuilderAddMorphs(string $dbName, BaseSqlDriver $driver)
     {
         // Create a table first using schema builder
         $driver->dropTable('altertest_comments', true);

@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\TestItem;
@@ -43,10 +43,10 @@ class ChunkingTest extends AbstractDriverTestCase
     /**
      * Create test tables and insert seed data for a database
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing table
         try {
@@ -88,10 +88,10 @@ class ChunkingTest extends AbstractDriverTestCase
      * Truncate the table to remove all rows and reset auto-increment.
      *
      * @param string $dbName Database name
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function cleanupData(string $dbName, Driver $driver): void
+    private function cleanupData(string $dbName, BaseSqlDriver $driver): void
     {
         try {
             // Truncate table to delete all rows and reset auto-increment
@@ -104,11 +104,11 @@ class ChunkingTest extends AbstractDriverTestCase
     /**
      * Insert test records
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @param int $count Number of records to insert
      * @return void
      */
-    private function insertRecords(Driver $driver, int $count): void
+    private function insertRecords(BaseSqlDriver $driver, int $count): void
     {
         $rows = [];
         for ($i = 1; $i <= $count; $i++) {
@@ -133,7 +133,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkProcessesAllRecords(string $dbName, Driver $driver): void
+    public function testChunkProcessesAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -157,7 +157,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkStopsOnFalse(string $dbName, Driver $driver): void
+    public function testChunkStopsOnFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -181,7 +181,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkReturnsTrueWhenComplete(string $dbName, Driver $driver): void
+    public function testChunkReturnsTrueWhenComplete(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -198,7 +198,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkValidatesChunkSize(string $dbName, Driver $driver): void
+    public function testChunkValidatesChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -211,7 +211,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkWithQueryConstraints(string $dbName, Driver $driver): void
+    public function testChunkWithQueryConstraints(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -241,7 +241,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkByIdProcessesAllRecords(string $dbName, Driver $driver): void
+    public function testChunkByIdProcessesAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -264,7 +264,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkByIdStopsOnFalse(string $dbName, Driver $driver): void
+    public function testChunkByIdStopsOnFalse(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -288,7 +288,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkByIdWithCustomColumn(string $dbName, Driver $driver): void
+    public function testChunkByIdWithCustomColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -311,7 +311,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChunkByIdValidatesChunkSize(string $dbName, Driver $driver): void
+    public function testChunkByIdValidatesChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -328,7 +328,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCursorReturnsGenerator(string $dbName, Driver $driver): void
+    public function testCursorReturnsGenerator(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -345,7 +345,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCursorIteratesAllRecords(string $dbName, Driver $driver): void
+    public function testCursorIteratesAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -371,7 +371,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCursorWithQueryConstraints(string $dbName, Driver $driver): void
+    public function testCursorWithQueryConstraints(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -391,7 +391,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCursorWithEmptyResults(string $dbName, Driver $driver): void
+    public function testCursorWithEmptyResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -409,7 +409,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCursorValidatesChunkSize(string $dbName, Driver $driver): void
+    public function testCursorValidatesChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -426,7 +426,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyReturnsGenerator(string $dbName, Driver $driver): void
+    public function testLazyReturnsGenerator(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -443,7 +443,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyIteratesAllRecords(string $dbName, Driver $driver): void
+    public function testLazyIteratesAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -469,7 +469,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyWithQueryConstraints(string $dbName, Driver $driver): void
+    public function testLazyWithQueryConstraints(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -489,7 +489,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyWithEmptyResults(string $dbName, Driver $driver): void
+    public function testLazyWithEmptyResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -507,7 +507,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyValidatesChunkSize(string $dbName, Driver $driver): void
+    public function testLazyValidatesChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -524,7 +524,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyByIdReturnsGenerator(string $dbName, Driver $driver): void
+    public function testLazyByIdReturnsGenerator(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -541,7 +541,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyByIdIteratesAllRecords(string $dbName, Driver $driver): void
+    public function testLazyByIdIteratesAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -567,7 +567,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyByIdWithCustomColumn(string $dbName, Driver $driver): void
+    public function testLazyByIdWithCustomColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -588,7 +588,7 @@ class ChunkingTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLazyByIdValidatesChunkSize(string $dbName, Driver $driver): void
+    public function testLazyByIdValidatesChunkSize(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 

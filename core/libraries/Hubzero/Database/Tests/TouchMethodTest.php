@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\TouchTestItem;
 
@@ -34,7 +34,7 @@ class TouchMethodTest extends AbstractDriverTestCase
     /**
      * Create test tables
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('touch_test_items', true);
 
@@ -59,7 +59,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchUpdatesModifiedColumn(string $dbName, Driver $driver)
+    public function touchUpdatesModifiedColumn(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -92,7 +92,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchUpdatesCustomColumn(string $dbName, Driver $driver)
+    public function touchUpdatesCustomColumn(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -122,7 +122,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchReturnsFalseForNonExistentColumn(string $dbName, Driver $driver)
+    public function touchReturnsFalseForNonExistentColumn(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -144,7 +144,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchReturnsFalseForNewModel(string $dbName, Driver $driver)
+    public function touchReturnsFalseForNewModel(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -166,7 +166,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchDoesNotModifyOtherColumns(string $dbName, Driver $driver)
+    public function touchDoesNotModifyOtherColumns(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -197,7 +197,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchUpdatesLocalAttribute(string $dbName, Driver $driver)
+    public function touchUpdatesLocalAttribute(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -224,7 +224,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchSyncsOriginalAttribute(string $dbName, Driver $driver)
+    public function touchSyncsOriginalAttribute(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -248,7 +248,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleSequentialTouches(string $dbName, Driver $driver)
+    public function multipleSequentialTouches(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -278,7 +278,7 @@ class TouchMethodTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function touchDifferentColumnsSequentially(string $dbName, Driver $driver)
+    public function touchDifferentColumnsSequentially(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
         TouchTestItem::setDefaultConnection($driver);
@@ -309,7 +309,7 @@ class TouchMethodTest extends AbstractDriverTestCase
     /**
      * Setup test table
      */
-    private function setupTable(Driver $driver): void
+    private function setupTable(BaseSqlDriver $driver): void
     {
         $driver->dropTable('touch_test_items', true);
 
@@ -328,7 +328,7 @@ class TouchMethodTest extends AbstractDriverTestCase
     /**
      * Insert test record
      */
-    private function insertTestRecord(Driver $driver, string $title): int
+    private function insertTestRecord(BaseSqlDriver $driver, string $title): int
     {
         $modified = '2020-01-01 00:00:00';
 

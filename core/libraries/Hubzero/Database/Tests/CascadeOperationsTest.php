@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Relationship\Relationship;
@@ -38,7 +38,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         return ['cascade_posts', 'cascade_comments', 'cascade_profiles'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('cascade_profiles', true);
         $driver->dropTable('cascade_comments', true);
@@ -99,10 +99,10 @@ class CascadeOperationsTest extends AbstractDriverTestCase
     /**
      * Clean up test data before each test
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function cleanupData(Driver $driver): void
+    private function cleanupData(BaseSqlDriver $driver): void
     {
         try {
             foreach (array_reverse(static::getTestTables()) as $table) {
@@ -122,7 +122,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeOnDeleteFluentMethod(string $dbName, Driver $driver): void
+    public function testCascadeOnDeleteFluentMethod(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -146,7 +146,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeOnDeleteCanBeDisabled(string $dbName, Driver $driver): void
+    public function testCascadeOnDeleteCanBeDisabled(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -169,7 +169,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeOnSaveFluentMethod(string $dbName, Driver $driver): void
+    public function testCascadeOnSaveFluentMethod(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -193,7 +193,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOrphanRemovalFluentMethod(string $dbName, Driver $driver): void
+    public function testOrphanRemovalFluentMethod(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -217,7 +217,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeMethodChaining(string $dbName, Driver $driver): void
+    public function testCascadeMethodChaining(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -248,7 +248,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNoCascadeDeleteByDefault(string $dbName, Driver $driver): void
+    public function testNoCascadeDeleteByDefault(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -293,7 +293,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeDeleteWhenEnabled(string $dbName, Driver $driver): void
+    public function testCascadeDeleteWhenEnabled(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -346,7 +346,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetRelatedReturnsRelatedModel(string $dbName, Driver $driver): void
+    public function testGetRelatedReturnsRelatedModel(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -363,7 +363,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetModelReturnsParentModel(string $dbName, Driver $driver): void
+    public function testGetModelReturnsParentModel(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -384,7 +384,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeDeleteWithNoRelatedRecords(string $dbName, Driver $driver): void
+    public function testCascadeDeleteWithNoRelatedRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -406,7 +406,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeOptionsAreIndependent(string $dbName, Driver $driver): void
+    public function testCascadeOptionsAreIndependent(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -447,7 +447,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTrackOrphansForStoresOriginalIds(string $dbName, Driver $driver): void
+    public function testTrackOrphansForStoresOriginalIds(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -492,7 +492,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeOnDeleteBulkParameter(string $dbName, Driver $driver): void
+    public function testCascadeOnDeleteBulkParameter(string $dbName, BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -525,7 +525,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBulkCascadeDeleteWorks(string $dbName, Driver $driver): void
+    public function testBulkCascadeDeleteWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -574,7 +574,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNonBulkCascadeDeleteStillWorks(string $dbName, Driver $driver): void
+    public function testNonBulkCascadeDeleteStillWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);
@@ -614,7 +614,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCascadeSaveFailureRollsBackParentSave(string $dbName, Driver $driver): void
+    public function testCascadeSaveFailureRollsBackParentSave(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($driver);
         Relational::setDefaultConnection($driver);

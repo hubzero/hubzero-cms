@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\EventStub;
@@ -52,10 +53,10 @@ class SoftDeletesTest extends AbstractDriverTestCase
     /**
      * Create test tables
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop tables if they exist
         $driver->dropTable('soft_delete_posts', true);
@@ -99,9 +100,9 @@ class SoftDeletesTest extends AbstractDriverTestCase
      * Clean up tables before each test
      *
      * @param string $dbName Database name
-     * @param Driver $driver Driver instance
+     * @param BaseSqlDriver $driver Driver instance
      */
-    private function cleanTables(string $dbName, Driver $driver): void
+    private function cleanTables(string $dbName, BaseSqlDriver $driver): void
     {
         $driver->truncateTable('soft_delete_posts');
         $driver->truncateTable('soft_delete_custom_posts');
@@ -110,7 +111,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
     /**
      * Helper to insert a test record directly
      */
-    private function insertTestRecord(Driver $driver, string $title, ?string $deletedAt = null): int
+    private function insertTestRecord(BaseSqlDriver $driver, string $title, ?string $deletedAt = null): int
     {
         $query = new Query($driver);
         $values = [
@@ -140,7 +141,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function destroySetsSoftDeleteTimestamp(string $dbName, Driver $driver)
+    public function destroySetsSoftDeleteTimestamp(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -169,7 +170,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function trashedReturnsCorrectStatus(string $dbName, Driver $driver)
+    public function trashedReturnsCorrectStatus(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -188,7 +189,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function destroyReturnsFalseForAlreadyTrashed(string $dbName, Driver $driver)
+    public function destroyReturnsFalseForAlreadyTrashed(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -214,7 +215,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreClearsDeletedAtTimestamp(string $dbName, Driver $driver)
+    public function restoreClearsDeletedAtTimestamp(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -249,7 +250,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreReturnsFalseForNonTrashed(string $dbName, Driver $driver)
+    public function restoreReturnsFalseForNonTrashed(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -271,7 +272,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function forceDeletePermanentlyRemovesRecord(string $dbName, Driver $driver)
+    public function forceDeletePermanentlyRemovesRecord(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -299,7 +300,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function forceDeleteWorksOnSoftDeletedRecords(string $dbName, Driver $driver)
+    public function forceDeleteWorksOnSoftDeletedRecords(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -334,7 +335,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function defaultQueriesExcludeSoftDeletedRecords(string $dbName, Driver $driver)
+    public function defaultQueriesExcludeSoftDeletedRecords(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -358,7 +359,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function withTrashedIncludesSoftDeletedRecords(string $dbName, Driver $driver)
+    public function withTrashedIncludesSoftDeletedRecords(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -376,7 +377,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function onlyTrashedReturnsOnlySoftDeletedRecords(string $dbName, Driver $driver)
+    public function onlyTrashedReturnsOnlySoftDeletedRecords(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -399,7 +400,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function withTrashedWorksWithAdditionalConstraints(string $dbName, Driver $driver)
+    public function withTrashedWorksWithAdditionalConstraints(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -426,7 +427,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function softDeletesWithCustomColumnName(string $dbName, Driver $driver)
+    public function softDeletesWithCustomColumnName(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -461,7 +462,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getDeletedAtColumnReturnsCorrectName(string $dbName, Driver $driver)
+    public function getDeletedAtColumnReturnsCorrectName(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -482,7 +483,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function modelWithoutTraitPerformsHardDelete(string $dbName, Driver $driver)
+    public function modelWithoutTraitPerformsHardDelete(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -525,7 +526,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleSoftDeleteRestoreCycles(string $dbName, Driver $driver)
+    public function multipleSoftDeleteRestoreCycles(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -562,7 +563,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isForceDeleting(string $dbName, Driver $driver)
+    public function isForceDeleting(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -580,7 +581,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function softDeletedRecordsNotIncludedInCount(string $dbName, Driver $driver)
+    public function softDeletedRecordsNotIncludedInCount(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -599,7 +600,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function withTrashedCountIncludesAllRecords(string $dbName, Driver $driver)
+    public function withTrashedCountIncludesAllRecords(string $dbName, BaseSqlDriver $driver)
     {
         $this->cleanTables($dbName, $driver);
         Relational::setDefaultConnection($driver);

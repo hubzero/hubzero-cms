@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\SchemaManager;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DiffSqlGenerator;
@@ -29,7 +29,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         return ['cmp_test_v1', 'cmp_test_v2'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created/dropped per-test
     }
@@ -37,9 +37,9 @@ class SchemaComparisonTest extends AbstractDriverTestCase
     /**
      * Clean up test tables before each test
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      */
-    private function cleanTestTables(Driver $driver): void
+    private function cleanTestTables(BaseSqlDriver $driver): void
     {
         $driver->dropTable('cmp_test_v1', true);
         $driver->dropTable('cmp_test_v2', true);
@@ -54,7 +54,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compareRealTables(string $dbName, Driver $driver): void
+    public function compareRealTables(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -104,7 +104,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function generateTableDiffSql(string $dbName, Driver $driver): void
+    public function generateTableDiffSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -143,7 +143,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compareIdenticalTables(string $dbName, Driver $driver): void
+    public function compareIdenticalTables(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -174,7 +174,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compareTableInfoObjects(string $dbName, Driver $driver): void
+    public function compareTableInfoObjects(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -216,7 +216,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getComparatorReturnsInstance(string $dbName, Driver $driver): void
+    public function getComparatorReturnsInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
         $comparator = $schema->getComparator();
@@ -229,7 +229,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getDiffSqlGeneratorReturnsInstance(string $dbName, Driver $driver): void
+    public function getDiffSqlGeneratorReturnsInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $schema = $driver->schema();
         $generator = $schema->getDiffSqlGenerator();
@@ -242,7 +242,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function generateReverseSql(string $dbName, Driver $driver): void
+    public function generateReverseSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -287,7 +287,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function diffWithIndexChanges(string $dbName, Driver $driver): void
+    public function diffWithIndexChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();
@@ -321,7 +321,7 @@ class SchemaComparisonTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function destructiveWarningForDroppedColumn(string $dbName, Driver $driver): void
+    public function destructiveWarningForDroppedColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanTestTables($driver);
         $schema = $driver->schema();

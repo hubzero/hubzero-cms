@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Drivers\Base\BaseSchemaGrammar as Grammar;
 use Hubzero\Database\Schema\TableDefinition;
@@ -25,7 +25,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
         return [];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // No persistent database fixtures required for these grammar contract tests.
     }
@@ -37,7 +37,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function compileCreateTableFromDefinitionUsesGenericCompilationByDefault(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array
@@ -117,7 +117,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function compileCreateTableFromDefinitionConfiguredOverrideReturnsSqlList(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $grammar = $driver->getSchemaGrammar();
 
@@ -155,8 +155,10 @@ class SchemaGrammarTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function concreteGrammarsOverrideCreateFromDefinitionAndReturnSqlList(string $dbName, Driver $driver): void
-    {
+    public function concreteGrammarsOverrideCreateFromDefinitionAndReturnSqlList(
+        string $dbName,
+        BaseSqlDriver $driver,
+    ): void {
         $classes = [
             get_class($driver->getSchemaGrammar()),
         ];
@@ -206,7 +208,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compileIndexesQuotesIdentifiersInBaseGrammar(string $dbName, Driver $driver): void
+    public function compileIndexesQuotesIdentifiersInBaseGrammar(string $dbName, BaseSqlDriver $driver): void
     {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array

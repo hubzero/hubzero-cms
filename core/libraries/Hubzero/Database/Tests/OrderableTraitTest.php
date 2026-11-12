@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Traits\Orderable;
@@ -31,7 +31,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         return ['orderable_custom_items', 'orderable_menu_items', 'orderable_items'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('orderable_items', true);
         $driver
@@ -59,7 +59,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         OrderableItem::clearBootedModels();
@@ -82,7 +82,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetOrderingReturnsCurrentValue(string $dbName, Driver $driver)
+    public function testGetOrderingReturnsCurrentValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -100,7 +100,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetOrderingSetsValue(string $dbName, Driver $driver)
+    public function testSetOrderingSetsValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -119,7 +119,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetMaxOrderingReturnsHighestValue(string $dbName, Driver $driver)
+    public function testGetMaxOrderingReturnsHighestValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -140,7 +140,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetNewOrderingSetsNextAvailableOrdering(string $dbName, Driver $driver)
+    public function testSetNewOrderingSetsNextAvailableOrdering(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -165,7 +165,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveUpDecreasesOrdering(string $dbName, Driver $driver)
+    public function testMoveUpDecreasesOrdering(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -190,7 +190,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveDownIncreasesOrdering(string $dbName, Driver $driver)
+    public function testMoveDownIncreasesOrdering(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -215,7 +215,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveWithPositiveDeltaMovesDown(string $dbName, Driver $driver)
+    public function testMoveWithPositiveDeltaMovesDown(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -240,7 +240,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveWithNegativeDeltaMovesUp(string $dbName, Driver $driver)
+    public function testMoveWithNegativeDeltaMovesUp(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -265,7 +265,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveZeroReturnsTrue(string $dbName, Driver $driver)
+    public function testMoveZeroReturnsTrue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -285,7 +285,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveFirstMovesToPositionOne(string $dbName, Driver $driver)
+    public function testMoveFirstMovesToPositionOne(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -309,7 +309,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveLastMovesToLastPosition(string $dbName, Driver $driver)
+    public function testMoveLastMovesToLastPosition(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -333,7 +333,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveToMovesToSpecificPosition(string $dbName, Driver $driver)
+    public function testMoveToMovesToSpecificPosition(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -359,7 +359,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveToSamePositionReturnsTrue(string $dbName, Driver $driver)
+    public function testMoveToSamePositionReturnsTrue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -383,7 +383,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveUpOnFirstItemDoesNothing(string $dbName, Driver $driver)
+    public function testMoveUpOnFirstItemDoesNothing(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -405,7 +405,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveDownOnLastItemDoesNothing(string $dbName, Driver $driver)
+    public function testMoveDownOnLastItemDoesNothing(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -431,7 +431,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testReorderAllCompactsOrderingNumbers(string $dbName, Driver $driver)
+    public function testReorderAllCompactsOrderingNumbers(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -459,7 +459,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testReorderByIdsSetsOrderingBasedOnIdArray(string $dbName, Driver $driver)
+    public function testReorderByIdsSetsOrderingBasedOnIdArray(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -493,7 +493,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOrderingIsScopedToGroup(string $dbName, Driver $driver)
+    public function testOrderingIsScopedToGroup(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -526,7 +526,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMoveUpInGroupDoesntAffectOtherGroups(string $dbName, Driver $driver)
+    public function testMoveUpInGroupDoesntAffectOtherGroups(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -561,7 +561,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCustomOrderingColumnNameWorks(string $dbName, Driver $driver)
+    public function testCustomOrderingColumnNameWorks(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 

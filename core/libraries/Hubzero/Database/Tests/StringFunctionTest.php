@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * String function abstraction tests
@@ -34,10 +34,10 @@ class StringFunctionTest extends AbstractDriverTestCase
     /**
      * Create test tables (no-op -- table is created per-test in setupTable())
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Table is created fresh per test via setupTable()
         // Just ensure it's clean at setup time
@@ -47,7 +47,7 @@ class StringFunctionTest extends AbstractDriverTestCase
     /**
      * Setup test table with sample data
      */
-    private function setupTable(Driver $driver): void
+    private function setupTable(BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('string_func_test', true);
@@ -98,7 +98,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function concatCombinesStrings(string $dbName, Driver $driver)
+    public function concatCombinesStrings(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -129,7 +129,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function replaceSubstitutesText(string $dbName, Driver $driver)
+    public function replaceSubstitutesText(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -160,7 +160,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function lowerConvertsToLowercase(string $dbName, Driver $driver)
+    public function lowerConvertsToLowercase(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -191,7 +191,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function upperConvertsToUppercase(string $dbName, Driver $driver)
+    public function upperConvertsToUppercase(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -222,7 +222,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleStringFunctions(string $dbName, Driver $driver)
+    public function multipleStringFunctions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -255,7 +255,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function concatMultipleArguments(string $dbName, Driver $driver)
+    public function concatMultipleArguments(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -286,7 +286,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function replaceMultipleTimes(string $dbName, Driver $driver)
+    public function replaceMultipleTimes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -325,7 +325,7 @@ class StringFunctionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function stringFunctionsInSelect(string $dbName, Driver $driver)
+    public function stringFunctionsInSelect(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 

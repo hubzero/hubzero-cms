@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\ReplicateTestItem;
@@ -35,10 +35,10 @@ class ReplicateTest extends AbstractDriverTestCase
     /**
      * Create test tables
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('replicate_test_items', true);
 
@@ -63,7 +63,7 @@ class ReplicateTest extends AbstractDriverTestCase
     /**
      * Reset test state for each test method
      */
-    private function resetReplicateState(Driver $driver): void
+    private function resetReplicateState(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         Query::purgeCache();
@@ -74,7 +74,7 @@ class ReplicateTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      */
-    protected function insertTestRecord(Driver $driver, $data = [])
+    protected function insertTestRecord(BaseSqlDriver $driver, $data = [])
     {
         $defaults = [
             'title' => 'Test Item',
@@ -104,7 +104,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() returns a new instance
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateReturnsNewInstance(string $dbName, Driver $driver): void
+    public function testReplicateReturnsNewInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -121,7 +121,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() removes the primary key
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateRemovesPrimaryKey(string $dbName, Driver $driver): void
+    public function testReplicateRemovesPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -139,7 +139,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() copies regular attributes
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateCopiesAttributes(string $dbName, Driver $driver): void
+    public function testReplicateCopiesAttributes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -163,7 +163,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() removes default timestamp columns
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateRemovesTimestamps(string $dbName, Driver $driver): void
+    public function testReplicateRemovesTimestamps(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -184,7 +184,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() keeps non-excluded attributes
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateKeepsNonExcludedAttributes(string $dbName, Driver $driver): void
+    public function testReplicateKeepsNonExcludedAttributes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -209,7 +209,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() accepts custom exclusions
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateWithCustomExclusions(string $dbName, Driver $driver): void
+    public function testReplicateWithCustomExclusions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -234,7 +234,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicate() merges custom exclusions with defaults
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateMergesExclusionsWithDefaults(string $dbName, Driver $driver): void
+    public function testReplicateMergesExclusionsWithDefaults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -255,7 +255,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test replicate with empty exclusion array
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateWithEmptyExclusionArray(string $dbName, Driver $driver): void
+    public function testReplicateWithEmptyExclusionArray(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -277,7 +277,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that replicated model can be saved as new record
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicatedModelCanBeSaved(string $dbName, Driver $driver): void
+    public function testReplicatedModelCanBeSaved(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -298,7 +298,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that saving replicate creates distinct database records
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateCreatesSeparateRecords(string $dbName, Driver $driver): void
+    public function testReplicateCreatesSeparateRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -327,7 +327,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test replicated model is marked as new (isNew)
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicatedModelIsNew(string $dbName, Driver $driver): void
+    public function testReplicatedModelIsNew(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -349,7 +349,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test replicate on a new (unsaved) model
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicateOnNewModel(string $dbName, Driver $driver): void
+    public function testReplicateOnNewModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -368,7 +368,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test replicate preserves null values
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicatePreservesNullValues(string $dbName, Driver $driver): void
+    public function testReplicatePreservesNullValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -387,7 +387,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test replicate with integer zero value
      */
     #[DataProvider('databaseProvider')]
-    public function testReplicatePreservesZeroValues(string $dbName, Driver $driver): void
+    public function testReplicatePreservesZeroValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -404,7 +404,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test multiple replicates from same original
      */
     #[DataProvider('databaseProvider')]
-    public function testMultipleReplicates(string $dbName, Driver $driver): void
+    public function testMultipleReplicates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 
@@ -444,7 +444,7 @@ class ReplicateTest extends AbstractDriverTestCase
      * Test that modifying copy doesn't affect original
      */
     #[DataProvider('databaseProvider')]
-    public function testModifyingCopyDoesNotAffectOriginal(string $dbName, Driver $driver): void
+    public function testModifyingCopyDoesNotAffectOriginal(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetReplicateState($driver);
 

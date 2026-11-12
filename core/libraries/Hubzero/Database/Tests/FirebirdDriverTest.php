@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Firebird\FirebirdDriver as Firebird;
 
 /**
@@ -34,7 +34,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         return ['FT_ITEMS', 'FT_CATEGORIES'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof Firebird)) {
             return;
@@ -107,7 +107,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
     /**
      * Check if the driver is Firebird; if not, pass with no-op assertion.
      */
-    private function requiresFirebird(Driver $driver): bool
+    private function requiresFirebird(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Firebird)) {
             $this->assertTrue(true);
@@ -199,7 +199,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function driverConnectionWorks(string $dbName, Driver $driver): void
+    public function driverConnectionWorks(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -211,7 +211,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetFirebirdVersion(string $dbName, Driver $driver): void
+    public function canGetFirebirdVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -228,7 +228,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canListTables(string $dbName, Driver $driver): void
+    public function canListTables(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -248,7 +248,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCheckTableExists(string $dbName, Driver $driver): void
+    public function canCheckTableExists(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -269,7 +269,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetTableColumns(string $dbName, Driver $driver): void
+    public function canGetTableColumns(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -297,7 +297,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetPrimaryKey(string $dbName, Driver $driver): void
+    public function canGetPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -315,7 +315,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetForeignKeys(string $dbName, Driver $driver): void
+    public function canGetForeignKeys(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -343,7 +343,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetIndexes(string $dbName, Driver $driver): void
+    public function canGetIndexes(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -373,7 +373,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAllRecords(string $dbName, Driver $driver): void
+    public function canSelectAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -389,7 +389,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectWithWhereClause(string $dbName, Driver $driver): void
+    public function canSelectWithWhereClause(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -401,7 +401,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectWithJoin(string $dbName, Driver $driver): void
+    public function canSelectWithJoin(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -421,7 +421,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canInsertRecord(string $dbName, Driver $driver): void
+    public function canInsertRecord(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -439,7 +439,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUpdateRecord(string $dbName, Driver $driver): void
+    public function canUpdateRecord(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -456,7 +456,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDeleteRecord(string $dbName, Driver $driver): void
+    public function canDeleteRecord(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -475,7 +475,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCommitTransaction(string $dbName, Driver $driver): void
+    public function canCommitTransaction(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -493,7 +493,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canRollbackTransaction(string $dbName, Driver $driver): void
+    public function canRollbackTransaction(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -523,7 +523,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCount(string $dbName, Driver $driver): void
+    public function canUseCount(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -535,7 +535,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseSum(string $dbName, Driver $driver): void
+    public function canUseSum(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -547,7 +547,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseAvg(string $dbName, Driver $driver): void
+    public function canUseAvg(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -559,7 +559,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseMinMax(string $dbName, Driver $driver): void
+    public function canUseMinMax(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -578,7 +578,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCurrentTimestamp(string $dbName, Driver $driver): void
+    public function canUseCurrentTimestamp(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -590,7 +590,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canExtractDateParts(string $dbName, Driver $driver): void
+    public function canExtractDateParts(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -614,7 +614,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseDateadd(string $dbName, Driver $driver): void
+    public function canUseDateadd(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -638,7 +638,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canConcatenateStrings(string $dbName, Driver $driver): void
+    public function canConcatenateStrings(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -650,7 +650,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCharLength(string $dbName, Driver $driver): void
+    public function canUseCharLength(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -662,7 +662,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseUpperLower(string $dbName, Driver $driver): void
+    public function canUseUpperLower(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -679,7 +679,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseSubstring(string $dbName, Driver $driver): void
+    public function canUseSubstring(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -691,7 +691,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUsePosition(string $dbName, Driver $driver): void
+    public function canUsePosition(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -707,7 +707,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCoalesce(string $dbName, Driver $driver): void
+    public function canUseCoalesce(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -719,7 +719,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canFilterNulls(string $dbName, Driver $driver): void
+    public function canFilterNulls(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -739,7 +739,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCaseExpression(string $dbName, Driver $driver): void
+    public function canUseCaseExpression(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -766,7 +766,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGroupByWithHaving(string $dbName, Driver $driver): void
+    public function canGroupByWithHaving(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -788,7 +788,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseSubqueryInWhere(string $dbName, Driver $driver): void
+    public function canUseSubqueryInWhere(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -803,7 +803,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseCorrelatedSubquery(string $dbName, Driver $driver): void
+    public function canUseCorrelatedSubquery(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -832,7 +832,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canLimitResultsWithFirst(string $dbName, Driver $driver): void
+    public function canLimitResultsWithFirst(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -844,7 +844,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSkipAndLimitWithFirstSkip(string $dbName, Driver $driver): void
+    public function canSkipAndLimitWithFirstSkip(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -859,7 +859,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseOffsetFetch(string $dbName, Driver $driver): void
+    public function canUseOffsetFetch(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -875,7 +875,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canInsertAndReadBlob(string $dbName, Driver $driver): void
+    public function canInsertAndReadBlob(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -906,7 +906,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateAndUseGenerator(string $dbName, Driver $driver): void
+    public function canCreateAndUseGenerator(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -930,7 +930,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseFluentQueryWithLimit(string $dbName, Driver $driver): void
+    public function canUseFluentQueryWithLimit(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -949,7 +949,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUseFluentQueryWithSubquery(string $dbName, Driver $driver): void
+    public function canUseFluentQueryWithSubquery(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -973,7 +973,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canHandleEmptyWhereIn(string $dbName, Driver $driver): void
+    public function canHandleEmptyWhereIn(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -995,7 +995,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canAddColumn(string $dbName, Driver $driver): void
+    public function canAddColumn(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1013,7 +1013,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDropColumn(string $dbName, Driver $driver): void
+    public function canDropColumn(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1036,7 +1036,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canAlterColumnType(string $dbName, Driver $driver): void
+    public function canAlterColumnType(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1061,7 +1061,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateIndex(string $dbName, Driver $driver): void
+    public function canCreateIndex(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1076,7 +1076,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateUniqueIndex(string $dbName, Driver $driver): void
+    public function canCreateUniqueIndex(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1091,7 +1091,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDropIndex(string $dbName, Driver $driver): void
+    public function canDropIndex(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1107,7 +1107,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateCompositeIndex(string $dbName, Driver $driver): void
+    public function canCreateCompositeIndex(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1126,7 +1126,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateForeignKey(string $dbName, Driver $driver): void
+    public function canCreateForeignKey(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1146,7 +1146,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDropForeignKey(string $dbName, Driver $driver): void
+    public function canDropForeignKey(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1171,7 +1171,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateView(string $dbName, Driver $driver): void
+    public function canCreateView(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1193,7 +1193,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canReplaceView(string $dbName, Driver $driver): void
+    public function canReplaceView(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1224,7 +1224,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCheckViewExists(string $dbName, Driver $driver): void
+    public function canCheckViewExists(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1239,7 +1239,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDropView(string $dbName, Driver $driver): void
+    public function canDropView(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1255,7 +1255,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canCreateAndQueryViewOnData(string $dbName, Driver $driver): void
+    public function canCreateAndQueryViewOnData(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1275,7 +1275,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canTruncateTableViaDelete(string $dbName, Driver $driver): void
+    public function canTruncateTableViaDelete(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1307,7 +1307,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canAddPrimaryKeyWithGenerator(string $dbName, Driver $driver): void
+    public function canAddPrimaryKeyWithGenerator(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1340,7 +1340,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function identityColumnAutoIncrements(string $dbName, Driver $driver): void
+    public function identityColumnAutoIncrements(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1366,7 +1366,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canAddCustomNamedPrimaryKey(string $dbName, Driver $driver): void
+    public function canAddCustomNamedPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1396,7 +1396,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function complexMigrationAddsPkToLegacyTable(string $dbName, Driver $driver): void
+    public function complexMigrationAddsPkToLegacyTable(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1435,7 +1435,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function resourceAssocMigrationPattern(string $dbName, Driver $driver): void
+    public function resourceAssocMigrationPattern(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1481,7 +1481,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canChangeVarcharLength(string $dbName, Driver $driver): void
+    public function canChangeVarcharLength(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1501,7 +1501,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canChangeIntegerToBigint(string $dbName, Driver $driver): void
+    public function canChangeIntegerToBigint(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1522,7 +1522,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canAddDefaultValue(string $dbName, Driver $driver): void
+    public function canAddDefaultValue(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;
@@ -1538,7 +1538,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSetColumnNotNull(string $dbName, Driver $driver): void
+    public function canSetColumnNotNull(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresFirebird($driver)) {
             return;

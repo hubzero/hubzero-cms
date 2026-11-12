@@ -10,6 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\SchemaManager;
 
@@ -28,7 +29,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         return ['fki_child', 'fki_parent', 'fki_grandparent'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop in reverse dependency order
         $driver->dropTable('fki_child', true);
@@ -107,7 +108,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testGetForeignKeysReturnsEmptyArrayForTableWithoutForeignKeys(string $dbName, Driver $driver)
+    public function testGetForeignKeysReturnsEmptyArrayForTableWithoutForeignKeys(string $dbName, BaseSqlDriver $driver)
     {
         // The fki_grandparent table has no foreign keys
         $foreignKeys = $driver->getForeignKeys('fki_grandparent');
@@ -122,7 +123,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testGetForeignKeysReturnsConstraintInfo(string $dbName, Driver $driver)
+    public function testGetForeignKeysReturnsConstraintInfo(string $dbName, BaseSqlDriver $driver)
     {
         $foreignKeys = $driver->getForeignKeys('fki_child');
 
@@ -163,7 +164,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testGetForeignKeysWithDifferentActions(string $dbName, Driver $driver)
+    public function testGetForeignKeysWithDifferentActions(string $dbName, BaseSqlDriver $driver)
     {
         // Check parent table FK (SET NULL on delete)
         $foreignKeys = $driver->getForeignKeys('fki_parent');
@@ -186,7 +187,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHasForeignKeyReturnsTrueForExistingConstraint(string $dbName, Driver $driver)
+    public function testHasForeignKeyReturnsTrueForExistingConstraint(string $dbName, BaseSqlDriver $driver)
     {
         // Get the FK name from getForeignKeys
         $foreignKeys = $driver->getForeignKeys('fki_child');
@@ -207,7 +208,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHasForeignKeyReturnsFalseForNonexistentConstraint(string $dbName, Driver $driver)
+    public function testHasForeignKeyReturnsFalseForNonexistentConstraint(string $dbName, BaseSqlDriver $driver)
     {
         $this->assertFalse(
             $driver->hasForeignKey('fki_grandparent', 'nonexistent_fk_xyz'),
@@ -225,7 +226,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSchemaGetForeignKeysDelegatesToDriver(string $dbName, Driver $driver)
+    public function testSchemaGetForeignKeysDelegatesToDriver(string $dbName, BaseSqlDriver $driver)
     {
         $schema = new SchemaManager($driver);
 
@@ -244,7 +245,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSchemaHasForeignKeyDelegatesToDriver(string $dbName, Driver $driver)
+    public function testSchemaHasForeignKeyDelegatesToDriver(string $dbName, BaseSqlDriver $driver)
     {
         $schema = new SchemaManager($driver);
 
@@ -273,7 +274,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testTableGetForeignKeysReturnsConstraintInfo(string $dbName, Driver $driver)
+    public function testTableGetForeignKeysReturnsConstraintInfo(string $dbName, BaseSqlDriver $driver)
     {
         $schema = new SchemaManager($driver);
         $table = $schema->table('fki_child');
@@ -293,7 +294,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testTableHasForeignKeyChecksExistence(string $dbName, Driver $driver)
+    public function testTableHasForeignKeyChecksExistence(string $dbName, BaseSqlDriver $driver)
     {
         $schema = new SchemaManager($driver);
         $table = $schema->table('fki_child');
@@ -319,7 +320,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testTableGatewayFluentIntrospection(string $dbName, Driver $driver)
+    public function testTableGatewayFluentIntrospection(string $dbName, BaseSqlDriver $driver)
     {
         $schema = new SchemaManager($driver);
 
@@ -346,7 +347,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testGetForeignKeysForNonexistentTableReturnsEmptyArray(string $dbName, Driver $driver)
+    public function testGetForeignKeysForNonexistentTableReturnsEmptyArray(string $dbName, BaseSqlDriver $driver)
     {
         $foreignKeys = $driver->getForeignKeys('nonexistent_table_xyz');
 
@@ -360,7 +361,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHasForeignKeyForNonexistentTableReturnsFalse(string $dbName, Driver $driver)
+    public function testHasForeignKeyForNonexistentTableReturnsFalse(string $dbName, BaseSqlDriver $driver)
     {
         $this->assertFalse(
             $driver->hasForeignKey('nonexistent_table_xyz', 'any_fk'),

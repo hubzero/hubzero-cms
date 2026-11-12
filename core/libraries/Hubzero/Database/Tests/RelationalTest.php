@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\User;
 use Hubzero\Database\Tests\TestModels\Post;
@@ -42,7 +43,7 @@ class RelationalTest extends AbstractDriverTestCase
         return [User::class, Post::class, Tag::class];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created on-demand in setupTables() per test
     }
@@ -65,7 +66,7 @@ class RelationalTest extends AbstractDriverTestCase
      * @param   string  $dbName  Database name
      * @return  void
      */
-    protected function setupTables(Driver $driver, string $dbName): void
+    protected function setupTables(BaseSqlDriver $driver, string $dbName): void
     {
         if (isset(self::$tablesCreated[$dbName])) {
             $allExist = true;
@@ -128,7 +129,7 @@ class RelationalTest extends AbstractDriverTestCase
      * @param   string  $dbName  Database name
      * @return  void
      */
-    protected function seedTestData(Driver $driver, string $dbName): void
+    protected function seedTestData(BaseSqlDriver $driver, string $dbName): void
     {
         $usersTable = $this->tableName('users');
         $postsTable = $this->tableName('posts');
@@ -197,7 +198,7 @@ class RelationalTest extends AbstractDriverTestCase
      * @param   string  $dbName  Database name
      * @return  void
      */
-    protected function cleanupTestData(Driver $driver, string $dbName): void
+    protected function cleanupTestData(BaseSqlDriver $driver, string $dbName): void
     {
         $usersTable = $this->tableName('users');
         $postsTable = $this->tableName('posts');
@@ -241,7 +242,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModelConstruction(string $dbName, Driver $driver)
+    public function testModelConstruction(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->configureModels($dbName);
@@ -256,7 +257,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFindById(string $dbName, Driver $driver)
+    public function testFindById(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -273,7 +274,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOneOrFailThrowsException(string $dbName, Driver $driver)
+    public function testOneOrFailThrowsException(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -290,7 +291,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOneOrNewReturnsNewModel(string $dbName, Driver $driver)
+    public function testOneOrNewReturnsNewModel(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -306,7 +307,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFetchAll(string $dbName, Driver $driver)
+    public function testFetchAll(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -322,7 +323,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWhereEquals(string $dbName, Driver $driver)
+    public function testWhereEquals(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -344,7 +345,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBelongsToOne(string $dbName, Driver $driver)
+    public function testBelongsToOne(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -363,7 +364,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOneToMany(string $dbName, Driver $driver)
+    public function testOneToMany(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -380,7 +381,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testManyToMany(string $dbName, Driver $driver)
+    public function testManyToMany(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -397,7 +398,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWhereRelatedHasCount(string $dbName, Driver $driver)
+    public function testWhereRelatedHasCount(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -415,7 +416,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWhereRelatedHas(string $dbName, Driver $driver)
+    public function testWhereRelatedHas(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -439,7 +440,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCreateRecord(string $dbName, Driver $driver)
+    public function testCreateRecord(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -462,7 +463,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testUpdateRecord(string $dbName, Driver $driver)
+    public function testUpdateRecord(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -486,7 +487,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDeleteRecord(string $dbName, Driver $driver)
+    public function testDeleteRecord(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -520,7 +521,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOrderBy(string $dbName, Driver $driver)
+    public function testOrderBy(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -546,7 +547,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLimit(string $dbName, Driver $driver)
+    public function testLimit(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -564,7 +565,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCount(string $dbName, Driver $driver)
+    public function testCount(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -580,7 +581,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testForwardedPropertyReturnsRelatedValue(string $dbName, Driver $driver)
+    public function testForwardedPropertyReturnsRelatedValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->seedTestData($driver, $dbName);
@@ -605,7 +606,7 @@ class RelationalTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInstanceConnectionOverridesTheDefault(string $dbName, Driver $driver)
+    public function testInstanceConnectionOverridesTheDefault(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTables($driver, $dbName);
         $this->configureModels($dbName);

@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\CastTestItem;
@@ -43,10 +43,10 @@ class AttributeCastingTest extends AbstractDriverTestCase
     /**
      * Create test tables and insert seed data for a database
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing table
         try {
@@ -96,10 +96,10 @@ class AttributeCastingTest extends AbstractDriverTestCase
      * Clean up test data before each test
      *
      * @param string $dbName Database name
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function cleanupData(string $dbName, Driver $driver): void
+    private function cleanupData(string $dbName, BaseSqlDriver $driver): void
     {
         try {
             $driver->exec("DELETE FROM " . $driver->quoteName(self::$testTable));
@@ -117,11 +117,11 @@ class AttributeCastingTest extends AbstractDriverTestCase
     /**
      * Helper to insert a test record
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @param array $data Record data
      * @return int Insert ID
      */
-    protected function insertTestRecord(Driver $driver, array $data = []): int
+    protected function insertTestRecord(BaseSqlDriver $driver, array $data = []): int
     {
         $defaults = [
             'title' => 'Test Item',
@@ -148,7 +148,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIntegerCastingOnGet(string $dbName, Driver $driver): void
+    public function testIntegerCastingOnGet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -163,7 +163,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIntegerCastingOnSet(string $dbName, Driver $driver): void
+    public function testIntegerCastingOnSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -182,7 +182,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFloatCastingOnGet(string $dbName, Driver $driver): void
+    public function testFloatCastingOnGet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -197,7 +197,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testFloatCastingOnSet(string $dbName, Driver $driver): void
+    public function testFloatCastingOnSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -215,7 +215,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalCastingWithPrecision2(string $dbName, Driver $driver): void
+    public function testDecimalCastingWithPrecision2(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -231,7 +231,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalCastingRoundsToPrecision(string $dbName, Driver $driver): void
+    public function testDecimalCastingRoundsToPrecision(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -247,7 +247,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalCastingPadsZeros(string $dbName, Driver $driver): void
+    public function testDecimalCastingPadsZeros(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -262,7 +262,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalCastingWithPrecision4(string $dbName, Driver $driver): void
+    public function testDecimalCastingWithPrecision4(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -277,7 +277,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalCastingOnSet(string $dbName, Driver $driver): void
+    public function testDecimalCastingOnSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -293,7 +293,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDecimalAvoidsFloatingPointIssues(string $dbName, Driver $driver): void
+    public function testDecimalAvoidsFloatingPointIssues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -313,7 +313,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBooleanCastingFromIntegerOne(string $dbName, Driver $driver): void
+    public function testBooleanCastingFromIntegerOne(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -328,7 +328,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBooleanCastingFromIntegerZero(string $dbName, Driver $driver): void
+    public function testBooleanCastingFromIntegerZero(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -343,7 +343,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBooleanCastingOnSetConvertsToInteger(string $dbName, Driver $driver): void
+    public function testBooleanCastingOnSetConvertsToInteger(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -364,7 +364,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testArrayCastingFromJson(string $dbName, Driver $driver): void
+    public function testArrayCastingFromJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -381,7 +381,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testArrayCastingOnSetEncodesToJson(string $dbName, Driver $driver): void
+    public function testArrayCastingOnSetEncodesToJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -400,7 +400,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testArrayCastingWithEmptyJson(string $dbName, Driver $driver): void
+    public function testArrayCastingWithEmptyJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -415,7 +415,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testArrayCastingWithInvalidJson(string $dbName, Driver $driver): void
+    public function testArrayCastingWithInvalidJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -434,7 +434,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testObjectCastingFromJson(string $dbName, Driver $driver): void
+    public function testObjectCastingFromJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -451,7 +451,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testObjectCastingOnSetEncodesToJson(string $dbName, Driver $driver): void
+    public function testObjectCastingOnSetEncodesToJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -475,7 +475,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCollectionCastingFromJson(string $dbName, Driver $driver): void
+    public function testCollectionCastingFromJson(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -496,7 +496,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDatetimeCasting(string $dbName, Driver $driver): void
+    public function testDatetimeCasting(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -515,7 +515,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDatetimeCastingOnSet(string $dbName, Driver $driver): void
+    public function testDatetimeCastingOnSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -531,7 +531,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDatetimeCastingWithNull(string $dbName, Driver $driver): void
+    public function testDatetimeCastingWithNull(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -549,7 +549,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDateCastingSetsTimeToMidnight(string $dbName, Driver $driver): void
+    public function testDateCastingSetsTimeToMidnight(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -567,7 +567,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDateCastingOnSet(string $dbName, Driver $driver): void
+    public function testDateCastingOnSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -586,7 +586,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTimestampCasting(string $dbName, Driver $driver): void
+    public function testTimestampCasting(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -609,7 +609,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNullValuesStayNull(string $dbName, Driver $driver): void
+    public function testNullValuesStayNull(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -639,7 +639,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCastCachePreventsRepeatedCasting(string $dbName, Driver $driver): void
+    public function testCastCachePreventsRepeatedCasting(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -659,7 +659,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSettingValueClearsCastCache(string $dbName, Driver $driver): void
+    public function testSettingValueClearsCastCache(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -682,7 +682,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testClearCastCacheMethod(string $dbName, Driver $driver): void
+    public function testClearCastCacheMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -707,7 +707,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHasCast(string $dbName, Driver $driver): void
+    public function testHasCast(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -723,7 +723,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHasCastWithTypeFilter(string $dbName, Driver $driver): void
+    public function testHasCastWithTypeFilter(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -737,7 +737,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetCasts(string $dbName, Driver $driver): void
+    public function testGetCasts(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -753,7 +753,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetRawReturnsUncastedValue(string $dbName, Driver $driver): void
+    public function testGetRawReturnsUncastedValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -776,7 +776,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModelWithoutCastsReturnsRawValues(string $dbName, Driver $driver): void
+    public function testModelWithoutCastsReturnsRawValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -796,7 +796,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCastingWithDefaultValue(string $dbName, Driver $driver): void
+    public function testCastingWithDefaultValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);
@@ -809,7 +809,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMultipleGetsOfDifferentCastTypes(string $dbName, Driver $driver): void
+    public function testMultipleGetsOfDifferentCastTypes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->cleanupData($dbName, $driver);
         Relational::setDefaultConnection($driver);

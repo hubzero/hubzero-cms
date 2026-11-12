@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Drivers\Base\BaseSqlSyntax;
 
@@ -28,7 +28,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
         return ['iis_dest_users', 'iis_unique_emails', 'iis_source_users'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop in reverse dependency order
         try {
@@ -81,10 +81,10 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     /**
      * Seed source data for tests
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function seedSourceData(Driver $driver): void
+    private function seedSourceData(BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
         $query->insertMany('iis_source_users', [
@@ -97,10 +97,10 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     /**
      * Reset test data before each test
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Query::purgeCache();
 
@@ -120,7 +120,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test insertIgnore() method exists
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreMethodExists(string $dbName, Driver $driver): void
+    public function testInsertIgnoreMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(Query::class, 'insertIgnore'),
@@ -132,7 +132,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test fromSelect() method exists
      */
     #[DataProvider('databaseProvider')]
-    public function testFromSelectMethodExists(string $dbName, Driver $driver): void
+    public function testFromSelectMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(Query::class, 'fromSelect'),
@@ -144,7 +144,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test columns() method exists
      */
     #[DataProvider('databaseProvider')]
-    public function testColumnsMethodExists(string $dbName, Driver $driver): void
+    public function testColumnsMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(Query::class, 'columns'),
@@ -156,7 +156,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test fromSelectRaw() method exists
      */
     #[DataProvider('databaseProvider')]
-    public function testFromSelectRawMethodExists(string $dbName, Driver $driver): void
+    public function testFromSelectRawMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(Query::class, 'fromSelectRaw'),
@@ -168,7 +168,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test Syntax class has setColumns method
      */
     #[DataProvider('databaseProvider')]
-    public function testSyntaxHasSetColumnsMethod(string $dbName, Driver $driver): void
+    public function testSyntaxHasSetColumnsMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'setColumns'),
@@ -180,7 +180,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test Syntax class has setInsertSelect method
      */
     #[DataProvider('databaseProvider')]
-    public function testSyntaxHasSetInsertSelectMethod(string $dbName, Driver $driver): void
+    public function testSyntaxHasSetInsertSelectMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'setInsertSelect'),
@@ -192,7 +192,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test Syntax class has resetInsertSelect method
      */
     #[DataProvider('databaseProvider')]
-    public function testSyntaxHasResetInsertSelectMethod(string $dbName, Driver $driver): void
+    public function testSyntaxHasResetInsertSelectMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'resetInsertSelect'),
@@ -208,7 +208,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test insertIgnore() works by inserting and then ignoring duplicates
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreIgnoresDuplicates(string $dbName, Driver $driver): void
+    public function testInsertIgnoreIgnoresDuplicates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -243,7 +243,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Both methods should handle duplicates the same way.
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreEquivalentToInsertTrue(string $dbName, Driver $driver): void
+    public function testInsertIgnoreEquivalentToInsertTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -275,7 +275,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT ... SELECT with Query object (NO CLOSURES)
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectWithQueryObject(string $dbName, Driver $driver): void
+    public function testInsertSelectWithQueryObject(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -304,7 +304,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT IGNORE ... SELECT with Query object
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreSelectWithQueryObject(string $dbName, Driver $driver): void
+    public function testInsertIgnoreSelectWithQueryObject(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -332,7 +332,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT ... SELECT preserves bindings
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectPreservesBindings(string $dbName, Driver $driver): void
+    public function testInsertSelectPreservesBindings(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -362,7 +362,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT ... SELECT without columns specified executes successfully
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectWithoutColumns(string $dbName, Driver $driver): void
+    public function testInsertSelectWithoutColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -395,7 +395,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT ... SELECT with closure
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectWithClosure(string $dbName, Driver $driver): void
+    public function testInsertSelectWithClosure(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -423,7 +423,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT IGNORE ... SELECT with closure
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertIgnoreSelectWithClosure(string $dbName, Driver $driver): void
+    public function testInsertIgnoreSelectWithClosure(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -450,7 +450,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test Query object and closure produce identical results
      */
     #[DataProvider('databaseProvider')]
-    public function testQueryObjectAndClosureProduceSameResults(string $dbName, Driver $driver): void
+    public function testQueryObjectAndClosureProduceSameResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -507,7 +507,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT ... SELECT with raw SQL
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectWithRawSql(string $dbName, Driver $driver): void
+    public function testInsertSelectWithRawSql(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -544,7 +544,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test fromSelectRaw() with no bindings
      */
     #[DataProvider('databaseProvider')]
-    public function testFromSelectRawWithoutBindings(string $dbName, Driver $driver): void
+    public function testFromSelectRawWithoutBindings(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -581,7 +581,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test fromSelect() throws exception for invalid input
      */
     #[DataProvider('databaseProvider')]
-    public function testFromSelectThrowsExceptionForInvalidInput(string $dbName, Driver $driver): void
+    public function testFromSelectThrowsExceptionForInvalidInput(string $dbName, BaseSqlDriver $driver): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('fromSelect() expects a Query object or closure');
@@ -602,7 +602,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Verifies that INSERT ... SELECT executes and does not include VALUES.
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildValuesHandlesInsertSelect(string $dbName, Driver $driver): void
+    public function testBuildValuesHandlesInsertSelect(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -631,7 +631,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test buildValues() handles regular INSERT VALUES correctly (regression test)
      */
     #[DataProvider('databaseProvider')]
-    public function testBuildValuesHandlesRegularInsert(string $dbName, Driver $driver): void
+    public function testBuildValuesHandlesRegularInsert(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -653,7 +653,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * a separate Query object used for a regular INSERT.
      */
     #[DataProvider('databaseProvider')]
-    public function testNewQueryAfterInsertSelectWorksForRegularInsert(string $dbName, Driver $driver): void
+    public function testNewQueryAfterInsertSelectWorksForRegularInsert(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -690,7 +690,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * INSERT IGNORE should skip duplicate rows and insert non-duplicates.
      */
     #[DataProvider('databaseProvider')]
-    public function testCompleteInsertIgnoreSelectWorkflow(string $dbName, Driver $driver): void
+    public function testCompleteInsertIgnoreSelectWorkflow(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -742,7 +742,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
      * Test INSERT SELECT with complex WHERE conditions
      */
     #[DataProvider('databaseProvider')]
-    public function testInsertSelectWithComplexWhere(string $dbName, Driver $driver): void
+    public function testInsertSelectWithComplexWhere(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\ArticleWithoutScopes;
@@ -38,7 +38,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
     /**
      * Create test tables
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('scoped_articles', true);
 
@@ -68,7 +68,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
     /**
      * Setup test data
      */
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         // Set as default connection
         Relational::setDefaultConnection($driver);
@@ -110,7 +110,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testModelWithoutScopesReturnsAllRows(string $dbName, Driver $driver)
+    public function testModelWithoutScopesReturnsAllRows(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -126,7 +126,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testAddGlobalScopeRegistersScope(string $dbName, Driver $driver)
+    public function testAddGlobalScopeRegistersScope(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -144,7 +144,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGlobalScopeIsAppliedToQueries(string $dbName, Driver $driver)
+    public function testGlobalScopeIsAppliedToQueries(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -169,7 +169,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testMultipleGlobalScopesAreApplied(string $dbName, Driver $driver)
+    public function testMultipleGlobalScopesAreApplied(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -196,7 +196,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWithoutGlobalScopesRemovesAllScopes(string $dbName, Driver $driver)
+    public function testWithoutGlobalScopesRemovesAllScopes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -214,7 +214,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWithoutGlobalScopesWithSpecificScopes(string $dbName, Driver $driver)
+    public function testWithoutGlobalScopesWithSpecificScopes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -236,7 +236,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testWithoutGlobalScopeRemovesSingleScope(string $dbName, Driver $driver)
+    public function testWithoutGlobalScopeRemovesSingleScope(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -258,7 +258,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testChainingMultipleWithoutGlobalScope(string $dbName, Driver $driver)
+    public function testChainingMultipleWithoutGlobalScope(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -282,7 +282,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testObjectBasedGlobalScope(string $dbName, Driver $driver)
+    public function testObjectBasedGlobalScope(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -303,7 +303,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testRemovingObjectBasedScopeByClassName(string $dbName, Driver $driver)
+    public function testRemovingObjectBasedScopeByClassName(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -324,7 +324,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGetRemovedScopesReturnsCorrectScopes(string $dbName, Driver $driver)
+    public function testGetRemovedScopesReturnsCorrectScopes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -345,7 +345,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testGetGlobalScopesReturnsRegisteredScopes(string $dbName, Driver $driver)
+    public function testGetGlobalScopesReturnsRegisteredScopes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -365,7 +365,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testHasGlobalScopeReturnsCorrectResult(string $dbName, Driver $driver)
+    public function testHasGlobalScopeReturnsCorrectResult(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -384,7 +384,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testClearBootedModelsResetsState(string $dbName, Driver $driver)
+    public function testClearBootedModelsResetsState(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -407,7 +407,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testBootIsOnlyCalledOnce(string $dbName, Driver $driver)
+    public function testBootIsOnlyCalledOnce(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -430,7 +430,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testScopesWorkWithAdditionalConstraints(string $dbName, Driver $driver)
+    public function testScopesWorkWithAdditionalConstraints(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -452,7 +452,7 @@ class GlobalScopesTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function testInvalidAddGlobalScopeThrowsException(string $dbName, Driver $driver)
+    public function testInvalidAddGlobalScopeThrowsException(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 

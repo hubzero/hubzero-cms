@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\UpsertItem;
@@ -40,7 +41,7 @@ class UpsertTest extends AbstractDriverTestCase
      * @param   Driver  $driver  The database driver
      * @return  void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('upsert_items', true);
 
@@ -61,7 +62,7 @@ class UpsertTest extends AbstractDriverTestCase
      * @param   Driver  $driver  The database driver
      * @return  void
      */
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         Query::purgeCache();
@@ -81,7 +82,7 @@ class UpsertTest extends AbstractDriverTestCase
      * Helper to insert a row directly
      */
     private function insertRow(
-        Driver $driver,
+        BaseSqlDriver $driver,
         string $code,
         string $name,
         int $value = 0,
@@ -97,7 +98,7 @@ class UpsertTest extends AbstractDriverTestCase
      * Helper to read a row by code
      */
     private function getRowByCode(
-        Driver $driver,
+        BaseSqlDriver $driver,
         string $code,
     ): ?object {
         $driver->setQuery(
@@ -123,7 +124,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertInsertsNewRow(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -157,7 +158,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertUpdatesExistingRow(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -192,7 +193,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertWithSelectiveUpdateColumns(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -230,7 +231,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertWithExplicitConflictColumns(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'B001', 'Beta', 5);
@@ -264,7 +265,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertPreservesOtherRows(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -303,7 +304,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPushOrUpdateInsertsNewRow(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -331,7 +332,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPushOrUpdateUpdatesExistingRow(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'C001', 'Charlie', 30);
@@ -367,7 +368,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyInsertsMultipleNewRows(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -402,7 +403,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyUpdatesExistingRows(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'X01', 'X-One', 1);
@@ -442,7 +443,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyMixedInsertAndUpdate(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'M01', 'Existing', 10);
@@ -477,7 +478,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyEmptyArray(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -498,7 +499,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyInconsistentColumnsThrows(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -526,7 +527,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFirstOrCreateFindsExisting(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'F001', 'Found', 42);
@@ -551,7 +552,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFirstOrCreateCreatesNew(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -576,7 +577,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpdateOrCreateUpdatesExisting(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'U001', 'Original', 10);
@@ -601,7 +602,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpdateOrCreateCreatesNew(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -625,7 +626,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testRelationalUpsertMany(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'R01', 'Existing R', 10);

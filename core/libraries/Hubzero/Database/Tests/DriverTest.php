@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Ase\AseDriver as Ase;
 use Hubzero\Database\Drivers\Db2\Db2Driver as Db2;
 use Hubzero\Database\Drivers\Firebird\FirebirdDriver as Firebird;
@@ -47,10 +48,10 @@ class DriverTest extends AbstractDriverTestCase
     /**
      * Set up test table for a database
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop existing table
         $driver->dropTable(self::$testTable, true);
@@ -194,21 +195,21 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testConnectionIsActive(string $dbName, Driver $driver): void
+    public function testConnectionIsActive(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue($driver->connected(), 'Connection should be active');
     }
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testConnected(string $dbName, Driver $driver): void
+    public function testConnected(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue($driver->connected(), 'Driver should report as connected');
     }
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetVersion(string $dbName, Driver $driver): void
+    public function testGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         $version = $driver->getVersion();
         $this->assertNotEmpty($version, 'Database version should not be empty');
@@ -221,7 +222,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetServerInfo(string $dbName, Driver $driver): void
+    public function testGetServerInfo(string $dbName, BaseSqlDriver $driver): void
     {
         $info = $driver->getServerInfo();
         $this->assertNotEmpty($info, 'Server info should not be empty');
@@ -233,7 +234,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetQueryAndExecute(string $dbName, Driver $driver): void
+    public function testSetQueryAndExecute(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -252,7 +253,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testInsertId(string $dbName, Driver $driver): void
+    public function testInsertId(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -270,7 +271,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadObject(string $dbName, Driver $driver): void
+    public function testLoadObject(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -293,7 +294,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadObjectList(string $dbName, Driver $driver): void
+    public function testLoadObjectList(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -321,7 +322,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadAssoc(string $dbName, Driver $driver): void
+    public function testLoadAssoc(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -344,7 +345,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadColumn(string $dbName, Driver $driver): void
+    public function testLoadColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -374,7 +375,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testLoadResult(string $dbName, Driver $driver): void
+    public function testLoadResult(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -393,7 +394,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testPreparedStatementWithBind(string $dbName, Driver $driver): void
+    public function testPreparedStatementWithBind(string $dbName, BaseSqlDriver $driver): void
     {
         // Note: bind() method has compatibility issues across databases
         // This test is simplified to just verify the method exists
@@ -406,7 +407,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableExists(string $dbName, Driver $driver): void
+    public function testTableExists(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
         $this->assertTrue($driver->tableExists($table), 'Test table should exist');
@@ -414,14 +415,14 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableDoesNotExist(string $dbName, Driver $driver): void
+    public function testTableDoesNotExist(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertFalse($driver->tableExists('nonexistent_table_xyz'), 'Nonexistent table should not exist');
     }
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTableHasField(string $dbName, Driver $driver): void
+    public function testTableHasField(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -430,7 +431,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetTableColumns(string $dbName, Driver $driver): void
+    public function testGetTableColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
         $columns = $driver->getTableColumns($table);
@@ -443,7 +444,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetTableList(string $dbName, Driver $driver): void
+    public function testGetTableList(string $dbName, BaseSqlDriver $driver): void
     {
         $tables = $driver->getTableList();
 
@@ -453,7 +454,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetPrimaryKey(string $dbName, Driver $driver): void
+    public function testGetPrimaryKey(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
         $pk = $driver->getPrimaryKey($table);
@@ -468,7 +469,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTransactionCommit(string $dbName, Driver $driver): void
+    public function testTransactionCommit(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -492,7 +493,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTransactionRollback(string $dbName, Driver $driver): void
+    public function testTransactionRollback(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -520,7 +521,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQuoteString(string $dbName, Driver $driver): void
+    public function testQuoteString(string $dbName, BaseSqlDriver $driver): void
     {
         $testString = "test'string";
         $quoted = $driver->quote($testString);
@@ -531,7 +532,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testQuoteName(string $dbName, Driver $driver): void
+    public function testQuoteName(string $dbName, BaseSqlDriver $driver): void
     {
         $testName = "test_table";
         $quoted = $driver->quoteName($testName);
@@ -550,7 +551,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSupportsEnum(string $dbName, Driver $driver): void
+    public function testSupportsEnum(string $dbName, BaseSqlDriver $driver): void
     {
         $result = $driver->supportsEnum();
         $this->assertIsBool($result, 'supportsEnum should return boolean');
@@ -558,7 +559,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSupportsEngine(string $dbName, Driver $driver): void
+    public function testSupportsEngine(string $dbName, BaseSqlDriver $driver): void
     {
         $result = $driver->supportsEngine();
         $this->assertIsBool($result, 'supportsEngine should return boolean');
@@ -566,7 +567,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSupportsColumnPositioning(string $dbName, Driver $driver): void
+    public function testSupportsColumnPositioning(string $dbName, BaseSqlDriver $driver): void
     {
         $result = $driver->supportsColumnPositioning();
         $this->assertIsBool($result, 'supportsColumnPositioning should return boolean');
@@ -574,7 +575,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSupportsTableCharset(string $dbName, Driver $driver): void
+    public function testSupportsTableCharset(string $dbName, BaseSqlDriver $driver): void
     {
         $result = $driver->supportsTableCharset();
         $this->assertIsBool($result, 'supportsTableCharset should return boolean');
@@ -582,7 +583,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSqlNow(string $dbName, Driver $driver): void
+    public function testSqlNow(string $dbName, BaseSqlDriver $driver): void
     {
         $now = $driver->sqlNow();
         $this->assertNotEmpty($now, 'sqlNow should return a value');
@@ -590,7 +591,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSqlNowWorksInQuery(string $dbName, Driver $driver): void
+    public function testSqlNowWorksInQuery(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -629,7 +630,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testStaticTest(string $dbName, Driver $driver): void
+    public function testStaticTest(string $dbName, BaseSqlDriver $driver): void
     {
         $driverClass = $driver::class;
         $this->assertTrue($driverClass::test(), 'Static test() method should return true for available driver');
@@ -637,7 +638,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetUtfReturnsTrue(string $dbName, Driver $driver): void
+    public function testSetUtfReturnsTrue(string $dbName, BaseSqlDriver $driver): void
     {
         $result = $driver->setUtf();
         $this->assertTrue($result, 'setUtf() should return true');
@@ -649,7 +650,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTruncateTable(string $dbName, Driver $driver): void
+    public function testTruncateTable(string $dbName, BaseSqlDriver $driver): void
     {
         $table = self::$testTable;
 
@@ -678,7 +679,7 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testTruncateTableResetsAutoIncrement(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $table = self::$testTable;
 
@@ -724,7 +725,7 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testTruncateTableWithCustomNextId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $table = self::$testTable;
 
@@ -757,7 +758,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRenameTable(string $dbName, Driver $driver): void
+    public function testRenameTable(string $dbName, BaseSqlDriver $driver): void
     {
         $oldTable = self::$testTable . '_old';
         $newTable = self::$testTable . '_new';
@@ -787,7 +788,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropTable(string $dbName, Driver $driver): void
+    public function testDropTable(string $dbName, BaseSqlDriver $driver): void
     {
         $tempTable = self::$testTable . '_drop';
 
@@ -811,7 +812,7 @@ class DriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDropTableIfExists(string $dbName, Driver $driver): void
+    public function testDropTableIfExists(string $dbName, BaseSqlDriver $driver): void
     {
         $tempTable = self::$testTable . '_drop_if_exists';
 

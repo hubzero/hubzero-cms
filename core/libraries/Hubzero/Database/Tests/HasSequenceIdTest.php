@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\SequenceItem;
@@ -51,7 +52,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
      * @param   Driver  $driver  The database driver
      * @return  void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('seq_items', true);
 
@@ -70,7 +71,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
      * @param   Driver  $driver  The database driver
      * @return  void
      */
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -108,7 +109,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequenceNameReturnsDefault(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -127,7 +128,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequenceNameReturnsCustom(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -150,7 +151,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSequenceIdAssignedOnCreate(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -176,7 +177,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testMultipleModelsGetUniqueIds(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -206,7 +207,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testExplicitIdNotOverwritten(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -231,7 +232,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCustomSequenceNameWorks(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $this->setupTestData($driver);
 

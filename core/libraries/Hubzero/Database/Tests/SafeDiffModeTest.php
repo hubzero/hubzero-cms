@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DiffSqlGenerator;
 use Hubzero\Database\Schema\DatabaseInfo;
@@ -33,7 +33,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
         return [];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // No persistent tables needed - tests use in-memory TableInfo objects
     }
@@ -130,7 +130,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModePreventsDropTableInSchemaDiff(string $dbName, Driver $driver): void
+    public function safeModePreventsDropTableInSchemaDiff(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -175,7 +175,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function generateSafeSchemaUpConvenienceMethod(string $dbName, Driver $driver): void
+    public function generateSafeSchemaUpConvenienceMethod(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -211,7 +211,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModePreventsDropColumn(string $dbName, Driver $driver): void
+    public function safeModePreventsDropColumn(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -255,7 +255,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModePreventsDropIndex(string $dbName, Driver $driver): void
+    public function safeModePreventsDropIndex(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -302,7 +302,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModePreventsDropForeignKey(string $dbName, Driver $driver): void
+    public function safeModePreventsDropForeignKey(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -340,7 +340,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeAllPreventsAllDestructiveOperations(string $dbName, Driver $driver): void
+    public function safeAllPreventsAllDestructiveOperations(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -383,7 +383,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModeWithEmptyDiff(string $dbName, Driver $driver): void
+    public function safeModeWithEmptyDiff(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);
@@ -406,7 +406,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function safeModeAllowsAddingElements(string $dbName, Driver $driver): void
+    public function safeModeAllowsAddingElements(string $dbName, BaseSqlDriver $driver): void
     {
         $comparator = new Comparator();
         $generator = new DiffSqlGenerator($driver);

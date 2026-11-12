@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\DirtyPost;
@@ -28,7 +28,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         return ['posts'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('posts', true);
         $driver
@@ -42,7 +42,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         DirtyPost::clearBootedModels();
@@ -57,7 +57,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testBlankModelIsNotDirty(string $dbName, Driver $driver)
+    public function testBlankModelIsNotDirty(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -68,7 +68,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSettingAttributeOnBlankModelMakesDirty(string $dbName, Driver $driver)
+    public function testSettingAttributeOnBlankModelMakesDirty(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -81,7 +81,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModelFromResultsIsNotDirty(string $dbName, Driver $driver)
+    public function testModelFromResultsIsNotDirty(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -96,7 +96,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testModifyingLoadedModelMakesDirty(string $dbName, Driver $driver)
+    public function testModifyingLoadedModelMakesDirty(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -115,7 +115,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIsDirtyWithArrayOfAttributes(string $dbName, Driver $driver)
+    public function testIsDirtyWithArrayOfAttributes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -139,7 +139,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSettingSameValueDoesNotMakeDirty(string $dbName, Driver $driver)
+    public function testSettingSameValueDoesNotMakeDirty(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -159,7 +159,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetDirtyReturnsChangedAttributes(string $dbName, Driver $driver)
+    public function testGetDirtyReturnsChangedAttributes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -182,7 +182,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetDirtyOnBlankModel(string $dbName, Driver $driver)
+    public function testGetDirtyOnBlankModel(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -201,7 +201,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetOriginalReturnsAllOriginalValues(string $dbName, Driver $driver)
+    public function testGetOriginalReturnsAllOriginalValues(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -220,7 +220,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetOriginalReturnsSpecificValue(string $dbName, Driver $driver)
+    public function testGetOriginalReturnsSpecificValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -237,7 +237,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetOriginalReturnsDefaultForMissingKey(string $dbName, Driver $driver)
+    public function testGetOriginalReturnsDefaultForMissingKey(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -255,7 +255,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSyncOriginalClearsDirtyState(string $dbName, Driver $driver)
+    public function testSyncOriginalClearsDirtyState(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -275,7 +275,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSyncOriginalAttributeSyncsOnlyOneAttribute(string $dbName, Driver $driver)
+    public function testSyncOriginalAttributeSyncsOnlyOneAttribute(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -300,7 +300,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWasChangedIsFalseBeforeSave(string $dbName, Driver $driver)
+    public function testWasChangedIsFalseBeforeSave(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -316,7 +316,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetChangesIsEmptyBeforeSave(string $dbName, Driver $driver)
+    public function testGetChangesIsEmptyBeforeSave(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -336,7 +336,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDiscardChangesRevertsAllChanges(string $dbName, Driver $driver)
+    public function testDiscardChangesRevertsAllChanges(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -358,7 +358,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDiscardChangesRevertsSpecificAttribute(string $dbName, Driver $driver)
+    public function testDiscardChangesRevertsSpecificAttribute(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -381,7 +381,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDiscardChangesRemovesNewAttributes(string $dbName, Driver $driver)
+    public function testDiscardChangesRemovesNewAttributes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -403,7 +403,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNumericStringComparisonHandled(string $dbName, Driver $driver)
+    public function testNumericStringComparisonHandled(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -421,7 +421,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testNullHandling(string $dbName, Driver $driver)
+    public function testNullHandling(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -443,7 +443,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWasChangedWithArrayOfAttributes(string $dbName, Driver $driver)
+    public function testWasChangedWithArrayOfAttributes(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 

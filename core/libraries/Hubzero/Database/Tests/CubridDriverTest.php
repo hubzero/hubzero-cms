@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Cubrid\CubridDriver as Cubrid;
 
 /**
@@ -36,7 +36,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         return ['cubrid_items', 'cubrid_categories'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof Cubrid)) {
             return;
@@ -107,7 +107,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         );
     }
 
-    private function requiresCubrid(Driver $driver): bool
+    private function requiresCubrid(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Cubrid)) {
             $this->assertTrue(true);
@@ -173,7 +173,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsCubridInstance(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -186,7 +186,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -198,7 +198,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetVersion(string $dbName, Driver $driver): void
+    public function canGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -212,7 +212,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -230,7 +230,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function serverInfoDriverVersionIsNormalized(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -248,7 +248,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getVersionMatchesServerInfoVersion(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -264,7 +264,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sqlHelpersEmitExpectedCubridExpressions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -294,7 +294,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -307,7 +307,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -322,7 +322,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -339,7 +339,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -355,7 +355,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAll(string $dbName, Driver $driver): void
+    public function canSelectAll(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -374,7 +374,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -397,7 +397,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -428,7 +428,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -457,7 +457,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -486,7 +486,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -526,7 +526,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -567,7 +567,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -590,7 +590,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canManageViews(string $dbName, Driver $driver): void
+    public function canManageViews(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -617,7 +617,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -646,7 +646,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -678,7 +678,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -699,7 +699,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -724,7 +724,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function updateWithJoinDoesNotEmitFromAfterSet(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -766,7 +766,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;

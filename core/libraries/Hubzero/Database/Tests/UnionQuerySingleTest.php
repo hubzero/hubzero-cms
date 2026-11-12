@@ -5,7 +5,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * Single union test to verify basic UNION functionality
@@ -17,7 +17,7 @@ class UnionQuerySingleTest extends AbstractDriverTestCase
         return ['union_users', 'union_admins', 'union_logs', 'union_archived_logs'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Clean slate
         $driver->dropTable('union_users', true);
@@ -28,7 +28,7 @@ class UnionQuerySingleTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function unionMethodExistsAndReturnsQuery(string $dbName, Driver $driver)
+    public function unionMethodExistsAndReturnsQuery(string $dbName, BaseSqlDriver $driver)
     {
         // Create tables
         $schema = $driver->schema();

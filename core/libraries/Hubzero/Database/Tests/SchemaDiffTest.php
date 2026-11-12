@@ -8,7 +8,7 @@
 
 namespace Hubzero\Database\Tests;
 
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DatabaseInfo;
 use Hubzero\Database\Schema\TableInfo;
@@ -42,7 +42,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
         ];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created/dropped per-test
     }
@@ -65,7 +65,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compareIdenticalSchemasReturnsEmptyDiff(string $dbName, Driver $driver): void
+    public function compareIdenticalSchemasReturnsEmptyDiff(string $dbName, BaseSqlDriver $driver): void
     {
         // Create test tables
         $driver->dropTable('diff_users', true);
@@ -102,7 +102,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function detectsAddedTable(string $dbName, Driver $driver): void
+    public function detectsAddedTable(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -143,7 +143,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function detectsRemovedTable(string $dbName, Driver $driver): void
+    public function detectsRemovedTable(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema with two tables
         $driver->dropTable('diff_users', true);
@@ -184,7 +184,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function detectsChangedTable(string $dbName, Driver $driver): void
+    public function detectsChangedTable(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -224,7 +224,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function detectsMultipleChanges(string $dbName, Driver $driver): void
+    public function detectsMultipleChanges(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -290,7 +290,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getSummaryReturnsCorrectCounts(string $dbName, Driver $driver): void
+    public function getSummaryReturnsCorrectCounts(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -339,7 +339,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getChangeCountReturnsTotal(string $dbName, Driver $driver): void
+    public function getChangeCountReturnsTotal(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -389,7 +389,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasDestructiveChangesDetectsDroppedTable(string $dbName, Driver $driver): void
+    public function hasDestructiveChangesDetectsDroppedTable(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -430,7 +430,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasDestructiveChangesDetectsDroppedColumn(string $dbName, Driver $driver): void
+    public function hasDestructiveChangesDetectsDroppedColumn(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -465,7 +465,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nonDestructiveChangesNoWarning(string $dbName, Driver $driver): void
+    public function nonDestructiveChangesNoWarning(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -507,7 +507,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function toArraySerialization(string $dbName, Driver $driver): void
+    public function toArraySerialization(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -556,7 +556,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getAddedTableNames(string $dbName, Driver $driver): void
+    public function getAddedTableNames(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -601,7 +601,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRemovedTableNames(string $dbName, Driver $driver): void
+    public function getRemovedTableNames(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);
@@ -647,7 +647,7 @@ class SchemaDiffTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getChangedTableNames(string $dbName, Driver $driver): void
+    public function getChangedTableNames(string $dbName, BaseSqlDriver $driver): void
     {
         // Create initial schema
         $driver->dropTable('diff_users', true);

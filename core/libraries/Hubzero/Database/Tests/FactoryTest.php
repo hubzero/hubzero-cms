@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Factory;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Rows;
 use Hubzero\Database\Tests\TestModels\User;
@@ -31,7 +31,7 @@ class FactoryTest extends AbstractDriverTestCase
         return [User::class];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('factory_users', true);
 
@@ -56,7 +56,7 @@ class FactoryTest extends AbstractDriverTestCase
     /**
      * Clean up factory_users table data before each database test
      */
-    private function resetTable(Driver $driver): void
+    private function resetTable(BaseSqlDriver $driver): void
     {
         $driver->setQuery("DELETE FROM factory_users");
         try {
@@ -751,7 +751,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeReturnsSingleModel(string $dbName, Driver $driver): void
+    public function makeReturnsSingleModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -765,7 +765,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeDoesNotPersistToDatabase(string $dbName, Driver $driver): void
+    public function makeDoesNotPersistToDatabase(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -778,7 +778,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeWithCountReturnsRows(string $dbName, Driver $driver): void
+    public function makeWithCountReturnsRows(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -790,7 +790,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeAcceptsAttributeOverrides(string $dbName, Driver $driver): void
+    public function makeAcceptsAttributeOverrides(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -801,7 +801,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeAppliesStates(string $dbName, Driver $driver): void
+    public function makeAppliesStates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -812,7 +812,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeAppliesMultipleStates(string $dbName, Driver $driver): void
+    public function makeAppliesMultipleStates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -827,7 +827,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function makeAppliesCallableState(string $dbName, Driver $driver): void
+    public function makeAppliesCallableState(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -842,7 +842,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function afterMakingCallbackFires(string $dbName, Driver $driver): void
+    public function afterMakingCallbackFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
         $callbackFired = false;
@@ -862,7 +862,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createPersistsSingleModel(string $dbName, Driver $driver): void
+    public function createPersistsSingleModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -879,7 +879,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createWithCountPersistsMultipleModels(string $dbName, Driver $driver): void
+    public function createWithCountPersistsMultipleModels(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -896,7 +896,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createAppliesAttributeOverrides(string $dbName, Driver $driver): void
+    public function createAppliesAttributeOverrides(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -912,7 +912,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createAppliesStates(string $dbName, Driver $driver): void
+    public function createAppliesStates(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
 
@@ -928,7 +928,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function afterCreatingCallbackFires(string $dbName, Driver $driver): void
+    public function afterCreatingCallbackFires(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
         $callbackFired = false;
@@ -947,7 +947,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createGeneratesUniqueModels(string $dbName, Driver $driver): void
+    public function createGeneratesUniqueModels(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTable($driver);
         Factory::resetSequence(1);

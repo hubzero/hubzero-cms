@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Value\Raw;
 
 /**
@@ -34,7 +34,7 @@ class UpdateRawTest extends AbstractDriverTestCase
     /**
      * Create test tables
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('update_raw_test', true);
 
@@ -52,7 +52,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rawValueExecutesSqlExpression(string $dbName, Driver $driver)
+    public function rawValueExecutesSqlExpression(string $dbName, BaseSqlDriver $driver)
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -90,7 +90,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleRawValuesInSameUpdate(string $dbName, Driver $driver)
+    public function multipleRawValuesInSameUpdate(string $dbName, BaseSqlDriver $driver)
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -136,7 +136,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function mixingRawAndBoundValues(string $dbName, Driver $driver)
+    public function mixingRawAndBoundValues(string $dbName, BaseSqlDriver $driver)
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -182,7 +182,7 @@ class UpdateRawTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rawValueWithWhereClause(string $dbName, Driver $driver)
+    public function rawValueWithWhereClause(string $dbName, BaseSqlDriver $driver)
     {
         // Setup table and data
         $this->setupTestTable($driver);
@@ -219,7 +219,7 @@ class UpdateRawTest extends AbstractDriverTestCase
     /**
      * Setup test table
      */
-    private function setupTestTable(Driver $driver): void
+    private function setupTestTable(BaseSqlDriver $driver): void
     {
         $driver->dropTable('update_raw_test', true);
 
@@ -235,7 +235,7 @@ class UpdateRawTest extends AbstractDriverTestCase
     /**
      * Insert test data
      */
-    private function insertTestData(Driver $driver): void
+    private function insertTestData(BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
         $query->insertMany('update_raw_test', [

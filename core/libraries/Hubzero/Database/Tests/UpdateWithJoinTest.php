@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * Tests for UPDATE with JOIN queries
@@ -33,10 +33,10 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      *
      * Tables are created per-test, so this is a no-op.
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created/dropped per-test in setupTestTables() and setupGroupsTable()
     }
@@ -46,7 +46,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithInnerJoinUpdatesMatchingRecords(string $dbName, Driver $driver)
+    public function updateWithInnerJoinUpdatesMatchingRecords(string $dbName, BaseSqlDriver $driver)
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -93,7 +93,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithLeftJoinAndMultipleConditions(string $dbName, Driver $driver)
+    public function updateWithLeftJoinAndMultipleConditions(string $dbName, BaseSqlDriver $driver)
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -132,7 +132,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithMultipleJoins(string $dbName, Driver $driver)
+    public function updateWithMultipleJoins(string $dbName, BaseSqlDriver $driver)
     {
         // Setup all tables
         $this->setupTestTables($driver);
@@ -174,7 +174,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithJoinSetsMultipleColumns(string $dbName, Driver $driver)
+    public function updateWithJoinSetsMultipleColumns(string $dbName, BaseSqlDriver $driver)
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -224,7 +224,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function updateWithJoinDoesNotAffectUnmatchedRows(string $dbName, Driver $driver)
+    public function updateWithJoinDoesNotAffectUnmatchedRows(string $dbName, BaseSqlDriver $driver)
     {
         // Setup tables and data
         $this->setupTestTables($driver);
@@ -271,7 +271,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
     /**
      * Setup test tables
      */
-    private function setupTestTables(Driver $driver): void
+    private function setupTestTables(BaseSqlDriver $driver): void
     {
         // Drop existing tables
         $driver->dropTable('update_test_users', true);
@@ -302,7 +302,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
     /**
      * Setup groups table
      */
-    private function setupGroupsTable(Driver $driver): void
+    private function setupGroupsTable(BaseSqlDriver $driver): void
     {
         $driver->dropTable('update_test_groups', true);
 
@@ -318,7 +318,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
     /**
      * Insert test data
      */
-    private function insertTestData(Driver $driver): void
+    private function insertTestData(BaseSqlDriver $driver): void
     {
         // Insert users
         $query = new Query($driver);
@@ -340,7 +340,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
     /**
      * Insert groups data
      */
-    private function insertGroupsData(Driver $driver): void
+    private function insertGroupsData(BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
         $query->insertMany('update_test_groups', [

@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Base\BaseSchemaGrammar as Grammar;
 use Hubzero\Database\Schema\TableBuilder;
 use Hubzero\Database\Schema\AlterTableBuilder;
@@ -27,12 +27,12 @@ class TableBuilderTest extends AbstractDriverTestCase
     /**
      * Build a schema grammar stub that returns a fixed create-definition payload.
      */
-    private function createStubGrammar(Driver $driver, array $compiled): Grammar
+    private function createStubGrammar(BaseSqlDriver $driver, array $compiled): Grammar
     {
         return new class ($driver, $compiled) extends Grammar {
             private array $compiled;
 
-            public function __construct(Driver $driver, array $compiled)
+            public function __construct(BaseSqlDriver $driver, array $compiled)
             {
                 parent::__construct($driver);
                 $this->compiled = $compiled;
@@ -85,12 +85,12 @@ class TableBuilderTest extends AbstractDriverTestCase
         };
     }
 
-    private function createBuilderWithGrammar(Driver $driver, string $table, Grammar $grammar): TableBuilder
+    private function createBuilderWithGrammar(BaseSqlDriver $driver, string $table, Grammar $grammar): TableBuilder
     {
         return new class ($driver, $table, $grammar) extends TableBuilder {
             private Grammar $grammar;
 
-            public function __construct(Driver $driver, string $table, Grammar $grammar)
+            public function __construct(BaseSqlDriver $driver, string $table, Grammar $grammar)
             {
                 parent::__construct($driver, $table);
                 $this->grammar = $grammar;
@@ -106,7 +106,7 @@ class TableBuilderTest extends AbstractDriverTestCase
     /**
      * No tables created upfront - all created/dropped in individual tests
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created and dropped in individual test methods
     }
@@ -128,7 +128,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderCreateDefinitionShape(string $dbName, Driver $driver)
+    public function tableBuilderCreateDefinitionShape(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_users');
         $builder
@@ -176,7 +176,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderCreateDefinitionCompositePrimaryKey(string $dbName, Driver $driver)
+    public function tableBuilderCreateDefinitionCompositePrimaryKey(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_composite');
         $builder
@@ -197,7 +197,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderCreateDefinitionMultipleForeignKeys(string $dbName, Driver $driver)
+    public function tableBuilderCreateDefinitionMultipleForeignKeys(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_memberships');
         $builder
@@ -220,7 +220,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderCreateDefinitionResolvesPrefix(string $dbName, Driver $driver)
+    public function tableBuilderCreateDefinitionResolvesPrefix(string $dbName, BaseSqlDriver $driver)
     {
         $originalPrefix = $driver->getPrefix();
 
@@ -240,7 +240,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderCreateDefinitionFluentForeignIdConstrained(string $dbName, Driver $driver)
+    public function tableBuilderCreateDefinitionFluentForeignIdConstrained(string $dbName, BaseSqlDriver $driver)
     {
         $builder = new TableBuilder($driver, 'tdf_posts');
         $builder
@@ -266,7 +266,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderUsesGrammarDelegationWhenListOfSqlReturned(string $dbName, Driver $driver): void
+    public function tableBuilderUsesGrammarDelegationWhenListOfSqlReturned(string $dbName, BaseSqlDriver $driver): void
     {
         $stub = $this->createStubGrammar($driver, [
             'CREATE TABLE delegated_stub (id INTEGER)',
@@ -287,7 +287,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderRejectsWhenGrammarDoesNotReturnSqlList(string $dbName, Driver $driver): void
+    public function tableBuilderRejectsWhenGrammarDoesNotReturnSqlList(string $dbName, BaseSqlDriver $driver): void
     {
         $stub = $this->createStubGrammar($driver, ['table' => 'not_a_statement_list']);
         $builder = $this->createBuilderWithGrammar($driver, 'fallback_test', $stub);
@@ -302,7 +302,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderBaseGrammarDefaultCompilesCreateDefinition(string $dbName, Driver $driver): void
+    public function tableBuilderBaseGrammarDefaultCompilesCreateDefinition(string $dbName, BaseSqlDriver $driver): void
     {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array
@@ -364,7 +364,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableCreationExecution(string $dbName, Driver $driver)
+    public function tableCreationExecution(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_create_exec', true);
 
@@ -400,7 +400,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableAddColumn(string $dbName, Driver $driver)
+    public function alterTableAddColumn(string $dbName, BaseSqlDriver $driver)
     {
         // Clean up leftovers from previous failed runs
         $driver->dropTable('test_alter_add', true);
@@ -429,7 +429,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableAddMultipleColumns(string $dbName, Driver $driver)
+    public function alterTableAddMultipleColumns(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_alter_multi', true);
         $driver
@@ -459,7 +459,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableAddIndex(string $dbName, Driver $driver)
+    public function alterTableAddIndex(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_alter_idx', true);
         $driver
@@ -486,7 +486,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableAddUniqueIndex(string $dbName, Driver $driver)
+    public function alterTableAddUniqueIndex(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_alter_uidx';
         $driver->dropTable($tableName, true);
@@ -514,7 +514,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function alterTableDropIndex(string $dbName, Driver $driver)
+    public function alterTableDropIndex(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_drop_idx';
         $driver->dropTable($tableName, true);
@@ -548,7 +548,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaAddColumn(string $dbName, Driver $driver)
+    public function schemaAddColumn(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_add', true);
         $driver
@@ -577,7 +577,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaDropColumn(string $dbName, Driver $driver)
+    public function schemaDropColumn(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_schema_drop';
         $driver->dropTable($tableName, true);
@@ -605,7 +605,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaRenameTable(string $dbName, Driver $driver)
+    public function schemaRenameTable(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_rename_old', true);
         $driver->dropTable('test_schema_rename_new', true);
@@ -633,7 +633,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaAddIndex(string $dbName, Driver $driver)
+    public function schemaAddIndex(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_schema_idx';
         $driver->dropTable($tableName, true);
@@ -658,7 +658,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaDropIndex(string $dbName, Driver $driver)
+    public function schemaDropIndex(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_drop_idx', true);
         $driver
@@ -685,7 +685,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaAddUniqueIndex(string $dbName, Driver $driver)
+    public function schemaAddUniqueIndex(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_uidx', true);
         $driver
@@ -709,7 +709,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaTableExistence(string $dbName, Driver $driver)
+    public function schemaTableExistence(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_exists', true);
         $this->assertFalse($driver->schema()->tableExists('test_schema_exists'));
@@ -734,7 +734,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaHasColumn(string $dbName, Driver $driver)
+    public function schemaHasColumn(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_schema_has_col';
 
@@ -758,7 +758,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaDropTable(string $dbName, Driver $driver)
+    public function schemaDropTable(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_drop_tbl', true);
         $driver
@@ -780,7 +780,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaAddColumnWithTypes(string $dbName, Driver $driver)
+    public function schemaAddColumnWithTypes(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'test_schema_col_types';
 
@@ -825,7 +825,7 @@ class TableBuilderTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function schemaAlterTableFluent(string $dbName, Driver $driver)
+    public function schemaAlterTableFluent(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('test_schema_alter_fluent', true);
         $driver

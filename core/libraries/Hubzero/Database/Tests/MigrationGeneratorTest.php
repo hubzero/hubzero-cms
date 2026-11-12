@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\MigrationGenerator;
 use Hubzero\Database\Schema\Comparator;
 use Hubzero\Database\Schema\DiffSqlGenerator;
@@ -30,7 +30,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
         return [];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // No persistent tables - tests use in-memory schema objects
     }
@@ -93,7 +93,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating a blank migration stub
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlank(string $dbName, Driver $driver): void
+    public function testGenerateBlank(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -126,7 +126,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating blank migration with different component names
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlankWithComponent(string $dbName, Driver $driver): void
+    public function testGenerateBlankWithComponent(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -140,7 +140,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test strict blank migration mode rejects TODO stubs
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlankStrictModeRejectsTodoStub(string $dbName, Driver $driver): void
+    public function testGenerateBlankStrictModeRejectsTodoStub(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
@@ -154,7 +154,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test strict blank migration mode accepts explicit bodies
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlankWithBodiesStrictModeAllowsExplicitCode(string $dbName, Driver $driver): void
+    public function testGenerateBlankWithBodiesStrictModeAllowsExplicitCode(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
@@ -175,8 +175,10 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test strict blank migration mode rejects TODO placeholders in provided bodies
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlankWithBodiesStrictModeRejectsTodoPlaceholders(string $dbName, Driver $driver): void
-    {
+    public function testGenerateBlankWithBodiesStrictModeRejectsTodoPlaceholders(
+        string $dbName,
+        BaseSqlDriver $driver,
+    ): void {
         $generator = new MigrationGenerator($driver)->setStrictBlankMigrations(true);
 
         $this->expectException(\RuntimeException::class);
@@ -194,7 +196,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generateBlankWithBodies rejects empty content
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateBlankWithBodiesRejectsEmptyBodies(string $dbName, Driver $driver): void
+    public function testGenerateBlankWithBodiesRejectsEmptyBodies(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -212,7 +214,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating migration from table diff with added columns
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromTableDiffWithAddedColumns(string $dbName, Driver $driver): void
+    public function testGenerateFromTableDiffWithAddedColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -247,7 +249,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating migration from table diff with removed columns
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromTableDiffWithRemovedColumns(string $dbName, Driver $driver): void
+    public function testGenerateFromTableDiffWithRemovedColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -276,7 +278,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating migration from table diff with modified columns
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromTableDiffWithModifiedColumns(string $dbName, Driver $driver): void
+    public function testGenerateFromTableDiffWithModifiedColumns(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -308,7 +310,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating migration from schema diff with added tables
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaDiffWithAddedTables(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaDiffWithAddedTables(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -339,7 +341,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test generating migration from schema diff with multiple changes
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaDiffWithMultipleChanges(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaDiffWithMultipleChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -372,7 +374,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test custom template support
      */
     #[DataProvider('databaseProvider')]
-    public function testSetTemplate(string $dbName, Driver $driver): void
+    public function testSetTemplate(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -404,7 +406,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test copyright year setting
      */
     #[DataProvider('databaseProvider')]
-    public function testSetCopyrightYear(string $dbName, Driver $driver): void
+    public function testSetCopyrightYear(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -418,7 +420,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test existence checks setting
      */
     #[DataProvider('databaseProvider')]
-    public function testSetIncludeExistenceChecks(string $dbName, Driver $driver): void
+    public function testSetIncludeExistenceChecks(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -449,7 +451,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test safe mode flag setting
      */
     #[DataProvider('databaseProvider')]
-    public function testSetSafeFlags(string $dbName, Driver $driver): void
+    public function testSetSafeFlags(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -481,7 +483,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test getClassName method
      */
     #[DataProvider('databaseProvider')]
-    public function testGetClassName(string $dbName, Driver $driver): void
+    public function testGetClassName(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -493,7 +495,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test getClassName with auto-generated timestamp
      */
     #[DataProvider('databaseProvider')]
-    public function testGetClassNameAutoTimestamp(string $dbName, Driver $driver): void
+    public function testGetClassNameAutoTimestamp(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -511,7 +513,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test empty table diff generates appropriate message
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromEmptyTableDiff(string $dbName, Driver $driver): void
+    public function testGenerateFromEmptyTableDiff(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -535,7 +537,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test empty schema diff generates appropriate message
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromEmptySchemaDiff(string $dbName, Driver $driver): void
+    public function testGenerateFromEmptySchemaDiff(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();
@@ -565,7 +567,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test that generated content has proper PHP structure
      */
     #[DataProvider('databaseProvider')]
-    public function testGeneratedContentHasProperPhpStructure(string $dbName, Driver $driver): void
+    public function testGeneratedContentHasProperPhpStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
 
@@ -587,7 +589,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
      * Test multiple column changes in description
      */
     #[DataProvider('databaseProvider')]
-    public function testDescriptionWithMultipleChanges(string $dbName, Driver $driver): void
+    public function testDescriptionWithMultipleChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $generator = new MigrationGenerator($driver);
         $comparator = new Comparator();

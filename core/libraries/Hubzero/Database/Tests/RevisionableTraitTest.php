@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\RevisionableArticle;
@@ -42,10 +42,10 @@ class RevisionableTraitTest extends AbstractDriverTestCase
     /**
      * Set up test tables
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Create revisionable_articles table
         $driver->dropTable('revisionable_articles', true);
@@ -95,7 +95,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         RevisionableArticle::clearBootedModels();
@@ -117,7 +117,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createRevisionCreatesRevision(string $dbName, Driver $driver): void
+    public function createRevisionCreatesRevision(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -148,7 +148,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createRevisionWithLogMessage(string $dbName, Driver $driver): void
+    public function createRevisionWithLogMessage(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -172,7 +172,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createRevisionFailsForUnsavedRecord(string $dbName, Driver $driver): void
+    public function createRevisionFailsForUnsavedRecord(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -189,7 +189,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function multipleRevisionsIncrementNumber(string $dbName, Driver $driver): void
+    public function multipleRevisionsIncrementNumber(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -227,7 +227,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function revisionsReturnsAllRevisions(string $dbName, Driver $driver): void
+    public function revisionsReturnsAllRevisions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -281,7 +281,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function revisionsWithAscOrder(string $dbName, Driver $driver): void
+    public function revisionsWithAscOrder(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -323,7 +323,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function findRevisionReturnsSpecificRevision(string $dbName, Driver $driver): void
+    public function findRevisionReturnsSpecificRevision(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -366,7 +366,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function findRevisionReturnsNullForNonExistent(string $dbName, Driver $driver): void
+    public function findRevisionReturnsNullForNonExistent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -387,7 +387,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function latestRevisionReturnsMostRecent(string $dbName, Driver $driver): void
+    public function latestRevisionReturnsMostRecent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -438,7 +438,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function latestRevisionReturnsNullWhenNoRevisions(string $dbName, Driver $driver): void
+    public function latestRevisionReturnsNullWhenNoRevisions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -459,7 +459,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRevisionCountReturnsCorrectCount(string $dbName, Driver $driver): void
+    public function getRevisionCountReturnsCorrectCount(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -499,7 +499,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRevisionCountReturnsZeroForNoRevisions(string $dbName, Driver $driver): void
+    public function getRevisionCountReturnsZeroForNoRevisions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -523,7 +523,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreRevisionRestoresData(string $dbName, Driver $driver): void
+    public function restoreRevisionRestoresData(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -561,7 +561,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreRevisionCreatesNewRevision(string $dbName, Driver $driver): void
+    public function restoreRevisionCreatesNewRevision(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -595,7 +595,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreRevisionWithoutNewRevision(string $dbName, Driver $driver): void
+    public function restoreRevisionWithoutNewRevision(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -629,7 +629,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function restoreRevisionFailsForNonExistent(string $dbName, Driver $driver): void
+    public function restoreRevisionFailsForNonExistent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -654,7 +654,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function diffRevisionsShowsChanges(string $dbName, Driver $driver): void
+    public function diffRevisionsShowsChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -704,7 +704,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function diffRevisionsReturnsEmptyForNonExistent(string $dbName, Driver $driver): void
+    public function diffRevisionsReturnsEmptyForNonExistent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -725,7 +725,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function diffFromRevisionComparesToCurrentState(string $dbName, Driver $driver): void
+    public function diffFromRevisionComparesToCurrentState(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -763,7 +763,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasChangedSinceLastRevisionDetectsChanges(string $dbName, Driver $driver): void
+    public function hasChangedSinceLastRevisionDetectsChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -801,7 +801,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function hasChangedSinceLastRevisionReturnsTrueWhenNoRevisions(string $dbName, Driver $driver): void
+    public function hasChangedSinceLastRevisionReturnsTrueWhenNoRevisions(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -825,7 +825,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function deleteRevisionsRemovesAll(string $dbName, Driver $driver): void
+    public function deleteRevisionsRemovesAll(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -875,7 +875,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function pruneOldRevisionsKeepsRecent(string $dbName, Driver $driver): void
+    public function pruneOldRevisionsKeepsRecent(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -946,7 +946,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function pruneOldRevisionsDoesNothingWhenUnderLimit(string $dbName, Driver $driver): void
+    public function pruneOldRevisionsDoesNothingWhenUnderLimit(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -988,7 +988,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function staticPruneRevisionsAcrossAllRecords(string $dbName, Driver $driver): void
+    public function staticPruneRevisionsAcrossAllRecords(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1085,7 +1085,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRevisionTableReturnsCorrectTableName(string $dbName, Driver $driver): void
+    public function getRevisionTableReturnsCorrectTableName(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1101,7 +1101,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRevisionForeignKeyReturnsCorrectKey(string $dbName, Driver $driver): void
+    public function getRevisionForeignKeyReturnsCorrectKey(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1117,7 +1117,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getRevisionableFieldsReturnsConfiguredFields(string $dbName, Driver $driver): void
+    public function getRevisionableFieldsReturnsConfiguredFields(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1137,7 +1137,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function customConfigurationWorks(string $dbName, Driver $driver): void
+    public function customConfigurationWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1172,7 +1172,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getMaxRevisionsReturnsConfiguredValue(string $dbName, Driver $driver): void
+    public function getMaxRevisionsReturnsConfiguredValue(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -1188,7 +1188,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function autoPruneWhenMaxRevisionsSet(string $dbName, Driver $driver): void
+    public function autoPruneWhenMaxRevisionsSet(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 

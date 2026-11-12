@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -33,7 +33,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      *
      * This is provided by the driver capability layer.
      */
-    private function integerCastType(Driver $driver): string
+    private function integerCastType(BaseSqlDriver $driver): string
     {
         return $driver->getIntegerCastKeyword();
     }
@@ -41,10 +41,10 @@ class NamedParametersTest extends AbstractDriverTestCase
     /**
      * Set up test tables for a specific database
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         try {
             $driver->dropTable('np_posts', true);
@@ -79,10 +79,10 @@ class NamedParametersTest extends AbstractDriverTestCase
     /**
      * Reset test data before each functional test
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Query::purgeCache();
 
@@ -125,7 +125,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSetParameterStoresValue(string $dbName, Driver $driver): void
+    public function testSetParameterStoresValue(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -142,7 +142,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSetParameterStripsColon(string $dbName, Driver $driver): void
+    public function testSetParameterStripsColon(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -159,7 +159,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSetParameterReturnsChain(string $dbName, Driver $driver): void
+    public function testSetParameterReturnsChain(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -174,7 +174,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSetParametersSetsMultipleValues(string $dbName, Driver $driver): void
+    public function testSetParametersSetsMultipleValues(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -197,7 +197,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHasParameterReturnsTrueForExisting(string $dbName, Driver $driver): void
+    public function testHasParameterReturnsTrueForExisting(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -213,7 +213,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHasParameterReturnsFalseForNonExisting(string $dbName, Driver $driver): void
+    public function testHasParameterReturnsFalseForNonExisting(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -226,7 +226,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testClearParametersRemovesAll(string $dbName, Driver $driver): void
+    public function testClearParametersRemovesAll(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -243,7 +243,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testGetNamedParametersEmptyInitially(string $dbName, Driver $driver): void
+    public function testGetNamedParametersEmptyInitially(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -260,7 +260,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testMissingNamedParameterThrowsException(string $dbName, Driver $driver): void
+    public function testMissingNamedParameterThrowsException(string $dbName, BaseSqlDriver $driver): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Missing named parameter ':other'");
@@ -281,7 +281,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testMultipleSetParametersCalls(string $dbName, Driver $driver): void
+    public function testMultipleSetParametersCalls(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -301,7 +301,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSetParameterOverwritesExisting(string $dbName, Driver $driver): void
+    public function testSetParameterOverwritesExisting(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -319,7 +319,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testNamedParametersWithVariousTypes(string $dbName, Driver $driver): void
+    public function testNamedParametersWithVariousTypes(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -348,7 +348,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testNamedParametersInGetBindings(string $dbName, Driver $driver): void
+    public function testNamedParametersInGetBindings(string $dbName, BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -378,7 +378,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereRawWithInlineNamedParameters(string $dbName, Driver $driver): void
+    public function testWhereRawWithInlineNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -403,7 +403,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereRawWithStoredParameters(string $dbName, Driver $driver): void
+    public function testWhereRawWithStoredParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -427,7 +427,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testInlineParametersOverrideStored(string $dbName, Driver $driver): void
+    public function testInlineParametersOverrideStored(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -451,7 +451,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testWhereRawWithReusedParameter(string $dbName, Driver $driver): void
+    public function testWhereRawWithReusedParameter(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -472,7 +472,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testOrWhereRawWithNamedParameters(string $dbName, Driver $driver): void
+    public function testOrWhereRawWithNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -494,7 +494,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testPositionalParametersStillWork(string $dbName, Driver $driver): void
+    public function testPositionalParametersStillWork(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -520,7 +520,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSelectRawWithInlineNamedParameters(string $dbName, Driver $driver): void
+    public function testSelectRawWithInlineNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -548,7 +548,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSelectRawWithStoredParameters(string $dbName, Driver $driver): void
+    public function testSelectRawWithStoredParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -575,7 +575,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSelectRawWithNoParameters(string $dbName, Driver $driver): void
+    public function testSelectRawWithNoParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -599,7 +599,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testSelectRawWithPositionalParameters(string $dbName, Driver $driver): void
+    public function testSelectRawWithPositionalParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -627,7 +627,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHavingRawWithInlineNamedParameters(string $dbName, Driver $driver): void
+    public function testHavingRawWithInlineNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -651,7 +651,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHavingRawWithStoredParameters(string $dbName, Driver $driver): void
+    public function testHavingRawWithStoredParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -676,7 +676,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testHavingRawWithPositionalParameters(string $dbName, Driver $driver): void
+    public function testHavingRawWithPositionalParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -700,7 +700,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testOrHavingRawWithNamedParameters(string $dbName, Driver $driver): void
+    public function testOrHavingRawWithNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -729,7 +729,7 @@ class NamedParametersTest extends AbstractDriverTestCase
      * @return void
      */
     #[DataProvider('databaseProvider')]
-    public function testChainingMultipleMethodsWithNamedParameters(string $dbName, Driver $driver): void
+    public function testChainingMultipleMethodsWithNamedParameters(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

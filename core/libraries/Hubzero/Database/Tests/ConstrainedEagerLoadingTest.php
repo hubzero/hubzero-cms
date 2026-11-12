@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\EagerPost;
 use Hubzero\Database\Tests\TestModels\EagerComment;
@@ -246,7 +246,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     // =========================================================================
 
     #[DataProvider('databaseProvider')]
-    public function testConditionsClosureAppliesWhereEquals(string $dbName, Driver $driver)
+    public function testConditionsClosureAppliesWhereEquals(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -267,7 +267,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testNullConditionAppliesWhereIsNull(string $dbName, Driver $driver)
+    public function testNullConditionAppliesWhereIsNull(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -286,7 +286,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testOrderClosureAppliesOrder(string $dbName, Driver $driver)
+    public function testOrderClosureAppliesOrder(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -311,7 +311,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testLimitClosureAppliesLimit(string $dbName, Driver $driver)
+    public function testLimitClosureAppliesLimit(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -329,7 +329,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testScopeClosureCallsScopeMethod(string $dbName, Driver $driver)
+    public function testScopeClosureCallsScopeMethod(string $dbName, BaseSqlDriver $driver)
     {
         Relational::setDefaultConnection($driver);
 
@@ -352,7 +352,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testScopeClosurePassesParameters(string $dbName, Driver $driver)
+    public function testScopeClosurePassesParameters(string $dbName, BaseSqlDriver $driver)
     {
         Relational::setDefaultConnection($driver);
 
@@ -382,7 +382,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         return ['eager_comments', 'eager_posts'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('eager_comments', true);
         $driver->dropTable('eager_posts', true);
@@ -428,7 +428,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithConditionsConstraint(string $dbName, Driver $driver)
+    public function testEagerLoadingWithConditionsConstraint(string $dbName, BaseSqlDriver $driver)
     {
         $query = new \Hubzero\Database\Query($driver);
         $posts = $query
@@ -458,7 +458,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithOrderConstraint(string $dbName, Driver $driver)
+    public function testEagerLoadingWithOrderConstraint(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -480,7 +480,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithLimitConstraint(string $dbName, Driver $driver)
+    public function testEagerLoadingWithLimitConstraint(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();
@@ -498,7 +498,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     }
 
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithMultipleConstraints(string $dbName, Driver $driver)
+    public function testEagerLoadingWithMultipleConstraints(string $dbName, BaseSqlDriver $driver)
     {
         $model = EagerPost::blank();
         $method = $this->getBuildEagerConstraintMethod();

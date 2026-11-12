@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Mariadb\MariadbDriver as Mariadb;
 
 /**
@@ -32,7 +32,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         return ['mdb_items', 'mdb_categories'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof Mariadb)) {
             return;
@@ -103,7 +103,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         );
     }
 
-    private function requiresMariadb(Driver $driver): bool
+    private function requiresMariadb(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Mariadb)) {
             $this->assertTrue(true);
@@ -177,7 +177,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsMariadbInstance(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -190,7 +190,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -202,7 +202,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetVersion(string $dbName, Driver $driver): void
+    public function canGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -216,7 +216,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -235,7 +235,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -248,7 +248,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -263,7 +263,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -280,7 +280,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -294,7 +294,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -310,7 +310,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAll(string $dbName, Driver $driver): void
+    public function canSelectAll(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -329,7 +329,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -352,7 +352,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -383,7 +383,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -412,7 +412,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -441,7 +441,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -481,7 +481,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -500,7 +500,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function hasAriaOrInnoDBEngine(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -514,7 +514,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -539,7 +539,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sequenceSupportReflectsVersion(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -555,7 +555,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canManageViews(string $dbName, Driver $driver): void
+    public function canManageViews(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -582,7 +582,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -611,7 +611,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -643,7 +643,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -664,7 +664,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -693,7 +693,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -715,7 +715,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;

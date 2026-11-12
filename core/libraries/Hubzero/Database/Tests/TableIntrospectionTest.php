@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\TableInfo;
 use Hubzero\Database\Schema\ColumnInfo;
 use Hubzero\Database\Schema\IndexInfo;
@@ -30,7 +30,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         return [];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created/dropped per-test in setupTable() helper
     }
@@ -46,7 +46,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function introspectTableReturnsTableInfo(string $dbName, Driver $driver)
+    public function introspectTableReturnsTableInfo(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -64,7 +64,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoName(string $dbName, Driver $driver)
+    public function tableInfoName(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -82,7 +82,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoColumnsAreColumnInfoObjects(string $dbName, Driver $driver)
+    public function tableInfoColumnsAreColumnInfoObjects(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -106,7 +106,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoGetColumn(string $dbName, Driver $driver)
+    public function tableInfoGetColumn(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -129,7 +129,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoHasColumn(string $dbName, Driver $driver)
+    public function tableInfoHasColumn(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -149,7 +149,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoGetColumnNames(string $dbName, Driver $driver)
+    public function tableInfoGetColumnNames(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -171,7 +171,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoIndexesAreIndexInfoObjects(string $dbName, Driver $driver)
+    public function tableInfoIndexesAreIndexInfoObjects(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -194,7 +194,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoPrimaryKey(string $dbName, Driver $driver)
+    public function tableInfoPrimaryKey(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -213,7 +213,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoToArray(string $dbName, Driver $driver)
+    public function tableInfoToArray(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -240,7 +240,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function columnInfoGetName(string $dbName, Driver $driver)
+    public function columnInfoGetName(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -259,7 +259,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function columnInfoIsNullable(string $dbName, Driver $driver)
+    public function columnInfoIsNullable(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -287,7 +287,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function columnInfoTypeDetection(string $dbName, Driver $driver)
+    public function columnInfoTypeDetection(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -310,7 +310,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function columnInfoIsPrimaryKey(string $dbName, Driver $driver)
+    public function columnInfoIsPrimaryKey(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -333,7 +333,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function columnInfoToArray(string $dbName, Driver $driver)
+    public function columnInfoToArray(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -360,7 +360,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function indexInfoGetName(string $dbName, Driver $driver)
+    public function indexInfoGetName(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -391,7 +391,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function indexInfoGetColumns(string $dbName, Driver $driver)
+    public function indexInfoGetColumns(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -414,7 +414,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function indexInfoIsPrimary(string $dbName, Driver $driver)
+    public function indexInfoIsPrimary(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -436,7 +436,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function indexInfoToArray(string $dbName, Driver $driver)
+    public function indexInfoToArray(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -540,7 +540,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function individualMethodsStillWork(string $dbName, Driver $driver)
+    public function individualMethodsStillWork(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -568,7 +568,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoColumnCount(string $dbName, Driver $driver)
+    public function tableInfoColumnCount(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -587,7 +587,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableInfoIndexCount(string $dbName, Driver $driver)
+    public function tableInfoIndexCount(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = $this->setupTable($driver);
         $schema = $driver->schema();
@@ -613,7 +613,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
      *
      * @return string The table name that was created
      */
-    private function setupTable(Driver $driver): string
+    private function setupTable(BaseSqlDriver $driver): string
     {
         $tableName = 'introspect_test';
 

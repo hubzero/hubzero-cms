@@ -5,7 +5,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Query;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 
 /**
  * Minimal union test to debug DB2 issues
@@ -17,7 +17,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
         return ['TEST_USERS', 'TEST_ADMINS'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('TEST_USERS', true);
         $driver->dropTable('TEST_ADMINS', true);
@@ -25,7 +25,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function basicUnionWorks(string $dbName, Driver $driver)
+    public function basicUnionWorks(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('TEST_USERS', true);
         $driver->dropTable('TEST_ADMINS', true);
@@ -76,7 +76,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function basicFetchWorks(string $dbName, Driver $driver)
+    public function basicFetchWorks(string $dbName, BaseSqlDriver $driver)
     {
         $driver->dropTable('TEST_USERS', true);
 

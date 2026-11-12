@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Traits\Hittable;
@@ -38,10 +38,10 @@ class HittableTraitTest extends AbstractDriverTestCase
     /**
      * Create test tables and insert seed data for a database
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Create test table with hits column
         $driver->dropTable('hittable_articles', true);
@@ -66,7 +66,7 @@ class HittableTraitTest extends AbstractDriverTestCase
     /**
      * Setup test data before each test
      */
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -90,7 +90,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetHitsReturnsCurrentValue(string $dbName, Driver $driver)
+    public function testGetHitsReturnsCurrentValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -108,7 +108,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetHitsReturnsZeroForNewRecord(string $dbName, Driver $driver)
+    public function testGetHitsReturnsZeroForNewRecord(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -126,7 +126,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHitIncrementsByOneByDefault(string $dbName, Driver $driver)
+    public function testHitIncrementsByOneByDefault(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -150,7 +150,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHitWithCustomAmount(string $dbName, Driver $driver)
+    public function testHitWithCustomAmount(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -174,7 +174,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHitWithZeroOrNegativeAmountReturnsTrue(string $dbName, Driver $driver)
+    public function testHitWithZeroOrNegativeAmountReturnsTrue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -196,7 +196,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMultipleHitsAccumulate(string $dbName, Driver $driver)
+    public function testMultipleHitsAccumulate(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -223,7 +223,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetHitsSetsExactValue(string $dbName, Driver $driver)
+    public function testSetHitsSetsExactValue(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -245,7 +245,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testSetHitsWithNegativeValueSetsToZero(string $dbName, Driver $driver)
+    public function testSetHitsWithNegativeValueSetsToZero(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -265,7 +265,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testResetHitsSetsToZero(string $dbName, Driver $driver)
+    public function testResetHitsSetsToZero(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -291,7 +291,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIncrementHitsStaticMethod(string $dbName, Driver $driver)
+    public function testIncrementHitsStaticMethod(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -312,7 +312,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testIncrementHitsStaticMethodWithCustomAmount(string $dbName, Driver $driver)
+    public function testIncrementHitsStaticMethodWithCustomAmount(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -333,7 +333,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMostViewedReturnsRecordsOrderedByHits(string $dbName, Driver $driver)
+    public function testMostViewedReturnsRecordsOrderedByHits(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -362,7 +362,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMostViewedRespectsLimit(string $dbName, Driver $driver)
+    public function testMostViewedRespectsLimit(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -385,7 +385,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMostViewedWithWhereConditions(string $dbName, Driver $driver)
+    public function testMostViewedWithWhereConditions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -410,7 +410,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTotalHitsReturnsSumOfAllHits(string $dbName, Driver $driver)
+    public function testTotalHitsReturnsSumOfAllHits(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -431,7 +431,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTotalHitsWithWhereConditions(string $dbName, Driver $driver)
+    public function testTotalHitsWithWhereConditions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -452,7 +452,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testTotalHitsReturnsZeroForEmptyTable(string $dbName, Driver $driver)
+    public function testTotalHitsReturnsZeroForEmptyTable(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -470,7 +470,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testGetHitsColumnReturnsCorrectColumnName(string $dbName, Driver $driver)
+    public function testGetHitsColumnReturnsCorrectColumnName(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -486,7 +486,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testCustomColumnNameWorksCorrectly(string $dbName, Driver $driver)
+    public function testCustomColumnNameWorksCorrectly(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 
@@ -518,7 +518,7 @@ class HittableTraitTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testHitUsesAtomicIncrement(string $dbName, Driver $driver)
+    public function testHitUsesAtomicIncrement(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
 

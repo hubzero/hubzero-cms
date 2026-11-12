@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -26,7 +27,7 @@ class TransactionTest extends AbstractDriverTestCase
         return ['test_transactions'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Table is created per-test by setupTable() helper
     }
@@ -40,7 +41,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function inTransactionReturnsFalseWhenNotInTransaction(string $dbName, Driver $driver)
+    public function inTransactionReturnsFalseWhenNotInTransaction(string $dbName, BaseSqlDriver $driver)
     {
         $this->assertFalse($driver->inTransaction());
     }
@@ -50,7 +51,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function inTransactionReturnsTrueWhenInTransaction(string $dbName, Driver $driver)
+    public function inTransactionReturnsTrueWhenInTransaction(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
 
@@ -64,7 +65,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function inTransactionReturnsFalseAfterCommit(string $dbName, Driver $driver)
+    public function inTransactionReturnsFalseAfterCommit(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
         $driver->transactionCommit();
@@ -77,7 +78,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function inTransactionReturnsFalseAfterRollback(string $dbName, Driver $driver)
+    public function inTransactionReturnsFalseAfterRollback(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
         $driver->transactionRollback();
@@ -94,7 +95,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTransactionLevelReturnsZeroWhenNotInTransaction(string $dbName, Driver $driver)
+    public function getTransactionLevelReturnsZeroWhenNotInTransaction(string $dbName, BaseSqlDriver $driver)
     {
         $this->assertEquals(0, $driver->getTransactionLevel());
     }
@@ -104,7 +105,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function getTransactionLevelReturnsOneInTransaction(string $dbName, Driver $driver)
+    public function getTransactionLevelReturnsOneInTransaction(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
 
@@ -118,7 +119,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nestedTransactionsIncrementLevel(string $dbName, Driver $driver)
+    public function nestedTransactionsIncrementLevel(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
         $this->assertEquals(1, $driver->getTransactionLevel());
@@ -140,7 +141,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function commitDecrementsLevel(string $dbName, Driver $driver)
+    public function commitDecrementsLevel(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
         $driver->transactionStart();
@@ -158,7 +159,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rollbackDecrementsLevel(string $dbName, Driver $driver)
+    public function rollbackDecrementsLevel(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transactionStart();
         $driver->transactionStart();
@@ -180,7 +181,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionCommitsOnSuccess(string $dbName, Driver $driver)
+    public function transactionCommitsOnSuccess(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -207,7 +208,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionRollsBackOnException(string $dbName, Driver $driver)
+    public function transactionRollsBackOnException(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -240,7 +241,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionReturnsCallbackResult(string $dbName, Driver $driver)
+    public function transactionReturnsCallbackResult(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -262,7 +263,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionRethrowsException(string $dbName, Driver $driver)
+    public function transactionRethrowsException(string $dbName, BaseSqlDriver $driver)
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Test exception');
@@ -277,7 +278,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionReceivesDriverAsArgument(string $dbName, Driver $driver)
+    public function transactionReceivesDriverAsArgument(string $dbName, BaseSqlDriver $driver)
     {
         $receivedDriver = null;
 
@@ -293,7 +294,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function notInTransactionAfterSuccess(string $dbName, Driver $driver)
+    public function notInTransactionAfterSuccess(string $dbName, BaseSqlDriver $driver)
     {
         $driver->transaction(fn($db) => null);
 
@@ -305,7 +306,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function notInTransactionAfterFailure(string $dbName, Driver $driver)
+    public function notInTransactionAfterFailure(string $dbName, BaseSqlDriver $driver)
     {
         try {
             $driver->transaction(function ($db) {
@@ -327,7 +328,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nestedTransactionCommit(string $dbName, Driver $driver)
+    public function nestedTransactionCommit(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -361,7 +362,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function nestedTransactionRollbackOnlyAffectsInner(string $dbName, Driver $driver)
+    public function nestedTransactionRollbackOnlyAffectsInner(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -404,7 +405,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function outerRollbackRollsBackEverything(string $dbName, Driver $driver)
+    public function outerRollbackRollsBackEverything(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTable($driver);
 
@@ -442,7 +443,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isDeadlockExceptionDetectsDeadlock(string $dbName, Driver $driver)
+    public function isDeadlockExceptionDetectsDeadlock(string $dbName, BaseSqlDriver $driver)
     {
         $reflection = new \ReflectionClass(Driver::class);
         $method = $reflection->getMethod('isDeadlockException');
@@ -457,7 +458,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isDeadlockExceptionDetectsLockTimeout(string $dbName, Driver $driver)
+    public function isDeadlockExceptionDetectsLockTimeout(string $dbName, BaseSqlDriver $driver)
     {
         $reflection = new \ReflectionClass(Driver::class);
         $method = $reflection->getMethod('isDeadlockException');
@@ -471,7 +472,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isDeadlockExceptionDetectsSerializationFailure(string $dbName, Driver $driver)
+    public function isDeadlockExceptionDetectsSerializationFailure(string $dbName, BaseSqlDriver $driver)
     {
         $reflection = new \ReflectionClass(Driver::class);
         $method = $reflection->getMethod('isDeadlockException');
@@ -485,7 +486,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function isDeadlockExceptionReturnsFalseForOtherExceptions(string $dbName, Driver $driver)
+    public function isDeadlockExceptionReturnsFalseForOtherExceptions(string $dbName, BaseSqlDriver $driver)
     {
         $reflection = new \ReflectionClass(Driver::class);
         $method = $reflection->getMethod('isDeadlockException');
@@ -504,7 +505,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionWithZeroAttemptsUsesOne(string $dbName, Driver $driver)
+    public function transactionWithZeroAttemptsUsesOne(string $dbName, BaseSqlDriver $driver)
     {
         $count = 0;
 
@@ -520,7 +521,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function transactionWithNegativeAttemptsUsesOne(string $dbName, Driver $driver)
+    public function transactionWithNegativeAttemptsUsesOne(string $dbName, BaseSqlDriver $driver)
     {
         $count = 0;
 
@@ -536,7 +537,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function commitWhenNotInTransactionIsSafe(string $dbName, Driver $driver)
+    public function commitWhenNotInTransactionIsSafe(string $dbName, BaseSqlDriver $driver)
     {
         // Should not throw
         $driver->transactionCommit();
@@ -549,7 +550,7 @@ class TransactionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function rollbackWhenNotInTransactionIsSafe(string $dbName, Driver $driver)
+    public function rollbackWhenNotInTransactionIsSafe(string $dbName, BaseSqlDriver $driver)
     {
         // Should not throw
         $driver->transactionRollback();
@@ -564,7 +565,7 @@ class TransactionTest extends AbstractDriverTestCase
     /**
      * Setup test table
      */
-    private function setupTable(Driver $driver): void
+    private function setupTable(BaseSqlDriver $driver): void
     {
         $driver->dropTable('test_transactions', true);
 

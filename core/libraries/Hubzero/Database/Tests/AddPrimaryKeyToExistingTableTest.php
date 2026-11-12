@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -32,7 +32,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
         ];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if ($driver->getDriverName() === 'db2') {
             self::markTestSkipped('Not supported on this database');
@@ -48,7 +48,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKey(string $dbName, Driver $driver)
+    public function addAutoIncrementPrimaryKey(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_add_pk', true);
@@ -103,7 +103,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKeyCustomColumn(string $dbName, Driver $driver)
+    public function addAutoIncrementPrimaryKeyCustomColumn(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_custom_pk', true);
@@ -157,7 +157,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function dropPrimaryKeyThenAddAutoIncrement(string $dbName, Driver $driver)
+    public function dropPrimaryKeyThenAddAutoIncrement(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_pk_drop_add', true);
@@ -223,7 +223,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function primaryKeyColumnMigrationScenario(string $dbName, Driver $driver)
+    public function primaryKeyColumnMigrationScenario(string $dbName, BaseSqlDriver $driver)
     {
         $schema = $driver->schema();
 
@@ -264,7 +264,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addPrimaryKeyToTableWithoutOne(string $dbName, Driver $driver)
+    public function addPrimaryKeyToTableWithoutOne(string $dbName, BaseSqlDriver $driver)
     {
         $schema = $driver->schema();
 

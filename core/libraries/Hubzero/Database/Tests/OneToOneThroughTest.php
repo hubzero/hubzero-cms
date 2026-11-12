@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\ThroughUser;
@@ -50,10 +50,10 @@ class OneToOneThroughTest extends AbstractDriverTestCase
     /**
      * Set up test tables using schema builder
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop in dependency order
         $driver->dropTable('through_profiles', true);
@@ -109,10 +109,10 @@ class OneToOneThroughTest extends AbstractDriverTestCase
     /**
      * Seed test data into all tables
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function seedTestData(Driver $driver): void
+    private function seedTestData(BaseSqlDriver $driver): void
     {
         $query = new Query($driver);
 
@@ -166,10 +166,10 @@ class OneToOneThroughTest extends AbstractDriverTestCase
     /**
      * Reset test state: clear models, purge cache, clean tables, re-seed data
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    private function resetTestState(Driver $driver): void
+    private function resetTestState(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
 
@@ -202,7 +202,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test oneToOneThrough method exists on Relational
      */
     #[DataProvider('databaseProvider')]
-    public function testOneToOneThroughMethodExists(string $dbName, Driver $driver): void
+    public function testOneToOneThroughMethodExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -214,7 +214,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test hasOneThrough alias exists on Relational
      */
     #[DataProvider('databaseProvider')]
-    public function testHasOneThroughAliasExists(string $dbName, Driver $driver): void
+    public function testHasOneThroughAliasExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -226,7 +226,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test basic oneToOneThrough retrieval
      */
     #[DataProvider('databaseProvider')]
-    public function testBasicOneToOneThroughRetrieval(string $dbName, Driver $driver): void
+    public function testBasicOneToOneThroughRetrieval(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -242,7 +242,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test oneToOneThrough returns different result for different models
      */
     #[DataProvider('databaseProvider')]
-    public function testOneToOneThroughReturnsDifferentResults(string $dbName, Driver $driver): void
+    public function testOneToOneThroughReturnsDifferentResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -260,7 +260,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test oneToOneThrough returns blank model when intermediate has null foreign key
      */
     #[DataProvider('databaseProvider')]
-    public function testOneToOneThroughReturnsBlankWhenNullForeignKey(string $dbName, Driver $driver): void
+    public function testOneToOneThroughReturnsBlankWhenNullForeignKey(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -276,7 +276,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test hasOneThrough alias works identically
      */
     #[DataProvider('databaseProvider')]
-    public function testHasOneThroughAliasWorks(string $dbName, Driver $driver): void
+    public function testHasOneThroughAliasWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -295,7 +295,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test relationship returns correct class type
      */
     #[DataProvider('databaseProvider')]
-    public function testRelationshipReturnsCorrectType(string $dbName, Driver $driver): void
+    public function testRelationshipReturnsCorrectType(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -312,7 +312,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test constrain method works
      */
     #[DataProvider('databaseProvider')]
-    public function testConstrainMethodWorks(string $dbName, Driver $driver): void
+    public function testConstrainMethodWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -327,7 +327,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test rows method returns single model
      */
     #[DataProvider('databaseProvider')]
-    public function testRowsReturnsSingleModel(string $dbName, Driver $driver): void
+    public function testRowsReturnsSingleModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -346,7 +346,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test eager loading with including()
      */
     #[DataProvider('databaseProvider')]
-    public function testEagerLoadingWithIncluding(string $dbName, Driver $driver): void
+    public function testEagerLoadingWithIncluding(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -371,7 +371,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test lazy eager loading with load()
      */
     #[DataProvider('databaseProvider')]
-    public function testLazyEagerLoadingWithLoad(string $dbName, Driver $driver): void
+    public function testLazyEagerLoadingWithLoad(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -395,7 +395,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test join method works for sorting
      */
     #[DataProvider('databaseProvider')]
-    public function testJoinMethodWorks(string $dbName, Driver $driver): void
+    public function testJoinMethodWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 
@@ -412,7 +412,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
      * Test mediate method works
      */
     #[DataProvider('databaseProvider')]
-    public function testMediateMethodWorks(string $dbName, Driver $driver): void
+    public function testMediateMethodWorks(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetTestState($driver);
 

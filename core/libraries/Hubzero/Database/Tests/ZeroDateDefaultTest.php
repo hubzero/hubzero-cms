@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver as SqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Schema\Column;
@@ -30,7 +30,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         return ['zerodate_test'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables created and dropped per-test
     }
@@ -136,7 +136,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function zeroDatetimeDefaultCreatesNullableColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -174,7 +174,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function zeroDateDefaultCreatesNullableColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -212,7 +212,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function normalDatetimeDefaultIsUnchanged(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -252,7 +252,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function nullableColumnWithZeroDateDefaultAcceptsNull(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -294,7 +294,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function alterTableZeroDateDefaultBecomesNull(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -346,7 +346,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableDefinitionZeroDateDefaultBecomesNull(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -390,7 +390,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function multipleZeroDateColumnsInSameTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -425,7 +425,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function explicitDateValueOverridesZeroDateDefault(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -460,7 +460,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function mixedZeroDateAndNormalDefaults(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 

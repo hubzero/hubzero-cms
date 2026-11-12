@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Tests\TestModels\RefreshTestItem;
@@ -36,10 +36,10 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Create test tables
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('refresh_test_comments', true);
         $driver->dropTable('refresh_test_items', true);
@@ -66,7 +66,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Reset test state for each test method
      */
-    private function resetRefreshState(Driver $driver): void
+    private function resetRefreshState(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         Query::purgeCache();
@@ -79,8 +79,12 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      */
-    protected function insertTestRecord(Driver $driver, $title = 'Test Item', $content = 'Test content', $viewCount = 0)
-    {
+    protected function insertTestRecord(
+        BaseSqlDriver $driver,
+        $title = 'Test Item',
+        $content = 'Test content',
+        $viewCount = 0,
+    ) {
         $now = date('Y-m-d H:i:s');
         $query = new Query($driver);
         $query->insertMany('refresh_test_items', [[
@@ -97,7 +101,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Insert a comment for an item
      */
-    protected function insertComment(Driver $driver, $itemId, $body = 'Test comment')
+    protected function insertComment(BaseSqlDriver $driver, $itemId, $body = 'Test comment')
     {
         $query = new Query($driver);
         $query->insertMany('refresh_test_comments', [
@@ -109,7 +113,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Update a record directly in the database (simulating external change)
      */
-    protected function updateRecordDirectly(Driver $driver, $id, $field, $value)
+    protected function updateRecordDirectly(BaseSqlDriver $driver, $id, $field, $value)
     {
         if (is_string($value)) {
             $value = "'" . str_replace("'", "''", $value) . "'";
@@ -126,7 +130,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() reloads data from database
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshReloadsFromDatabase(string $dbName, Driver $driver): void
+    public function testRefreshReloadsFromDatabase(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -150,7 +154,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() discards local unsaved changes
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshDiscardsLocalChanges(string $dbName, Driver $driver): void
+    public function testRefreshDiscardsLocalChanges(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -173,7 +177,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() clears cached relationships
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshClearsCachedRelationships(string $dbName, Driver $driver): void
+    public function testRefreshClearsCachedRelationships(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -202,7 +206,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() returns false for new (unsaved) models
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshReturnsFalseForNewModel(string $dbName, Driver $driver): void
+    public function testRefreshReturnsFalseForNewModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -218,7 +222,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() returns false if record no longer exists
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshReturnsFalseIfRecordDeleted(string $dbName, Driver $driver): void
+    public function testRefreshReturnsFalseIfRecordDeleted(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -239,7 +243,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh() syncs original attributes (no dirty state)
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshSyncsOriginalAttributes(string $dbName, Driver $driver): void
+    public function testRefreshSyncsOriginalAttributes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -266,7 +270,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() returns a new instance
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshReturnsNewInstance(string $dbName, Driver $driver): void
+    public function testFreshReturnsNewInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -284,7 +288,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() leaves original instance unchanged
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshLeavesOriginalUnchanged(string $dbName, Driver $driver): void
+    public function testFreshLeavesOriginalUnchanged(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -311,7 +315,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() returns false for new (unsaved) models
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshReturnsFalseForNewModel(string $dbName, Driver $driver): void
+    public function testFreshReturnsFalseForNewModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -327,7 +331,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() returns false if record no longer exists
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshReturnsFalseIfRecordDeleted(string $dbName, Driver $driver): void
+    public function testFreshReturnsFalseIfRecordDeleted(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -348,7 +352,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() can eager load relationships
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshWithEagerLoading(string $dbName, Driver $driver): void
+    public function testFreshWithEagerLoading(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -370,7 +374,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() accepts string for single relationship
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshAcceptsStringForSingleRelationship(string $dbName, Driver $driver): void
+    public function testFreshAcceptsStringForSingleRelationship(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -390,7 +394,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that fresh() returns model with no dirty state
      */
     #[DataProvider('databaseProvider')]
-    public function testFreshReturnsCleanModel(string $dbName, Driver $driver): void
+    public function testFreshReturnsCleanModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -410,7 +414,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test refresh and fresh with numeric values
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshWithNumericValues(string $dbName, Driver $driver): void
+    public function testRefreshWithNumericValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -432,7 +436,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test multiple consecutive refreshes
      */
     #[DataProvider('databaseProvider')]
-    public function testMultipleRefreshes(string $dbName, Driver $driver): void
+    public function testMultipleRefreshes(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 
@@ -454,7 +458,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
      * Test that refresh works correctly with chaining
      */
     #[DataProvider('databaseProvider')]
-    public function testRefreshIsChainable(string $dbName, Driver $driver): void
+    public function testRefreshIsChainable(string $dbName, BaseSqlDriver $driver): void
     {
         $this->resetRefreshState($driver);
 

@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\DatabaseManager;
 
 /**
@@ -32,7 +33,7 @@ use Hubzero\Database\DatabaseManager;
  *         return ['my_test_table'];
  *     }
  *
- *     protected static function setUpDatabase(Driver $driver): void
+ *     protected static function setUpDatabase(BaseSqlDriver $driver): void
  *     {
  *         $driver->createTable('my_test_table')
  *             ->id()
@@ -42,7 +43,7 @@ use Hubzero\Database\DatabaseManager;
  *
  *     #[Test]
  *     #[DataProvider('databaseProvider')]
- *     public function testSomething(string $dbName, Driver $driver): void
+ *     public function testSomething(string $dbName, BaseSqlDriver $driver): void
  *     {
  *         // ...
  *     }
@@ -110,10 +111,10 @@ abstract class AbstractDriverTestCase extends TestCase
      * would occur if setup ran during data provider evaluation (PHPUnit
      * evaluates ALL providers before running any tests).
      *
-     * @param Driver $driver Database driver
+     * @param BaseSqlDriver $driver Database driver
      * @return void
      */
-    abstract protected static function setUpDatabase(Driver $driver): void;
+    abstract protected static function setUpDatabase(BaseSqlDriver $driver): void;
 
     /**
      * Return table names created by this test for automatic cleanup
@@ -319,7 +320,7 @@ abstract class AbstractDriverTestCase extends TestCase
      * @return Driver
      * @throws \RuntimeException If driver is unknown or unavailable
      */
-    protected static function createDriver(string $dbName, array $config): Driver
+    protected static function createDriver(string $dbName, array $config): BaseSqlDriver
     {
         $manager = static::getDatabaseManager();
         return $manager->makeDriver($dbName, $config);

@@ -9,7 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Schema\MigrationSquasher;
 use Hubzero\Database\Schema\DatabaseInfo;
 use Hubzero\Database\Schema\TableInfo;
@@ -26,7 +26,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
         return ['squash_posts', 'squash_users'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         $driver->dropTable('squash_posts', true);
         $driver->dropTable('squash_users', true);
@@ -58,7 +58,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
     /**
      * Introspect specific tables and return a DatabaseInfo
      */
-    protected function introspectSchema(Driver $driver, array $tableNames): DatabaseInfo
+    protected function introspectSchema(BaseSqlDriver $driver, array $tableNames): DatabaseInfo
     {
         $schema = $driver->schema();
         $tables = [];
@@ -75,7 +75,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test class exists
      */
     #[DataProvider('databaseProvider')]
-    public function testClassExists(string $dbName, Driver $driver): void
+    public function testClassExists(string $dbName, BaseSqlDriver $driver): void
     {
         $this->assertTrue(class_exists(MigrationSquasher::class));
     }
@@ -84,7 +84,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test can create instance
      */
     #[DataProvider('databaseProvider')]
-    public function testCanCreateInstance(string $dbName, Driver $driver): void
+    public function testCanCreateInstance(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -95,7 +95,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test setIncludeExistenceChecks returns self for fluent interface
      */
     #[DataProvider('databaseProvider')]
-    public function testSetIncludeExistenceChecksReturnsSelf(string $dbName, Driver $driver): void
+    public function testSetIncludeExistenceChecksReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -107,7 +107,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test setIncludeForeignKeys returns self for fluent interface
      */
     #[DataProvider('databaseProvider')]
-    public function testSetIncludeForeignKeysReturnsSelf(string $dbName, Driver $driver): void
+    public function testSetIncludeForeignKeysReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -119,7 +119,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test setExcludeTables returns self for fluent interface
      */
     #[DataProvider('databaseProvider')]
-    public function testSetExcludeTablesReturnsSelf(string $dbName, Driver $driver): void
+    public function testSetExcludeTablesReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -131,7 +131,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test setTemplate returns self for fluent interface
      */
     #[DataProvider('databaseProvider')]
-    public function testSetTemplateReturnsSelf(string $dbName, Driver $driver): void
+    public function testSetTemplateReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -143,7 +143,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test setCopyrightYear returns self for fluent interface
      */
     #[DataProvider('databaseProvider')]
-    public function testSetCopyrightYearReturnsSelf(string $dbName, Driver $driver): void
+    public function testSetCopyrightYearReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -155,7 +155,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generateFromSchema with empty schema
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaWithEmptySchema(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaWithEmptySchema(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -177,7 +177,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generateFromSchema with single table
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaWithSingleTable(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaWithSingleTable(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -195,7 +195,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generateFromSchema includes existence checks by default
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaIncludesExistenceChecksByDefault(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaIncludesExistenceChecksByDefault(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -210,7 +210,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generateFromSchema without existence checks
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaWithoutExistenceChecks(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaWithoutExistenceChecks(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -228,7 +228,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generateFromSchema excludes foreign keys when disabled
      */
     #[DataProvider('databaseProvider')]
-    public function testGenerateFromSchemaExcludesForeignKeysWhenDisabled(string $dbName, Driver $driver): void
+    public function testGenerateFromSchemaExcludesForeignKeysWhenDisabled(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -247,7 +247,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGenerateFromSchemaWithMultipleTablesRespectsDependencyOrder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         $squasher = new MigrationSquasher($driver);
 
@@ -268,7 +268,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test getSquashStats returns correct statistics
      */
     #[DataProvider('databaseProvider')]
-    public function testGetSquashStatsReturnsCorrectStatistics(string $dbName, Driver $driver): void
+    public function testGetSquashStatsReturnsCorrectStatistics(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -291,7 +291,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test getSquashStats respects excluded tables
      */
     #[DataProvider('databaseProvider')]
-    public function testGetSquashStatsRespectsExcludedTables(string $dbName, Driver $driver): void
+    public function testGetSquashStatsRespectsExcludedTables(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -308,7 +308,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test getExistingMigrations returns array
      */
     #[DataProvider('databaseProvider')]
-    public function testGetExistingMigrationsReturnsArray(string $dbName, Driver $driver): void
+    public function testGetExistingMigrationsReturnsArray(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -322,7 +322,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generated migration has correct structure
      */
     #[DataProvider('databaseProvider')]
-    public function testGeneratedMigrationHasCorrectStructure(string $dbName, Driver $driver): void
+    public function testGeneratedMigrationHasCorrectStructure(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -343,7 +343,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test generated migration down() drops tables
      */
     #[DataProvider('databaseProvider')]
-    public function testGeneratedMigrationDownDropsTables(string $dbName, Driver $driver): void
+    public function testGeneratedMigrationDownDropsTables(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -358,7 +358,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test custom component name in generated migration
      */
     #[DataProvider('databaseProvider')]
-    public function testCustomComponentNameInGeneratedMigration(string $dbName, Driver $driver): void
+    public function testCustomComponentNameInGeneratedMigration(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 
@@ -373,7 +373,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
      * Test custom description in generated migration
      */
     #[DataProvider('databaseProvider')]
-    public function testCustomDescriptionInGeneratedMigration(string $dbName, Driver $driver): void
+    public function testCustomDescriptionInGeneratedMigration(string $dbName, BaseSqlDriver $driver): void
     {
         $squasher = new MigrationSquasher($driver);
 

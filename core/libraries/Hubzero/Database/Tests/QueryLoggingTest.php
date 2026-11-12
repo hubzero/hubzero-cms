@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\LogTestArticle;
@@ -36,10 +36,10 @@ class QueryLoggingTest extends AbstractDriverTestCase
     /**
      * Create test tables
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      * @return void
      */
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Drop table if exists
         $driver->dropTable('log_test_articles', true);
@@ -58,9 +58,9 @@ class QueryLoggingTest extends AbstractDriverTestCase
     /**
      * Setup test data before each test
      *
-     * @param Driver $driver
+     * @param BaseSqlDriver $driver
      */
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         // Set as default connection for models
         Relational::setDefaultConnection($driver);
@@ -99,7 +99,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function queryUsesParameterization(string $dbName, Driver $driver): void
+    public function queryUsesParameterization(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -126,7 +126,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function modelQueryReturnsCorrectResults(string $dbName, Driver $driver): void
+    public function modelQueryReturnsCorrectResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -148,7 +148,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getBindingsReturnsBoundValues(string $dbName, Driver $driver): void
+    public function getBindingsReturnsBoundValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -174,7 +174,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getQueryBindingsOnModel(string $dbName, Driver $driver): void
+    public function getQueryBindingsOnModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -197,7 +197,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function toRawSqlSubstitutesValues(string $dbName, Driver $driver): void
+    public function toRawSqlSubstitutesValues(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -220,7 +220,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function toRawSqlHandlesIntegers(string $dbName, Driver $driver): void
+    public function toRawSqlHandlesIntegers(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -243,7 +243,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function toRawSqlHandlesNull(string $dbName, Driver $driver): void
+    public function toRawSqlHandlesNull(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -264,7 +264,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function toRawSqlOnModel(string $dbName, Driver $driver): void
+    public function toRawSqlOnModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -286,7 +286,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getDebugInfoReturnsAllData(string $dbName, Driver $driver): void
+    public function getDebugInfoReturnsAllData(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -315,7 +315,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getDebugInfoOnModel(string $dbName, Driver $driver): void
+    public function getDebugInfoOnModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -339,7 +339,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function dumpReturnsSelfForChaining(string $dbName, Driver $driver): void
+    public function dumpReturnsSelfForChaining(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -361,7 +361,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function dumpOutputsDebugInfo(string $dbName, Driver $driver): void
+    public function dumpOutputsDebugInfo(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -388,7 +388,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function dumpOnModelReturnsSelf(string $dbName, Driver $driver): void
+    public function dumpOnModelReturnsSelf(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -412,7 +412,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function enableQueryLogEnablesLogging(string $dbName, Driver $driver): void
+    public function enableQueryLogEnablesLogging(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -430,7 +430,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function disableQueryLogDisablesLogging(string $dbName, Driver $driver): void
+    public function disableQueryLogDisablesLogging(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -447,7 +447,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function queriesAreLoggedWhenEnabled(string $dbName, Driver $driver): void
+    public function queriesAreLoggedWhenEnabled(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -473,7 +473,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function queriesNotLoggedWhenDisabled(string $dbName, Driver $driver): void
+    public function queriesNotLoggedWhenDisabled(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -496,7 +496,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function flushQueryLogClearsLog(string $dbName, Driver $driver): void
+    public function flushQueryLogClearsLog(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -520,7 +520,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getQueryLogCountReturnsCorrectCount(string $dbName, Driver $driver): void
+    public function getQueryLogCountReturnsCorrectCount(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -543,7 +543,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function getQueryLogTotalTimeReturnsTotalTime(string $dbName, Driver $driver): void
+    public function getQueryLogTotalTimeReturnsTotalTime(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -566,7 +566,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function queryLogContainsTimingInfo(string $dbName, Driver $driver): void
+    public function queryLogContainsTimingInfo(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -593,7 +593,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function whereLikeFiltersResults(string $dbName, Driver $driver): void
+    public function whereLikeFiltersResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -617,7 +617,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function orderByReturnsOrderedResults(string $dbName, Driver $driver): void
+    public function orderByReturnsOrderedResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -640,7 +640,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function limitRestrictsResultCount(string $dbName, Driver $driver): void
+    public function limitRestrictsResultCount(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 
@@ -658,7 +658,7 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
     #[DataProvider('databaseProvider')]
 
-    public function complexQueryReturnsCorrectResults(string $dbName, Driver $driver): void
+    public function complexQueryReturnsCorrectResults(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTestData($driver);
 

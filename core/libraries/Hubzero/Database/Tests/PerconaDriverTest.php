@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Percona\PerconaDriver as Percona;
 
 /**
@@ -32,7 +32,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
         return ['pc_items', 'pc_categories'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof Percona)) {
             return;
@@ -103,7 +103,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
         );
     }
 
-    private function requiresPercona(Driver $driver): bool
+    private function requiresPercona(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Percona)) {
             $this->assertTrue(true);
@@ -165,7 +165,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsPerconaInstance(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -178,7 +178,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -190,7 +190,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetVersion(string $dbName, Driver $driver): void
+    public function canGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -205,7 +205,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -224,7 +224,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -237,7 +237,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -252,7 +252,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -269,7 +269,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -283,7 +283,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -299,7 +299,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAll(string $dbName, Driver $driver): void
+    public function canSelectAll(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -318,7 +318,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -341,7 +341,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -370,7 +370,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -399,7 +399,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -431,7 +431,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function hasInnoDBEngine(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -444,7 +444,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -465,7 +465,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -486,7 +486,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canManageViews(string $dbName, Driver $driver): void
+    public function canManageViews(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -513,7 +513,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -534,7 +534,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -563,7 +563,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;
@@ -585,7 +585,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresPercona($driver)) {
             return;

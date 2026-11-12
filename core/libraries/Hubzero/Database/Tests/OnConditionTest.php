@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Relationship\OneToMany;
@@ -30,7 +30,7 @@ class OnConditionTest extends AbstractDriverTestCase
         return ['oncond_comments', 'oncond_posts'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Create tables
         $driver->dropTable('oncond_posts', true);
@@ -51,7 +51,7 @@ class OnConditionTest extends AbstractDriverTestCase
             ->execute();
     }
 
-    private function setupTestData(Driver $driver): void
+    private function setupTestData(BaseSqlDriver $driver): void
     {
         Relational::setDefaultConnection($driver);
         OnCondPost::clearBootedModels();
@@ -138,7 +138,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionWithSimpleEquality(string $dbName, Driver $driver)
+    public function testOnConditionWithSimpleEquality(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(1);
@@ -160,7 +160,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionWithOperator(string $dbName, Driver $driver)
+    public function testOnConditionWithOperator(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -184,7 +184,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionWithClosure(string $dbName, Driver $driver)
+    public function testOnConditionWithClosure(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(1);
@@ -204,7 +204,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMultipleOnConditions(string $dbName, Driver $driver)
+    public function testMultipleOnConditions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(1);
@@ -228,7 +228,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionIn(string $dbName, Driver $driver)
+    public function testOnConditionIn(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -250,7 +250,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionNotIn(string $dbName, Driver $driver)
+    public function testOnConditionNotIn(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -272,7 +272,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionNull(string $dbName, Driver $driver)
+    public function testOnConditionNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -294,7 +294,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionNotNull(string $dbName, Driver $driver)
+    public function testOnConditionNotNull(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -320,7 +320,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testMethodChainingReturnsSelf(string $dbName, Driver $driver)
+    public function testMethodChainingReturnsSelf(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -348,7 +348,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testWithoutDefaultConditions(string $dbName, Driver $driver)
+    public function testWithoutDefaultConditions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(
@@ -376,7 +376,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testRelationshipsWithoutOnConditionUnchanged(string $dbName, Driver $driver)
+    public function testRelationshipsWithoutOnConditionUnchanged(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(1);
@@ -395,7 +395,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testChainingAdditionalWhereClauses(string $dbName, Driver $driver)
+    public function testChainingAdditionalWhereClauses(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(1);
@@ -422,7 +422,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOnConditionWithRelationshipMethods(string $dbName, Driver $driver)
+    public function testOnConditionWithRelationshipMethods(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post = OnCondPost::one(2);
@@ -441,7 +441,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testDifferentPostsGetCorrectResults(string $dbName, Driver $driver)
+    public function testDifferentPostsGetCorrectResults(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $post1 = OnCondPost::one(1);
@@ -464,7 +464,7 @@ class OnConditionTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function testOrOnCondition(string $dbName, Driver $driver)
+    public function testOrOnCondition(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
         $relationship = new OneToMany(

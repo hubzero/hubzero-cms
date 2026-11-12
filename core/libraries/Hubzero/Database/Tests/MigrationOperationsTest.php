@@ -10,7 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -39,7 +39,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         ];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         // Tables are created/dropped per-test
     }
@@ -56,7 +56,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKeyIdempotent(string $dbName, Driver $driver)
+    public function addAutoIncrementPrimaryKeyIdempotent(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_idempotent', true);
@@ -84,7 +84,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function addAutoIncrementPrimaryKeyNonExistentTable(string $dbName, Driver $driver)
+    public function addAutoIncrementPrimaryKeyNonExistentTable(string $dbName, BaseSqlDriver $driver)
     {
         $result = $driver->addAutoIncrementPrimaryKey('nonexistent_table_xyz', 'id', true);
         $this->assertFalse($result, 'Should return false for non-existent table');
@@ -97,7 +97,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function migrationPatternCheckBeforeAdd(string $dbName, Driver $driver)
+    public function migrationPatternCheckBeforeAdd(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_migrate_pattern', true);
@@ -139,7 +139,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableWithPrimaryKeyFromStart(string $dbName, Driver $driver)
+    public function createTableWithPrimaryKeyFromStart(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_pk_safe', true);
@@ -193,7 +193,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableWithCompositePrimaryKey(string $dbName, Driver $driver)
+    public function createTableWithCompositePrimaryKey(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_pk_change', true);
@@ -248,7 +248,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function complexMigrationScenario(string $dbName, Driver $driver)
+    public function complexMigrationScenario(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_complex_migrate', true);
@@ -316,7 +316,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function realWorldMigrationPattern(string $dbName, Driver $driver)
+    public function realWorldMigrationPattern(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_resource_assoc', true);
@@ -376,7 +376,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function migrationWithConditionalLogic(string $dbName, Driver $driver)
+    public function migrationWithConditionalLogic(string $dbName, BaseSqlDriver $driver)
     {
         // Drop table if exists
         $driver->dropTable('temp_conditional', true);
@@ -427,7 +427,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function createTableWithIdFromStart(string $dbName, Driver $driver)
+    public function createTableWithIdFromStart(string $dbName, BaseSqlDriver $driver)
     {
         $tableName = 'temp_id_from_start';
 

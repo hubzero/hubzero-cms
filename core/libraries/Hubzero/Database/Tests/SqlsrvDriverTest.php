@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Sqlsrv\SqlsrvDriver as Sqlsrv;
 
 /**
@@ -32,7 +33,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         return ['ss_items', 'ss_categories'];
     }
 
-    protected static function setUpDatabase(Driver $driver): void
+    protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
         if (!($driver instanceof Sqlsrv)) {
             return;
@@ -109,7 +110,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         );
     }
 
-    private function requiresSqlsrv(Driver $driver): bool
+    private function requiresSqlsrv(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Sqlsrv)) {
             $this->assertTrue(true);
@@ -177,7 +178,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsSqlsrvInstance(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -190,7 +191,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -202,7 +203,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetVersion(string $dbName, Driver $driver): void
+    public function canGetVersion(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -215,7 +216,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canGetServerInfo(string $dbName, Driver $driver): void
+    public function canGetServerInfo(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -234,7 +235,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -247,7 +248,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -260,7 +261,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -276,7 +277,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -294,7 +295,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsFullInfo(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -312,7 +313,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -326,7 +327,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyColumns(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -340,7 +341,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -359,7 +360,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canSelectAll(string $dbName, Driver $driver): void
+    public function canSelectAll(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -376,7 +377,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -392,7 +393,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithJoin(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -413,7 +414,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetIdentityId(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -439,7 +440,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canUpdateRecord(string $dbName, Driver $driver): void
+    public function canUpdateRecord(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -466,7 +467,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canDeleteRecord(string $dbName, Driver $driver): void
+    public function canDeleteRecord(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -495,7 +496,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -523,7 +524,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -563,7 +564,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -586,7 +587,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseTopForLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -602,7 +603,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseOffsetFetch(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -622,7 +623,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseBitLiterals(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -644,7 +645,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseIsNull(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -660,7 +661,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canConcatenateWithConcat(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -676,7 +677,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCaseExpression(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -701,7 +702,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGroupByWithHaving(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -721,7 +722,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -740,7 +741,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseDatePartFunctions(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -765,7 +766,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function canManageViews(string $dbName, Driver $driver): void
+    public function canManageViews(string $dbName, BaseSqlDriver $driver): void
     {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -804,7 +805,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -837,7 +838,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropIndex(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -862,7 +863,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddUniqueIndex(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -891,7 +892,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropForeignKey(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -931,7 +932,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -962,7 +963,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRenameTable(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -994,7 +995,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function identityAutoIncrementsCorrectly(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1028,7 +1029,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1049,7 +1050,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithOffset(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1072,7 +1073,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1097,7 +1098,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderHandlesEmptyWhereIn(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1121,7 +1122,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1144,7 +1145,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver,
+        BaseSqlDriver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
