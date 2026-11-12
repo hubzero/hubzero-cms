@@ -69,9 +69,10 @@ class Manager extends Obj
     /**
      * Populate the forum with defaulta section and category
      *
+     * @param   int|null  $access  The access level to give them; the site's default when not given
      * @return  boolean
      */
-    public function setup()
+    public function setup($access = null)
     {
         // Create a default section
         $section = Section::blank()->set([
@@ -80,6 +81,9 @@ class Manager extends Obj
             'scope_id' => $this->get('scope_id'),
             'state'    => 1,
         ]);
+        if ($access !== null) {
+            $section->set('access', (int) $access);
+        }
         if (!$section->save()) {
             $this->setError($section->getError());
             return false;
@@ -94,6 +98,9 @@ class Manager extends Obj
             'scope_id'    => $this->get('scope_id'),
             'state'       => 1,
         ]);
+        if ($access !== null) {
+            $category->set('access', (int) $access);
+        }
         if (!$category->save()) {
             $this->setError($category->getError());
             return false;

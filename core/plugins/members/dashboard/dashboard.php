@@ -24,6 +24,7 @@ class Dashboard extends Plugin
 {
     protected $action;
     protected $controller;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $member;
 
@@ -450,9 +451,7 @@ class Dashboard extends Plugin
             . $this->database->quote($this->params->toString())
             . " WHERE `folder`='members' AND `element`='dashboard'";
         $this->database->setQuery($query);
-        if ($this->database->query()) {
-            $this->setError($this->database->getErrorMsg());
-        }
+        $this->database->query();
 
         //quit now
         exit();
