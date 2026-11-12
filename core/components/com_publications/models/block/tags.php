@@ -35,7 +35,7 @@ class Tags extends Base
     /**
      * Default manifest
      *
-     * @var  string
+     * @var  object|null
      */
     protected $manifest = null;
 

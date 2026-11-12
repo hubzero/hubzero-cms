@@ -66,7 +66,7 @@ class Notes extends Plugin
     /**
      * Tool record (tool wiki)
      *
-     * @var  array
+     * @var  object|null
      */
     protected $tool = null;
 

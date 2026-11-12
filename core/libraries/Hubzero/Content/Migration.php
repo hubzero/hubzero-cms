@@ -1128,7 +1128,7 @@ class Migration
      *
      * @param   string  $file       The migration filename
      * @param   string  $extension  Optional extension filter
-     * @return  array|false  Migration entry if executed, false if not found or not executed
+     * @return  object|false  Migration entry if executed, false if not found or not executed
      **/
     public function getMigrationStatus($file, $extension = null)
     {

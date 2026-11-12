@@ -30,7 +30,7 @@ class Login extends Obj
     /**
      * A state object
      *
-     * @var  string
+     * @var  \Hubzero\Base\Obj
      */
     protected $state;
 

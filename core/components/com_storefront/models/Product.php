@@ -751,7 +751,7 @@ class Product
     /**
      * Get publishing times
      *
-     * @return  string
+     * @return  \stdClass  holds publish_up and publish_down
      */
     public function getPublishTime()
     {

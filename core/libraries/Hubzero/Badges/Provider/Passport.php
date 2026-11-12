@@ -46,7 +46,7 @@ class Passport implements ProviderInterface
     /**
      * Credentials
      *
-     * @var  array
+     * @var  object|false
      */
     private $credentials = false;
 
