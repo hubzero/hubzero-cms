@@ -185,6 +185,7 @@ use Hubzero\Facades\User;
  * @method static static having(string $column, string $operator, mixed $value)
  * @method static static order(string $column, string $dir)
  * @method static static unorder()
+ * @method string toString()  The query built so far, as SQL
  * @method static static start(int $start)
  * @method static static limit(int $limit)
  * @method static static joinRaw(string $table, string $raw, string $type = 'inner')

@@ -157,9 +157,8 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         </label>
                         <select name="fields[status]" id="field-status">
                             <option value=""><?php echo Lang::txt('Select...'); ?></option>
-                            <?php $row = new \Components\Support\Models\Ticket(); ?>
                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
-                                <?php foreach ($row->statuses('open') as $status) { ?>
+                                <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
                                     <option value="<?php echo $status->get('id'); ?>">
                                         <?php echo $this->escape($status->get('title')); ?>
                                     </option>
@@ -169,7 +168,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                                 <option value="0">
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?>
                                 </option>
-                                <?php foreach ($row->statuses('closed') as $status) { ?>
+                                <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
                                     <option value="<?php echo $status->get('id'); ?>">
                                         <?php echo $this->escape($status->get('title')); ?>
                                     </option>

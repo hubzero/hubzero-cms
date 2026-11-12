@@ -14,6 +14,10 @@ use Exception;
 
 /**
  * Document manager
+ *
+ * Calls it does not define are passed to the document it manages.
+ *
+ * @mixin Base
  */
 class Manager
 {
