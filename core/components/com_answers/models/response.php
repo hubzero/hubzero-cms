@@ -324,7 +324,7 @@ class Response extends Relational
             // Mark it at the chosen one
             $question->set('state', 1);
 
-            if (!$question->save(true)) {
+            if (!$question->save()) {
                 $this->addError($question->getError());
                 return false;
             }

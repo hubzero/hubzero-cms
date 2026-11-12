@@ -237,7 +237,7 @@ class Solr extends AdminController
         $helper = new SolrHelper();
 
         // Remove from index
-        if ($helper->removeDocument($id, 'delete')) {
+        if ($helper->removeDocument($id)) {
             Notify::success(Lang::txt('COM_SEARCH_SOLR_REMOVE_DOCUMENT', $id));
         } else {
             Notify::error(Lang::txt('COM_SEARCH_SOLR_REMOVE_DOCUMENT_ERROR', $id));

@@ -331,7 +331,7 @@ class Checkout extends ComponentController
 
         $errors = [];
 
-        if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select') {
+        if (!empty($params->action) && !empty($params->saId) && $params->action == 'select') {
             try {
                 $this->selectSavedShippingAddress($params->saId, $cart);
                 $addressSet = true;

@@ -307,7 +307,7 @@ class Composer
         $json = self::getComposerJson();
         $contents = file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
-        if (!$manipulator->removeSubNode('require', $packageName, false)) {
+        if (!$manipulator->removeSubNode('require', $packageName)) {
             return false;
         }
         file_put_contents($json->getPath(), $manipulator->getContents());

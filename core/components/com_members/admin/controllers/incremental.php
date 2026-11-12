@@ -59,9 +59,7 @@ class Incremental extends AdminController
             $this->database->setQuery(
                 'INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')',
             );
-            $this->database->execute(
-                'INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')',
-            );
+            $this->database->execute();
             $gid = $this->database->insertid();
 
             foreach ($_POST['group-cols-' . $idx] as $colKey) {

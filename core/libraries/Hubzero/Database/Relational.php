@@ -755,11 +755,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      */
     protected static function pluralize(string $word): string
     {
-        if (in_array(strtolower($word), static::$uncountable)) {
+        if (in_array(strtolower($word), self::$uncountable)) {
             return $word;
         }
 
-        foreach (static::$pluralRules as $rule => $replacement) {
+        foreach (self::$pluralRules as $rule => $replacement) {
             if (preg_match($rule, $word)) {
                 return preg_replace($rule, $replacement, $word);
             }
@@ -1904,7 +1904,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         if ($clearCustomCasters) {
-            static::$customCasters = [];
+            self::$customCasters = [];
         }
 
         if ($clearBootedModels) {
@@ -1912,7 +1912,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         if ($clearClassMethods) {
-            static::$classMethods = [];
+            self::$classMethods = [];
         }
 
         if ($clearResolvers) {
@@ -4125,7 +4125,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
      * @return  static
-     * @throws  Hubzero\Database\Exception\RuntimeException
+     * @throws  \Hubzero\Database\Exception\RuntimeException
      **/
     public static function oneOrFail($id)
     {

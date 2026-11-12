@@ -92,7 +92,7 @@ class Recaptcha extends Plugin
         $html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" '
             . 'data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public')
             . '"></div>
-					<script type="text/javascript" src="' . static::$jsUrl . '?hl='
+					<script type="text/javascript" src="' . self::$jsUrl . '?hl='
             . $this->params->get('language', 'en') . '" async '
         . 'defer></script>';
         // [a11y] Remove role="presentation" from reCAPTCHA iframe (injected by Google JS)
@@ -124,7 +124,7 @@ class Recaptcha extends Plugin
         }
 
         // perform a get request to the verify server with the needed data
-        $verificationResponse = $this->submitHttpGet(static::$verifyUrl, [
+        $verificationResponse = $this->submitHttpGet(self::$verifyUrl, [
             'secret'   => $this->params->get('private'),
             'remoteip' => $remoteIp,
             'response' => $response,

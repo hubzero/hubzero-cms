@@ -40,7 +40,7 @@ class RandomPage extends WikiMacro
             ->whereEquals('scope', $this->domain)
             ->whereEquals('scope_id', $this->domain_id)
             ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
-            ->order('rand()')
+            ->order(\Hubzero\Database\Expression::randomOrder(), 'asc')
             ->row();
 
         // Build and return the link

@@ -152,7 +152,6 @@ if (count($this->citations) > 0) :
                                     $this->database,
                                     $this->config,
                                     $this->openurl,
-                                    true,
                                 );
                             }
                             ?>

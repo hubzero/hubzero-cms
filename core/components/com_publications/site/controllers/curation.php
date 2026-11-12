@@ -233,7 +233,7 @@ class Curation extends SiteController
         $this->pub->setCuration();
 
         // Get reviewed Items
-        $this->pub->reviewedItems = $this->pub->_curationModel->getReviewedItems($this->pub->version_id);
+        $this->pub->reviewedItems = $this->pub->_curationModel->getReviewedItems();
 
         // Get last history record (from author)
         $history = $this->pub->_curationModel->getLastHistoryRecord();

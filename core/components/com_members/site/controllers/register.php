@@ -842,13 +842,13 @@ class Register extends SiteController
                     $newUsertype = $db->loadResult();
                 }
 
-                $user->set('username', $xregistration->get('login', ''));
-                $user->set('name', $xregistration->get('name', ''));
-                $user->set('givenName', $xregistration->get('givenName', ''));
-                $user->set('middleName', $xregistration->get('middleName', ''));
-                $user->set('surname', $xregistration->get('surname', ''));
-                $user->set('email', $xregistration->get('email', ''));
-                $user->set('usageAgreement', (int) $xregistration->get('usageAgreement', 0));
+                $user->set('username', $xregistration->get('login'));
+                $user->set('name', $xregistration->get('name'));
+                $user->set('givenName', $xregistration->get('givenName'));
+                $user->set('middleName', $xregistration->get('middleName'));
+                $user->set('surname', $xregistration->get('surname'));
+                $user->set('email', $xregistration->get('email'));
+                $user->set('usageAgreement', (int) $xregistration->get('usageAgreement'));
                 $user->set('sendEmail', -1);
                 if ($xregistration->get('sendEmail') >= 0) {
                     $user->set('sendEmail', (int) $xregistration->get('sendEmail'));

@@ -542,7 +542,7 @@ class Publications extends SiteController
         }
 
         // Create download headers
-        $resourceMap->pushDownload($this->config->get('webpath'));
+        $resourceMap->pushDownload();
         exit();
     }
 

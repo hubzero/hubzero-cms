@@ -315,7 +315,9 @@ class Asset extends Base
                 $processor = new \Hubzero\Image\Processor($orig);
                 if (!$processor->getErrors()) {
                     $processor->resize($size, $useHeight);
-                    if (!$processor->save($dest)) {
+                    // save() reports nothing; whether the file is there is the answer
+                    $processor->save($dest);
+                    if (!file_exists($dest)) {
                         return false;
                     }
                 }

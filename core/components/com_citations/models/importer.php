@@ -445,7 +445,7 @@ class Importer extends Obj
                 // save the citation
                 $cc = Citation::blank()->set($crna);
 
-                if (!$cc->save($crna)) {
+                if (!$cc->save()) {
                     $results['error'][] = $crna;
                 } else {
                     // tags

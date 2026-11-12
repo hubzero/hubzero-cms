@@ -1528,7 +1528,7 @@ class Tickets extends SiteController
                 if ($watch == 'start') {
                     $row->watch(User::get('id'));
 
-                    if (!$row->isWatching(User::get('id'), true)) {
+                    if (!$row->isWatching(User::get('id'))) {
                         $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
                     }
                 }

@@ -35,7 +35,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
-        if (!static::isMysqlOnly($driver)) {
+        if (!self::isMysqlOnly($driver)) {
             return;
         }
 
@@ -115,7 +115,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
     private function requiresMysql(BaseSqlDriver $driver): bool
     {
-        if (!static::isMysqlOnly($driver)) {
+        if (!self::isMysqlOnly($driver)) {
             $this->assertTrue(true);
             return false;
         }
@@ -139,7 +139,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
         ];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (!static::isMysqlOnly($driver)) {
+            if (!self::isMysqlOnly($driver)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -160,7 +160,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (!static::isMysqlOnly($driver)) {
+            if (!self::isMysqlOnly($driver)) {
                 continue;
             }
             try {
