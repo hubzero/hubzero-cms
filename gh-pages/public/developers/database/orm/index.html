@@ -260,7 +260,7 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array&lt;string, string|callable|array&lt;string, mixed&gt;&gt;
      */
     protected $rules = [
         'title'    =&gt; 'notempty',
@@ -271,7 +271,7 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      **/
     public $always = [
         'alias',
@@ -282,7 +282,7 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      */
     public $initiate = [
         'created',
@@ -292,7 +292,7 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
     /**
      * Fields to be parsed
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      **/
     protected $parsed = [
         'fulltxt',

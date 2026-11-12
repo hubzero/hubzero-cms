@@ -103,7 +103,7 @@ tree: the file parses, the page loads, and one branch — the error path, the
 A task takes no arguments and returns nothing; it produces output or a
 redirect:
 
-<!--include: core/components/com_kb/site/controllers/articles.php:40-69-->
+<!--include: core/components/com_kb/site/controllers/articles.php:40-71-->
 
 ## Properties
 
@@ -204,7 +204,7 @@ and `unregisterTask($task)` removes a mapping.
 `AdminController` extends `SiteController` and adds exactly one thing, a
 cancel task that returns to the controller's default view:
 
-<!--include: core/libraries/Hubzero/Component/AdminController.php:14-29-->
+<!--include: core/libraries/Hubzero/Component/AdminController.php:14-31-->
 
 Everything else — the toolbar, the sub-menu, permission checks — is written by
 the component. Two habits are not optional:

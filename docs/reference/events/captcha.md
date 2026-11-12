@@ -12,8 +12,8 @@ Events in the `captcha` group. A plugin in `core/plugins/captcha/` receives an e
 Fired from:
 
 - [`core/components/com_members/models/registration.php:644`](../../../core/components/com_members/models/registration.php#L644)
-- [`core/components/com_members/site/controllers/register.php:1242`](../../../core/components/com_members/site/controllers/register.php#L1242)
-- [`core/components/com_support/site/controllers/tickets.php:910`](../../../core/components/com_support/site/controllers/tickets.php#L910)
+- [`core/components/com_members/site/controllers/register.php:1248`](../../../core/components/com_members/site/controllers/register.php#L1248)
+- [`core/components/com_support/site/controllers/tickets.php:913`](../../../core/components/com_support/site/controllers/tickets.php#L913)
 
 Listeners:
 
@@ -27,7 +27,7 @@ Fired from:
 
 - [`core/components/com_members/site/views/register/tmpl/default.php:841`](../../../core/components/com_members/site/views/register/tmpl/default.php#L841)
 - [`core/components/com_members/site/views/register/tmpl/resend_request.php:49`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L49)
-- [`core/components/com_support/site/controllers/tickets.php:806`](../../../core/components/com_support/site/controllers/tickets.php#L806)
+- [`core/components/com_support/site/controllers/tickets.php:809`](../../../core/components/com_support/site/controllers/tickets.php#L809)
 
 Listeners:
 

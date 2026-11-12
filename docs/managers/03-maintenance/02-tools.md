@@ -64,7 +64,7 @@ Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in
 `com_tools`' **Admin Group** option, which defaults to `apps`:
 
-<!--include: core/components/com_tools/site/controllers/admin.php:939-955-->
+<!--include: core/components/com_tools/site/controllers/admin.php:945-961-->
 
 While that option has a value, membership of the group is the *only* way to
 get those controls; a Super User outside the group sees none of them. Clear

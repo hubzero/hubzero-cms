@@ -53,7 +53,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Retrieve tag's logs that preceeded the given log
 
-API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2r0.php#L24).
+API version 2.0, task `previousLogs` in [`tagactivitylogsv2r0.php`](../../../core/components/com_tags/api/controllers/tagactivitylogsv2r0.php#L27).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

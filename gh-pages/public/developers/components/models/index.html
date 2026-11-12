@@ -242,7 +242,7 @@ the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array&lt;string, string|callable|array&lt;string, mixed&gt;&gt;
      */
     protected $rules = [
         'title'    =&gt; 'notempty',
@@ -253,7 +253,7 @@ the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      **/
     public $always = [
         'alias',
@@ -264,7 +264,7 @@ the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      */
     public $initiate = [
         'created',
@@ -274,7 +274,7 @@ the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
     /**
      * Fields to be parsed
      *
-     * @var  array
+     * @var  array&lt;int, string&gt;
      **/
     protected $parsed = [
         'fulltxt',

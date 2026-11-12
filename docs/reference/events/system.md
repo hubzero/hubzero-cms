@@ -26,7 +26,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Base/Application.php:471`](../../../core/libraries/Hubzero/Base/Application.php#L471)
+- [`core/libraries/Hubzero/Base/Application.php:477`](../../../core/libraries/Hubzero/Base/Application.php#L477)
 
 Listeners:
 
@@ -105,7 +105,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_templates/admin/controllers/styles.php:468`](../../../core/components/com_templates/admin/controllers/styles.php#L468) with `[$group, $client_id]`
+- [`core/components/com_templates/admin/controllers/styles.php:470`](../../../core/components/com_templates/admin/controllers/styles.php#L470) with `[$group, $client_id]`
 
 Listeners:
 

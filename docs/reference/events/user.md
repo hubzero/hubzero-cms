@@ -127,7 +127,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:845`](../../../core/components/com_members/admin/controllers/members.php#L845) with `[$data, true, $this->getError()]`
+- [`core/components/com_members/admin/controllers/members.php:847`](../../../core/components/com_members/admin/controllers/members.php#L847) with `[$data, true, $this->getError()]`
 - [`core/components/com_members/models/member.php:475`](../../../core/components/com_members/models/member.php#L475) with `[$data, true, $this->getError()]`
 - [`core/libraries/Hubzero/User/User.php:1159`](../../../core/libraries/Hubzero/User/User.php#L1159) with `[$data, true, $this->getError()]`
 
@@ -145,7 +145,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:312`](../../../core/components/com_members/admin/controllers/accessgroups.php#L312) with `$afterData`
+- [`core/components/com_members/admin/controllers/accessgroups.php:314`](../../../core/components/com_members/admin/controllers/accessgroups.php#L314) with `$afterData`
 
 No plugin in the source tree listens for this event.
 
@@ -202,7 +202,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:302`](../../../core/components/com_members/admin/controllers/accessgroups.php#L302) with `[$data]`
+- [`core/components/com_members/admin/controllers/accessgroups.php:304`](../../../core/components/com_members/admin/controllers/accessgroups.php#L304) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -228,7 +228,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:1189`](../../../core/components/com_members/admin/controllers/members.php#L1189) with `$id`
+- [`core/components/com_members/admin/controllers/members.php:1193`](../../../core/components/com_members/admin/controllers/members.php#L1193) with `$id`
 
 Listeners:
 

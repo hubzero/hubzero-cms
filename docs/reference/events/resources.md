@@ -31,7 +31,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1505`](../../../core/components/com_resources/site/controllers/create.php#L1505) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1534`](../../../core/components/com_resources/site/controllers/create.php#L1534) with `[$resource]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,7 +39,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1333`](../../../core/components/com_resources/site/controllers/create.php#L1333) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1354`](../../../core/components/com_resources/site/controllers/create.php#L1354) with `[$resource]`
 
 Listeners:
 
@@ -49,8 +49,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:662`](../../../core/components/com_resources/site/controllers/resources.php#L662) with `[$model, $this->option, ['about'], 'metadata']`
-- [`core/components/com_resources/site/controllers/resources.php:1507`](../../../core/components/com_resources/site/controllers/resources.php#L1507) with `[ $this->model, $this->option, [$tab], 'all', ]`
+- [`core/components/com_resources/site/controllers/resources.php:664`](../../../core/components/com_resources/site/controllers/resources.php#L664) with `[$model, $this->option, ['about'], 'metadata']`
+- [`core/components/com_resources/site/controllers/resources.php:1509`](../../../core/components/com_resources/site/controllers/resources.php#L1509) with `[ $this->model, $this->option, [$tab], 'all', ]`
 
 Listeners:
 
@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:1479`](../../../core/components/com_resources/site/controllers/resources.php#L1479) with `[ $this->model, ]`
+- [`core/components/com_resources/site/controllers/resources.php:1481`](../../../core/components/com_resources/site/controllers/resources.php#L1481) with `[ $this->model, ]`
 
 No plugin in the source tree listens for this event.
 

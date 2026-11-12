@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:898`](../../../core/components/com_members/site/controllers/profiles.php#L898) with `[User::getInstance(), $profile, $this->option, [$tab]]`
+- [`core/components/com_members/site/controllers/profiles.php:900`](../../../core/components/com_members/site/controllers/profiles.php#L900) with `[User::getInstance(), $profile, $this->option, [$tab]]`
 
 Listeners:
 
@@ -105,7 +105,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:880`](../../../core/components/com_members/site/controllers/profiles.php#L880) with `[User::getInstance(), $profile]`
+- [`core/components/com_members/site/controllers/profiles.php:882`](../../../core/components/com_members/site/controllers/profiles.php#L882) with `[User::getInstance(), $profile]`
 
 Listeners:
 
@@ -163,6 +163,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:313`](../../../core/components/com_members/admin/controllers/members.php#L313) with `[$user]`
+- [`core/components/com_members/admin/controllers/members.php:315`](../../../core/components/com_members/admin/controllers/members.php#L315) with `[$user]`
 
 No plugin in the source tree listens for this event.

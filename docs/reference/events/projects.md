@@ -57,7 +57,7 @@ Fired from:
 - [`core/components/com_projects/site/controllers/projects.php:615`](../../../core/components/com_projects/site/controllers/projects.php#L615) with `$plugin_params`
 - [`core/components/com_projects/site/controllers/setup.php:928`](../../../core/components/com_projects/site/controllers/setup.php#L928) with `[ $this->model, 'save', ['team'], ]`
 - [`core/components/com_projects/site/controllers/setup.php:1029`](../../../core/components/com_projects/site/controllers/setup.php#L1029) with `[ $this->model, $this->task, ['team'], ]`
-- [`core/components/com_publications/site/controllers/publications.php:1448`](../../../core/components/com_publications/site/controllers/publications.php#L1448) with `$plugin_params`
+- [`core/components/com_publications/site/controllers/publications.php:1453`](../../../core/components/com_publications/site/controllers/publications.php#L1453) with `$plugin_params`
 - [`core/plugins/cron/projects/projects.php:138`](../../../core/plugins/cron/projects/projects.php#L138) with `$plugin_params`
 
 Listeners:
@@ -86,7 +86,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/activity.php:299`](../../../core/components/com_projects/admin/controllers/activity.php#L299) with `[$id]`
+- [`core/components/com_projects/admin/controllers/activity.php:301`](../../../core/components/com_projects/admin/controllers/activity.php#L301) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -110,8 +110,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/activity.php:254`](../../../core/components/com_projects/admin/controllers/activity.php#L254) with `[&$recipient, $isNew]`
-- [`core/components/com_projects/admin/controllers/activity.php:399`](../../../core/components/com_projects/admin/controllers/activity.php#L399) with `[$entry]`
+- [`core/components/com_projects/admin/controllers/activity.php:256`](../../../core/components/com_projects/admin/controllers/activity.php#L256) with `[&$recipient, $isNew]`
+- [`core/components/com_projects/admin/controllers/activity.php:401`](../../../core/components/com_projects/admin/controllers/activity.php#L401) with `[$entry]`
 
 No plugin in the source tree listens for this event.
 
@@ -144,7 +144,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/activity.php:229`](../../../core/components/com_projects/admin/controllers/activity.php#L229) with `[&$recipient, $isNew]`
+- [`core/components/com_projects/admin/controllers/activity.php:231`](../../../core/components/com_projects/admin/controllers/activity.php#L231) with `[&$recipient, $isNew]`
 
 No plugin in the source tree listens for this event.
 

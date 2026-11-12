@@ -280,7 +280,7 @@ A condition too long for one line puts each clause on a line of its own,
 indented one level, with the boolean operator at the start of the line. The
 closing parenthesis and the opening brace share the line after:
 
-<!--include: core/components/com_blog/admin/controllers/entries.php:134-139-->
+<!--include: core/components/com_blog/admin/controllers/entries.php:136-141-->
 
 A `switch` indents its `case` one level and the case body one more; the body
 starts on the line after the `case` and is never wrapped in braces. Give it a
