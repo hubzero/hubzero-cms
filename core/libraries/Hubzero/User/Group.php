@@ -20,6 +20,13 @@ use Hubzero\Facades\Route;
 
 /**
  * Group model
+ *
+ * Its private properties are read and written from outside through __get() and
+ * __set(); these are the ones other code uses:
+ *
+ * @property  string|null  $params
+ * @property  integer|null  $published
+ * @property  string|null  $cn
  */
 class Group extends Obj
 {

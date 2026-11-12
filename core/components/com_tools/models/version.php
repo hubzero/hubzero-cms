@@ -13,6 +13,26 @@ use Hubzero\Facades\App;
 
 /**
  * Tool version instance
+ *
+ * Its private properties are read and written from outside through __get() and
+ * __set(); these are the ones other code uses:
+ *
+ * @property  mixed  $toolid
+ * @property  mixed  $vnc_command
+ * @property  mixed  $vnc_timeout
+ * @property  array  $hostreq
+ * @property  mixed  $mw
+ * @property  mixed  $params
+ * @property  integer|null  $hardTimeout
+ * @property  string|null  $instance
+ * @property  mixed  $toolname
+ * @property  integer|null  $state
+ * @property  mixed  $revision
+ * @property  mixed  $codeaccess
+ * @property  mixed  $license
+ * @property  mixed  $fulltxt
+ * @property  mixed  $description
+ * @property  mixed  $title
  */
 class Version
 {
