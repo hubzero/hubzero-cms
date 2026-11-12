@@ -46,6 +46,8 @@ use Hubzero\Facades\Filesystem;
  * Not columns:
  *
  * @property  \Components\Categories\Models\Category  $parentCategory  The category, through parentCategory()
+ *
+ * @method string fulltxt(string $as = 'parsed')  The article's text, parsed; a field named in $parsed
  */
 class Article extends Relational implements \Hubzero\Search\Searchable
 {

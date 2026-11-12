@@ -21,6 +21,22 @@ interface Schema
     public static function handles($type);
 
     /**
+     * Set the service the schema writes for
+     *
+     * @param   Service  $service
+     * @return  object
+     */
+    public function setService(Service &$service);
+
+    /**
+     * Set the response the schema writes to
+     *
+     * @param   Xml\Response  $response
+     * @return  object
+     */
+    public function setResponse(Xml\Response &$response);
+
+    /**
      * Output set data
      *
      * @param  array  $set
