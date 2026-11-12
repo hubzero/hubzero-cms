@@ -40,7 +40,7 @@ class Location extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      **/
     protected $rules = [
         'zone_id' => 'positive|nonzero',
@@ -49,7 +49,7 @@ class Location extends Relational
     /**
      * Automatic fields, set on every save; automaticIpFrom() sets ipTO too
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $always = [
         'ipFROM',

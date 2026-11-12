@@ -21,7 +21,7 @@ class WhitespaceNote extends Relational
     protected $table = 'notes';
 
     /**
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'body' => 'notempty',

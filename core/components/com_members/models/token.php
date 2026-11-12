@@ -27,7 +27,7 @@ class Token extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var array
+     * @var array<int, string>
      */
     public $initiate = [
         'created',

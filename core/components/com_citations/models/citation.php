@@ -128,7 +128,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'type'  => 'notempty',

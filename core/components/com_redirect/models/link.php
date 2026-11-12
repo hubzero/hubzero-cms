@@ -41,7 +41,7 @@ class Link extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'old_url' => 'notempty',
@@ -50,7 +50,7 @@ class Link extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'old_url',

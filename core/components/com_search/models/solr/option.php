@@ -29,7 +29,7 @@ class Option extends Relational
     /**
      * Automatic fields to populate every time a row is updated
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'modified',
@@ -39,7 +39,7 @@ class Option extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',

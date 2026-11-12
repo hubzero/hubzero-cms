@@ -41,7 +41,7 @@ class Run extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'import_id' => 'positive|nonzero',
@@ -50,7 +50,7 @@ class Run extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $initiate = [
         'ran_at',

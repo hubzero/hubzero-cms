@@ -25,7 +25,7 @@ class Token extends \Hubzero\Database\Relational
     /**
      * Fields and their validation criteria
      *
-     * @var    array
+     * @var    array<string, string|callable|array<string, mixed>>
      * @since  2.1.0
      */
     protected $rules = [
@@ -35,7 +35,7 @@ class Token extends \Hubzero\Database\Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',

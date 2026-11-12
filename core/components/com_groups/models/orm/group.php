@@ -82,7 +82,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'description' => 'notempty',
@@ -91,7 +91,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $always = [
         'cn',
@@ -100,7 +100,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',
@@ -110,7 +110,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Fields to be parsed
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $parsed = [
         'public_desc',

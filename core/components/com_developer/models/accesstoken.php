@@ -52,7 +52,7 @@ class Accesstoken extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'access_token'   => 'notempty',
@@ -63,7 +63,7 @@ class Accesstoken extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',

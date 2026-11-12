@@ -76,7 +76,7 @@ class CustomExtensions extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'name'    => 'notempty',
@@ -109,7 +109,7 @@ class CustomExtensions extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $always = [
         'path',

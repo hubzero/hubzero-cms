@@ -29,7 +29,7 @@ class Auth extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $initiate = [
         'logged',

@@ -53,7 +53,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'publication_id' => 'positive|nonzero',
@@ -62,7 +62,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'modified',
@@ -72,7 +72,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',
@@ -82,7 +82,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Fields that have content that can/should be parsed
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     protected $parsed = [
         'notes',

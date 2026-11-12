@@ -58,7 +58,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Fields and their validation criteria
      *
-     * @var    array
+     * @var    array<string, string|callable|array<string, mixed>>
      * @since  2.1.0
      */
     protected $rules = [
@@ -70,7 +70,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var    array
+     * @var    array<int, string>
      * @since  2.1.0
      */
     public $initiate = [

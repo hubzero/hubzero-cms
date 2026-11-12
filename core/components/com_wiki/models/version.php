@@ -52,7 +52,7 @@ class Version extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'page_id'  => 'positive|nonzero',
@@ -63,7 +63,7 @@ class Version extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'version',
@@ -73,7 +73,7 @@ class Version extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',

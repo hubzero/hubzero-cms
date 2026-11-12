@@ -39,7 +39,7 @@ class Option extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'poll_id' => 'positive|nonzero',

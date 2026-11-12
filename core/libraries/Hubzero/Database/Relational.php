@@ -408,7 +408,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Fields that have content that can/should be parsed
      *
-     * @var array
+     * @var array<int, string>
      **/
     protected $parsed = [];
 
@@ -425,7 +425,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - Array: ['register', 'update'] - in multiple scenarios
      * - Omitted: applies to all scenarios
      *
-     * @var array
+     * @var array<string, string|callable|array<string, mixed>>
      * @see  \Hubzero\Database\Rules
      **/
     protected $rules = [];
@@ -469,14 +469,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Automatic fields to populate every time a row is touched
      *
-     * @var array
+     * @var array<int, string>
      **/
     public $always = [];
 
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var array
+     * @var array<int, string>
      **/
     public $initiate = [];
 

@@ -46,7 +46,7 @@ class Filter extends Relational
     /**
      * Automatic fields to populate every time a row is updated
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'params',
@@ -57,7 +57,7 @@ class Filter extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created',

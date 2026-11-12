@@ -61,7 +61,7 @@ class Category extends Nested
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'title'    => 'notempty',
@@ -72,7 +72,7 @@ class Category extends Nested
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $always = [
         'params',
@@ -86,7 +86,7 @@ class Category extends Nested
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'created_time',

@@ -41,7 +41,7 @@ class Page extends Relational
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var  array<string, string|callable|array<string, mixed>>
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
@@ -51,7 +51,7 @@ class Page extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var  array<int, string>
      **/
     public $always = [
         'alias',
@@ -60,7 +60,7 @@ class Page extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @var  array<int, string>
      */
     public $initiate = [
         'lft',
