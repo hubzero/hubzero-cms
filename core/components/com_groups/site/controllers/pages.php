@@ -103,8 +103,8 @@ class Pages extends Base
         ]);
 
         // get request vars
-        $this->view->search = Request::getString('search', '');
-        $this->view->filter = Request::getInt('filer', 0);
+        $this->view->set('search', Request::getString('search', ''));
+        $this->view->set('filter', Request::getInt('filer', 0));
 
         //build pathway
         $this->buildPathway();
@@ -113,13 +113,13 @@ class Pages extends Base
         $this->buildTitle();
 
         //set view vars
-        $this->view->title  = Lang::txt('COM_GROUPS_PAGES_MANAGE') . ': ' . $this->group->get('description');
+        $this->view->set('title', Lang::txt('COM_GROUPS_PAGES_MANAGE') . ': ' . $this->group->get('description'));
 
         // get view notifications
-        $this->view->notifications = $this->getNotifications();
+        $this->view->set('notifications', $this->getNotifications());
         $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
-        $this->view->group         = $this->group;
-        $this->view->config        = $this->config;
+        $this->view->set('group', $this->group);
+        $this->view->set('config', $this->config);
 
         //display
         $this->view->setLayout('manager');
@@ -145,8 +145,8 @@ class Pages extends Base
         $pageid = Request::getInt('pageid', 0, 'get');
 
         // load page object
-        $this->view->page    = new Page($pageid);
-        $this->view->version = $this->view->page->version();
+        $this->view->set('page', new Page($pageid));
+        $this->view->set('version', $this->view->page->version());
 
         //are we adding or editing
         $new = ($this->view->page->get('id') === null && $pageid == null) ? true : false;
@@ -208,7 +208,7 @@ class Pages extends Base
         $this->view->stylesheets = []; //Helpers\View::getPageCss($this->group);
 
         // get page templates
-        $this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
+        $this->view->set('pageTemplates', Helpers\View::getPageTemplates($this->group));
 
         // build the title
         $this->buildTitle();
@@ -217,10 +217,10 @@ class Pages extends Base
         $this->buildPathway();
 
         // get view notifications
-        $this->view->notifications = $this->getNotifications();
+        $this->view->set('notifications', $this->getNotifications());
         $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
-        $this->view->group         = $this->group;
-        $this->view->config        = $this->config;
+        $this->view->set('group', $this->group);
+        $this->view->set('config', $this->config);
 
         //display layout
         $this->view
@@ -492,7 +492,7 @@ class Pages extends Base
         $pageid = Request::getInt('pageid', 0, 'get');
 
         // load page object
-        $this->view->page = new Page($pageid);
+        $this->view->set('page', new Page($pageid));
 
         // make sure page exists
         if (!$this->view->page->exists()) {
@@ -511,9 +511,9 @@ class Pages extends Base
         $this->buildPathway();
 
         // get view notifications
-        $this->view->notifications = $this->getNotifications();
+        $this->view->set('notifications', $this->getNotifications());
         $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
-        $this->view->group         = $this->group;
+        $this->view->set('group', $this->group);
 
         //display layout
         $this->view

@@ -129,7 +129,7 @@ class Order extends ComponentController
         }
 
         // Display message
-        $this->view->transactionInfo = $tInfo->info;
+        $this->view->set('transactionInfo', $tInfo->info);
         $this->view->display();
     }
 

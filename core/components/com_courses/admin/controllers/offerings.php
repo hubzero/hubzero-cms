@@ -90,7 +90,7 @@ class Offerings extends AdminController
             ),
         ];
 
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
         if (!$this->view->course->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
@@ -104,11 +104,11 @@ class Offerings extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->total = $this->view->course->offerings($this->view->filters);
+        $this->view->set('total', $this->view->course->offerings($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->rows = $this->view->course->offerings($this->view->filters);
+        $this->view->set('rows', $this->view->course->offerings($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -138,14 +138,14 @@ class Offerings extends AdminController
             $model = \Components\Courses\Models\Offering::getInstance($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
         if (!$this->view->row->get('course_id')) {
             $this->view->row->set('course_id', Request::getInt('course', 0));
         }
 
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id'));
-        $this->view->config = $this->config;
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));
+        $this->view->set('config', $this->config);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

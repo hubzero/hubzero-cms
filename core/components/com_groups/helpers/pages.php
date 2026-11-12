@@ -87,12 +87,12 @@ class Pages
         $groupConfig = Component::params('com_groups');
         $customFields = $groupConfig->get('custom_fields');
         // pass vars to view
-        $view->user  = User::getInstance();
-        $view->group = $group;
-        $view->fields = Field::getAllGroupFields($group->get('gidNumber'));
+        $view->set('user', User::getInstance());
+        $view->set('group', $group);
+        $view->set('fields', Field::getAllGroupFields($group->get('gidNumber')));
         // get group desc
-        $view->publicDesc  = $view->group->getDescription('parsed', 0, 'public');
-        $view->privateDesc = $view->group->getDescription('parsed', 0, 'private');
+        $view->set('publicDesc', $view->group->getDescription('parsed', 0, 'public'));
+        $view->set('privateDesc', $view->group->getDescription('parsed', 0, 'private'));
 
         // make sure we have a public desc
         if ($view->publicDesc == '') {
@@ -295,10 +295,10 @@ class Pages
             'name'   => 'emails',
             'layout' => $type . '_plain',
         ]);
-        $eview->option     = Request::getCmd('option', 'com_groups');
-        $eview->controller = Request::getCmd('controller', 'groups');
-        $eview->group      = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
-        $eview->object     = $object;
+        $eview->set('option', Request::getCmd('option', 'com_groups'));
+        $eview->set('controller', Request::getCmd('controller', 'groups'));
+        $eview->set('group', \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid'))));
+        $eview->set('object', $object);
 
         $plain = $eview->loadTemplate(false);
         $plain = str_replace("\n", "\r\n", $plain);
@@ -371,8 +371,8 @@ class Pages
 
         $eview->set('option', Request::getCmd('option', 'com_groups'));
         $eview->set('controller', Request::getCmd('controller', 'groups'));
-        $eview->group      = $group;
-        $eview->object     = $object;
+        $eview->set('group', $group);
+        $eview->set('object', $object);
         $html = $eview->loadTemplate();
         $html = str_replace("\n", "\r\n", $html);
 
@@ -601,9 +601,9 @@ class Pages
             $hasPagePermission = Permissions::userHasPermissionForGroupAction($group, 'group.pages');
             if ($authorized == 'manager' || $hasPagePermission) {
                 $view->setLayout($layout);
-                $view->group   = $group;
-                $view->page    = $page;
-                $view->version = $version;
+                $view->set('group', $group);
+                $view->set('page', $page);
+                $view->set('version', $version);
                 return $view->loadTemplate();
             }
 

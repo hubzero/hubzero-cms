@@ -274,8 +274,8 @@ class Helper extends \Hubzero\Base\Obj
                 'name'    => 'browse',
                 'layout'  => '_rateitem',
             ]);
-            $view->option = $this->componentOption;
-            $view->item = $rev;
+            $view->set('option', $this->componentOption);
+            $view->set('item', $rev);
 
             $view->display();
             exit();
@@ -429,10 +429,10 @@ class Helper extends \Hubzero\Base\Obj
             'element' => 'reviews',
             'name'    => 'emails',
         ]);
-        $eview->option   = $this->componentOption;
-        $eview->user     = User::getInstance();
-        $eview->resource = $this->resource;
-        $eview->review   = $row;
+        $eview->set('option', $this->componentOption);
+        $eview->set('user', User::getInstance());
+        $eview->set('resource', $this->resource);
+        $eview->set('review', $row);
         $message = $eview->loadTemplate();
 
         // Build the "from" data for the e-mail

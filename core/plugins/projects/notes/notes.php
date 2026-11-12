@@ -314,7 +314,7 @@ class Notes extends Plugin
         ]);
 
         // Get first project note
-        $view->firstNote = $this->note->getFirstNote($pagePrefix);
+        $view->set('firstNote', $this->note->getFirstNote($pagePrefix));
 
         // Default view to first available note if no page is requested
         if (!$this->pagename && $this->task != 'new' && $this->task != 'save') {
@@ -327,8 +327,8 @@ class Notes extends Plugin
         $canDelete = 1;
 
         // Get page
-        $view->page    = $this->note->page($this->pagename);
-        $view->content = null;
+        $view->set('page', $this->note->page($this->pagename));
+        $view->set('content', null);
         $exists = $view->page->get('id') ? true : false;
 
         Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->pagename);
@@ -348,9 +348,9 @@ class Notes extends Plugin
                 'name'    => 'pages',
                 'layout'  => 'doesnotexist',
             ]);
-            $nview->scope   = $scope;
-            $nview->option  = $this->componentOption;
-            $nview->project = $this->model;
+            $nview->set('scope', $scope);
+            $nview->set('option', $this->componentOption);
+            $nview->set('project', $this->model);
             $view->content  = $nview->loadTemplate();
         }
 
@@ -421,23 +421,23 @@ class Notes extends Plugin
         $this->fixupPathway();
 
         // Get messages and errors
-        $view->msg = isset($this->msg) ? $this->msg : null;
+        $view->set('msg', isset($this->msg) ? $this->msg : null);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
 
-        $view->title    = $this->area['title'];
-        $view->note     = $this->note;
-        $view->task     = $this->task;
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->project  = $this->model;
-        $view->uid      = $this->uid;
-        $view->pagename = $this->pagename;
-        $view->scope    = $scope;
-        $view->preview  = $preview;
-        $view->group    = $this->group;
-        $view->params   = $this->params;
+        $view->set('title', $this->area['title']);
+        $view->set('note', $this->note);
+        $view->set('task', $this->task);
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('pagename', $this->pagename);
+        $view->set('scope', $scope);
+        $view->set('preview', $preview);
+        $view->set('group', $this->group);
+        $view->set('params', $this->params);
 
         return $view->loadTemplate();
     }
@@ -658,15 +658,15 @@ class Notes extends Plugin
         );
 
         // Output HTML
-        $view->params = $this->model->params;
-        $view->option = $this->componentOption;
-        $view->database = $this->database;
-        $view->model = $this->model;
-        $view->uid = $this->uid;
-        $view->config = $this->config;
-        $view->title = $this->area['title'];
-        $view->primary = $primary;
-        $view->versionid = $versionid;
+        $view->set('params', $this->model->params);
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->config);
+        $view->set('title', $this->area['title']);
+        $view->set('primary', $primary);
+        $view->set('versionid', $versionid);
 
         // Get messages and errors
         if ($this->getError()) {
@@ -739,11 +739,11 @@ class Notes extends Plugin
             'element' => 'notes',
             'name'    => 'pubview',
         ]);
-        $view->option = $this->componentOption;
-        $view->model = $this->model;
-        $view->page = $page;
-        $view->revision = $page->revision('current');
-        $view->masterscope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('page', $page);
+        $view->set('revision', $page->revision('current'));
+        $view->set('masterscope', 'projects' . DS . $this->model->get('alias') . DS . 'notes');
 
         // Output HTML
         if ($this->getError()) {
@@ -781,8 +781,8 @@ class Notes extends Plugin
             $group,
             $model->get('id'),
         );
-        $view->notes = $note->getNotes();
-        $view->model = $model;
+        $view->set('notes', $note->getNotes());
+        $view->set('model', $model);
 
         return $view->loadTemplate();
     }
@@ -812,9 +812,9 @@ class Notes extends Plugin
         $database = App::get('db');
         $objSt    = new \Components\Projects\Tables\Stamp($database);
 
-        $view->items = $objSt->getPubList($model->get('id'), 'notes');
-        $view->page  = \Components\Wiki\Models\Page::blank();
-        $view->model = $model;
+        $view->set('items', $objSt->getPubList($model->get('id'), 'notes'));
+        $view->set('page', \Components\Wiki\Models\Page::blank());
+        $view->set('model', $model);
 
         return $view->loadTemplate();
     }

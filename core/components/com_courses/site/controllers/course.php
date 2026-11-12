@@ -145,7 +145,7 @@ class Course extends SiteController
         // Build pathway
         $this->buildPathway();
 
-        $this->view->active = Request::getString('active', 'overview');
+        $this->view->set('active', Request::getString('active', 'overview'));
 
         $this->view->plugins = Event::trigger(
             'courses.onCourseView',
@@ -170,9 +170,9 @@ class Course extends SiteController
             }
         }
 
-        $this->view->course        = $this->course;
-        $this->view->config        = $this->config;
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('course', $this->course);
+        $this->view->set('config', $this->config);
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view->display();
     }
 
@@ -218,24 +218,24 @@ class Course extends SiteController
                 App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
             }
 
-            $this->view->title = Lang::txt('COM_COURSES_EDIT_COURSE') . ': ' . $this->course->get('title');
+            $this->view->set('title', Lang::txt('COM_COURSES_EDIT_COURSE') . ': ' . $this->course->get('title'));
         } else {
             $this->course->set('state', 3);
 
-            $this->view->title = Lang::txt('COM_COURSES_NEW_COURSE');
+            $this->view->set('title', Lang::txt('COM_COURSES_NEW_COURSE'));
         }
 
         //get directory for course file uploads
         if ($this->course->get('id')) {
-            $this->view->lid = $this->course->get('id');
+            $this->view->set('lid', $this->course->get('id'));
         } else {
-            $this->view->lid = time() . rand(0, 1000);
+            $this->view->set('lid', time() . rand(0, 1000));
         }
 
         // Output HTML
-        $this->view->course = $this->course;
+        $this->view->set('course', $this->course);
 
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view
             ->setLayout('edit')
             ->display();
@@ -413,18 +413,18 @@ class Course extends SiteController
             return;
         }
 
-        $this->view->no_html = Request::getInt('no_html', 0);
+        $this->view->set('no_html', Request::getInt('no_html', 0));
 
         if ($offering instanceof Models\Offering) {
-            $this->view->offering = $offering;
+            $this->view->set('offering', $offering);
         } else {
-            $this->view->offering = new Models\Offering(0);
+            $this->view->set('offering', new Models\Offering(0));
         }
 
-        $this->view->course = $this->course;
+        $this->view->set('course', $this->course);
 
-        $this->view->title = Lang::txt('COM_COURSES_NEW_OFFERING');
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('title', Lang::txt('COM_COURSES_NEW_OFFERING'));
+        $this->view->set('notifications', Notify::messages('courses'));
 
         $this->view->display();
     }
@@ -578,11 +578,11 @@ class Course extends SiteController
             }
 
             // Output HTML
-            $this->view->title  = Lang::txt('COM_COURSES_DELETE_COURSE') . ': ' . $this->course->get('title');
-            $this->view->course = $this->course;
-            $this->view->log    = $log;
-            $this->view->msg    = $msg;
-            $this->view->notifications = Notify::messages('courses');
+            $this->view->set('title', Lang::txt('COM_COURSES_DELETE_COURSE') . ': ' . $this->course->get('title'));
+            $this->view->set('course', $this->course);
+            $this->view->set('log', $log);
+            $this->view->set('msg', $msg);
+            $this->view->set('notifications', Notify::messages('courses'));
             $this->view->display();
             return;
         }
@@ -592,11 +592,11 @@ class Course extends SiteController
         // Delete course (update() is a Table method the model does not have)
         if (!$this->course->store(false)) {
             $this->view->setLayout('error');
-            $this->view->title = Lang::txt('COM_COURSES_DELETE');
+            $this->view->set('title', Lang::txt('COM_COURSES_DELETE'));
             if ($this->course->getError()) {
                 Notify::error($this->course->getError(), 'courses');
             }
-            $this->view->notifications = Notify::messages('courses');
+            $this->view->set('notifications', Notify::messages('courses'));
             $this->view->display();
             return;
         }
@@ -620,11 +620,11 @@ class Course extends SiteController
             'layout' => 'deleted',
         ]);
         $eview->set('option', $this->option);
-        $eview->sitename = Config::get('sitename');
-        $eview->user = User::getInstance();
-        $eview->gcn = $this->course->get('cn');
-        $eview->msg = $msg;
-        $eview->course = $this->course;
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('user', User::getInstance());
+        $eview->set('gcn', $this->course->get('cn'));
+        $eview->set('msg', $msg);
+        $eview->set('course', $this->course);
 
         $message = $eview->loadTemplate();
         $message = str_replace("\n", "\r\n", $message);

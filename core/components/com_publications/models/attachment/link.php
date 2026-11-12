@@ -604,8 +604,8 @@ class Link extends Base
             'name'    => 'attachments',
             'layout'  => $this->name,
         ]);
-        $view->data   = $data;
-        $view->params = $params;
+        $view->set('data', $data);
+        $view->set('params', $params);
 
         if ($this->getError()) {
             $view->setError($this->getError());

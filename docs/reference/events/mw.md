@@ -29,7 +29,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/admin/controllers/sessions.php:166`](../../../core/components/com_tools/admin/controllers/sessions.php#L166) with `[$row->appname]`
+- [`core/components/com_tools/admin/controllers/sessions.php:165`](../../../core/components/com_tools/admin/controllers/sessions.php#L165) with `[$row->appname]`
 - [`core/components/com_tools/api/controllers/sessionsv1r0.php:1556`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1556) with `[$ms->get('appname')]`
 - [`core/components/com_tools/site/controllers/sessions.php:1597`](../../../core/components/com_tools/site/controllers/sessions.php#L1597) with `[$ms->appname]`
 
@@ -57,7 +57,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/admin/controllers/sessions.php:151`](../../../core/components/com_tools/admin/controllers/sessions.php#L151) with `[$row->appname]`
+- [`core/components/com_tools/admin/controllers/sessions.php:150`](../../../core/components/com_tools/admin/controllers/sessions.php#L150) with `[$row->appname]`
 - [`core/components/com_tools/api/controllers/sessionsv1r0.php:1550`](../../../core/components/com_tools/api/controllers/sessionsv1r0.php#L1550) with `[$ms->get('appname')]`
 - [`core/components/com_tools/site/controllers/sessions.php:1584`](../../../core/components/com_tools/site/controllers/sessions.php#L1584) with `[$ms->appname]`
 

@@ -182,12 +182,12 @@ class Notifier
                 'name'      => 'emails',
                 'layout'    => 'comment_plain',
             ]);
-            $eview->option     = $options['option'];
-            $eview->controller = $options['controller'];
-            $eview->comment    = $comment;
-            $eview->ticket     = $ticket;
-            $eview->config     = $config;
-            $eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+            $eview->set('option', $options['option']);
+            $eview->set('controller', $options['controller']);
+            $eview->set('comment', $comment);
+            $eview->set('ticket', $ticket);
+            $eview->set('config', $config);
+            $eview->set('delimiter', ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : ''));
 
             $message = [];
             $message['plaintext'] = $eview->loadTemplate(false);

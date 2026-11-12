@@ -298,8 +298,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
 
             if ($this->pInfo->ptModel == 'software') {
                 $view = new \Hubzero\Component\View(['name' => 'meta', 'layout' => 'sku-software']);
-                $view->parent = $this;
-                $view->skuMeta = $skuMeta;
+                $view->set('parent', $this);
+                $view->set('skuMeta', $skuMeta);
                 $view->display();
             }
 

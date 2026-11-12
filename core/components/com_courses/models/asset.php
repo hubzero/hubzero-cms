@@ -361,9 +361,9 @@ class Asset extends Base
             'name'      => 'assets',
             'layout'    => $layout,
         ]);
-        $view->asset   = $this->table;
-        $view->model   = $this;
-        $view->course  = $course;
+        $view->set('asset', $this->table);
+        $view->set('model', $this);
+        $view->set('course', $course);
         $view->set('option', $option);
 
         return $view->loadTemplate();

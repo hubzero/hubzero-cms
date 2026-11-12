@@ -79,7 +79,7 @@ class Projects extends AdminController
      */
     public function displayTask()
     {
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Get quotas
         $this->view->defaultQuota = Helpers\Html::convertSize(
@@ -154,8 +154,8 @@ class Projects extends AdminController
             $this->view->filters['filterby'] = '';
         }
 
-        $this->view->limit = $this->view->filters['limit'];
-        $this->view->start = $this->view->filters['start'];
+        $this->view->set('limit', $this->view->filters['limit']);
+        $this->view->set('start', $this->view->filters['start']);
 
         // Retrieve all records when filtering by quota (no paging)
         if ($this->view->filters['quota'] != 'all') {
@@ -166,10 +166,10 @@ class Projects extends AdminController
         $obj = new Tables\Project($this->database);
 
         // Get records
-        $this->view->rows = $obj->getRecords($this->view->filters, 'admin', 0, 1);
+        $this->view->set('rows', $obj->getRecords($this->view->filters, 'admin', 0, 1));
 
         // Get a record count
-        $this->view->total = $obj->getCount($this->view->filters, 'admin', 0, 1);
+        $this->view->set('total', $obj->getCount($this->view->filters, 'admin', 0, 1));
 
         // Filtering by quota
         if ($this->view->filters['quota'] != 'all' && $this->view->rows) {
@@ -264,11 +264,11 @@ class Projects extends AdminController
             return;
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Get project types
         $objT = $model->table('Type');
-        $this->view->types = $objT->getTypes();
+        $this->view->set('types', $objT->getTypes());
 
         // Get activity counts
         $counts = Event::trigger('projects.onProjectCount', [$model, 1]);
@@ -277,7 +277,7 @@ class Projects extends AdminController
             ->whereEquals('scope', 'project')
             ->whereEquals('scope_id', $model->get('id'))
             ->total();
-        $this->view->counts = $counts;
+        $this->view->set('counts', $counts);
 
         // Get team
         $objO = $model->table('Owner');
@@ -286,10 +286,10 @@ class Projects extends AdminController
         $objO->sysGroup($model->get('alias'), $this->config->get('group_prefix', 'pr-'));
 
         // Get members and managers
-        $this->view->managers  = $objO->getOwnerNames($id, 0, '1', 1);
-        $this->view->members   = $objO->getOwnerNames($id, 0, '0', 1);
-        $this->view->authors   = $objO->getOwnerNames($id, 0, '2', 1);
-        $this->view->reviewers = $objO->getOwnerNames($id, 0, '5', 1);
+        $this->view->set('managers', $objO->getOwnerNames($id, 0, '1', 1));
+        $this->view->set('members', $objO->getOwnerNames($id, 0, '0', 1));
+        $this->view->set('authors', $objO->getOwnerNames($id, 0, '2', 1));
+        $this->view->set('reviewers', $objO->getOwnerNames($id, 0, '5', 1));
 
         // Get last activity
         $log = \Hubzero\Activity\Log::all();
@@ -305,7 +305,7 @@ class Projects extends AdminController
             ->row();
 
         // Was project suspended?
-        $this->view->suspended = false;
+        $this->view->set('suspended', false);
         $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
         if ($model->isInactive()) {
             $log = \Hubzero\Activity\Log::all();
@@ -328,10 +328,10 @@ class Projects extends AdminController
         }
 
         // Get project params
-        $this->view->params = $model->params;
+        $this->view->set('params', $model->params);
 
         $content = Event::trigger('projects.diskspace', [$model, 'local', 'admin']);
-        $this->view->diskusage = isset($content[0]) ? $content[0] : '';
+        $this->view->set('diskusage', isset($content[0]) ? $content[0] : '');
 
         // Set any errors
         if ($this->getError()) {
@@ -340,11 +340,11 @@ class Projects extends AdminController
 
         // Get tags on this item
         $cloud = new Models\Tags($id);
-        $this->view->tags = $cloud->render('string');
+        $this->view->set('tags', $cloud->render('string'));
 
         // Output the HTML
-        $this->view->model = $model;
-        $this->view->publishing = $this->_publishing;
+        $this->view->set('model', $model);
+        $this->view->set('publishing', $this->_publishing);
         $this->view->display();
     }
 
@@ -553,11 +553,11 @@ class Projects extends AdminController
                 'name'   => 'emails',
                 'layout' => 'admin_plain',
             ]);
-            $eview->option  = $this->option;
-            $eview->subject = $subject;
-            $eview->action  = $action;
-            $eview->project = $model;
-            $eview->message = $message;
+            $eview->set('option', $this->option);
+            $eview->set('subject', $subject);
+            $eview->set('action', $action);
+            $eview->set('project', $model);
+            $eview->set('message', $message);
 
             $body = [];
             $body['plaintext'] = $eview->loadTemplate(false);

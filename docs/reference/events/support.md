@@ -53,7 +53,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/abuse.php:198`](../../../core/components/com_support/site/controllers/abuse.php#L198) with `[ $refid, $cat, ]`
+- [`core/components/com_support/site/controllers/abuse.php:200`](../../../core/components/com_support/site/controllers/abuse.php#L200) with `[ $refid, $cat, ]`
 
 Listeners:
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:1371`](../../../core/components/com_support/site/controllers/tickets.php#L1371) with `[$row]`
+- [`core/components/com_support/site/controllers/tickets.php:1377`](../../../core/components/com_support/site/controllers/tickets.php#L1377) with `[$row]`
 
 Listeners:
 

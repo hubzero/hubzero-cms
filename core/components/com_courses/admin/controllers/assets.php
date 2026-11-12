@@ -107,7 +107,7 @@ class Assets extends AdminController
                 $r[$row->id] = $row;
             }
         }
-        $this->view->rows = $r;
+        $this->view->set('rows', $r);
 
         $assets = $tbl->find([
             'w' => ['course_id' => $this->view->filters['course_id']],
@@ -118,11 +118,11 @@ class Assets extends AdminController
                 $a[$row->id] = $row;
             }
         }
-        $this->view->assets = $a;
+        $this->view->set('assets', $a);
 
         // print_r($a);
 
-        $this->view->total = count($this->view->rows);
+        $this->view->set('total', count($this->view->rows));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -263,13 +263,13 @@ class Assets extends AdminController
             $model->load($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
-        $this->view->tmpl      = Request::getString('tmpl', '');
-        $this->view->scope     = Request::getString('scope', 'asset_group');
-        $this->view->scope_id  = Request::getInt('scope_id', 0);
-        $this->view->course_id = Request::getInt('course_id', 0);
-        $this->view->config    = $this->config;
+        $this->view->set('tmpl', Request::getString('tmpl', ''));
+        $this->view->set('scope', Request::getString('scope', 'asset_group'));
+        $this->view->set('scope_id', Request::getInt('scope_id', 0));
+        $this->view->set('course_id', Request::getInt('course_id', 0));
+        $this->view->set('config', $this->config);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

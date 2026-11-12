@@ -13,7 +13,7 @@ Fired from:
 
 - [`core/components/com_members/models/registration.php:644`](../../../core/components/com_members/models/registration.php#L644)
 - [`core/components/com_members/site/controllers/register.php:1242`](../../../core/components/com_members/site/controllers/register.php#L1242)
-- [`core/components/com_support/site/controllers/tickets.php:908`](../../../core/components/com_support/site/controllers/tickets.php#L908)
+- [`core/components/com_support/site/controllers/tickets.php:910`](../../../core/components/com_support/site/controllers/tickets.php#L910)
 
 Listeners:
 

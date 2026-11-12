@@ -114,7 +114,7 @@ class Messages extends AdminController
             $row = Message\Component::oneOrNew($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

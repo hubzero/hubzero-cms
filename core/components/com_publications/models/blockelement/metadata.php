@@ -150,12 +150,12 @@ class Metadata extends Base
             'layout'    => 'metadata',
         ]);
 
-        $view->pub           = $pub;
-        $view->manifest      = $manifest;
-        $view->status        = $status;
-        $view->elementId     = $elementId;
-        $view->name          = $viewname;
-        $view->master        = $master;
+        $view->set('pub', $pub);
+        $view->set('manifest', $manifest);
+        $view->set('status', $status);
+        $view->set('elementId', $elementId);
+        $view->set('name', $viewname);
+        $view->set('master', $master);
 
         return $view->loadTemplate();
     }
@@ -183,15 +183,15 @@ class Metadata extends Base
             'layout'    => 'metadata',
         ]);
 
-        $view->pub           = $pub;
-        $view->manifest      = $manifest;
-        $view->status        = $status;
-        $view->elementId     = $elementId;
-        $view->active        = $active;
-        $view->collapse      = $collapse;
-        $view->total         = $total;
-        $view->master        = $master;
-        $view->order         = $order;
+        $view->set('pub', $pub);
+        $view->set('manifest', $manifest);
+        $view->set('status', $status);
+        $view->set('elementId', $elementId);
+        $view->set('active', $active);
+        $view->set('collapse', $collapse);
+        $view->set('total', $total);
+        $view->set('master', $master);
+        $view->set('order', $order);
 
         return $view->loadTemplate();
     }

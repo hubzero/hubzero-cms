@@ -319,7 +319,7 @@ class Databases extends Plugin
             'layout' => 'default',
         ]);
 
-        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // On error
         if (!$view->publication->exists()) {
@@ -330,8 +330,8 @@ class Databases extends Plugin
                 'name' => 'error',
             ]);
 
-            $view->title = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
             return $view->loadTemplate();
         }
@@ -357,20 +357,20 @@ class Databases extends Plugin
             \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
         }
 
-        $view->option = $this->componentOption;
-        $view->database = $this->database;
-        $view->model = $this->model;
-        $view->uid = $this->uid;
-        $view->ajax = $ajax;
-        $view->element = $element;
-        $view->block = $block;
-        $view->step = $step;
-        $view->props = $props;
-        $view->filter = $filter;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
+        $view->set('element', $element);
+        $view->set('block', $block);
+        $view->set('step', $step);
+        $view->set('props', $props);
+        $view->set('filter', $filter);
 
         // Get databases to choose from
         $objPD = new \Components\Projects\Tables\Database($this->database);
-        $view->items = $objPD->getItems($this->model->get('id'), []);
+        $view->set('items', $objPD->getItems($this->model->get('id'), []));
 
         // Get messages and errors
         if ($this->getError()) {
@@ -434,15 +434,15 @@ class Databases extends Plugin
         );
 
         // Output HTML
-        $view->params = $this->model->params;
-        $view->option = $this->componentOption;
-        $view->database = $this->database;
-        $view->model = $this->model;
-        $view->uid = $this->uid;
-        $view->config = $this->config;
-        $view->title = $this->area['title'];
-        $view->primary = $primary;
-        $view->versionid = $versionid;
+        $view->set('params', $this->model->params);
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->config);
+        $view->set('title', $this->area['title']);
+        $view->set('primary', $primary);
+        $view->set('versionid', $versionid);
 
         // Get messages and errors
         if ($this->getError()) {
@@ -503,10 +503,10 @@ class Databases extends Plugin
             'element' => 'databases',
             'name' => 'list',
         ]);
-        $view->model = $this->model;
-        $view->option = $this->componentOption;
-        $view->dataviewer = $this->dataviewer;
-        $view->list = $list_u;
+        $view->set('model', $this->model);
+        $view->set('option', $this->componentOption);
+        $view->set('dataviewer', $this->dataviewer);
+        $view->set('list', $list_u);
 
         return ['html' => $view->loadTemplate()];
     }
@@ -573,10 +573,10 @@ class Databases extends Plugin
             'name' => 'create',
         ]);
 
-        $view->model = $this->model;
-        $view->option = $this->componentOption;
-        $view->files = $files;
-        $view->msg = null;
+        $view->set('model', $this->model);
+        $view->set('option', $this->componentOption);
+        $view->set('files', $files);
+        $view->set('msg', null);
 
         if ($error) {
             $view->setError($error);
@@ -586,11 +586,11 @@ class Databases extends Plugin
         $objPD = new \Components\Projects\Tables\Database($this->database);
 
         if ($objPD->loadRecord($db_id)) {
-            $view->db_id = $db_id;
-            $view->dir = $objPD->source_dir;
-            $view->file = $objPD->source_file;
-            $view->title = $objPD->title;
-            $view->desc = $objPD->description;
+            $view->set('db_id', $db_id);
+            $view->set('dir', $objPD->source_dir);
+            $view->set('file', $objPD->source_file);
+            $view->set('title', $objPD->title);
+            $view->set('desc', $objPD->description);
         }
 
         return ['html' => $view->loadTemplate()];

@@ -116,14 +116,14 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                         'name'    => 'selector',
                         'layout'  => $this->block,
                     ]);
-                    $view->option      = $this->option;
-                    $view->project     = $this->project;
-                    $view->database    = $database;
-                    $view->manifest    = $manifest;
-                    $view->publication = $this->publication;
-                    $view->selected    = $selected;
-                    $view->selections  = $selections;
-                    $view->url         = Route::url($this->publication->link('edit'));
+                    $view->set('option', $this->option);
+                    $view->set('project', $this->project);
+                    $view->set('database', $database);
+                    $view->set('manifest', $manifest);
+                    $view->set('publication', $this->publication);
+                    $view->set('selected', $selected);
+                    $view->set('selections', $selections);
+                    $view->set('url', Route::url($this->publication->link('edit')));
                     echo $view->loadTemplate();
                     ?>
                 </div>
@@ -147,12 +147,12 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                 'name'    => 'selector',
                 'layout'  => $this->block,
             ]);
-            $view->option      = $this->option;
-            $view->project     = $this->project;
-            $view->database    = $database;
-            $view->manifest    = $manifest;
-            $view->publication = $this->publication;
-            $view->url         = Route::url($this->publication->link('edit'));
+            $view->set('option', $this->option);
+            $view->set('project', $this->project);
+            $view->set('database', $database);
+            $view->set('manifest', $manifest);
+            $view->set('publication', $this->publication);
+            $view->set('url', Route::url($this->publication->link('edit')));
             $view->display();
 
             $task = 'apply';

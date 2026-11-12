@@ -309,14 +309,14 @@ class Resources extends SiteController
             );
         }
 
-        $this->view->row     = $row;
-        $this->view->step    = $step;
-        $this->view->version = $version;
-        $this->view->status  = $status;
-        $this->view->tags    = $tags;
-        $this->view->tagfa   = $tagfa;
-        $this->view->fats    = $fats;
-        $this->view->authors = $authors;
+        $this->view->set('row', $row);
+        $this->view->set('step', $step);
+        $this->view->set('version', $version);
+        $this->view->set('status', $status);
+        $this->view->set('tags', $tags);
+        $this->view->set('tagfa', $tagfa);
+        $this->view->set('fats', $fats);
+        $this->view->set('authors', $authors);
 
         // Output HTML
         $this->view
@@ -506,13 +506,13 @@ class Resources extends SiteController
             );
         }
 
-        $this->view->toolid      = $this->_toolid;
-        $this->view->step        = 5;
-        $this->view->version     = $version;
-        $this->view->resource    = $resource;
-        $this->view->config      = $this->rconfig;
-        $this->view->usersgroups = $usersgroups;
-        $this->view->status      = $status;
+        $this->view->set('toolid', $this->_toolid);
+        $this->view->set('step', 5);
+        $this->view->set('version', $version);
+        $this->view->set('resource', $resource);
+        $this->view->set('config', $this->rconfig);
+        $this->view->set('usersgroups', $usersgroups);
+        $this->view->set('status', $status);
 
         // Output HTML
         $this->view

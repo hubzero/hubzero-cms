@@ -11,7 +11,7 @@ Events in the `wishlist` group. A plugin in `core/plugins/wishlist/` receives an
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/lists.php:251`](../../../core/components/com_wishlist/admin/controllers/lists.php#L251) with `[$id]`
+- [`core/components/com_wishlist/admin/controllers/lists.php:258`](../../../core/components/com_wishlist/admin/controllers/lists.php#L258) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/comments.php:291`](../../../core/components/com_wishlist/admin/controllers/comments.php#L291) with `[$id]`
+- [`core/components/com_wishlist/admin/controllers/comments.php:296`](../../../core/components/com_wishlist/admin/controllers/comments.php#L296) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/wishes.php:413`](../../../core/components/com_wishlist/admin/controllers/wishes.php#L413) with `[$id]`
+- [`core/components/com_wishlist/admin/controllers/wishes.php:420`](../../../core/components/com_wishlist/admin/controllers/wishes.php#L420) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -35,7 +35,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/lists.php:204`](../../../core/components/com_wishlist/admin/controllers/lists.php#L204) with `[&$row, $isNew]`
+- [`core/components/com_wishlist/admin/controllers/lists.php:208`](../../../core/components/com_wishlist/admin/controllers/lists.php#L208) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -43,7 +43,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/comments.php:247`](../../../core/components/com_wishlist/admin/controllers/comments.php#L247) with `[&$row, $isNew]`
+- [`core/components/com_wishlist/admin/controllers/comments.php:251`](../../../core/components/com_wishlist/admin/controllers/comments.php#L251) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -51,7 +51,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wishlist/admin/controllers/wishes.php:370`](../../../core/components/com_wishlist/admin/controllers/wishes.php#L370) with `[&$row, $isNew]`
+- [`core/components/com_wishlist/admin/controllers/wishes.php:376`](../../../core/components/com_wishlist/admin/controllers/wishes.php#L376) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 

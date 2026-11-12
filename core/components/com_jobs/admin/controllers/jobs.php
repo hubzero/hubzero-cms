@@ -79,10 +79,10 @@ class Jobs extends AdminController
         // Get data
         $obj = new Job($this->database);
 
-        $this->view->rows  = $obj->getOpenings($this->view->filters, User::get('id'), 1);
-        $this->view->total = $obj->getOpenings($this->view->filters, User::get('id'), 1, '', 1);
+        $this->view->set('rows', $obj->getOpenings($this->view->filters, User::get('id'), 1));
+        $this->view->set('total', $obj->getOpenings($this->view->filters, User::get('id'), 1, '', 1));
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -119,13 +119,13 @@ class Jobs extends AdminController
         $id = is_array($id) ? $id[0] : $id;
 
         // Grab some filters for returning to place after editing
-        $this->view->return = [];
+        $this->view->set('return', []);
         $this->view->return['sortby'] = Request::getString('sortby', 'added');
 
-        $this->view->row = new Job($this->database);
+        $this->view->set('row', new Job($this->database));
 
-        $this->view->jobadmin = new Admin($this->database);
-        $this->view->employer = new Employer($this->database);
+        $this->view->set('jobadmin', new Admin($this->database));
+        $this->view->set('employer', new Employer($this->database));
 
         // Is this a new job?
         if (!$id) {
@@ -142,7 +142,7 @@ class Jobs extends AdminController
             );
         }
 
-        $this->view->job = $this->view->row->getOpening($id, User::get('id'), 1);
+        $this->view->set('job', $this->view->row->getOpening($id, User::get('id'), 1));
 
         // Get employer information
         if ($this->view->row->employerid != 1) {
@@ -165,22 +165,22 @@ class Jobs extends AdminController
         // Get subscription info
 
         $subId = $this->view->employer->subscriptionid;
-        $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
+        $this->view->set('subscription', \Components\Services\Models\Subscription::oneOrNew($subId));
 
         // Get job types and categories
         $jt = new Type($this->database);
         $jc = new Category($this->database);
 
         // get job types
-        $this->view->types = $jt->getTypes();
+        $this->view->set('types', $jt->getTypes());
         $this->view->types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
 
         // get job categories
-        $this->view->cats = $jc->getCats();
+        $this->view->set('cats', $jc->getCats());
         $this->view->cats[0] = Lang::txt('COM_JOBS_CATEGORY_UNSPECIFIED');
 
-        $this->view->config = $this->config;
-        $this->view->isnew = $isnew;
+        $this->view->set('config', $this->config);
+        $this->view->set('isnew', $isnew);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

@@ -95,7 +95,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/curation.php:927`](../../../core/components/com_publications/site/controllers/curation.php#L927) with `[$pub]`
+- [`core/components/com_publications/site/controllers/curation.php:930`](../../../core/components/com_publications/site/controllers/curation.php#L930) with `[$pub]`
 
 Listeners:
 

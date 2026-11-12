@@ -229,7 +229,7 @@ class Managers extends SiteController
      */
     public function displayTask()
     {
-        $this->view->course = $this->course;
+        $this->view->set('course', $this->course);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

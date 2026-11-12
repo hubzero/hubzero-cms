@@ -52,7 +52,7 @@ API version 1.0, task `list` in [`entriesv1r0.php`](../../../core/components/com
 
 Trigger a specific event
 
-API version 1.0, task `trigger` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L408).
+API version 1.0, task `trigger` in [`entriesv1r0.php`](../../../core/components/com_plugins/api/controllers/entriesv1r0.php#L407).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -92,11 +92,11 @@ class Courses extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->total = $model->courses($this->view->filters);
+        $this->view->set('total', $model->courses($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->rows  = $model->courses($this->view->filters);
+        $this->view->set('rows', $model->courses($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -126,7 +126,7 @@ class Courses extends AdminController
             $row = \Components\Courses\Models\Course::getInstance($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         if (!$this->view->row->exists()) {
             $this->view->row->set('state', 3);
@@ -137,7 +137,7 @@ class Courses extends AdminController
             Notify::error($error);
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view

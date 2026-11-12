@@ -394,7 +394,7 @@ class CartMessenger
                     'name' => 'emails',
                     'layout' => 'order_notify',
                 ]);
-                $eview->message = $lowInventoryNotifySummary;
+                $eview->set('message', $lowInventoryNotifySummary);
 
                 $plain = $lowInventoryNotifySummary;
 

@@ -939,11 +939,11 @@ class Wishlists extends SiteController
                 'name'   => 'emails',
                 'layout' => 'wish_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->wish       = $objWish;
-            $eview->wishlist   = $wishlist;
-            $eview->action     = 'assigned';
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('wish', $objWish);
+            $eview->set('wishlist', $wishlist);
+            $eview->set('action', 'assigned');
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -1282,11 +1282,11 @@ class Wishlists extends SiteController
                 'name'   => 'emails',
                 'layout' => 'wish_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->wish       = $row;
-            $eview->wishlist   = $wishlist;
-            $eview->action     = 'created';
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('wish', $row);
+            $eview->set('wishlist', $wishlist);
+            $eview->set('action', 'created');
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -1515,12 +1515,12 @@ class Wishlists extends SiteController
                     'name'   => 'emails',
                     'layout' => 'wish_plain',
                 ]);
-                $eview->option     = $this->option;
-                $eview->controller = $this->controller;
-                $eview->wish       = $wish;
-                $eview->wishlist   = $wishlist;
-                $eview->action     = 'updated';
-                $eview->status     = $status;
+                $eview->set('option', $this->option);
+                $eview->set('controller', $this->controller);
+                $eview->set('wish', $wish);
+                $eview->set('wishlist', $wishlist);
+                $eview->set('action', 'updated');
+                $eview->set('status', $status);
 
                 $message['plaintext'] = $eview->loadTemplate(false);
                 $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -1745,12 +1745,12 @@ class Wishlists extends SiteController
                     'name'   => 'emails',
                     'layout' => 'wish_plain',
                 ]);
-                $eview->option     = $this->option;
-                $eview->controller = $this->controller;
-                $eview->wish       = $wish;
-                $eview->wishlist   = $newlist;
-                $eview->action     = 'moved';
-                $eview->oldlist    = $oldlist;
+                $eview->set('option', $this->option);
+                $eview->set('controller', $this->controller);
+                $eview->set('wish', $wish);
+                $eview->set('wishlist', $newlist);
+                $eview->set('action', 'moved');
+                $eview->set('oldlist', $oldlist);
 
                 $message['plaintext'] = $eview->loadTemplate(false);
                 $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -2278,11 +2278,11 @@ class Wishlists extends SiteController
                 'name'   => 'emails',
                 'layout' => 'comment_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->wish       = $objWish;
-            $eview->wishlist   = $wishlist;
-            $eview->comment    = $row;
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('wish', $objWish);
+            $eview->set('wishlist', $wishlist);
+            $eview->set('comment', $row);
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

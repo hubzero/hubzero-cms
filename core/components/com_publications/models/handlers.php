@@ -352,9 +352,9 @@ class Handlers extends Obj
             'name'   => 'handlers',
             'layout' => '_selected',
         ]);
-        $view->handler  = $handler;
-        $view->configs  = $configs;
-        $view->assigned = $assigned;
+        $view->set('handler', $handler);
+        $view->set('configs', $configs);
+        $view->set('assigned', $assigned);
         return $view->loadTemplate();
     }
 

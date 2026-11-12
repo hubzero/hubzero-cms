@@ -76,8 +76,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/hosts.php:65`](../../../core/components/com_members/admin/controllers/hosts.php#L65) with `[$profile]`
-- [`core/components/com_members/admin/controllers/hosts.php:111`](../../../core/components/com_members/admin/controllers/hosts.php#L111) with `[$profile]`
+- [`core/components/com_members/admin/controllers/hosts.php:71`](../../../core/components/com_members/admin/controllers/hosts.php#L71) with `[$profile]`
+- [`core/components/com_members/admin/controllers/hosts.php:123`](../../../core/components/com_members/admin/controllers/hosts.php#L123) with `[$profile]`
 - [`core/libraries/Hubzero/User/Profile.php:1049`](../../../core/libraries/Hubzero/User/Profile.php#L1049) with `[$this]`
 
 Listeners:
@@ -127,7 +127,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:820`](../../../core/components/com_members/admin/controllers/members.php#L820) with `[$data, true, $this->getError()]`
+- [`core/components/com_members/admin/controllers/members.php:845`](../../../core/components/com_members/admin/controllers/members.php#L845) with `[$data, true, $this->getError()]`
 - [`core/components/com_members/models/member.php:475`](../../../core/components/com_members/models/member.php#L475) with `[$data, true, $this->getError()]`
 - [`core/libraries/Hubzero/User/User.php:1159`](../../../core/libraries/Hubzero/User/User.php#L1159) with `[$data, true, $this->getError()]`
 
@@ -145,7 +145,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:305`](../../../core/components/com_members/admin/controllers/accessgroups.php#L305) with `$afterData`
+- [`core/components/com_members/admin/controllers/accessgroups.php:312`](../../../core/components/com_members/admin/controllers/accessgroups.php#L312) with `$afterData`
 
 No plugin in the source tree listens for this event.
 
@@ -202,7 +202,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:295`](../../../core/components/com_members/admin/controllers/accessgroups.php#L295) with `[$data]`
+- [`core/components/com_members/admin/controllers/accessgroups.php:302`](../../../core/components/com_members/admin/controllers/accessgroups.php#L302) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -228,7 +228,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:1163`](../../../core/components/com_members/admin/controllers/members.php#L1163) with `$id`
+- [`core/components/com_members/admin/controllers/members.php:1189`](../../../core/components/com_members/admin/controllers/members.php#L1189) with `$id`
 
 Listeners:
 

@@ -456,11 +456,11 @@ class Questions extends Plugin
                 'name'      => 'emails',
                 'layout'    => 'question_plaintext',
             ]);
-            $eview->option   = 'com_answers';
-            $eview->sitename = Config::get('sitename');
-            $eview->question = $row;
-            $eview->id       = $row->get('id', 0);
-            $eview->boundary = $from['multipart'];
+            $eview->set('option', 'com_answers');
+            $eview->set('sitename', Config::get('sitename'));
+            $eview->set('question', $row);
+            $eview->set('id', $row->get('id', 0));
+            $eview->set('boundary', $from['multipart']);
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

@@ -707,7 +707,7 @@ class Filefsv1r0 extends ApiController
                 'name'    => 'preview',
             ]);
 
-            $view->file = isset($collector[0]) ? $collector[0] : null;
+            $view->set('file', isset($collector[0]) ? $collector[0] : null);
 
             // Get last revision
             if (!$view->file->get('converted') && !$hash) {
@@ -715,8 +715,8 @@ class Filefsv1r0 extends ApiController
                 $hash = $this->repo->getLastRevision($params);
                 $view->file->set('hash', $hash);
             }
-            $view->option = $this->option;
-            $view->model  = $this->model;
+            $view->set('option', $this->option);
+            $view->set('model', $this->model);
 
             if (!($view->file instanceof \Components\Projects\Models\File)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));

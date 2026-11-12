@@ -51,7 +51,7 @@ class Help extends AdminController
         $finalHelpPage = Finder::page($component, $extension, $page);
 
         // Var to hold content
-        $this->view->content = '';
+        $this->view->set('content', '');
 
         // If we have an existing pge
         if ($finalHelpPage != '') {
@@ -71,10 +71,10 @@ class Help extends AdminController
         }
 
         // Set vars for views
-        $this->view->modified  = filemtime($finalHelpPage);
-        $this->view->component = $component;
-        $this->view->extension = $extension;
-        $this->view->page      = $page;
+        $this->view->set('modified', filemtime($finalHelpPage));
+        $this->view->set('component', $component);
+        $this->view->set('extension', $extension);
+        $this->view->set('page', $page);
 
         // Display
         $this->view->display();

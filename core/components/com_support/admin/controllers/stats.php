@@ -36,8 +36,8 @@ class Stats extends AdminController
 
         $filters['type'] = ($filters['type'] == 'automatic') ? 1 : 0;
 
-        $this->view->opened = [];
-        $this->view->closed = [];
+        $this->view->set('opened', []);
+        $this->view->set('closed', []);
 
         $sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM `#__support_tickets` AS s
@@ -46,10 +46,10 @@ class Stats extends AdminController
 				AND s.type=" . $this->database->quote($filters['type']) . "
 				ORDER BY g.description ASC";
         $this->database->setQuery($sql);
-        $this->view->groups = $this->database->loadObjectList();
+        $this->view->set('groups', $this->database->loadObjectList());
 
         // Users
-        $this->view->users = null;
+        $this->view->set('users', null);
 
         if ($filters['group'] || $filters['group'] == '_none_') {
             $query = "SELECT a.username, a.name, a.id
@@ -155,7 +155,7 @@ class Stats extends AdminController
                 }
             }
         }
-        $this->view->closedTickets = $closedTickets;
+        $this->view->set('closedTickets', $closedTickets);
         $closed = [];
         foreach ($closedTickets as $o) {
             if (!isset($closed[$o->year])) {
@@ -171,8 +171,8 @@ class Stats extends AdminController
         // Group data by year and gather some info for each user
         $y = date("Y");
         $y++;
-        $this->view->closedmonths = [];
-        $this->view->openedmonths = [];
+        $this->view->set('closedmonths', []);
+        $this->view->set('openedmonths', []);
         for ($k = $first, $n = $y; $k < $n; $k++) {
             $this->view->closedmonths[$k] = [];
             $this->view->openedmonths[$k] = [];

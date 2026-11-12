@@ -772,10 +772,10 @@ class Items extends AdminController
                 'name'   => $this->controller,
                 'layout' => 'authors',
             ]);
-            $authorslist->authnames = $authnames;
-            $authorslist->attribs   = $row->attribs;
+            $authorslist->set('authnames', $authnames);
+            $authorslist->set('attribs', $row->attribs);
             $authorslist->set('option', $this->option);
-            $authorslist->roles     = $row->type->roles()->rows();
+            $authorslist->set('roles', $row->type->roles()->rows());
 
             $lists['authors'] = $authorslist->loadTemplate();
         }
@@ -784,7 +784,7 @@ class Items extends AdminController
             'name'   => $this->controller,
             'layout' => 'aclusers',
         ]);
-        $aclusers->aclusernames = $row->aclusers();
+        $aclusers->set('aclusernames', $row->aclusers());
         $aclusers->option    = $this->option;
 
         $lists['aclusers'] = $aclusers->loadTemplate();
@@ -793,7 +793,7 @@ class Items extends AdminController
             'name'   => $this->controller,
             'layout' => 'aclgroups',
         ]);
-        $aclgroups->aclgroupnames = $row->aclgroups();
+        $aclgroups->set('aclgroupnames', $row->aclgroups());
         $aclgroups->option    = $this->option;
 
         $lists['aclgroups'] = $aclgroups->loadTemplate();

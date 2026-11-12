@@ -446,8 +446,8 @@ class Files extends Plugin
         ];
 
         // Retrieve items
-        $view->files = $this->repo->filelist($view->params);
-        $view->model = $model;
+        $view->set('files', $this->repo->filelist($view->params));
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -477,13 +477,13 @@ class Files extends Plugin
 
         // Load member params
         $member = $this->model->member(true);
-        $view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
+        $view->set('oparams', new \Hubzero\Config\Registry($member ? $member->params : ''));
 
         // Sync active?
         $remotes = [];
-        $view->connect     = $this->connect;
-        $view->services    = $this->connect->active;
-        $view->connections = $this->connect->getConnections($this->uid);
+        $view->set('connect', $this->connect);
+        $view->set('services', $this->connect->active);
+        $view->set('connections', $this->connect->getConnections($this->uid));
 
         // Get stored remote connections
         if (!empty($this->remoteService)) {
@@ -495,9 +495,9 @@ class Files extends Plugin
             );
             $forceSync = $this->forceSync ?? $this->model->params->get('google_sync_queue', 0);
 
-            $view->sync    = $sync == 2 ? 0 : $forceSync;
-            $view->rSync   = new Sync($this->connect);
-            $view->sharing = 1;
+            $view->set('sync', $sync == 2 ? 0 : $forceSync);
+            $view->set('rSync', new Sync($this->connect));
+            $view->set('sharing', 1);
         }
 
         // Set params
@@ -516,17 +516,17 @@ class Files extends Plugin
         ];
 
         // Retrieve items
-        $view->items = $this->repo->filelist($view->params);
+        $view->set('items', $this->repo->filelist($view->params));
 
         $view->publishing = false; // do not show publishing info
-        $view->title      = $this->area['title'];
-        $view->option     = $this->componentOption;
-        $view->subdir     = $this->subdir;
-        $view->model      = $this->model;
-        $view->repo       = $this->repo;
-        $view->uid        = $this->uid;
-        $view->fileparams = $this->params;
-        $view->database   = $this->database;
+        $view->set('title', $this->area['title']);
+        $view->set('option', $this->componentOption);
+        $view->set('subdir', $this->subdir);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('uid', $this->uid);
+        $view->set('fileparams', $this->params);
+        $view->set('database', $this->database);
 
         return $view->loadTemplate();
     }
@@ -582,7 +582,7 @@ class Files extends Plugin
         $filterUrl = Route::url($route) . '?action=filter&p=' . $props . '&ajax=1&no_html=1';
         $elId = '';
         if ($pid !== 0) {
-            $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+            $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
             // On error
             if (!$view->publication->exists()) {
                 // Output error
@@ -592,8 +592,8 @@ class Files extends Plugin
                     'name'    => 'error',
                 ]);
 
-                $view->title  = '';
-                $view->option = $this->componentOption;
+                $view->set('title', '');
+                $view->set('option', $this->componentOption);
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
                 return $view->loadTemplate();
             }
@@ -669,8 +669,8 @@ class Files extends Plugin
         }
 
         // Get file list
-        $view->items = null;
-        $view->selected = [];
+        $view->set('items', null);
+        $view->set('selected', []);
         if ($this->model->get('id')) {
             // Get preselected items
             $selected = [];
@@ -714,36 +714,36 @@ class Files extends Plugin
                 'dirsOnly'         => true,
             ];
 
-            $view->folders = $this->repo->filelist($fileParams);
+            $view->set('folders', $this->repo->filelist($fileParams));
         }
-        $view->hiddenFields = $hiddenFields;
-        $view->option    = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
-        $view->database  = $this->database;
-        $view->model     = $this->model;
-        $view->repo      = $this->repo;
-        $view->uid       = $this->uid;
-        $view->ajax      = $ajax;
-        $view->task      = $this->task;
-        $view->element   = $element;
-        $view->block     = $block;
-        $view->step      = $step;
-        $view->props     = $props;
-        $view->filter    = $filter;
-        $view->sizelimit = $this->params->get('maxUpload', '104857600');
+        $view->set('hiddenFields', $hiddenFields);
+        $view->set('option', $this->model->isProvisioned() ? 'com_publications' : $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
+        $view->set('task', $this->task);
+        $view->set('element', $element);
+        $view->set('block', $block);
+        $view->set('step', $step);
+        $view->set('props', $props);
+        $view->set('filter', $filter);
+        $view->set('sizelimit', $this->params->get('maxUpload', '104857600'));
         // Hard server-side ceiling for non-chunked POST uploads. PHP
         // rejects multipart POSTs over post_max_size before any handler
         // runs, so the basic-upload form needs to know this value to
         // validate client-side and surface a useful error.
-        $view->postLimit = self::iniBytes('post_max_size');
-        $view->showCons  = ($this->params->get('default_action', 'browse') == 'connections') ? true : false;
-        $view->min = $min;
-        $view->max = $max;
-        $view->filterUrl = $filterUrl;
-        $view->elId = $elId;
-        $view->connections = $this->connections();
+        $view->set('postLimit', self::iniBytes('post_max_size'));
+        $view->set('showCons', ($this->params->get('default_action', 'browse') == 'connections') ? true : false);
+        $view->set('min', $min);
+        $view->set('max', $max);
+        $view->set('filterUrl', $filterUrl);
+        $view->set('elId', $elId);
+        $view->set('connections', $this->connections());
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -798,15 +798,15 @@ class Files extends Plugin
                 'name'    => 'selector',
                 'layout'  => $layout,
             ]);
-            $view->option       = $this->option;
-            $view->model        = $this->model;
-            $view->items        = $items;
-            $view->requirements = $params;
-            $view->publication  = $this->publication;
-            $view->selected     = $selected;
-            $view->allowed      = $allowed;
-            $view->used         = $used;
-            $view->noUl         = true;
+            $view->set('option', $this->option);
+            $view->set('model', $this->model);
+            $view->set('items', $items);
+            $view->set('requirements', $params);
+            $view->set('publication', $this->publication);
+            $view->set('selected', $selected);
+            $view->set('allowed', $allowed);
+            $view->set('used', $used);
+            $view->set('noUl', true);
 
             $template = $view->loadTemplate();
         }
@@ -827,8 +827,8 @@ class Files extends Plugin
             'name'    => 'selector',
             'layout'  => 'connections',
         ]);
-        $view->model       = $this->model;
-        $view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
+        $view->set('model', $this->model);
+        $view->set('connections', Project::oneOrFail($this->model->get('id'))->connections()->thatICanView());
 
         return $view->loadTemplate();
     }
@@ -852,22 +852,22 @@ class Files extends Plugin
             'name'    => 'upload',
         ]);
 
-        $view->url       = Route::url($this->model->link('files'));
-        $view->unused    = $this->model->repo()->getAvailableDiskSpace();
-        $view->option    = $this->componentOption;
-        $view->model     = $this->model;
-        $view->repo      = $this->repo;
-        $view->subdir    = $this->subdir;
-        $view->ajax      = $ajax;
-        $view->config    = $this->model->config();
-        $view->sizelimit = $this->params->get('maxUpload', '104857600');
+        $view->set('url', Route::url($this->model->link('files')));
+        $view->set('unused', $this->model->repo()->getAvailableDiskSpace());
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('subdir', $this->subdir);
+        $view->set('ajax', $ajax);
+        $view->set('config', $this->model->config());
+        $view->set('sizelimit', $this->params->get('maxUpload', '104857600'));
         // Hard server-side ceiling for non-chunked POST uploads. PHP
         // rejects multipart POSTs over post_max_size before any handler
         // runs, so the basic-upload form needs to know this value to
         // validate client-side and surface a useful error.
-        $view->postLimit = self::iniBytes('post_max_size');
-        $view->title     = $this->area['title'];
-        $view->params    = $this->params;
+        $view->set('postLimit', self::iniBytes('post_max_size'));
+        $view->set('title', $this->area['title']);
+        $view->set('params', $this->params);
 
         return $view->loadTemplate();
     }
@@ -980,13 +980,13 @@ class Files extends Plugin
             'name'    => 'newfolder',
         ]);
 
-        $view->option = $this->componentOption;
-        $view->model  = $this->model;
-        $view->repo   = $this->repo;
-        $view->uid    = $this->uid;
-        $view->ajax   = 1;
-        $view->subdir = $this->subdir;
-        $view->url    = Route::url($this->model->link('files'));
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', 1);
+        $view->set('subdir', $this->subdir);
+        $view->set('url', Route::url($this->model->link('files')));
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -1122,19 +1122,19 @@ class Files extends Plugin
                 'name'    => 'delete',
             ]);
 
-            $view->items       = [];
-            $view->services    = $this->connect->active;
-            $view->connections = $this->connect->getConnections();
-            $view->connect     = $this->connect;
-            $view->database    = $this->database;
-            $view->option      = $this->componentOption;
-            $view->model       = $this->model;
-            $view->repo        = $this->repo;
-            $view->uid         = $this->uid;
-            $view->ajax        = Request::getInt('ajax', 0);
-            $view->subdir      = $this->subdir;
-            $view->url         = Route::url($this->model->link('files'));
-            $view->path        = $this->path;
+            $view->set('items', []);
+            $view->set('services', $this->connect->active);
+            $view->set('connections', $this->connect->getConnections());
+            $view->set('connect', $this->connect);
+            $view->set('database', $this->database);
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('repo', $this->repo);
+            $view->set('uid', $this->uid);
+            $view->set('ajax', Request::getInt('ajax', 0));
+            $view->set('subdir', $this->subdir);
+            $view->set('url', Route::url($this->model->link('files')));
+            $view->set('path', $this->path);
             if (empty($items)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
             } else {
@@ -1243,20 +1243,20 @@ class Files extends Plugin
             } else {
                 // Get selected item
                 foreach ($items[0] as $type => $item) {
-                    $view->item = $item;
-                    $view->type = $type;
+                    $view->set('item', $item);
+                    $view->set('type', $type);
                     break;
                 }
             }
 
-            $view->option = $this->componentOption;
-            $view->model  = $this->model;
-            $view->repo   = $this->repo;
-            $view->uid    = $this->uid;
-            $view->ajax   = 1;
-            $view->subdir = $this->subdir;
-            $view->url    = Route::url($this->model->link('files'));
-            $view->path   = $this->path;
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('repo', $this->repo);
+            $view->set('uid', $this->uid);
+            $view->set('ajax', 1);
+            $view->set('subdir', $this->subdir);
+            $view->set('url', Route::url($this->model->link('files')));
+            $view->set('path', $this->path);
             return $view->loadTemplate();
         }
 
@@ -1331,20 +1331,20 @@ class Files extends Plugin
                 'recursive'        => true,
             ];
 
-            $view->list        = $this->repo->filelist($listParams);
-            $view->path        = $this->path;
-            $view->items       = [];
-            $view->database    = $this->database;
-            $view->services    = $this->connect->active;
-            $view->connections = $this->connect->getConnections();
-            $view->connect     = $this->connect;
-            $view->option      = $this->componentOption;
-            $view->model       = $this->model;
-            $view->repo        = $this->repo;
-            $view->uid         = $this->uid;
-            $view->ajax        = Request::getInt('ajax', 0);
-            $view->subdir      = $this->subdir;
-            $view->url         = Route::url($this->model->link('files'));
+            $view->set('list', $this->repo->filelist($listParams));
+            $view->set('path', $this->path);
+            $view->set('items', []);
+            $view->set('database', $this->database);
+            $view->set('services', $this->connect->active);
+            $view->set('connections', $this->connect->getConnections());
+            $view->set('connect', $this->connect);
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('repo', $this->repo);
+            $view->set('uid', $this->uid);
+            $view->set('ajax', Request::getInt('ajax', 0));
+            $view->set('subdir', $this->subdir);
+            $view->set('url', Route::url($this->model->link('files')));
             if (empty($items)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
             } else {
@@ -1467,7 +1467,7 @@ class Files extends Plugin
         ]);
 
         // Redirect to file list
-        $view->url = Route::url($this->model->link('files'));
+        $view->set('url', Route::url($this->model->link('files')));
 
         // Collective vars
         $versions   = [];
@@ -1486,16 +1486,16 @@ class Files extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
 
-        $view->file = $params['file'];
+        $view->set('file', $params['file']);
 
         // Get remote revision history
-        $view->connected = false;
+        $view->set('connected', false);
         if (!empty($this->remoteService)) {
             if ($view->file->get('converted')) {
                 $this->connect->sortRemoteRevisions(
@@ -1544,20 +1544,20 @@ class Files extends Plugin
             $i++;
         }
 
-        $view->versions = $versions;
-        $view->path     = $this->path;
-        $view->option   = $this->componentOption;
-        $view->model    = $this->model;
-        $view->repo     = $this->repo;
-        $view->uid      = $this->uid;
-        $view->ajax     = Request::getInt('ajax');
-        $view->title    = $this->area['title'];
-        $view->subdir   = $this->subdir;
+        $view->set('versions', $versions);
+        $view->set('path', $this->path);
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', Request::getInt('ajax'));
+        $view->set('title', $this->area['title']);
+        $view->set('subdir', $this->subdir);
 
         if ($this->getError()) {
             $view->setError($this->getError());
         }
-        $view->msg = isset($this->msg) ? $this->msg : '';
+        $view->set('msg', isset($this->msg) ? $this->msg : '');
         return $view->loadTemplate();
     }
 
@@ -1610,24 +1610,24 @@ class Files extends Plugin
         ]);
 
         // Run diff
-        $view->diff = $this->repo->diff($params);
+        $view->set('diff', $this->repo->diff($params));
 
-        $view->url    = Route::url($this->model->link('files'));
-        $view->config = $this->model->config();
-        $view->file   = $params['file'];
-        $view->option = $this->componentOption;
-        $view->model  = $this->model;
-        $view->repo   = $this->repo;
-        $view->uid    = $this->uid;
-        $view->title  = $this->area['title'];
-        $view->subdir = $this->subdir;
-        $view->ajax   = 0;
-        $view->params = $params;
+        $view->set('url', Route::url($this->model->link('files')));
+        $view->set('config', $this->model->config());
+        $view->set('file', $params['file']);
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
+        $view->set('uid', $this->uid);
+        $view->set('title', $this->area['title']);
+        $view->set('subdir', $this->subdir);
+        $view->set('ajax', 0);
+        $view->set('params', $params);
 
         if ($this->getError()) {
             $view->setError($this->getError());
         }
-        $view->msg = isset($this->msg) ? $this->msg : '';
+        $view->set('msg', isset($this->msg) ? $this->msg : '');
         return $view->loadTemplate();
     }
 
@@ -1818,7 +1818,7 @@ class Files extends Plugin
                 'name'    => 'preview',
             ]);
 
-            $view->file = isset($collector[0]) ? $collector[0] : null;
+            $view->set('file', isset($collector[0]) ? $collector[0] : null);
 
             // Get last revision
             if (!$view->file->get('converted') && !$hash) {
@@ -1826,8 +1826,8 @@ class Files extends Plugin
                 $hash = $this->repo->getLastRevision($params);
                 $view->file->set('hash', $hash);
             }
-            $view->option = $this->componentOption;
-            $view->model  = $this->model;
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
 
             if (!($view->file instanceof \Components\Projects\Models\File)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
@@ -2093,10 +2093,10 @@ class Files extends Plugin
         // Tex compiler path
         $texPath = DS . trim($this->params->get('texpath'), DS);
 
-        $view->file    = $file;
-        $view->oWidth  = '780';
-        $view->oHeight = '460';
-        $view->url     = Route::url($this->model->link('files'));
+        $view->set('file', $file);
+        $view->set('oWidth', '780');
+        $view->set('oHeight', '460');
+        $view->set('url', Route::url($this->model->link('files')));
         $cExt          = 'pdf';
 
         // Take out Google native extension if present
@@ -2133,7 +2133,7 @@ class Files extends Plugin
                 $url,
             );
         } elseif ($file->exists()) {
-            $view->data = $file->isImage() ? null : $file->contents();
+            $view->set('data', $file->isImage() ? null : $file->contents());
         } else {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_NO_DATA'));
         }
@@ -2160,7 +2160,7 @@ class Files extends Plugin
             // Read log (to show in case of error)
             $logFile = $tempBase . '.log';
             if (file_exists(PATH_APP . $outputDir . DS . $logFile)) {
-                $view->log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
+                $view->set('log', Filesystem::read(PATH_APP . $outputDir . DS . $logFile));
             }
 
             if (!$contentFile) {
@@ -2289,14 +2289,14 @@ class Files extends Plugin
         }
 
         $view->file      = $file;
-        $view->outputDir = $outputDir;
-        $view->embed     = $contentFile;
-        $view->cType     = $cType;
-        $view->subdir    = $this->subdir;
-        $view->option    = $this->componentOption;
-        $view->image     = !empty($image) ? $image : null;
-        $view->model     = $this->model;
-        $view->repo      = $this->repo;
+        $view->set('outputDir', $outputDir);
+        $view->set('embed', $contentFile);
+        $view->set('cType', $cType);
+        $view->set('subdir', $this->subdir);
+        $view->set('option', $this->componentOption);
+        $view->set('image', !empty($image) ? $image : null);
+        $view->set('model', $this->model);
+        $view->set('repo', $this->repo);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -2373,19 +2373,19 @@ class Files extends Plugin
                 'name'    => 'share',
             ]);
 
-            $view->option = $this->componentOption;
-            $view->model  = $this->model;
-            $view->repo   = $this->repo;
-            $view->uid    = $this->uid;
-            $view->subdir = $this->subdir;
-            $view->path   = $this->path;
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('repo', $this->repo);
+            $view->set('uid', $this->uid);
+            $view->set('subdir', $this->subdir);
+            $view->set('path', $this->path);
 
             if ($this->getError()) {
                 $view->setError($this->getError());
             } else {
-                $view->file    = !empty($file) ? $file : null;
-                $view->connect = $this->connect;
-                $view->service = $this->remoteService;
+                $view->set('file', !empty($file) ? $file : null);
+                $view->set('connect', $this->connect);
+                $view->set('service', $this->remoteService);
             }
 
             return $view->loadTemplate();
@@ -2400,8 +2400,8 @@ class Files extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -2676,7 +2676,7 @@ class Files extends Plugin
                 );
             }
 
-            $view->dirsize = $view->totalspace;
+            $view->set('dirsize', $view->totalspace);
         }
 
         // Get publication usage
@@ -2691,7 +2691,7 @@ class Files extends Plugin
             $objP = new \Components\Publications\Tables\Publication($database);
             $pubs = $objP->getRecords($filters);
 
-            $view->pubDiskUsage = \Components\Publications\Helpers\Html::getDiskUsage($pubs);
+            $view->set('pubDiskUsage', \Components\Publications\Helpers\Html::getDiskUsage($pubs));
             $view->pubQuota     = $model->params->get('pubQuota')
                                 ? $model->params->get('pubQuota')
                                 : \Components\Projects\Helpers\Html::convertSize(
@@ -2701,7 +2701,7 @@ class Files extends Plugin
                                 );
         }
 
-        $view->total  = $this->repo->count();
+        $view->set('total', $this->repo->count());
         $view->quota  = $model->params->get(
             'quota',
             \Components\Projects\Helpers\Html::convertSize(
@@ -2711,13 +2711,13 @@ class Files extends Plugin
             ),
         );
 
-        $view->by     = $by;
-        $view->model  = $model;
-        $view->option = $this->componentOption;
-        $view->config = $model->config();
-        $view->title  = isset($this->area['title']) ? $this->area['title'] : '';
-        $view->params = $this->params;
-        $view->versionTracking = $model->params->get('versionTracking', '0');
+        $view->set('by', $by);
+        $view->set('model', $model);
+        $view->set('option', $this->componentOption);
+        $view->set('config', $model->config());
+        $view->set('title', isset($this->area['title']) ? $this->area['title'] : '');
+        $view->set('params', $this->params);
+        $view->set('versionTracking', $model->params->get('versionTracking', '0'));
 
         return $view->loadTemplate();
     }
@@ -2737,18 +2737,18 @@ class Files extends Plugin
         ]);
 
         // Get deleted files
-        $view->files  = $this->repo->getTrash();
+        $view->set('files', $this->repo->getTrash());
 
-        $view->option = $this->componentOption;
-        $view->model  = $this->model;
-        $view->ajax   = Request::getInt('ajax', 0);
+        $view->set('option', $this->componentOption);
+        $view->set('model', $this->model);
+        $view->set('ajax', Request::getInt('ajax', 0));
 
         // Build URL
         $url          = $this->model->link('files');
         $url         .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
         $url         .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
-        $view->url    = $url;
-        $view->subdir = $this->subdir;
+        $view->set('url', $url);
+        $view->set('subdir', $this->subdir);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -2818,25 +2818,25 @@ class Files extends Plugin
             'name'   => 'connect',
         ]);
 
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->url      = $url;
-        $view->title    = $this->area['title'];
-        $view->services = $this->connect->getServices();
-        $view->connect  = $this->connect;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('url', $url);
+        $view->set('title', $this->area['title']);
+        $view->set('services', $this->connect->getServices());
+        $view->set('connect', $this->connect);
 
         // Get refreshed params
         $this->model->reloadProject();
-        $view->params = new \Hubzero\Config\Registry($this->model->table()->params);
+        $view->set('params', new \Hubzero\Config\Registry($this->model->table()->params));
 
         // Get connection details for user
         $member = $this->model->member(true);
-        $view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
+        $view->set('oparams', new \Hubzero\Config\Registry($member ? $member->params : ''));
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }

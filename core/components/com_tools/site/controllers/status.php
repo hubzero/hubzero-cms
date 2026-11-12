@@ -63,14 +63,14 @@ class Status extends SiteController
         // Create a Table object
         $obj = new \Components\Tools\Tables\Status($this->database);
 
-        $this->view->lastsession = $obj->getLastSession();
-        $this->view->sessions = $obj->getSessionCount();
-        $this->view->used_displays = $obj->getUsedDisplayCount();
-        $this->view->ready_displays = $obj->getReadyDisplayCount();
-        $this->view->absent_displays = $obj->getAbsentDisplayCount();
-        $this->view->broken_displays = $obj->getBrokenDisplayCount();
-        $this->view->config = $this->config;
-        $this->view->admin = $this->config->get('access-admin-component');
+        $this->view->set('lastsession', $obj->getLastSession());
+        $this->view->set('sessions', $obj->getSessionCount());
+        $this->view->set('used_displays', $obj->getUsedDisplayCount());
+        $this->view->set('ready_displays', $obj->getReadyDisplayCount());
+        $this->view->set('absent_displays', $obj->getAbsentDisplayCount());
+        $this->view->set('broken_displays', $obj->getBrokenDisplayCount());
+        $this->view->set('config', $this->config);
+        $this->view->set('admin', $this->config->get('access-admin-component'));
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

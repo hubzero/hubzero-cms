@@ -242,14 +242,14 @@ class View
         ], true);
 
         // pass vars to view
-        $view->group           = $group;
-        $view->user            = User::getInstance();
-        $view->classOrId       = $classOrId;
-        $view->tab             = self::getTab($group);
-        $view->sections        = self::getSections();
-        $view->sectionsContent = self::getSectionsContent($group);
-        $view->pages           = $pages;
-        $view->pluginAccess    = \Hubzero\User\Group\Helper::getPluginAccess($group);
+        $view->set('group', $group);
+        $view->set('user', User::getInstance());
+        $view->set('classOrId', $classOrId);
+        $view->set('tab', self::getTab($group));
+        $view->set('sections', self::getSections());
+        $view->set('sectionsContent', self::getSectionsContent($group));
+        $view->set('pages', $pages);
+        $view->set('pluginAccess', \Hubzero\User\Group\Helper::getPluginAccess($group));
 
         // return template
         return $view->loadTemplate();
@@ -394,8 +394,8 @@ class View
         }
 
         // pass vars to view
-        $view->group   = $group;
-        $view->content = $content;
+        $view->set('group', $group);
+        $view->set('content', $content);
 
         // return template
         return $view->loadTemplate();
@@ -419,10 +419,10 @@ class View
         ]);
 
         // pass vars to view
-        $view->group      = $group;
-        $view->user       = User::getInstance();
-        $view->classOrId  = $classOrId;
-        $view->logoutLink = $displayLogoutLink;
+        $view->set('group', $group);
+        $view->set('user', User::getInstance());
+        $view->set('classOrId', $classOrId);
+        $view->set('logoutLink', $displayLogoutLink);
 
         // return template
         return $view->loadTemplate();
@@ -764,7 +764,7 @@ class View
             $view->addTemplatePath(PATH_APP . $base . DS . 'template');
         }
 
-        $view->content = $componentContent;
+        $view->set('content', $componentContent);
         return $view->loadTemplate();
     }
 
@@ -868,7 +868,7 @@ class View
             $view->addTemplatePath(PATH_APP . $base . DS . 'template');
         }
 
-        $view->content = $phpPageContent;
+        $view->set('content', $phpPageContent);
         return $view->loadTemplate();
     }
 }

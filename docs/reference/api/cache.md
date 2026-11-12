@@ -41,4 +41,4 @@ API version 1.0, task `list` in [`cachev1r0.php`](../../../core/components/com_c
 
 Purge expired data
 
-API version 1.0, task `purge` in [`cachev1r0.php`](../../../core/components/com_cache/api/controllers/cachev1r0.php#L123).
+API version 1.0, task `purge` in [`cachev1r0.php`](../../../core/components/com_cache/api/controllers/cachev1r0.php#L122).

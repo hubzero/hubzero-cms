@@ -1069,12 +1069,12 @@ class Members extends AdminController
             'name'      => 'emails',
             'layout'    => 'approved_plain',
         ]);
-        $eview->option     = $this->option;
-        $eview->controller = $this->controller;
-        $eview->config     = $this->config;
-        $eview->baseURL    = Request::root();
-        $eview->user       = $user;
-        $eview->sitename   = Config::get('sitename');
+        $eview->set('option', $this->option);
+        $eview->set('controller', $this->controller);
+        $eview->set('config', $this->config);
+        $eview->set('baseURL', Request::root());
+        $eview->set('user', $user);
+        $eview->set('sitename', Config::get('sitename'));
 
         $plain = $eview->loadTemplate(false);
         $plain = str_replace("\n", "\r\n", $plain);

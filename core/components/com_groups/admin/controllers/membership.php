@@ -115,9 +115,9 @@ class Membership extends AdminController
 
         $tbl = new Tables\Group($this->database);
 
-        $this->view->total = $tbl->countMembers($this->view->filters);
+        $this->view->set('total', $tbl->countMembers($this->view->filters));
 
-        $this->view->rows = $tbl->findMembers($this->view->filters);
+        $this->view->set('rows', $tbl->findMembers($this->view->filters));
 
         //add invite emails to list
         if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee') {
@@ -143,11 +143,11 @@ class Membership extends AdminController
             $this->view->total += $added;
         }
 
-        $this->view->group = $group;
+        $this->view->set('group', $group);
 
         // Membership terms for the whole roster in one query, so the list can
         // show and filter on them without asking per row
-        $this->view->expiration_supported = \Hubzero\User\Group\Membership::supported();
+        $this->view->set('expiration_supported', \Hubzero\User\Group\Membership::supported());
         $this->view->expirations = $this->view->expiration_supported
             ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
             : [];
@@ -206,7 +206,7 @@ class Membership extends AdminController
         $gid = Request::getString('gid', '');
 
         // Load the group page
-        $this->view->group = new Group();
+        $this->view->set('group', new Group());
         $this->view->group->read($gid);
 
         // Set any errors
@@ -328,15 +328,15 @@ class Membership extends AdminController
     {
         $gid = Request::getString('gid', '');
 
-        $this->view->group = new Group();
+        $this->view->set('group', new Group());
         $this->view->group->read($gid);
 
         $ids = Request::getArray('id', []);
         $ids = array_values(array_filter(array_map('intval', (array) $ids)));
 
-        $this->view->users   = $ids;
-        $this->view->maxDays = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
-        $this->view->current = [];
+        $this->view->set('users', $ids);
+        $this->view->set('maxDays', (int) Component::params('com_groups')->get('membership_max_term_days', 0));
+        $this->view->set('current', []);
 
         foreach ($ids as $uid) {
             $this->view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor(

@@ -346,7 +346,7 @@ class Media extends AdminController
             'name'   => 'media',
             'layout' => '_asset',
         ]);
-        $view->i          = Request::getInt('i', 0);
+        $view->set('i', Request::getInt('i', 0));
         $view->set('option', $this->option);
         $view->set('controller', $this->controller);
         $view->set('asset', $asset);

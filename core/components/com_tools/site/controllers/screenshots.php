@@ -154,7 +154,7 @@ class Screenshots extends SiteController
         }
 
         // Incoming child ID
-        $this->view->file = basename(str_replace('\\', '/', (string) Request::getString('filename', '')));
+        $this->view->set('file', basename(str_replace('\\', '/', (string) Request::getString('filename', ''))));
         if (!$this->view->file) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
             $this->displayTask($pid, $version);
@@ -178,20 +178,20 @@ class Screenshots extends SiteController
 
         // Build the path
         $listdir  = $row->relativepath() . DS . $vid;
-        $this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
+        $this->view->set('wpath', DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir);
 
         // Make sure wpath is preceded by app
         if (substr($this->view->wpath, 0, 4) != DS . 'app') {
             $this->view->wpath = DS . 'app' . $this->view->wpath;
         }
 
-        $this->view->upath = PATH_ROOT . $this->view->wpath;
+        $this->view->set('upath', PATH_ROOT . $this->view->wpath);
 
         // Instantiate a new screenshot object
         $shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
+        $this->view->set('title', Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS'));
         Document::setTitle($this->view->title);
 
         // Output HTML
@@ -786,7 +786,7 @@ class Screenshots extends SiteController
         $vid = $objV->getVersionIdFromResource($rid, $version);
 
         // Do we have a published tool?
-        $this->view->published = $objV->getCurrentVersionProperty($resource->alias, 'id');
+        $this->view->set('published', $objV->getCurrentVersionProperty($resource->alias, 'id'));
 
         // Get screenshot information for this resource
         $this->view->shots = $resource
@@ -797,8 +797,8 @@ class Screenshots extends SiteController
 
         // Build paths
         $path = $resource->relativepath();
-        $this->view->upath = PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
-        $this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
+        $this->view->set('upath', PATH_APP . DS . trim($this->rconfig->get('uploadpath'), DS) . $path);
+        $this->view->set('wpath', DS . trim($this->rconfig->get('uploadpath'), DS) . $path);
         if ($vid) {
             $this->view->upath .= DS . $vid;
             $this->view->wpath .= DS . $vid;
@@ -810,9 +810,9 @@ class Screenshots extends SiteController
         }
 
         // get config
-        $this->view->cparams = Component::params('com_resources');
-        $this->view->version = $version;
-        $this->view->rid = $rid;
+        $this->view->set('cparams', Component::params('com_resources'));
+        $this->view->set('version', $version);
+        $this->view->set('rid', $rid);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

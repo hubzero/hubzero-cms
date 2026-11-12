@@ -388,9 +388,9 @@ class Watch extends Plugin
             'name' => 'emails',
             'layout' => 'watch_plain',
         ]);
-        $eview->activities = $activities;
-        $eview->subject = $subject;
-        $eview->project = $project;
+        $eview->set('activities', $activities);
+        $eview->set('subject', $subject);
+        $eview->set('project', $project);
 
         $plain = $eview->loadTemplate(false);
         $plain = str_replace("\n", "\r\n", $plain);

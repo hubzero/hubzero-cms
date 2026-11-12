@@ -97,8 +97,8 @@ class Groups extends Base
             'invitees'   => null,
             'applicants' => null,
         ];
-        $this->view->populargroups = [];
-        $this->view->interestinggroups = [];
+        $this->view->set('populargroups', []);
+        $this->view->set('interestinggroups', []);
 
         // If we have a users profile load their groups and groups matching their tags
         if (!User::isGuest()) {
@@ -129,11 +129,11 @@ class Groups extends Base
         );
 
         // Set some vars for view
-        $this->view->config = $this->config;
-        $this->view->title = $this->_title;
+        $this->view->set('config', $this->config);
+        $this->view->set('title', $this->_title);
 
         // Get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
         // Display view
         $this->view
@@ -223,7 +223,7 @@ class Groups extends Base
         }
 
         // Load the group object
-        $this->view->group = Group::getInstance($this->cn);
+        $this->view->set('group', Group::getInstance($this->cn));
 
         // Check to make sure we were able to load group
         if (!is_object($this->view->group) || !$this->view->group->get('gidNumber') || !$this->view->group->get('cn')) {
@@ -281,14 +281,14 @@ class Groups extends Base
         }
 
         // Get the group params
-        $this->view->gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+        $this->view->set('gparams', new \Hubzero\Config\Registry($this->view->group->get('params')));
 
         // Check authorization
-        $this->view->authorized = Helpers\View::authorize($this->view->group);
+        $this->view->set('authorized', Helpers\View::authorize($this->view->group));
 
         // Get active tab
-        $this->view->tab     = Helpers\View::getTab($this->view->group);
-        $this->view->trueTab = strtolower(Request::getString('active', 'overview'));
+        $this->view->set('tab', Helpers\View::getTab($this->view->group));
+        $this->view->set('trueTab', strtolower(Request::getString('active', 'overview')));
         if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview') {
             $this->unapprovedGroupTask();
 
@@ -352,10 +352,10 @@ class Groups extends Base
         $this->buildPathway($pages);
 
         // Set some vars for view
-        $this->view->title         = $this->_title;
-        $this->view->content       = Helpers\View::displaySectionsContent($this->view->group, $overviewContent);
-        $this->view->activePage    = $activePage;
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
+        $this->view->set('title', $this->_title);
+        $this->view->set('content', Helpers\View::displaySectionsContent($this->view->group, $overviewContent));
+        $this->view->set('activePage', $activePage);
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
         // Check session if this is a newly submitted entry. Trigger a proper event if so.
         if (Session::get('newsubmission.group')) {
@@ -433,7 +433,7 @@ class Groups extends Base
         // Are we creating a new group?
         if ($this->task == 'new') {
             // Instantiate an Group object
-            $this->view->group = new Group();
+            $this->view->set('group', new Group());
 
             // set some group vars for view
             $this->view->group->set('cn', Request::getString('suggested_cn', ''));
@@ -441,10 +441,10 @@ class Groups extends Base
             $this->view->group->set('discoverability', $this->config->get('discoverability', 0));
             $this->view->group->set('discussion_email_autosubscribe', null);
 
-            $this->view->tags = '';
+            $this->view->set('tags', '');
 
             // Set title
-            $this->view->title = Lang::txt('COM_GROUPS_NEW_TITLE');
+            $this->view->set('title', Lang::txt('COM_GROUPS_NEW_TITLE'));
         } else {
             // Check to make sure we have cname
             if (!$this->cn) {
@@ -452,7 +452,7 @@ class Groups extends Base
             }
 
             // Load the group page
-            $this->view->group = Group::getInstance($this->cn);
+            $this->view->set('group', Group::getInstance($this->cn));
 
             // Ensure we found the group info
             if (!$this->view->group || !$this->view->group->get('gidNumber')) {
@@ -470,14 +470,14 @@ class Groups extends Base
 
             // Get the group's interests (tags)
             $gt = new Tags($this->view->group->get('gidNumber'));
-            $this->view->tags = $gt->render('string');
+            $this->view->set('tags', $gt->render('string'));
 
             // Set title
-            $this->view->title = Lang::txt('COM_GROUPS_EDIT_TITLE', $this->view->group->get('description'));
+            $this->view->set('title', Lang::txt('COM_GROUPS_EDIT_TITLE', $this->view->group->get('description')));
         }
 
         // Create dir for uploads
-        $this->view->lid = time() . rand(0, 1000);
+        $this->view->set('lid', time() . rand(0, 1000));
         if ($this->lid != '') {
             $this->view->lid = $this->lid;
         } elseif ($this->view->group->get('gidNumber')) {
@@ -486,7 +486,7 @@ class Groups extends Base
 
         // Are we passing a group from save method
         if ($this->group) {
-            $this->view->group = $this->group;
+            $this->view->set('group', $this->group);
             $this->view->tags  = $this->tags;
         }
 
@@ -500,7 +500,7 @@ class Groups extends Base
             . 'uploads';
 
         // If path is a directory then load images
-        $this->view->logos = [];
+        $this->view->set('logos', []);
         if (is_dir($asset_path)) {
             // Get all images that are in group asset folder and could be a possible group logo
             $this->view->logos = Filesystem::files(
@@ -513,7 +513,7 @@ class Groups extends Base
 
         // Trigger the functions that return the areas we'll be using
         // then add overview to array
-        $this->view->hub_group_plugins = Event::trigger('groups.onGroupAreas', []);
+        $this->view->set('hub_group_plugins', Event::trigger('groups.onGroupAreas', []));
         array_unshift($this->view->hub_group_plugins, [
             'name'             => 'overview',
             'title'            => 'Overview',
@@ -522,7 +522,7 @@ class Groups extends Base
         ]);
 
         // Get plugin access
-        $this->view->group_plugin_access = Group\Helper::getPluginAccess($this->view->group);
+        $this->view->set('group_plugin_access', Group\Helper::getPluginAccess($this->view->group));
 
         // Build the title
         $this->buildTitle();
@@ -531,17 +531,17 @@ class Groups extends Base
         $this->buildPathway();
 
         $this->view->task = $this->task;
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
-        $this->view->customFields = Field::all()->ordered('ordering');
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
+        $this->view->set('customFields', Field::all()->ordered('ordering'));
         $customAnswers = [];
         foreach ($this->view->customFields as $field) {
             $fieldName = $field->get('name');
             $customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->group->get('gidNumber'));
         }
-        $this->view->customAnswers = $customAnswers;
+        $this->view->set('customAnswers', $customAnswers);
         // Display view
         $this->view->display();
     }
@@ -837,10 +837,10 @@ class Groups extends Base
             'layout' => 'saved_plain',
         ]);
 
-        $eview->option = $this->option;
-        $eview->user   = User::getInstance();
-        $eview->group  = $group;
-        $eview->before = $before_vals;
+        $eview->set('option', $this->option);
+        $eview->set('user', User::getInstance());
+        $eview->set('group', $group);
+        $eview->set('before', $before_vals);
         $message['plaintext'] = $eview->loadTemplate(false);
         $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
@@ -1017,7 +1017,7 @@ class Groups extends Base
         }
 
         // Load the group page
-        $this->view->group = Group::getInstance($this->cn);
+        $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
@@ -1039,7 +1039,7 @@ class Groups extends Base
         }
 
         // Start log
-        $this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->group->get('members')));
+        $this->view->set('log', Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->group->get('members'))));
 
         // Trigger the functions that delete associated content
         // Should return logs of what was deleted
@@ -1055,11 +1055,11 @@ class Groups extends Base
         $this->buildPathway();
 
         // Get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
         // Set some vars for view
-        $this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');
-        $this->view->msg = Request::getString('msg', '');
+        $this->view->set('title', Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description'));
+        $this->view->set('msg', Request::getString('msg', ''));
 
         // Display view
         $this->view->display();
@@ -1184,11 +1184,11 @@ class Groups extends Base
         // Build the e-mail message
         $eview = new \Hubzero\Component\View(['name' => 'emails','layout' => 'deleted']);
         $eview->set('option', $this->option);
-        $eview->sitename = Config::get('sitename');
-        $eview->user     = User::getInstance();
-        $eview->gcn      = $deletedgroup->get('cn');
-        $eview->msg      = $message;
-        $eview->group    = $deletedgroup;
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('user', User::getInstance());
+        $eview->set('gcn', $deletedgroup->get('cn'));
+        $eview->set('msg', $message);
+        $eview->set('group', $deletedgroup);
         $html = $eview->loadTemplate();
         $html = str_replace("\n", "\r\n", $html);
 

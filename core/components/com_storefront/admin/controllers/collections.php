@@ -61,10 +61,10 @@ class Collections extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->collections('count', $this->view->filters);
+        $this->view->set('total', $obj->collections('count', $this->view->filters));
 
         // Get records
-        $this->view->rows  = $obj->collections('list', $this->view->filters);
+        $this->view->set('rows', $obj->collections('list', $this->view->filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -100,7 +100,7 @@ class Collections extends AdminController
         $obj = new Archive();
 
         if (is_object($row)) {
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
         } else {
             // Incoming
@@ -111,7 +111,7 @@ class Collections extends AdminController
             }
 
             // Load collection
-            $this->view->row = new Collection($id);
+            $this->view->set('row', new Collection($id));
         }
 
         // Set any errors
@@ -119,7 +119,7 @@ class Collections extends AdminController
             $this->view->setError($error);
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view
@@ -207,7 +207,7 @@ class Collections extends AdminController
                 // Incoming
                 $id = Request::getArray('id', [0]);
 
-                $this->view->cId = $id;
+                $this->view->set('cId', $id);
 
                 // Set any errors
                 if ($this->getError()) {

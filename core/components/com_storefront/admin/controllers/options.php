@@ -61,19 +61,19 @@ class Options extends AdminController
 
         // Get option group ID
         $ogId = Request::getInt('ogId', 0);
-        $this->view->ogId = $ogId;
+        $this->view->set('ogId', $ogId);
 
         // Get option group
         $optionGroup = new OptionGroup($ogId);
-        $this->view->optionGroup = $optionGroup;
+        $this->view->set('optionGroup', $optionGroup);
 
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->options('count', $ogId, $this->view->filters);
+        $this->view->set('total', $obj->options('count', $ogId, $this->view->filters));
 
         // Get records
-        $this->view->rows = $obj->options('list', $ogId, $this->view->filters);
+        $this->view->set('rows', $obj->options('list', $ogId, $this->view->filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -114,7 +114,7 @@ class Options extends AdminController
                 $ogId = Request::getInt('ogId');
                 $row->setOptionGroupId($ogId);
             }
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
         } else {
             // Incoming
@@ -126,7 +126,7 @@ class Options extends AdminController
 
             // Get option
             $row = $obj->option($id);
-            $this->view->row = $row;
+            $this->view->set('row', $row);
 
             // If this is a new option, set option group ID
             if (!$id) {
@@ -139,7 +139,7 @@ class Options extends AdminController
         $ogId = $row->getOptionGroupId();
         $warehouse = new Warehouse();
         $ogInfo = $warehouse->getOptionGroups('list', $filters = ['ids' => $ogId]);
-        $this->view->ogInfo = $ogInfo[0];
+        $this->view->set('ogInfo', $ogInfo[0]);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -223,8 +223,8 @@ class Options extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', [0]);
-                $this->view->oId = $id;
-                $this->view->ogId = $ogId;
+                $this->view->set('oId', $id);
+                $this->view->set('ogId', $ogId);
 
                 // Set any errors
                 if ($this->getError()) {

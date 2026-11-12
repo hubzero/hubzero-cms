@@ -89,11 +89,11 @@ class Orders extends AdminController
         // Get record count
         $this->view->filters['count'] = true;
         $this->view->filters['userInfo'] = true;
-        $this->view->total = Cart::getAllTransactions($this->view->filters);
+        $this->view->set('total', Cart::getAllTransactions($this->view->filters));
 
         // Get records
         $this->view->filters['count'] = false;
-        $this->view->rows = Cart::getAllTransactions($this->view->filters);
+        $this->view->set('rows', Cart::getAllTransactions($this->view->filters));
 
         if (!$this->view->rows) {
             $this->view->rows = [];
@@ -204,13 +204,13 @@ class Orders extends AdminController
                 }
             }
 
-            $this->view->log = $changesLog;
+            $this->view->set('log', $changesLog);
         }
 
-        $this->view->user = $user;
-        $this->view->tInfo = $tInfo;
-        $this->view->items = $transactionItems;
-        $this->view->tId = $id;
+        $this->view->set('user', $user);
+        $this->view->set('tInfo', $tInfo);
+        $this->view->set('items', $transactionItems);
+        $this->view->set('tId', $id);
 
         $this->view
             ->setLayout('view')
@@ -253,10 +253,10 @@ class Orders extends AdminController
         $userId = Cart::getCartUser($tInfo->crtId);
         $user = User::getInstance($userId);
 
-        $this->view->user = $user;
-        $this->view->tInfo = $tInfo;
-        $this->view->items = $transactionItems;
-        $this->view->tId = $id;
+        $this->view->set('user', $user);
+        $this->view->set('tInfo', $tInfo);
+        $this->view->set('items', $transactionItems);
+        $this->view->set('tId', $id);
 
         $this->view
             ->setLayout('edit')
@@ -439,7 +439,7 @@ class Orders extends AdminController
         }
 
         // Get orders count
-        $this->view->total = OrdersHelper::getItemsOrdered('count', $this->view->filters);
+        $this->view->set('total', OrdersHelper::getItemsOrdered('count', $this->view->filters));
 
         // Get orders
         $orders = OrdersHelper::getItemsOrdered('list', $this->view->filters);
@@ -449,7 +449,7 @@ class Orders extends AdminController
             $order->itemInfo = $orderItems[$order->sId];
         }
 
-        $this->view->rows = $orders;
+        $this->view->set('rows', $orders);
 
         // Output the HTML
         $this->view->display();

@@ -292,11 +292,11 @@ class Watch extends Plugin
             'name'   => 'emails',
             'layout' => 'watch_plain',
         ]);
-        $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
-        $eview->message     = $message;
-        $eview->subject     = $subject;
-        $eview->publication = $this->publication;
-        $eview->url         = $url;
+        $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+        $eview->set('message', $message);
+        $eview->set('subject', $subject);
+        $eview->set('publication', $this->publication);
+        $eview->set('url', $url);
 
         $name = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBER');
         $email = $subscriber->email;

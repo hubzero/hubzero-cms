@@ -34,11 +34,11 @@ class Whitelist extends AdminController
         if (empty($sId)) {
             $sId = Request::getInt('sId', 0);
         }
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Get SKU
         $sku = Sku::getInstance($sId);
-        $this->view->sku = $sku;
+        $this->view->set('sku', $sku);
 
         // Get filters
         $this->view->filters = [
@@ -70,11 +70,11 @@ class Whitelist extends AdminController
 
         // Get record count
         $this->view->filters['return'] = 'count';
-        $this->view->total = RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId);
+        $this->view->set('total', RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId));
 
         // Get records
         $this->view->filters['return'] = 'list';
-        $this->view->rows = RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId);
+        $this->view->set('rows', RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId));
 
         // Output the HTML
         $this->view->display();
@@ -131,7 +131,7 @@ class Whitelist extends AdminController
     public function newTask()
     {
         $sId = Request::getInt('id', 0);
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -176,8 +176,8 @@ class Whitelist extends AdminController
             }
         }
 
-        $this->view->matched = $matched;
-        $this->view->noUserMatch = $noHubUserMatch;
+        $this->view->set('matched', $matched);
+        $this->view->set('noUserMatch', $noHubUserMatch);
         $this->view->display();
     }
 }

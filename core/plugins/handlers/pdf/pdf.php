@@ -63,7 +63,7 @@ class Pdf extends Plugin
             'layout'  => 'view',
         ]);
 
-        $view->file = $collection->findFirstWithExtension('pdf');
+        $view->set('file', $collection->findFirstWithExtension('pdf'));
 
         return $view;
     }

@@ -79,12 +79,12 @@ class Review extends Base
             ]);
         }
 
-        $view->manifest     = $this->manifest;
-        $view->content      = self::buildContent($pub, $viewname);
-        $view->pub          = $pub;
-        $view->active       = $this->name;
-        $view->step         = $blockId;
-        $view->showControls = 0;
+        $view->set('manifest', $this->manifest);
+        $view->set('content', self::buildContent($pub, $viewname));
+        $view->set('pub', $pub);
+        $view->set('active', $this->name);
+        $view->set('step', $blockId);
+        $view->set('showControls', 0);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -111,9 +111,9 @@ class Review extends Base
 
         \Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
 
-        $view->pub      = $pub;
-        $view->manifest = $this->manifest;
-        $view->step     = $this->blockId;
+        $view->set('pub', $pub);
+        $view->set('manifest', $this->manifest);
+        $view->set('step', $this->blockId);
 
         if ($this->getError()) {
             $view->setError($this->getError());

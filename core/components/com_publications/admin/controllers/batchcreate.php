@@ -50,7 +50,7 @@ class Batchcreate extends AdminController
             'sortdir'    => 'DESC',
             'authorized' => true,
         ];
-        $this->view->projects  = $project->getRecords($filters, true, 0, 1);
+        $this->view->set('projects', $project->getRecords($filters, true, 0, 1));
 
         // Master type info
         $mt = new Tables\MasterType($this->database);
@@ -61,7 +61,7 @@ class Batchcreate extends AdminController
             'contributable' => 1,
             'authorized' => true,
         ];
-        $this->view->mastertypes = $mt->getRecords($filters);
+        $this->view->set('mastertypes', $mt->getRecords($filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -467,7 +467,7 @@ class Batchcreate extends AdminController
                     'layout' => 'dryrun',
                 ]);
                 $eview->set('option', $this->option);
-                $eview->items  = $items;
+                $eview->set('items', $items);
                 $output       .= $eview->loadTemplate();
             }
         } elseif ($dryRun == 2) {

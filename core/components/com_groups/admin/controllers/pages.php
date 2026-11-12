@@ -79,7 +79,7 @@ class Pages extends AdminController
         $approvers = array_map("trim", explode(',', $approvers));
 
         // are we in the approvers
-        $this->view->needsAttention = new \Hubzero\Base\ItemList();
+        $this->view->set('needsAttention', new \Hubzero\Base\ItemList());
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $pageArchive = Page\Archive::getInstance();
@@ -91,7 +91,7 @@ class Pages extends AdminController
         }
 
         // pass vars to view
-        $this->view->group = $this->group;
+        $this->view->set('group', $this->group);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -122,9 +122,9 @@ class Pages extends AdminController
         $id = (is_array($id) ? $id[0] : $id);
 
         // get the page & version objects
-        $this->view->page = new Page($id);
-        $this->view->version = $this->view->page->version();
-        $this->view->firstversion = $this->view->page->version(1);
+        $this->view->set('page', new Page($id));
+        $this->view->set('version', $this->view->page->version());
+        $this->view->set('firstversion', $this->view->page->version(1));
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
@@ -142,10 +142,10 @@ class Pages extends AdminController
         ]);
 
         // pass vars to view
-        $this->view->group = $this->group;
+        $this->view->set('group', $this->group);
 
         // get page templates
-        $this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
+        $this->view->set('pageTemplates', Helpers\View::getPageTemplates($this->group));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -477,11 +477,11 @@ class Pages extends AdminController
         // handle issues
         if ($issues->count != 0) {
             $this->view->setLayout('scan');
-            $this->view->issues = $issues;
-            $this->view->page = $page;
+            $this->view->set('issues', $issues);
+            $this->view->set('page', $page);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;
-            $this->view->group = $this->group;
+            $this->view->set('group', $this->group);
             $this->view->display();
             return;
         }
@@ -563,12 +563,12 @@ class Pages extends AdminController
         // do we get errors?
         if ($return != 0) {
             $this->view->setLayout('errors');
-            $this->view->error = (isset($output[0])) ? $output[0] : '';
+            $this->view->set('error', (isset($output[0])) ? $output[0] : '');
             $this->view->error = str_replace($file, '"' . $page->get('title') . '"', $this->view->error);
-            $this->view->page = $page;
+            $this->view->set('page', $page);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;
-            $this->view->group = $this->group;
+            $this->view->set('group', $this->group);
             $this->view->display();
             return;
         }

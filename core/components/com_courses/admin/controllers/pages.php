@@ -80,7 +80,10 @@ class Pages extends AdminController
             ),
         ];
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+        );
         if ($this->view->offering->exists()) {
             $this->view->filters['course']    = Request::getState(
                 $this->option . '.' . $this->controller . '.course',
@@ -96,7 +99,7 @@ class Pages extends AdminController
             );
         }
 
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
 
         if ($this->view->offering->exists()) {
             $list = $this->view->offering->pages(['active' => [0, 1]]);
@@ -104,9 +107,9 @@ class Pages extends AdminController
             $list = $this->view->course->pages(['active' => [0, 1]]);
         }
 
-        $this->view->total = count($list);
+        $this->view->set('total', count($list));
 
-        $this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
+        $this->view->set('rows', array_slice($list, $this->view->filters['start'], $this->view->filters['limit']));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -136,7 +139,7 @@ class Pages extends AdminController
             $model = new \Components\Courses\Models\Page($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
         if (!$this->view->row->get('course_id')) {
             $this->view->row->set('course_id', Request::getInt('course', 0));
@@ -148,8 +151,11 @@ class Pages extends AdminController
             $this->view->row->set('active', 1);
         }
 
-        $this->view->course   = \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id'));
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id')),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -635,14 +641,14 @@ class Pages extends AdminController
     public function filesTask()
     {
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
-        $this->view->course_id = Request::getInt('course', 0);
-        $this->view->listdir   = Request::getInt('listdir', 0);
+        $this->view->set('course_id', Request::getInt('course', 0));
+        $this->view->set('listdir', Request::getInt('listdir', 0));
 
         // Incoming sub-directory
-        $this->view->subdir = Request::getString('subdir', '');
+        $this->view->set('subdir', Request::getString('subdir', ''));
 
         // Build the path
-        $this->view->path = $this->buildUploadPath($this->view->listdir);
+        $this->view->set('path', $this->buildUploadPath($this->view->listdir));
 
         // Get list of directories
         $dirs = $this->recursiveListDir($this->view->path);
@@ -667,7 +673,7 @@ class Pages extends AdminController
             $this->view->subdir,
         );
 
-        $this->view->config  = $this->config;
+        $this->view->set('config', $this->config);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -688,11 +694,11 @@ class Pages extends AdminController
     public function listTask()
     {
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
-        $this->view->course_id = Request::getInt('course', 0);
-        $this->view->listdir   = Request::getInt('listdir', 0);
+        $this->view->set('course_id', Request::getInt('course', 0));
+        $this->view->set('listdir', Request::getInt('listdir', 0));
 
         // Incoming sub-directory
-        $this->view->subdir = Request::getString('subdir', '');
+        $this->view->set('subdir', Request::getString('subdir', ''));
 
         // Build the path
         $path = $this->buildUploadPath($this->view->listdir);
@@ -731,9 +737,9 @@ class Pages extends AdminController
             ksort($docs);
         }
 
-        $this->view->docs    = $docs;
-        $this->view->folders = $folders;
-        $this->view->config  = $this->config;
+        $this->view->set('docs', $docs);
+        $this->view->set('folders', $folders);
+        $this->view->set('config', $this->config);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

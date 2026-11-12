@@ -79,12 +79,12 @@ class License extends Base
             ]);
         }
 
-        $view->manifest     = $this->manifest;
-        $view->content      = self::buildContent($pub, $viewname);
-        $view->pub          = $pub;
-        $view->active       = $this->name;
-        $view->step         = $blockId;
-        $view->showControls = 4;
+        $view->set('manifest', $this->manifest);
+        $view->set('content', self::buildContent($pub, $viewname));
+        $view->set('pub', $pub);
+        $view->set('active', $this->name);
+        $view->set('step', $blockId);
+        $view->set('showControls', 4);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -112,16 +112,16 @@ class License extends Base
             'layout'    => 'license',
         ]);
 
-        $view->pub      = $pub;
-        $view->manifest = $this->manifest;
-        $view->step     = $this->blockId;
+        $view->set('pub', $pub);
+        $view->set('manifest', $this->manifest);
+        $view->set('step', $this->blockId);
 
         $objL = new \Components\Publications\Tables\License($this->parent->db);
 
         // Get selected license
-        $view->license = $objL->getPubLicense($pub->version_id);
+        $view->set('license', $objL->getPubLicense($pub->version_id));
 
-        $view->selections = $objL->getBlockLicenses($this->manifest, $view->license);
+        $view->set('selections', $objL->getBlockLicenses($this->manifest, $view->license));
 
         // Pre-select single available license
         if (!$view->license && count($view->selections) == 1) {

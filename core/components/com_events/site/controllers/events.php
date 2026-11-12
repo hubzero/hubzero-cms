@@ -1266,15 +1266,15 @@ class Events extends SiteController
 
             $eview = new \Hubzero\Component\View(['name' => 'register','layout' => 'email']);
             $eview->set('option', $this->option);
-            $eview->sitename = Config::get('sitename');
-            $eview->register = $register;
-            $eview->race = $race;
-            $eview->dietary = $dietary;
-            $eview->disability = $disability;
-            $eview->arrival = $arrival;
-            $eview->departure = $departure;
-            $eview->dinner = $dinner;
-            $eview->params = new \Hubzero\Config\Registry($event->params);
+            $eview->set('sitename', Config::get('sitename'));
+            $eview->set('register', $register);
+            $eview->set('race', $race);
+            $eview->set('dietary', $dietary);
+            $eview->set('disability', $disability);
+            $eview->set('arrival', $arrival);
+            $eview->set('departure', $departure);
+            $eview->set('dinner', $dinner);
+            $eview->set('params', new \Hubzero\Config\Registry($event->params));
 
             $start = $event->get('publish_up');
             $end = $event->get('publish_down');
@@ -1293,9 +1293,9 @@ class Events extends SiteController
             }
 
             $format = 'l, F d, Y \a\t g:i a ';
-            $eview->eventStart = Date::of($start, $tz)->toLocal($format) . $tzStart;
-            $eview->eventEnd = Date::of($end, $tz)->toLocal($format) . $tzEnd;
-            $eview->eventTitle = $event->title;
+            $eview->set('eventStart', Date::of($start, $tz)->toLocal($format) . $tzStart);
+            $eview->set('eventEnd', Date::of($end, $tz)->toLocal($format) . $tzEnd);
+            $eview->set('eventTitle', $event->title);
 
             $message = $eview->loadTemplate();
             $message = str_replace("\n", "\r\n", $message);
@@ -1769,13 +1769,13 @@ class Events extends SiteController
             . ': '
             . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task));
         $this->view->task = $this->task;
-        $this->view->config = $this->config;
-        $this->view->row = $row;
-        $this->view->fields = $fields;
-        $this->view->times = $times;
-        $this->view->lists = $lists;
-        $this->view->gid = $this->gid;
-        $this->view->admin = $this->authorize('core.edit.state');
+        $this->view->set('config', $this->config);
+        $this->view->set('row', $row);
+        $this->view->set('fields', $fields);
+        $this->view->set('times', $times);
+        $this->view->set('lists', $lists);
+        $this->view->set('gid', $this->gid);
+        $this->view->set('admin', $this->authorize('core.edit.state'));
         if ($this->getError()) {
             $this->view->setError($this->getError());
         }
@@ -1858,9 +1858,9 @@ class Events extends SiteController
             'layout' => 'deleted',
         ]);
         $eview->set('option', $this->option);
-        $eview->sitename = Config::get('sitename');
-        $eview->user = User::getInstance();
-        $eview->event = $event;
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('user', User::getInstance());
+        $eview->set('event', $event);
         $message = $eview->loadTemplate();
         $message = str_replace("\n", "\r\n", $message);
 
@@ -2160,9 +2160,9 @@ class Events extends SiteController
             $eview = new View(['name' => 'emails','layout' => 'edited']);
         }
         $eview->set('option', $this->option);
-        $eview->sitename = Config::get('sitename');
-        $eview->user = User::getInstance();
-        $eview->row = $row;
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('user', User::getInstance());
+        $eview->set('row', $row);
         $message = $eview->loadTemplate();
         $message = str_replace("\n", "\r\n", $message);
 

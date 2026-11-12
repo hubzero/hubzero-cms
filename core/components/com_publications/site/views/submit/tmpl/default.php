@@ -59,8 +59,8 @@ $this
         'name'      => 'projects',
         'layout'    => '_statusmsg',
     ]);
-    $view->error = $this->getError();
-    $view->msg   = $this->msg;
+    $view->set('error', $this->getError());
+    $view->set('msg', $this->msg);
     echo $view->loadTemplate();
     ?>
 

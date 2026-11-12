@@ -377,13 +377,13 @@ class Jobs extends SiteController
         if ($this->task != 'browse' && $this->_allowSubscriptions) {
             // Component introduction
             $view = new View(['name' => 'intro']);
-            $view->title       = $this->_title;
-            $view->config      = $this->config;
+            $view->set('title', $this->_title);
+            $view->set('config', $this->config);
             $view->set('option', $this->option);
-            $view->emp         = $this->_emp;
-            $view->admin       = $this->_admin;
-            $view->pageNav     = $pageNav;
-            $view->msg         = $this->_msg;
+            $view->set('emp', $this->_emp);
+            $view->set('admin', $this->_admin);
+            $view->set('pageNav', $pageNav);
+            $view->set('msg', $this->_msg);
             $view->display();
 
             // Show latest jobs
@@ -404,18 +404,18 @@ class Jobs extends SiteController
                 'name'      => 'jobs',
                 'layout'    => 'default',
             ]);
-            $view->title            = $this->_title;
-            $view->config           = $this->config;
+            $view->set('title', $this->_title);
+            $view->set('config', $this->config);
             $view->set('option', $this->option);
-            $view->emp              = $this->_emp;
-            $view->admin            = $this->_admin;
-            $view->total            = $jtotal;
-            $view->pageNav          = $pageNav;
-            $view->jobs             = $jobs;
-            $view->mini             = 0;
-            $view->filters          = $filters;
-            $view->subscriptionCode = $subscriptionCode;
-            $view->employer         = $employer;
+            $view->set('emp', $this->_emp);
+            $view->set('admin', $this->_admin);
+            $view->set('total', $jtotal);
+            $view->set('pageNav', $pageNav);
+            $view->set('jobs', $jobs);
+            $view->set('mini', 0);
+            $view->set('filters', $filters);
+            $view->set('subscriptionCode', $subscriptionCode);
+            $view->set('employer', $employer);
             $view->set('task', $this->task);
 
             $view->display();
@@ -483,16 +483,16 @@ class Jobs extends SiteController
             );
 
             // Output HTML
-            $this->view->config      = $this->config;
-            $this->view->admin       = $this->_admin;
-            $this->view->masterAdmin = $this->_masterAdmin;
-            $this->view->title       = $this->_title;
-            $this->view->seekers     = $seekers;
-            $this->view->pageNav     = $pageNav;
-            $this->view->cats        = $cats;
-            $this->view->types       = $types;
-            $this->view->filters     = $filters;
-            $this->view->emp         = $this->_emp;
+            $this->view->set('config', $this->config);
+            $this->view->set('admin', $this->_admin);
+            $this->view->set('masterAdmin', $this->_masterAdmin);
+            $this->view->set('title', $this->_title);
+            $this->view->set('seekers', $seekers);
+            $this->view->set('pageNav', $pageNav);
+            $this->view->set('cats', $cats);
+            $this->view->set('types', $types);
+            $this->view->set('filters', $filters);
+            $this->view->set('emp', $this->_emp);
             $this->view->option      = $this->option;
             $this->view
                 ->setName('resumes')
@@ -613,15 +613,15 @@ class Jobs extends SiteController
         $funds   = ($funds > 0) ? $funds : '0';
 
         // Output HTML
-        $this->view->title        = $this->_title;
-        $this->view->config       = $this->config;
-        $this->view->subscription = $subscription;
-        $this->view->employer     = $employer;
-        $this->view->services     = $services;
-        $this->view->funds        = $funds;
-        $this->view->uid          = $uid;
-        $this->view->emp          = $this->_emp;
-        $this->view->admin        = $this->_admin;
+        $this->view->set('title', $this->_title);
+        $this->view->set('config', $this->config);
+        $this->view->set('subscription', $subscription);
+        $this->view->set('employer', $employer);
+        $this->view->set('services', $services);
+        $this->view->set('funds', $funds);
+        $this->view->set('uid', $uid);
+        $this->view->set('emp', $this->_emp);
+        $this->view->set('admin', $this->_admin);
         $this->view->task         = $this->task;
         $this->view->option       = $this->option;
 
@@ -990,22 +990,22 @@ class Jobs extends SiteController
         $this->buildPathway();
 
         // Output HTML
-        $this->view->title          = $this->_title;
-        $this->view->config         = $this->config;
-        $this->view->admin          = $this->_admin;
-        $this->view->masterAdmin    = $this->_masterAdmin;
-        $this->view->emp            = 1;
+        $this->view->set('title', $this->_title);
+        $this->view->set('config', $this->config);
+        $this->view->set('admin', $this->_admin);
+        $this->view->set('masterAdmin', $this->_masterAdmin);
+        $this->view->set('emp', 1);
         $this->view->task           = $this->task;
         $this->view->option         = $this->option;
-        $this->view->updated        = 0;
-        $this->view->myjobs         = $myjobs;
-        $this->view->activejobs     = $activejobs;
-        $this->view->subscription   = $subscription;
-        $this->view->employer       = $employer;
-        $this->view->service        = $service;
-        $this->view->login          = $profile->get('username');
-        $this->view->uid            = $uid;
-        $this->view->stats          = $stats;
+        $this->view->set('updated', 0);
+        $this->view->set('myjobs', $myjobs);
+        $this->view->set('activejobs', $activejobs);
+        $this->view->set('subscription', $subscription);
+        $this->view->set('employer', $employer);
+        $this->view->set('service', $service);
+        $this->view->set('login', $profile->get('username'));
+        $this->view->set('uid', $uid);
+        $this->view->set('stats', $stats);
 
         // Set any errors
         if ($this->getError()) {
@@ -1062,7 +1062,7 @@ class Jobs extends SiteController
             // Error view
             $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_INACTIVE'));
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->name));
+            $view->set('title', Lang::txt(strtoupper($this->name)));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1102,13 +1102,13 @@ class Jobs extends SiteController
 
         // Output HTML
         $view = new View(['name' => 'apply']);
-        $view->title       = $this->_title;
-        $view->config      = $this->config;
-        $view->emp         = $this->_emp;
-        $view->job         = $job;
-        $view->seeker      = $seeker;
-        $view->admin       = $this->_admin;
-        $view->application = $ja;
+        $view->set('title', $this->_title);
+        $view->set('config', $this->config);
+        $view->set('emp', $this->_emp);
+        $view->set('job', $job);
+        $view->set('seeker', $seeker);
+        $view->set('admin', $this->_admin);
+        $view->set('application', $ja);
         $view->set('task', $this->task);
         $view->set('option', $this->option);
 
@@ -1255,7 +1255,7 @@ class Jobs extends SiteController
 
             // Output HTML
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->name));
+            $view->set('title', Lang::txt(strtoupper($this->name)));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1285,7 +1285,7 @@ class Jobs extends SiteController
 
             // Output HTML
             $view = new View(['name' => 'error']);
-            $view->title = Lang::txt(strtoupper($this->name));
+            $view->set('title', Lang::txt(strtoupper($this->name)));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1307,8 +1307,8 @@ class Jobs extends SiteController
         // Labels go to the view, not onto the table row: a property that is
         // not a column ends up in the UPDATE if the row is stored (the view's
         // content() call can), and type/cid must stay the ids
-        $this->view->jobtype = $jt->getType($job->type);
-        $this->view->jobcat  = $jc->getCat($job->cid);
+        $this->view->set('jobtype', $jt->getType($job->type));
+        $this->view->set('jobcat', $jc->getCat($job->cid));
 
         // Get applications
         $ja = new Application($this->database);
@@ -1330,11 +1330,11 @@ class Jobs extends SiteController
         }
 
         // Output HTML
-        $this->view->title          = $this->_title;
-        $this->view->config         = $this->config;
-        $this->view->emp            = $this->_emp;
-        $this->view->job            = $job;
-        $this->view->admin          = $this->_admin;
+        $this->view->set('title', $this->_title);
+        $this->view->set('config', $this->config);
+        $this->view->set('emp', $this->_emp);
+        $this->view->set('job', $job);
+        $this->view->set('admin', $this->_admin);
         $this->view->task           = $this->task;
         $this->view->option         = $this->option;
 
@@ -1712,17 +1712,17 @@ class Jobs extends SiteController
         $this->buildPathway();
 
         // Output HTML
-        $this->view->title    = $this->_title;
-        $this->view->config   = $this->config;
-        $this->view->uid      = $uid;
-        $this->view->profile  = $profile;
-        $this->view->emp      = $this->_emp;
-        $this->view->job      = $job;
-        $this->view->jobid    = $job->id;
-        $this->view->types    = $types;
-        $this->view->cats     = $cats;
-        $this->view->employer = $employer;
-        $this->view->admin    = $this->_admin;
+        $this->view->set('title', $this->_title);
+        $this->view->set('config', $this->config);
+        $this->view->set('uid', $uid);
+        $this->view->set('profile', $profile);
+        $this->view->set('emp', $this->_emp);
+        $this->view->set('job', $job);
+        $this->view->set('jobid', $job->id);
+        $this->view->set('types', $types);
+        $this->view->set('cats', $cats);
+        $this->view->set('employer', $employer);
+        $this->view->set('admin', $this->_admin);
         $this->view->task     = $this->task;
         $this->view->option   = $this->option;
 

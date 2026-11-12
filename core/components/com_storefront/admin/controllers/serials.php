@@ -30,11 +30,11 @@ class Serials extends AdminController
     {
         // Get SKU ID
         $sId = Request::getInt('sId');
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Get SKU
         $sku = Sku::getInstance($sId);
-        $this->view->sku = $sku;
+        $this->view->set('sku', $sku);
 
         // Get filters
         $this->view->filters = [
@@ -67,11 +67,11 @@ class Serials extends AdminController
 
         // Get record count
         $this->view->filters['return'] = 'count';
-        $this->view->total = SerialsHelper::getSkuSerials($this->view->filters, $sId);
+        $this->view->set('total', SerialsHelper::getSkuSerials($this->view->filters, $sId));
 
         // Get records
         $this->view->filters['return'] = 'list';
-        $this->view->rows = SerialsHelper::getSkuSerials($this->view->filters, $sId);
+        $this->view->set('rows', SerialsHelper::getSkuSerials($this->view->filters, $sId));
 
         // Output the HTML
         $this->view->display();
@@ -133,7 +133,7 @@ class Serials extends AdminController
     public function newTask()
     {
         $sId = Request::getInt('sId', 0);
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -171,7 +171,7 @@ class Serials extends AdminController
     public function uploadTask()
     {
         $sId = Request::getInt('sId', 0);
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Output the HTML
         $this->view->display();
@@ -212,9 +212,9 @@ class Serials extends AdminController
                 }
                 fclose($handle);
 
-                $this->view->inserted = $inserted;
-                $this->view->skipped = $skipped;
-                $this->view->ignored = $ignored;
+                $this->view->set('inserted', $inserted);
+                $this->view->set('skipped', $skipped);
+                $this->view->set('ignored', $ignored);
             } else {
                 $this->view->setError('Could not read the file.');
             }
@@ -225,7 +225,7 @@ class Serials extends AdminController
         }
 
         // Output the HTML
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
         $this->view->display();
     }
 }

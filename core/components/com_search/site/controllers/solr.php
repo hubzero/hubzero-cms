@@ -244,7 +244,7 @@ class Solr extends SiteController
             // Get MoreLikeThis results
         }
 
-        $this->view->pagination = new \Hubzero\Pagination\Paginator($numFound, $start, $limit);
+        $this->view->set('pagination', new \Hubzero\Pagination\Paginator($numFound, $start, $limit));
         $this->view->pagination->setAdditionalUrlParam('terms', $terms);
         $this->view->pagination->setAdditionalUrlParam('type', $type);
         foreach ($childTerms as $index => $child) {
@@ -253,18 +253,18 @@ class Solr extends SiteController
         }
 
         if (count($results) > 0) {
-            $this->view->query = $terms;
-            $this->view->results = $results;
-            $this->view->facets = $searchComponents;
-            $this->view->facetCounts = $facetCounts;
-            $this->view->total = 0;
+            $this->view->set('query', $terms);
+            $this->view->set('results', $results);
+            $this->view->set('facets', $searchComponents);
+            $this->view->set('facetCounts', $facetCounts);
+            $this->view->set('total', 0);
             foreach ($this->view->facets as $facet) {
                 $facetIndex = $facet->getQueryName();
                 $this->view->total = $this->view->total + $facetCounts[$facetIndex];
             }
         } else {
-            $this->view->queryString = '';
-            $this->view->results = null;
+            $this->view->set('queryString', '');
+            $this->view->set('results', null);
         }
 
         // Set breadcrumbs
@@ -286,18 +286,18 @@ class Solr extends SiteController
             $viewOverrides[$name] = $viewOverride;
         }
 
-        $this->view->terms = $terms;
-        $this->view->tags = $tagString;
-        $this->view->childTerms = $childTerms;
-        $this->view->childTermsString =  $tagParams;
-        $this->view->type = $type;
-        $this->view->filters = $filters;
-        $this->view->searchComponent = $typeComponent;
-        $this->view->tagSearchEnabled = $tagSearchEnabled;
-        $this->view->viewOverrides = $viewOverrides;
-        $this->view->section = $section;
+        $this->view->set('terms', $terms);
+        $this->view->set('tags', $tagString);
+        $this->view->set('childTerms', $childTerms);
+        $this->view->set('childTermsString', $tagParams);
+        $this->view->set('type', $type);
+        $this->view->set('filters', $filters);
+        $this->view->set('searchComponent', $typeComponent);
+        $this->view->set('tagSearchEnabled', $tagSearchEnabled);
+        $this->view->set('viewOverrides', $viewOverrides);
+        $this->view->set('section', $section);
         $this->view->setLayout('display');
-        $this->view->urlQuery = $urlQuery;
+        $this->view->set('urlQuery', $urlQuery);
         $this->view->display();
     }
 

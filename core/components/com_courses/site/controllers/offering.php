@@ -185,7 +185,7 @@ class Offering extends SiteController
         }
 
         // Get the active tab (section)
-        $this->view->nonadmin = 0;
+        $this->view->set('nonadmin', 0);
         if ($this->course->offering()->access('manage', 'section')) {
             $offeringId = $this->course->offering()->get('id');
             $stateKey = $this->option . '.offering' . $offeringId . '.nonadmin';
@@ -232,10 +232,10 @@ class Offering extends SiteController
             $this->course->offering(),
         ]);
 
-        $this->view->course        = $this->course;
-        $this->view->config        = $this->config;
-        $this->view->plugins       = $plugins;
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('course', $this->course);
+        $this->view->set('config', $this->config);
+        $this->view->set('plugins', $plugins);
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view->display();
     }
 
@@ -264,7 +264,7 @@ class Offering extends SiteController
             );
         }
 
-        $this->view->course = $this->course;
+        $this->view->set('course', $this->course);
 
         // Build the title
         $this->buildTitle();
@@ -397,7 +397,7 @@ class Offering extends SiteController
         if ($this->getError()) {
             Notify::error($this->getError(), 'courses');
         }
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view->display();
     }
 
@@ -418,7 +418,7 @@ class Offering extends SiteController
      */
     public function editTask()
     {
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view
             ->setLayout('edit')
             ->display();

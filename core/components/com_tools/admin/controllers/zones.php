@@ -96,9 +96,9 @@ class Zones extends AdminController
         // Get the middleware
         $model = new Middleware();
 
-        $this->view->total = $model->zones('count', $this->view->filters);
+        $this->view->set('total', $model->zones('count', $this->view->filters));
 
-        $this->view->rows  = $model->zones('list', $this->view->filters);
+        $this->view->set('rows', $model->zones('list', $this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -130,7 +130,7 @@ class Zones extends AdminController
             $row = new Middleware\Zone($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         if (!$this->view->row->exists()) {
             $this->view->row->set('state', 'down');
@@ -671,7 +671,7 @@ class Zones extends AdminController
         // Incoming
         $id = $id ?: Request::getInt('id', 0);
 
-        $this->view->zone = Middleware\Zone::getInstance($id);
+        $this->view->set('zone', Middleware\Zone::getInstance($id));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

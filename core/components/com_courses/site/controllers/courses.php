@@ -131,12 +131,12 @@ class Courses extends SiteController
         // Output HTML
         $allCoursesCount = count($all_courses);
         $popularCoursesCount = count($this->view->popularcourses);
-        $this->view->more_courses = ($allCoursesCount > $popularCoursesCount);
-        $this->view->config   = $this->config;
-        $this->view->database = $this->database;
-        $this->view->title    = $this->_title;
+        $this->view->set('more_courses', ($allCoursesCount > $popularCoursesCount));
+        $this->view->set('config', $this->config);
+        $this->view->set('database', $this->database);
+        $this->view->set('title', $this->_title);
 
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view->display();
     }
 
@@ -219,11 +219,11 @@ class Courses extends SiteController
 
         // Get a record count
         $this->view->filters['count'] = true;
-        $this->view->total   = $model->courses($this->view->filters);
+        $this->view->set('total', $model->courses($this->view->filters));
 
         // Get records
         $this->view->filters['count'] = false;
-        $this->view->courses = $model->courses($this->view->filters);
+        $this->view->set('courses', $model->courses($this->view->filters));
 
         //build the title
         $this->buildTitle();
@@ -232,10 +232,10 @@ class Courses extends SiteController
         $this->buildPathway();
 
         // Output HTML
-        $this->view->model  = $model;
-        $this->view->title  = $this->_title;
-        $this->view->config = $this->config;
-        $this->view->notifications = Notify::messages('courses');
+        $this->view->set('model', $model);
+        $this->view->set('title', $this->_title);
+        $this->view->set('config', $this->config);
+        $this->view->set('notifications', Notify::messages('courses'));
         $this->view->display();
     }
 
@@ -252,10 +252,10 @@ class Courses extends SiteController
             if (!$badge->get('id')) {
                 throw new Exception(Lang::txt('COM_COURSES_BADGE_NOT_FOUND'), 500);
             } else {
-                $this->view->badge  = $badge;
-                $this->view->config = $this->config;
-                $this->view->action = Request::getWord('action', 'default');
-                $this->view->token  = Request::getString('validation_token', false);
+                $this->view->set('badge', $badge);
+                $this->view->set('config', $this->config);
+                $this->view->set('action', Request::getWord('action', 'default'));
+                $this->view->set('token', Request::getString('validation_token', false));
             }
         } else {
             throw new Exception(Lang::txt('COM_COURSES_BADGE_NOT_FOUND'), 500);

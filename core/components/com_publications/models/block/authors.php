@@ -87,13 +87,13 @@ class Authors extends Base
             ]);
         }
 
-        $view->manifest     = $this->manifest;
-        $view->content      = self::buildContent($pub, $viewname);
-        $view->pub          = $pub;
-        $view->active       = $this->name;
-        $view->step         = $blockId;
+        $view->set('manifest', $this->manifest);
+        $view->set('content', self::buildContent($pub, $viewname));
+        $view->set('pub', $pub);
+        $view->set('active', $this->name);
+        $view->set('step', $blockId);
         $showGroupOwner     = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';
-        $view->showControls = $showGroupOwner ? 4 : 2;
+        $view->set('showControls', $showGroupOwner ? 4 : 2);
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -693,15 +693,15 @@ class Authors extends Base
         }
 
         // Get creator groups
-        $view->groups = \Hubzero\User\Helper::getGroups($pub->_project->get('owned_by_user'), 'members', 1);
+        $view->set('groups', \Hubzero\User\Helper::getGroups($pub->_project->get('owned_by_user'), 'members', 1));
 
-        $view->pub      = $pub;
-        $view->manifest = $this->manifest;
-        $view->step     = $this->blockId;
+        $view->set('pub', $pub);
+        $view->set('manifest', $this->manifest);
+        $view->set('step', $this->blockId);
 
         // Get team members
         $objO = new \Components\Projects\Tables\Owner($this->parent->db);
-        $view->teamids = $objO->getIds($pub->_project->get('id'), 'all', 0, 0);
+        $view->set('teamids', $objO->getIds($pub->_project->get('id'), 'all', 0, 0));
 
         if ($this->getError()) {
             $view->setError($this->getError());

@@ -112,7 +112,7 @@ class Campaigns extends AdminController
 
             // Campaign expiration date: saved as GMT (see edit.php)
             $expire_date = Date::of($row->expire_date);
-            $this->view->expire_date = $expire_date;
+            $this->view->set('expire_date', $expire_date);
         }
 
         // Output the HTML

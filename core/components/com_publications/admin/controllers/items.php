@@ -51,7 +51,7 @@ class Items extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [];
+        $this->view->set('filters', []);
         $this->view->filters['ignore_access'] = true;
         $this->view->filters['limit']    = Request::getState(
             $this->option . '.publications.limit',
@@ -93,20 +93,20 @@ class Items extends AdminController
         ));
 
         // Instantiate a publication object
-        $this->view->model = new Models\Publication($this->database);
+        $this->view->set('model', new Models\Publication($this->database));
 
         // Get record count
-        $this->view->total = $this->view->model->entries('count', $this->view->filters, true);
+        $this->view->set('total', $this->view->model->entries('count', $this->view->filters, true));
 
         // Get publications
-        $this->view->rows = $this->view->model->entries('list', $this->view->filters, true);
+        $this->view->set('rows', $this->view->model->entries('list', $this->view->filters, true));
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Get <select> of types
         // Get types
         $rt = new Tables\Category($this->database);
-        $this->view->categories = $rt->getContribCategories();
+        $this->view->set('categories', $rt->getContribCategories());
 
         // Set any errors
         if ($this->getError()) {
@@ -127,10 +127,10 @@ class Items extends AdminController
     {
         Request::setVar('hidemainmenu', 1);
 
-        $this->view->isnew = $isnew;
+        $this->view->set('isnew', $isnew);
 
         // Get the publications component config
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Incoming publication ID
         $id = Request::getArray('id', [0]);
@@ -152,13 +152,13 @@ class Items extends AdminController
         $version = Request::getString('version', 'default');
 
         // Grab some filters for returning to place after editing
-        $this->view->return = [];
+        $this->view->set('return', []);
         $this->view->return['category'] = Request::getString('category', '');
         $this->view->return['sortby']   = Request::getString('sortby', '');
         $this->view->return['status']   = Request::getString('status', '');
 
         // Instantiate a publication object
-        $this->view->model = new Models\Publication($id, $version);
+        $this->view->set('model', new Models\Publication($id, $version));
 
         // If publication not found, raise error
         if (!$this->view->model->exists()) {
@@ -183,7 +183,7 @@ class Items extends AdminController
         $this->view->model->setCuration();
 
         // Get licenses
-        $this->view->licenses = $this->view->model->table('License')->getLicenses();
+        $this->view->set('licenses', $this->view->model->table('License')->getLicenses());
 
         // Get groups
         $filters = [
@@ -192,7 +192,7 @@ class Items extends AdminController
             'type'       => [1, 3],
             'sortby'     => 'description',
         ];
-        $this->view->groups = \Hubzero\User\Group::find($filters);
+        $this->view->set('groups', \Hubzero\User\Group::find($filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -216,15 +216,15 @@ class Items extends AdminController
         $v  = Request::getString('v', 'default');
 
         // Get publication information
-        $this->view->pub = new Models\Publication($id, $v);
+        $this->view->set('pub', new Models\Publication($id, $v));
 
         // If publication not found, raise error
         if (!$this->view->pub->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
-        $this->view->config = $this->config;
-        $this->view->typeParams = $this->view->pub->masterType()->_params;
+        $this->view->set('config', $this->config);
+        $this->view->set('typeParams', $this->view->pub->masterType()->_params);
 
         // Get attachments
         $this->view->pub->attachments();
@@ -235,8 +235,8 @@ class Items extends AdminController
         if (!$el) {
             $this->setError('No Element Id');
         } else {
-            $this->view->elementId = $el;
-            $this->view->element   = $this->view->pub->_curationModel->getElementManifest($el, 'content');
+            $this->view->set('elementId', $el);
+            $this->view->set('element', $this->view->pub->_curationModel->getElementManifest($el, 'content'));
         }
 
         // Set any errors
@@ -327,7 +327,7 @@ class Items extends AdminController
         $this->view->setLayout('editauthor');
 
         $authorTblObj = new Tables\Author($this->database);
-        $this->view->author = $authorTblObj->getAuthorById($author_id);
+        $this->view->set('author', $authorTblObj->getAuthorById($author_id));
 
         if ($this->task == 'editauthor' && !$this->view->author) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
@@ -336,8 +336,8 @@ class Items extends AdminController
         // Version ID
         $vid = Request::getInt('vid', $this->view->author->publication_version_id);
 
-        $this->view->row = new Tables\Version($this->database);
-        $this->view->pub = new Tables\Publication($this->database);
+        $this->view->set('row', new Tables\Version($this->database));
+        $this->view->set('pub', new Tables\Publication($this->database));
 
         // Load version
         if (!$this->view->row->load($vid)) {
@@ -360,7 +360,7 @@ class Items extends AdminController
         $filters['status']  = 'active';
 
         // Get all active team members
-        $this->view->team = $objO->getOwners($this->view->pub->project_id, $filters);
+        $this->view->set('team', $objO->getOwners($this->view->pub->project_id, $filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -1061,11 +1061,11 @@ class Items extends AdminController
                                             'layout'    => 'admin_html',
                                         ]);
 
-                                        $eview->model = $this->model;
-                                        $eview->project = $this->model->project();
-                                        $eview->subject = $subjectForPermissionEmail;
-                                        $eview->message = $messageForPermissionEmail;
-                                        $eview->permissionURL = $permissionURL;
+                                        $eview->set('model', $this->model);
+                                        $eview->set('project', $this->model->project());
+                                        $eview->set('subject', $subjectForPermissionEmail);
+                                        $eview->set('message', $messageForPermissionEmail);
+                                        $eview->set('permissionURL', $permissionURL);
                                         $eview->permissionTxt = Lang::txt(
                                             'COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION',
                                         );
@@ -1442,12 +1442,12 @@ class Items extends AdminController
                 'name'      => 'emails',
                 'layout'    => 'admin_plain',
             ]);
-            $eview->option  = $this->option;
-            $eview->subject = $subject;
-            $eview->action  = $action;
-            $eview->model   = $this->model;
-            $eview->message = $message;
-            $eview->project = $this->model->project();
+            $eview->set('option', $this->option);
+            $eview->set('subject', $subject);
+            $eview->set('action', $action);
+            $eview->set('model', $this->model);
+            $eview->set('message', $message);
+            $eview->set('project', $this->model->project());
 
             $body = [];
             $body['plaintext'] = $eview->loadTemplate(false);
@@ -1482,7 +1482,7 @@ class Items extends AdminController
     public function versionsTask()
     {
         // Get the publications component config
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Incoming publication ID
         $id = Request::getInt('id', 0);
@@ -1497,13 +1497,13 @@ class Items extends AdminController
         }
 
         // Grab some filters for returning to place after editing
-        $this->view->return = [];
+        $this->view->set('return', []);
         $this->view->return['cat']    = Request::getString('cat', '');
         $this->view->return['sortby'] = Request::getString('sortby', '');
         $this->view->return['status'] = Request::getString('status', '');
 
         // Load publication model
-        $this->view->pub = new Models\Publication($id, 'default');
+        $this->view->set('pub', new Models\Publication($id, 'default'));
 
         if (!$this->view->pub) {
             App::redirect(
@@ -1514,7 +1514,7 @@ class Items extends AdminController
         }
 
         // Get versions
-        $this->view->versions = $this->view->pub->version->getVersions($id, $filters = ['withdev' => 1]);
+        $this->view->set('versions', $this->view->pub->version->getVersions($id, $filters = ['withdev' => 1]));
 
         // Set any errors
         if ($this->getError()) {

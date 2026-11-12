@@ -247,11 +247,11 @@ class Abuse extends SiteController
                 'name'   => 'emails',
                 'layout' => 'abuse_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->report     = $row;
-            $eview->reported   = $reported;
-            $eview->author     = null;
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('report', $row);
+            $eview->set('reported', $reported);
+            $eview->set('author', null);
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);

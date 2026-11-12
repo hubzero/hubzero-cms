@@ -220,11 +220,11 @@ class Sessions extends SiteController
         $this->buildTitle();
         $this->buildPathway();
 
-        $this->view->title     = $this->_title;
-        $this->view->app       = $app;
-        $this->view->version   = $version;
-        $this->view->toolTitle = $title;
-        $this->view->mode      = $mode;
+        $this->view->set('title', $this->_title);
+        $this->view->set('app', $app);
+        $this->view->set('version', $version);
+        $this->view->set('toolTitle', $title);
+        $this->view->set('mode', $mode);
         $this->view->display();
     }
 
@@ -266,7 +266,7 @@ class Sessions extends SiteController
         $this->buildPathway();
 
         // Instantiate the view
-        $this->view->title = $this->_title;
+        $this->view->set('title', $this->_title);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -292,9 +292,9 @@ class Sessions extends SiteController
         $this->buildPathway();
 
         // Instantiate the view
-        $this->view->title = $this->_title;
+        $this->view->set('title', $this->_title);
 
-        $this->view->badparams = $badparams;
+        $this->view->set('badparams', $badparams);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -350,7 +350,7 @@ class Sessions extends SiteController
         $ms = new \Components\Tools\Tables\Session($mwdb);
         $sessions = $ms->getRecords(User::get('username'), '', false);
 
-        $this->view->sessions = $sessions;
+        $this->view->set('sessions', $sessions);
         if ($this->config->get('access-manage-session')) {
             $this->view->allsessions = $ms->getRecords(
                 User::get('username'),
@@ -358,8 +358,8 @@ class Sessions extends SiteController
                 $this->config->get('access-manage-session'),
             );
         }
-        $this->view->active = Request::getString('active', '');
-        $this->view->config = $this->config;
+        $this->view->set('active', Request::getString('active', ''));
+        $this->view->set('config', $this->config);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -646,9 +646,9 @@ class Sessions extends SiteController
             $sessions = $ms->getRecords(User::get('username'), $app->name, false);
             if ($sessions && count($sessions) > 0) {
                 $this->view->setLayout('list');
-                $this->view->app = $app;
-                $this->view->config   = $this->config;
-                $this->view->sessions = $sessions;
+                $this->view->set('app', $app);
+                $this->view->set('config', $this->config);
+                $this->view->set('sessions', $sessions);
 
                 foreach ($this->getErrors() as $error) {
                     $this->view->setError($error);
@@ -1138,7 +1138,7 @@ class Sessions extends SiteController
             );
         }
 
-        $this->view->rtrn = Request::getString('return', '');
+        $this->view->set('rtrn', Request::getString('return', ''));
 
         // Get the user's IP address
         $app->ip = Request::ip(); //Request::getString('REMOTE_ADDR', '', 'server');
@@ -1153,7 +1153,7 @@ class Sessions extends SiteController
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
         }
 
-        $this->view->middleware = new \Components\Tools\Models\Middleware();
+        $this->view->set('middleware', new \Components\Tools\Models\Middleware());
         //$session = $this->view->middleware->session($app->sess);
 
         $tv = new \Components\Tools\Tables\Version($this->database);
@@ -1163,7 +1163,7 @@ class Sessions extends SiteController
         );
         $this->view->middleware->set('allowed', $this->database->loadColumn());
 
-        $this->view->zone = $this->view->middleware->zone($row->zone_id);
+        $this->view->set('zone', $this->view->middleware->zone($row->zone_id));
 
         if (strstr($row->appname, '_')) {
             $v = substr(strrchr($row->appname, '_'), 1);
@@ -1472,13 +1472,13 @@ class Sessions extends SiteController
         }
 
         // Get users groups
-        $this->view->mygroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
+        $this->view->set('mygroups', \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1));
 
-        $this->view->app      = $app;
-        $this->view->config   = $this->config;
-        $this->view->output   = $output;
-        $this->view->toolname = $toolname;
-        $this->view->total    = $this->total;
+        $this->view->set('app', $app);
+        $this->view->set('config', $this->config);
+        $this->view->set('output', $output);
+        $this->view->set('toolname', $toolname);
+        $this->view->set('total', $this->total);
 
         // Get everyone sharing this session
         if ($app->sess) {
@@ -1487,7 +1487,7 @@ class Sessions extends SiteController
 
             // Load the viewperm
             $ms = new \Components\Tools\Tables\Viewperm($mwdb);
-            $this->view->shares = $ms->loadViewperm($app->sess);
+            $this->view->set('shares', $ms->loadViewperm($app->sess));
         }
 
         // Set any error messages

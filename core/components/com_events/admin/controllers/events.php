@@ -77,7 +77,7 @@ class Events extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [];
+        $this->view->set('filters', []);
         $this->view->filters['limit']    = Request::getState(
             $this->option . '.' . $this->controller . '.limit',
             'limit',
@@ -101,10 +101,10 @@ class Events extends AdminController
         $ee = new Event($this->database);
 
         // Get a record count
-        $this->view->total = $ee->getCount($this->view->filters);
+        $this->view->set('total', $ee->getCount($this->view->filters));
 
         // Get records
-        $this->view->rows = $ee->getRecords($this->view->filters);
+        $this->view->set('rows', $ee->getRecords($this->view->filters));
 
         // Get list of categories
         $categories[] = \Html::select(
@@ -210,7 +210,7 @@ class Events extends AdminController
         // Instantiate a new view
         $this->view->setLayout('edit');
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         $offset = Config::get('offset');
 
@@ -227,7 +227,7 @@ class Events extends AdminController
         }
 
         // Load the event object
-        $this->view->row = new Event($this->database);
+        $this->view->set('row', new Event($this->database));
         $this->view->row->load($id);
 
         // Fail if checked out not by 'me'
@@ -277,7 +277,7 @@ class Events extends AdminController
         $this->database->setQuery("SELECT 0 AS value, 'Public' AS text");
         $groups = $this->database->loadObjectList();
 
-        $this->view->fields = $this->config->getCfg('fields');
+        $this->view->set('fields', $this->config->getCfg('fields'));
         if (!empty($this->view->fields)) {
             for ($i = 0, $n = count($this->view->fields); $i < $n; $i++) {
                 // explore the text and pull out all matches
@@ -341,7 +341,7 @@ class Events extends AdminController
         }
         $end_time = $end_hrs . ':' . $end_mins;
 
-        $this->view->times = [];
+        $this->view->set('times', []);
         $this->view->times['start_publish'] = $start_publish;
         $this->view->times['start_time'] = $start_time;
         $this->view->times['start_pm'] = $start_pm;
@@ -353,7 +353,7 @@ class Events extends AdminController
         if ($this->view->row->id != null) {
             // Get tags on this event
             $rt = new Tags($this->view->row->id);
-            $this->view->tags = $rt->render('string');
+            $this->view->set('tags', $rt->render('string'));
         }
 
         // Set any errors

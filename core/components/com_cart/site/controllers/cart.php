@@ -183,22 +183,22 @@ class Cart extends ComponentController
 
         // Get the latest synced cart info, it will also enable cart syncing that was turned off before
         $cartInfo = $cart->getCartInfo(true);
-        $this->view->cartInfo = $cartInfo;
+        $this->view->set('cartInfo', $cartInfo);
 
         // Handle coupons
         $couponPerks = $cart->getCouponPerks();
         //print_r($couponPerks); die;
-        $this->view->couponPerks = $couponPerks;
+        $this->view->set('couponPerks', $couponPerks);
 
         // Handle memberships
         $membershipInfo = $cart->getMembershipInfo();
         //print_r($membershipInfo); die;
-        $this->view->membershipInfo = $membershipInfo;
+        $this->view->set('membershipInfo', $membershipInfo);
 
         // At this point the cart is lifted and may have some issues/errors (say, after merging), get them
         if ($cart->hasMessages()) {
             $cartMessages = $cart->getMessages();
-            $this->view->notifications = $cartMessages;
+            $this->view->set('notifications', $cartMessages);
         }
 
         if (Pathway::count() <= 0) {

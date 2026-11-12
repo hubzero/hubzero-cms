@@ -51,7 +51,7 @@ class Collections extends SiteController
      */
     public function postsTask()
     {
-        $this->view->config  = $this->config;
+        $this->view->set('config', $this->config);
 
         // Filters for returning results
         $this->view->filters = [
@@ -68,13 +68,13 @@ class Collections extends SiteController
             $this->view->filters['object_type'] = 'site';
         }
 
-        $this->view->collection = new Collection();
+        $this->view->set('collection', new Collection());
 
         $this->view->filters['count'] = true;
-        $this->view->total = $this->view->collection->posts($this->view->filters);
+        $this->view->set('total', $this->view->collection->posts($this->view->filters));
 
         $this->view->filters['count'] = false;
-        $this->view->rows = $this->view->collection->posts($this->view->filters);
+        $this->view->set('rows', $this->view->collection->posts($this->view->filters));
 
         $model = Archive::getInstance();
 
@@ -99,7 +99,7 @@ class Collections extends SiteController
      */
     public function collectionsTask()
     {
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Filters for returning results
         $this->view->filters = [
@@ -117,15 +117,15 @@ class Collections extends SiteController
         $model = Archive::getInstance();
 
         $this->view->filters['count'] = true;
-        $this->view->total = $model->collections($this->view->filters);
+        $this->view->set('total', $model->collections($this->view->filters));
 
         $this->view->filters['user_id'] = User::get('id');
 
-        $this->view->posts = $model->posts($this->view->filters);
+        $this->view->set('posts', $model->posts($this->view->filters));
         unset($this->view->filters['user_id']);
 
         $this->view->filters['count'] = false;
-        $this->view->rows = $model->collections($this->view->filters);
+        $this->view->set('rows', $model->collections($this->view->filters));
 
         $this->buildTitle();
         $this->buildPathway();
@@ -154,10 +154,10 @@ class Collections extends SiteController
             $this->view->filters['object_type'] = 'site';
         }
 
-        $this->view->collection = new Collection();
+        $this->view->set('collection', new Collection());
 
         $this->view->filters['count'] = true;
-        $this->view->total = $this->view->collection->posts($this->view->filters);
+        $this->view->set('total', $this->view->collection->posts($this->view->filters));
 
         $model = Archive::getInstance();
 

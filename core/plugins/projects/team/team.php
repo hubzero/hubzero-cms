@@ -224,8 +224,8 @@ class Team extends Plugin
             'element' => 'team',
             'name'    => 'mini',
         ]);
-        $view->team  = $team;
-        $view->model = $model;
+        $view->set('team', $team);
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -252,8 +252,8 @@ class Team extends Plugin
         ]);
 
         // Get team
-        $view->team  = $model->team($filters = ['status' => 1]);
-        $view->model = $model;
+        $view->set('team', $model->team($filters = ['status' => 1]));
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -275,7 +275,7 @@ class Team extends Plugin
             'name'    => $layout,
         ]);
 
-        $view->total = count($this->model->team());
+        $view->set('total', count($this->model->team()));
 
         // Instantiate project owner
         $view->filters['limit']   = Request::getInt('limit', Config::get('list_limit'));
@@ -296,31 +296,31 @@ class Team extends Plugin
             $view->filters['start'] = 0;
         }
         // Get all active team members
-        $view->team = $this->model->team($view->filters, true);
+        $view->set('team', $this->model->team($view->filters, true));
 
         // Get managers count
-        $view->managers_count = count($this->model->table('Owner')->getIds($this->model->get('id'), $role = 1));
+        $view->set('managers_count', count($this->model->table('Owner')->getIds($this->model->get('id'), $role = 1)));
 
         // Get count of project groups
         $groups = $this->model->table('Owner')->getProjectGroups($this->model->get('id'));
 
         $userId = User::getInstance()->get('id');
         $projectId = $this->model->get('id');
-        $view->currentUser = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
-        $view->count_groups = $groups ? count($groups) : 0;
-        $view->params   = $this->model->params;
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->setup    = $setup;
-        $view->config   = $this->config;
-        $view->task     = $this->task;
-        $view->edit     = $edit;
-        $view->title    = $this->area['title'];
+        $view->set('currentUser', \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId));
+        $view->set('count_groups', $groups ? count($groups) : 0);
+        $view->set('params', $this->model->params);
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('setup', $setup);
+        $view->set('config', $this->config);
+        $view->set('task', $this->task);
+        $view->set('edit', $edit);
+        $view->set('title', $this->area['title']);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -343,7 +343,7 @@ class Team extends Plugin
             'layout'  => 'choose',
         ]);
 
-        $view->filters = [];
+        $view->set('filters', []);
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
         if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
@@ -353,17 +353,17 @@ class Team extends Plugin
             $view->filters['sortby'] = 'name';
         }
 
-        $view->params   = $this->model->params;
-        $view->option   = $this->componentOption;
-        $view->controller = Request::getCmd('controller', 'projects');
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->config   = $this->config;
-        $view->task     = $this->task;
-        $view->section  = $this->pluginName;
-        $view->step     = 1;
-        $view->ajax     = $no_html;
+        $view->set('params', $this->model->params);
+        $view->set('option', $this->componentOption);
+        $view->set('controller', Request::getCmd('controller', 'projects'));
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->config);
+        $view->set('task', $this->task);
+        $view->set('section', $this->pluginName);
+        $view->set('step', 1);
+        $view->set('ajax', $no_html);
         $view->setErrors($this->getErrors());
 
         $output = $view->loadTemplate();
@@ -405,7 +405,7 @@ class Team extends Plugin
             'layout'  => $layout,
         ]);
 
-        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // The publication must belong to this project
         if (!$view->publication->exists() || $view->publication->get('project_id') != $this->model->get('id')) {
@@ -418,8 +418,8 @@ class Team extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -447,29 +447,29 @@ class Team extends Plugin
         $view->filters['pub_versionid'] = $vid;
 
         // Get all active team members
-        $view->team = $objO->getOwners($this->model->get('id'), $view->filters);
+        $view->set('team', $objO->getOwners($this->model->get('id'), $view->filters));
 
         // Get current authors
         $pa = $view->publication->table('Author');
-        $view->authors = $pa->getAuthors($vid);
+        $view->set('authors', $pa->getAuthors($vid));
 
         // Exclude any owners?
-        $view->exclude = [];
+        $view->set('exclude', []);
 
-        $view->mc = Event::trigger('hubzero.onGetSingleEntry', [['members', 'uid', 'uid']]);
+        $view->set('mc', Event::trigger('hubzero.onGetSingleEntry', [['members', 'uid', 'uid']]));
 
-        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->ajax     = $ajax;
-        $view->task     = $this->task;
-        $view->block    = $block;
-        $view->step     = $step;
-        $view->props    = $props;
+        $view->set('option', $this->model->isProvisioned() ? 'com_publications' : $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
+        $view->set('task', $this->task);
+        $view->set('block', $block);
+        $view->set('step', $step);
+        $view->set('props', $props);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -815,14 +815,14 @@ class Team extends Plugin
                 'name'    => 'delete',
             ]);
 
-            $view->selected = $selected;
-            $view->checked  = $checked;
-            $view->option   = $this->componentOption;
-            $view->model    = $this->model;
-            $view->uid      = $this->uid;
-            $view->setup    = $setup;
-            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->uid);
-            $view->msg      = isset($this->msg) ? $this->msg : '';
+            $view->set('selected', $selected);
+            $view->set('checked', $checked);
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('setup', $setup);
+            $view->set('aid', $objO->getOwnerID($this->model->get('id'), $this->uid));
+            $view->set('msg', isset($this->msg) ? $this->msg : '');
             $view->setErrors($this->getErrors());
 
             return $view->loadTemplate();
@@ -922,9 +922,9 @@ class Team extends Plugin
                     'name'    => 'memberrequest',
                 ]);
 
-                $view->option = $this->componentOption;
-                $view->model  = $this->model;
-                $view->owner  = $owner;
+                $view->set('option', $this->componentOption);
+                $view->set('model', $this->model);
+                $view->set('owner', $owner);
                 $view->setErrors($this->getErrors());
 
                 return $view->loadTemplate();
@@ -1043,15 +1043,15 @@ class Team extends Plugin
             ]);
 
             // Get groups project owner belongs to
-            $view->groups = \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1);
+            $view->set('groups', \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1));
             if ($this->model->groupOwner()) {
                 $view->groups[] = $this->model->groupOwner();
             }
 
-            $view->option = $this->componentOption;
-            $view->model  = $this->model;
-            $view->msg    = isset($this->msg) ? $this->msg : '';
-            $view->title  = $this->area['title'];
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('msg', isset($this->msg) ? $this->msg : '');
+            $view->set('title', $this->area['title']);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1120,15 +1120,15 @@ class Team extends Plugin
                 'name'    => 'quit',
             ]);
 
-            $view->group       = $this->model->groupOwner('id');
-            $view->onlymanager = $onlymanager;
-            $view->option      = $this->componentOption;
-            $view->database    = $this->database;
-            $view->model       = $this->model;
-            $view->uid         = $this->uid;
-            $view->config      = $this->config;
-            $view->msg         = isset($this->msg) ? $this->msg : '';
-            $view->title       = $this->area['title'];
+            $view->set('group', $this->model->groupOwner('id'));
+            $view->set('onlymanager', $onlymanager);
+            $view->set('option', $this->componentOption);
+            $view->set('database', $this->database);
+            $view->set('model', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('config', $this->config);
+            $view->set('msg', isset($this->msg) ? $this->msg : '');
+            $view->set('title', $this->area['title']);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1188,13 +1188,13 @@ class Team extends Plugin
                 'name'    => 'role',
             ]);
 
-            $view->selected = $selected;
-            $view->checked  = $checked;
-            $view->option   = $this->componentOption;
-            $view->model    = $this->model;
-            $view->uid      = $this->uid;
-            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->uid);
-            $view->msg      = isset($this->msg) ? $this->msg : '';
+            $view->set('selected', $selected);
+            $view->set('checked', $checked);
+            $view->set('option', $this->componentOption);
+            $view->set('model', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('aid', $objO->getOwnerID($this->model->get('id'), $this->uid));
+            $view->set('msg', isset($this->msg) ? $this->msg : '');
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1295,13 +1295,13 @@ class Team extends Plugin
             'layout'    => 'invite_plain',
         ]);
 
-        $eview->option  = $option;
-        $eview->project = $model;
-        $eview->code    = $code;
-        $eview->email   = $email;
-        $eview->uid     = $uid;
-        $eview->role    = $role;
-        $eview->pub     = isset($pub) ? $pub : '';
+        $eview->set('option', $option);
+        $eview->set('project', $model);
+        $eview->set('code', $code);
+        $eview->set('email', $email);
+        $eview->set('uid', $uid);
+        $eview->set('role', $role);
+        $eview->set('pub', isset($pub) ? $pub : '');
 
         $message['plaintext'] = $eview->loadTemplate(false);
         $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

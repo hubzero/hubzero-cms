@@ -1039,14 +1039,14 @@ class Resources extends SiteController
                     'layout' => 'watch',
                 ]);
                 $this->view->set('option', $this->option);
-                $this->view->config         = $this->config;
-                $this->view->database       = $this->database;
-                $this->view->doc            = Document::getRoot();
-                $this->view->manifest       = $manifest;
-                $this->view->content_folder = $content_folder;
-                $this->view->content_url    = $content_url;
-                $this->view->pid            = $parent;
-                $this->view->resid          = $child;
+                $this->view->set('config', $this->config);
+                $this->view->set('database', $this->database);
+                $this->view->set('doc', Document::getRoot());
+                $this->view->set('manifest', $manifest);
+                $this->view->set('content_folder', $content_folder);
+                $this->view->set('content_url', $content_url);
+                $this->view->set('pid', $parent);
+                $this->view->set('resid', $child);
 
                 // Output HTML
                 foreach ($this->getErrors() as $error) {
@@ -1175,11 +1175,11 @@ class Resources extends SiteController
             'layout' => 'video',
         ]);
         $this->view->set('option', $this->option);
-        $this->view->config   = $this->config;
-        $this->view->database = $this->database;
-        $this->view->resource = $activechild;
-        $this->view->parent   = $model;
-        $this->view->manifest = $manifest;
+        $this->view->set('config', $this->config);
+        $this->view->set('database', $this->database);
+        $this->view->set('resource', $activechild);
+        $this->view->set('parent', $model);
+        $this->view->set('manifest', $manifest);
 
         // Output HTML
         foreach ($this->getErrors() as $error) {
@@ -1537,13 +1537,13 @@ class Resources extends SiteController
                 'layout'    => 'play',
             ]);
             $view->set('option', $this->option);
-            $view->config      = $this->config;
-            $view->tconfig     = $tconfig;
-            $view->resource    = $this->model;
-            $view->resid       = $this->resid;
-            $view->activechild = $activechild;
-            $view->no_html     = 0;
-            $view->fsize       = 0;
+            $view->set('config', $this->config);
+            $view->set('tconfig', $tconfig);
+            $view->set('resource', $this->model);
+            $view->set('resid', $this->resid);
+            $view->set('activechild', $activechild);
+            $view->set('no_html', 0);
+            $view->set('fsize', 0);
             $view->setErrors($this->getErrors());
 
             $body = $view->loadTemplate();

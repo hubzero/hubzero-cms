@@ -160,7 +160,7 @@ class Media extends Base
         $this->view->setLayout('filebrowser');
 
         //get rel path to start
-        $this->view->activeFolder = Request::getString('path', '/');
+        $this->view->set('activeFolder', Request::getString('path', '/'));
 
         // make sure we have an active folder
         if ($this->view->activeFolder == '') {
@@ -192,8 +192,8 @@ class Media extends Base
 
         // build recursive folder trees
         $folderTree             = $this->buildFolderTree($folders);
-        $this->view->folderTree = $this->buildFolderTreeHtml($folderTree);
-        $this->view->folderList = $this->buildFolderTreeSelect($folderTree);
+        $this->view->set('folderTree', $this->buildFolderTreeHtml($folderTree));
+        $this->view->set('folderList', $this->buildFolderTreeSelect($folderTree));
 
         // add base path if super group
         /*if ($this->group->isSuperGroup())
@@ -204,8 +204,8 @@ class Media extends Base
         }*/
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
-        $this->view->group         = $this->group;
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
+        $this->view->set('group', $this->group);
 
         //display view
         $this->view
@@ -364,10 +364,10 @@ class Media extends Base
         $this->view->setLayout('filelist');
 
         //get request vars
-        $this->view->folders = [];
-        $this->view->files   = [];
-        $this->view->type    = \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', ''));
-        $this->view->relpath = Request::getString('path', '/');
+        $this->view->set('folders', []);
+        $this->view->set('files', []);
+        $this->view->set('type', \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', '')));
+        $this->view->set('relpath', Request::getString('path', '/'));
 
         // make sure we default to uploads folder for non-super groups
         if ($this->group->get('type') != 3 && (!$this->view->relpath || $this->view->relpath == '/')) {
@@ -415,11 +415,11 @@ class Media extends Base
 
         // pass vars to view
         //$this->view->config = $this->config;
-        $this->view->group   = $this->group;
-        $this->view->path    = $this->path;
+        $this->view->set('group', $this->group);
+        $this->view->set('path', $this->path);
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
         //display view
         $this->view
@@ -864,7 +864,7 @@ class Media extends Base
         $file = $this->containRelativePath(Request::getString('file', ''));
 
         // default folder to have open
-        $this->view->activeFolder = '/uploads';
+        $this->view->set('activeFolder', '/uploads');
         //if ($this->group->get('type') == 3)
         //{
         //  $this->view->activeFolder = '/';
@@ -882,9 +882,9 @@ class Media extends Base
         $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
-        $this->view->group      = $this->group;
-        $this->view->folderList = $folderList;
-        $this->view->file       = $file;
+        $this->view->set('group', $this->group);
+        $this->view->set('folderList', $folderList);
+        $this->view->set('file', $file);
 
         //render layout
         $this->view
@@ -945,8 +945,8 @@ class Media extends Base
         $file = $this->containRelativePath(Request::getString('file', ''));
 
         // pass vars to view
-        $this->view->group = $this->group;
-        $this->view->file  = $file;
+        $this->view->set('group', $this->group);
+        $this->view->set('file', $file);
 
         //render layout
         $this->view
@@ -1126,8 +1126,8 @@ class Media extends Base
         $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
-        $this->view->group      = $this->group;
-        $this->view->folderList = $folderList;
+        $this->view->set('group', $this->group);
+        $this->view->set('folderList', $folderList);
 
         //render layout
         $this->view
@@ -1193,8 +1193,8 @@ class Media extends Base
         $folder = $this->containRelativePath(Request::getString('folder', ''));
 
         // pass vars to view
-        $this->view->group  = $this->group;
-        $this->view->folder = $folder;
+        $this->view->set('group', $this->group);
+        $this->view->set('folder', $folder);
 
         //render layout
         $this->view
@@ -1270,7 +1270,7 @@ class Media extends Base
         $folder = $this->containRelativePath(Request::getString('folder', ''));
 
         // default folder to have open
-        $this->view->activeFolder = '/uploads';
+        $this->view->set('activeFolder', '/uploads');
         //if ($this->group->get('type') == 3)
         //{
         //  $this->view->activeFolder = '/';
@@ -1289,9 +1289,9 @@ class Media extends Base
         $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
-        $this->view->group      = $this->group;
-        $this->view->folderList = $folderList;
-        $this->view->folder     = $folder;
+        $this->view->set('group', $this->group);
+        $this->view->set('folderList', $folderList);
+        $this->view->set('folder', $folder);
 
         //render layout
         $this->view

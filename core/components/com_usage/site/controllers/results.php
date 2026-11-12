@@ -68,10 +68,10 @@ class Results extends SiteController
             throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
         }
 
-        $this->view->no_html = Request::getInt('no_html', 0);
+        $this->view->set('no_html', Request::getInt('no_html', 0));
 
         // Trigger the functions that return the areas we'll be using
-        $this->view->cats = Event::trigger('usage.onUsageAreas');
+        $this->view->set('cats', Event::trigger('usage.onUsageAreas'));
 
         if (is_array($this->view->cats)) {
             if (!$this->task || $this->task == 'default') {
@@ -107,7 +107,7 @@ class Results extends SiteController
         ]);
 
         // Build the page title
-        $this->view->title  = Lang::txt(strtoupper($this->option));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)));
         if ($this->task) {
             $langKey = 'PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task);
             $this->view->title .= ': ' . Lang::txt($langKey);

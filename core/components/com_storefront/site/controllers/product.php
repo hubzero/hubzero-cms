@@ -64,8 +64,8 @@ class Product extends \Hubzero\Component\SiteController
         $p = new P($pId);
         $meta = $p->getMeta();
 
-        $this->view->pId = $pId;
-        $this->view->meta = $meta;
+        $this->view->set('pId', $pId);
+        $this->view->set('meta', $meta);
         $this->view->css();
         $this->view->js('product_display.js');
 
@@ -107,7 +107,7 @@ class Product extends \Hubzero\Component\SiteController
 
         // Get the product info
         $product = $this->warehouse->getProductInfo($pId);
-        $this->view->product = $product;
+        $this->view->set('product', $product);
 
         // Run the auditor
         $auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
@@ -130,9 +130,9 @@ class Product extends \Hubzero\Component\SiteController
         $data = false;
         if ($productOptions->status == 'ok') {
             $data = $productOptions->options;
-            $this->view->options = $data->options;
+            $this->view->set('options', $data->options);
         } else {
-            $this->view->statusMessage = $productOptions->msg;
+            $this->view->set('statusMessage', $productOptions->msg);
         }
 
         // Find a price range for the product
@@ -149,7 +149,7 @@ class Product extends \Hubzero\Component\SiteController
         if (!$data || !count($data->skus)) {
             $inStock = false;
         }
-        $this->view->inStock = $inStock;
+        $this->view->set('inStock', $inStock);
 
         if ($data && count($data->skus) == 1) {
             // Set the max value for the dropdown QTY
@@ -179,7 +179,7 @@ class Product extends \Hubzero\Component\SiteController
             }
         }
 
-        $this->view->qtyDropDown = $qtyDropDownMaxVal;
+        $this->view->set('qtyDropDown', $qtyDropDownMaxVal);
 
         if ($data) {
             foreach ($data->skus as $sId => $info) {
@@ -193,7 +193,7 @@ class Product extends \Hubzero\Component\SiteController
                 }
             }
         }
-        $this->view->price = $priceRange;
+        $this->view->set('price', $priceRange);
 
         // Add custom page JS
         if ($data && (count($data->options) > 0 || count($data->skus) > 1)) {
@@ -201,15 +201,15 @@ class Product extends \Hubzero\Component\SiteController
             Document::addScriptDeclaration($js);
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
-        $this->view->productAvailable = $productAvailable;
+        $this->view->set('productAvailable', $productAvailable);
 
         //build pathway
         $this->buildPathway($product->pName);
 
         // Set notifications
-        $this->view->notifications = $pageMessages;
+        $this->view->set('notifications', $pageMessages);
 
         $this->view->display();
     }

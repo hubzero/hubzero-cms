@@ -2040,12 +2040,12 @@ class Forum extends Plugin
             'layout'    => 'mentions_html',
         ]);
 
-        $eView->comment = $comment;
-        $eView->commentNoTags = strip_tags($comment);
-        $eView->postLink = $url;
-        $eView->postAuthor = $postAuthor;
-        $eView->groupTitle = $groupTitle;
-        $eView->groupAlias = $groupAlias;
+        $eView->set('comment', $comment);
+        $eView->set('commentNoTags', strip_tags($comment));
+        $eView->set('postLink', $url);
+        $eView->set('postAuthor', $postAuthor);
+        $eView->set('groupTitle', $groupTitle);
+        $eView->set('groupAlias', $groupAlias);
 
         $html = $eView->loadTemplate(false);
         $html = str_replace("\n", "\r\n", $html);

@@ -42,7 +42,7 @@ class Configure extends AdminController
      */
     public function displayTask()
     {
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();

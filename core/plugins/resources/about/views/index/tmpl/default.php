@@ -314,9 +314,9 @@ $maintext = $this->model->description;
                         'layout'    => '_submitters',
                     ]);
                     $view->set('option', $this->option);
-                    $view->contributors = $this->model->contributors('submitter');
-                    $view->badges       = $this->plugin->get('badges', 0);
-                    $view->showorgs     = 1;
+                    $view->set('contributors', $this->model->contributors('submitter'));
+                    $view->set('badges', $this->plugin->get('badges', 0));
+                    $view->set('showorgs', 1);
                     $view->display();
                     ?>
                 </div>

@@ -53,7 +53,7 @@ class Login extends AdminController
                 }
 
                 if (method_exists($className, 'display')) {
-                    $this->view->return = Request::getString('return', null);
+                    $this->view->set('return', Request::getString('return', null));
 
                     $result = $myplugin->display($this->view, null);
 

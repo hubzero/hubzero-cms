@@ -176,15 +176,15 @@ class Tickets extends SiteController
         // Set the page title
         $this->buildTitle();
 
-        $this->view->title = $this->_title;
+        $this->view->set('title', $this->_title);
 
         // Set the pathway
         $this->buildPathway();
 
         $type = Request::getWord('type', 'submitted');
-        $this->view->type = ($type == 'automatic') ? 1 : 0;
+        $this->view->set('type', ($type == 'automatic') ? 1 : 0);
 
-        $this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getString('group', '_none_'));
+        $this->view->set('group', preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getString('group', '_none_')));
 
         // Set up some dates
         $date = new \Hubzero\Utility\Date();
@@ -192,9 +192,9 @@ class Tickets extends SiteController
         $year  = Request::getInt('year', $date->toLocal('Y'));
         $month = $date->toLocal('m');
 
-        $this->view->year = $year;
-        $this->view->opened = [];
-        $this->view->closed = [];
+        $this->view->set('year', $year);
+        $this->view->set('opened', []);
+        $this->view->set('closed', []);
 
         $sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM `#__support_tickets` AS s
@@ -203,10 +203,10 @@ class Tickets extends SiteController
 				AND s.type=" . $this->database->quote($this->view->type) . "
 				ORDER BY g.description ASC";
         $this->database->setQuery($sql);
-        $this->view->groups = $this->database->loadObjectList();
+        $this->view->set('groups', $this->database->loadObjectList());
 
         // Users
-        $this->view->users = null;
+        $this->view->set('users', null);
 
         if ($this->view->group == '_none_') {
             $query = "SELECT DISTINCT a.username, a.name, a.id
@@ -262,7 +262,7 @@ class Tickets extends SiteController
         $startyear  = $first;
         $startmonth = 1;
 
-        $this->view->start = Request::getString('start', $first . '-01');
+        $this->view->set('start', Request::getString('start', $first . '-01'));
         if ($this->view->start != $first . '-01') {
             if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->start)) {
                 $this->view->start = $first . '-01';
@@ -275,7 +275,7 @@ class Tickets extends SiteController
             }
         }
 
-        $this->view->end = Request::getString('end', '');
+        $this->view->set('end', Request::getString('end', ''));
 
         $endmonth = $month;
         $endyear = date("Y");
@@ -397,7 +397,7 @@ class Tickets extends SiteController
                 }
             }
         }
-        $this->view->closedTickets = $closedTickets;
+        $this->view->set('closedTickets', $closedTickets);
         // Loop through info and divide into years/months
         $closed = [];
         foreach ($closedTickets as $o) {
@@ -413,8 +413,8 @@ class Tickets extends SiteController
 
         // Group data by year and gather some info for each user
 
-        $this->view->closedmonths = [];
-        $this->view->openedmonths = [];
+        $this->view->set('closedmonths', []);
+        $this->view->set('openedmonths', []);
 
         for ($k = $startyear, $n = $endyear; $k < $n; $k++) {
             $this->view->closedmonths[$k] = [];
@@ -859,7 +859,7 @@ class Tickets extends SiteController
         // Set page title
         $this->buildTitle();
 
-        $this->view->title = $this->_title;
+        $this->view->set('title', $this->_title);
 
         // Set the pathway
         $this->buildPathway();
@@ -1058,11 +1058,11 @@ class Tickets extends SiteController
                 'name'   => 'emails',
                 'layout' => 'ticket_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->ticket     = $row;
-            $eview->config     = $this->config;
-            $eview->delimiter  = '';
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('ticket', $row);
+            $eview->set('config', $this->config);
+            $eview->set('delimiter', '');
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);
@@ -1242,12 +1242,12 @@ class Tickets extends SiteController
                         'name'   => 'emails',
                         'layout' => 'comment_plain',
                     ]);
-                    $eview->option     = $this->option;
-                    $eview->controller = $this->controller;
-                    $eview->comment    = $rowc;
-                    $eview->ticket     = $row;
-                    $eview->config     = $this->config;
-                    $eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+                    $eview->set('option', $this->option);
+                    $eview->set('controller', $this->controller);
+                    $eview->set('comment', $rowc);
+                    $eview->set('ticket', $row);
+                    $eview->set('config', $this->config);
+                    $eview->set('delimiter', ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : ''));
 
                     $message['plaintext'] = $eview->loadTemplate(false);
                     $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

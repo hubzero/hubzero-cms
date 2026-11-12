@@ -77,7 +77,7 @@ class Import extends SiteController
     {
         $gid = Request::getString('group');
         if ($gid != '') {
-            $this->view->gid = $gid;
+            $this->view->set('gid', $gid);
         }
 
         //are we allowing importing
@@ -115,10 +115,10 @@ class Import extends SiteController
             . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller));
 
         //call the plugins
-        $this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', []);
+        $this->view->set('accepted_files', Event::trigger('citation.onImportAcceptedFiles', []));
 
         //get any messages
-        $this->view->messages = Notify::messages('citations');
+        $this->view->set('messages', Notify::messages('citations'));
 
         //display view
         $this->view->display();
@@ -239,11 +239,11 @@ class Import extends SiteController
             }
         }
 
-        $this->view->citations_require_attention    = $citations_require_attention;
-        $this->view->citations_require_no_attention = $citations_require_no_attention;
+        $this->view->set('citations_require_attention', $citations_require_attention);
+        $this->view->set('citations_require_no_attention', $citations_require_no_attention);
 
         // get any messages
-        $this->view->messages = Notify::messages('citations');
+        $this->view->set('messages', Notify::messages('citations'));
 
         // display view
         $this->view->display();
@@ -380,11 +380,11 @@ class Import extends SiteController
         // Instantiate a new view
         $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
             . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
-        $this->view->config    = $this->config;
-        $this->view->database  = $this->database;
-        $this->view->filters   = $filters;
-        $this->view->defaultFormat = Format::getDefault();
-        $this->view->citations = [];
+        $this->view->set('config', $this->config);
+        $this->view->set('database', $this->database);
+        $this->view->set('filters', $filters);
+        $this->view->set('defaultFormat', Format::getDefault());
+        $this->view->set('citations', []);
         $citations_saved = Citation::all()->whereIn('id', $citations_saved)->rows();
 
         foreach ($citations_saved as $cs) {
@@ -396,7 +396,7 @@ class Import extends SiteController
         $this->view->openurl['icon'] = '';
 
         //get any messages
-        $this->view->messages = Notify::messages('citations');
+        $this->view->set('messages', Notify::messages('citations'));
 
         //display view
         $this->view->display();

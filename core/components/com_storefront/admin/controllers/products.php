@@ -77,10 +77,10 @@ class Products extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->products('count', $this->view->filters);
+        $this->view->set('total', $obj->products('count', $this->view->filters));
 
         // Get records
-        $this->view->rows = $obj->products('list', $this->view->filters);
+        $this->view->set('rows', $obj->products('list', $this->view->filters));
 
         // For all records here get SKUs
         $skus = new \stdClass();
@@ -103,7 +103,7 @@ class Products extends AdminController
             $skus->$key = $skuCounter;
         }
 
-        $this->view->skus = $skus;
+        $this->view->set('skus', $skus);
 
         // access groups
         $accessGroups = [];
@@ -120,11 +120,11 @@ class Products extends AdminController
                 $accessGroups[$obj->value] = $obj->text;
             }
         }
-        $this->view->ag = $accessGroups;
+        $this->view->set('ag', $accessGroups);
 
         $db = App::get('db');
         $db->setQuery("SELECT * FROM `#__storefront_product_types`");
-        $this->view->types = $db->loadObjectList();
+        $this->view->set('types', $db->loadObjectList());
 
         // Output the HTML
         $this->view
@@ -154,17 +154,17 @@ class Products extends AdminController
 
         $obj = new Archive();
         // Get types
-        $this->view->types = $obj->getProductTypes();
+        $this->view->set('types', $obj->getProductTypes());
 
         // Get collections
-        $this->view->collections = $obj->collections('list', ['sort' => 'cType']);
+        $this->view->set('collections', $obj->collections('list', ['sort' => 'cType']));
 
         // Get all option groups
-        $this->view->optionGroups = $obj->optionGroups('list', ['sort' => 'ogName']);
+        $this->view->set('optionGroups', $obj->optionGroups('list', ['sort' => 'ogName']));
 
         if (is_object($row)) {
             $id = $row->getId();
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
         } else {
             // Incoming
@@ -175,31 +175,31 @@ class Products extends AdminController
             }
 
             // Load product
-            $this->view->row = $obj->product($id);
+            $this->view->set('row', $obj->product($id));
         }
 
         // Get product option groups
-        $this->view->productOptionGroups = $this->view->row->getOptionGroups();
-        $this->view->config = $this->config;
+        $this->view->set('productOptionGroups', $this->view->row->getOptionGroups());
+        $this->view->set('config', $this->config);
 
         // Check if meta is needed for this product
         $pType = null;
         if ($this->view->row->getTypeInfo()) {
             $pType = $this->view->row->getTypeInfo()->name;
         }
-        $this->view->metaNeeded = false;
+        $this->view->set('metaNeeded', false);
         // Only software needs meta
         if ($pType == 'Software Download') {
             $this->view->metaNeeded = true;
 
             // Get number of downloads
             $downloaded = Download::countProductDownloads($id);
-            $this->view->downloaded = $downloaded;
+            $this->view->set('downloaded', $downloaded);
         }
 
         // Get meta
         $meta = $this->view->row->getMeta();
-        $this->view->meta = $meta;
+        $this->view->set('meta', $meta);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -347,7 +347,7 @@ class Products extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', []);
-                $this->view->pIds = $id;
+                $this->view->set('pIds', $id);
 
                 // Set any errors
                 if ($this->getError()) {

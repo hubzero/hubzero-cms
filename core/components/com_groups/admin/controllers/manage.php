@@ -130,7 +130,7 @@ class Manage extends AdminController
         }
 
         // Get a record count
-        $this->view->total = Group::find($this->view->filters);
+        $this->view->set('total', Group::find($this->view->filters));
 
         // Filters for returning results
         $this->view->filters['limit']  = Request::getState(
@@ -152,7 +152,7 @@ class Manage extends AdminController
         $this->view->filters['fields'] = ['cn', 'description', 'published', 'gidNumber', 'type'];
 
         // Get a list of all groups
-        $this->view->rows = [];
+        $this->view->set('rows', []);
         if ($this->view->total > 0) {
             if ($rows = Group::find($this->view->filters)) {
                 $this->view->rows = $rows;
@@ -165,7 +165,7 @@ class Manage extends AdminController
         }
 
         // pass config to view
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();

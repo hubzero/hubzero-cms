@@ -33,7 +33,7 @@ $this->css();
 
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(['name' => 'shared', 'layout' => 'notifications']);
-    $view->notifications = $this->notifications;
+    $view->set('notifications', $this->notifications);
     $view->display();
 }
 
@@ -75,10 +75,10 @@ if (!empty($this->notifications)) {
         <div class="grid">
             <?php
             $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_items']);
-            $view->perks = $perks;
-            $view->membershipInfo = $membershipInfo;
-            $view->transactionItems = $this->transactionItems;
-            $view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
+            $view->set('perks', $perks);
+            $view->set('membershipInfo', $membershipInfo);
+            $view->set('transactionItems', $this->transactionItems);
+            $view->set('tiShippingDiscount', $this->transactionInfo->tiShippingDiscount);
 
             echo '<div class="col span6">';
 
@@ -159,7 +159,7 @@ if (!empty($this->notifications)) {
 
         if (in_array('shipping', $this->transactionInfo->steps)) {
             $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_shippinginfo']);
-            $view->transactionInfo = $this->transactionInfo;
+            $view->set('transactionInfo', $this->transactionInfo);
             $view->display();
         }
         ?>

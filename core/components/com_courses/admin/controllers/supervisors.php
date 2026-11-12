@@ -188,7 +188,7 @@ class Supervisors extends AdminController
             }
         }
 
-        $this->view->model = $model;
+        $this->view->set('model', $model);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

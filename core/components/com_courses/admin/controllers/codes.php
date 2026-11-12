@@ -61,7 +61,7 @@ class Codes extends AdminController
             ),
         ];
 
-        $this->view->section = \Components\Courses\Models\Section::getInstance($this->view->filters['section']);
+        $this->view->set('section', \Components\Courses\Models\Section::getInstance($this->view->filters['section']));
         if (!$this->view->section->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
@@ -70,7 +70,10 @@ class Codes extends AdminController
         $this->view->offering = \Components\Courses\Models\Offering::getInstance(
             $this->view->section->get('offering_id'),
         );
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor(
@@ -79,11 +82,11 @@ class Codes extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->total = $this->view->section->codes($this->view->filters);
+        $this->view->set('total', $this->view->section->codes($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->rows = $this->view->section->codes($this->view->filters);
+        $this->view->set('rows', $this->view->section->codes($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -125,13 +128,16 @@ class Codes extends AdminController
             $model = new \Components\Courses\Models\Section\Code($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
         if (!$this->view->row->get('offering_id')) {
             $this->view->row->set('offering_id', Request::getInt('offering', 0));
         }
 
-        $this->view->section = \Components\Courses\Models\Section::getInstance($this->view->row->get('section_id'));
+        $this->view->set(
+            'section',
+            \Components\Courses\Models\Section::getInstance($this->view->row->get('section_id')),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -294,7 +300,7 @@ class Codes extends AdminController
     {
         $section = Request::getInt('section', 0);
 
-        $this->view->section = \Components\Courses\Models\Section::getInstance($section);
+        $this->view->set('section', \Components\Courses\Models\Section::getInstance($section));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

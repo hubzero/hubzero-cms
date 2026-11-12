@@ -125,12 +125,12 @@ $resumesUrl = Route::url(
                             Plugin::params('members', 'resume'),
                         );
 
-                        $view->seeker   = $seeker;
-                        $view->emp      = $emp;
+                        $view->set('seeker', $seeker);
+                        $view->set('emp', $emp);
                         $view->option   = 'com_members';
-                        $view->admin    = $admin;
-                        $view->params   = $params;
-                        $view->list     = 1;
+                        $view->set('admin', $admin);
+                        $view->set('params', $params);
+                        $view->set('list', 1);
                         echo $view->loadTemplate();
                     ?>
                     </li>

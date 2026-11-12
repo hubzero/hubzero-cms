@@ -139,7 +139,7 @@ class Collections extends Plugin
             'element' => 'collections',
             'name'    => 'result',
         ]);
-        $view->entry = new \Components\Collections\Models\Post($row);
+        $view->set('entry', new \Components\Collections\Models\Post($row));
 
         return $view->loadTemplate();
     }

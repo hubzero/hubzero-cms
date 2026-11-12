@@ -82,11 +82,11 @@ $newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=
                 'name'      => 'selector',
                 'layout'    => 'selector',
             ]);
-            $view->option       = $this->option;
-            $view->model        = $this->model;
-            $view->selected     = $selected;
-            $view->publication  = $this->publication;
-            $view->team         = $this->team;
+            $view->set('option', $this->option);
+            $view->set('model', $this->model);
+            $view->set('selected', $selected);
+            $view->set('publication', $this->publication);
+            $view->set('team', $this->team);
             echo $view->loadTemplate();
             ?>
     </div>

@@ -1215,11 +1215,11 @@ class Html extends Obj
             'layout'    => $layout . '_plain',
         ]);
 
-        $eview->option   = $option;
-        $eview->project  = $project;
-        $eview->message  = $message;
-        $eview->reviewer = $reviewer;
-        $eview->subject  = $subject;
+        $eview->set('option', $option);
+        $eview->set('project', $project);
+        $eview->set('message', $message);
+        $eview->set('reviewer', $reviewer);
+        $eview->set('subject', $subject);
 
         $body = [];
         $body['plaintext'] = $eview->loadTemplate(false);

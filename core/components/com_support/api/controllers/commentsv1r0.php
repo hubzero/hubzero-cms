@@ -402,11 +402,11 @@ class Commentsv1r0 extends ApiController
                 'name'      => 'emails',
                 'layout'    => 'comment_plain',
             ]);
-            $eview->option     = 'com_support';
-            $eview->controller = 'tickets';
-            $eview->comment    = $comment;
-            $eview->ticket     = $ticket;
-            $eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+            $eview->set('option', 'com_support');
+            $eview->set('controller', 'tickets');
+            $eview->set('comment', $comment);
+            $eview->set('ticket', $ticket);
+            $eview->set('delimiter', ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : ''));
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

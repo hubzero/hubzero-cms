@@ -121,7 +121,7 @@ class Downloads extends AdminController
             }
 
             $this->view->filters['skuRequested'] = $skuRequested;
-            $this->view->skuRequestedName = $skuName;
+            $this->view->set('skuRequestedName', $skuName);
         }
 
         // Clean filters -- reset to default if needed
@@ -131,10 +131,10 @@ class Downloads extends AdminController
         }
 
         // Get record count
-        $this->view->total = Download::getDownloads('count', $this->view->filters);
+        $this->view->set('total', Download::getDownloads('count', $this->view->filters));
 
         // Get records
-        $this->view->rows = Download::getDownloads('list', $this->view->filters);
+        $this->view->set('rows', Download::getDownloads('list', $this->view->filters));
 
         // Output the HTML
         $this->view->display();
@@ -191,10 +191,10 @@ class Downloads extends AdminController
         ];
 
         // Get record count
-        $this->view->total = Download::getDownloadsSku('count', $this->view->filters);
+        $this->view->set('total', Download::getDownloadsSku('count', $this->view->filters));
 
         // Get records
-        $this->view->rows = Download::getDownloadsSku('list', $this->view->filters);
+        $this->view->set('rows', Download::getDownloadsSku('list', $this->view->filters));
 
         // Output the HTML
         //print_r($this->view); die;

@@ -288,8 +288,8 @@ class Orcid extends SiteController
             'name'   => $this->controller,
             'layout' => 'results',
         ]);
-        $view->records = $records;
-        $view->callbackPrefix = $callbackPrefix;
+        $view->set('records', $records);
+        $view->set('callbackPrefix', $callbackPrefix);
 
         return $view->loadTemplate();
     }
@@ -457,7 +457,7 @@ class Orcid extends SiteController
         ob_end_clean();
         ob_start();
 
-        $this->view->orcid_records_html = $this->format($records, $callbackPrefix);
+        $this->view->set('orcid_records_html', $this->format($records, $callbackPrefix));
 
         if ($is_return) {
             return;

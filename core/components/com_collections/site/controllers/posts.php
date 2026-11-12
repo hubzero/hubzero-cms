@@ -77,19 +77,19 @@ class Posts extends SiteController
      */
     public function displayTask()
     {
-        $this->view->config  = $this->config;
-        $this->view->model   = $this->model;
-        $this->view->no_html = Request::getInt('no_html', 0);
+        $this->view->set('config', $this->config);
+        $this->view->set('model', $this->model);
+        $this->view->set('no_html', Request::getInt('no_html', 0));
 
         $post_id = Request::getInt('post', 0);
 
-        $this->view->post = Post::getInstance($post_id);
+        $this->view->set('post', Post::getInstance($post_id));
 
         if (!$this->view->post->exists()) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_POST'));
         }
 
-        $this->view->collection = $this->model->collection($this->view->post->get('collection_id'));
+        $this->view->set('collection', $this->model->collection($this->view->post->get('collection_id')));
 
         if (!$this->view->collection->exists()) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION'));
@@ -167,10 +167,10 @@ class Posts extends SiteController
             return;
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Incoming
-        $this->view->no_html = Request::getInt('no_html', 0);
+        $this->view->set('no_html', Request::getInt('no_html', 0));
 
         $id = Request::getInt('post', 0);
 
@@ -182,10 +182,10 @@ class Posts extends SiteController
             $id = isset($posted['id']) ? (int) $posted['id'] : 0;
         }
 
-        $this->view->collection = $this->model->collection(Request::getString('board', 0));
+        $this->view->set('collection', $this->model->collection(Request::getString('board', 0)));
 
         // Load the post
-        $this->view->entry = $this->view->collection->post($id);
+        $this->view->set('entry', $this->view->collection->post($id));
         if ($row instanceof Item) {
             // Show what was typed rather than what is stored
             $this->view->entry->item($row);
@@ -218,7 +218,7 @@ class Posts extends SiteController
         // groups', the same two sources collectTask()'s repost form draws on.
         // saveTask() enforces canBePostedToBy() on whatever is submitted, so
         // this closes the listing, not the write.
-        $this->view->collections = $this->postableBoards($this->view->collection);
+        $this->view->set('collections', $this->postableBoards($this->view->collection));
         if (!$this->view->collections->total()) {
             $this->view->collection->setup(User::get('id'), 'member');
             $this->view->collections = $this->postableBoards($this->view->collection);
@@ -805,15 +805,15 @@ class Posts extends SiteController
                 $item_id = $post->get('item_id');
             }
 
-            $this->view->myboards      = $model->mine();
-            $this->view->groupboards   = $model->mine('groups');
+            $this->view->set('myboards', $model->mine());
+            $this->view->set('groupboards', $model->mine('groups'));
 
             //$this->view->name          = $this->_name;
             $this->view->option        = $this->option;
-            $this->view->no_html       = $no_html;
-            $this->view->post_id       = $post_id;
-            $this->view->collection_id = $collection_id;
-            $this->view->item_id       = $item_id;
+            $this->view->set('no_html', $no_html);
+            $this->view->set('post_id', $post_id);
+            $this->view->set('collection_id', $collection_id);
+            $this->view->set('item_id', $item_id);
 
             $this->view->display();
             return;

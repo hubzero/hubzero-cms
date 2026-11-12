@@ -11,10 +11,10 @@ Events in the `tags` group. A plugin in `core/plugins/tags/` receives an event b
 
 Fired from:
 
-- [`core/components/com_tags/admin/controllers/entries.php:223`](../../../core/components/com_tags/admin/controllers/entries.php#L223) with `[&$row, $isNew]`
+- [`core/components/com_tags/admin/controllers/entries.php:229`](../../../core/components/com_tags/admin/controllers/entries.php#L229) with `[&$row, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:265`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L265) with `[&$record, $isNew]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:400`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L400) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:795`](../../../core/components/com_tags/site/controllers/tags.php#L795) with `[&$row, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:801`](../../../core/components/com_tags/site/controllers/tags.php#L801) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -41,9 +41,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/admin/controllers/entries.php:265`](../../../core/components/com_tags/admin/controllers/entries.php#L265) with `[$id]`
+- [`core/components/com_tags/admin/controllers/entries.php:274`](../../../core/components/com_tags/admin/controllers/entries.php#L274) with `[$id]`
 - [`core/components/com_tags/api/controllers/entriesv1r0.php:438`](../../../core/components/com_tags/api/controllers/entriesv1r0.php#L438) with `[$id]`
-- [`core/components/com_tags/site/controllers/tags.php:845`](../../../core/components/com_tags/site/controllers/tags.php#L845) with `[$id]`
+- [`core/components/com_tags/site/controllers/tags.php:853`](../../../core/components/com_tags/site/controllers/tags.php#L853) with `[$id]`
 
 No plugin in the source tree listens for this event.
 

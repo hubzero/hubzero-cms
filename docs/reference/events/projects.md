@@ -78,7 +78,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:548`](../../../core/components/com_projects/models/orm/project.php#L548) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:546`](../../../core/components/com_projects/models/orm/project.php#L546) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -86,7 +86,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/activity.php:292`](../../../core/components/com_projects/admin/controllers/activity.php#L292) with `[$id]`
+- [`core/components/com_projects/admin/controllers/activity.php:299`](../../../core/components/com_projects/admin/controllers/activity.php#L299) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -94,11 +94,11 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/projects.php:531`](../../../core/components/com_projects/admin/controllers/projects.php#L531) with `[$this->model]`
-- [`core/components/com_projects/admin/controllers/projects.php:700`](../../../core/components/com_projects/admin/controllers/projects.php#L700) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:752`](../../../core/components/com_projects/admin/controllers/projects.php#L752) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:806`](../../../core/components/com_projects/admin/controllers/projects.php#L806) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:858`](../../../core/components/com_projects/admin/controllers/projects.php#L858) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:539`](../../../core/components/com_projects/admin/controllers/projects.php#L539) with `[$this->model]`
+- [`core/components/com_projects/admin/controllers/projects.php:709`](../../../core/components/com_projects/admin/controllers/projects.php#L709) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:760`](../../../core/components/com_projects/admin/controllers/projects.php#L760) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:813`](../../../core/components/com_projects/admin/controllers/projects.php#L813) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:864`](../../../core/components/com_projects/admin/controllers/projects.php#L864) with `[$model]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:566`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L566) with `[&$row, $isNew]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:1074`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L1074) with `[&$row, $isNew]`
 - [`core/components/com_projects/site/controllers/setup.php:342`](../../../core/components/com_projects/site/controllers/setup.php#L342) with `[$this->model]`
@@ -110,8 +110,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/activity.php:248`](../../../core/components/com_projects/admin/controllers/activity.php#L248) with `[&$recipient, $isNew]`
-- [`core/components/com_projects/admin/controllers/activity.php:394`](../../../core/components/com_projects/admin/controllers/activity.php#L394) with `[$entry]`
+- [`core/components/com_projects/admin/controllers/activity.php:254`](../../../core/components/com_projects/admin/controllers/activity.php#L254) with `[&$recipient, $isNew]`
+- [`core/components/com_projects/admin/controllers/activity.php:399`](../../../core/components/com_projects/admin/controllers/activity.php#L399) with `[$entry]`
 
 No plugin in the source tree listens for this event.
 
@@ -127,7 +127,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:519`](../../../core/components/com_projects/models/orm/project.php#L519) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:517`](../../../core/components/com_projects/models/orm/project.php#L517) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -152,7 +152,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/projects.php:270`](../../../core/components/com_projects/admin/controllers/projects.php#L270) with `[$model, 1]`
+- [`core/components/com_projects/admin/controllers/projects.php:274`](../../../core/components/com_projects/admin/controllers/projects.php#L274) with `[$model, 1]`
 - [`core/components/com_projects/site/controllers/projects.php:634`](../../../core/components/com_projects/site/controllers/projects.php#L634) with `[$this->model]`
 
 Listeners:

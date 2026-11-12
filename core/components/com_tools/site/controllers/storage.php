@@ -161,7 +161,7 @@ class Storage extends SiteController
 
         // Get their disk space usage
         $this->percent = 0;
-        $this->view->monitor = '';
+        $this->view->set('monitor', '');
         if ($this->config->get('show_storage')) {
             $this->exceeded = $exceeded;
             $this->getDiskUsage();
@@ -171,23 +171,23 @@ class Storage extends SiteController
                 'layout' => 'diskusage',
             ]);
             $view->set('option', $this->option);
-            $view->amt       = $this->percent;
-            $view->du        = '';
-            $view->percent   = 0;
-            $view->msgs      = 0;
-            $view->ajax      = 0;
-            $view->writelink = 0;
-            $view->total     = $this->total;
+            $view->set('amt', $this->percent);
+            $view->set('du', '');
+            $view->set('percent', 0);
+            $view->set('msgs', 0);
+            $view->set('ajax', 0);
+            $view->set('writelink', 0);
+            $view->set('total', $this->total);
 
-            $this->view->monitor = $view->loadTemplate();
+            $this->view->set('monitor', $view->loadTemplate());
         }
 
         // Instantiate the view
-        $this->view->exceeded = $exceeded;
-        $this->view->output = (isset($this->view->output)) ? $this->view->output : null;
-        $this->view->percentage = $this->percent;
-        $this->view->usedBytes  = isset($this->used) ? $this->used : 0;
-        $this->view->softBytes  = isset($this->soft) ? $this->soft : 0;
+        $this->view->set('exceeded', $exceeded);
+        $this->view->set('output', (isset($this->view->output)) ? $this->view->output : null);
+        $this->view->set('percentage', $this->percent);
+        $this->view->set('usedBytes', isset($this->used) ? $this->used : 0);
+        $this->view->set('softBytes', isset($this->soft) ? $this->soft : 0);
         $this->view->freeBytes  = ($this->view->softBytes > $this->view->usedBytes)
             ? ($this->view->softBytes - $this->view->usedBytes)
             : 0;
@@ -244,7 +244,7 @@ class Storage extends SiteController
         }
 
         // Output HTML
-        $this->view->output = $msg;
+        $this->view->set('output', $msg);
 
         $this->displayTask();
     }
@@ -329,13 +329,13 @@ class Storage extends SiteController
         $amt = ($percent > 100) ? '100' : $percent;
         $total = (isset($du['softspace'])) ? round($du['softspace'] / 1024000000, 2) : 0;
 
-        $this->view->amt       = $amt;
-        $this->view->total     = $total;
-        $this->view->du        = $du;
-        $this->view->percent   = $percent;
-        $this->view->msgs      = $msgs;
-        $this->view->ajax      = 1;
-        $this->view->writelink = 1;
+        $this->view->set('amt', $amt);
+        $this->view->set('total', $total);
+        $this->view->set('du', $du);
+        $this->view->set('percent', $percent);
+        $this->view->set('msgs', $msgs);
+        $this->view->set('ajax', 1);
+        $this->view->set('writelink', 1);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -578,12 +578,12 @@ class Storage extends SiteController
         }
 
         // Instantiate a view
-        $this->view->dirtree = $dirtree;
-        $this->view->docs = $docs;
-        $this->view->folders = $folders;
-        $this->view->config = $this->config;
-        $this->view->listdir = $listdir;
-        $this->view->path = $path;
+        $this->view->set('dirtree', $dirtree);
+        $this->view->set('docs', $docs);
+        $this->view->set('folders', $folders);
+        $this->view->set('config', $this->config);
+        $this->view->set('listdir', $listdir);
+        $this->view->set('path', $path);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

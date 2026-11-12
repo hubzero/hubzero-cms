@@ -230,11 +230,11 @@ class Create extends SiteController
         $this->setView('steps', strtolower($steps[$step]));
 
         // assign some commonly used vars
-        $this->view->config   = $this->config;
-        $this->view->database = $this->database;
-        $this->view->title    = $this->_title;
-        $this->view->step     = $this->step;
-        $this->view->steps    = $this->steps;
+        $this->view->set('config', $this->config);
+        $this->view->set('database', $this->database);
+        $this->view->set('title', $this->_title);
+        $this->view->set('step', $this->step);
+        $this->view->set('steps', $this->steps);
 
         // Is it a POST and the step field was set?
         // If so, it means we're at least past step 1
@@ -264,7 +264,7 @@ class Create extends SiteController
             // Check the progress
             $this->checkProgress(Request::getInt('id', 0));
 
-            $this->view->progress = $this->progress;
+            $this->view->set('progress', $this->progress);
 
             // Call current step
             $this->$activestep();
@@ -306,7 +306,7 @@ class Create extends SiteController
             App::redirect(Route::url('index.php?option=com_tools&task=create'), '', 'message');
         }
 
-        $this->view->next_step = $this->step + 1;
+        $this->view->set('next_step', $this->step + 1);
 
         // Incoming
         $id = Request::getInt('id', 0);
@@ -365,12 +365,12 @@ class Create extends SiteController
                 $this->step = $this->step;
             }
 
-            $this->view->config   = $this->config;
-            $this->view->database = $this->database;
-            $this->view->title    = $this->_title;
-            $this->view->step     = $this->step;
-            $this->view->steps    = $this->steps;
-            $this->view->progress = $this->progress;
+            $this->view->set('config', $this->config);
+            $this->view->set('database', $this->database);
+            $this->view->set('title', $this->_title);
+            $this->view->set('step', $this->step);
+            $this->view->set('steps', $this->steps);
+            $this->view->set('progress', $this->progress);
         }
 
         // Incoming
@@ -565,12 +565,12 @@ class Create extends SiteController
             $this->setView('steps', 'review');
         }
         if (!isset($this->view->database)) {
-            $this->view->config   = $this->config;
-            $this->view->database = $this->database;
-            $this->view->title    = $this->_title;
-            $this->view->step     = $this->step;
-            $this->view->steps    = $this->steps;
-            $this->view->progress = $this->progress;
+            $this->view->set('config', $this->config);
+            $this->view->set('database', $this->database);
+            $this->view->set('title', $this->_title);
+            $this->view->set('step', $this->step);
+            $this->view->set('steps', $this->steps);
+            $this->view->set('progress', $this->progress);
         }
 
         // Incoming
@@ -820,7 +820,7 @@ class Create extends SiteController
         // Fall back to step if any errors found
         if ($this->getError()) {
             $this->step--;
-            $this->view->step = $this->step;
+            $this->view->set('step', $this->step);
             $this->view->setLayout('compose');
             return $this->stepCompose($row);
         }
@@ -834,7 +834,7 @@ class Create extends SiteController
         if (!$row->save()) {
             $this->setError(Lang::txt('Error: Failed to store changes.'));
             $this->step--;
-            $this->view->step = $this->step;
+            $this->view->set('step', $this->step);
             $this->view->setLayout('compose');
             return $this->stepCompose($row);
         }
@@ -1178,7 +1178,7 @@ class Create extends SiteController
                         : 'Please make selections for "' . $lbl . '" to a depth of at least ' . $fa['minimum_depth'],
                 );
                 --$this->step;
-                $this->view->step = $this->step;
+                $this->view->set('step', $this->step);
                 $this->view->setLayout('tags');
                 return $this->stepTags($push);
             }
@@ -1403,10 +1403,10 @@ class Create extends SiteController
                 'name'   => 'emails',
                 'layout' => 'submitted_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->resource   = $resource;
-            $eview->delimiter  = '';
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('resource', $resource);
+            $eview->set('delimiter', '');
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);

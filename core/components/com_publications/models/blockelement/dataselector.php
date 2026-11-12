@@ -149,18 +149,18 @@ class Dataselector extends Base
             $manifest->params->role,
         );
 
-        $view->type        = $manifest->params->type;
-        $view->path        = $this->path;
-        $view->pub         = $pub;
-        $view->manifest    = $manifest;
-        $view->status      = $status;
-        $view->elementId   = $elementId;
-        $view->attachments = $attachments;
-        $view->database    = $this->parent->db;
-        $view->master      = $master;
-        $view->name        = $viewname;
-        $view->viewer      = 'freeze';
-        $view->git         = $this->git;
+        $view->set('type', $manifest->params->type);
+        $view->set('path', $this->path);
+        $view->set('pub', $pub);
+        $view->set('manifest', $manifest);
+        $view->set('status', $status);
+        $view->set('elementId', $elementId);
+        $view->set('attachments', $attachments);
+        $view->set('database', $this->parent->db);
+        $view->set('master', $master);
+        $view->set('name', $viewname);
+        $view->set('viewer', 'freeze');
+        $view->set('git', $this->git);
 
         return $view->loadTemplate();
     }
@@ -217,21 +217,21 @@ class Dataselector extends Base
             'layout'  => 'dataselector',
         ]);
 
-        $view->type        = $manifest->params->type;
-        $view->path        = $this->path;
-        $view->pub         = $pub;
-        $view->manifest    = $manifest;
-        $view->status      = $status;
-        $view->elementId   = $elementId;
-        $view->attachments = $attachments;
-        $view->active      = $active;
-        $view->collapse    = $collapse;
-        $view->total       = $total;
-        $view->master      = $master;
-        $view->database    = $this->parent->db;
-        $view->order       = $order;
-        $view->viewer      = 'edit';
-        $view->git         = $this->git;
+        $view->set('type', $manifest->params->type);
+        $view->set('path', $this->path);
+        $view->set('pub', $pub);
+        $view->set('manifest', $manifest);
+        $view->set('status', $status);
+        $view->set('elementId', $elementId);
+        $view->set('attachments', $attachments);
+        $view->set('active', $active);
+        $view->set('collapse', $collapse);
+        $view->set('total', $total);
+        $view->set('master', $master);
+        $view->set('database', $this->parent->db);
+        $view->set('order', $order);
+        $view->set('viewer', 'edit');
+        $view->set('git', $this->git);
 
         return $view->loadTemplate();
     }

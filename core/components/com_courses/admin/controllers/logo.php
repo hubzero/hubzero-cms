@@ -534,34 +534,34 @@ class Logo extends AdminController
     public function displayTask($file = '', $id = 0)
     {
         // Load the component config
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Incoming
         if (!$id) {
             $id = Request::getInt('id', 0);
         }
-        $this->view->id = $id;
+        $this->view->set('id', $id);
 
-        $this->view->type = strtolower(Request::getWord('type', ''));
+        $this->view->set('type', strtolower(Request::getWord('type', '')));
 
         // Build the file path
-        $this->view->dir  = $id;
-        $this->view->path = $this->path($this->view->type, $id);
+        $this->view->set('dir', $id);
+        $this->view->set('path', $this->path($this->view->type, $id));
 
         switch ($this->view->type) {
             case 'section':
                 $model = \Components\Courses\Models\Section::getInstance($id);
-                $this->view->file = $model->params('logo');
+                $this->view->set('file', $model->params('logo'));
                 break;
 
             case 'offering':
                 $model = \Components\Courses\Models\Offering::getInstance($id);
-                $this->view->file = $model->params('logo');
+                $this->view->set('file', $model->params('logo'));
                 break;
 
             case 'course':
                 $model = \Components\Courses\Models\Course::getInstance($id);
-                $this->view->file = $model->get('logo');
+                $this->view->set('file', $model->get('logo'));
                 break;
 
             default:

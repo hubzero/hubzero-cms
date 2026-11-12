@@ -86,11 +86,11 @@ class Tags extends Cloud
                         'layout'    => '_tags',
                     ]);
                     if (isset($filters['filters'])) {
-                        $view->base    = $filters['base'];
-                        $view->filters = $filters['filters'];
+                        $view->set('base', $filters['base']);
+                        $view->set('filters', $filters['filters']);
                     }
-                    $view->config = Component::params('com_tags');
-                    $view->tags   = $this->tags('list', $filters, $clear);
+                    $view->set('config', Component::params('com_tags'));
+                    $view->set('tags', $this->tags('list', $filters, $clear));
 
                     $this->cache['tags_cloud'] = $view->loadTemplate();
                 }

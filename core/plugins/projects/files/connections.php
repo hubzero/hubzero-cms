@@ -1651,7 +1651,7 @@ class Connections
         if (!isset($handler)) {
             $view->setError(Lang::txt('Failed to compile a view for this combination of file(s).'));
         } else {
-            $view->handler = $handler;
+            $view->set('handler', $handler);
         }
 
         $view->set('items', $items);

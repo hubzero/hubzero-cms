@@ -94,11 +94,11 @@ class Locations extends AdminController
         }
 
         // Get the middleware database
-        $this->view->zone = new Middleware\Zone($this->view->filters['zone']);
+        $this->view->set('zone', new Middleware\Zone($this->view->filters['zone']));
 
-        $this->view->total = $this->view->zone->locations('count', $this->view->filters);
+        $this->view->set('total', $this->view->zone->locations('count', $this->view->filters));
 
-        $this->view->rows  = $this->view->zone->locations('list', $this->view->filters);
+        $this->view->set('rows', $this->view->zone->locations('list', $this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -128,13 +128,13 @@ class Locations extends AdminController
             $row = new Middleware\Location($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
-        $this->view->zone = Request::getInt('zone', 0);
+        $this->view->set('zone', Request::getInt('zone', 0));
         if (!$this->view->row->exists()) {
             $this->view->row->set('zone_id', $this->view->zone);
         }
-        $this->view->tmpl = Request::getCmd('tmpl', '');
+        $this->view->set('tmpl', Request::getCmd('tmpl', ''));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

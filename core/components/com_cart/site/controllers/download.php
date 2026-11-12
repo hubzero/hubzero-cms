@@ -215,8 +215,8 @@ class Download extends ComponentController
     public function landingTask($tId, $sId)
     {
         $this->setView('download', 'landing');
-        $this->view->sId = $sId;
-        $this->view->tId = $tId;
+        $this->view->set('sId', $sId);
+        $this->view->set('tId', $tId);
         $this->view->display();
     }
 
@@ -229,7 +229,7 @@ class Download extends ComponentController
     public function messageTask($notifications)
     {
         $this->setView('download', 'message');
-        $this->view->notifications = $notifications;
+        $this->view->set('notifications', $notifications);
         $this->view->display();
     }
 

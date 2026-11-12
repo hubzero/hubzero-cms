@@ -145,9 +145,9 @@ class Credentials extends SiteController
             'layout' => 'remind_plain',
         ]);
 
-        $eview->config  = Config::getRoot();
-        $eview->baseUrl = rtrim(Request::base(), DS);
-        $eview->users   = $users;
+        $eview->set('config', Config::getRoot());
+        $eview->set('baseUrl', rtrim(Request::base(), DS));
+        $eview->set('users', $users);
 
         $plain = $eview->loadTemplate(false);
         $plain = str_replace("\n", "\r\n", $plain);
@@ -621,9 +621,9 @@ class Credentials extends SiteController
             'layout' => $layout . '_plain',
         ]);
 
-        $eview->config  = Config::getRoot();
-        $eview->baseUrl = rtrim(Request::base(), '/');
-        $eview->user    = $user;
+        $eview->set('config', Config::getRoot());
+        $eview->set('baseUrl', rtrim(Request::base(), '/'));
+        $eview->set('user', $user);
 
         foreach ($vars as $key => $value) {
             $eview->$key = $value;

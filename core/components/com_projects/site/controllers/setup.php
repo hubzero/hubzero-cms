@@ -172,20 +172,20 @@ class Setup extends Base
         $this->buildTitle();
 
         if ($this->section == 'team') {
-            $this->view->content = $this->loadTeamEditor();
+            $this->view->set('content', $this->loadTeamEditor());
         }
 
         // Output HTML
-        $this->view->model    = $this->model;
-        $this->view->step     = $step;
-        $this->view->section  = $this->section;
-        $this->view->title    = $this->title;
+        $this->view->set('model', $this->model);
+        $this->view->set('step', $step);
+        $this->view->set('section', $this->section);
+        $this->view->set('title', $this->title);
         $this->view->option   = $this->option;
-        $this->view->config   = $this->config;
-        $this->view->extended = Request::getInt('extended', 0, 'post');
+        $this->view->set('config', $this->config);
+        $this->view->set('extended', Request::getInt('extended', 0, 'post'));
 
         // Get messages and errors
-        $this->view->msg = $this->getNotifications('success');
+        $this->view->set('msg', $this->getNotifications('success'));
         $error = $this->getError() ? $this->getError() : $this->getNotifications('error');
         if ($error) {
             $this->view->setError($error);
@@ -1080,14 +1080,14 @@ class Setup extends Base
             && ($this->section == 'info' || $this->section == 'info_custom')
         ) {
             //$sections = array('info_custom', 'team', 'settings');
-            $this->view->fields = Field::all()->order('ordering', 'ASC');
+            $this->view->set('fields', Field::all()->order('ordering', 'ASC'));
 
             $projectID = $this->model->get('id');
 
             // Load project values
             $projectData = Description::all()->where('project_id', '=', $projectID);
             $data = Description::collect($projectData);
-            $this->view->data = $data;
+            $this->view->set('data', $data);
             $this->section = 'info_custom';
         }
 
@@ -1099,27 +1099,27 @@ class Setup extends Base
 
         $this->view->setLayout('edit');
         if ($this->section == 'team') {
-            $this->view->content = $this->loadTeamEditor();
+            $this->view->set('content', $this->loadTeamEditor());
         }
 
         // Output HTML
-        $this->view->model      = $this->model;
-        $this->view->uid        = User::get('id');
-        $this->view->section    = $this->section;
-        $this->view->sections   = $sections;
-        $this->view->title      = $this->title;
+        $this->view->set('model', $this->model);
+        $this->view->set('uid', User::get('id'));
+        $this->view->set('section', $this->section);
+        $this->view->set('sections', $sections);
+        $this->view->set('title', $this->title);
         $this->view->option     = $this->option;
-        $this->view->config     = $this->config;
+        $this->view->set('config', $this->config);
         $this->view->task       = $this->task;
-        $this->view->publishing = $this->_publishing;
-        $this->view->active     = 'edit';
+        $this->view->set('publishing', $this->_publishing);
+        $this->view->set('active', 'edit');
 
         // Get messages and errors
         $error = $this->getError() ? $this->getError() : $this->getNotifications('error');
         if ($error) {
             $this->view->setError($error);
         }
-        $this->view->msg = $this->getNotifications('success');
+        $this->view->set('msg', $this->getNotifications('success'));
 
         $this->view->display();
     }

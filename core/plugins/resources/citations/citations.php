@@ -101,10 +101,10 @@ class Citations extends Plugin
             ]);
 
             // Pass the view some info
-            $view->option    = $option;
-            $view->resource  = $model;
-            $view->citations = $citations;
-            $view->citationFormat = $this->params->get('format', 'APA');
+            $view->set('option', $option);
+            $view->set('resource', $model);
+            $view->set('citations', $citations);
+            $view->set('citationFormat', $this->params->get('format', 'APA'));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -120,8 +120,8 @@ class Citations extends Plugin
                 'element' => $this->pluginName,
                 'name'    => 'metadata',
             ]);
-            $view->url = Route::url($model->link() . '&active=citations');
-            $view->citations = $citations;
+            $view->set('url', Route::url($model->link() . '&active=citations'));
+            $view->set('citations', $citations);
 
             $arr['metadata'] = $view->loadTemplate();
         }

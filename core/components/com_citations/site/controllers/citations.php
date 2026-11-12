@@ -71,19 +71,19 @@ class Citations extends SiteController
         $this->buildPathway();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->option));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)));
 
-        $this->view->database = $this->database;
+        $this->view->set('database', $this->database);
 
-        $this->view->yearlystats = Citation::getYearlyStats();
+        $this->view->set('yearlystats', Citation::getYearlyStats());
 
         // Get some stats
-        $this->view->typestats = Type::getCitationsCountByType();
+        $this->view->set('typestats', Type::getCitationsCountByType());
 
         //are we allowing importing
-        $this->view->allow_import = $this->config->get('citation_import', 1);
-        $this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
-        $this->view->isAdmin = false;
+        $this->view->set('allow_import', $this->config->get('citation_import', 1));
+        $this->view->set('allow_bulk_import', $this->config->get('citation_bulk_import', 1));
+        $this->view->set('isAdmin', false);
         if (User::authorise('core.manage', $this->option)) {
             $this->view->isAdmin = true;
         }
@@ -102,10 +102,10 @@ class Citations extends SiteController
     public function browseTask()
     {
         // Instantiate a new view
-        $this->view->title    = Lang::txt(strtoupper($this->option));
-        $this->view->database = $this->database;
-        $this->view->config   = $this->config;
-        $this->view->isAdmin  = false;
+        $this->view->set('title', Lang::txt(strtoupper($this->option)));
+        $this->view->set('database', $this->database);
+        $this->view->set('config', $this->config);
+        $this->view->set('isAdmin', false);
 
         $earliest_year = Citation::all()
             ->where('year', '!=', '')
@@ -260,13 +260,13 @@ class Citations extends SiteController
         $citations = $citations->paginated('limitstart', 'limit')->rows();
 
         // Get records
-        $this->view->citations = $citations;
+        $this->view->set('citations', $citations);
 
         // Get default format
-        $this->view->defaultFormat = FormatModel::getDefault();
+        $this->view->set('defaultFormat', FormatModel::getDefault());
 
         // Add some data to our view for form filtering/sorting
-        $this->view->types = Type::all()->rows();
+        $this->view->set('types', Type::all()->rows());
         /*
         // Get the users id to make lookup
         $users_ip = Request::ip();
@@ -343,8 +343,8 @@ class Citations extends SiteController
         $this->displayMessages();
 
         // Are we allowing importing?
-        $this->view->allow_import = $this->config->get('citation_import', 1);
-        $this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
+        $this->view->set('allow_import', $this->config->get('citation_import', 1));
+        $this->view->set('allow_bulk_import', $this->config->get('citation_bulk_import', 1));
 
         // Output HTML
         $this->view->setLayout('browse')->display();
@@ -366,10 +366,10 @@ class Citations extends SiteController
         }
 
         // set vars for view
-        $this->view->database = $this->database;
+        $this->view->set('database', $this->database);
 
         //get the citation
-        $this->view->citation = Citation::oneOrFail($id);
+        $this->view->set('citation', Citation::oneOrFail($id));
 
 
         // make sure citation is published
@@ -380,13 +380,13 @@ class Citations extends SiteController
         $this->view->associations = $this->view->citation
             ->resources()
             ->whereEquals('#__citations_assoc.tbl', 'resource');
-        $this->view->sponsors = $this->view->citation->sponsors;
+        $this->view->set('sponsors', $this->view->citation->sponsors);
 
         //open url stuff
-        $this->view->openUrl = $this->openUrl();
+        $this->view->set('openUrl', $this->openUrl());
 
         //make sure title isnt too long
-        $this->view->maxTitleLength = 50;
+        $this->view->set('maxTitleLength', 50);
         $this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength)
             ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;'
             : $this->view->citation->title;
@@ -404,7 +404,7 @@ class Citations extends SiteController
             'index.php?option=' . $this->option . '&task=view&id=' . $this->view->citation->id,
         );
 
-        $this->view->citationType = $this->view->citation->relatedType;
+        $this->view->set('citationType', $this->view->citation->relatedType);
         $typeAlias = $this->view->citationType->type;
 
         // Build paths to type specific overrides
@@ -435,7 +435,7 @@ class Citations extends SiteController
         }
 
         $this->displayMessages();
-        $this->view->config   = $this->config;
+        $this->view->set('config', $this->config);
         $this->view->display();
     }
 
@@ -594,7 +594,7 @@ class Citations extends SiteController
             'type_title' => ' - Select a Type &mdash;',
         ]);
 
-        $this->view->types = $types;
+        $this->view->set('types', $types);
 
         // Incoming - expecting an array id[]=4232
         $id = Request::getInt('id', 0);
@@ -608,7 +608,7 @@ class Citations extends SiteController
             $associations[] = $cite;
         }
 
-        $this->view->assocs = $associations;
+        $this->view->set('assocs', $associations);
 
         // Is user authorized to edit citations?
         // A brand new citation has no owner yet; submission is gated above by
@@ -618,7 +618,7 @@ class Citations extends SiteController
         }
 
         // Load the object
-        $this->view->row = $citation;
+        $this->view->set('row', $citation);
 
         //make sure title isnt too long
         $maxTitleLength = 30;
@@ -649,7 +649,7 @@ class Citations extends SiteController
         $this->view->title  = Lang::txt(strtoupper($this->option))
             . ': '
             . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
@@ -662,19 +662,19 @@ class Citations extends SiteController
             $this->view->assocs = [];
 
             //tags & badges
-            $this->view->tags   = [];
-            $this->view->badges = [];
+            $this->view->set('tags', []);
+            $this->view->set('badges', []);
         } else {
             //tags & badges
-            $this->view->tags   = Format::citationTags($this->view->row, false);
-            $this->view->badges = Format::citationBadges($this->view->row, false);
+            $this->view->set('tags', Format::citationTags($this->view->row, false));
+            $this->view->set('badges', Format::citationBadges($this->view->row, false));
         }
 
         // Output HTML
         foreach ($this->getErrors() as $error) {
             Notify::error($error, 'com.citations');
         }
-        $this->view->token = App::get('session')->getFormToken();
+        $this->view->set('token', App::get('session')->getFormToken());
         $this->view
             ->setLayout('edit')
             ->display();

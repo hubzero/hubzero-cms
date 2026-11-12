@@ -75,12 +75,12 @@ class Preferences extends AdminController
         $obj = new Tables\Preferences($this->database);
 
         // Get a record count
-        $this->view->total = $obj->find('count', $this->view->filters);
-        $this->view->rows  = $obj->find('list', $this->view->filters);
+        $this->view->set('total', $obj->find('count', $this->view->filters));
+        $this->view->set('rows', $obj->find('list', $this->view->filters));
 
         $classes = new Tables\SessionClass($this->database);
-        $this->view->classes = $classes->find('list');
-        $this->view->config  = $this->config;
+        $this->view->set('classes', $classes->find('list'));
+        $this->view->set('config', $this->config);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -124,7 +124,7 @@ class Preferences extends AdminController
             $row->load($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         // Build classes select option
         $quotaClass = new Tables\SessionClass($this->database);

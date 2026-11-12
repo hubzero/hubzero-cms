@@ -286,8 +286,8 @@ class Media extends SiteController
         ]);
         $view->set('option', $this->option);
         $view->set('controller', $this->controller);
-        $view->asset      = $asset;
-        $view->no_html    = 1;
+        $view->set('asset', $asset);
+        $view->set('no_html', 1);
 
         // Remove any abandoned uploads older than a day
         try {

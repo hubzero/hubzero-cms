@@ -81,13 +81,19 @@ class Units extends AdminController
             ),
         ];
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+        );
         if (!$this->view->offering->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
         }
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         // In case limit has been changed, adjust limitstart accordingly
         $limit = $this->view->filters['limit'];
@@ -96,11 +102,11 @@ class Units extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->total = $this->view->offering->units($this->view->filters);
+        $this->view->set('total', $this->view->offering->units($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->rows = $this->view->offering->units($this->view->filters);
+        $this->view->set('rows', $this->view->offering->units($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -130,13 +136,16 @@ class Units extends AdminController
             $model = \Components\Courses\Models\Unit::getInstance($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
         if (!$this->view->row->get('offering_id')) {
             $this->view->row->set('offering_id', Request::getInt('offering', 0));
         }
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id')),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

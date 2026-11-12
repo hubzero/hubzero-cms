@@ -106,10 +106,10 @@ class Latex extends Plugin
 
         // Read log (to show in case of error)
         if ($log->size()) {
-            $view->log = $log->read();
+            $view->set('log', $log->read());
         }
 
-        $view->compiled = $compiled;
+        $view->set('compiled', $compiled);
 
         return $view;
     }

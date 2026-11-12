@@ -113,9 +113,9 @@ class Redirect extends SiteController
                     $time = intval($params["delay_seconds"]);
                 }
             }
-            $this->view->domain = $this->extractBaseDomain($host['host']);
-            $this->view->url = $url;
-            $this->view->time = $time;
+            $this->view->set('domain', $this->extractBaseDomain($host['host']));
+            $this->view->set('url', $url);
+            $this->view->set('time', $time);
             $this->view
                 ->set('option', $this->option)
                 ->set('task', $this->task)

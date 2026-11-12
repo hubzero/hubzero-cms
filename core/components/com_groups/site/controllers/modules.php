@@ -104,7 +104,7 @@ class Modules extends Base
         $moduleid = Request::getInt('moduleid', 0);
 
         // get the category object
-        $this->view->module = new Module($moduleid);
+        $this->view->set('module', new Module($moduleid));
 
         // only this group's own modules open in its editor
         if ($this->view->module->get('id') && !$this->view->module->belongsToGroup($this->group)) {
@@ -134,7 +134,7 @@ class Modules extends Base
         ]);
 
         // get stylesheets for editor
-        $this->view->stylesheets = Helpers\View::getPageCss($this->group);
+        $this->view->set('stylesheets', Helpers\View::getPageCss($this->group));
 
         // build the title
         $this->buildTitle();
@@ -143,8 +143,8 @@ class Modules extends Base
         $this->buildPathway();
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
-        $this->view->group = $this->group;
+        $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
+        $this->view->set('group', $this->group);
 
         //display layout
         $this->view->display();

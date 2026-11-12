@@ -183,10 +183,10 @@ class Forum extends Plugin
             'name'      => 'emails',
             'layout'    => 'digest_plain',
         ]);
-        $eview->option    = 'com_forum';
-        $eview->delimiter = '~!~!~!~!~!~!~!~!~!~!';
-        $eview->posts     = $posts;
-        $eview->interval  = $interval;
+        $eview->set('option', 'com_forum');
+        $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+        $eview->set('posts', $posts);
+        $eview->set('interval', $interval);
 
         $plain = $eview->loadTemplate();
         $plain = str_replace("\n", "\r\n", $plain);

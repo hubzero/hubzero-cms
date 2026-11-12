@@ -150,7 +150,7 @@ class Blogs extends Plugin
             'element' => 'blogs',
             'name'    => 'result',
         ]);
-        $view->entry = \Components\Blog\Models\Entry::blank();
+        $view->set('entry', \Components\Blog\Models\Entry::blank());
         $view->entry->set(get_object_vars($row));
 
         return $view->loadTemplate();

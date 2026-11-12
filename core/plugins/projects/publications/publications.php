@@ -350,8 +350,8 @@ class Publications extends Plugin
             'sortdir' => 'DESC',
         ];
 
-        $view->items = $pub->entries('list', $view->filters);
-        $view->model = $model;
+        $view->set('items', $pub->entries('list', $view->filters));
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -386,8 +386,8 @@ class Publications extends Plugin
             'sortdir' => 'DESC',
         ];
 
-        $view->items = $pub->entries('list', $view->filters);
-        $view->model = $model;
+        $view->set('items', $pub->entries('list', $view->filters));
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -416,13 +416,13 @@ class Publications extends Plugin
         ]);
 
         // Instantiate a publication object
-        $view->pub = new \Components\Publications\Models\Publication();
+        $view->set('pub', new \Components\Publications\Models\Publication());
 
         // Get all publications
-        $view->rows = $view->pub->entries('list', $filters);
+        $view->set('rows', $view->pub->entries('list', $filters));
 
         // Get total count
-        $view->total = $view->pub->entries('count', $filters);
+        $view->set('total', $view->pub->entries('count', $filters));
 
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
         \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
@@ -431,9 +431,9 @@ class Publications extends Plugin
         $allRows = $view->pub->entries('list', ['project' => $this->model->get('id'), 'dev' => 1]);
 
         // Get used space
-        $view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($allRows, false);
-        $view->params  = $this->model->params;
-        $view->new_pubs = $this->params->get('new_pubs');
+        $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($allRows, false));
+        $view->set('params', $this->model->params);
+        $view->set('new_pubs', $this->params->get('new_pubs'));
         $view->quota   = $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
@@ -443,14 +443,14 @@ class Publications extends Plugin
                         );
 
         // Output HTML
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->project  = $this->model;
-        $view->filters  = $filters;
-        $view->title    = $this->area['title'];
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('filters', $filters);
+        $view->set('title', $this->area['title']);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -484,7 +484,7 @@ class Publications extends Plugin
             'layout'    => 'editor',
         ]);
 
-        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         if (!$view->publication->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
@@ -495,8 +495,8 @@ class Publications extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -511,7 +511,7 @@ class Publications extends Plugin
 
         // Load handler
         $modelHandler = new \Components\Publications\Models\Handlers($this->database);
-        $view->handler = $modelHandler->ini($handler);
+        $view->set('handler', $modelHandler->ini($handler));
         if (!$view->handler) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER'));
         } else {
@@ -521,22 +521,22 @@ class Publications extends Plugin
             }
 
             // Load editor
-            $view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
+            $view->set('editor', $modelHandler->loadEditor($view->handler, $view->publication, $element));
         }
 
         $view->set('option', $this->componentOption);
-        $view->database = $this->database;
-        $view->uid      = $this->uid;
-        $view->ajax     = $ajax;
+        $view->set('database', $this->database);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
         $view->set('task', $this->task);
-        $view->element  = $element;
-        $view->block    = $block;
-        $view->blockId  = $blockId;
-        $view->props    = $props;
-        $view->config   = $this->pubconfig;
+        $view->set('element', $element);
+        $view->set('block', $block);
+        $view->set('blockId', $blockId);
+        $view->set('props', $props);
+        $view->set('config', $this->pubconfig);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -569,7 +569,7 @@ class Publications extends Plugin
             'name'    => 'selector',
         ]);
 
-        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         if (!$view->publication->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
@@ -580,8 +580,8 @@ class Publications extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -600,26 +600,26 @@ class Publications extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT'));
             return $view->loadTemplate();
         }
 
-        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
-        $view->database = $this->database;
-        $view->project  = $this->model;
-        $view->uid      = $this->uid;
-        $view->ajax     = $ajax;
-        $view->task     = $this->task;
-        $view->element  = $element;
-        $view->block    = $block;
-        $view->blockId  = $blockId;
-        $view->props    = $props;
-        $view->filter   = $filter;
+        $view->set('option', $this->model->isProvisioned() ? 'com_publications' : $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
+        $view->set('task', $this->task);
+        $view->set('element', $element);
+        $view->set('block', $block);
+        $view->set('blockId', $blockId);
+        $view->set('props', $props);
+        $view->set('filter', $filter);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1078,17 +1078,17 @@ class Publications extends Plugin
         );
 
         // Output HTML
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->project  = $this->model;
-        $view->uid      = $this->uid;
-        $view->config   = $this->model->config();
-        $view->choices  = $choices;
-        $view->title    = $this->area['title'];
-        $view->pubConfig = $this->pubconfig;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->model->config());
+        $view->set('choices', $choices);
+        $view->set('title', $this->area['title']);
+        $view->set('pubConfig', $this->pubconfig);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1349,23 +1349,23 @@ class Publications extends Plugin
         ]);
 
         // Output HTML
-        $view->option           = $this->componentOption;
-        $view->database         = $this->database;
-        $view->project          = $this->model;
-        $view->uid              = $this->uid;
-        $view->config           = $this->model->config();
-        $view->title            = $this->area['title'];
-        $view->active           = $block;
-        $view->pub              = $pub;
-        $view->selected_version = $version;
-        $view->pubconfig        = $this->pubconfig;
-        $view->task             = $this->task;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->model->config());
+        $view->set('title', $this->area['title']);
+        $view->set('active', $block);
+        $view->set('pub', $pub);
+        $view->set('selected_version', $version);
+        $view->set('pubconfig', $this->pubconfig);
+        $view->set('task', $this->task);
 
         // Append breadcrumbs
         $this->appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1425,8 +1425,8 @@ class Publications extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -1444,20 +1444,20 @@ class Publications extends Plugin
 
         // Get project path
         if ($this->task != 'editauthor') {
-            $view->path = $pub->project()->repo()->get('path');
+            $view->set('path', $pub->project()->repo()->get('path'));
         }
 
-        $view->step     = $step;
-        $view->block    = $block;
-        $view->element  = $element;
-        $view->database = $this->database;
-        $view->option   = $this->componentOption;
-        $view->project  = $this->model;
-        $view->pub      = $pub;
-        $view->row      = $row;
-        $view->backUrl  = Request::getString('HTTP_REFERER', null, 'server');
-        $view->ajax     = Request::getInt('ajax', 0);
-        $view->props    = $props;
+        $view->set('step', $step);
+        $view->set('block', $block);
+        $view->set('element', $element);
+        $view->set('database', $this->database);
+        $view->set('option', $this->componentOption);
+        $view->set('project', $this->model);
+        $view->set('pub', $pub);
+        $view->set('row', $row);
+        $view->set('backUrl', Request::getString('HTTP_REFERER', null, 'server'));
+        $view->set('ajax', Request::getInt('ajax', 0));
+        $view->set('props', $props);
 
         return $view->loadTemplate();
     }
@@ -1499,29 +1499,29 @@ class Publications extends Plugin
 
         // Get pub stats for each publication
         $pubLog = new \Components\Publications\Tables\Log($this->database);
-        $view->pubstats = $pubLog->getPubStats($this->model->get('id'), $pid);
+        $view->set('pubstats', $pubLog->getPubStats($this->model->get('id'), $pid));
 
         // Get date of first log
-        $view->firstlog = $pubLog->getFirstLogDate();
+        $view->set('firstlog', $pubLog->getFirstLogDate());
 
         // Test
-        $view->totals = $pubLog->getTotals($this->model->get('id'), 'project');
+        $view->set('totals', $pubLog->getTotals($this->model->get('id'), 'project'));
 
         // Output HTML
-        $view->option    = $this->componentOption;
-        $view->database  = $this->database;
-        $view->project   = $this->model;
-        $view->uid       = $this->uid;
-        $view->pid       = $pid;
-        $view->pub       = new \Components\Publications\Models\Publication($pid, $version);
-        $view->task      = $this->task;
-        $view->config    = $this->model->config();
-        $view->pubconfig = $this->pubconfig;
-        $view->version   = $version;
-        $view->title     = $this->area['title'];
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('pid', $pid);
+        $view->set('pub', new \Components\Publications\Models\Publication($pid, $version));
+        $view->set('task', $this->task);
+        $view->set('config', $this->model->config());
+        $view->set('pubconfig', $this->pubconfig);
+        $view->set('version', $version);
+        $view->set('title', $this->area['title']);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1628,21 +1628,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option    = $this->componentOption;
-            $view->database  = $this->database;
-            $view->project   = $this->model;
-            $view->uid       = $this->uid;
-            $view->pid       = $pid;
-            $view->pub       = $pub;
-            $view->task      = $this->task;
-            $view->config    = $this->model->config();
-            $view->pubconfig = $this->pubconfig;
-            $view->ajax      = $ajax;
-            $view->version   = $version;
-            $view->title     = $this->area['title'];
+            $view->set('option', $this->componentOption);
+            $view->set('database', $this->database);
+            $view->set('project', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('pid', $pid);
+            $view->set('pub', $pub);
+            $view->set('task', $this->task);
+            $view->set('config', $this->model->config());
+            $view->set('pubconfig', $this->pubconfig);
+            $view->set('ajax', $ajax);
+            $view->set('version', $version);
+            $view->set('title', $this->area['title']);
 
             // Get messages and errors
-            $view->msg = $this->msg;
+            $view->set('msg', $this->msg);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1775,21 +1775,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option           = $this->componentOption;
-            $view->database         = $this->database;
-            $view->project          = $this->model;
-            $view->uid              = $this->uid;
-            $view->pid              = $pid;
-            $view->pub              = $pub;
-            $view->task             = $this->task;
-            $view->config           = $this->model->config();
-            $view->pubconfig        = $this->pubconfig;
-            $view->selected_version = $selected_version;
-            $view->ajax             = $ajax;
-            $view->title            = $this->area['title'];
+            $view->set('option', $this->componentOption);
+            $view->set('database', $this->database);
+            $view->set('project', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('pid', $pid);
+            $view->set('pub', $pub);
+            $view->set('task', $this->task);
+            $view->set('config', $this->model->config());
+            $view->set('pubconfig', $this->pubconfig);
+            $view->set('selected_version', $selected_version);
+            $view->set('ajax', $ajax);
+            $view->set('title', $this->area['title']);
 
             // Get messages and errors
-            $view->msg = $this->msg;
+            $view->set('msg', $this->msg);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -2615,21 +2615,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option         = $this->componentOption;
-            $view->database       = $this->database;
-            $view->project        = $this->model;
-            $view->uid            = $this->uid;
-            $view->pid            = $pid;
-            $view->pub            = $pub;
-            $view->publishedCount = $pub->version->getPublishedCount($pid);
-            $view->task           = $this->task;
-            $view->config         = $this->model->config();
-            $view->pubconfig      = $this->pubconfig;
-            $view->ajax           = $ajax;
-            $view->title          = $this->area['title'];
+            $view->set('option', $this->componentOption);
+            $view->set('database', $this->database);
+            $view->set('project', $this->model);
+            $view->set('uid', $this->uid);
+            $view->set('pid', $pid);
+            $view->set('pub', $pub);
+            $view->set('publishedCount', $pub->version->getPublishedCount($pid));
+            $view->set('task', $this->task);
+            $view->set('config', $this->model->config());
+            $view->set('pubconfig', $this->pubconfig);
+            $view->set('ajax', $ajax);
+            $view->set('title', $this->area['title']);
 
             // Get messages and errors
-            $view->msg = $this->msg;
+            $view->set('msg', $this->msg);
             $view->setErrors($this->getErrors());
 
             return $view->loadTemplate();
@@ -2663,7 +2663,7 @@ class Publications extends Plugin
         ]);
 
         // Load publication model
-        $view->pub  = new \Components\Publications\Models\Publication($pid, 'default');
+        $view->set('pub', new \Components\Publications\Models\Publication($pid, 'default'));
 
         if (!$view->pub->exists() || !$view->pub->belongsToProject($this->model->get('id'))) {
             throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
@@ -2676,21 +2676,21 @@ class Publications extends Plugin
         );
 
         // Get versions
-        $view->versions = $view->pub->version->getVersions($pid, $filters = ['withdev' => 1]);
+        $view->set('versions', $view->pub->version->getVersions($pid, $filters = ['withdev' => 1]));
 
         // Output HTML
-        $view->option    = $this->componentOption;
-        $view->database  = $this->database;
-        $view->project   = $this->model;
-        $view->uid       = $this->uid;
-        $view->pid       = $pid;
-        $view->task      = $this->task;
-        $view->config    = $this->model->config();
-        $view->pubconfig = $this->pubconfig;
-        $view->title     = $this->area['title'];
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('project', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('pid', $pid);
+        $view->set('task', $this->task);
+        $view->set('config', $this->model->config());
+        $view->set('pubconfig', $this->pubconfig);
+        $view->set('title', $this->area['title']);
 
         // Get messages and errors
-        $view->msg = $this->msg;
+        $view->set('msg', $this->msg);
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -2726,14 +2726,14 @@ class Publications extends Plugin
             'name'    => 'browse',
             'layout'  => 'provisioned',
         ]);
-        $view->option   = $this->componentOption;
-        $view->juser    = User::getInstance();
-        $view->database = $this->database;
+        $view->set('option', $this->componentOption);
+        $view->set('juser', User::getInstance());
+        $view->set('database', $this->database);
 
         // Instantiate a publication object
-        $view->pub     = new \Components\Publications\Models\Publication();
-        $view->project = $this->model;
-        $view->choices = $choices;
+        $view->set('pub', new \Components\Publications\Models\Publication());
+        $view->set('project', $this->model);
+        $view->set('choices', $choices);
 
         return $view->loadTemplate();
     }
@@ -2853,11 +2853,11 @@ class Publications extends Plugin
         $pub_model = new \Components\Publications\Models\Publication();
 
         // Get all publications
-        $view->rows = $pub_model->entries('list', $filters);
+        $view->set('rows', $pub_model->entries('list', $filters));
 
         // Get used space
-        $view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
-        $view->params  = $model->params;
+        $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($view->rows));
+        $view->set('params', $model->params);
         $view->quota   = $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
@@ -2867,11 +2867,11 @@ class Publications extends Plugin
                         );
 
         // Get total count
-        $view->total = $pub_model->entries('count', $filters);
+        $view->set('total', $pub_model->entries('count', $filters));
 
-        $view->project = $model;
-        $view->option  = $this->componentOption;
-        $view->title   = isset($this->area['title']) ? $this->area['title'] : '';
+        $view->set('project', $model);
+        $view->set('option', $this->componentOption);
+        $view->set('title', isset($this->area['title']) ? $this->area['title'] : '');
 
         return $view->loadTemplate();
     }

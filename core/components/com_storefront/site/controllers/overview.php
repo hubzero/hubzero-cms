@@ -56,8 +56,8 @@ class Overview extends ComponentController
 
         $content = Article::oneOrFail($customLandingPage);
 
-        $this->view->content = $content->toObject();
-        $this->view->config = $config;
+        $this->view->set('content', $content->toObject());
+        $this->view->set('config', $config);
         $this->view->display();
     }
 }

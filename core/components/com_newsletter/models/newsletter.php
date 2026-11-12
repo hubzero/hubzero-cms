@@ -458,7 +458,7 @@ class Newsletter extends Relational
                     $view->setBasePath(Component::path('com_newsletter') . DS . 'admin');
 
                     // Pass the object through to the view
-                    $view->object = $content;
+                    $view->set('object', $content);
                     $view->addTemplatePath(
                         Component::path('com_newsletter') . DS . 'admin' . DS . 'views'
                         . DS . 'storytemplates' . DS . 'tmpl',

@@ -1023,19 +1023,19 @@ class Profiles extends SiteController
             $this->setError($message);
         }
 
-        $this->view->title = $title;
-        $this->view->profile = $profile;
-        $this->view->change = $change;
-        $this->view->oldpass = $oldpass;
-        $this->view->newpass = $newpass;
-        $this->view->newpass2 = $newpass2;
-        $this->view->validated = true;
+        $this->view->set('title', $title);
+        $this->view->set('profile', $profile);
+        $this->view->set('change', $change);
+        $this->view->set('oldpass', $oldpass);
+        $this->view->set('newpass', $newpass);
+        $this->view->set('newpass2', $newpass2);
+        $this->view->set('validated', true);
 
         $password_rules = \Hubzero\Password\Rule::all()
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $this->view->password_rules = [];
+        $this->view->set('password_rules', []);
 
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
@@ -1450,7 +1450,7 @@ class Profiles extends SiteController
 
         // Get the user's interests (tags)
         $mt = new \Components\Members\Models\Tags($id);
-        $this->view->tags = $mt->render('string');
+        $this->view->set('tags', $mt->render('string'));
 
         // Set the page title
         $title  = Lang::txt(strtoupper($this->option));

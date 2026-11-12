@@ -86,7 +86,7 @@ class Modules extends AdminController
         ]);
 
         // are we in the approvers
-        $this->view->needsAttention = new \Hubzero\Base\ItemList();
+        $this->view->set('needsAttention', new \Hubzero\Base\ItemList());
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $moduleArchive = Module\Archive::getInstance();
@@ -98,7 +98,7 @@ class Modules extends AdminController
         }
 
         // pass group to view
-        $this->view->group = $this->group;
+        $this->view->set('group', $this->group);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -133,7 +133,7 @@ class Modules extends AdminController
         }
 
         // get the category object
-        $this->view->module = new Module($id);
+        $this->view->set('module', new Module($id));
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
@@ -158,7 +158,7 @@ class Modules extends AdminController
         }
 
         // pass group to view
-        $this->view->group = $this->group;
+        $this->view->set('group', $this->group);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -566,12 +566,12 @@ class Modules extends AdminController
         // do we get errors?
         if ($return != 0) {
             $this->view->setLayout('errors');
-            $this->view->error = (isset($output[0])) ? $output[0] : '';
+            $this->view->set('error', (isset($output[0])) ? $output[0] : '');
             $this->view->error = str_replace($file, '"' . $module->get('title') . '"', $this->view->error);
-            $this->view->module = $module;
+            $this->view->set('module', $module);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;
-            $this->view->group = $this->group;
+            $this->view->set('group', $this->group);
             $this->view->display();
             return;
         }
@@ -716,11 +716,11 @@ class Modules extends AdminController
         // handle issues
         if ($issues->count != 0) {
             $this->view->setLayout('scan');
-            $this->view->issues = $issues;
-            $this->view->module = $module;
+            $this->view->set('issues', $issues);
+            $this->view->set('module', $module);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;
-            $this->view->group = $this->group;
+            $this->view->set('group', $this->group);
             $this->view->display();
             return;
         }

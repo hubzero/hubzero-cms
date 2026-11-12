@@ -61,10 +61,10 @@ class Optiongroups extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->optionGroups('count', $this->view->filters);
+        $this->view->set('total', $obj->optionGroups('count', $this->view->filters));
 
         // Get records
-        $this->view->rows = $obj->optionGroups('list', $this->view->filters);
+        $this->view->set('rows', $obj->optionGroups('list', $this->view->filters));
 
         // For all records here get options
         $options = new \stdClass();
@@ -87,7 +87,7 @@ class Optiongroups extends AdminController
             $options->$key = $optionCounter;
         }
 
-        $this->view->options = $options;
+        $this->view->set('options', $options);
 
         // Set any errors
         if ($this->getError()) {
@@ -123,7 +123,7 @@ class Optiongroups extends AdminController
         $obj = new Archive();
 
         if (is_object($row)) {
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
         } else {
             // Incoming
@@ -134,7 +134,7 @@ class Optiongroups extends AdminController
             }
 
             // Load option group
-            $this->view->row = $obj->optionGroup($id);
+            $this->view->set('row', $obj->optionGroup($id));
         }
 
         // Set any errors
@@ -216,7 +216,7 @@ class Optiongroups extends AdminController
                 // Incoming
                 $id = Request::getArray('id', [0]);
 
-                $this->view->ogId = $id;
+                $this->view->set('ogId', $id);
 
                 // Set any errors
                 if ($this->getError()) {

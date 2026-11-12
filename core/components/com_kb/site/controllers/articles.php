@@ -99,7 +99,7 @@ class Articles extends SiteController
         }
 
         // Get the category
-        $this->view->catid = 0;
+        $this->view->set('catid', 0);
 
         if ($categoryAlias == 'all') {
             $category = $this->allCategory();
@@ -136,8 +136,8 @@ class Articles extends SiteController
             $this->view->filters['user_id'] = User::get('id');
         }
 
-        $this->view->archive = $this->archive;
-        $this->view->category = $category;
+        $this->view->set('archive', $this->archive);
+        $this->view->set('category', $category);
 
         $this->view
             ->setLayout('category')
@@ -176,9 +176,9 @@ class Articles extends SiteController
                 Request::ip(),
                 'article',
             );
-            $this->view->vote = $vote->get('vote');
+            $this->view->set('vote', $vote->get('vote'));
         } else {
-            $this->view->vote = strtolower(Request::getString('vote', ''));
+            $this->view->set('vote', strtolower(Request::getString('vote', '')));
         }
 
         // Load the category object
@@ -188,7 +188,7 @@ class Articles extends SiteController
             throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
         }
 
-        $this->view->catid = $category->get('id');
+        $this->view->set('catid', $category->get('id'));
         if ($category->get('parent_id') > 1) {
             $this->view->catid = $category->get('parent_id');
         }
@@ -280,9 +280,9 @@ class Articles extends SiteController
         }
 
         if (Request::getInt('no_html', 0)) {
-            $this->view->item = $row;
-            $this->view->type = $type;
-            $this->view->vote = $vote;
+            $this->view->set('item', $row);
+            $this->view->set('type', $type);
+            $this->view->set('vote', $vote);
             $this->view->id   = ''; //$id;
             if ($this->getError()) {
                 $this->view->setError($this->getError());

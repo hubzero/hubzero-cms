@@ -538,13 +538,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
             ]);
             $eview->set('option', 'com_members');
             $eview->set('controller', 'register');
-            $eview->sitename     = Config::get('sitename');
-            $eview->login        = $this->record->entry->get('username');
-            $eview->name         = $this->record->entry->get('name');
-            $eview->registerDate = $this->record->entry->get('registerDate');
-            $eview->confirm      = $this->record->entry->get('activation');
-            $eview->baseURL      = Request::base();
-            $eview->email        = $this->record->entry->get('email');
+            $eview->set('sitename', Config::get('sitename'));
+            $eview->set('login', $this->record->entry->get('username'));
+            $eview->set('name', $this->record->entry->get('name'));
+            $eview->set('registerDate', $this->record->entry->get('registerDate'));
+            $eview->set('confirm', $this->record->entry->get('activation'));
+            $eview->set('baseURL', Request::base());
+            $eview->set('email', $this->record->entry->get('email'));
 
             $msg = new \Hubzero\Mail\Message();
             $msg

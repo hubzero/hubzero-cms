@@ -61,8 +61,8 @@ class Categories extends AdminController
         $jc = new Category($this->database);
 
         // Get records
-        $this->view->rows = $jc->getCats($this->view->filters['sort'], $this->view->filters['sort_Dir'], 1);
-        $this->view->total = count($this->view->rows);
+        $this->view->set('rows', $jc->getCats($this->view->filters['sort'], $this->view->filters['sort_Dir'], 1));
+        $this->view->set('total', count($this->view->rows));
 
         // Output the HTML
         $this->view->display();
@@ -126,7 +126,7 @@ class Categories extends AdminController
             $row->load($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         // Output the HTML
         $this->view

@@ -26,7 +26,7 @@ class Index extends SiteController
     public function displayTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)));
 
         Document::setTitle($this->view->title);
 

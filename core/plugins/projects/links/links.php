@@ -609,7 +609,7 @@ class Links extends Plugin
             'layout'  => $layout,
         ]);
 
-        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // On error
         if (!$view->publication->exists()) {
@@ -620,8 +620,8 @@ class Links extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
             return $view->loadTemplate();
         }
@@ -647,23 +647,23 @@ class Links extends Plugin
             $cid    = Request::getInt('cid', 0);
 
             // Load the object
-            $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
+            $view->set('row', \Components\Citations\Models\Citation::oneOrNew($cid));
 
             // get the citation types
-            $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
+            $view->set('types', \Components\Citations\Models\Type::all()->rows()->toArray());
         }
 
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->ajax     = $ajax;
-        $view->task     = $this->task;
-        $view->element  = $element;
-        $view->block    = $block;
-        $view->step     = $step;
-        $view->props    = $props;
-        $view->filter   = $filter;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('ajax', $ajax);
+        $view->set('task', $this->task);
+        $view->set('element', $element);
+        $view->set('block', $block);
+        $view->set('step', $step);
+        $view->set('props', $props);
+        $view->set('filter', $filter);
 
         // Get messages and errors
         $view->setErrors($this->getErrors());
@@ -693,7 +693,7 @@ class Links extends Plugin
 
         // Load classes
         $objP = new \Components\Publications\Tables\Publication($this->database);
-        $view->version = new \Components\Publications\Tables\Version($this->database);
+        $view->set('version', new \Components\Publications\Tables\Version($this->database));
 
         // Load publication version
         $view->version->load($vid);
@@ -721,24 +721,24 @@ class Links extends Plugin
                 'name'    => 'error',
             ]);
 
-            $view->title  = '';
-            $view->option = $this->componentOption;
+            $view->set('title', '');
+            $view->set('option', $this->componentOption);
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
 
         // Load the object
-        $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
+        $view->set('row', \Components\Citations\Models\Citation::oneOrNew($cid));
 
         // get the citation types
-        $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
+        $view->set('types', \Components\Citations\Models\Type::all()->rows()->toArray());
 
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->task     = $this->task;
-        $view->ajax     = Request::getInt('ajax', 0);
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('task', $this->task);
+        $view->set('ajax', Request::getInt('ajax', 0));
 
         // Get messages and errors
         $view->setErrors($this->getErrors());
@@ -774,16 +774,19 @@ class Links extends Plugin
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
-        $view->attachments = $pContent->getAttachments($versionid, $filters = ['role' => $role, 'type' => 'link']);
+        $view->set(
+            'attachments',
+            $pContent->getAttachments($versionid, $filters = ['role' => $role, 'type' => 'link']),
+        );
 
         // Output HTML
-        $view->option    = $this->componentOption;
-        $view->database  = $this->database;
-        $view->model     = $this->model;
-        $view->uid       = $this->uid;
-        $view->config    = $this->config;
-        $view->primary   = $primary;
-        $view->versionid = $versionid;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('config', $this->config);
+        $view->set('primary', $primary);
+        $view->set('versionid', $versionid);
 
         // Get messages and errors
         $view->setErrors($this->getErrors());

@@ -111,9 +111,9 @@ class Hubpresenter extends Plugin
             'layout' => 'view',
         ]);
 
-        $view->items = $collection;
-        $view->entityId = $entityId;
-        $view->entityType = $entityType;
+        $view->set('items', $collection);
+        $view->set('entityId', $entityId);
+        $view->set('entityType', $entityType);
 
         return $view;
     }

@@ -67,10 +67,10 @@ class Roles extends AdminController
         $model = new Tables\Role($this->database);
 
         // Get a record count
-        $this->view->total = $model->count($this->view->filters);
+        $this->view->set('total', $model->count($this->view->filters));
 
         // Get records
-        $this->view->rows = $model->find($this->view->filters);
+        $this->view->set('rows', $model->find($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -112,7 +112,7 @@ class Roles extends AdminController
             $row->load($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         if (!$this->view->row->id) {
             $this->view->row->created_by = User::get('id');
@@ -120,7 +120,7 @@ class Roles extends AdminController
         }
 
         $model = \Components\Courses\Models\Courses::getInstance();
-        $this->view->courses = $model->courses();
+        $this->view->set('courses', $model->courses());
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

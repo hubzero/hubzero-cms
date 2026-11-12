@@ -37,7 +37,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:200`](../../../core/components/com_members/admin/controllers/plugins.php#L200) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
+- [`core/components/com_members/admin/controllers/plugins.php:202`](../../../core/components/com_members/admin/controllers/plugins.php#L202) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
 
 Listeners:
 

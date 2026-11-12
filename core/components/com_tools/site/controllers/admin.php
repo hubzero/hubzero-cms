@@ -164,7 +164,7 @@ class Admin extends SiteController
             }
         }
         // Set messages to view
-        $this->view->messages = $this->getMessages();
+        $this->view->set('messages', $this->getMessages());
 
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
@@ -304,7 +304,7 @@ class Admin extends SiteController
         }
 
         // Set messages to view
-        $this->view->messages = $this->getMessages();
+        $this->view->set('messages', $this->getMessages());
 
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
@@ -367,7 +367,7 @@ class Admin extends SiteController
             }
         }
         // Set messages to view
-        $this->view->messages = $this->getMessages();
+        $this->view->set('messages', $this->getMessages());
 
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
@@ -693,7 +693,7 @@ class Admin extends SiteController
         }
 
         // Set messages to view
-        $this->view->messages = $this->getMessages();
+        $this->view->set('messages', $this->getMessages());
 
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {

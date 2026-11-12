@@ -263,9 +263,9 @@ class Helper extends \Hubzero\Base\Obj
                 'name'   => 'browse',
                 'layout' => '_rateitem',
             ]);
-            $view->option = $this->componentOption;
-            $view->item   = new Models\Review($response[0]);
-            $view->rid    = $publication->get('id');
+            $view->set('option', $this->componentOption);
+            $view->set('item', new Models\Review($response[0]));
+            $view->set('rid', $publication->get('id'));
 
             $view->display();
             exit();
@@ -422,9 +422,9 @@ class Helper extends \Hubzero\Base\Obj
             'element' => 'reviews',
             'name'    => 'emails',
         ]);
-        $eview->option      = $this->componentOption;
-        $eview->juser       = User::getInstance();
-        $eview->publication = $publication;
+        $eview->set('option', $this->componentOption);
+        $eview->set('juser', User::getInstance());
+        $eview->set('publication', $publication);
         $message            = $eview->loadTemplate();
         $message            = str_replace("\n", "\r\n", $message);
 

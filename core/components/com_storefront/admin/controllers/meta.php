@@ -61,10 +61,10 @@ class Meta extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->products('count', $this->view->filters);
+        $this->view->set('total', $obj->products('count', $this->view->filters));
 
         // Get records
-        $this->view->rows  = $obj->products('list', $this->view->filters);
+        $this->view->set('rows', $obj->products('list', $this->view->filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -99,7 +99,7 @@ class Meta extends AdminController
         $obj = new Archive();
 
         if (is_object($row)) {
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
 
             $id = $row->getId();
@@ -112,11 +112,11 @@ class Meta extends AdminController
             }
 
             // Load product
-            $this->view->row = $obj->product($id);
+            $this->view->set('row', $obj->product($id));
         }
 
         // Load meta
-        $this->view->meta = $this->view->row->getMeta();
+        $this->view->set('meta', $this->view->row->getMeta());
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

@@ -188,11 +188,11 @@ class Questions extends SiteController
             'name'   => 'emails',
             'layout' => 'response_plaintext',
         ]);
-        $eview->option   = $this->option;
-        $eview->sitename = Config::get('sitename');
-        $eview->question = $question;
-        $eview->row      = $row;
-        $eview->boundary = $from['multipart'];
+        $eview->set('option', $this->option);
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('question', $question);
+        $eview->set('row', $row);
+        $eview->set('boundary', $from['multipart']);
 
         $message['plaintext'] = $eview->loadTemplate();
         $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -881,11 +881,11 @@ class Questions extends SiteController
                 'name'   => 'emails',
                 'layout' => 'question_plaintext',
             ]);
-            $eview->option   = $this->option;
-            $eview->sitename = Config::get('sitename');
-            $eview->question = $row;
-            $eview->id       = $row->get('id', 0);
-            $eview->boundary = $from['multipart'];
+            $eview->set('option', $this->option);
+            $eview->set('sitename', Config::get('sitename'));
+            $eview->set('question', $row);
+            $eview->set('id', $row->get('id', 0));
+            $eview->set('boundary', $from['multipart']);
 
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
@@ -1213,12 +1213,12 @@ class Questions extends SiteController
             'name'   => 'emails',
             'layout' => 'response_plaintext',
         ]);
-        $eview->option   = $this->option;
-        $eview->sitename = Config::get('sitename');
-        $eview->question = $question;
-        $eview->row      = $row;
-        $eview->id       = $response['question_id'];
-        $eview->boundary = $from['multipart'];
+        $eview->set('option', $this->option);
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('question', $question);
+        $eview->set('row', $row);
+        $eview->set('id', $response['question_id']);
+        $eview->set('boundary', $from['multipart']);
 
         $message['plaintext'] = $eview->loadTemplate(false);
         $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

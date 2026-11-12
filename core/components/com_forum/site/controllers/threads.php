@@ -758,10 +758,10 @@ class Threads extends SiteController
             'layout' => 'mentions_html',
         ]);
 
-        $eView->comment = $comment;
-        $eView->commentNoTags = strip_tags($comment);
-        $eView->postLink = $url;
-        $eView->postAuthor = $postAuthor;
+        $eView->set('comment', $comment);
+        $eView->set('commentNoTags', strip_tags($comment));
+        $eView->set('postLink', $url);
+        $eView->set('postAuthor', $postAuthor);
 
         $html = $eView->loadTemplate(false);
         $html = str_replace("\n", "\r\n", $html);

@@ -237,8 +237,8 @@ class Storefront extends Plugin
             'layout'    => 'publish_down_notification',
         ]);
         $eview->set('option', 'com_storefront');
-        $eview->skus     = $skusInfo;
-        $eview->products = $productsInfo;
+        $eview->set('skus', $skusInfo);
+        $eview->set('products', $productsInfo);
 
         $plain = $eview->loadTemplate();
         $plain = str_replace("\n", "\r\n", $plain);

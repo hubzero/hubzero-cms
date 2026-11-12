@@ -61,11 +61,11 @@ defined('_HZEXEC_') or die();
                     'name'    => 'selector',
                     'layout'  => 'selector',
                 ]);
-                $view->option       = $this->option;
-                $view->model        = $this->model;
-                $view->items        = $this->items;
-                $view->publication  = $this->publication;
-                $view->selected     = $this->selected;
+                $view->set('option', $this->option);
+                $view->set('model', $this->model);
+                $view->set('items', $this->items);
+                $view->set('publication', $this->publication);
+                $view->set('selected', $this->selected);
 
                 echo $view->loadTemplate();
             }

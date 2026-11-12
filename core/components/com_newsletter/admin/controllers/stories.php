@@ -155,7 +155,7 @@ class Stories extends AdminController
             ]);
 
             // Pass the data through to the view
-            $view->object = $obj;
+            $view->set('object', $obj);
             $view->display();
         } else {
             // Output a warning

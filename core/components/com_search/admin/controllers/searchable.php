@@ -385,13 +385,13 @@ class Searchable extends AdminController
         // Create the pagination
         $pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
         $pagination->setLimits(['5','10','15','20','50','100','200']);
-        $this->view->pagination = $pagination;
+        $this->view->set('pagination', $pagination);
 
         // Pass the filters and documents to the display
-        $this->view->filter = ($filter == '' || $filter == '*:*') ? '' : $filter;
-        $this->view->facet = !isset($facet) ? '' : $facet;
-        $this->view->documents = isset($results) ? $results : [];
-        $this->view->blacklist = $blacklist;
+        $this->view->set('filter', ($filter == '' || $filter == '*:*') ? '' : $filter);
+        $this->view->set('facet', !isset($facet) ? '' : $facet);
+        $this->view->set('documents', isset($results) ? $results : []);
+        $this->view->set('blacklist', $blacklist);
 
         // Display the view
         $this->view->display();

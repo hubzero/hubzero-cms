@@ -97,15 +97,15 @@ class Content extends Base
         $master->params     = $this->manifest->params;
         $master->props      = $elModel->getActiveElement($status->elements, $status->review);
 
-        $view->manifest     = $this->manifest;
-        $view->content      = self::buildContent($pub, $viewname, $status, $master);
-        $view->pub          = $pub;
-        $view->active       = $this->name;
-        $view->step         = $blockId;
+        $view->set('manifest', $this->manifest);
+        $view->set('content', self::buildContent($pub, $viewname, $status, $master));
+        $view->set('pub', $pub);
+        $view->set('active', $this->name);
+        $view->set('step', $blockId);
         $view->showControls = isset($master->params->collapse_elements)
                             && $master->params->collapse_elements == 1 ? 3 : 2;
-        $view->status       = $status;
-        $view->master       = $master;
+        $view->set('status', $status);
+        $view->set('master', $master);
 
         if ($this->getError()) {
             $view->setError($this->getError());

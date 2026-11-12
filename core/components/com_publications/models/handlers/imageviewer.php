@@ -288,7 +288,7 @@ class ImageViewer extends Base
                 'layout'    => '_gallery',
             ]);
 
-            $view->content  = $html;
+            $view->set('content', $html);
             return $view->loadTemplate();
         }
 
@@ -459,9 +459,9 @@ class ImageViewer extends Base
             'name'    => 'attachments',
             'layout'  => $layout,
         ]);
-        $view->data   = $data;
-        $view->config = $this->config;
-        $view->params = $params;
+        $view->set('data', $data);
+        $view->set('config', $this->config);
+        $view->set('params', $params);
 
         if ($this->getError()) {
             $view->setError($this->getError());

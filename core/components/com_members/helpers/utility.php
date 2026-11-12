@@ -204,11 +204,11 @@ class Utility
         ]);
         $eview->option        = 'com_members';//$this->_option; //com_members
         $eview->controller    = 'register'; //$this->_controller; //register
-        $eview->sitename      = Config::get('sitename');
-        $eview->xprofile      = $user;
-        $eview->baseURL       = $baseURL;
-        $eview->xregistration = $xregistration;
-        $eview->new           = $new;
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('xprofile', $user);
+        $eview->set('baseURL', $baseURL);
+        $eview->set('xregistration', $xregistration);
+        $eview->set('new', $new);
 
         $msg = new \Hubzero\Mail\Message();
         $msg

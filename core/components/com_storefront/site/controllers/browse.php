@@ -75,7 +75,7 @@ class Browse extends \Hubzero\Component\SiteController
     {
         // get categories
         $categories = $this->warehouse->getRootCategories();
-        $this->view->categories = $categories;
+        $this->view->set('categories', $categories);
 
         $this->view->display();
     }
@@ -98,11 +98,11 @@ class Browse extends \Hubzero\Component\SiteController
         $this->warehouse->addLookupCollection($cId);
         $products = $this->warehouse->getProducts('rows', true, ['sort' => 'title']);
 
-        $view->cId = $cId;
-        $view->collectionName = $collectionName;
-        $view->products = $products;
+        $view->set('cId', $cId);
+        $view->set('collectionName', $collectionName);
+        $view->set('products', $products);
 
-        $view->config = $this->config;
+        $view->set('config', $this->config);
 
         $this->css('storefront.css', 'com_storefront');
 

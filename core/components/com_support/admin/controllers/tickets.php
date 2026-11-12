@@ -472,11 +472,11 @@ class Tickets extends AdminController
                     'name'      => 'emails',
                     'layout'    => 'ticket_plain',
                 ]);
-                $eview->option     = $this->option;
-                $eview->controller = $this->controller;
-                $eview->ticket     = $ticket;
-                $eview->config     = $this->config;
-                $eview->delimiter  = '';
+                $eview->set('option', $this->option);
+                $eview->set('controller', $this->controller);
+                $eview->set('ticket', $ticket);
+                $eview->set('config', $this->config);
+                $eview->set('delimiter', '');
 
                 $plain = $eview->loadTemplate(false);
                 $plain = str_replace("\n", "\r\n", $plain);

@@ -371,13 +371,13 @@ class Support extends Plugin
                         'name'      => 'emails',
                         'layout'    => 'comment_plain',
                     ]);
-                    $eview->option     = 'com_support';
-                    $eview->controller = 'tickets';
-                    $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-                    $eview->boundary   = $from['multipart'];
-                    $eview->comment    = $comment;
-                    $eview->config     = $sconfig;
-                    $eview->ticket     = $row;
+                    $eview->set('option', 'com_support');
+                    $eview->set('controller', 'tickets');
+                    $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+                    $eview->set('boundary', $from['multipart']);
+                    $eview->set('comment', $comment);
+                    $eview->set('config', $sconfig);
+                    $eview->set('ticket', $row);
 
                     $plain = $eview->loadTemplate(false);
                     $plain = str_replace("\n", "\r\n", $plain);
@@ -520,11 +520,11 @@ class Support extends Plugin
                 'name'      => 'emails',
                 'layout'    => 'tickets_plain',
             ]);
-            $eview->option     = 'com_support';
-            $eview->controller = 'tickets';
-            $eview->tickets    = $tickets;
-            $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-            $eview->config     = $sconfig;
+            $eview->set('option', 'com_support');
+            $eview->set('controller', 'tickets');
+            $eview->set('tickets', $tickets);
+            $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+            $eview->set('config', $sconfig);
             $eview->tickets    = $usertickets;
 
             $plain = $eview->loadTemplate(false);
@@ -892,12 +892,12 @@ class Support extends Plugin
                 'name'      => 'emails',
                 'layout'    => 'ticketlist_plain',
             ]);
-            $eview->option     = 'com_support';
-            $eview->controller = 'tickets';
-            $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-            $eview->boundary   = $from['multipart'];
-            $eview->tickets    = $results;
-            $eview->config     = $sconfig;
+            $eview->set('option', 'com_support');
+            $eview->set('controller', 'tickets');
+            $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+            $eview->set('boundary', $from['multipart']);
+            $eview->set('tickets', $results);
+            $eview->set('config', $sconfig);
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);

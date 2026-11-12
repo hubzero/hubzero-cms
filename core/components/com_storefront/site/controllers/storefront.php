@@ -51,9 +51,9 @@ class Storefront extends ComponentController
     {
         // get categories
         $categories = $this->warehouse->getRootCategories();
-        $this->view->categories = $categories;
+        $this->view->set('categories', $categories);
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         if (Pathway::count() <= 0) {
             Pathway::append(

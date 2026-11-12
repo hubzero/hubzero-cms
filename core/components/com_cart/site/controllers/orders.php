@@ -63,7 +63,7 @@ class Orders extends ComponentController
         $cart = new CurrentCart();
 
         // Get all completed transactions count
-        $this->view->total = $cart->getTransactions(['count' => true]);
+        $this->view->set('total', $cart->getTransactions(['count' => true]));
 
         // Get all completed transactions
         $transactions = $cart->getTransactions($this->view->filters);
@@ -92,7 +92,7 @@ class Orders extends ComponentController
             }
         }
 
-        $this->view->transactions = $transactions;
+        $this->view->set('transactions', $transactions);
 
         if (Pathway::count() <= 0) {
             Pathway::append(

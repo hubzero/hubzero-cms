@@ -67,17 +67,17 @@ class Types extends AdminController
         $rt = new \Components\Publications\Tables\MasterType($database);
 
         // Get a record count
-        $this->view->total = $rt->getCount($this->view->filters);
+        $this->view->set('total', $rt->getCount($this->view->filters));
 
         // Get records
-        $this->view->rows = $rt->getRecords($this->view->filters);
+        $this->view->set('rows', $rt->getRecords($this->view->filters));
 
         // Set any errors
         if ($this->getError()) {
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -106,7 +106,7 @@ class Types extends AdminController
         $id = Request::getInt('id', 0);
         $database = App::get('db');
 
-        $this->view->row = new \Components\Publications\Tables\MasterType($database);
+        $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
         if (!$id || !$this->view->row->load($id)) {
@@ -137,7 +137,7 @@ class Types extends AdminController
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -156,10 +156,10 @@ class Types extends AdminController
 
             // Incoming
             $id = Request::getInt('id', 0);
-            $this->view->blockid = Request::getInt('blockid', 0);
+            $this->view->set('blockid', Request::getInt('blockid', 0));
             $database = App::get('db');
 
-            $this->view->row = new \Components\Publications\Tables\MasterType($database);
+            $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
             // Load object
             if (!$id || !$this->view->row->load($id)) {
@@ -180,7 +180,7 @@ class Types extends AdminController
                 $this->view->setError($this->getError());
             }
 
-            $this->view->config = $this->config;
+            $this->view->set('config', $this->config);
 
             // Output the HTML
             $this->view->display();
@@ -193,10 +193,10 @@ class Types extends AdminController
             $id       = Request::getInt('id', 0);
             $confirm  = Request::getBool('confirmdel', false);
             $blockid = Request::getInt('blockid', 0);
-            $this->view->blockid = $blockid;
+            $this->view->set('blockid', $blockid);
             $database = App::get('db');
 
-            $this->view->row = new \Components\Publications\Tables\MasterType($database);
+            $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
             $row = $this->view->row;
 
             // Load object
@@ -221,7 +221,7 @@ class Types extends AdminController
                 foreach ($this->getErrors() as $error) {
                     $this->view->setError($error);
                 }
-                $this->view->config = $this->config;
+                $this->view->set('config', $this->config);
 
                 $this->view->display();
 
@@ -383,7 +383,7 @@ class Types extends AdminController
 
         $database = App::get('db');
 
-        $this->view->row = new \Components\Publications\Tables\MasterType($database);
+        $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
         if (!$id || !$this->view->row->load($id)) {
@@ -404,7 +404,7 @@ class Types extends AdminController
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -480,10 +480,10 @@ class Types extends AdminController
 
         // Incoming
         $id = Request::getInt('id', 0);
-        $this->view->blockId = Request::getInt('bid', 0);
+        $this->view->set('blockId', Request::getInt('bid', 0));
         $database = App::get('db');
 
-        $this->view->row = new \Components\Publications\Tables\MasterType($database);
+        $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
         if (!$id || !$this->view->row->load($id)) {
@@ -504,7 +504,7 @@ class Types extends AdminController
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -614,7 +614,7 @@ class Types extends AdminController
         $id = Request::getInt('id', 0);
         $database = App::get('db');
 
-        $this->view->row = new \Components\Publications\Tables\MasterType($database);
+        $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
         if (!$id || !$this->view->row->load($id)) {
@@ -645,7 +645,7 @@ class Types extends AdminController
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Output the HTML
         $this->view->display();
@@ -735,7 +735,7 @@ class Types extends AdminController
             $row->load($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         $this->view->curation = new \Components\Publications\Models\Curation(
             $this->view->row->curation,
@@ -756,11 +756,11 @@ class Types extends AdminController
             $this->view->setError($this->getError());
         }
 
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         // Get all active categories
         $objC = new \Components\Publications\Tables\Category($database);
-        $this->view->cats = $objC->getCategories();
+        $this->view->set('cats', $objC->getCategories());
 
         // Output the HTML
         $this->view

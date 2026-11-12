@@ -11,7 +11,7 @@ Events in the `extension` group. A plugin in `core/plugins/extension/` receives 
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:769`](../../../core/components/com_modules/admin/controllers/modules.php#L769) with `['com_modules.module', $model->getTableName()]`
+- [`core/components/com_modules/admin/controllers/modules.php:775`](../../../core/components/com_modules/admin/controllers/modules.php#L775) with `['com_modules.module', $model->getTableName()]`
 
 No plugin in the source tree listens for this event.
 
@@ -19,8 +19,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:435`](../../../core/components/com_modules/admin/controllers/modules.php#L435) with `[$this->option . '.module', &$model, $model->isNew()]`
-- [`core/components/com_templates/admin/controllers/styles.php:328`](../../../core/components/com_templates/admin/controllers/styles.php#L328) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
+- [`core/components/com_modules/admin/controllers/modules.php:441`](../../../core/components/com_modules/admin/controllers/modules.php#L441) with `[$this->option . '.module', &$model, $model->isNew()]`
+- [`core/components/com_templates/admin/controllers/styles.php:332`](../../../core/components/com_templates/admin/controllers/styles.php#L332) with `['com_templates.style', $style, ($fields['id'] ? false : true)]`
 - [`core/components/com_templates/models/file.php:154`](../../../core/components/com_templates/models/file.php#L154) with `['com_templates.source', &$this, false]`
 - [`core/components/com_templates/models/source.php:152`](../../../core/components/com_templates/models/source.php#L152) with `['com_templates.source', &$this, false]`
 
@@ -30,7 +30,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_modules/admin/controllers/modules.php:760`](../../../core/components/com_modules/admin/controllers/modules.php#L760) with `['com_modules.module', $model->getTableName()]`
+- [`core/components/com_modules/admin/controllers/modules.php:766`](../../../core/components/com_modules/admin/controllers/modules.php#L766) with `['com_modules.module', $model->getTableName()]`
 
 No plugin in the source tree listens for this event.
 

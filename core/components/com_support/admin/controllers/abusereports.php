@@ -324,11 +324,11 @@ class Abusereports extends AdminController
                 'name'      => 'emails',
                 'layout'    => 'abuse_plain',
             ]);
-            $eview->option     = $this->option;
-            $eview->controller = $this->controller;
-            $eview->reported   = $reported;
-            $eview->report     = $report;
-            $eview->author     = $user;
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('reported', $reported);
+            $eview->set('report', $report);
+            $eview->set('author', $user);
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);

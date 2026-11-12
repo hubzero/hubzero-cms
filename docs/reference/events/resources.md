@@ -21,7 +21,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/admin/controllers/plugins.php:190`](../../../core/components/com_resources/admin/controllers/plugins.php#L190) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
+- [`core/components/com_resources/admin/controllers/plugins.php:192`](../../../core/components/com_resources/admin/controllers/plugins.php#L192) with `[ $this->option, $this->controller, Request::getString('action', 'default'), ]`
 
 Listeners:
 
@@ -49,8 +49,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:660`](../../../core/components/com_resources/site/controllers/resources.php#L660) with `[$model, $this->option, ['about'], 'metadata']`
-- [`core/components/com_resources/site/controllers/resources.php:1505`](../../../core/components/com_resources/site/controllers/resources.php#L1505) with `[ $this->model, $this->option, [$tab], 'all', ]`
+- [`core/components/com_resources/site/controllers/resources.php:662`](../../../core/components/com_resources/site/controllers/resources.php#L662) with `[$model, $this->option, ['about'], 'metadata']`
+- [`core/components/com_resources/site/controllers/resources.php:1507`](../../../core/components/com_resources/site/controllers/resources.php#L1507) with `[ $this->model, $this->option, [$tab], 'all', ]`
 
 Listeners:
 
@@ -73,7 +73,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:1477`](../../../core/components/com_resources/site/controllers/resources.php#L1477) with `[ $this->model, ]`
+- [`core/components/com_resources/site/controllers/resources.php:1479`](../../../core/components/com_resources/site/controllers/resources.php#L1479) with `[ $this->model, ]`
 
 No plugin in the source tree listens for this event.
 

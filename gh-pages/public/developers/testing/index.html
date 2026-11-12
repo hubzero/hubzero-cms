@@ -411,7 +411,8 @@ three ways.</p>
 Name your tables in <code>getTestTables()</code>, create them in <code>setUpDatabase()</code>, and
 take the driver each test runs against from the <code>databaseProvider</code> data
 provider:</p>
-<pre><code class="language-php"> * Usage:
+<pre><code class="language-php"> *
+ * Usage:
  * ```php
  * class MyTest extends AbstractDriverTestCase
  * {
@@ -420,7 +421,7 @@ provider:</p>
  *         return ['my_test_table'];
  *     }
  *
- *     protected static function setUpDatabase(Driver $driver): void
+ *     protected static function setUpDatabase(BaseSqlDriver $driver): void
  *     {
  *         $driver-&gt;createTable('my_test_table')
  *             -&gt;id()
@@ -430,12 +431,11 @@ provider:</p>
  *
  *     #[Test]
  *     #[DataProvider('databaseProvider')]
- *     public function testSomething(string $dbName, Driver $driver): void
+ *     public function testSomething(string $dbName, BaseSqlDriver $driver): void
  *     {
  *         // ...
  *     }
  * }
- * ```
 </code></pre>
 <p>Which databases run is set by the <code>DB_*</code> variables in <code>phpunit.xml.dist</code>.
 Only those with <code>DB_{NAME}_ENABLED</code> set to <code>true</code> are tested; copy the file to

@@ -2512,11 +2512,11 @@ class Curation extends Obj
             'name'    => 'draft',
             'layout'  => 'statusbar',
         ]);
-        $view->pub       = $this->pub;
-        $view->progress  = $this->progress;
-        $view->active    = $this->blockname;
-        $view->activenum = $this->blockorder;
-        $view->database  = $this->db;
+        $view->set('pub', $this->pub);
+        $view->set('progress', $this->progress);
+        $view->set('active', $this->blockname);
+        $view->set('activenum', $this->blockorder);
+        $view->set('database', $this->db);
         $view->display();
     }
 

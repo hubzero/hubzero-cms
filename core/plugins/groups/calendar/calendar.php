@@ -1543,18 +1543,18 @@ class Calendar extends Plugin
                 'name'    => 'calendar',
                 'layout'  => 'register_email_admin',
             ]);
-            $email->option     = $this->option;
-            $email->group      = $this->group;
-            $email->params     = $params;
-            $email->event      = $eventsEvent;
-            $email->sitename   = Config::get('sitename');
-            $email->register   = $register;
-            $email->race       = $race;
-            $email->dietary    = $dietary;
-            $email->disability = $disability;
-            $email->arrival    = $arrival;
-            $email->departure  = $departure;
-            $email->dinner     = $dinner;
+            $email->set('option', $this->option);
+            $email->set('group', $this->group);
+            $email->set('params', $params);
+            $email->set('event', $eventsEvent);
+            $email->set('sitename', Config::get('sitename'));
+            $email->set('register', $register);
+            $email->set('race', $race);
+            $email->set('dietary', $dietary);
+            $email->set('disability', $disability);
+            $email->set('arrival', $arrival);
+            $email->set('departure', $departure);
+            $email->set('dinner', $dinner);
             $message           = str_replace("\n", "\r\n", $email->loadTemplate());
 
             //declare subject

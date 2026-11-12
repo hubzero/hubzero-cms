@@ -102,16 +102,16 @@ class Curation extends SiteController
         $filters['dev']     = 1; // get dev versions
         $filters['status']  = [5, 7]; // submitted/pending
         $filters['curator'] = $assigned || $authorized == false ? 'owner' : null;
-        $this->view->filters = $filters;
+        $this->view->set('filters', $filters);
 
         // Instantiate project publication
         $objP = new Tables\Publication($this->database);
 
         // Get all publications
-        $this->view->rows = $objP->getRecords($filters);
+        $this->view->set('rows', $objP->getRecords($filters));
 
         // Get total count
-        $this->view->total = $objP->getCount($filters);
+        $this->view->set('total', $objP->getCount($filters));
 
         // Initiate paging
         $this->view->pageNav = new \Hubzero\Pagination\Paginator(
@@ -670,11 +670,14 @@ class Curation extends SiteController
                                 'layout'    => '_html',
                             ]);
 
-                            $eview->publication = $this->pub;
-                            $eview->message     = $message;
-                            $eview->subject     = $subject;
-                            $eview->permissionURL = $permissionURL;
-                            $eview->permissionTxt = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+                            $eview->set('publication', $this->pub);
+                            $eview->set('message', $message);
+                            $eview->set('subject', $subject);
+                            $eview->set('permissionURL', $permissionURL);
+                            $eview->set(
+                                'permissionTxt',
+                                Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION'),
+                            );
 
                             $body = [];
                             $body['multipart'] = $eview->loadTemplate();

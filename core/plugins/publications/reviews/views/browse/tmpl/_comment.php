@@ -106,11 +106,11 @@ if ($this->comment->get('publication_id')) {
                     'name'    => 'browse',
                     'layout'  => '_rateitem',
                 ]);
-                $view->option = $this->option;
-                $view->item   = $this->comment;
-                $view->type   = 'review';
-                $view->vote   = '';
-                $view->id     = '';
+                $view->set('option', $this->option);
+                $view->set('item', $this->comment);
+                $view->set('type', 'review');
+                $view->set('vote', '');
+                $view->set('id', '');
                 if (!User::isGuest()) {
                     if ($this->comment->get('created_by') == User::get('username')) {
                         $view->vote = $this->comment->get('vote');

@@ -63,7 +63,10 @@ class Students extends AdminController
             ),
         ];
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+        );
         $this->view->filters['offering_id'] = $this->view->filters['offering'];
         /*if (!$this->view->offering->exists())
         {
@@ -72,7 +75,10 @@ class Students extends AdminController
             );
             return;
         }*/
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         $limit = $this->view->filters['limit'];
         $start = $this->view->filters['start'];
@@ -129,13 +135,16 @@ class Students extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $offering = Request::getInt('offering', 0);
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($offering);
+        $this->view->set('offering', \Components\Courses\Models\Offering::getInstance($offering));
 
         $id = 0;
 
-        $this->view->row = \Components\Courses\Models\Member::getInstance($id, $offering);
+        $this->view->set('row', \Components\Courses\Models\Member::getInstance($id, $offering));
 
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -156,7 +165,7 @@ class Students extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         $offering = Request::getInt('offering', 0);
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($offering);
+        $this->view->set('offering', \Components\Courses\Models\Offering::getInstance($offering));
 
         if (!is_object($model)) {
             // Incoming
@@ -174,9 +183,12 @@ class Students extends AdminController
             $model = \Components\Courses\Models\Student::getInstance($id, null, null, null);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -397,9 +409,15 @@ class Students extends AdminController
             ),
         ];
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
+        );
         $this->view->filters['offering_id'] = $this->view->filters['offering'];
-        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         if (!$this->view->filters['offering_id']) {
             $this->view->filters['offering_id'] = null;

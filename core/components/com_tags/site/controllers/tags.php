@@ -144,9 +144,9 @@ class Tags extends SiteController
             return;
         }
 
-        $this->view->total      = 0;
-        $this->view->results    = null;
-        $this->view->categories = [];
+        $this->view->set('total', 0);
+        $this->view->set('results', null);
+        $this->view->set('categories', []);
 
         // Incoming paging vars
         $this->view->filters = [
@@ -159,7 +159,7 @@ class Tags extends SiteController
         }
 
         $parent = Request::getString('parent', '');
-        $this->view->parent = $parent;
+        $this->view->set('parent', $parent);
 
         // Get the active category
         $area = Request::getString('area', '');
@@ -257,13 +257,13 @@ class Tags extends SiteController
 
         $related = null;
         if (count($tags) == 1) {
-            $this->view->tagstring = $tags[0]->get('tag');
+            $this->view->set('tagstring', $tags[0]->get('tag'));
         } else {
             $tagstring = [];
             foreach ($tags as $tag) {
                 $tagstring[] = $tag->get('tag');
             }
-            $this->view->tagstring = implode('+', $tagstring);
+            $this->view->set('tagstring', implode('+', $tagstring));
         }
 
         // Set the pathway
@@ -934,7 +934,7 @@ class Tags extends SiteController
      */
     protected function buildTitle($tags = null)
     {
-        $this->view->title = Lang::txt(strtoupper($this->option));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)));
         if ($this->task && $this->task != 'view' && $this->task != 'display') {
             $this->view->title .= ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         }

@@ -116,11 +116,11 @@ class Html
             'name'      => 'view',
             'layout'    => '_contributors',
         ]);
-        $view->contributors  = $contributors;
-        $view->showorgs      = $showorgs;
-        $view->showaslist    = $showaslist;
-        $view->incSubmitter  = $incSubmitter;
-        $view->format        = $format;
+        $view->set('contributors', $contributors);
+        $view->set('showorgs', $showorgs);
+        $view->set('showaslist', $showaslist);
+        $view->set('incSubmitter', $incSubmitter);
+        $view->set('format', $format);
         return $view->loadTemplate();
     }
 
@@ -140,7 +140,7 @@ class Html
             'name'      => 'view',
             'layout'    => '_supportingdocs',
         ]);
-        $view->publication  = $publication;
+        $view->set('publication', $publication);
         return $view->loadTemplate();
     }
 
@@ -1170,9 +1170,9 @@ class Html
             'layout'    => '_plain',
         ]);
 
-        $eview->publication = $publication;
-        $eview->message     = $message;
-        $eview->subject     = $subject;
+        $eview->set('publication', $publication);
+        $eview->set('message', $message);
+        $eview->set('subject', $subject);
 
         $body = [];
         $body['plaintext'] = $eview->loadTemplate(false);

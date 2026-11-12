@@ -171,9 +171,9 @@ class Activity extends Plugin
             'name'      => 'emails',
             'layout'    => 'digest_plain',
         ]);
-        $eview->member   = $user;
-        $eview->rows     = $posts;
-        $eview->interval = $interval;
+        $eview->set('member', $user);
+        $eview->set('rows', $posts);
+        $eview->set('interval', $interval);
 
         $plain = $eview->loadTemplate();
         $plain = str_replace("\n", "\r\n", $plain);

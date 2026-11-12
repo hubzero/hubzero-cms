@@ -162,8 +162,8 @@ class Media extends AdminController
         ]);
         $view->set('option', $this->option);
         $view->set('controller', $this->controller);
-        $view->asset      = $asset;
-        $view->no_html    = 1;
+        $view->set('asset', $asset);
+        $view->set('no_html', 1);
 
         //echo result
         echo json_encode([

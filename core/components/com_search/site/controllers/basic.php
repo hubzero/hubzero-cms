@@ -52,7 +52,7 @@ class Basic extends SiteController
         $results->setOffset(Request::getInt('limitstart', 0));
         $results->collect(Request::getBool('force-generic'));
 
-        $this->view->url_terms = urlencode($terms->getRawWithoutSection());
+        $this->view->set('url_terms', urlencode($terms->getRawWithoutSection()));
         @list($plugin, $section) = $terms->getSection();
 
         $total = 0;
@@ -67,11 +67,11 @@ class Basic extends SiteController
             $total = $results->getTotalCount();
         }
 
-        $this->view->terms   = $terms;
-        $this->view->results = $results;
-        $this->view->total   = $total;
-        $this->view->plugin  = $plugin;
-        $this->view->section = $section;
+        $this->view->set('terms', $terms);
+        $this->view->set('results', $results);
+        $this->view->set('total', $total);
+        $this->view->set('plugin', $plugin);
+        $this->view->set('section', $section);
 
         $this->view->display();
     }

@@ -378,12 +378,12 @@ class Account extends Plugin
             'name'    => 'setlocalpassword',
             'layout'  => 'confirmtoken',
         ]);
-        $view->option = $this->option;
-        $view->id     = $this->user->get('id');
+        $view->set('option', $this->option);
+        $view->set('id', $this->user->get('id'));
 
         // Blank form request (no data submitted)
         if (empty($change)) {
-            $view->notifications = [];
+            $view->set('notifications', []);
             return $view->loadTemplate();
         }
 
@@ -511,8 +511,8 @@ class Account extends Plugin
         ]);
 
         // Add a few more variables to the view
-        $view->option = $this->option;
-        $view->id     = $this->user->get('id');
+        $view->set('option', $this->option);
+        $view->set('id', $this->user->get('id'));
 
         // Get the password rules
         $password_rules = \Hubzero\Password\Rule::all()
@@ -520,7 +520,7 @@ class Account extends Plugin
             ->rows();
 
         // Get the password rule descriptions
-        $view->password_rules = [];
+        $view->set('password_rules', []);
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
                 $view->password_rules[] = $rule['description'];
@@ -529,7 +529,7 @@ class Account extends Plugin
 
         // Blank form request (no data submitted)
         if (empty($change)) {
-            $view->notifications = [];
+            $view->set('notifications', []);
             return $view->loadTemplate();
         }
 

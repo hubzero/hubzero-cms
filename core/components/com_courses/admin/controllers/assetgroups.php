@@ -86,14 +86,20 @@ class Assetgroups extends AdminController
             ),
         ];
 
-        $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']);
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']));
         if (!$this->view->unit->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
         }
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id'));
-        $this->view->course   = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+        );
+        $this->view->set(
+            'course',
+            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+        );
 
         $rows = $this->view->unit->assetgroups(null, $this->view->filters);
 
@@ -113,9 +119,9 @@ class Assetgroups extends AdminController
         // second pass - get an indent list of the items
         $list = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
 
-        $this->view->total = count($list);
+        $this->view->set('total', count($list));
 
-        $this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
+        $this->view->set('rows', array_slice($list, $this->view->filters['start'], $this->view->filters['limit']));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -189,15 +195,18 @@ class Assetgroups extends AdminController
             $model = new \Components\Courses\Models\Assetgroup($id);
         }
 
-        $this->view->row = $model;
+        $this->view->set('row', $model);
 
         if (!$this->view->row->get('unit_id')) {
             $this->view->row->set('unit_id', Request::getInt('unit', 0));
         }
 
-        $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id'));
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id')));
 
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id'));
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+        );
 
         $rows = $this->view->unit->assetgroups();
 
@@ -215,7 +224,7 @@ class Assetgroups extends AdminController
         }
 
         // second pass - get an indent list of the items
-        $this->view->assetgroups = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
+        $this->view->set('assetgroups', $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1)));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -500,19 +509,22 @@ class Assetgroups extends AdminController
 
         // ------------- ASSET GROUPS BASED ON ID -------------
         $assetGroup = new \Components\Courses\Models\Assetgroup($id);
-        $this->view->row = $assetGroup;
+        $this->view->set('row', $assetGroup);
 
         if (!$this->view->row->get('unit_id')) {
             $this->view->row->set('unit_id', Request::getInt('unit', 0));
         }
 
-        $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id'));
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id'));
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id')));
+        $this->view->set(
+            'offering',
+            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+        );
 
         $scopeId = $this->view->row->get('id');
         // $parentId = $this->view->row->parent;
         $courseId = $this->view->offering->get('course_id');
-        $this->view->course = \Components\Courses\Models\Course::getInstance($courseId);
+        $this->view->set('course', \Components\Courses\Models\Course::getInstance($courseId));
 
         // ------------- ASSETS -------------
         $this->view->filters = [
@@ -529,8 +541,8 @@ class Assetgroups extends AdminController
             'w' => $this->view->filters,
         ]);
 
-        $this->view->assetrows = $assetRows;
-        $this->view->assetsCount = count($assetRows);
+        $this->view->set('assetrows', $assetRows);
+        $this->view->set('assetsCount', count($assetRows));
 
         // NEED TO GET HIERARCHY OF ALL ASSET GROUPS ---------------
         // RECURSION FROM THE TOP OF THE CHAIN - all asset groups
@@ -551,7 +563,7 @@ class Assetgroups extends AdminController
         }
 
         // 2nd pass - get an indent list of the items
-        $this->view->assetgroups = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
+        $this->view->set('assetgroups', $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1)));
 
         // ------------- OUTPUT TO HTML -------------
         $this->view

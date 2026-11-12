@@ -161,9 +161,9 @@ class Premis extends AdminController
                 fclose($handle);
             }
 
-            $this->view->report = $report;
-            $this->view->ok = $ok;
-            $this->view->fail = $fail;
+            $this->view->set('report', $report);
+            $this->view->set('ok', $ok);
+            $this->view->set('fail', $fail);
         } else {
             $this->setError(Lang::txt('Error uploading file'));
         }

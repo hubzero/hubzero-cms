@@ -224,8 +224,8 @@ class Todo extends Plugin
             'sortdir'  => 'ASC',
         ];
 
-        $view->items = $this->todo->entries('list', $view->filters);
-        $view->model = $model;
+        $view->set('items', $this->todo->entries('list', $view->filters));
+        $view->set('model', $model);
         return $view->loadTemplate();
     }
 
@@ -253,12 +253,12 @@ class Todo extends Plugin
             'name'    => 'view',
             'layout'  => 'shared',
         ]);
-        $view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
-        $view->filters  = $filters;
-        $view->uid      = $uid;
-        $view->model    = $model;
-        $view->database = App::get('db');
-        $view->todo     = new \Components\Projects\Models\Todo();
+        $view->set('limit', isset($filters['limit']) ? $filters['limit'] : 0);
+        $view->set('filters', $filters);
+        $view->set('uid', $uid);
+        $view->set('model', $model);
+        $view->set('database', App::get('db'));
+        $view->set('todo', new \Components\Projects\Models\Todo());
 
         return $view->loadTemplate();
     }
@@ -301,12 +301,12 @@ class Todo extends Plugin
             'layout'     => $layout,
         ];
 
-        $view->option   = $this->componentOption;
-        $view->database = $this->database;
-        $view->model    = $this->model;
-        $view->uid      = $this->uid;
-        $view->title    = $this->area['title'];
-        $view->todo     = $this->todo;
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('model', $this->model);
+        $view->set('uid', $this->uid);
+        $view->set('title', $this->area['title']);
+        $view->set('todo', $this->todo);
 
         // Update view preference if changed
         if ($layout != $defaultView) {
@@ -344,19 +344,19 @@ class Todo extends Plugin
             'name'    => 'item',
             'layout'  => $layout,
         ]);
-        $view->option = $this->option;
-        $view->todo   = $this->todo;
-        $view->params = $this->model->params;
-        $view->model  = $this->model;
+        $view->set('option', $this->option);
+        $view->set('todo', $this->todo);
+        $view->set('params', $this->model->params);
+        $view->set('model', $this->model);
 
         // Get team members (to assign items to)
         $objO = $this->model->table('Owner');
-        $view->team = $objO->getOwners($this->model->get('id'), $tfilters = ['status' => 1]);
+        $view->set('team', $objO->getOwners($this->model->get('id'), $tfilters = ['status' => 1]));
 
         if (isset($this->entry) && is_object($this->entry)) {
-            $view->row = $this->entry;
+            $view->set('row', $this->entry);
         } else {
-            $view->row = $this->todo->entry($todoid);
+            $view->set('row', $this->todo->entry($todoid));
         }
 
         if (!$view->row->exists() && $this->task != 'new') {
@@ -369,10 +369,10 @@ class Todo extends Plugin
             Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid),
         );
 
-        $view->uid   = $this->uid;
-        $view->title = $this->area['title'];
-        $view->list  = Request::getString('list', '');
-        $view->ajax  = Request::getInt('ajax', 0);
+        $view->set('uid', $this->uid);
+        $view->set('title', $this->area['title']);
+        $view->set('list', Request::getString('list', ''));
+        $view->set('ajax', Request::getInt('ajax', 0));
 
         return $view->loadTemplate();
     }

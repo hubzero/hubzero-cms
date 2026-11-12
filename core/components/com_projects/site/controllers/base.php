@@ -179,8 +179,8 @@ class Base extends SiteController
         $view = new \Hubzero\Component\View(
             ['name' => 'error', 'layout' => $layout],
         );
-        $view->error = $this->getError();
-        $view->title = $this->title;
+        $view->set('error', $this->getError());
+        $view->set('title', $this->title);
         $view->display();
         return;
     }
@@ -465,18 +465,18 @@ class Base extends SiteController
             'name'   => 'emails',
             'layout' => 'invite_plain',
         ]);
-        $eview->option    = $this->option;
-        $eview->project   = $this->model;
-        $eview->delimiter = '';
+        $eview->set('option', $this->option);
+        $eview->set('project', $this->model);
+        $eview->set('delimiter', '');
 
         // Send out message/email
         foreach ($team as $member) {
             if ($managers_only && $member->role != 1) {
                 continue;
             }
-            $eview->role = $member->role;
+            $eview->set('role', $member->role);
             if ($member->userid && $member->userid != User::get('id')) {
-                $eview->uid = $member->userid;
+                $eview->set('uid', $member->userid);
                 $message['plaintext'] = $eview->loadTemplate(false);
                 $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
@@ -504,9 +504,9 @@ class Base extends SiteController
                     ],
                 );
             } elseif ($member->invited_email && $member->invited_code) {
-                $eview->uid   = 0;
-                $eview->code  = $member->invited_code;
-                $eview->email = $member->invited_email;
+                $eview->set('uid', 0);
+                $eview->set('code', $member->invited_code);
+                $eview->set('email', $member->invited_email);
 
                 $message['plaintext'] = $eview->loadTemplate(false);
                 $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);

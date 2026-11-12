@@ -36,7 +36,7 @@ class Points extends AdminController
     {
         // Get top earners
         $this->database->setQuery("SELECT * FROM `#__users_points` ORDER BY earnings DESC, balance DESC LIMIT 15");
-        $this->view->rows = $this->database->loadObjectList();
+        $this->view->set('rows', $this->database->loadObjectList());
 
         $thismonth = Date::of('now')->format('Y-m');
         $lastmonth = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m');
@@ -297,7 +297,7 @@ class Points extends AdminController
     public function editTask()
     {
         if ($uid = Request::getInt('uid', 0)) {
-            $this->view->row = \Hubzero\Bank\Account::oneByUserId($uid);
+            $this->view->set('row', \Hubzero\Bank\Account::oneByUserId($uid));
 
             if (!$this->view->row->get('balance')) {
                 $this->view->row->set('uid', $uid);
@@ -308,7 +308,7 @@ class Points extends AdminController
             $this->database->setQuery(
                 "SELECT * FROM `#__users_transactions` WHERE uid=" . $uid . " ORDER BY created DESC, id DESC",
             );
-            $this->view->history = $this->database->loadObjectList();
+            $this->view->set('history', $this->database->loadObjectList());
         } else {
             $this->view->setLayout('find');
         }
@@ -417,7 +417,7 @@ class Points extends AdminController
     public function configTask()
     {
         $this->database->setQuery("SELECT * FROM `#__users_points_config`");
-        $this->view->params = $this->database->loadObjectList();
+        $this->view->set('params', $this->database->loadObjectList());
 
         // Set any errors
         if ($this->getError()) {

@@ -67,9 +67,9 @@ class Search extends \Hubzero\Component\SiteController
         }
 
         $products = $this->warehouse->getProducts('rows', true, ['sort' => 'title', 'search' => $search]);
-        $this->view->products = $products;
-        $this->view->config = $this->config;
-        $this->view->search = $search;
+        $this->view->set('products', $products);
+        $this->view->set('config', $this->config);
+        $this->view->set('search', $search);
 
         if (Pathway::count() <= 0) {
             Pathway::append(

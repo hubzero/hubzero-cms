@@ -81,7 +81,7 @@ class Pipeline extends SiteController
         Document::setTitle($this->view->title);
 
         // Filters
-        $this->view->filters = [];
+        $this->view->set('filters', []);
         $this->view->filters['filterby'] = trim(Request::getString('filterby', 'all'));
         $this->view->filters['search'] = trim(urldecode(Request::getString('search', '')));
         if (!$this->config->get('access-admin-component')) {
@@ -105,10 +105,13 @@ class Pipeline extends SiteController
         $obj = new \Components\Tools\Tables\Tool($this->database);
 
         // Record count
-        $this->view->total = $obj->getToolCount($this->view->filters, $this->config->get('access-admin-component'));
+        $this->view->set(
+            'total',
+            $obj->getToolCount($this->view->filters, $this->config->get('access-admin-component')),
+        );
 
         // Fetch results
-        $this->view->rows = $obj->getTools($this->view->filters, $this->config->get('access-admin-component'));
+        $this->view->set('rows', $obj->getTools($this->view->filters, $this->config->get('access-admin-component')));
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -121,8 +124,8 @@ class Pipeline extends SiteController
             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
         );
 
-        $this->view->config = $this->config;
-        $this->view->admin = $this->config->get('access-admin-component');
+        $this->view->set('config', $this->config);
+        $this->view->set('admin', $this->config->get('access-admin-component'));
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -180,10 +183,10 @@ class Pipeline extends SiteController
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
         }
 
-        $this->view->status = $status;
-        $this->view->msg    = (isset($this->_msg)) ? $this->_msg : '';
-        $this->view->config = $this->config;
-        $this->view->admin  = $this->config->get('access-admin-component');
+        $this->view->set('status', $status);
+        $this->view->set('msg', (isset($this->_msg)) ? $this->_msg : '');
+        $this->view->set('config', $this->config);
+        $this->view->set('admin', $this->config->get('access-admin-component'));
 
         // Set the page title
         $this->view->title  = Lang::txt(strtoupper($this->option)) . ': '
@@ -265,7 +268,7 @@ class Pipeline extends SiteController
         $objV->getToolVersions($this->_toolid, $versions, '');
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ';
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ');
         $this->view->title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_VERSIONS');
@@ -308,10 +311,10 @@ class Pipeline extends SiteController
             );
         }
 
-        $this->view->admin = $this->config->get('access-admin-component');
-        $this->view->error = $this->_error;
-        $this->view->action = $this->_action;
-        $this->view->versions = $versions;
+        $this->view->set('admin', $this->config->get('access-admin-component'));
+        $this->view->set('error', $this->_error);
+        $this->view->set('action', $this->_action);
+        $this->view->set('versions', $versions);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -383,8 +386,8 @@ class Pipeline extends SiteController
             . '&task=status&app=' . $this->_toolid,
         );
 
-        $this->view->config = $this->config;
-        $this->view->status = $status;
+        $this->view->set('config', $this->config);
+        $this->view->set('status', $status);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -445,17 +448,17 @@ class Pipeline extends SiteController
         }
 
         if (!isset($this->view->code)) {
-            $this->view->code = $status['code'];
+            $this->view->set('code', $status['code']);
         }
 
         // get default license text
         $this->database->setQuery(
             "SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC",
         );
-        $this->view->licenses = $this->database->loadObjectList();
+        $this->view->set('licenses', $this->database->loadObjectList());
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ';
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ');
         $this->view->title .= ($this->_action == 'confirm')
             ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
             : Lang::txt('COM_TOOLS_TASK_LICENSE');
@@ -483,10 +486,10 @@ class Pipeline extends SiteController
             }
         }
 
-        $this->view->config = $this->config;
-        $this->view->error  = $this->_error;
-        $this->view->action = $this->_action;
-        $this->view->status = $status;
+        $this->view->set('config', $this->config);
+        $this->view->set('error', $this->_error);
+        $this->view->set('action', $this->_action);
+        $this->view->set('status', $status);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -544,8 +547,8 @@ class Pipeline extends SiteController
             $reason = Request::getString('reason', '');
 
             if (!$reason) {
-                $this->view->license_choice = $this->license_choice;
-                $this->view->code           = $hztv->codeaccess;
+                $this->view->set('license_choice', $this->license_choice);
+                $this->view->set('code', $hztv->codeaccess);
 
                 // display license page with error
                 $this->setError(Lang::txt('COM_TOOLS_LICENSE_CLOSED_SOURCE_NEED_REASON'));
@@ -600,8 +603,8 @@ class Pipeline extends SiteController
                 $this->finalizeTask();
             }
         } else {
-            $this->view->code           = $hztv->codeaccess;
-            $this->view->license_choice = $this->license_choice;
+            $this->view->set('code', $hztv->codeaccess);
+            $this->view->set('license_choice', $this->license_choice);
 
             // display license page with error
             $this->setError($error);
@@ -660,7 +663,10 @@ class Pipeline extends SiteController
         ];
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
+        $this->view->set(
+            'title',
+            Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL'),
+        );
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
@@ -676,10 +682,10 @@ class Pipeline extends SiteController
             );
         }
 
-        $this->view->admin  = $this->config->get('access-admin-component');
-        $this->view->config = $this->config;
-        $this->view->id     = '';
-        $this->view->editversion = 'dev';
+        $this->view->set('admin', $this->config->get('access-admin-component'));
+        $this->view->set('config', $this->config);
+        $this->view->set('id', '');
+        $this->view->set('editversion', 'dev');
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -713,7 +719,7 @@ class Pipeline extends SiteController
             }
         }
 
-        $this->view->editversion = Request::getString('editversion', '');
+        $this->view->set('editversion', Request::getString('editversion', ''));
         // do not allow to edit all versions just yet, will default to dev
         $this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev';
 
@@ -730,7 +736,7 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL');
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'));
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
@@ -753,11 +759,11 @@ class Pipeline extends SiteController
             );
         }
 
-        $this->view->admin    = $this->config->get('access-admin-component');
-        $this->view->config   = $this->config;
-        $this->view->error    = $this->_error;
-        $this->view->defaults = (is_array($tool)) ? $tool : $status;
-        $this->view->id       = $this->_toolid;
+        $this->view->set('admin', $this->config->get('access-admin-component'));
+        $this->view->set('config', $this->config);
+        $this->view->set('error', $this->_error);
+        $this->view->set('defaults', (is_array($tool)) ? $tool : $status);
+        $this->view->set('id', $this->_toolid);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

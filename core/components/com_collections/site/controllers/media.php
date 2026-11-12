@@ -406,11 +406,11 @@ class Media extends SiteController
             'name'   => 'media',
             'layout' => '_asset',
         ]);
-        $view->i          = Request::getInt('i', 0);
+        $view->set('i', Request::getInt('i', 0));
         $view->set('option', $this->option);
         $view->set('controller', $this->controller);
-        $view->asset      = $asset;
-        $view->no_html    = 1;
+        $view->set('asset', $asset);
+        $view->set('no_html', 1);
 
         //echo result
         echo json_encode([
@@ -715,10 +715,10 @@ class Media extends SiteController
     public function displayTask()
     {
         // Incoming
-        $this->view->listdir = Request::getInt('dir', 0, 'request');
+        $this->view->set('listdir', Request::getInt('dir', 0, 'request'));
 
         // Output HTML
-        $this->view->config = $this->config;
+        $this->view->set('config', $this->config);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -743,7 +743,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
         }
 
-        $this->view->item = Item::getInstance($listdir);
+        $this->view->set('item', Item::getInstance($listdir));
         if (!$this->view->item->exists()) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
         } elseif (!$this->userOwnsItem($listdir)) {
@@ -751,8 +751,8 @@ class Media extends SiteController
             $this->view->item = Item::getInstance(0);
         }
 
-        $this->view->config  = $this->config;
-        $this->view->listdir = $listdir;
+        $this->view->set('config', $this->config);
+        $this->view->set('listdir', $listdir);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

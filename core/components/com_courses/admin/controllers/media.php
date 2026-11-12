@@ -426,20 +426,20 @@ class Media extends AdminController
         $this->view->setLayout('display');
 
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
-        $this->view->course_id = Request::getInt('course', 0);
-        $this->view->listdir   = Request::getInt('listdir', 0);
+        $this->view->set('course_id', Request::getInt('course', 0));
+        $this->view->set('listdir', Request::getInt('listdir', 0));
         if (!$this->view->listdir) {
             echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
             return;
         }
 
         // Incoming sub-directory
-        $this->view->subdir = Request::getString('subdir', '');
+        $this->view->set('subdir', Request::getString('subdir', ''));
 
         // Build the path
         //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS
         //    . $this->view->course_id . DS . $this->view->listdir;
-        $this->view->path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
+        $this->view->set('path', $this->buildUploadPath($this->view->listdir, $this->view->subdir));
 
         // Get list of directories
         $dirs = $this->recursiveListDir($this->view->path);
@@ -464,7 +464,7 @@ class Media extends AdminController
             $this->view->subdir,
         );
 
-        $this->view->config  = $this->config;
+        $this->view->set('config', $this->config);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -483,15 +483,15 @@ class Media extends AdminController
     public function listTask()
     {
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
-        $this->view->course_id = Request::getInt('course', 0);
-        $this->view->listdir   = Request::getInt('listdir', 0);
+        $this->view->set('course_id', Request::getInt('course', 0));
+        $this->view->set('listdir', Request::getInt('listdir', 0));
         if (!$this->view->listdir) {
             echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
             return;
         }
 
         // Incoming sub-directory
-        $this->view->subdir = Request::getString('subdir', '');
+        $this->view->set('subdir', Request::getString('subdir', ''));
 
         // Build the path
         $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
@@ -530,9 +530,9 @@ class Media extends AdminController
             ksort($docs);
         }
 
-        $this->view->docs    = $docs;
-        $this->view->folders = $folders;
-        $this->view->config  = $this->config;
+        $this->view->set('docs', $docs);
+        $this->view->set('folders', $folders);
+        $this->view->set('config', $this->config);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

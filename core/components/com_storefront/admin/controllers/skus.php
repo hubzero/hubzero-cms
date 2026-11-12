@@ -39,11 +39,11 @@ class Skus extends AdminController
         if (empty($pId)) {
             $pId = Request::getArray('pId', [0]);
         }
-        $this->view->pId = $pId;
+        $this->view->set('pId', $pId);
 
         // Get product
         $product = new Product($pId);
-        $this->view->product = $product;
+        $this->view->set('product', $product);
 
         // Get filters
         $this->view->filters = [
@@ -76,10 +76,10 @@ class Skus extends AdminController
         $obj = new Archive();
 
         // Get record count
-        $this->view->total = $obj->skus('count', $pId, $this->view->filters);
+        $this->view->set('total', $obj->skus('count', $pId, $this->view->filters));
 
         // Get records
-        $this->view->rows = $obj->skus('list', $pId, $this->view->filters);
+        $this->view->set('rows', $obj->skus('list', $pId, $this->view->filters));
 
         // Set any errors
         if ($this->getError()) {
@@ -121,7 +121,7 @@ class Skus extends AdminController
                 $pId = Request::getInt('pId');
                 $row->setProductId($pId);
             }
-            $this->view->row = $row;
+            $this->view->set('row', $row);
             $this->view->task = 'edit';
         } else {
             // Incoming
@@ -142,25 +142,25 @@ class Skus extends AdminController
             } else {
                 throw new \Exception('SKU was not found');
             }
-            $this->view->row = $row;
+            $this->view->set('row', $row);
         }
 
         // Get product's info
         $pId = $row->getProductId();
         $warehouse = new Warehouse();
         $pInfo = $warehouse->getProductInfo($pId, true);
-        $this->view->pInfo = $pInfo;
+        $this->view->set('pInfo', $pInfo);
         //print_r($pInfo); die;
 
         // Get available product-defined option groups and options
-        $this->view->allOptions = $obj->getProductOptions($pId);
+        $this->view->set('allOptions', $obj->getProductOptions($pId));
 
         // Get current SKU options
-        $this->view->options = $row->getOptions();
+        $this->view->set('options', $row->getOptions());
 
         // Get number of downloads
         $downloaded = Download::countSkuDownloads($id);
-        $this->view->downloaded = $downloaded;
+        $this->view->set('downloaded', $downloaded);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -262,9 +262,9 @@ class Skus extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', [0]);
-                $this->view->sId = $id;
+                $this->view->set('sId', $id);
 
-                $this->view->pId = $pId;
+                $this->view->set('pId', $pId);
 
                 // Set any errors
                 if ($this->getError()) {

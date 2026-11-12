@@ -90,7 +90,7 @@ class Handlers extends AdminController
         }
 
         // Output the HTML
-        $this->view->row = $handler;
+        $this->view->set('row', $handler);
         $this->view->display();
     }
 

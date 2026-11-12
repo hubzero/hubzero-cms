@@ -11,7 +11,7 @@ Events in the `antispam` group. A plugin in `core/plugins/antispam/` receives an
 
 Fired from:
 
-- [`core/components/com_support/admin/controllers/abusereports.php:390`](../../../core/components/com_support/admin/controllers/abusereports.php#L390)
+- [`core/components/com_support/admin/controllers/abusereports.php:400`](../../../core/components/com_support/admin/controllers/abusereports.php#L400)
 - [`core/plugins/content/antispam/antispam.php:85`](../../../core/plugins/content/antispam/antispam.php#L85)
 
 Listeners:
@@ -27,7 +27,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/controllers/abusereports.php:281`](../../../core/components/com_support/admin/controllers/abusereports.php#L281) with `[ $reported->text, $isSpam, ]`
+- [`core/components/com_support/admin/controllers/abusereports.php:289`](../../../core/components/com_support/admin/controllers/abusereports.php#L289) with `[ $reported->text, $isSpam, ]`
 - [`core/plugins/content/antispam/antispam.php:117`](../../../core/plugins/content/antispam/antispam.php#L117) with `[ $content, true, ]`
 - [`core/plugins/content/antispam/antispam.php:141`](../../../core/plugins/content/antispam/antispam.php#L141) with `[ $content, false, ]`
 

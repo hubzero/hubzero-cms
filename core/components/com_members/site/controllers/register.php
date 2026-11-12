@@ -184,9 +184,9 @@ class Register extends SiteController
                 ]);
                 $eview->set('option', $this->option);
                 $eview->set('controller', $this->controller);
-                $eview->sitename   = Config::get('sitename');
-                $eview->xprofile   = $xprofile;
-                $eview->baseURL    = $this->baseURL;
+                $eview->set('sitename', Config::get('sitename'));
+                $eview->set('xprofile', $xprofile);
+                $eview->set('baseURL', $this->baseURL);
                 $message = $eview->loadTemplate();
                 $message = str_replace("\n", "\r\n", $message);
 
@@ -213,9 +213,9 @@ class Register extends SiteController
             ]);
             $eaview->set('option', $this->option);
             $eaview->set('controller', $this->controller);
-            $eaview->sitename   = Config::get('sitename');
-            $eaview->xprofile   = $xprofile;
-            $eaview->baseURL    = $this->baseURL;
+            $eaview->set('sitename', Config::get('sitename'));
+            $eaview->set('xprofile', $xprofile);
+            $eaview->set('baseURL', $this->baseURL);
             $message = $eaview->loadTemplate();
             $message = str_replace("\n", "\r\n", $message);
 
@@ -247,9 +247,9 @@ class Register extends SiteController
                 ]);
                 $eview->set('option', $this->option);
                 $eview->set('controller', $this->controller);
-                $eview->sitename   = Config::get('sitename');
-                $eview->xprofile   = $xprofile;
-                $eview->baseURL    = $this->baseURL;
+                $eview->set('sitename', Config::get('sitename'));
+                $eview->set('xprofile', $xprofile);
+                $eview->set('baseURL', $this->baseURL);
                 $message = $eview->loadTemplate();
                 $message = str_replace("\n", "\r\n", $message);
 
@@ -276,9 +276,9 @@ class Register extends SiteController
             ]);
             $eaview->set('option', $this->option);
             $eaview->set('controller', $this->controller);
-            $eaview->sitename   = Config::get('sitename');
-            $eaview->xprofile   = $xprofile;
-            $eaview->baseURL    = $this->baseURL;
+            $eaview->set('sitename', Config::get('sitename'));
+            $eaview->set('xprofile', $xprofile);
+            $eaview->set('baseURL', $this->baseURL);
             $message = $eaview->loadTemplate();
             $message = str_replace("\n", "\r\n", $message);
 
@@ -679,9 +679,9 @@ class Register extends SiteController
                 ]);
                 $eaview->set('option', $this->option);
                 $eaview->set('controller', $this->controller);
-                $eaview->sitename   = Config::get('sitename');
-                $eaview->xprofile   = $xprofile;
-                $eaview->baseURL    = $this->baseURL;
+                $eaview->set('sitename', Config::get('sitename'));
+                $eaview->set('xprofile', $xprofile);
+                $eaview->set('baseURL', $this->baseURL);
                 $message = $eaview->loadTemplate();
                 $message = str_replace("\n", "\r\n", $message);
             }
@@ -1047,15 +1047,15 @@ class Register extends SiteController
             }
         }
 
-        $this->view->registrationUsername = Field::state('registrationUsername', 'RROO', $task);
-        $this->view->registrationPassword = Field::state('registrationPassword', 'RRHH', $task);
-        $this->view->registrationConfirmPassword = Field::state('registrationConfirmPassword', 'RRHH', $task);
-        $this->view->registrationFullname = Field::state('registrationFullname', 'RRRR', $task);
-        $this->view->registrationEmail = Field::state('registrationEmail', 'RRRR', $task);
-        $this->view->registrationConfirmEmail = Field::state('registrationConfirmEmail', 'RRRR', $task);
-        $this->view->registrationOptIn = Field::state('registrationOptIn', 'HHHH', $task);
-        $this->view->registrationCAPTCHA = Field::state('registrationCAPTCHA', 'HHHH', $task);
-        $this->view->registrationTOU = Field::state('registrationTOU', 'HHHH', $task);
+        $this->view->set('registrationUsername', Field::state('registrationUsername', 'RROO', $task));
+        $this->view->set('registrationPassword', Field::state('registrationPassword', 'RRHH', $task));
+        $this->view->set('registrationConfirmPassword', Field::state('registrationConfirmPassword', 'RRHH', $task));
+        $this->view->set('registrationFullname', Field::state('registrationFullname', 'RRRR', $task));
+        $this->view->set('registrationEmail', Field::state('registrationEmail', 'RRRR', $task));
+        $this->view->set('registrationConfirmEmail', Field::state('registrationConfirmEmail', 'RRRR', $task));
+        $this->view->set('registrationOptIn', Field::state('registrationOptIn', 'HHHH', $task));
+        $this->view->set('registrationCAPTCHA', Field::state('registrationCAPTCHA', 'HHHH', $task));
+        $this->view->set('registrationTOU', Field::state('registrationTOU', 'HHHH', $task));
 
         if ($task == 'update') {
             if (empty($this->view->xregistration->login)) {
@@ -1365,15 +1365,15 @@ class Register extends SiteController
             'name'   => 'emails',
             'layout' => 'confirm',
         ]);
-        $eview->option       = $this->option;
-        $eview->controller   = $this->controller;
-        $eview->sitename     = Config::get('sitename');
-        $eview->login        = $profile->get('username');
-        $eview->name         = $profile->get('name');
-        $eview->registerDate = $profile->get('registerDate');
-        $eview->baseURL      = $this->baseURL;
-        $eview->confirm      = $confirm;
-        $eview->email        = $profile->get('email');
+        $eview->set('option', $this->option);
+        $eview->set('controller', $this->controller);
+        $eview->set('sitename', Config::get('sitename'));
+        $eview->set('login', $profile->get('username'));
+        $eview->set('name', $profile->get('name'));
+        $eview->set('registerDate', $profile->get('registerDate'));
+        $eview->set('baseURL', $this->baseURL);
+        $eview->set('confirm', $confirm);
+        $eview->set('email', $profile->get('email'));
 
         $msg = new \Hubzero\Mail\Message();
         $msg
@@ -1488,15 +1488,15 @@ class Register extends SiteController
                                 'name'   => 'emails',
                                 'layout' => 'confirm',
                             ]);
-                            $eview->option     = $this->option;
-                            $eview->controller = $this->controller;
-                            $eview->sitename   = Config::get('sitename');
-                            $eview->login      = $login;
-                            $eview->name       = $xprofile->get('name');
-                            $eview->registerDate = $xprofile->get('registerDate');
-                            $eview->baseURL    = $this->baseURL;
-                            $eview->confirm    = $confirm;
-                            $eview->email      = $email;
+                            $eview->set('option', $this->option);
+                            $eview->set('controller', $this->controller);
+                            $eview->set('sitename', Config::get('sitename'));
+                            $eview->set('login', $login);
+                            $eview->set('name', $xprofile->get('name'));
+                            $eview->set('registerDate', $xprofile->get('registerDate'));
+                            $eview->set('baseURL', $this->baseURL);
+                            $eview->set('confirm', $confirm);
+                            $eview->set('email', $email);
 
                             $msg = new \Hubzero\Mail\Message();
                             $msg

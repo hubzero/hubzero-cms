@@ -193,10 +193,10 @@ class Solr extends AdminController
 
         $this->view->set('controller', 'solr');
         $this->view->set('task', 'display');
-        $this->view->mechanism = $config->get('engine');
-        $this->view->status = $status;
-        $this->view->logs = $logs;
-        $this->view->lastInsert = $insertTime;
+        $this->view->set('mechanism', $config->get('engine'));
+        $this->view->set('status', $status);
+        $this->view->set('logs', $logs);
+        $this->view->set('lastInsert', $insertTime);
 
         // Display the view
         $this->view->display();
@@ -209,7 +209,7 @@ class Solr extends AdminController
      */
     public function manageBlacklistTask()
     {
-        $this->view->blacklist = Blacklist::all()->rows();
+        $this->view->set('blacklist', Blacklist::all()->rows());
         $this->view->display();
     }
 

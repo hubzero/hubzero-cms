@@ -154,7 +154,7 @@ class Enrollment extends AdminController
             $course = \Components\Courses\Models\Course::getInstance($id);
         }
 
-        $this->view->course = $course;
+        $this->view->set('course', $course);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

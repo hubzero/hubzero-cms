@@ -43,7 +43,7 @@ defined('_HZEXEC_') or die();
 <?php
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(['name' => 'shared', 'layout' => 'notifications']);
-    $view->notifications = $this->notifications;
+    $view->set('notifications', $this->notifications);
     $view->display();
 }
 ?>

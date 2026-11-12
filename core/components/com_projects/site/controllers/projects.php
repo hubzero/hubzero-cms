@@ -267,7 +267,7 @@ class Projects extends Base
         }
         if ($reviewer && !$this->model->reviewerAccess($reviewer)) {
             $this->view = new \Hubzero\Component\View(['name' => 'error', 'layout' => 'default']);
-            $this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
+            $this->view->set('error', Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS'));
             $this->view->title = $reviewer == 'sponsored'
                 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
                 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
@@ -393,7 +393,7 @@ class Projects extends Base
                 $view = new \Hubzero\Component\View(
                     ['name' => 'changeowner', 'layout' => 'default'],
                 );
-                $view->project = $this->model;
+                $view->set('project', $this->model);
                 $view->set('task', $this->task);
                 $view->set('option', $this->option);
                 $view->display();
@@ -577,10 +577,10 @@ class Projects extends Base
         $plugins = Event::trigger('projects.onProjectAreas', [$this->model->get('alias')]);
 
         // Get tabbed plugins
-        $this->view->tabs = Helpers\Html::getTabs($plugins);
+        $this->view->set('tabs', Helpers\Html::getTabs($plugins));
 
         // Go through plugins
-        $this->view->content = '';
+        $this->view->set('content', '');
         if ($layout == 'internal') {
             $plugin = $this->active;
 

@@ -227,17 +227,17 @@ class Courses extends Plugin
                                     'name'      => 'emails',
                                     'layout'    => 'digest_plain',
                                 ]);
-                                $eview->option      = 'com_courses';
-                                $eview->controller  = 'courses';
-                                $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
-                                $eview->course      = $course;
-                                $eview->enrollments = $enrollments;
-                                $eview->passing     = $passing;
-                                $eview->failing     = $failing;
-                                $eview->offering    = $offering;
-                                $eview->posts_cnt   = $posts_cnt;
-                                $eview->latest      = $latest;
-                                $eview->latest_cnt  = $latest_cnt;
+                                $eview->set('option', 'com_courses');
+                                $eview->set('controller', 'courses');
+                                $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
+                                $eview->set('course', $course);
+                                $eview->set('enrollments', $enrollments);
+                                $eview->set('passing', $passing);
+                                $eview->set('failing', $failing);
+                                $eview->set('offering', $offering);
+                                $eview->set('posts_cnt', $posts_cnt);
+                                $eview->set('latest', $latest);
+                                $eview->set('latest_cnt', $latest_cnt);
 
                                 $plain = $eview->loadTemplate();
                                 $plain = str_replace("\n", "\r\n", $plain);

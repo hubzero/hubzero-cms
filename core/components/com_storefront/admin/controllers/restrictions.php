@@ -34,11 +34,11 @@ class Restrictions extends AdminController
         if (empty($sId)) {
             $sId = Request::getArray('sId', [0]);
         }
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Get SKU
         $sku = Sku::getInstance($sId);
-        $this->view->sku = $sku;
+        $this->view->set('sku', $sku);
 
         // Get filters
         $this->view->filters = [
@@ -70,11 +70,11 @@ class Restrictions extends AdminController
 
         // Get record count
         $this->view->filters['return'] = 'count';
-        $this->view->total = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
+        $this->view->set('total', RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId));
 
         // Get records
         $this->view->filters['return'] = 'list';
-        $this->view->rows = RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId);
+        $this->view->set('rows', RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId));
 
         // Output the HTML
         $this->view->display();
@@ -131,7 +131,7 @@ class Restrictions extends AdminController
     public function newTask()
     {
         $sId = Request::getInt('id', '');
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -177,8 +177,8 @@ class Restrictions extends AdminController
             }
         }
 
-        $this->view->matched = $matched;
-        $this->view->noUserMatch = $noHubUserMatch;
+        $this->view->set('matched', $matched);
+        $this->view->set('noUserMatch', $noHubUserMatch);
         $this->view->display();
     }
 
@@ -191,7 +191,7 @@ class Restrictions extends AdminController
     {
         $sId = Request::getInt('id', '');
 
-        $this->view->sId = $sId;
+        $this->view->set('sId', $sId);
 
         // Output the HTML
         $this->view->display();
@@ -252,10 +252,10 @@ class Restrictions extends AdminController
         }
 
         // Output the HTML
-        $this->view->sId = $sId;
-        $this->view->inserted = $inserted;
-        $this->view->skipped = $skipped;
-        $this->view->ignored = $ignored;
+        $this->view->set('sId', $sId);
+        $this->view->set('inserted', $inserted);
+        $this->view->set('skipped', $skipped);
+        $this->view->set('ignored', $ignored);
         $this->view->display();
     }
 }

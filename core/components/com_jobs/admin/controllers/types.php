@@ -61,8 +61,8 @@ class Types extends AdminController
         $jt = new Type($this->database);
 
         // Get records
-        $this->view->rows = $jt->getTypes($this->view->filters['sort'], $this->view->filters['sort_Dir']);
-        $this->view->total = count($this->view->rows);
+        $this->view->set('rows', $jt->getTypes($this->view->filters['sort'], $this->view->filters['sort_Dir']));
+        $this->view->set('total', count($this->view->rows));
 
         // Load default types if none found
         if (!$this->view->total) {
@@ -135,7 +135,7 @@ class Types extends AdminController
             $row->load($id);
         }
 
-        $this->view->row = $row;
+        $this->view->set('row', $row);
 
         // Output the HTML
         $this->view

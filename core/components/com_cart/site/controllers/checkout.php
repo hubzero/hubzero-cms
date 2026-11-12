@@ -161,7 +161,7 @@ class Checkout extends ComponentController
         $warehouse = new Warehouse();
         $skuInfo = $warehouse->getSkuInfo($sId);
 
-        $this->view->productInfo = $skuInfo['info'];
+        $this->view->set('productInfo', $skuInfo['info']);
 
         // Check if there is SKU EULA set
         if (!empty($skuInfo['meta']['eula'])) {
@@ -173,7 +173,7 @@ class Checkout extends ComponentController
             $productEula = Product::getMetaValue($pId, 'eula');
         }
 
-        $this->view->productEula = $productEula;
+        $this->view->set('productEula', $productEula);
 
         $eulaSubmitted = Request::getBool('submitEula', false, 'post');
 
@@ -200,7 +200,7 @@ class Checkout extends ComponentController
         }
 
         if (!empty($errors)) {
-            $this->view->notifications = $errors;
+            $this->view->set('notifications', $errors);
         }
 
         if (Pathway::count() <= 0) {
@@ -255,7 +255,7 @@ class Checkout extends ComponentController
                 ];
             }
         }
-        $this->view->noteFields = $noteFields;
+        $this->view->set('noteFields', $noteFields);
 
         $notesSubmitted = Request::getBool('submitNotes', false, 'post');
 
@@ -284,7 +284,7 @@ class Checkout extends ComponentController
             }
 
             if (!empty($errors)) {
-                $this->view->notifications = $errors;
+                $this->view->set('notifications', $errors);
             } else {
                 $notes = Request::getString('notes', false, 'post');
 
@@ -385,7 +385,7 @@ class Checkout extends ComponentController
         }
 
         if (!empty($errors)) {
-            $this->view->notifications = $errors;
+            $this->view->set('notifications', $errors);
         }
 
         if (Pathway::count() <= 0) {
@@ -401,7 +401,7 @@ class Checkout extends ComponentController
         }
 
         $savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
-        $this->view->savedShippingAddresses = $savedShippingAddresses;
+        $this->view->set('savedShippingAddresses', $savedShippingAddresses);
         $this->view->display();
     }
 
@@ -457,9 +457,9 @@ class Checkout extends ComponentController
             );
         }
 
-        $this->view->token = $token;
-        $this->view->transactionItems = $transaction->items;
-        $this->view->transactionInfo = $transaction->info;
+        $this->view->set('token', $token);
+        $this->view->set('transactionItems', $transaction->items);
+        $this->view->set('transactionInfo', $transaction->info);
         $this->view->display();
     }
 

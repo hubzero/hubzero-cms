@@ -142,9 +142,9 @@ class Form extends SiteController
             $this->view->errors = [];
         }
 
-        $this->view->title = $this->_title;
-        $this->view->base  = $this->base;
-        $this->view->course = $this->course;
+        $this->view->set('title', $this->_title);
+        $this->view->set('base', $this->base);
+        $this->view->set('course', $this->course);
 
         // Display
         $this->view->display();
@@ -207,12 +207,12 @@ class Form extends SiteController
         $this->buildTitle();
         $this->buildPathway();
 
-        $this->view->pdf        = new PdfForm($this->assertFormId());
-        $this->view->title      = $this->view->pdf->getTitle();
-        $this->view->readonly   = Request::getInt('readonly', false);
-        $this->view->unenrolled = $this->unenrolled;
-        $this->view->base       = $this->base;
-        $this->view->course     = $this->course;
+        $this->view->set('pdf', new PdfForm($this->assertFormId()));
+        $this->view->set('title', $this->view->pdf->getTitle());
+        $this->view->set('readonly', Request::getInt('readonly', false));
+        $this->view->set('unenrolled', $this->unenrolled);
+        $this->view->set('base', $this->base);
+        $this->view->set('course', $this->course);
         $this->view->display();
     }
 
@@ -261,11 +261,11 @@ class Form extends SiteController
         $this->buildTitle();
         $this->buildPathway();
 
-        $this->view->pdf   = $this->assertExistentForm();
-        $this->view->dep   = ($dep) ? $dep : new PdfFormDeployment();
-        $this->view->title = $this->view->pdf->getTitle();
-        $this->view->base  = $this->base;
-        $this->view->course = $this->course;
+        $this->view->set('pdf', $this->assertExistentForm());
+        $this->view->set('dep', ($dep) ? $dep : new PdfFormDeployment());
+        $this->view->set('title', $this->view->pdf->getTitle());
+        $this->view->set('base', $this->base);
+        $this->view->set('course', $this->course);
 
         $this->view->display();
     }
@@ -379,11 +379,11 @@ class Form extends SiteController
         $this->buildTitle();
         $this->buildPathway();
 
-        $this->view->pdf   = $this->assertExistentForm();
-        $this->view->title = $this->view->pdf->getTitle();
-        $this->view->dep   = ($dep) ? $dep : PdfFormDeployment::load($id);
-        $this->view->base  = $this->base;
-        $this->view->course = $this->course;
+        $this->view->set('pdf', $this->assertExistentForm());
+        $this->view->set('title', $this->view->pdf->getTitle());
+        $this->view->set('dep', ($dep) ? $dep : PdfFormDeployment::load($id));
+        $this->view->set('base', $this->base);
+        $this->view->set('course', $this->course);
 
         // Display
         $this->view->display();
@@ -427,13 +427,13 @@ class Form extends SiteController
                 $this->buildTitle();
                 $this->buildPathway();
 
+                $this->view->set('dep', $dep);
+                $this->view->set('resp', $dep->getRespondent($this->member, $attempt));
+                $this->view->set('pdf', $dep->getForm());
+                $this->view->set('title', $this->view->pdf->getTitle());
+                $this->view->set('base', $this->base);
                 $this->view->dep   = $dep;
-                $this->view->resp  = $dep->getRespondent($this->member, $attempt);
-                $this->view->pdf   = $dep->getForm();
-                $this->view->title = $this->view->pdf->getTitle();
-                $this->view->base  = $this->base;
-                $this->view->dep   = $dep;
-                $this->view->course = $this->course;
+                $this->view->set('course', $this->course);
 
                 // Display
                 $this->view->display();
@@ -456,13 +456,13 @@ class Form extends SiteController
                     $this->buildTitle();
                     $this->buildPathway();
 
-                    $this->view->incomplete = [];
-                    $this->view->pdf        = $dep->getForm();
-                    $this->view->title      = $this->view->pdf->getTitle();
-                    $this->view->base       = $this->base;
-                    $this->view->dep        = $dep;
-                    $this->view->resp       = $resp;
-                    $this->view->course     = $this->course;
+                    $this->view->set('incomplete', []);
+                    $this->view->set('pdf', $dep->getForm());
+                    $this->view->set('title', $this->view->pdf->getTitle());
+                    $this->view->set('base', $this->base);
+                    $this->view->set('dep', $dep);
+                    $this->view->set('resp', $resp);
+                    $this->view->set('course', $this->course);
                     $this->view->display();
                     return;
                 } else {
@@ -470,13 +470,13 @@ class Form extends SiteController
                     $this->buildTitle();
                     $this->buildPathway();
 
-                    $this->view->pdf        = $dep->getForm();
-                    $this->view->title      = $this->view->pdf->getTitle();
-                    $this->view->base       = $this->base;
-                    $this->view->dep        = $dep;
-                    $this->view->resp       = $resp;
-                    $this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : [];
-                    $this->view->course     = $this->course;
+                    $this->view->set('pdf', $dep->getForm());
+                    $this->view->set('title', $this->view->pdf->getTitle());
+                    $this->view->set('base', $this->base);
+                    $this->view->set('dep', $dep);
+                    $this->view->set('resp', $resp);
+                    $this->view->set('incomplete', (isset($this->view->incomplete)) ? $this->view->incomplete : []);
+                    $this->view->set('course', $this->course);
                     $this->view->display();
                 }
                 break;

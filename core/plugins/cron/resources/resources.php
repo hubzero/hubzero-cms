@@ -367,8 +367,8 @@ class Resources extends Plugin
             'name'      => 'emails',
             'layout'    => 'digest_plain',
         ]);
-        $eview->member = $user;
-        $eview->rows   = $posts;
+        $eview->set('member', $user);
+        $eview->set('rows', $posts);
 
         $plain = $eview->loadTemplate();
         $plain = str_replace("\n", "\r\n", $plain);

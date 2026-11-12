@@ -101,22 +101,22 @@ class Tools extends SiteController
         $model = new \Components\Tools\Models\Tools();
 
         // Get the tool list
-        $this->view->apps = $model->getApplicationTools();
+        $this->view->set('apps', $model->getApplicationTools());
 
         // Tool admins also see tools stalled in the pipeline, marked with
         // their state, so drift can be put right
-        $this->view->isToolAdmin = $this->isToolAdmin();
+        $this->view->set('isToolAdmin', $this->isToolAdmin());
 
         // Get the forge image
-        $this->view->image = \Hubzero\Document\Assets::getComponentImage($this->option, 'forge.png', 1);
+        $this->view->set('image', \Hubzero\Document\Assets::getComponentImage($this->option, 'forge.png', 1));
 
         // Get some vars to fill in text
-        $this->view->title = $this->_title;
+        $this->view->set('title', $this->_title);
 
         $live_site = rtrim(Request::base(), '/');
         $slive_site = preg_replace('/^http:\/\//', 'https://', $live_site, 1);
 
-        $this->view->forgeName = Config::get('sitename') . ' FORGE';
+        $this->view->set('forgeName', Config::get('sitename') . ' FORGE');
 
         // Set the page title
         $this->buildTitle($this->view->forgeName);
