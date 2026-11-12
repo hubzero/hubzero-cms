@@ -20,6 +20,7 @@ use Hubzero\Facades\Route;
  */
 class Upay extends Plugin
 {
+    /** @var \stdClass|null */
     protected $options;
     protected $transactionDetails;
 

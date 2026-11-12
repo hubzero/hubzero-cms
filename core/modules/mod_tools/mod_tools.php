@@ -24,6 +24,7 @@ class Tools extends Module
     protected $published;
     protected $registered;
     protected $retired;
+    /** @var int|null */
     protected $total;
     protected $updated;
     protected $uploaded;

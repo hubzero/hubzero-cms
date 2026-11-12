@@ -40,8 +40,10 @@ class Forum extends Plugin
 {
     protected $authorized;
     protected $base;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $filters;
+    /** @var \Components\Forum\Models\Manager|null */
     protected $forum;
     protected $group;
     protected $group_plugin_acl;

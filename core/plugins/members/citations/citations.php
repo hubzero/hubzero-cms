@@ -37,7 +37,9 @@ use Exception;
  */
 class Citations extends Plugin
 {
+    /** @var string|null */
     protected $action;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $grand_total;
     protected $importer;

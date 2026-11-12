@@ -22,12 +22,16 @@ use Hubzero\Facades\User;
  */
 class Todo extends Plugin
 {
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $filters;
     protected $member;
+    /** @var \Components\Projects\Models\Project|null */
     protected $model;
     protected $projects;
+    /** @var string|null */
     protected $task;
+    /** @var \Components\Projects\Models\Todo|null */
     protected $todo;
     protected $user;
 

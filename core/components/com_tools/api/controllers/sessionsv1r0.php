@@ -27,6 +27,7 @@ use Hubzero\Facades\Plugin;
 class Sessionsv1r0 extends ApiController
 {
     protected $database;
+    /** @var \Components\Resources\Helpers\Tags|null */
     protected $rt;
 
     /**

@@ -18,10 +18,12 @@ use Hubzero\Facades\User;
 class Mycontributions extends Module
 {
     public $contributions;
+    /** @var int|null */
     public $limit_other;
     public $limit_tools;
     public $show_questions;
     public $show_tickets;
+    /** @var int|null */
     public $show_tools;
     public $show_wishes;
     public $tools;

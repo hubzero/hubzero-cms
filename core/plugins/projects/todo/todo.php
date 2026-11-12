@@ -32,12 +32,14 @@ use Exception;
 class Todo extends Plugin
 {
     protected $area;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $mine;
     protected $task;
     protected $todoid;
     protected $uid;
     protected $model;
+    /** @var \Components\Projects\Models\Todo|null */
     protected $todo;
 
     /**

@@ -17,9 +17,11 @@ use Hubzero\Facades\Component;
  */
 class Featuredquestion extends Module
 {
+    /** @var string|null */
     protected $cls;
     protected $row;
     protected $thumb;
+    /** @var string|null */
     protected $txt_length;
 
     /**

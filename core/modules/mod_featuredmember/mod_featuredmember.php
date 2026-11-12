@@ -19,8 +19,10 @@ use Hubzero\Facades\User;
  */
 class Featuredmember extends Module
 {
+    /** @var string|null */
     protected $cls;
     protected $row;
+    /** @var string|null */
     protected $txt_length;
 
     /**

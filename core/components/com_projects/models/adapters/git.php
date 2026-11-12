@@ -22,6 +22,7 @@ class Git extends Models\Adapter
 {
     protected $fileLog;
     protected $files;
+    /** @var \Components\Projects\Helpers\Git|null */
     protected $git;
     protected $gitpath;
     protected $profileAssoc;

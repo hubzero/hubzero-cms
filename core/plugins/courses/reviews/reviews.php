@@ -21,10 +21,12 @@ use Hubzero\Facades\User;
  */
 class Reviews extends Plugin
 {
+    /** @var string|null */
     protected $controller;
     protected $database;
     protected $obj;
     protected $obj_type;
+    /** @var string|null */
     protected $task;
     protected $url;
     protected $view;

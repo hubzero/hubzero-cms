@@ -35,8 +35,10 @@ use Hubzero\Facades\User;
  */
 class Blog extends Plugin
 {
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $member;
+    /** @var \Components\Blog\Models\Archive|null */
     protected $model;
     protected $task;
     protected $user;

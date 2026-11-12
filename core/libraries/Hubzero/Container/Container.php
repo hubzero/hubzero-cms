@@ -22,7 +22,9 @@ use Closure;
 class Container implements ArrayAccess
 {
     private $values = [];
+    /** @var \SplObjectStorage|null */
     private $factories;
+    /** @var \SplObjectStorage|null */
     private $protected;
     private $frozen = [];
     private $raw = [];

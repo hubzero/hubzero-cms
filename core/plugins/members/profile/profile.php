@@ -22,6 +22,7 @@ class Profile extends Plugin
 {
     protected $areas;
     protected $member;
+    /** @var string|null */
     protected $task;
     protected $user;
 

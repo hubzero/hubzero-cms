@@ -27,6 +27,7 @@ use Hubzero\Facades\Component;
  */
 class Warehouse extends \Hubzero\Base\Obj
 {
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
 
     // Product categories to look at (to define scope)

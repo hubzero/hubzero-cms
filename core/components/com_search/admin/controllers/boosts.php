@@ -20,6 +20,7 @@ use Hubzero\Facades\Component;
 class Boosts extends AdminController
 {
     protected $crudHelper;
+    /** @var \Components\Search\Helpers\BoostFactory|null */
     protected $factory;
     protected $typeHelper;
 

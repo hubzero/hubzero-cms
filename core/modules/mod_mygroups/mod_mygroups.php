@@ -19,6 +19,7 @@ use Hubzero\Facades\User;
 class Mygroups extends Module
 {
     public $allgroups;
+    /** @var int|null */
     public $limit;
     public $moduleclass;
     public $recentgroups;

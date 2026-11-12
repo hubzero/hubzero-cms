@@ -15,6 +15,7 @@ use Hubzero\Module\Module;
  */
 class Latestusage extends Module
 {
+    /** @var string|null */
     protected $cls;
     protected $resources;
     protected $sims;

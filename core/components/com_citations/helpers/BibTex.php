@@ -150,7 +150,9 @@ class BibTex
      */
     public $authorstring;
 
+    /** @var int|null */
     protected $oldpos;
+    /** @var int|null */
     protected $pos;
 
     /**

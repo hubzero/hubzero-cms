@@ -39,6 +39,7 @@ class Publications extends Plugin
     protected $activity;
     protected $area;
     protected $config;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $imageExt;
     protected $pid;

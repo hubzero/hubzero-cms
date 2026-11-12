@@ -25,6 +25,7 @@ class Groups extends Module
     protected $pastDay;
     protected $pending;
     protected $restricted;
+    /** @var string|null */
     protected $type;
     protected $visible;
 

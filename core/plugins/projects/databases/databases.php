@@ -27,11 +27,13 @@ class Databases extends Plugin
     protected $area;
     protected $config;
     protected $configured;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $path;
     protected $uid;
     protected $gitpath;
     protected $model;
+    /** @var \Components\Projects\Models\Repo|null */
     protected $repo;
     protected $subdir;
 

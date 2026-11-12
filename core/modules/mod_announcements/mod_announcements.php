@@ -17,6 +17,7 @@ use Hubzero\Facades\Date;
  */
 class Announcements extends Module
 {
+    /** @var int|null */
     protected $cid;
     protected $container;
     protected $content;

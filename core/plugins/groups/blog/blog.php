@@ -27,9 +27,11 @@ class Blog extends Plugin
 {
     protected $action;
     protected $authorized;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $group;
     protected $members;
+    /** @var \Components\Blog\Models\Archive|null */
     protected $model;
 
     /**

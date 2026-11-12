@@ -23,6 +23,7 @@ use Hubzero\Facades\User;
  */
 class Toolsv1r0 extends ApiController
 {
+    /** @var \Components\Resources\Helpers\Tags|null */
     protected $rt;
 
     /**

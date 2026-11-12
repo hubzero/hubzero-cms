@@ -23,7 +23,9 @@ class Popularquestions extends Module
     protected $cssClass;
     protected $cssId;
     protected $rows;
+    /** @var string|null */
     protected $style;
+    /** @var string|null */
     protected $tag;
 
     /**

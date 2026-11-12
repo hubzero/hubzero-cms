@@ -19,6 +19,7 @@ class Myresources extends Module
 {
     protected $contributions;
     protected $limit;
+    /** @var int|null */
     protected $no_html;
     protected $sort;
 

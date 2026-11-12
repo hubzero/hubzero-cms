@@ -22,6 +22,7 @@ use Hubzero\Facades\User;
  */
 class Impact extends Plugin
 {
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $componentOption;
 

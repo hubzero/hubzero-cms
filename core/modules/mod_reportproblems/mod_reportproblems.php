@@ -27,6 +27,7 @@ class Reportproblems extends Module
     protected $os_version;
     protected $referrer;
     protected $supportParams;
+    /** @var int|null */
     protected $verified;
 
     /**

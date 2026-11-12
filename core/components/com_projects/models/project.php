@@ -30,18 +30,25 @@ class Project extends Model
     protected $groupOwner;
     protected $member;
     protected $newCount;
+    /** @var \Components\Publications\Tables\Publication|null */
     protected $objPub;
     protected $owner;
     protected $project;
     protected $publication;
     protected $repo;
+    /** @var \Components\Projects\Tables\Activity|null */
     protected $tblActivity;
+    /** @var \Components\Projects\Tables\Blog|null */
     protected $tblBlog;
+    /** @var \Components\Projects\Tables\Comment|null */
     protected $tblComment;
     // Read and written from outside the class: the projects controller
     // reconciles groups, matches invitations and loads the team through it.
+    /** @var \Components\Projects\Tables\Owner|null */
     public $tblOwner;
+    /** @var \Components\Projects\Tables\Todo|null */
     protected $tblTodo;
+    /** @var \Components\Projects\Tables\Type|null */
     protected $tblType;
     protected $team;
     protected $type;

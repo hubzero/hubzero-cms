@@ -46,6 +46,7 @@ class Citations extends Plugin
     protected $access;
     protected $action;
     protected $authorized;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $group;
     protected $importer;

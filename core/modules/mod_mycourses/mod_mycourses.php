@@ -18,6 +18,7 @@ use Hubzero\Facades\Date;
 class Mycourses extends Module
 {
     protected $courses;
+    /** @var int|null */
     protected $limit;
     protected $moduleclass;
 

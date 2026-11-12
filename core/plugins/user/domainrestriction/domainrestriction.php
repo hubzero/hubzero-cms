@@ -27,6 +27,7 @@ class Domainrestriction extends Plugin
     private $badtlds;
     private $baddomains;
     private $bademails;
+    /** @var string|null */
     private $email;
     private $domain;
     private $tld;

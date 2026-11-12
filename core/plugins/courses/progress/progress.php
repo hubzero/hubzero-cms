@@ -25,6 +25,7 @@ class Progress extends Plugin
 {
     protected $base;
     protected $course;
+    /** @var \Hubzero\Database\Driver|null */
     protected $db;
     protected $member;
     protected $view;

@@ -21,9 +21,11 @@ use Hubzero\Facades\Request;
 class PaymentProvider
 {
     private $options;
+    /** @var \stdClass|null */
     private $siteDetails;
     private $transactionDetails;
     private $postBack;
+    /** @var \stdClass|null */
     private $error;
 
     /**

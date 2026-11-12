@@ -28,6 +28,7 @@ class Team extends Plugin
 {
     protected $area;
     protected $config;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $task;
     protected $uid;

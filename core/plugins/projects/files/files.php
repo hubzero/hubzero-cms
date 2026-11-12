@@ -42,12 +42,16 @@ class Files extends Plugin
     public $area;
 
     protected $connect;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $publishing;
+    /** @var \Plugins\Projects\Files\Helpers\Sync|null */
     protected $rSync;
+    /** @var string|null */
     protected $remoteService;
     protected $task;
     protected $uid;
+    /** @var int|null */
     protected $forceSync;
 
     /**
@@ -57,6 +61,7 @@ class Files extends Plugin
      */
     public $model;
 
+    /** @var int|null */
     protected $publication;
     protected $repo;
 

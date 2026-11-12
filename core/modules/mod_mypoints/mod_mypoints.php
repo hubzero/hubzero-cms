@@ -20,6 +20,7 @@ class Mypoints extends Module
 {
     protected $error;
     protected $history;
+    /** @var int|null */
     protected $limit;
     protected $moduleclass;
     protected $summary;

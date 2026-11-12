@@ -20,6 +20,7 @@ use Hubzero\Facades\User;
 class Nogit extends Models\Adapter
 {
     protected $files;
+    /** @var \Components\Projects\Helpers\Nogit|null */
     protected $nogit;
     protected $profileAssoc;
 

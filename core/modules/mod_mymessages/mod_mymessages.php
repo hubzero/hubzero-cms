@@ -19,6 +19,7 @@ use Hubzero\Facades\Lang;
  */
 class Mymessages extends Module
 {
+    /** @var int|null */
     protected $limit;
     protected $moduleclass;
     protected $rows;

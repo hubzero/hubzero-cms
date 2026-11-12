@@ -26,6 +26,7 @@ class Sync extends \Hubzero\Base\Obj
      * @var  \Components\Projects\Helpers\Connect
      */
     protected $connect;
+    /** @var \Hubzero\Database\Driver|null */
     protected $db;
     protected $logPath;
     protected $path;

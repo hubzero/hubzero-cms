@@ -29,8 +29,11 @@ use Hubzero\Facades\User;
 class Discussions extends Plugin
 {
     protected $config;
+    /** @var int|null */
     protected $limit;
+    /** @var int|null */
     protected $limitstart;
+    /** @var string|null */
     protected $name;
     protected $sections;
 

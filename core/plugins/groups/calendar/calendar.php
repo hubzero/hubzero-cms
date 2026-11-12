@@ -27,7 +27,9 @@ class Calendar extends Plugin
     protected $action;
     protected $arrival;
     protected $authorized;
+    /** @var int|null */
     protected $calendar;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $departure;
     protected $dietary;
@@ -39,6 +41,7 @@ class Calendar extends Plugin
     protected $race;
     protected $register;
     protected $user;
+    /** @var int|null */
     protected $year;
 
     /**

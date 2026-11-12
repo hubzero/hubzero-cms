@@ -30,6 +30,7 @@ class Whatsnew extends Module
     public $rows;
     public $rows2;
     protected $searchareas;
+    /** @var int|null */
     public $tagged;
     public $tags;
 

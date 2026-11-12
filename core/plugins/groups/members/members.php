@@ -33,6 +33,7 @@ class Members extends Plugin
     protected $output;
     protected $action;
     protected $authorized;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $display_system_users;
     protected $group;

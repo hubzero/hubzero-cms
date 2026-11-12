@@ -28,6 +28,7 @@ class Links extends Plugin
 {
     protected $area;
     protected $config;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $pubconfig;
     protected $task;

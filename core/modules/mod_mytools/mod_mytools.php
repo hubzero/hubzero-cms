@@ -22,12 +22,16 @@ class Mytools extends Module
 {
     public $alltools;
     protected $can_launch;
+    /** @var string|null */
     public $fav;
     public $favs;
     public $favtools;
+    /** @var bool|null */
     protected $launch_page;
+    /** @var int|null */
     public $no_html;
     public $rectools;
+    /** @var \Components\Resources\Helpers\Tags|null */
     protected $rt;
     protected $supportedtag;
     protected $supportedtagusage;

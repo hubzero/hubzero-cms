@@ -26,6 +26,7 @@ class Questions extends Plugin
 {
     protected $banking;
     protected $count;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $filters;
     protected $model;

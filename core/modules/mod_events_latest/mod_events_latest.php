@@ -41,6 +41,7 @@ use Hubzero\Facades\App;
  */
 class EventsLatest extends Module
 {
+    /** @var string|null */
     protected $error;
     protected $events;
 

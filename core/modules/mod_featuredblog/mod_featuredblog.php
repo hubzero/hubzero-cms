@@ -17,8 +17,10 @@ use Hubzero\Facades\App;
  */
 class Featuredblog extends Module
 {
+    /** @var string|null */
     protected $cls;
     protected $row;
+    /** @var string|null */
     protected $txt_length;
 
     /**

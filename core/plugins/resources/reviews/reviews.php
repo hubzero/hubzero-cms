@@ -23,6 +23,7 @@ use Hubzero\Facades\User;
 class Reviews extends Plugin
 {
     protected $banking;
+    /** @var string|null */
     protected $infolink;
 
     /**

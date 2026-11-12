@@ -25,6 +25,7 @@ class Collect extends Module
     protected $collections;
     protected $groupboards;
     protected $item;
+    /** @var \Components\Collections\Models\Archive|null */
     protected $model;
     protected $myboards;
 

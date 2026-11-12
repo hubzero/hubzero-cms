@@ -24,10 +24,12 @@ class Collections extends Plugin
 {
     protected $action;
     protected $authorized;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $group;
     protected $member;
     protected $members;
+    /** @var \Components\Collections\Models\Archive|null */
     protected $model;
     protected $name;
 

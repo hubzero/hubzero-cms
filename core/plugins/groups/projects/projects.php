@@ -31,6 +31,7 @@ class Projects extends Plugin
     protected $authorized;
     protected $group;
     protected $members;
+    /** @var \Components\Projects\Models\Project|null */
     protected $model;
 
     /**

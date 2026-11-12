@@ -24,6 +24,7 @@ class Sponsors extends Plugin
     protected $controller;
     protected $componentOption;
     protected $task;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
 
     /**

@@ -27,8 +27,10 @@ use Hubzero\Facades\Component;
  */
 class Curation extends Obj
 {
+    /** @var \Components\Publications\Tables\CurationVersion|null */
     protected $curationVersion;
     protected $tbl;
+    /** @var \Components\Publications\Tables\CurationHistory|null */
     protected $tblHistory;
 
     /**

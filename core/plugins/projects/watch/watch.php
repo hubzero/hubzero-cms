@@ -24,9 +24,12 @@ use Hubzero\Facades\User;
 class Watch extends Plugin
 {
     protected $area;
+    /** @var string|null */
     protected $action;
+    /** @var \Hubzero\Database\Driver|null */
     protected $database;
     protected $project;
+    /** @var \Hubzero\Item\Watch|null */
     protected $watch;
 
     /**

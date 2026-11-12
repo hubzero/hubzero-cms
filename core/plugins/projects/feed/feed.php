@@ -26,6 +26,7 @@ class Feed extends Plugin
 {
     protected $area;
     protected $config;
+    /** @var string|null */
     protected $task;
     protected $uid;
     protected $model;

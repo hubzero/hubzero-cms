@@ -10,6 +10,7 @@ namespace Components\Search\Helpers;
 
 class ErrorMessageHelper
 {
+    /** @var string|null */
     protected $breaks;
 
     public function __construct()

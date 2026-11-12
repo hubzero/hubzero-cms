@@ -14,6 +14,7 @@ class BaseAuditor
     public $pId;
     public $crtId;
     public $uId;
+    /** @var \stdClass|null */
     public $response;
     public $sId;
 

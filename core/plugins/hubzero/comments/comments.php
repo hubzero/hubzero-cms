@@ -26,11 +26,14 @@ use Hubzero\Facades\User;
 class Comments extends Plugin
 {
     protected $componentOption;
+    /** @var string|null */
     protected $action;
+    /** @var \Plugins\Hubzero\Comments\Models\Comment|null */
     protected $comment;
     protected $obj;
     protected $obj_id;
     protected $obj_type;
+    /** @var string|null */
     protected $task;
     protected $url;
     protected $view;
