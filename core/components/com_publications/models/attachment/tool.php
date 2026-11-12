@@ -43,7 +43,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -100,7 +100,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  string   HTML
      */
@@ -404,7 +404,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -420,7 +420,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -548,7 +548,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
      * @return  boolean
@@ -565,7 +565,7 @@ class Tool extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  boolean
      */

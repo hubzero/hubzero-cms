@@ -53,9 +53,9 @@ class Curation extends Obj
     public $model = null;
 
     /**
-     * Curation manifest
+     * Curation manifest, decoded
      *
-     * @var  string
+     * @var  object|null
      */
     public $manifest = null;
 

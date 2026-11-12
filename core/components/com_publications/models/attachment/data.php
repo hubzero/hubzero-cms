@@ -51,7 +51,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object   $blockParams
      * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -98,7 +98,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  string   HTML
      */
@@ -574,7 +574,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -616,7 +616,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -745,7 +745,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
      * @return  boolean
@@ -839,7 +839,7 @@ class Data extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  boolean
      */
@@ -898,7 +898,7 @@ class Data extends Base
      * Publish supporting database files
      *
      * @param   object   $objPD
-     * @param   array    $configs
+     * @param   object   $configs
      * @return  boolean  or error
      */
     public function publishDataFiles($objPD, $configs)

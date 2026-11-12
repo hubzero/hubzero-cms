@@ -41,7 +41,7 @@ class Link extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
@@ -90,7 +90,7 @@ class Link extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  string   HTML
      */
@@ -455,7 +455,7 @@ class Link extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -489,7 +489,7 @@ class Link extends Base
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
-     * @param   array    $blockParams
+     * @param   object    $blockParams
      * @return  boolean
      */
     public function updateAttachment($row, $element, $elementId, $pub, $blockParams)

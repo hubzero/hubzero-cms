@@ -84,7 +84,7 @@ class ImageViewer extends Base
      * Clean-up related files
      *
      * @param   string  $path
-     * @param   array   $configs
+     * @param   object   $configs
      * @param   string  $md5
      * @return  bool
      */
@@ -132,7 +132,7 @@ class ImageViewer extends Base
      *
      * @param   object  $row
      * @param   object  $pub
-     * @param   array   $configs
+     * @param   object   $configs
      * @return  bool
      */
     public function makeDefault($row, $pub, $configs)
