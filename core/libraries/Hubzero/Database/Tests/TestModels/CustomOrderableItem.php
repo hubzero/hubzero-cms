@@ -19,5 +19,8 @@ class CustomOrderableItem extends Relational
     use Orderable;
 
     protected $table = 'orderable_custom_items';
+    /**
+     * @var  string
+     */
     protected $orderingColumn = 'sort_order';
 }

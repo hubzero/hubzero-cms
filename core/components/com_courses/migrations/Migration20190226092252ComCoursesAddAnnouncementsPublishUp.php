@@ -17,6 +17,9 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
  */
 class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
 {
+    /**
+     * @var  string
+     */
     public static $announcementsTable = '#__courses_announcements';
 
     public static $announcementsColumns = [

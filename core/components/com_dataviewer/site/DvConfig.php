@@ -13,7 +13,13 @@ use Hubzero\Facades\Component;
 class DvConfig
 {
     public static $dv_conf = [];
+    /**
+     * @var  string
+     */
     public static $com_name = '';
+    /**
+     * @var  string
+     */
     public static $html_path = '';
 
     /** @var string  Absolute filesystem path to the html/ assets, also the constant DV_PATH_HTML */

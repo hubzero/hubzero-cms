@@ -33,18 +33,30 @@ class Warehouse extends \Hubzero\Base\Obj
     public $lookupCollections = null;
 
     // Access levels scope (what is allowed to display)
+    /**
+     * @var  array|false
+     */
     public $accessLevelsScope = false;
 
     // Access groups scope (what is allowed to display)
     public $accessGroupsScope = [];
 
     // User scope (what user is trying to get the info)
+    /**
+     * @var  int|false
+     */
     public $userScope = false;
 
     // User whitelisted SKUS for a product
+    /**
+     * @var  array|false
+     */
     public $userWhitelistedSkus = false;
 
     // Flag if the current product is not permitted to access by the uses by default
+    /**
+     * @var  bool
+     */
     public $userCannotAccessProduct = false;
 
     // Database instance

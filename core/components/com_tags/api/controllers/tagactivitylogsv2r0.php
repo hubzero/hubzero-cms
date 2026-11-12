@@ -19,6 +19,9 @@ use Exception;
 
 class TagActivityLogsv2r0 extends ApiController
 {
+    /**
+     * @var  string
+     */
     protected static $version = '2.0';
 
     /**

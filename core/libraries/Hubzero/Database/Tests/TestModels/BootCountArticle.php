@@ -18,6 +18,9 @@ class BootCountArticle extends Relational
     protected $table = 'scoped_articles';
     protected $namespace = '';
 
+    /**
+     * @var  int
+     */
     public static $bootCount = 0;
 
     protected static function boot()

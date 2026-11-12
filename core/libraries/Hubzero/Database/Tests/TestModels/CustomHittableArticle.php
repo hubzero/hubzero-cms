@@ -19,5 +19,8 @@ class CustomHittableArticle extends Relational
     use Hittable;
 
     protected $table = 'hittable_custom_articles';
+    /**
+     * @var  string
+     */
     protected $hitsColumn = 'view_count';
 }

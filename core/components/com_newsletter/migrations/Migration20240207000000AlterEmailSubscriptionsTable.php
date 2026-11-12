@@ -7,6 +7,9 @@ use Hubzero\Facades\Date;
 
 class Migration20240207000000AlterEmailSubscriptionsTable extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__email_subscriptions';
 
     /**

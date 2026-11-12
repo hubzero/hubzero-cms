@@ -43,12 +43,27 @@ class Ftp implements AdapterInterface
 
     protected $connection;
     protected $host;
+    /**
+     * @var  int
+     */
     protected $port = 21;
     protected $username;
     protected $password;
+    /**
+     * @var  bool
+     */
     protected $ssl = false;
+    /**
+     * @var  int
+     */
     protected $timeout = 90;
+    /**
+     * @var  bool
+     */
     protected $passive = true;
+    /**
+     * @var  string
+     */
     protected $separator = '/';
     protected $root;
 

@@ -15,6 +15,9 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20230920000000ComNewsletter extends Base
 {
+    /**
+     * @var  string
+     */
     public static $table = '#__campaign';
 
     /**

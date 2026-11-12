@@ -7,6 +7,9 @@ use Hubzero\Facades\Date;
 
 class Migration20240212000000PopulatePagesTable extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__reply_pages';
 
     /**

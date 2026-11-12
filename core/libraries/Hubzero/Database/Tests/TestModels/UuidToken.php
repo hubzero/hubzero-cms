@@ -20,6 +20,9 @@ class UuidToken extends Relational
 
     protected $table = 'uuid_tokens';
     protected $pk = 'uuid';
+    /**
+     * @var  bool
+     */
     protected $uuidAsPrimaryKey = true;
     protected $namespace = '';
     protected $dispatchesModelEvents = true;

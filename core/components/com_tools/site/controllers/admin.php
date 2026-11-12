@@ -26,7 +26,13 @@ use Hubzero\Facades\Date;
  */
 class Admin extends SiteController
 {
+    /**
+     * @var  int
+     */
     private $toolid = 0;
+    /**
+     * @var  int
+     */
     private $admin = 0;
     private $messages = [];
 

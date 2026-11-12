@@ -15,9 +15,15 @@ use Hubzero\Base\Obj;
  */
 class StatefulObj extends Obj
 {
+    /**
+     * @var  string
+     */
     public $title = 'declared';
 
     protected $cache = ['kept' => true];
 
+    /**
+     * @var  int
+     */
     private $count = 0;
 }

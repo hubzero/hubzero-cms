@@ -16,8 +16,17 @@ use Hubzero\Content\Migration\Base;
  */
 class Migration20180702134743ComToolsRemoveSubmitSessions extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $submitTable = '#__tool_submit_sessions';
+    /**
+     * @var  string
+     */
     protected static $migrationsTable = '#__migrations';
+    /**
+     * @var  string
+     */
     protected static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
 
     /**

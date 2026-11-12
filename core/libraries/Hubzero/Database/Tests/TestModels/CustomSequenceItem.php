@@ -21,6 +21,9 @@ class CustomSequenceItem extends Relational
     protected $table = 'seq_items';
     protected $pk = 'id';
     protected $namespace = '';
+    /**
+     * @var  string
+     */
     protected $sequenceName = 'custom_item_seq';
     protected $dispatchesModelEvents = true;
 }

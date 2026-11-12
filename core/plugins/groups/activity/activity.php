@@ -25,7 +25,13 @@ class Activity extends Plugin
 {
     protected $base;
     protected $group;
+    /**
+     * @var  bool
+     */
     protected $canModerate = false;
+    /**
+     * @var  bool
+     */
     protected $canStar = false;
 
     /**

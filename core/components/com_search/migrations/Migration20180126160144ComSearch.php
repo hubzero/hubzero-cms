@@ -15,6 +15,9 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20180126160144ComSearch extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $tableName = '#__solr_search_searchcomponents';
 
     /**

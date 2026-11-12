@@ -15,6 +15,9 @@ use Hubzero\Facades\Request;
 class DvConfig
 {
     public static $conf;
+    /**
+     * @var  string
+     */
     public static $com_name = '';
 
     /** @var string  Session-based request ID sent with each form, also the constant DB_RID */

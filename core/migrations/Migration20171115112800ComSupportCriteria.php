@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20171115112800ComSupportCriteria extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $tableName = '#__support_criteria';
 
     /**

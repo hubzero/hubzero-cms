@@ -17,6 +17,9 @@ use Hubzero\Facades\Date;
 class Migration20230920000000ComConfig extends Base
 {
     // TODO: finalize this name
+    /**
+     * @var  string
+     */
     protected static $tableName = "#__config";
 
     /**

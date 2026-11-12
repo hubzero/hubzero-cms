@@ -7,8 +7,17 @@ use Hubzero\Facades\App;
 
 class Migration20231222155500CreateHashStoredProc extends Base
 {
+    /**
+     * @var  string
+     */
     public static $campaign = '#__campaign';
+    /**
+     * @var  string
+     */
     public static $config = '#__config';
+    /**
+     * @var  string
+     */
     public static $users = '#__users';
 
     /**

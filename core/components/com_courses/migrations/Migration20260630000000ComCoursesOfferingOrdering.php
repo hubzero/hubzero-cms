@@ -22,6 +22,9 @@ use Hubzero\Content\Migration\Base;
  */
 class Migration20260630000000ComCoursesOfferingOrdering extends Base
 {
+    /**
+     * @var  string
+     */
     public static $table = '#__courses_offerings';
 
     /**

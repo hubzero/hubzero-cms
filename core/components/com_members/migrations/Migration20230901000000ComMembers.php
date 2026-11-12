@@ -21,6 +21,9 @@ use Hubzero\Content\Migration\Base;
 class Migration20230901000000ComMembers extends Base
 {
     // specify table name
+    /**
+     * @var  string
+     */
     public static $tableName = '#__users';
 
     // specify column to create

@@ -6,6 +6,9 @@ use Hubzero\Content\Migration\Base;
 
 class Migration20240204000000CreateEmailSubscriptionsTable extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__email_subscriptions';
 
     /**

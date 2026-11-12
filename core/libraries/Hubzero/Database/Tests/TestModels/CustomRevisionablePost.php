@@ -21,14 +21,23 @@ class CustomRevisionablePost extends Relational
     protected $table = 'revisionable_posts';
 
     // Custom revision table
+    /**
+     * @var  string
+     */
     protected $revisionTable = 'post_history';
 
     // Custom foreign key
+    /**
+     * @var  string
+     */
     protected $revisionForeignKey = 'post_id';
 
     // Only track these fields
     protected $revisionable = ['title', 'body'];
 
     // Keep max 5 revisions
+    /**
+     * @var  int
+     */
     protected $maxRevisions = 5;
 }

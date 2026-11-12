@@ -20,10 +20,25 @@ class SubscriptionsHelper
      */
     private $db;
 
+    /**
+     * @var  string
+     */
     private static $activeReferenceField = 'preference';
+    /**
+     * @var  string
+     */
     private static $activePattern = '/^yes/i';
+    /**
+     * @var  string
+     */
     private static $badDataSubmitted = 'Unable to process your updates';
+    /**
+     * @var  string
+     */
     private static $subscriptionNotFound = 'Selected user subscription not found';
+    /**
+     * @var  string
+     */
     private static $userProfileOptionNotFound = 'Selected user profile option not found';
 
     public function __construct()

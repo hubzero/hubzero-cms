@@ -108,6 +108,9 @@ class Curation extends Obj
      */
     public $message = null;
 
+    /**
+     * @var  string
+     */
     public $readmeFileName = 'hubREADME.txt';
 
     /**

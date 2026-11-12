@@ -17,6 +17,9 @@ class TestObserver
     protected static $models = [];
     protected static $callTimes = [];
     protected static $callCounts = [];
+    /**
+     * @var  int
+     */
     protected static $callSequence = 0;
     protected static $callOrder = [];
 

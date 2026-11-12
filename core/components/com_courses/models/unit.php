@@ -20,6 +20,9 @@ class Unit extends Base
 {
     protected $assetgroupsBackup;
 
+    /**
+     * @var  int
+     */
     protected $course_id = 0;
 
     /**

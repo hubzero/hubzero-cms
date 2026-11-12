@@ -17,6 +17,9 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
  */
 class Migration20190102152739ComCoursesMissingColumns extends Base
 {
+    /**
+     * @var  string
+     */
     public static $assetsTable = '#__courses_assets';
 
     public static $assetsColumns = [
@@ -25,6 +28,9 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
     ];
 
+    /**
+     * @var  string
+     */
     public static $offeringSectionsTable = '#__courses_offering_sections';
 
     public static $offeringSectionsColumns = [
@@ -32,6 +38,9 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
     ];
 
+    /**
+     * @var  string
+     */
     public static $pagesTable = '#__courses_pages';
 
     public static $pagesColumns = [

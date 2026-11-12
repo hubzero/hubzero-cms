@@ -28,9 +28,15 @@ class CurrentCart extends Cart
     public $cart = null;
 
     // Syncing enabled?
+    /**
+     * @var  bool
+     */
     public $sync = true;
 
     // Cookie max age
+    /**
+     * @var  int
+     */
     public $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
 
     public $cartCoupons;

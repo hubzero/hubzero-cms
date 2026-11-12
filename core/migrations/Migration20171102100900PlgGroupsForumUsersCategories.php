@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $tableName = '#__forum_users_categories';
 
     /**

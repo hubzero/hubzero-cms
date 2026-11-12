@@ -16,7 +16,13 @@ use Plugins\Antispam\SpamAssassin\Service\Client\Remote\Result;
  */
 class Remote
 {
+    /**
+     * @var  string
+     */
     protected $server = 'http://spamcheck.postmarkapp.com/filter';
+    /**
+     * @var  bool
+     */
     protected $verbose = false;
 
     /**

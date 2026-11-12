@@ -6,6 +6,9 @@ use Hubzero\Content\Migration\Base;
 
 class Migration20240203000000CreateRepliesTable extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__reply_replies';
 
     /**

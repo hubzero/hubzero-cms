@@ -54,8 +54,14 @@ class Application extends Container
      */
     protected $serviceProviders = [];
 
+    /**
+     * @var  int|float
+     */
     protected $startms = 0;
 
+    /**
+     * @var  int|float
+     */
     protected $endms = 0;
 
     /**

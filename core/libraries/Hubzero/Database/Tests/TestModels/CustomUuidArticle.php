@@ -20,6 +20,9 @@ class CustomUuidArticle extends Relational
 
     protected $table = 'uuid_custom_articles';
     protected $pk = 'id';
+    /**
+     * @var  string
+     */
     protected $uuidColumn = 'public_id';
     protected $namespace = '';
     protected $dispatchesModelEvents = true;

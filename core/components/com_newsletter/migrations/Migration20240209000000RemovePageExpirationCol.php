@@ -12,6 +12,9 @@ use Hubzero\Content\Migration\Base;
 
 class Migration20240209000000RemovePageExpirationCol extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__reply_pages';
 
     // next_expiration column should not be present in core implementation of table

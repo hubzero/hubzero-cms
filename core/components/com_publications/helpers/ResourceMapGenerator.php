@@ -34,16 +34,31 @@ class ResourceMapGenerator
     ];
 
     // URL of the component
+    /**
+     * @var  string
+     */
     private $componentURL = '';
 
     // URL of the publication (e.g. /publication/1234)
+    /**
+     * @var  string
+     */
     private $resourceURL = '';
 
     // Path to file system that stores resource
+    /**
+     * @var  string
+     */
     private $resourceSite = '';
 
     // Variables of this resource for composing the RDF file
+    /**
+     * @var  int|string
+     */
     private $id = -1;
+    /**
+     * @var  int
+     */
     private $version_id = -1;
     private $author_id;
     private $type;

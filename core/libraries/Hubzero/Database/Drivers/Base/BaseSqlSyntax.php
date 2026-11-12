@@ -56,10 +56,25 @@ abstract class BaseSqlSyntax
      * The syntax element containers
      */
     protected $select = [];
+    /**
+     * @var  bool
+     */
     protected $distinct = false;
+    /**
+     * @var  string|array
+     */
     protected $insert = '';
+    /**
+     * @var  bool
+     */
     protected $ignore = false;
+    /**
+     * @var  string
+     */
     protected $update = '';
+    /**
+     * @var  string
+     */
     protected $delete = '';
     protected $set    = [];
     protected $values = [];
@@ -76,7 +91,13 @@ abstract class BaseSqlSyntax
     protected $group  = [];
     protected $having = [];
     protected $order  = [];
+    /**
+     * @var  string|int
+     */
     protected $start  = '';
+    /**
+     * @var  string|int
+     */
     protected $limit  = '';
 
     /**
@@ -97,6 +118,9 @@ abstract class BaseSqlSyntax
      * The actual data is stored in $upsertTable, $upsertValues, etc.
      */
     protected $upsert = false;
+    /**
+     * @var  string
+     */
     protected $upsertTable = '';
     protected $upsertValues = [];
     protected $upsertUpdateColumns = [];
@@ -109,6 +133,9 @@ abstract class BaseSqlSyntax
      * configured. The actual data is in $upsertMany* properties below.
      */
     protected $upsertMany = false;
+    /**
+     * @var  string
+     */
     protected $upsertManyTable = '';
     protected $upsertManyRows = [];
     protected $upsertManyUpdateColumns = [];
@@ -121,6 +148,9 @@ abstract class BaseSqlSyntax
      * The actual data is stored in $insertManyTable, $insertManyRows, and $insertManyIgnore.
      */
     protected $insertMany = false;
+    /**
+     * @var  string
+     */
     protected $insertManyTable = '';
 
     /**
@@ -144,6 +174,9 @@ abstract class BaseSqlSyntax
      **/
     protected $insertSelectBindings = [];
     protected $insertManyRows = [];
+    /**
+     * @var  bool
+     */
     protected $insertManyIgnore = false;
 
     /**

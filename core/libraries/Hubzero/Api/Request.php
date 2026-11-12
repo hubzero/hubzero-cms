@@ -39,18 +39,45 @@ class Request
      * @var string
      */
     private $scheme = 'http';
+    /**
+     * @var  string
+     */
     private $username = '';
+    /**
+     * @var  string
+     */
     private $password = '';
+    /**
+     * @var  string
+     */
     private $hostname = 'localhost';
+    /**
+     * @var  string
+     */
     private $port = '';
+    /**
+     * @var  string
+     */
     private $path = '';
+    /**
+     * @var  string
+     */
     private $query = '';
+    /**
+     * @var  string
+     */
     private $fragment = '';
 
+    /**
+     * @var  string
+     */
     private $version = 'HTTP/1.0';
 
     private $headers = [];
 
+    /**
+     * @var  string
+     */
     private $body = '';
 
     private $server = [];

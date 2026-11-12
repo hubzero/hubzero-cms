@@ -7,6 +7,9 @@ use Hubzero\Facades\Date;
 
 class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__email_subscriptions';
 
     // truncate existing table, insert two records according to its current schema

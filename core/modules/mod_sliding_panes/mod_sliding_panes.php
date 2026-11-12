@@ -25,6 +25,9 @@ class SlidingPanes extends Module
     protected $container;
     protected $content;
 
+    /**
+     * @var  int
+     */
     protected static $instances = 0;
 
     /**

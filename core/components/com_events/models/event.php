@@ -37,6 +37,9 @@ class Event extends Model
      */
     protected $tableClass = '\\Components\\Events\\Tables\\Event';
 
+    /**
+     * @var  string
+     */
     protected $address_info = '';
 
     /**

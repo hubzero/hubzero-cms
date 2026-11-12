@@ -15,7 +15,13 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20180724112946ComSearch extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $filtersTable = '#__solr_search_filters';
+    /**
+     * @var  string
+     */
     protected static $filterOptionsTable = '#__solr_search_filter_options';
 
     /**

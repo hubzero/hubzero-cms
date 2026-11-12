@@ -21,8 +21,17 @@ use Hubzero\Facades\Component;
  */
 class Badges
 {
+    /**
+     * @var  string
+     */
     public $scope = '';
+    /**
+     * @var  string
+     */
     public $scopeId = '';
+    /**
+     * @var  string
+     */
     private $db = '';
 
     public const LABEL = 'badge';

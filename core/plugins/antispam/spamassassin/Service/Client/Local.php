@@ -29,11 +29,20 @@ class Local
         self::LEARN_FORGET,
     ];
 
+    /**
+     * @var  string
+     */
     protected $hostname = 'localhost';
+    /**
+     * @var  string
+     */
     protected $port = '783';
 
     protected $socketPath;
     protected $socket;
+    /**
+     * @var  string
+     */
     protected $protocolVersion = '1.5';
     protected $enableZlib;
 

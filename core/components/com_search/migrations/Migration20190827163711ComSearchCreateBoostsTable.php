@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
  */
 class Migration20190827163711ComSearchCreateBoostsTable extends Base
 {
+    /**
+     * @var  string
+     */
     protected static $tableName = '#__solr_search_boosts';
 
     /**

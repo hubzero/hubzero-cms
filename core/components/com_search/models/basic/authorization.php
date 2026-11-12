@@ -22,6 +22,9 @@ class Authorization
      * @var string
      */
     private $uid = null;
+    /**
+     * @var  bool
+     */
     private $super_admin = false;
     private $groups = null;
 

@@ -19,6 +19,12 @@ class CustomLockableArticle extends Relational
     use Lockable;
 
     protected $table = 'lockable_custom_articles';
+    /**
+     * @var  string
+     */
     protected $checkedOutColumn = 'locked_by';
+    /**
+     * @var  string
+     */
     protected $checkedOutTimeColumn = 'locked_at';
 }

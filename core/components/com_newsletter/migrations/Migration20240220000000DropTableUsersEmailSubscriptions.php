@@ -12,6 +12,9 @@ use Hubzero\Content\Migration\Base;
 
 class Migration20240220000000DropTableUsersEmailSubscriptions extends Base
 {
+    /**
+     * @var  string
+     */
     public static $tableName = '#__users_email_subscriptions';
 
     // users_email_subscriptions table should not be present in core implementation

@@ -18,6 +18,9 @@ class Requirements implements StepInterface
 {
     private $installer;
     private $requirements = [];
+    /**
+     * @var  bool
+     */
     private $passed = true;
 
     public function __construct($installer)

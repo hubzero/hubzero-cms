@@ -25,6 +25,9 @@ class Pagedown extends Plugin
     public const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
     public const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
+    /**
+     * @var  int
+     */
     protected $editorCount = 1;
 
     /*

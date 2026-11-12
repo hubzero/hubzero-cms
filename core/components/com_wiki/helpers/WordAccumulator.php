@@ -22,9 +22,21 @@ if (!defined('NBSP')) {
  */
 class WordAccumulator
 {
+    /**
+     * @var  array|string
+     */
     public $lines = '';
+    /**
+     * @var  string
+     */
     public $line = '';
+    /**
+     * @var  string
+     */
     public $group = '';
+    /**
+     * @var  string
+     */
     public $tag = '';
 
     /**
