@@ -12,6 +12,10 @@ use Hubzero\Database\Relational;
 
 /**
  * Video model - demonstrates morphOne, morphMany, and morphToMany from parent side
+ *
+ * @property-read  mixed  $activities  What activities() gives
+ * @property-read  mixed  $image  What image() gives
+ * @property-read  mixed  $tags  What tags() gives
  */
 class PolyVideo extends Relational
 {

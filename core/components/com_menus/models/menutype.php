@@ -141,9 +141,9 @@ class Menutype extends Obj
         if (!empty($menu['options']) && $menu['options'] == 'none') {
             // Create the menu option for the component.
             $o = new Obj();
-            $o->title       = (string) $menu['name'];
-            $o->description = (string) $menu['msg'];
-            $o->request     = ['option' => $component];
+            $o->set('title', (string) $menu['name']);
+            $o->set('description', (string) $menu['msg']);
+            $o->set('request', ['option' => $component]);
 
             $options[] = $o;
 
@@ -166,18 +166,18 @@ class Menutype extends Obj
                 if ($child->getName() == 'option') {
                     // Create the menu option for the component.
                     $o = new Obj();
-                    $o->title       = (string) $child['name'];
-                    $o->description = (string) $child['msg'];
+                    $o->set('title', (string) $child['name']);
+                    $o->set('description', (string) $child['msg']);
                     $varKey = (string) $optionsNode['var'];
-                    $o->request     = ['option' => $component, $varKey => (string) $child['value']];
+                    $o->set('request', ['option' => $component, $varKey => (string) $child['value']]);
 
                     $options[] = $o;
                 } elseif ($child->getName() == 'default') {
                     // Create the menu option for the component.
                     $o = new Obj();
-                    $o->title       = (string) $child['name'];
-                    $o->description = (string) $child['msg'];
-                    $o->request     = ['option' => $component];
+                    $o->set('title', (string) $child['name']);
+                    $o->set('description', (string) $child['msg']);
+                    $o->set('request', ['option' => $component]);
 
                     $options[] = $o;
                 }
@@ -239,24 +239,24 @@ class Menutype extends Obj
                                         if ($child->getName() == 'option') {
                                             // Create the menu option for the component.
                                             $o = new Obj();
-                                            $o->title       = (string) $child['name'];
-                                            $o->description = (string) $child['msg'];
-                                            $o->request     = [
+                                            $o->set('title', (string) $child['name']);
+                                            $o->set('description', (string) $child['msg']);
+                                            $o->set('request', [
                                                 'option' => $component->option,
                                                 'view'   => $view,
                                                 (string) $optionsNode['var'] => (string) $child['value'],
-                                            ];
+                                            ]);
 
                                             $options[] = $o;
                                         } elseif ($child->getName() == 'default') {
                                             // Create the menu option for the component.
                                             $o = new Obj();
-                                            $o->title       = (string) $child['name'];
-                                            $o->description = (string) $child['msg'];
-                                            $o->request     = [
+                                            $o->set('title', (string) $child['name']);
+                                            $o->set('description', (string) $child['msg']);
+                                            $o->set('request', [
                                                 'option' => $component->option,
                                                 'view'   => $view,
-                                            ];
+                                            ]);
 
                                             $options[] = $o;
                                         }
@@ -356,12 +356,12 @@ class Menutype extends Obj
 
                 // Create the menu option for the layout.
                 $o = new Obj();
-                $o->title       = ucfirst($layout);
-                $o->description = '';
-                $o->request     = [
+                $o->set('title', ucfirst($layout));
+                $o->set('description', '');
+                $o->set('request', [
                     'option' => $component->option,
                     'view'   => $view,
-                ];
+                ]);
 
                 // Only add the layout request argument if not the default layout.
                 if ($layout != 'default') {

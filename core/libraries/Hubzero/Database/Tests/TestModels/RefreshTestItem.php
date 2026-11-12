@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Test model for refresh/fresh tests
+ *
+ * @property-read  mixed  $comments  What comments() gives
  */
 class RefreshTestItem extends Relational
 {

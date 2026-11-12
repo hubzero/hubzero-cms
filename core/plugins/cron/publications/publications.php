@@ -166,14 +166,14 @@ class Publications extends Plugin
                 'name'      => 'emails',
                 'layout'    => 'stats_plain',
             ]);
-            $eview->option     = 'com_publications';
-            $eview->controller = 'publications';
-            $eview->user       = $user;
-            $eview->pubstats   = $pubstats;
-            $eview->limit      = $limit;
-            $eview->image      = $image;
-            $eview->config     = $pconfig;
-            $eview->totals     = $pubLog->getTotals($author->user_id, 'author');
+            $eview->set('option', 'com_publications');
+            $eview->set('controller', 'publications');
+            $eview->set('user', $user);
+            $eview->set('pubstats', $pubstats);
+            $eview->set('limit', $limit);
+            $eview->set('image', $image);
+            $eview->set('config', $pconfig);
+            $eview->set('totals', $pubLog->getTotals($author->user_id, 'author'));
 
             $plain = $eview->loadTemplate();
             $plain = str_replace("\n", "\r\n", $plain);

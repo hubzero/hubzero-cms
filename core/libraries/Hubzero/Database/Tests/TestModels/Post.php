@@ -12,6 +12,9 @@ use Hubzero\Database\Relational;
 
 /**
  * Post test model for multi-database testing
+ *
+ * @property-read  mixed  $tags  What tags() gives
+ * @property-read  mixed  $user  What user() gives
  */
 class Post extends Relational
 {

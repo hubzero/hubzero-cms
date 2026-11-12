@@ -247,10 +247,10 @@ class Extension extends Relational
             $info = self::metaFile($file);
 
             $row = new \Hubzero\Base\Obj();
-            $row->language = $lang;
+            $row->set('language', $lang);
 
             if (!is_array($info)) {
-                $row->missing = true;
+                $row->set('missing', true);
 
                 $info = [
                     'language'     => $lang,
@@ -269,7 +269,7 @@ class Extension extends Relational
                 $row->$key = $value;
             }
 
-            $row->checked_out = 0;
+            $row->set('checked_out', 0);
 
             $this->data = $row;
         }

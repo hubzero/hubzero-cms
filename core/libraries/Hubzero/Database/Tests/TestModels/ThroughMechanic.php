@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Test Mechanic model (uses hasOneThrough alias)
+ *
+ * @property-read  mixed  $carOwner  What carOwner() gives
  */
 class ThroughMechanic extends Relational
 {

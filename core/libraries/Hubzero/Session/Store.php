@@ -164,7 +164,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
     public function session($id)
     {
         $session = new Obj();
-        $session->id = $id;
+        $session->set('id', $id);
 
         return $session;
     }

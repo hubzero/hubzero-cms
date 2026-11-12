@@ -66,4 +66,39 @@ class Result
      * @var string
      */
     public $output;
+
+    /**
+     * Protocol version the server answered with
+     *
+     * @var string
+     */
+    public $protocolVersion;
+
+    /**
+     * Did the server learn the message?
+     *
+     * @var bool
+     */
+    public $didSet;
+
+    /**
+     * Did the server forget the message?
+     *
+     * @var bool
+     */
+    public $didRemove;
+
+    /**
+     * Headers of the response
+     *
+     * @var string
+     */
+    public $headers;
+
+    /**
+     * Body of the response
+     *
+     * @var string
+     */
+    public $message;
 }

@@ -186,8 +186,8 @@ class Memcache extends Store
     public function session($id)
     {
         $session = new Obj();
-        $session->session_id = $id;
-        $session->data       = $this->read($id);
+        $session->set('session_id', $id);
+        $session->set('data', $this->read($id));
 
         return $session;
     }
@@ -209,8 +209,8 @@ class Memcache extends Store
         foreach ($data as $key => $value) {
             if (strpos($value->name, $this->prefix) === 0) {
                 $session = new Obj();
-                $session->session_id = $value->name;
-                $session->data       = $value;
+                $session->set('session_id', $value->name);
+                $session->set('data', $value);
 
                 $sessions[] = $session;
             }

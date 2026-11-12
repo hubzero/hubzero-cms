@@ -12,6 +12,9 @@ use Hubzero\Database\Relational;
 
 /**
  * Tag model - demonstrates morphedByMany (inverse of morphToMany)
+ *
+ * @property-read  mixed  $posts  What posts() gives
+ * @property-read  mixed  $videos  What videos() gives
  */
 class PolyTagModel extends Relational
 {

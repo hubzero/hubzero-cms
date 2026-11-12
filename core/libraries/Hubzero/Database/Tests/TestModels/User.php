@@ -14,6 +14,10 @@ use Hubzero\Database\Relational;
  * User test model for multi-database testing
  *
  * @method string getFirstName() Through __call(), from helperGetFirstName()
+ *
+ * @property-read  mixed  $posts  What posts() gives
+ *
+ * @property-read  mixed  $posts  What posts() gives
  */
 class User extends Relational
 {

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Image model - demonstrates morphTo (belongs to multiple parent types)
+ *
+ * @property-read  mixed  $imageable  What imageable() gives
  */
 class PolyImage extends Relational
 {

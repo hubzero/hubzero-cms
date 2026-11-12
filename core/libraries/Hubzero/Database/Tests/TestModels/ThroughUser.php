@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Test User model
+ *
+ * @property-read  mixed  $country  What country() gives
  */
 class ThroughUser extends Relational
 {
