@@ -28,7 +28,7 @@ class Pages
      * Check to see if group have a home page override
      *
      * @param    object    $group    \Hubzero\User\Group Object
-     * @param    array     $pages    \Hubzero\Base\ItemList
+     * @param    \Hubzero\Base\ItemList|null  $pages  The group's pages
      * @return   array|null
      */
     public static function addHomePage($group, $pages = null)

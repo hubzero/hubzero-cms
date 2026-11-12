@@ -93,7 +93,7 @@ class PdfForm
      * Load by asset id
      *
      * @param   integer  $asset_id
-     * @return  bool
+     * @return  self|false
      **/
     public static function loadByAssetId($asset_id)
     {

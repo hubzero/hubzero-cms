@@ -439,7 +439,7 @@ class Project extends Model
     /**
      * Get publication of a provisioned project
      *
-     * @return  boolean
+     * @return  object|false
      */
     public function getPublication()
     {

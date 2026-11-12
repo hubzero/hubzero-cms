@@ -322,7 +322,7 @@ class Page extends Model
     /**
      * Get Page Children
      *
-     * @return  array
+     * @return  object  the list of pages
      */
     public function getChildren()
     {

@@ -69,6 +69,7 @@ class Nested extends Relational
      * Establishes the model as a proper object as needed
      *
      * @param   object|int  $model  The model to resolve
+     * @param-out  object  $model
      * @return  $this
      **/
     private function establishIsModel(&$model)
@@ -84,7 +85,7 @@ class Nested extends Relational
     /**
      * Sets the default scopes on the model
      *
-     * @param   object|int  $parent  The parent of the child being created
+     * @param   object      $parent  The parent of the child being created
      * @return  $this
      **/
     private function establishBaseParametersFromParent($parent)
@@ -98,7 +99,7 @@ class Nested extends Relational
     /**
      * Applies the scopes of the given model to the current
      *
-     * @param   object|int  $parent  The parent from which to inherit
+     * @param   object      $parent  The parent from which to inherit
      * @param   string      $method  The way in which scopes are applied
      * @return  $this
      **/
@@ -115,7 +116,7 @@ class Nested extends Relational
     /**
      * Applies the scopes of the given model to the current pending query
      *
-     * @param   object|int  $parent  The parent from which to inherit
+     * @param   object      $parent  The parent from which to inherit
      * @return  $this
      **/
     private function applyScopesWhere($parent)

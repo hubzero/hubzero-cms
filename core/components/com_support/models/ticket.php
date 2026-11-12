@@ -666,13 +666,13 @@ class Ticket extends Relational
     /**
      * Get a record count
      *
-     * @param   string   $query    Filters to build query from
+     * @param   object|string  $query  The saved query, or its SQL
      * @param   array    $filters
      * @return  integer
      */
     public static function countWithQuery($query, $filters = [])
     {
-        if (!$query || $query->isNew()) {
+        if (!$query || (is_object($query) && $query->isNew())) {
             return 0;
         }
 
@@ -733,13 +733,13 @@ class Ticket extends Relational
     /**
      * Get a record count
      *
-     * @param   string   $query    Filters to build query from
+     * @param   object|string  $query  The saved query, or its SQL
      * @param   array    $filters
      * @return  array
      */
     public static function allWithQuery($query, $filters = [])
     {
-        if (!$query || $query->isNew()) {
+        if (!$query || (is_object($query) && $query->isNew())) {
             return [];
         }
 

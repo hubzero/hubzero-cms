@@ -101,7 +101,7 @@ class Base extends SiteController
     /**
      * Override Default Build Pathway Method
      *
-     * @param       array $pages    Array of group pages, if any
+     * @param       object $pages    Array of group pages, if any
      * @return      void
      */
     public function buildPathway($pages = [])
@@ -187,7 +187,7 @@ class Base extends SiteController
     /**
      * Override default build title
      *
-     * @param   array  $pages  Array of group pages, if any
+     * @param   object  $pages  Array of group pages, if any
      * @return  void
      */
     public function buildTitle($pages = [])
