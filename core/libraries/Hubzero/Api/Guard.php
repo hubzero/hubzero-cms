@@ -147,7 +147,7 @@ class Guard
                 $oauthResponse->send();
                 exit();
             }
-        } elseif ($oauthResponse->getParameters('error') != []) {
+        } elseif ($oauthResponse->getParameters() != []) {
             // This request looked like OAuth2 but failed. We respond
             // immediately with an error here because the client was expecting
             // an authenticated response so returning a guest response would

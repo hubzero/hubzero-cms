@@ -107,7 +107,7 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
             array_push($this->data, $resource);
 
             // mark record processed
-            $import->runs('current')->processed(1);
+            $import->runs()->order('id', 'desc')->row()->processed(1);
         }
 
         return $this->data;

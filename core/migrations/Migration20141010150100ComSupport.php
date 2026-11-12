@@ -182,7 +182,7 @@ class Migration20141010150100ComSupport extends Base
                 ->select('*')
                 ->from('#__support_queries')
                 ->where('folder_id', '=', 2)
-                ->order('id')
+                ->order('id', 'asc')
                 ->loadObjectList();
 
             if ($queries) {
