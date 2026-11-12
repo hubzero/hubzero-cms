@@ -115,7 +115,7 @@ class Events extends GroupMacro
     /**
      * Render the events
      *
-     * @param      array  $group  Array of group events
+     * @param      object  $group  The group
      * @param      array  $events Array of events
      * @return     string
      */

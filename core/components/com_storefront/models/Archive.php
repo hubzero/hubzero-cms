@@ -164,9 +164,9 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Update SKU info
      *
-     * @param   int    $sku     SKU
+     * @param   object \$sku     SKU
      * @param   array  $fields  New info
-     * @return  int exception
+     * @return  object  the saved SKU
      */
     public function updateSku($sku, $fields)
     {

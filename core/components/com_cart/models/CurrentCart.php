@@ -158,7 +158,7 @@ class CurrentCart extends Cart
      * Get session info about cart
      *
      * @param bool $sync Flag whether the session cart should be synced with DB first
-     * @return array of items in the cart
+     * @return object  the cart, with its items
      */
     public function getCartInfo($sync = false)
     {

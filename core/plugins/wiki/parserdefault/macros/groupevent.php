@@ -113,7 +113,7 @@ class GroupEvent extends WikiMacro
     /**
      * Query for group events
      *
-     * @param       array  $group    Array of group events
+     * @param       object  $group    The group
      * @param       array  $filters  Array of filters
      * @return      array
      */
@@ -150,7 +150,7 @@ class GroupEvent extends WikiMacro
     /**
      * Render the events
      *
-     * @param      array   $group  Array of group events
+     * @param      object   $group  The group
      * @param      array   $events Array of events
      * @return     string
      */

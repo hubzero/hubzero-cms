@@ -36,7 +36,7 @@ class DefaultHandler extends Plugin
     /**
      * Import data from a file
      *
-     * @param   array    $file
+     * @param   object   $file     the uploaded file
      * @param   string   $scope
      * @param   integer  $scope_id
      * @return  array|null

@@ -65,7 +65,7 @@ class Helper
      * Generate Confirmation Token
      *
      * @param   string  $emailAddress        Confirmation Email Address
-     * @param   array   $mailinglistObject  Mailing list
+     * @param   object   $mailinglistObject  Mailing list
      * @return  string|false
      */
     public static function generateConfirmationToken($emailAddress, $mailinglistObject)
@@ -207,7 +207,7 @@ class Helper
      * Send confirmation Email to user
      *
      * @param   string  $emailAddress         Confirmation Email Address
-     * @param   array   $mailinglistObject   Mailing list we just subscribed to
+     * @param   object   $mailinglistObject   Mailing list we just subscribed to
      * @param   bool    $addedByAdmin  Did we sign up or we were added by admin?
      * @return  bool
      */

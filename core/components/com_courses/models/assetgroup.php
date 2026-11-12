@@ -34,21 +34,21 @@ class Assetgroup extends Base
     /**
      * Curent asset
      *
-     * @var array|null
+     * @var object|null
      */
     private $asset = null;
 
     /**
      * \Components\Courses\Models\Asset
      *
-     * @var array
+     * @var object|null
      */
     private $assets = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var array
+     * @var object|null
      */
     public $children = null;
 
@@ -62,7 +62,7 @@ class Assetgroup extends Base
     /**
      * Container for properties
      *
-     * @var array
+     * @var object|null
      */
     public $siblings = null;
 
