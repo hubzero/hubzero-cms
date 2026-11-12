@@ -27,9 +27,9 @@ class Page implements RendererInterface
     protected $document;
 
     /**
-     * Template name
+     * Template loader
      *
-     * @var  string
+     * @var  object
      */
     protected $template;
 

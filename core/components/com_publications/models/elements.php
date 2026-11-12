@@ -599,7 +599,7 @@ class Elements
      *                                 The default is 'params' if not supplied.
      * @param   string  $group         An optional group to render.
      *                                 The default group is used if not supplied.
-     * @return  array  Any array of the label, the form element and the tooltip.
+     * @return  object  The label, the form element and the tooltip.
      */
     public function getElement(&$node, $control_name = 'nbtag', $group = '_default')
     {

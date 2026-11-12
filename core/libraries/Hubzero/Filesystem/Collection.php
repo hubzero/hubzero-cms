@@ -235,7 +235,7 @@ class Collection extends ItemList
      *
      * @param   bool  $structure  Whether or not to retain directory location of files being zipped
      * @param   bool  $upload     Whether or not to reupload compressed to filesystem location
-     * @return  string|bool
+     * @return  object|false  The archive, or false if there was nothing to put in it
      */
     public function compress($structure = false, $upload = false)
     {

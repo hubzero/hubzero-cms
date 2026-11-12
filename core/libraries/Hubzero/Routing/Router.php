@@ -134,7 +134,7 @@ class Router
      * Function to convert an internal URI to a route
      *
      * @param   string  $uri  The internal URL
-     * @return  string  The absolute search engine friendly URL
+     * @return  object  The absolute search engine friendly URL, as a URI
      */
     public function build($uri)
     {

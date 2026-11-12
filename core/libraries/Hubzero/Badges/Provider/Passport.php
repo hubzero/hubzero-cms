@@ -119,13 +119,14 @@ class Passport implements ProviderInterface
      */
     public function createBadge($data)
     {
-        if (!$this->credentialsSet()) {
+        $credentials = $this->credentials;
+        if (!$credentials) {
             throw new Exception('You need to set the credentials first.');
         }
 
-        $data['IssuerId'] = $this->credentials->issuerId;
+        $data['IssuerId'] = $credentials->issuerId;
         $data = json_encode($data);
-        $accessToken = $this->credentials->access_token;
+        $accessToken = $credentials->access_token;
         $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
         $headers = [
@@ -162,7 +163,8 @@ class Passport implements ProviderInterface
      */
     public function grantBadge($badge, $users)
     {
-        if (!$this->credentialsSet()) {
+        $credentials = $this->credentials;
+        if (!$credentials) {
             throw new Exception('You need to set the credentials first.');
         }
 
@@ -178,7 +180,7 @@ class Passport implements ProviderInterface
             $data['BadgeId']      = $badge->id;
             $data['EvidenceUrl']  = $badge->evidenceUrl;
             $data['EmailAddress'] = $user;
-            $data['ClientId']     = $this->credentials->clientId;
+            $data['ClientId']     = $credentials->clientId;
 
             $assertions[] = $data;
             unset($data);

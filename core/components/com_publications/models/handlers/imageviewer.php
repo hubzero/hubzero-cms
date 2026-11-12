@@ -438,7 +438,7 @@ class ImageViewer extends Base
     /**
      * Draw attachment
      *
-     * @param   array   $data
+     * @param   object  $data
      * @param   object  $params
      * @return  string
      */

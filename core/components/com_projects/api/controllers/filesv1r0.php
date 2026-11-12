@@ -937,6 +937,10 @@ class Filesv1r0 extends ApiController
 
         if (count($items) > 1) {
             $archive = $items->compress();
+            if (!$archive) {
+                throw new Exception(Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'), 500);
+            }
+
             $result  = $archive->serve('project_files_'
                     . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1)
                     . '.zip');
