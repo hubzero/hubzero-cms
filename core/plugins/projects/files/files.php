@@ -436,14 +436,14 @@ class Files extends Plugin
         ]);
 
         // Set params
-        $view->params = [
+        $view->set('params', [
             'limit'       => $model->config()->get('sidebox_limit', 5),
             'start'       => 0,
             'sortby'      => 'modified',
             'sortdir'     => 'DESC',
             'getParents'  => false,
             'getChildren' => false,
-        ];
+        ]);
 
         // Retrieve items
         $view->set('files', $this->repo->filelist($view->params));
@@ -501,7 +501,7 @@ class Files extends Plugin
         }
 
         // Set params
-        $view->params = [
+        $view->set('params', [
             'subdir'               => $this->subdir,
             'filter'               => Request::getString('filter', ''),
             'limit'                => Request::getInt('limit', 0),
@@ -513,12 +513,12 @@ class Files extends Plugin
             'getPubConnections'    => false,
             'remoteConnections'    => $remotes,
             'versionTracking'      => $this->model->params->get('versionTracking', '0'),
-        ];
+        ]);
 
         // Retrieve items
         $view->set('items', $this->repo->filelist($view->params));
 
-        $view->publishing = false; // do not show publishing info
+        $view->set('publishing', false); // do not show publishing info
         $view->set('title', $this->area['title']);
         $view->set('option', $this->componentOption);
         $view->set('subdir', $this->subdir);
@@ -679,7 +679,7 @@ class Files extends Plugin
                     $selected[] = $attach->path;
                 }
             }
-            $view->selected = $selected;
+            $view->set('selected', $selected);
             $fileParams = [
                 'sortby'           => 'localpath',
                 'showFullMetadata' => false,
@@ -703,7 +703,7 @@ class Files extends Plugin
                 $fileList = $this->repo->filelist($fileParams);
             }
             if (!empty($fileList)) {
-                $view->items = $fileList;
+                $view->set('items', $fileList);
             }
 
             // Get directories
@@ -1521,7 +1521,7 @@ class Files extends Plugin
                     1,
                 );
             }
-            $view->connected = $this->connect->getStoredParam($this->remoteService . '_token', $this->uid);
+            $view->set('connected', $this->connect->getStoredParam($this->remoteService . '_token', $this->uid));
         }
 
         $this->repo->versions($params, $versions, $timestamps);
@@ -2127,11 +2127,11 @@ class Files extends Plugin
             $url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
             // Get data
-            $view->data = $this->connect->sendHttpRequest(
+            $view->set('data', $this->connect->sendHttpRequest(
                 $this->remoteService,
                 $this->model->get('owned_by_user'),
                 $url,
-            );
+            ));
         } elseif ($file->exists()) {
             $view->set('data', $file->isImage() ? null : $file->contents());
         } else {
@@ -2203,7 +2203,7 @@ class Files extends Plugin
                     $view->oHeight = ceil($xRatio * $height);
                 } else {
                     // Resize the image based on height
-                    $view->oWidth  = ceil($yRatio * $width);
+                    $view->set('oWidth', ceil($yRatio * $width));
                 }
             }
 
@@ -2288,7 +2288,7 @@ class Files extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_PREVIEW_FAILED'));
         }
 
-        $view->file      = $file;
+        $view->set('file', $file);
         $view->set('outputDir', $outputDir);
         $view->set('embed', $contentFile);
         $view->set('cType', $cType);
@@ -2653,27 +2653,27 @@ class Files extends Plugin
 
         // Report usage with all history?
         if ($this->params->get('disk_usage') == true || $by == 'admin') {
-            $view->dirsize = $this->repo->call(
+            $view->set('dirsize', $this->repo->call(
                 'getDiskUsage',
                 $params = ['working' => true, 'history' => true],
-            );
-            $view->totalspace = $this->repo->call(
+            ));
+            $view->set('totalspace', $this->repo->call(
                 'getDiskUsage',
                 $params = ['working' => false, 'history' => false],
-            );
+            ));
         } else {
             if ($this->params->get('project_quota')) {
                 // Report usage only with current files and not with history
-                $view->totalspace = $this->repo->call(
+                $view->set('totalspace', $this->repo->call(
                     'getDiskUsage',
                     $params = ['working' => true, 'history' => false],
-                );
+                ));
             } else {
                 // Original Code
-                $view->totalspace = $this->repo->call(
+                $view->set('totalspace', $this->repo->call(
                     'getDiskUsage',
                     $params = ['working' => false, 'history' => true],
-                );
+                ));
             }
 
             $view->set('dirsize', $view->totalspace);
@@ -2692,24 +2692,24 @@ class Files extends Plugin
             $pubs = $objP->getRecords($filters);
 
             $view->set('pubDiskUsage', \Components\Publications\Helpers\Html::getDiskUsage($pubs));
-            $view->pubQuota     = $model->params->get('pubQuota')
+            $view->set('pubQuota', $model->params->get('pubQuota')
                                 ? $model->params->get('pubQuota')
                                 : \Components\Projects\Helpers\Html::convertSize(
                                     floatval($model->config()->get('pubQuota', '1')),
                                     'GB',
                                     'b',
-                                );
+                                ));
         }
 
         $view->set('total', $this->repo->count());
-        $view->quota  = $model->params->get(
+        $view->set('quota', $model->params->get(
             'quota',
             \Components\Projects\Helpers\Html::convertSize(
                 floatval($model->config()->get('defaultQuota', '1')),
                 'GB',
                 'b',
             ),
-        );
+        ));
 
         $view->set('by', $by);
         $view->set('model', $model);

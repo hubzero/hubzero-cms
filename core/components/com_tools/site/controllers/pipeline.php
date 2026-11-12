@@ -76,8 +76,8 @@ class Pipeline extends SiteController
     public function pipelineTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option . '_' . $this->task));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task)));
         Document::setTitle($this->view->title);
 
         // Filters
@@ -189,8 +189,8 @@ class Pipeline extends SiteController
         $this->view->set('admin', $this->config->get('access-admin-component'));
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option . '_' . $this->task));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task)));
         $this->view->title .= $status['toolname']
             ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname']
             : '';
@@ -279,7 +279,7 @@ class Pipeline extends SiteController
         $hztv_dev = $hzt->getRevision('development');
         $hztv_current = $hzt->getRevision('current');
 
-        $this->view->status = [
+        $this->view->set('status', [
             'toolid'          => $hzt->id,
             'published'       => $hzt->published,
             'version'         => $hztv_dev->version,
@@ -289,7 +289,7 @@ class Pipeline extends SiteController
             'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
             'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
             'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : ''),
-        ];
+        ]);
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -370,8 +370,8 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL'));
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
@@ -441,10 +441,10 @@ class Pipeline extends SiteController
 
         // get license
         if (!isset($this->view->license_choice)) {
-            $this->view->license_choice = [
+            $this->view->set('license_choice', [
                 'text'     => $status['license'],
                 'template' => 'c1',
-            ];
+            ]);
         }
 
         if (!isset($this->view->code)) {
@@ -642,7 +642,7 @@ class Pipeline extends SiteController
         // set defaults
         list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
 
-        $this->view->defaults = [
+        $this->view->set('defaults', [
             'toolname'     => '',
             'title'        => '',
             'version'      => '1.0',
@@ -660,7 +660,7 @@ class Pipeline extends SiteController
             'repohost'     => $this->config->get('github', 1) ? "gitExternal" : "svnLocal",
             'github'       => '',
             'publishType'  => 'standard',
-        ];
+        ]);
 
         // Set the page title
         $this->view->set(
@@ -721,7 +721,7 @@ class Pipeline extends SiteController
 
         $this->view->set('editversion', Request::getString('editversion', ''));
         // do not allow to edit all versions just yet, will default to dev
-        $this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev';
+        $this->view->set('editversion', ($this->view->editversion == 'current') ? 'current' : 'dev');
 
         // check access rights
         if ($this->_toolid && !$this->checkAccess($this->_toolid)) {

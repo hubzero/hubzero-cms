@@ -37,7 +37,7 @@ class Jobs extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get paging variables
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
@@ -74,7 +74,7 @@ class Jobs extends AdminController
                 'search',
                 '',
             )),
-        ];
+        ]);
 
         // Get data
         $obj = new Job($this->database);

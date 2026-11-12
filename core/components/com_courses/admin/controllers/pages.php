@@ -49,7 +49,7 @@ class Pages extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -78,7 +78,7 @@ class Pages extends AdminController
                 'offering',
                 0,
             ),
-        ];
+        ]);
 
         $this->view->set(
             'offering',
@@ -663,7 +663,7 @@ class Pages extends AdminController
         sort($folders);
 
         // Create folder <select> list
-        $this->view->dirPath = Html::select(
+        $this->view->set('dirPath', Html::select(
             'genericlist',
             $folders,
             'subdir',
@@ -671,7 +671,7 @@ class Pages extends AdminController
             'value',
             'text',
             $this->view->subdir,
-        );
+        ));
 
         $this->view->set('config', $this->config);
 

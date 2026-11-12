@@ -111,8 +111,8 @@ class Import extends SiteController
         $this->importer->cleanup();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->controller)));
 
         //call the plugins
         $this->view->set('accepted_files', Event::trigger('citation.onImportAcceptedFiles', []));
@@ -227,8 +227,8 @@ class Import extends SiteController
         $this->buildPathway();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)));
         if (!empty($citations_require_attention) && is_array($citations_require_attention)) {
             $citationRequiredIds = array_map(function ($value) {
                 return $value['duplicate'];
@@ -378,8 +378,8 @@ class Import extends SiteController
         ];
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)));
         $this->view->set('config', $this->config);
         $this->view->set('database', $this->database);
         $this->view->set('filters', $filters);

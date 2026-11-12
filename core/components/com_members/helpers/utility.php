@@ -202,8 +202,8 @@ class Utility
             'layout' => 'create',
             'base_path' => Component::path('members') . '/site',
         ]);
-        $eview->option        = 'com_members';//$this->_option; //com_members
-        $eview->controller    = 'register'; //$this->_controller; //register
+        $eview->set('option', 'com_members');//$this->_option; //com_members
+        $eview->set('controller', 'register'); //$this->_controller; //register
         $eview->set('sitename', Config::get('sitename'));
         $eview->set('xprofile', $user);
         $eview->set('baseURL', $baseURL);

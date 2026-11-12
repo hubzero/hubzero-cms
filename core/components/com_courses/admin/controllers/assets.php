@@ -46,7 +46,7 @@ class Assets extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'tmpl' => Request::getState(
                 $this->option . '.' . $this->controller . '.tmpl',
                 'tmpl',
@@ -82,7 +82,7 @@ class Assets extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $tbl = new Tables\Asset($this->database);
         // print_r($this->view->filters);

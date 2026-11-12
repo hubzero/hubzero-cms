@@ -454,7 +454,7 @@ class Media extends AdminController
         sort($folders);
 
         // Create folder <select> list
-        $this->view->dirPath = Html::select(
+        $this->view->set('dirPath', Html::select(
             'genericlist',
             $folders,
             'subdir',
@@ -462,7 +462,7 @@ class Media extends AdminController
             'value',
             'text',
             $this->view->subdir,
-        );
+        ));
 
         $this->view->set('config', $this->config);
 

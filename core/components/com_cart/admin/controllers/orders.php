@@ -32,7 +32,7 @@ class Orders extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -84,7 +84,7 @@ class Orders extends AdminController
                 'report-to',
                 gmdate('m/d/Y'),
             ),
-        ];
+        ]);
 
         // Get record count
         $this->view->filters['count'] = true;
@@ -373,7 +373,7 @@ class Orders extends AdminController
         }
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . $this->task . '.search',
                 'search',
@@ -431,7 +431,7 @@ class Orders extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         if ($this->view->filters['order']) {
             $this->view->filters['report-from'] = '';

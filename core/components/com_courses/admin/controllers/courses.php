@@ -46,7 +46,7 @@ class Courses extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => urldecode(trim(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -81,7 +81,7 @@ class Courses extends AdminController
                 'filter_order_Dir',
                 'ASC',
             )),
-        ];
+        ]);
 
         // In case limit has been changed, adjust limitstart accordingly
         $limit = $this->view->filters['limit'];

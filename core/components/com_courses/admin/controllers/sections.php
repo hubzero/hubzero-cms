@@ -49,7 +49,7 @@ class Sections extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'offering' => Request::getState(
                 $this->option . '.' . $this->controller . '.offering',
                 'offering',
@@ -89,7 +89,7 @@ class Sections extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         $this->view->set(
             'offering',

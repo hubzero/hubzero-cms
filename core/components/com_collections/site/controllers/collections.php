@@ -54,7 +54,7 @@ class Collections extends SiteController
         $this->view->set('config', $this->config);
 
         // Filters for returning results
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit'   => Request::getInt('limit', 25),
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
@@ -63,7 +63,7 @@ class Collections extends SiteController
             'sort'    => 'p.created',
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ];
+        ]);
         if ($this->view->filters['id']) {
             $this->view->filters['object_type'] = 'site';
         }
@@ -78,11 +78,11 @@ class Collections extends SiteController
 
         $model = Archive::getInstance();
 
-        $this->view->collections = $model->collections([
+        $this->view->set('collections', $model->collections([
             'count'      => true,
             'access'     => (!User::isGuest() ? [0, 1] : 0),
             'state'      => 1,
-        ]);
+        ]));
 
         $this->buildTitle();
         $this->buildPathway();
@@ -102,14 +102,14 @@ class Collections extends SiteController
         $this->view->set('config', $this->config);
 
         // Filters for returning results
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit'   => Request::getInt('limit', 25),
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
             'id'      => Request::getInt('id', 0),
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ];
+        ]);
         if ($this->view->filters['id']) {
             $this->view->filters['object_type'] = 'site';
         }
@@ -143,13 +143,13 @@ class Collections extends SiteController
     public function aboutTask()
     {
         // Filters for returning results
-        $this->view->filters = [
+        $this->view->set('filters', [
             'id'      => Request::getInt('id', 0),
             'search'  => Request::getString('search', ''),
             'sort'    => 'p.created',
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
-        ];
+        ]);
         if ($this->view->filters['id']) {
             $this->view->filters['object_type'] = 'site';
         }
@@ -161,11 +161,11 @@ class Collections extends SiteController
 
         $model = Archive::getInstance();
 
-        $this->view->collections = $model->collections([
+        $this->view->set('collections', $model->collections([
             'count'  => true,
             'state'  => 1,
             'access' => (!User::isGuest() ? [0, 1] : 0),
-        ]);
+        ]));
 
         $this->buildTitle();
         $this->buildPathway();

@@ -48,7 +48,7 @@ class Offerings extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'course' => Request::getState(
                 $this->option . '.' . $this->controller . '.course',
                 'course',
@@ -88,7 +88,7 @@ class Offerings extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
         if (!$this->view->course->exists()) {

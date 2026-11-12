@@ -147,13 +147,13 @@ class Course extends SiteController
 
         $this->view->set('active', Request::getString('active', 'overview'));
 
-        $this->view->plugins = Event::trigger(
+        $this->view->set('plugins', Event::trigger(
             'courses.onCourseView',
             [
                 $this->course,
                 $this->view->active,
             ],
-        );
+        ));
 
         if ($pages = $this->course->pages(['active' => 1])) {
             foreach ($pages as $page) {

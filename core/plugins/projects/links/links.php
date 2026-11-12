@@ -702,11 +702,11 @@ class Links extends Plugin
         }
 
         // Get publication
-        $view->publication = $objP->getPublication(
+        $view->set('publication', $objP->getPublication(
             $view->version->publication_id,
             $view->version->version_number,
             $this->model->get('id'),
-        );
+        ));
 
         if (!$view->publication) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));

@@ -32,7 +32,7 @@ class Options extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -57,7 +57,7 @@ class Options extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         // Get option group ID
         $ogId = Request::getInt('ogId', 0);

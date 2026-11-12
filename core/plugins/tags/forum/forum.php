@@ -164,7 +164,7 @@ class Forum extends Plugin
             'element' => 'forum',
             'name'    => 'result',
         ]);
-        $view->post = \Components\Forum\Models\Post::blank()->set([
+        $view->set('post', \Components\Forum\Models\Post::blank()->set([
             'id'         => $row->id,
             'title'      => $row->title,
             'alias'      => $row->alias,
@@ -178,7 +178,7 @@ class Forum extends Plugin
             'parent'     => $row->parent,
             'section'    => $row->data2,
             'category'   => $row->data1,
-        ]);
+        ]));
 
         return $view->loadTemplate();
     }

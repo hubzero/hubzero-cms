@@ -41,7 +41,7 @@ class Downloads extends AdminController
         }
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -104,7 +104,7 @@ class Downloads extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         // Is a particular SKU requested?
         $skuRequested = Request::getInt('sku', 0);
@@ -148,7 +148,7 @@ class Downloads extends AdminController
     public function skuTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . 'sku.search',
                 'search',
@@ -188,7 +188,7 @@ class Downloads extends AdminController
                 'report-to',
                 date('m/d/Y'),
             ),
-        ];
+        ]);
 
         // Get record count
         $this->view->set('total', Download::getDownloadsSku('count', $this->view->filters));

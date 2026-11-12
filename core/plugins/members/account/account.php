@@ -408,12 +408,12 @@ class Account extends Plugin
         // Verify the token
         if (!$row = $this->getToken()) {
             // Oops, user doesn't have a token set in the db (or their account is blocked)
-            $view->notifications = [
+            $view->set('notifications', [
                 [
                     'type' => 'error',
                     'message' => Lang::txt('You must be logged in to access this area.'),
                 ],
-            ];
+            ]);
 
             return $view->loadTemplate();
         }

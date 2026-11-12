@@ -113,8 +113,8 @@ if ($this->comment->get('publication_id')) {
                 $view->set('id', '');
                 if (!User::isGuest()) {
                     if ($this->comment->get('created_by') == User::get('username')) {
-                        $view->vote = $this->comment->get('vote');
-                        $view->id   = $this->comment->get('id');
+                        $view->set('vote', $this->comment->get('vote'));
+                        $view->set('id', $this->comment->get('id'));
                     }
                 }
                 $view->display();

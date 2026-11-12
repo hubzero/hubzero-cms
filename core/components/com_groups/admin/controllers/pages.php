@@ -68,11 +68,11 @@ class Pages extends AdminController
     {
         // get group pages
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', [
+        $this->view->set('pages', $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1, 2],
             'orderby'   => 'lft ASC',
-        ]);
+        ]));
 
         // get page approvers
         $approvers = $this->config->get('approvers', '');
@@ -83,11 +83,11 @@ class Pages extends AdminController
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $pageArchive = Page\Archive::getInstance();
-            $this->view->needsAttention = $pageArchive->pages('unapproved', [
+            $this->view->set('needsAttention', $pageArchive->pages('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
                 'state'     => [0, 1],
                 'orderby'   => 'lft ASC',
-            ]);
+            ]));
         }
 
         // pass vars to view
@@ -128,18 +128,18 @@ class Pages extends AdminController
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', [
+        $this->view->set('pages', $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1],
             'orderby'   => 'lft ASC',
-        ]);
+        ]));
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', [
+        $this->view->set('categories', $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title',
-        ]);
+        ]));
 
         // pass vars to view
         $this->view->set('group', $this->group);
@@ -564,7 +564,7 @@ class Pages extends AdminController
         if ($return != 0) {
             $this->view->setLayout('errors');
             $this->view->set('error', (isset($output[0])) ? $output[0] : '');
-            $this->view->error = str_replace($file, '"' . $page->get('title') . '"', $this->view->error);
+            $this->view->set('error', str_replace($file, '"' . $page->get('title') . '"', $this->view->error));
             $this->view->set('page', $page);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;

@@ -30,9 +30,9 @@ class Meta extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'access' => -1,
-        ];
+        ]);
         $this->view->filters['sort'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sort',
             'filter_order',

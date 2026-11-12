@@ -194,7 +194,7 @@ class Posts extends SiteController
             }
         }
         if (!$this->view->collection->exists() && $this->view->entry->exists()) {
-            $this->view->collection = $this->model->collection($this->view->entry->get('collection_id'));
+            $this->view->set('collection', $this->model->collection($this->view->entry->get('collection_id')));
         }
 
         // ?post=<id> resolves any row on the hub through Collection::post(), and
@@ -221,12 +221,12 @@ class Posts extends SiteController
         $this->view->set('collections', $this->postableBoards($this->view->collection));
         if (!$this->view->collections->total()) {
             $this->view->collection->setup(User::get('id'), 'member');
-            $this->view->collections = $this->postableBoards($this->view->collection);
+            $this->view->set('collections', $this->postableBoards($this->view->collection));
 
             // A board named in the request only if the post did not already
             // resolve one -- re-resolving unconditionally would discard it.
             if (!$this->view->collection->exists()) {
-                $this->view->collection = $this->model->collection(Request::getString('board', 0));
+                $this->view->set('collection', $this->model->collection(Request::getString('board', 0)));
             }
         }
 

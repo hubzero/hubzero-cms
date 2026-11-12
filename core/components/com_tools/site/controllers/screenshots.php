@@ -182,7 +182,7 @@ class Screenshots extends SiteController
 
         // Make sure wpath is preceded by app
         if (substr($this->view->wpath, 0, 4) != DS . 'app') {
-            $this->view->wpath = DS . 'app' . $this->view->wpath;
+            $this->view->set('wpath', DS . 'app' . $this->view->wpath);
         }
 
         $this->view->set('upath', PATH_ROOT . $this->view->wpath);
@@ -789,11 +789,11 @@ class Screenshots extends SiteController
         $this->view->set('published', $objV->getCurrentVersionProperty($resource->alias, 'id'));
 
         // Get screenshot information for this resource
-        $this->view->shots = $resource
+        $this->view->set('shots', $resource
             ->screenshots()
             ->whereEquals('versionid', $vid)
             ->ordered()
-            ->rows();
+            ->rows());
 
         // Build paths
         $path = $resource->relativepath();
@@ -806,7 +806,7 @@ class Screenshots extends SiteController
 
         // Make sure wpath is preceded by app
         if (substr($this->view->wpath, 0, 4) != DS . 'app') {
-            $this->view->wpath = DS . 'app' . $this->view->wpath;
+            $this->view->set('wpath', DS . 'app' . $this->view->wpath);
         }
 
         // get config

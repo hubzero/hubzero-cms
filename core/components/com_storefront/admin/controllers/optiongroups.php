@@ -31,7 +31,7 @@ class Optiongroups extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -56,7 +56,7 @@ class Optiongroups extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $obj = new Archive();
 

@@ -97,14 +97,14 @@ class Results extends SiteController
         }
 
         // Get the sections
-        $this->view->sections = Event::trigger('usage.onUsageDisplay', [
+        $this->view->set('sections', Event::trigger('usage.onUsageDisplay', [
             $this->option,
             $this->task,
             $udb,
             $months,
             $monthsReverse,
             $enddate,
-        ]);
+        ]));
 
         // Build the page title
         $this->view->set('title', Lang::txt(strtoupper($this->option)));

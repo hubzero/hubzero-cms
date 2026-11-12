@@ -55,7 +55,7 @@ class Assetgroups extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'unit' => Request::getState(
                 $this->option . '.' . $this->controller . '.unit',
                 'unit',
@@ -84,7 +84,7 @@ class Assetgroups extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']));
         if (!$this->view->unit->exists()) {
@@ -527,14 +527,14 @@ class Assetgroups extends AdminController
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($courseId));
 
         // ------------- ASSETS -------------
-        $this->view->filters = [
+        $this->view->set('filters', [
             'tmpl' => 'component',
             'asset_scope' => 'asset_group',
             'asset_scope_id' => $scopeId,
             'course_id' => $courseId,
             'limit' => Config::get('list_limit'),
             'start' => 0,
-        ];
+        ]);
 
         $tbl = new Tables\Asset($this->database);
         $assetRows = $tbl->find([

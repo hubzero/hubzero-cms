@@ -1765,9 +1765,9 @@ class Events extends SiteController
         // Output HTML
         $this->view->setLayout('default')->setName('edit');
         $this->view->option = $this->option;
-        $this->view->title = Lang::txt(strtoupper($this->name))
+        $this->view->set('title', Lang::txt(strtoupper($this->name))
             . ': '
-            . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task));
+            . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)));
         $this->view->task = $this->task;
         $this->view->set('config', $this->config);
         $this->view->set('row', $row);

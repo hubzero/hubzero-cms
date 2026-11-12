@@ -265,7 +265,7 @@ class Tickets extends SiteController
         $this->view->set('start', Request::getString('start', $first . '-01'));
         if ($this->view->start != $first . '-01') {
             if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->start)) {
-                $this->view->start = $first . '-01';
+                $this->view->set('start', $first . '-01');
             }
 
             if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs)) {
@@ -490,7 +490,7 @@ class Tickets extends SiteController
             $u[$key] = $user;
         }
         krsort($u);
-        $this->view->users = $u;
+        $this->view->set('users', $u);
 
         $this->view
             ->set('config', $this->config)

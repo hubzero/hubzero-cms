@@ -30,7 +30,7 @@ class Codes extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'section' => Request::getState(
                 $this->option . '.' . $this->controller . '.section',
                 'section',
@@ -59,7 +59,7 @@ class Codes extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $this->view->set('section', \Components\Courses\Models\Section::getInstance($this->view->filters['section']));
         if (!$this->view->section->exists()) {
@@ -67,9 +67,9 @@ class Codes extends AdminController
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
         }
-        $this->view->offering = \Components\Courses\Models\Offering::getInstance(
+        $this->view->set('offering', \Components\Courses\Models\Offering::getInstance(
             $this->view->section->get('offering_id'),
-        );
+        ));
         $this->view->set(
             'course',
             \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),

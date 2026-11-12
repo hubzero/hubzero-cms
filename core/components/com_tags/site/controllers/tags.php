@@ -149,11 +149,11 @@ class Tags extends SiteController
         $this->view->set('categories', []);
 
         // Incoming paging vars
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit' => Request::getInt('limit', Config::get('list_limit')),
             'start' => Request::getInt('limitstart', 0),
             'sort'  => Request::getCmd('sort', 'date'),
-        ];
+        ]);
         if (!in_array($this->view->filters['sort'], ['date', 'title'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters['sort']));
         }
@@ -168,13 +168,13 @@ class Tags extends SiteController
         if (empty($tags)) {
             //App::abort(404, Lang::txt('COM_TAGS_TAG_NOT_FOUND'));
         } else {
-            $this->view->categories = Event::trigger('tags.onTagView', [
+            $this->view->set('categories', Event::trigger('tags.onTagView', [
                 $tags,
                 $this->view->filters['limit'],
                 $this->view->filters['start'],
                 $this->view->filters['sort'],
                 $area,
-            ]);
+            ]));
 
             if (!$area) {
                 $query = '';
@@ -225,7 +225,7 @@ class Tags extends SiteController
                     }
                 }
                 $this->database->setQuery($query);
-                $this->view->results = $this->database->loadObjectList();
+                $this->view->set('results', $this->database->loadObjectList());
             } else {
                 if ($this->view->categories) {
                     foreach ($this->view->categories as $response) {
@@ -235,7 +235,7 @@ class Tags extends SiteController
                         //$this->view->total += $response['total'];
 
                         if (is_array($response['results']) && !empty($response['results']) && !$parent) {
-                            $this->view->results = $response['results'];
+                            $this->view->set('results', $response['results']);
                             break;
                         }
 
@@ -245,7 +245,7 @@ class Tags extends SiteController
 
                                 $hasResults = is_array($sresponse['results']) && !empty($sresponse['results']);
                                 if ($hasResults && ($parent == $response['name'])) {
-                                    $this->view->results = $sresponse['results'];
+                                    $this->view->set('results', $sresponse['results']);
                                     break 2;
                                 }
                             }

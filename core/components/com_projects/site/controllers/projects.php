@@ -268,9 +268,9 @@ class Projects extends Base
         if ($reviewer && !$this->model->reviewerAccess($reviewer)) {
             $this->view = new \Hubzero\Component\View(['name' => 'error', 'layout' => 'default']);
             $this->view->set('error', Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS'));
-            $this->view->title = $reviewer == 'sponsored'
+            $this->view->set('title', $reviewer == 'sponsored'
                 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
-                : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
+                : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA'));
             $this->view->display();
             return;
         }

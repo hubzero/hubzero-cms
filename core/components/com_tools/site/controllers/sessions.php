@@ -352,11 +352,11 @@ class Sessions extends SiteController
 
         $this->view->set('sessions', $sessions);
         if ($this->config->get('access-manage-session')) {
-            $this->view->allsessions = $ms->getRecords(
+            $this->view->set('allsessions', $ms->getRecords(
                 User::get('username'),
                 '',
                 $this->config->get('access-manage-session'),
-            );
+            ));
         }
         $this->view->set('active', Request::getString('active', ''));
         $this->view->set('config', $this->config);

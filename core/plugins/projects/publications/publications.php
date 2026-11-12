@@ -341,14 +341,14 @@ class Publications extends Plugin
         ]);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'project' => $model->get('id'),
             'limit'   => $model->config()->get('sidebox_limit', 5),
             'start'   => 0,
             'dev'     => 1,
             'sortby'  => 'date_created',
             'sortdir' => 'DESC',
-        ];
+        ]);
 
         $view->set('items', $pub->entries('list', $view->filters));
         $view->set('model', $model);
@@ -380,11 +380,11 @@ class Publications extends Plugin
         ]);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'project' => $model->get('id'),
             'sortby'  => 'date_published',
             'sortdir' => 'DESC',
-        ];
+        ]);
 
         $view->set('items', $pub->entries('list', $view->filters));
         $view->set('model', $model);
@@ -434,13 +434,13 @@ class Publications extends Plugin
         $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($allRows, false));
         $view->set('params', $this->model->params);
         $view->set('new_pubs', $this->params->get('new_pubs'));
-        $view->quota   = $view->params->get('pubQuota')
+        $view->set('quota', $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
                             floatval($this->model->config()->get('pubQuota', '1')),
                             'GB',
                             'b',
-                        );
+                        ));
 
         // Output HTML
         $view->set('option', $this->componentOption);
@@ -1062,9 +1062,9 @@ class Publications extends Plugin
         ]);
 
         // Build pub url
-        $view->route = $this->model->isProvisioned()
+        $view->set('route', $this->model->isProvisioned()
                     ? 'index.php?option=com_publications&task=submit'
-                    : $this->model->link('publications');
+                    : $this->model->link('publications'));
 
         // Do we have a choice?
         if (count($choices) <= 1) {
@@ -2858,13 +2858,13 @@ class Publications extends Plugin
         // Get used space
         $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($view->rows));
         $view->set('params', $model->params);
-        $view->quota   = $view->params->get('pubQuota')
+        $view->set('quota', $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
                             floatval($model->config()->get('pubQuota', '1')),
                             'GB',
                             'b',
-                        );
+                        ));
 
         // Get total count
         $view->set('total', $pub_model->entries('count', $filters));

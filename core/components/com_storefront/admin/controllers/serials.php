@@ -37,7 +37,7 @@ class Serials extends AdminController
         $this->view->set('sku', $sku);
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -62,7 +62,7 @@ class Serials extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
         //print_r($this->view->filters); die;
 
         // Get record count

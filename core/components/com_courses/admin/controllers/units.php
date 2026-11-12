@@ -50,7 +50,7 @@ class Units extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'offering' => Request::getState(
                 $this->option . '.' . $this->controller . '.offering',
                 'offering',
@@ -79,7 +79,7 @@ class Units extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $this->view->set(
             'offering',

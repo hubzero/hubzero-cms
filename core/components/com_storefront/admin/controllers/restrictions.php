@@ -41,7 +41,7 @@ class Restrictions extends AdminController
         $this->view->set('sku', $sku);
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -66,7 +66,7 @@ class Restrictions extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         // Get record count
         $this->view->filters['return'] = 'count';

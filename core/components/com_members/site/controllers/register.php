@@ -1059,9 +1059,9 @@ class Register extends SiteController
 
         if ($task == 'update') {
             if (empty($this->view->xregistration->login)) {
-                $this->view->registrationUsername = Field::STATE_REQUIRED;
+                $this->view->set('registrationUsername', Field::STATE_REQUIRED);
             } else {
-                $this->view->registrationUsername = Field::STATE_READONLY;
+                $this->view->set('registrationUsername', Field::STATE_READONLY);
             }
 
             // Third-party-auth users (e.g. ORCID) arrive without a usable email
@@ -1073,23 +1073,23 @@ class Register extends SiteController
             $email = $xregistration->get('email');
 
             if (empty($email) || substr($email, -8) == '@invalid') {
-                $this->view->registrationEmail = Field::STATE_REQUIRED;
-                $this->view->registrationConfirmEmail = Field::STATE_REQUIRED;
+                $this->view->set('registrationEmail', Field::STATE_REQUIRED);
+                $this->view->set('registrationConfirmEmail', Field::STATE_REQUIRED);
             }
 
-            $this->view->registrationPassword = Field::STATE_HIDDEN;
-            $this->view->registrationConfirmPassword = Field::STATE_HIDDEN;
+            $this->view->set('registrationPassword', Field::STATE_HIDDEN);
+            $this->view->set('registrationConfirmPassword', Field::STATE_HIDDEN);
         }
 
         if ($task == 'edit') {
-            $this->view->registrationUsername = Field::STATE_READONLY;
-            $this->view->registrationPassword = Field::STATE_HIDDEN;
-            $this->view->registrationConfirmPassword = Field::STATE_HIDDEN;
+            $this->view->set('registrationUsername', Field::STATE_READONLY);
+            $this->view->set('registrationPassword', Field::STATE_HIDDEN);
+            $this->view->set('registrationConfirmPassword', Field::STATE_HIDDEN);
         }
 
         if (User::get('auth_link_id') && $task == 'create') {
-            $this->view->registrationPassword = Field::STATE_HIDDEN;
-            $this->view->registrationConfirmPassword = Field::STATE_HIDDEN;
+            $this->view->set('registrationPassword', Field::STATE_HIDDEN);
+            $this->view->set('registrationConfirmPassword', Field::STATE_HIDDEN);
         }
 
         $fields = Field::all()

@@ -50,7 +50,7 @@ class Zones extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'zone' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.zone',
                 'zone',
@@ -85,7 +85,7 @@ class Zones extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start'] = ($this->view->filters['limit'] != 0

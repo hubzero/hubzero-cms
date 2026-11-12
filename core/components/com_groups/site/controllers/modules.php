@@ -113,25 +113,25 @@ class Modules extends Base
 
         // are we passing a module object
         if ($this->module) {
-            $this->view->module = $this->module;
+            $this->view->set('module', $this->module);
         }
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', [
+        $this->view->set('pages', $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
             'orderby'   => 'lft asc',
-        ]);
+        ]));
 
         // get a list of all pages for creating module menu
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->order = $moduleArchive->modules('list', [
+        $this->view->set('order', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
             'state'     => [0,1],
             'orderby'   => 'ordering',
-        ]);
+        ]));
 
         // get stylesheets for editor
         $this->view->set('stylesheets', Helpers\View::getPageCss($this->group));

@@ -44,7 +44,7 @@ class Locations extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'zone' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.zone',
                 'zone',
@@ -67,7 +67,7 @@ class Locations extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         if ($this->view->filters['tmpl'] == 'component') {
             $this->view->setLayout('component');

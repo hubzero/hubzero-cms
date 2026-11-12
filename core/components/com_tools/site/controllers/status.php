@@ -56,8 +56,8 @@ class Status extends SiteController
     public function statusTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->option)) . ': '
-            . Lang::txt(strtoupper($this->option . '_' . $this->task));
+        $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
+            . Lang::txt(strtoupper($this->option . '_' . $this->task)));
         Document::setTitle($this->view->title);
 
         // Create a Table object

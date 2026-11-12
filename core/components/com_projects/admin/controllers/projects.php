@@ -82,19 +82,19 @@ class Projects extends AdminController
         $this->view->set('config', $this->config);
 
         // Get quotas
-        $this->view->defaultQuota = Helpers\Html::convertSize(
+        $this->view->set('defaultQuota', Helpers\Html::convertSize(
             floatval($this->config->get('defaultQuota', 1)),
             'GB',
             'b',
-        );
-        $this->view->premiumQuota = Helpers\Html::convertSize(
+        ));
+        $this->view->set('premiumQuota', Helpers\Html::convertSize(
             floatval($this->config->get('premiumQuota', 30)),
             'GB',
             'b',
-        );
+        ));
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit' => Request::getState(
                 $this->option . '.projects.limit',
                 'limit',
@@ -143,7 +143,7 @@ class Projects extends AdminController
             'getowner'   => 1,
             'activity'   => 1,
             'quota'      => Request::getString('quota', 'all', 'post'),
-        ];
+        ]);
 
         if (
             !in_array(
@@ -189,7 +189,7 @@ class Projects extends AdminController
             }
 
             $rows = array_values($rows);
-            $this->view->total = $counter > 0 ? $counter : 0;
+            $this->view->set('total', $counter > 0 ? $counter : 0);
 
             // Fix up paging after filter
             if (count($rows) > $this->view->limit) {
@@ -297,12 +297,12 @@ class Projects extends AdminController
         $l = $log->getTableName();
         $r = \Hubzero\Activity\Recipient::blank()->getTableName();
 
-        $this->view->last_activity = $log
+        $this->view->set('last_activity', $log
             ->join($r, $r . '.log_id', $l . '.id', 'inner')
             ->whereEquals($r . '.scope', 'project')
             ->whereEquals($r . '.scope_id', $id)
             ->order($l . '.created', 'desc')
-            ->row();
+            ->row());
 
         // Was project suspended?
         $this->view->set('suspended', false);
@@ -321,7 +321,7 @@ class Projects extends AdminController
                 ->order($l . '.created', 'desc')
                 ->row();
 
-            $this->view->suspended = null;
+            $this->view->set('suspended', null);
             if ($result) {
                 $this->view->suspended = $result->details->get('admin');
             }

@@ -432,7 +432,7 @@ class Form extends SiteController
                 $this->view->set('pdf', $dep->getForm());
                 $this->view->set('title', $this->view->pdf->getTitle());
                 $this->view->set('base', $this->base);
-                $this->view->dep   = $dep;
+                $this->view->set('dep', $dep);
                 $this->view->set('course', $this->course);
 
                 // Display
@@ -594,12 +594,12 @@ class Form extends SiteController
         } else {
             $this->setView('form', 'complete');
             $this->task = 'complete';
-            $this->view->incomplete = array_filter(
+            $this->view->set('incomplete', array_filter(
                 $answers,
                 function ($ans) {
                     return is_null($ans[0]);
                 },
-            );
+            ));
             $this->completeTask();
         }
     }

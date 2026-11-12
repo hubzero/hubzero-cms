@@ -46,7 +46,7 @@ class Skus extends AdminController
         $this->view->set('product', $product);
 
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -71,7 +71,7 @@ class Skus extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $obj = new Archive();
 

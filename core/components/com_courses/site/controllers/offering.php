@@ -189,10 +189,10 @@ class Offering extends SiteController
         if ($this->course->offering()->access('manage', 'section')) {
             $offeringId = $this->course->offering()->get('id');
             $stateKey = $this->option . '.offering' . $offeringId . '.nonadmin';
-            $this->view->nonadmin = Request::getInt('nonadmin', User::getState(
+            $this->view->set('nonadmin', Request::getInt('nonadmin', User::getState(
                 $stateKey,
                 0,
-            ));
+            )));
             User::setState(
                 $stateKey,
                 $this->view->nonadmin,

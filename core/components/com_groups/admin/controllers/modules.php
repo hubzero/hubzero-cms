@@ -79,22 +79,22 @@ class Modules extends AdminController
 
         // get modules archive
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->modules = $moduleArchive->modules('list', [
+        $this->view->set('modules', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1,2],
             'orderby'   => 'position ASC, ordering ASC',
-        ]);
+        ]));
 
         // are we in the approvers
         $this->view->set('needsAttention', new \Hubzero\Base\ItemList());
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $moduleArchive = Module\Archive::getInstance();
-            $this->view->needsAttention = $moduleArchive->modules('unapproved', [
+            $this->view->set('needsAttention', $moduleArchive->modules('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
                 'state'     => [0,1],
                 'orderby'   => 'ordering',
-            ]);
+            ]));
         }
 
         // pass group to view
@@ -137,24 +137,24 @@ class Modules extends AdminController
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', [
+        $this->view->set('pages', $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1,2],
             'orderby'   => 'lft',
-        ]);
+        ]));
 
         // get a list of all pages for creating module menu
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->order = $moduleArchive->modules('list', [
+        $this->view->set('order', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
             'state'     => [0,1,2],
             'orderby'   => 'ordering',
-        ]);
+        ]));
 
         // are we passing a category object
         if ($this->module) {
-            $this->view->module = $this->module;
+            $this->view->set('module', $this->module);
         }
 
         // pass group to view
@@ -567,7 +567,7 @@ class Modules extends AdminController
         if ($return != 0) {
             $this->view->setLayout('errors');
             $this->view->set('error', (isset($output[0])) ? $output[0] : '');
-            $this->view->error = str_replace($file, '"' . $module->get('title') . '"', $this->view->error);
+            $this->view->set('error', str_replace($file, '"' . $module->get('title') . '"', $this->view->error));
             $this->view->set('module', $module);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;

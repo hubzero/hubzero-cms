@@ -81,26 +81,26 @@ class Pages extends Base
 
         // get group pages
         $pageArchive = new Page\Archive();
-        $this->view->pages = $pageArchive->pages('tree', [
+        $this->view->set('pages', $pageArchive->pages('tree', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
             'orderby'   => 'lft ASC',
-        ]);
+        ]));
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', [
+        $this->view->set('categories', $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title',
-        ]);
+        ]));
 
         // get modules archive
         $moduleArchive = new Module\Archive();
-        $this->view->modules = $moduleArchive->modules('list', [
+        $this->view->set('modules', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
             'orderby'   => 'position ASC, ordering ASC',
-        ]);
+        ]));
 
         // get request vars
         $this->view->set('search', Request::getString('search', ''));
@@ -117,7 +117,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
+        $this->view->set('notifications', ($this->view->notifications) ? $this->view->notifications : []);
         $this->view->set('group', $this->group);
         $this->view->set('config', $this->config);
 
@@ -163,10 +163,10 @@ class Pages extends Base
 
         // are we passing in a page from someplace else
         if ($this->page) {
-            $this->view->page = $this->page;
+            $this->view->set('page', $this->page);
         }
         if ($this->version) {
-            $this->view->version = $this->version;
+            $this->view->set('version', $this->version);
         }
 
         // For a new page in a group that isn't fully public, default the
@@ -188,24 +188,24 @@ class Pages extends Base
 
         // get a list of all pages for page ordering
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', [
+        $this->view->set('pages', $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1],
             'orderby'   => 'lft',
-        ]);
+        ]));
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', [
+        $this->view->set('categories', $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title',
-        ]);
+        ]));
 
         // get stylesheets for editor
         // [!] (zooley) 07/2015
         //     This causes extreme performance issues under certain situations
         //     Bypassing until a better solution can be found.
-        $this->view->stylesheets = []; //Helpers\View::getPageCss($this->group);
+        $this->view->set('stylesheets', []); //Helpers\View::getPageCss($this->group);
 
         // get page templates
         $this->view->set('pageTemplates', Helpers\View::getPageTemplates($this->group));
@@ -218,7 +218,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
+        $this->view->set('notifications', ($this->view->notifications) ? $this->view->notifications : []);
         $this->view->set('group', $this->group);
         $this->view->set('config', $this->config);
 
@@ -512,7 +512,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
+        $this->view->set('notifications', ($this->view->notifications) ? $this->view->notifications : []);
         $this->view->set('group', $this->group);
 
         //display layout

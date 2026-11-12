@@ -33,7 +33,7 @@ class Roles extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
                 'limit',
@@ -61,7 +61,7 @@ class Roles extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         // Instantiate an object
         $model = new Tables\Role($this->database);

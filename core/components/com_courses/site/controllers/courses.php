@@ -122,11 +122,11 @@ class Courses extends SiteController
         ], true);
 
         // Get first 12 courses
-        $this->view->popularcourses = $model->courses([
+        $this->view->set('popularcourses', $model->courses([
             'limit' => self::INTRO_COURSE_LIMIT,
             'sort'  => 'students',
             'state' => 1,
-        ], true);
+        ], true));
 
         // Output HTML
         $allCoursesCount = count($all_courses);
@@ -148,12 +148,12 @@ class Courses extends SiteController
     public function browseTask()
     {
         // Filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             'state'  => 1,
             'search' => Request::getString('search', ''),
             'sortby' => strtolower(Request::getWord('sortby', 'title')),
             'group'  => Request::getString('group', ''),
-        ];
+        ]);
         if ($this->view->filters['group']) {
             $group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
             if ($group) {

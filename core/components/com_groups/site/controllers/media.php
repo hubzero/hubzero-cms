@@ -374,7 +374,7 @@ class Media extends Base
             $this->view->relpath = '/uploads';
         }
 
-        $this->view->relpath = \Hubzero\Filesystem\Util::normalizePath($this->view->relpath);
+        $this->view->set('relpath', \Hubzero\Filesystem\Util::normalizePath($this->view->relpath));
         $this->view->relpath = explode('/', $this->view->relpath);
         foreach ($this->view->relpath as $i => $p) {
             $this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
@@ -409,8 +409,8 @@ class Media extends Base
             sort($files);
 
             //reset array keys
-            $this->view->folders = $folders;
-            $this->view->files   = $files;
+            $this->view->set('folders', $folders);
+            $this->view->set('files', $files);
         }
 
         // pass vars to view

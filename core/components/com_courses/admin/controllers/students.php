@@ -32,7 +32,7 @@ class Students extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'offering' => Request::getState(
                 $this->option . '.' . $this->controller . '.offering',
                 'offering',
@@ -61,7 +61,7 @@ class Students extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $this->view->set(
             'offering',
@@ -105,11 +105,13 @@ class Students extends AdminController
 
         $tbl = new Tables\Member($this->database);
 
-        $this->view->total = $tbl->count($this->view->filters); //$this->view->offering->students($this->view->filters);
+        //$this->view->offering->students($this->view->filters);
+        $this->view->set('total', $tbl->count($this->view->filters));
 
         //$this->view->filters['count'] = false;
 
-        $this->view->rows = $tbl->find($this->view->filters); //$this->view->offering->students($this->view->filters);
+        //$this->view->offering->students($this->view->filters);
+        $this->view->set('rows', $tbl->find($this->view->filters));
         if ($this->view->rows) {
             foreach ($this->view->rows as $key => $row) {
                 $this->view->rows[$key] = new \Components\Courses\Models\Student($row);
@@ -396,7 +398,7 @@ class Students extends AdminController
      */
     public function csvTask()
     {
-        $this->view->filters = [
+        $this->view->set('filters', [
             'offering' => Request::getState(
                 $this->option . '.' . $this->controller . '.offering',
                 'offering',
@@ -407,7 +409,7 @@ class Students extends AdminController
                 'section',
                 0,
             ),
-        ];
+        ]);
 
         $this->view->set(
             'offering',
@@ -429,7 +431,8 @@ class Students extends AdminController
 
         $tbl = new Tables\Member($this->database);
 
-        $this->view->rows = $tbl->find($this->view->filters); //$this->view->offering->students($this->view->filters);
+        //$this->view->offering->students($this->view->filters);
+        $this->view->set('rows', $tbl->find($this->view->filters));
         if ($this->view->rows) {
             foreach ($this->view->rows as $key => $row) {
                 $this->view->rows[$key] = new \Components\Courses\Models\Student($row);

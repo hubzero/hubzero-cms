@@ -85,7 +85,7 @@ class Citations extends SiteController
         $this->view->set('allow_bulk_import', $this->config->get('citation_bulk_import', 1));
         $this->view->set('isAdmin', false);
         if (User::authorise('core.manage', $this->option)) {
-            $this->view->isAdmin = true;
+            $this->view->set('isAdmin', true);
         }
 
         $this->displayMessages();
@@ -118,7 +118,7 @@ class Citations extends SiteController
         $earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Search/filtering params
             'id'              => Request::getInt('id', 0),
             'tag'             => Request::getString('tag', '', 'request'),
@@ -145,31 +145,31 @@ class Citations extends SiteController
             'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
             'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
             'scope'           => 'hub',
-        ];
+        ]);
 
         if (User::authorise('core.manage', $this->option)) {
-            $this->view->isAdmin = true;
+            $this->view->set('isAdmin', true);
             $this->view->filters['published'] = [0, 1];
         }
 
-        $this->view->filter = [
+        $this->view->set('filter', [
             'all'    => Lang::txt('COM_CITATIONS_ALL'),
             'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED'),
-        ];
+        ]);
         if (!in_array($this->view->filters['filter'], array_keys($this->view->filter))) {
             $this->view->filters['filter'] = '';
         }
 
         // Sort Filter
-        $this->view->sorts = [
+        $this->view->set('sorts', [
             'sec_cnt DESC' => Lang::txt('COM_CITATIONS_CITEDBY'),
             'year DESC'    => Lang::txt('COM_CITATIONS_YEAR'),
             'created DESC' => Lang::txt('COM_CITATIONS_NEWEST'),
             'title ASC'    => Lang::txt('COM_CITATIONS_TITLE'),
             'author ASC'   => Lang::txt('COM_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL'),
-        ];
+        ]);
         if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts))) {
             $this->view->filters['sort'] = 'created DESC';
         }
@@ -307,11 +307,11 @@ class Citations extends SiteController
         }
 */
         // Parse the returned xml
-        $this->view->openurl = [
+        $this->view->set('openurl', [
             'link' => '',
             'text' => '',
             'icon' => '',
-        ];
+        ]);
         /*
                 // Parse the return from resolver lookup
                 $resolver = null;
@@ -377,9 +377,9 @@ class Citations extends SiteController
             App::abort(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
         }
 
-        $this->view->associations = $this->view->citation
+        $this->view->set('associations', $this->view->citation
             ->resources()
-            ->whereEquals('#__citations_assoc.tbl', 'resource');
+            ->whereEquals('#__citations_assoc.tbl', 'resource'));
         $this->view->set('sponsors', $this->view->citation->sponsors);
 
         //open url stuff
@@ -387,9 +387,9 @@ class Citations extends SiteController
 
         //make sure title isnt too long
         $this->view->set('maxTitleLength', 50);
-        $this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength)
+        $this->view->set('shortenedTitle', (strlen($this->view->citation->title) > $this->view->maxTitleLength)
             ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;'
-            : $this->view->citation->title;
+            : $this->view->citation->title);
 
         // Set the page title
         Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
@@ -646,9 +646,9 @@ class Citations extends SiteController
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $this->view->title  = Lang::txt(strtoupper($this->option))
+        $this->view->set('title', Lang::txt(strtoupper($this->option))
             . ': '
-            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)));
         $this->view->set('config', $this->config);
 
         // No ID, so we're creating a new entry
@@ -659,7 +659,7 @@ class Citations extends SiteController
             $citation->set('id', -time());
 
             // It's new - no associations to get
-            $this->view->assocs = [];
+            $this->view->set('assocs', []);
 
             //tags & badges
             $this->view->set('tags', []);

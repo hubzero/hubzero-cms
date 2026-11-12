@@ -204,9 +204,9 @@ used before, read <a href="#deleting">Deleting</a> below.</p>
 <p>The hub has two model base classes, and both define the same three numbers.</p>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a>, which
 the newer components use:</p>
-<pre><code class="language-php">    public const STATE_UNPUBLISHED = 0;
-    public const STATE_PUBLISHED   = 1;
-    public const STATE_DELETED     = 2;
+<pre><code class="language-php">     * Database state constants
+     **/
+    public const STATE_UNPUBLISHED = 0;
 </code></pre>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Model.php"><code>Base\Model</code></a>, which the
 older ones use, adds a fourth:</p>

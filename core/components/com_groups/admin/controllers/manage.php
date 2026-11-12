@@ -58,7 +58,7 @@ class Manage extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Filters for getting a result count
             'limit'      => 'all',
             'fields'     => ['COUNT(*)'],
@@ -102,7 +102,7 @@ class Manage extends AdminController
             'approved'   => Request::getString('approved'),
             //'published'  => Request::getInt('published', 1),
             'created'    => Request::getString('created', ''),
-        ];
+        ]);
         $this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
         $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
@@ -155,7 +155,7 @@ class Manage extends AdminController
         $this->view->set('rows', []);
         if ($this->view->total > 0) {
             if ($rows = Group::find($this->view->filters)) {
-                $this->view->rows = $rows;
+                $this->view->set('rows', $rows);
             }
         }
 

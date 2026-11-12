@@ -35,7 +35,7 @@ class Products extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
@@ -72,7 +72,7 @@ class Products extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $obj = new Archive();
 
@@ -190,7 +190,7 @@ class Products extends AdminController
         $this->view->set('metaNeeded', false);
         // Only software needs meta
         if ($pType == 'Software Download') {
-            $this->view->metaNeeded = true;
+            $this->view->set('metaNeeded', true);
 
             // Get number of downloads
             $downloaded = Download::countProductDownloads($id);

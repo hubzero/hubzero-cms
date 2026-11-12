@@ -55,10 +55,10 @@ class Orders extends ComponentController
     public function homeTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-        ];
+        ]);
 
         $cart = new CurrentCart();
 

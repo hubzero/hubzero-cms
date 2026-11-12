@@ -351,7 +351,7 @@ class Notes extends Plugin
             $nview->set('scope', $scope);
             $nview->set('option', $this->componentOption);
             $nview->set('project', $this->model);
-            $view->content  = $nview->loadTemplate();
+            $view->set('content', $nview->loadTemplate());
         }
 
         $basePath = Component::path('com_wiki') . DS . 'site';
@@ -652,10 +652,10 @@ class Notes extends Plugin
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
-        $view->attachments = $pContent->getAttachments(
+        $view->set('attachments', $pContent->getAttachments(
             $versionid,
             $filters = ['role' => $role, 'type' => 'note'],
-        );
+        ));
 
         // Output HTML
         $view->set('params', $this->model->params);

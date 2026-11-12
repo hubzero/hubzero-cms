@@ -114,11 +114,11 @@ class Curation extends SiteController
         $this->view->set('total', $objP->getCount($filters));
 
         // Initiate paging
-        $this->view->pageNav = new \Hubzero\Pagination\Paginator(
+        $this->view->set('pageNav', new \Hubzero\Pagination\Paginator(
             $this->view->total,
             $this->view->filters['start'],
             $this->view->filters['limit'],
-        );
+        ));
 
         // Set page title
         $this->buildTitle();

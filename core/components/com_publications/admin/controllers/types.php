@@ -30,7 +30,7 @@ class Types extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'limit' => Request::getState(
                 $this->option . '.types.limit',
                 'limit',
@@ -58,7 +58,7 @@ class Types extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         $this->view->filters['state'] = 'all';
 
@@ -118,19 +118,19 @@ class Types extends AdminController
         }
 
         // Load curation
-        $this->view->curation = new \Components\Publications\Models\Curation(
+        $this->view->set('curation', new \Components\Publications\Models\Curation(
             $this->view->row->curation,
-        );
+        ));
 
         // Get blocks model
         $blocksModel = new \Components\Publications\Models\Blocks($database);
 
         // Get available blocks
-        $this->view->blocks = $blocksModel->getBlocks(
+        $this->view->set('blocks', $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
             " ORDER BY ordering, id",
-        );
+        ));
 
         // Set any errors
         if ($this->getError()) {
@@ -171,9 +171,9 @@ class Types extends AdminController
             }
 
             // Load curation
-            $this->view->curation = new \Components\Publications\Models\Curation(
+            $this->view->set('curation', new \Components\Publications\Models\Curation(
                 $this->view->row->curation,
-            );
+            ));
 
             // Set any errors
             if ($this->getError()) {
@@ -209,9 +209,9 @@ class Types extends AdminController
             }
 
             // Load curation
-            $this->view->curation = new \Components\Publications\Models\Curation(
+            $this->view->set('curation', new \Components\Publications\Models\Curation(
                 $this->view->row->curation,
-            );
+            ));
             $curation = $this->view->curation;
 
             // Go back to the confirmation page
@@ -395,9 +395,9 @@ class Types extends AdminController
         }
 
         // Load curation
-        $this->view->curation = new \Components\Publications\Models\Curation(
+        $this->view->set('curation', new \Components\Publications\Models\Curation(
             $this->view->row->curation,
-        );
+        ));
 
         // Set any errors
         if ($this->getError()) {
@@ -495,9 +495,9 @@ class Types extends AdminController
         }
 
         // Load curation
-        $this->view->curation = new \Components\Publications\Models\Curation(
+        $this->view->set('curation', new \Components\Publications\Models\Curation(
             $this->view->row->curation,
-        );
+        ));
 
         // Set any errors
         if ($this->getError()) {
@@ -626,19 +626,19 @@ class Types extends AdminController
         }
 
         // Load curation
-        $this->view->curation = new \Components\Publications\Models\Curation(
+        $this->view->set('curation', new \Components\Publications\Models\Curation(
             $this->view->row->curation,
-        );
+        ));
 
         // Get blocks model
         $blocksModel = new \Components\Publications\Models\Blocks($database);
 
         // Get available blocks
-        $this->view->blocks = $blocksModel->getBlocks(
+        $this->view->set('blocks', $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
             " ORDER BY ordering, id",
-        );
+        ));
 
         // Set any errors
         if ($this->getError()) {
@@ -737,19 +737,19 @@ class Types extends AdminController
 
         $this->view->set('row', $row);
 
-        $this->view->curation = new \Components\Publications\Models\Curation(
+        $this->view->set('curation', new \Components\Publications\Models\Curation(
             $this->view->row->curation,
-        );
+        ));
 
         // Get blocks model
         $blocksModel = new \Components\Publications\Models\Blocks($database);
 
         // Get available blocks
-        $this->view->blocks = $blocksModel->getBlocks(
+        $this->view->set('blocks', $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
             " ORDER BY ordering, id",
-        );
+        ));
 
         // Set any errors
         if ($this->getError()) {

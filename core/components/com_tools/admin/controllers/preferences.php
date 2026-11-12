@@ -32,7 +32,7 @@ class Preferences extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'search' => urldecode(Request::getState(
                 $this->option . '.' . $this->controller . '.search',
                 'search',
@@ -70,7 +70,7 @@ class Preferences extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $obj = new Tables\Preferences($this->database);
 
@@ -138,7 +138,7 @@ class Preferences extends AdminController
                 $selected = $class->id;
             }
         }
-        $this->view->classes = Html::select(
+        $this->view->set('classes', Html::select(
             'genericlist',
             $options,
             'fields[class_id]',
@@ -149,7 +149,7 @@ class Preferences extends AdminController
             'class_id',
             false,
             false,
-        );
+        ));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

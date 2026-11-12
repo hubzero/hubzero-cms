@@ -428,10 +428,10 @@ class Databases extends Plugin
         $role = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
-        $view->attachments = $pContent->getAttachments(
+        $view->set('attachments', $pContent->getAttachments(
             $versionid,
             $filters = ['role' => $role, 'type' => 'data'],
-        );
+        ));
 
         // Output HTML
         $view->set('params', $this->model->params);

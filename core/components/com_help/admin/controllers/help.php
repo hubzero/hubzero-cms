@@ -57,14 +57,14 @@ class Help extends AdminController
         if ($finalHelpPage != '') {
             ob_start();
             require_once $finalHelpPage;
-            $this->view->content = ob_get_contents();
+            $this->view->set('content', ob_get_contents());
             ob_end_clean();
         } elseif ($component != '' && $page == 'index') {
             // Get list of component pages
             $pages[] = Finder::pages($component);
 
             // Display page
-            $this->view->content = $this->displayHelpPageIndexForPages($pages, 'h1');
+            $this->view->set('content', $this->displayHelpPageIndexForPages($pages, 'h1'));
         } else {
             // Raise error to avoid security bug
             App::abort(404, Lang::txt('COM_HELP_PAGE_NOT_FOUND'));

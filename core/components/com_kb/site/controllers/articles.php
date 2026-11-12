@@ -106,7 +106,7 @@ class Articles extends SiteController
         } else {
             $category = Category::oneByAlias($categoryAlias);
 
-            $this->view->catid = $category->get('id');
+            $this->view->set('catid', $category->get('id'));
             if ($category->get('parent_id') > 1) {
                 $this->view->catid = $category->get('parent_id');
             }
@@ -123,11 +123,11 @@ class Articles extends SiteController
         Request::setVar('start', Request::getInt('start', 0));
 
         // Get configuration
-        $this->view->filters = [
+        $this->view->set('filters', [
             'sort'     => Request::getWord('sort', 'recent'),
             'category' => $category->get('id'),
             'search'   => Request::getString('search', ''),
-        ];
+        ]);
 
         if (!in_array($this->view->filters['sort'], ['recent', 'popularity'])) {
             $this->view->filters['sort'] = 'recent';
@@ -190,7 +190,7 @@ class Articles extends SiteController
 
         $this->view->set('catid', $category->get('id'));
         if ($category->get('parent_id') > 1) {
-            $this->view->catid = $category->get('parent_id');
+            $this->view->set('catid', $category->get('parent_id'));
         }
 
         $this->view
@@ -283,7 +283,7 @@ class Articles extends SiteController
             $this->view->set('item', $row);
             $this->view->set('type', $type);
             $this->view->set('vote', $vote);
-            $this->view->id   = ''; //$id;
+            $this->view->set('id', ''); //$id;
             if ($this->getError()) {
                 $this->view->setError($this->getError());
             }

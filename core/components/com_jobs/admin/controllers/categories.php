@@ -30,7 +30,7 @@ class Categories extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get paging variables
             'limit' => Request::getState(
                 $this->option . '.' . $this->controller . '.limit',
@@ -55,7 +55,7 @@ class Categories extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
         // Instantiate an object
         $jc = new Category($this->database);

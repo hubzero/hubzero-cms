@@ -119,7 +119,7 @@ class Events extends AdminController
         );
 
         $categories = array_merge($categories, $this->database->loadObjectList());
-        $this->view->clist = \Html::select(
+        $this->view->set('clist', \Html::select(
             'genericlist',
             $categories,
             'catid',
@@ -129,7 +129,7 @@ class Events extends AdminController
             $this->view->filters['catid'],
             false,
             false,
-        );
+        ));
 
         //get list of groups
         $groups[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
@@ -139,7 +139,7 @@ class Events extends AdminController
 				AND e.scope_id=g.gidNumber";
         $this->database->setQuery($sql);
         $groups = array_merge($groups, $this->database->loadObjectList());
-        $this->view->glist = \Html::select(
+        $this->view->set('glist', \Html::select(
             'genericlist',
             $groups,
             'group_id',
@@ -149,7 +149,7 @@ class Events extends AdminController
             $this->view->filters['scope_id'],
             false,
             false,
-        );
+        ));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

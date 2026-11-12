@@ -32,7 +32,7 @@ class Handlers extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Sorting
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -44,12 +44,12 @@ class Handlers extends AdminController
                 'filter_order_Dir',
                 'ASC',
             ),
-        ];
+        ]);
 
-        $this->view->rows = Handler::all()
+        $this->view->set('rows', Handler::all()
             ->paginated('limitstart')
             ->ordered('filter_order', 'filter_order_Dir')
-            ->rows();
+            ->rows());
 
         // Display results
         $this->view->display();

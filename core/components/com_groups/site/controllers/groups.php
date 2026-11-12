@@ -92,11 +92,11 @@ class Groups extends Base
 
         // Vars
         $mytags = '';
-        $this->view->mygroups = [
+        $this->view->set('mygroups', [
             'members'    => null,
             'invitees'   => null,
             'applicants' => null,
-        ];
+        ]);
         $this->view->set('populargroups', []);
         $this->view->set('interestinggroups', []);
 
@@ -114,19 +114,19 @@ class Groups extends Base
             $this->view->mygroups = array_filter($this->view->mygroups);
 
             // Get groups user may be interested in
-            $this->view->interestinggroups = Group\Helper::getGroupsMatchingTagString(
+            $this->view->set('interestinggroups', Group\Helper::getGroupsMatchingTagString(
                 $mytags,
                 \Hubzero\User\Helper::getGroups(User::get('id')),
-            );
+            ));
         }
 
         // Get the popular groups
-        $this->view->populargroups  = Group\Helper::getPopularGroups(3);
+        $this->view->set('populargroups', Group\Helper::getPopularGroups(3));
 
         // Get featured groups
-        $this->view->featuredgroups = Group\Helper::getFeaturedGroups(
+        $this->view->set('featuredgroups', Group\Helper::getFeaturedGroups(
             $this->config->get('intro_featuredgroups_list', ''),
-        );
+        ));
 
         // Set some vars for view
         $this->view->set('config', $this->config);
@@ -479,15 +479,15 @@ class Groups extends Base
         // Create dir for uploads
         $this->view->set('lid', time() . rand(0, 1000));
         if ($this->lid != '') {
-            $this->view->lid = $this->lid;
+            $this->view->set('lid', $this->lid);
         } elseif ($this->view->group->get('gidNumber')) {
-            $this->view->lid = $this->view->group->get('gidNumber');
+            $this->view->set('lid', $this->view->group->get('gidNumber'));
         }
 
         // Are we passing a group from save method
         if ($this->group) {
             $this->view->set('group', $this->group);
-            $this->view->tags  = $this->tags;
+            $this->view->set('tags', $this->tags);
         }
 
         // Path to group assets
@@ -503,12 +503,12 @@ class Groups extends Base
         $this->view->set('logos', []);
         if (is_dir($asset_path)) {
             // Get all images that are in group asset folder and could be a possible group logo
-            $this->view->logos = Filesystem::files(
+            $this->view->set('logos', Filesystem::files(
                 $asset_path,
                 '.jpg|.jpeg|.png|.gif|.svg|.PNG|.JPG|.JPEG|.GIF|.SVG',
                 true,
                 true,
-            );
+            ));
         }
 
         // Trigger the functions that return the areas we'll be using

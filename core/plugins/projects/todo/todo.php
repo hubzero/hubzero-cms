@@ -216,13 +216,13 @@ class Todo extends Plugin
         ]);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'projects' => [$model->get('id')],
             'limit'    => $model->config()->get('sidebox_limit', 5),
             'start'    => 0,
             'sortby'   => 'due',
             'sortdir'  => 'ASC',
-        ];
+        ]);
 
         $view->set('items', $this->todo->entries('list', $view->filters));
         $view->set('model', $model);
@@ -288,7 +288,7 @@ class Todo extends Plugin
         ]);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'projects'   => [$this->model->get('id')],
             'limit'      => Request::getInt('limit', $this->params->get('display_limit', 50)),
             'start'      => Request::getInt('limitstart', 0),
@@ -299,7 +299,7 @@ class Todo extends Plugin
             'sortby'     => Request::getString('sortby', 'priority'),
             'sortdir'    => Request::getString('sortdir', 'ASC'),
             'layout'     => $layout,
-        ];
+        ]);
 
         $view->set('option', $this->componentOption);
         $view->set('database', $this->database);

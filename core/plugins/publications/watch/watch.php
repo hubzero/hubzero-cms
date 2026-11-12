@@ -301,9 +301,9 @@ class Watch extends Plugin
         $name = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBER');
         $email = $subscriber->email;
 
-        $eview->unsubscribeLink = Route::url(
+        $eview->set('unsubscribeLink', Route::url(
             $this->publication->link() . '&active=watch&action=unsubscribe&confirm=1&email=' . $email,
-        );
+        ));
 
         // Get profile information
         if ($subscriber->created_by) {

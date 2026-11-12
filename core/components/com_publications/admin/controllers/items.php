@@ -140,7 +140,7 @@ class Items extends AdminController
 
         // Is this a new publication? TBD
         if (!$id) {
-            $this->view->isnew = 1;
+            $this->view->set('isnew', 1);
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
@@ -1066,9 +1066,9 @@ class Items extends AdminController
                                         $eview->set('subject', $subjectForPermissionEmail);
                                         $eview->set('message', $messageForPermissionEmail);
                                         $eview->set('permissionURL', $permissionURL);
-                                        $eview->permissionTxt = Lang::txt(
+                                        $eview->set('permissionTxt', Lang::txt(
                                             'COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION',
-                                        );
+                                        ));
 
                                         $body = [];
                                         $body['multipart'] = $eview->loadTemplate();

@@ -31,7 +31,7 @@ class Collections extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = [
+        $this->view->set('filters', [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
@@ -56,7 +56,7 @@ class Collections extends AdminController
                 0,
                 'int',
             ),
-        ];
+        ]);
 
         $obj = new Archive();
 

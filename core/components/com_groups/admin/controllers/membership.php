@@ -51,13 +51,13 @@ class Membership extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = [
+        $this->view->set('filters', [
             'gid' => Request::getState(
                 $this->option . '.' . $this->controller . '.gid',
                 'gid',
                 '',
             ),
-        ];
+        ]);
 
         // Ensure we have a group ID
         if (!$this->view->filters['gid']) {
@@ -148,9 +148,9 @@ class Membership extends AdminController
         // Membership terms for the whole roster in one query, so the list can
         // show and filter on them without asking per row
         $this->view->set('expiration_supported', \Hubzero\User\Group\Membership::supported());
-        $this->view->expirations = $this->view->expiration_supported
+        $this->view->set('expirations', $this->view->expiration_supported
             ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
-            : [];
+            : []);
 
         $this->view->filters['term'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.term',
@@ -166,7 +166,7 @@ class Membership extends AdminController
             $want  = $this->view->filters['term'];
             $soon  = time() + (30 * 86400);
 
-            $this->view->rows = array_filter((array) $this->view->rows, function ($row) use ($terms, $want, $soon) {
+            $wanted = function ($row) use ($terms, $want, $soon) {
                 $uid     = isset($row->uidNumber) ? (int) $row->uidNumber : 0;
                 $expires = ($uid && isset($terms[$uid])) ? $terms[$uid] : null;
 
@@ -180,11 +180,12 @@ class Membership extends AdminController
                 }
 
                 return true;
-            });
+            };
+            $this->view->set('rows', array_filter((array) $this->view->rows, $wanted));
 
             // The count no longer matches the filtered set; pagination is
             // against the filtered rows
-            $this->view->total = count($this->view->rows);
+            $this->view->set('total', count($this->view->rows));
         }
 
         // Set any errors

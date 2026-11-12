@@ -525,7 +525,7 @@ class Support extends Plugin
             $eview->set('tickets', $tickets);
             $eview->set('delimiter', '~!~!~!~!~!~!~!~!~!~!');
             $eview->set('config', $sconfig);
-            $eview->tickets    = $usertickets;
+            $eview->set('tickets', $usertickets);
 
             $plain = $eview->loadTemplate(false);
             $plain = str_replace("\n", "\r\n", $plain);

@@ -99,8 +99,8 @@ class Description extends Base
         $view->set('pub', $pub);
         $view->set('active', $this->name);
         $view->set('step', $blockId);
-        $view->showControls = isset($master->params->collapse_elements)
-                            && $master->params->collapse_elements == 1 ? 3 : 1;
+        $view->set('showControls', isset($master->params->collapse_elements)
+                            && $master->params->collapse_elements == 1 ? 3 : 1);
         $view->set('status', $status);
         $view->set('master', $master);
 

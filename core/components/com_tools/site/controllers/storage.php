@@ -188,9 +188,9 @@ class Storage extends SiteController
         $this->view->set('percentage', $this->percent);
         $this->view->set('usedBytes', isset($this->used) ? $this->used : 0);
         $this->view->set('softBytes', isset($this->soft) ? $this->soft : 0);
-        $this->view->freeBytes  = ($this->view->softBytes > $this->view->usedBytes)
+        $this->view->set('freeBytes', ($this->view->softBytes > $this->view->usedBytes)
             ? ($this->view->softBytes - $this->view->usedBytes)
-            : 0;
+            : 0);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);

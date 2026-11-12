@@ -748,7 +748,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
         } elseif (!$this->userOwnsItem($listdir)) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
-            $this->view->item = Item::getInstance(0);
+            $this->view->set('item', Item::getInstance(0));
         }
 
         $this->view->set('config', $this->config);
