@@ -169,7 +169,13 @@ class Images extends AdminController
             return;
         }
 
-        $imgId = $object->getImage()->imgId;
+        $image = $object->getImage();
+        if (!$image) {
+            echo json_encode(['error' => 'Error updating the object']);
+            return;
+        }
+
+        $imgId = $image->imgId;
 
         $this_size = filesize($file);
         list($width, $height, $type, $attr) = getimagesize($file);

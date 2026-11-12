@@ -160,6 +160,13 @@ class Versions extends AdminController
             $row = Version::getInstance($version);
         }
 
+        // No such version
+        if (!$row) {
+            $this->cancelTask();
+
+            return;
+        }
+
         $doi = null;
 
         // If the DOI service is enabled

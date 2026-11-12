@@ -107,6 +107,9 @@ class Product extends \Hubzero\Component\SiteController
 
         // Get the product info
         $product = $this->warehouse->getProductInfo($pId);
+        if (!$product) {
+            App::abort(404, Lang::txt('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+        }
         $this->view->set('product', $product);
 
         // Run the auditor

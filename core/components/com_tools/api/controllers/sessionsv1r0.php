@@ -399,7 +399,7 @@ class Sessionsv1r0 extends ApiController
             }
         }
 
-        if (!$screenshot) {
+        if (!$screenshot && $sess) {
             //check to make sure we have a sessions dir
             // The member owns everything under their home directory, so the path is
             // resolved without following links: a link here would have us serve an

@@ -192,6 +192,10 @@ class History
     public static function addPassword($passhash, $user = null)
     {
         $hzuph = self::getInstance($user);
+        if (!$hzuph) {
+            return false;
+        }
+
         $hzuph->add($passhash);
 
         return true;

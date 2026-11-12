@@ -118,7 +118,7 @@ class Source extends Obj
         }
 
         $fileName = $this->get('filename');
-        $filePath = \Hubzero\Filesystem\Util::normalizePath($this->template->path . '/' . $fileName);
+        $filePath = \Hubzero\Filesystem\Util::normalizePath($template->path . '/' . $fileName);
 
         // Try to make the template file writeable.
         if (!Filesystem::setPermissions($filePath, '0644')) {

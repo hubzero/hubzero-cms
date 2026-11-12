@@ -429,6 +429,11 @@ class Elements
                 // load resource element by type
                 $resourceElement = $this->loadElement($field->type);
 
+                // A field of a type nothing handles has no tag to make
+                if (!$resourceElement) {
+                    continue;
+                }
+
                 // if this is hidden lets use option value as default
                 if ($field->type == 'hidden') {
                     $field->default = (isset($field->options[0])) ? $field->options[0]->value : null;

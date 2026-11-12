@@ -148,7 +148,8 @@ class Record extends Obj
                 (array) $this->record->custom,
                 $this->record->type->customFields,
             );
-            foreach ($resourcesElements->getSchema()->fields as $field) {
+            $schema = $resourcesElements->getSchema();
+            foreach (($schema ? $schema->fields : []) as $field) {
                 $value = $resourcesElements->get($field->label);
                 if ($field->required && (!isset($value) || $value == '')) {
                     $errorMsg = Lang::txt(
@@ -339,7 +340,8 @@ class Record extends Obj
             $customFieldsHtml = $resourcesElements->toDatabaseHtml();
 
             // add all custom fields to custom object
-            foreach ($resourcesElements->getSchema()->fields as $field) {
+            $schema = $resourcesElements->getSchema();
+            foreach (($schema ? $schema->fields : []) as $field) {
                 $fieldLabel = $field->label;
                 $fieldName = $field->name;
                 $customFields = $this->raw->custom_fields;

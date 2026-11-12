@@ -117,7 +117,7 @@ class Resources extends SiteController
             $schema = $elements->getSchema();
 
             $fields = [];
-            foreach ($schema->fields as $field) {
+            foreach (($schema ? $schema->fields : []) as $field) {
                 $fields[$field->name] = $field;
             }
 

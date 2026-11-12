@@ -121,7 +121,7 @@ class Solr extends AdminController
                 $result = \Hubzero\User\Password::changePassword($user->get('id'), $newpass);
 
                 if (!$result) {
-                    Notify::error($result->getError());
+                    Notify::error('The password of the search user could not be set.');
                 }
 
                 // Make an application
