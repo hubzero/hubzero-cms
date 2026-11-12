@@ -96,9 +96,9 @@ class Locations extends AdminController
         // Get the middleware database
         $this->view->set('zone', new Middleware\Zone($this->view->filters['zone']));
 
-        $this->view->set('total', $this->view->zone->locations('count', $this->view->filters));
+        $this->view->set('total', $this->view->get('zone')->locations('count', $this->view->filters));
 
-        $this->view->set('rows', $this->view->zone->locations('list', $this->view->filters));
+        $this->view->set('rows', $this->view->get('zone')->locations('list', $this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -133,8 +133,8 @@ class Locations extends AdminController
         $this->view->set('row', $row);
 
         $this->view->set('zone', Request::getInt('zone', 0));
-        if (!$this->view->row->exists()) {
-            $this->view->row->set('zone_id', $this->view->zone);
+        if (!$this->view->get('row')->exists()) {
+            $this->view->get('row')->set('zone_id', $this->view->zone);
         }
         $this->view->set('tmpl', Request::getCmd('tmpl', ''));
 

@@ -96,10 +96,10 @@ class Items extends AdminController
         $this->view->set('model', new Models\Publication($this->database));
 
         // Get record count
-        $this->view->set('total', $this->view->model->entries('count', $this->view->filters, true));
+        $this->view->set('total', $this->view->get('model')->entries('count', $this->view->filters, true));
 
         // Get publications
-        $this->view->set('rows', $this->view->model->entries('list', $this->view->filters, true));
+        $this->view->set('rows', $this->view->get('model')->entries('list', $this->view->filters, true));
 
         $this->view->set('config', $this->config);
 
@@ -161,14 +161,14 @@ class Items extends AdminController
         $this->view->set('model', new Models\Publication($id, $version));
 
         // If publication not found, raise error
-        if (!$this->view->model->exists()) {
+        if (!$this->view->get('model')->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
         // Fail if checked out not by 'me'
         if (
-            $this->view->model->get('checked_out')
-            && $this->view->model->get('checked_out') <> User::get('id')
+            $this->view->get('model')->get('checked_out')
+            && $this->view->get('model')->get('checked_out') <> User::get('id')
         ) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
@@ -178,12 +178,12 @@ class Items extends AdminController
         }
 
         // Editing existing
-        $this->view->model->publication->checkout(User::get('id'));
+        $this->view->get('model')->publication->checkout(User::get('id'));
 
-        $this->view->model->setCuration();
+        $this->view->get('model')->setCuration();
 
         // Get licenses
-        $this->view->set('licenses', $this->view->model->table('License')->getLicenses());
+        $this->view->set('licenses', $this->view->get('model')->table('License')->getLicenses());
 
         // Get groups
         $filters = [
@@ -219,24 +219,24 @@ class Items extends AdminController
         $this->view->set('pub', new Models\Publication($id, $v));
 
         // If publication not found, raise error
-        if (!$this->view->pub->exists()) {
+        if (!$this->view->get('pub')->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
         $this->view->set('config', $this->config);
-        $this->view->set('typeParams', $this->view->pub->masterType()->_params);
+        $this->view->set('typeParams', $this->view->get('pub')->masterType()->_params);
 
         // Get attachments
-        $this->view->pub->attachments();
+        $this->view->get('pub')->attachments();
 
         // Set curation
-        $this->view->pub->setCuration();
+        $this->view->get('pub')->setCuration();
 
         if (!$el) {
             $this->setError('No Element Id');
         } else {
             $this->view->set('elementId', $el);
-            $this->view->set('element', $this->view->pub->_curationModel->getElementManifest($el, 'content'));
+            $this->view->set('element', $this->view->get('pub')->_curationModel->getElementManifest($el, 'content'));
         }
 
         // Set any errors
@@ -334,19 +334,19 @@ class Items extends AdminController
         }
 
         // Version ID
-        $vid = Request::getInt('vid', $this->view->author->publication_version_id);
+        $vid = Request::getInt('vid', $this->view->get('author')->publication_version_id);
 
         $this->view->set('row', new Tables\Version($this->database));
         $this->view->set('pub', new Tables\Publication($this->database));
 
         // Load version
-        if (!$this->view->row->load($vid)) {
+        if (!$this->view->get('row')->load($vid)) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
         // Load publication
-        $pid = Request::getInt('pid', $this->view->row->publication_id);
-        if (!$this->view->pub->load($pid)) {
+        $pid = Request::getInt('pid', $this->view->get('row')->publication_id);
+        if (!$this->view->get('pub')->load($pid)) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
@@ -360,7 +360,7 @@ class Items extends AdminController
         $filters['status']  = 'active';
 
         // Get all active team members
-        $this->view->set('team', $objO->getOwners($this->view->pub->project_id, $filters));
+        $this->view->set('team', $objO->getOwners($this->view->get('pub')->project_id, $filters));
 
         // Set any errors
         if ($this->getError()) {

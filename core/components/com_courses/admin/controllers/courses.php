@@ -130,8 +130,8 @@ class Courses extends AdminController
 
         $this->view->set('row', $row);
 
-        if (!$this->view->row->exists()) {
-            $this->view->row->set('state', 3);
+        if (!$this->view->get('row')->exists()) {
+            $this->view->get('row')->set('state', 3);
         }
 
         // Set any errors

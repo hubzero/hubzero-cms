@@ -419,23 +419,23 @@ class Publications extends Plugin
         $view->set('pub', new \Components\Publications\Models\Publication());
 
         // Get all publications
-        $view->set('rows', $view->pub->entries('list', $filters));
+        $view->set('rows', $view->get('pub')->entries('list', $filters));
 
         // Get total count
-        $view->set('total', $view->pub->entries('count', $filters));
+        $view->set('total', $view->get('pub')->entries('count', $filters));
 
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
         \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
         // Need to calculate ALL publications
-        $allRows = $view->pub->entries('list', ['project' => $this->model->get('id'), 'dev' => 1]);
+        $allRows = $view->get('pub')->entries('list', ['project' => $this->model->get('id'), 'dev' => 1]);
 
         // Get used space
         $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($allRows, false));
         $view->set('params', $this->model->params);
         $view->set('new_pubs', $this->params->get('new_pubs'));
-        $view->set('quota', $view->params->get('pubQuota')
-                        ? $view->params->get('pubQuota')
+        $view->set('quota', $view->get('params')->get('pubQuota')
+                        ? $view->get('params')->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
                             floatval($this->model->config()->get('pubQuota', '1')),
                             'GB',
@@ -486,7 +486,7 @@ class Publications extends Plugin
 
         $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
-        if (!$view->publication->exists()) {
+        if (!$view->get('publication')->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
             $view = new \Hubzero\Plugin\View([
@@ -502,10 +502,10 @@ class Publications extends Plugin
         }
 
         // Set curation
-        $view->publication->setCuration();
+        $view->get('publication')->setCuration();
 
         // Set block
-        if (!$view->publication->_curationModel->setBlock($block, $blockId)) {
+        if (!$view->get('publication')->_curationModel->setBlock($block, $blockId)) {
             $view->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT'));
         }
 
@@ -571,7 +571,7 @@ class Publications extends Plugin
 
         $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
-        if (!$view->publication->exists()) {
+        if (!$view->get('publication')->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
             $view = new \Hubzero\Plugin\View([
@@ -589,10 +589,10 @@ class Publications extends Plugin
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
         // Set curation
-        $view->publication->setCuration();
+        $view->get('publication')->setCuration();
 
         // Set block
-        if (!$view->publication->_curationModel->setBlock($block, $blockId)) {
+        if (!$view->get('publication')->_curationModel->setBlock($block, $blockId)) {
             // Output error
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -2667,18 +2667,18 @@ class Publications extends Plugin
         // Load publication model
         $view->set('pub', new \Components\Publications\Models\Publication($pid, 'default'));
 
-        if (!$view->pub->exists() || !$view->pub->belongsToProject($this->model->get('id'))) {
+        if (!$view->get('pub')->exists() || !$view->get('pub')->belongsToProject($this->model->get('id'))) {
             throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
         }
 
         // Append breadcrumbs
         Pathway::append(
-            stripslashes($view->pub->title),
-            $view->pub->link('edit'),
+            stripslashes($view->get('pub')->title),
+            $view->get('pub')->link('edit'),
         );
 
         // Get versions
-        $view->set('versions', $view->pub->version->getVersions($pid, $filters = ['withdev' => 1]));
+        $view->set('versions', $view->get('pub')->version->getVersions($pid, $filters = ['withdev' => 1]));
 
         // Output HTML
         $view->set('option', $this->componentOption);
@@ -2860,8 +2860,8 @@ class Publications extends Plugin
         // Get used space
         $view->set('dirsize', \Components\Publications\Helpers\Html::getDiskUsage($view->rows));
         $view->set('params', $model->params);
-        $view->set('quota', $view->params->get('pubQuota')
-                        ? $view->params->get('pubQuota')
+        $view->set('quota', $view->get('params')->get('pubQuota')
+                        ? $view->get('params')->get('pubQuota')
                         : \Components\Projects\Helpers\Html::convertSize(
                             floatval($model->config()->get('pubQuota', '1')),
                             'GB',

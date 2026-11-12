@@ -87,17 +87,17 @@ class Posts extends SiteController
 
         $this->view->set('post', Post::getInstance($post_id));
 
-        if (!$this->view->post->exists()) {
+        if (!$this->view->get('post')->exists()) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_POST'));
         }
 
-        $this->view->set('collection', $this->model->collection($this->view->post->get('collection_id')));
+        $this->view->set('collection', $this->model->collection($this->view->get('post')->get('collection_id')));
 
-        if (!$this->view->collection->exists()) {
+        if (!$this->view->get('collection')->exists()) {
             App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION'));
         }
 
-        if (!$this->view->collection->canAccess(User::get('id'))) {
+        if (!$this->view->get('collection')->canAccess(User::get('id'))) {
             App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
 
@@ -187,16 +187,16 @@ class Posts extends SiteController
         $this->view->set('collection', $this->model->collection(Request::getString('board', 0)));
 
         // Load the post
-        $this->view->set('entry', $this->view->collection->post($id));
+        $this->view->set('entry', $this->view->get('collection')->post($id));
         if ($row instanceof Item) {
             // Show what was typed rather than what is stored
-            $this->view->entry->item($row);
+            $this->view->get('entry')->item($row);
             if (isset($posted['description']) && is_string($posted['description'])) {
-                $this->view->entry->set('description', $posted['description']);
+                $this->view->get('entry')->set('description', $posted['description']);
             }
         }
-        if (!$this->view->collection->exists() && $this->view->entry->exists()) {
-            $this->view->set('collection', $this->model->collection($this->view->entry->get('collection_id')));
+        if (!$this->view->get('collection')->exists() && $this->view->get('entry')->exists()) {
+            $this->view->set('collection', $this->model->collection($this->view->get('entry')->get('collection_id')));
         }
 
         // ?post=<id> resolves any row on the hub through Collection::post(), and
@@ -206,8 +206,8 @@ class Posts extends SiteController
         // all, so a private board's post could be read here by any logged-in user.
         // saveTask() already refuses the write, so this closes the read.
         if (
-            $this->view->entry->exists()
-            && !new Collection($this->view->entry->get('collection_id'))->isReadableBy()
+            $this->view->get('entry')->exists()
+            && !new Collection($this->view->get('entry')->get('collection_id'))->isReadableBy()
         ) {
             App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
         }
@@ -221,13 +221,13 @@ class Posts extends SiteController
         // saveTask() enforces canBePostedToBy() on whatever is submitted, so
         // this closes the listing, not the write.
         $this->view->set('collections', $this->postableBoards($this->view->collection));
-        if (!$this->view->collections->total()) {
-            $this->view->collection->setup(User::get('id'), 'member');
+        if (!$this->view->get('collections')->total()) {
+            $this->view->get('collection')->setup(User::get('id'), 'member');
             $this->view->set('collections', $this->postableBoards($this->view->collection));
 
             // A board named in the request only if the post did not already
             // resolve one -- re-resolving unconditionally would discard it.
-            if (!$this->view->collection->exists()) {
+            if (!$this->view->get('collection')->exists()) {
                 $this->view->set('collection', $this->model->collection(Request::getString('board', 0)));
             }
         }
@@ -248,7 +248,7 @@ class Posts extends SiteController
             // This refuses nothing the form offers: the delete link renders only
             // inside `if ($this->entry->get('original'))`, and both Item::check()
             // and Post::check() stamp created_by from the same user on create.
-            $item = $this->view->entry->item();
+            $item = $this->view->get('entry')->item();
 
             if ($item->get('created_by') != User::get('id')) {
                 App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));

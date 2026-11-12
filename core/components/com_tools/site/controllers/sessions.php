@@ -1161,9 +1161,9 @@ class Sessions extends SiteController
         $this->database->setQuery(
             "SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id),
         );
-        $this->view->middleware->set('allowed', $this->database->loadColumn());
+        $this->view->get('middleware')->set('allowed', $this->database->loadColumn());
 
-        $this->view->set('zone', $this->view->middleware->zone($row->zone_id));
+        $this->view->set('zone', $this->view->get('middleware')->zone($row->zone_id));
 
         if (strstr($row->appname, '_')) {
             $v = substr(strrchr($row->appname, '_'), 1);

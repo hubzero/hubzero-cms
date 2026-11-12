@@ -208,7 +208,7 @@ class Membership extends AdminController
 
         // Load the group page
         $this->view->set('group', new Group());
-        $this->view->group->read($gid);
+        $this->view->get('group')->read($gid);
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -330,7 +330,7 @@ class Membership extends AdminController
         $gid = Request::getString('gid', '');
 
         $this->view->set('group', new Group());
-        $this->view->group->read($gid);
+        $this->view->get('group')->read($gid);
 
         $ids = Request::getArray('id', []);
         $ids = array_values(array_filter(array_map('intval', (array) $ids)));
@@ -341,7 +341,7 @@ class Membership extends AdminController
 
         foreach ($ids as $uid) {
             $this->view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor(
-                $this->view->group->get('gidNumber'),
+                $this->view->get('group')->get('gidNumber'),
                 $uid,
             );
         }

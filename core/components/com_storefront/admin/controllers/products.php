@@ -179,13 +179,13 @@ class Products extends AdminController
         }
 
         // Get product option groups
-        $this->view->set('productOptionGroups', $this->view->row->getOptionGroups());
+        $this->view->set('productOptionGroups', $this->view->get('row')->getOptionGroups());
         $this->view->set('config', $this->config);
 
         // Check if meta is needed for this product
         $pType = null;
-        if ($this->view->row->getTypeInfo()) {
-            $pType = $this->view->row->getTypeInfo()->name;
+        if ($this->view->get('row')->getTypeInfo()) {
+            $pType = $this->view->get('row')->getTypeInfo()->name;
         }
         $this->view->set('metaNeeded', false);
         // Only software needs meta
@@ -198,7 +198,7 @@ class Products extends AdminController
         }
 
         // Get meta
-        $meta = $this->view->row->getMeta();
+        $meta = $this->view->get('row')->getMeta();
         $this->view->set('meta', $meta);
 
         // Set any errors

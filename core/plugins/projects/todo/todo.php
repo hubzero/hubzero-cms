@@ -359,13 +359,13 @@ class Todo extends Plugin
             $view->set('row', $this->todo->entry($todoid));
         }
 
-        if (!$view->row->exists() && $this->task != 'new') {
+        if (!$view->get('row')->exists() && $this->task != 'new') {
             return $this->page();
         }
 
         // Append breadcrumbs
         Pathway::append(
-            stripslashes(\Hubzero\Utility\Str::truncate($view->row->get('content', ''), 40)),
+            stripslashes(\Hubzero\Utility\Str::truncate($view->get('row')->get('content', ''), 40)),
             Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid),
         );
 

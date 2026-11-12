@@ -86,11 +86,11 @@ class Pages extends AdminController
             'offering',
             \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
         );
-        if ($this->view->offering->exists()) {
+        if ($this->view->get('offering')->exists()) {
             $this->view->filters['course']    = Request::getState(
                 $this->option . '.' . $this->controller . '.course',
                 'course',
-                $this->view->offering->get('course_id'),
+                $this->view->get('offering')->get('course_id'),
             );
         } else {
             $using = 'course';
@@ -103,10 +103,10 @@ class Pages extends AdminController
 
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
 
-        if ($this->view->offering->exists()) {
-            $list = $this->view->offering->pages(['active' => [0, 1]]);
+        if ($this->view->get('offering')->exists()) {
+            $list = $this->view->get('offering')->pages(['active' => [0, 1]]);
         } else {
-            $list = $this->view->course->pages(['active' => [0, 1]]);
+            $list = $this->view->get('course')->pages(['active' => [0, 1]]);
         }
 
         $this->view->set('total', count($list));
@@ -145,20 +145,20 @@ class Pages extends AdminController
 
         $this->view->set('row', $model);
 
-        if (!$this->view->row->get('course_id')) {
-            $this->view->row->set('course_id', Request::getInt('course', 0));
+        if (!$this->view->get('row')->get('course_id')) {
+            $this->view->get('row')->set('course_id', Request::getInt('course', 0));
         }
-        if (!$this->view->row->get('offering_id')) {
-            $this->view->row->set('offering_id', Request::getInt('offering', 0));
+        if (!$this->view->get('row')->get('offering_id')) {
+            $this->view->get('row')->set('offering_id', Request::getInt('offering', 0));
         }
-        if (!$this->view->row->exists()) {
-            $this->view->row->set('active', 1);
+        if (!$this->view->get('row')->exists()) {
+            $this->view->get('row')->set('active', 1);
         }
 
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id')),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('row')->get('offering_id')),
         );
 
         // Set any errors

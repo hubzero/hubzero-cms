@@ -71,10 +71,10 @@ class Collections extends SiteController
         $this->view->set('collection', new Collection());
 
         $this->view->filters['count'] = true;
-        $this->view->set('total', $this->view->collection->posts($this->view->filters));
+        $this->view->set('total', $this->view->get('collection')->posts($this->view->filters));
 
         $this->view->filters['count'] = false;
-        $this->view->set('rows', $this->view->collection->posts($this->view->filters));
+        $this->view->set('rows', $this->view->get('collection')->posts($this->view->filters));
 
         $model = Archive::getInstance();
 
@@ -157,7 +157,7 @@ class Collections extends SiteController
         $this->view->set('collection', new Collection());
 
         $this->view->filters['count'] = true;
-        $this->view->set('total', $this->view->collection->posts($this->view->filters));
+        $this->view->set('total', $this->view->get('collection')->posts($this->view->filters));
 
         $model = Archive::getInstance();
 

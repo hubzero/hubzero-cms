@@ -62,17 +62,17 @@ class Codes extends AdminController
         ]);
 
         $this->view->set('section', \Components\Courses\Models\Section::getInstance($this->view->filters['section']));
-        if (!$this->view->section->exists()) {
+        if (!$this->view->get('section')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
         }
         $this->view->set('offering', \Components\Courses\Models\Offering::getInstance(
-            $this->view->section->get('offering_id'),
+            $this->view->get('section')->get('offering_id'),
         ));
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
         // In case limit has been changed, adjust limitstart accordingly
@@ -82,11 +82,11 @@ class Codes extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->set('total', $this->view->section->codes($this->view->filters));
+        $this->view->set('total', $this->view->get('section')->codes($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->set('rows', $this->view->section->codes($this->view->filters));
+        $this->view->set('rows', $this->view->get('section')->codes($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -130,13 +130,13 @@ class Codes extends AdminController
 
         $this->view->set('row', $model);
 
-        if (!$this->view->row->get('offering_id')) {
-            $this->view->row->set('offering_id', Request::getInt('offering', 0));
+        if (!$this->view->get('row')->get('offering_id')) {
+            $this->view->get('row')->set('offering_id', Request::getInt('offering', 0));
         }
 
         $this->view->set(
             'section',
-            \Components\Courses\Models\Section::getInstance($this->view->row->get('section_id')),
+            \Components\Courses\Models\Section::getInstance($this->view->get('row')->get('section_id')),
         );
 
         // Set any errors

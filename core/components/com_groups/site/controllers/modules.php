@@ -109,7 +109,7 @@ class Modules extends Base
         $this->view->set('module', new Module($moduleid));
 
         // only this group's own modules open in its editor
-        if ($this->view->module->get('id') && !$this->view->module->belongsToGroup($this->group)) {
+        if ($this->view->get('module')->get('id') && !$this->view->get('module')->belongsToGroup($this->group)) {
             App::abort(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -130,7 +130,7 @@ class Modules extends Base
         $moduleArchive = Module\Archive::getInstance();
         $this->view->set('order', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'position'  => $this->view->module->get('position'),
+            'position'  => $this->view->get('module')->get('position'),
             'state'     => [0,1],
             'orderby'   => 'ordering',
         ]));

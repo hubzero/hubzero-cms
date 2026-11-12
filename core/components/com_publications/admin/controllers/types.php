@@ -109,7 +109,7 @@ class Types extends AdminController
         $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
-        if (!$id || !$this->view->row->load($id)) {
+        if (!$id || !$this->view->get('row')->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -119,7 +119,7 @@ class Types extends AdminController
 
         // Load curation
         $this->view->set('curation', new \Components\Publications\Models\Curation(
-            $this->view->row->curation,
+            $this->view->get('row')->curation,
         ));
 
         // Get blocks model
@@ -162,7 +162,7 @@ class Types extends AdminController
             $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
             // Load object
-            if (!$id || !$this->view->row->load($id)) {
+            if (!$id || !$this->view->get('row')->load($id)) {
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -172,7 +172,7 @@ class Types extends AdminController
 
             // Load curation
             $this->view->set('curation', new \Components\Publications\Models\Curation(
-                $this->view->row->curation,
+                $this->view->get('row')->curation,
             ));
 
             // Set any errors
@@ -200,7 +200,7 @@ class Types extends AdminController
             $row = $this->view->row;
 
             // Load object
-            if (!$id || !$this->view->row->load($id)) {
+            if (!$id || !$this->view->get('row')->load($id)) {
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -210,7 +210,7 @@ class Types extends AdminController
 
             // Load curation
             $this->view->set('curation', new \Components\Publications\Models\Curation(
-                $this->view->row->curation,
+                $this->view->get('row')->curation,
             ));
             $curation = $this->view->curation;
 
@@ -386,7 +386,7 @@ class Types extends AdminController
         $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
-        if (!$id || !$this->view->row->load($id)) {
+        if (!$id || !$this->view->get('row')->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -396,7 +396,7 @@ class Types extends AdminController
 
         // Load curation
         $this->view->set('curation', new \Components\Publications\Models\Curation(
-            $this->view->row->curation,
+            $this->view->get('row')->curation,
         ));
 
         // Set any errors
@@ -486,7 +486,7 @@ class Types extends AdminController
         $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
-        if (!$id || !$this->view->row->load($id)) {
+        if (!$id || !$this->view->get('row')->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -496,7 +496,7 @@ class Types extends AdminController
 
         // Load curation
         $this->view->set('curation', new \Components\Publications\Models\Curation(
-            $this->view->row->curation,
+            $this->view->get('row')->curation,
         ));
 
         // Set any errors
@@ -617,7 +617,7 @@ class Types extends AdminController
         $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
 
         // Load object
-        if (!$id || !$this->view->row->load($id)) {
+        if (!$id || !$this->view->get('row')->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
@@ -627,7 +627,7 @@ class Types extends AdminController
 
         // Load curation
         $this->view->set('curation', new \Components\Publications\Models\Curation(
-            $this->view->row->curation,
+            $this->view->get('row')->curation,
         ));
 
         // Get blocks model
@@ -738,7 +738,7 @@ class Types extends AdminController
         $this->view->set('row', $row);
 
         $this->view->set('curation', new \Components\Publications\Models\Curation(
-            $this->view->row->curation,
+            $this->view->get('row')->curation,
         ));
 
         // Get blocks model

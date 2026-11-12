@@ -299,10 +299,10 @@ class Points extends AdminController
         if ($uid = Request::getInt('uid', 0)) {
             $this->view->set('row', \Hubzero\Bank\Account::oneByUserId($uid));
 
-            if (!$this->view->row->get('balance')) {
-                $this->view->row->set('uid', $uid);
-                $this->view->row->set('balance', 0);
-                $this->view->row->set('earnings', 0);
+            if (!$this->view->get('row')->get('balance')) {
+                $this->view->get('row')->set('uid', $uid);
+                $this->view->get('row')->set('balance', 0);
+                $this->view->get('row')->set('earnings', 0);
             }
 
             $this->database->setQuery(

@@ -375,23 +375,23 @@ class Citations extends SiteController
 
 
         // make sure citation is published
-        if (!$this->view->citation->published) {
+        if (!$this->view->get('citation')->published) {
             App::abort(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
         }
 
         $this->view->set('associations', $this->view->citation
             ->resources()
             ->whereEquals('#__citations_assoc.tbl', 'resource'));
-        $this->view->set('sponsors', $this->view->citation->sponsors);
+        $this->view->set('sponsors', $this->view->get('citation')->sponsors);
 
         //open url stuff
         $this->view->set('openUrl', $this->openUrl());
 
         //make sure title isnt too long
         $this->view->set('maxTitleLength', 50);
-        $this->view->set('shortenedTitle', (strlen($this->view->citation->title) > $this->view->maxTitleLength)
-            ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;'
-            : $this->view->citation->title);
+        $this->view->set('shortenedTitle', (strlen($this->view->get('citation')->title) > $this->view->maxTitleLength)
+            ? substr($this->view->get('citation')->title, 0, $this->view->maxTitleLength) . '&hellip;'
+            : $this->view->get('citation')->title);
 
         // Set the page title
         Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
@@ -403,11 +403,11 @@ class Citations extends SiteController
         Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->option . '&task=browse');
         Pathway::append(
             $this->view->shortenedTitle,
-            'index.php?option=' . $this->option . '&task=view&id=' . $this->view->citation->id,
+            'index.php?option=' . $this->option . '&task=view&id=' . $this->view->get('citation')->id,
         );
 
-        $this->view->set('citationType', $this->view->citation->relatedType);
-        $typeAlias = $this->view->citationType->type;
+        $this->view->set('citationType', $this->view->get('citation')->relatedType);
+        $typeAlias = $this->view->get('citationType')->type;
 
         // Build paths to type specific overrides
         $componentTypeOverride = Component::path('com_citations')
@@ -627,20 +627,20 @@ class Citations extends SiteController
         //make sure title isnt too long
         $maxTitleLength = 30;
         $shortenedTitle = (strlen($this->view->row->title ?? '') > $maxTitleLength)
-                        ? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;'
-                        : $this->view->row->title;
+                        ? substr($this->view->get('row')->title, 0, $maxTitleLength) . '&hellip;'
+                        : $this->view->get('row')->title;
 
         // Set the pathway
         Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         if ($id && $id != 0) {
             Pathway::append(
                 $shortenedTitle,
-                'index.php?option=' . $this->option . '&task=view&id=' . $this->view->row->id,
+                'index.php?option=' . $this->option . '&task=view&id=' . $this->view->get('row')->id,
             );
         }
         Pathway::append(
             Lang::txt('JACTION_EDIT'),
-            'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->row->id,
+            'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->get('row')->id,
         );
 
         // Set the page title
@@ -657,8 +657,8 @@ class Citations extends SiteController
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
-        if ($this->view->row->isNew()) {
-            $this->view->row->uid = User::get('id');
+        if ($this->view->get('row')->isNew()) {
+            $this->view->get('row')->uid = User::get('id');
             // Temporarily set ID with negative timestamp to add authors temporarily
             $citation->set('id', -time());
 

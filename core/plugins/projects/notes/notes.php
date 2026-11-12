@@ -329,7 +329,7 @@ class Notes extends Plugin
         // Get page
         $view->set('page', $this->note->page($this->pagename));
         $view->set('content', null);
-        $exists = $view->page->get('id') ? true : false;
+        $exists = $view->get('page')->get('id') ? true : false;
 
         Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->pagename);
         Request::setVar('action', $this->task);

@@ -91,7 +91,7 @@ class Offerings extends AdminController
         ]);
 
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->filters['course']));
-        if (!$this->view->course->exists()) {
+        if (!$this->view->get('course')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
@@ -104,11 +104,11 @@ class Offerings extends AdminController
 
         $this->view->filters['count'] = true;
 
-        $this->view->set('total', $this->view->course->offerings($this->view->filters));
+        $this->view->set('total', $this->view->get('course')->offerings($this->view->filters));
 
         $this->view->filters['count'] = false;
 
-        $this->view->set('rows', $this->view->course->offerings($this->view->filters));
+        $this->view->set('rows', $this->view->get('course')->offerings($this->view->filters));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -142,8 +142,8 @@ class Offerings extends AdminController
 
         $this->view->set('row', $model);
 
-        if (!$this->view->row->get('course_id')) {
-            $this->view->row->set('course_id', Request::getInt('course', 0));
+        if (!$this->view->get('row')->get('course_id')) {
+            $this->view->get('row')->set('course_id', Request::getInt('course', 0));
         }
 
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id')));

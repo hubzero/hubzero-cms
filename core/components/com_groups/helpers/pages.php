@@ -91,12 +91,12 @@ class Pages
         $view->set('group', $group);
         $view->set('fields', Field::getAllGroupFields($group->get('gidNumber')));
         // get group desc
-        $view->set('publicDesc', $view->group->getDescription('parsed', 0, 'public'));
-        $view->set('privateDesc', $view->group->getDescription('parsed', 0, 'private'));
+        $view->set('publicDesc', $view->get('group')->getDescription('parsed', 0, 'public'));
+        $view->set('privateDesc', $view->get('group')->getDescription('parsed', 0, 'private'));
 
         // make sure we have a public desc
         if ($view->publicDesc == '') {
-            $view->publicDesc = $view->group->get('description');
+            $view->publicDesc = $view->get('group')->get('description');
         }
 
         // return template

@@ -125,8 +125,8 @@ class Pages extends AdminController
 
         // get the page & version objects
         $this->view->set('page', new Page($id));
-        $this->view->set('version', $this->view->page->version());
-        $this->view->set('firstversion', $this->view->page->version(1));
+        $this->view->set('version', $this->view->get('page')->version());
+        $this->view->set('firstversion', $this->view->get('page')->version(1));
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();

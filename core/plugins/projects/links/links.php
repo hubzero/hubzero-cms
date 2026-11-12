@@ -612,7 +612,7 @@ class Links extends Plugin
         $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // On error
-        if (!$view->publication->exists()) {
+        if (!$view->get('publication')->exists()) {
             // Output error
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -626,13 +626,13 @@ class Links extends Plugin
             return $view->loadTemplate();
         }
 
-        $view->publication->attachments();
+        $view->get('publication')->attachments();
 
         // Get curation model
-        $view->publication->setCuration();
+        $view->get('publication')->setCuration();
 
         // Make sure block exists, else use default
-        if (!$view->publication->_curationModel->setBlock($block, $step)) {
+        if (!$view->get('publication')->_curationModel->setBlock($block, $step)) {
             $block = 'content';
             $step  = 1;
         }
@@ -696,15 +696,15 @@ class Links extends Plugin
         $view->set('version', new \Components\Publications\Tables\Version($this->database));
 
         // Load publication version
-        $view->version->load($vid);
-        if (!$view->version->id) {
+        $view->get('version')->load($vid);
+        if (!$view->get('version')->id) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
         }
 
         // Get publication
         $view->set('publication', $objP->getPublication(
-            $view->version->publication_id,
-            $view->version->version_number,
+            $view->get('version')->publication_id,
+            $view->get('version')->version_number,
             $this->model->get('id'),
         ));
 

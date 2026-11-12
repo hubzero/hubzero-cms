@@ -87,21 +87,21 @@ class Assetgroups extends AdminController
         ]);
 
         $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']));
-        if (!$this->view->unit->exists()) {
+        if (!$this->view->get('unit')->exists()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
         }
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('unit')->get('offering_id')),
         );
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
-        $rows = $this->view->unit->assetgroups(null, $this->view->filters);
+        $rows = $this->view->get('unit')->assetgroups(null, $this->view->filters);
 
         // establish the hierarchy of the menu
         $children = [
@@ -197,18 +197,18 @@ class Assetgroups extends AdminController
 
         $this->view->set('row', $model);
 
-        if (!$this->view->row->get('unit_id')) {
-            $this->view->row->set('unit_id', Request::getInt('unit', 0));
+        if (!$this->view->get('row')->get('unit_id')) {
+            $this->view->get('row')->set('unit_id', Request::getInt('unit', 0));
         }
 
-        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id')));
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->get('row')->get('unit_id')));
 
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('unit')->get('offering_id')),
         );
 
-        $rows = $this->view->unit->assetgroups();
+        $rows = $this->view->get('unit')->assetgroups();
 
         // establish the hierarchy of the menu
         $children = [
@@ -510,19 +510,19 @@ class Assetgroups extends AdminController
         $assetGroup = new \Components\Courses\Models\Assetgroup($id);
         $this->view->set('row', $assetGroup);
 
-        if (!$this->view->row->get('unit_id')) {
-            $this->view->row->set('unit_id', Request::getInt('unit', 0));
+        if (!$this->view->get('row')->get('unit_id')) {
+            $this->view->get('row')->set('unit_id', Request::getInt('unit', 0));
         }
 
-        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id')));
+        $this->view->set('unit', \Components\Courses\Models\Unit::getInstance($this->view->get('row')->get('unit_id')));
         $this->view->set(
             'offering',
-            \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id')),
+            \Components\Courses\Models\Offering::getInstance($this->view->get('unit')->get('offering_id')),
         );
 
-        $scopeId = $this->view->row->get('id');
+        $scopeId = $this->view->get('row')->get('id');
         // $parentId = $this->view->row->parent;
-        $courseId = $this->view->offering->get('course_id');
+        $courseId = $this->view->get('offering')->get('course_id');
         $this->view->set('course', \Components\Courses\Models\Course::getInstance($courseId));
 
         // ------------- ASSETS -------------
@@ -546,7 +546,7 @@ class Assetgroups extends AdminController
         // NEED TO GET HIERARCHY OF ALL ASSET GROUPS ---------------
         // RECURSION FROM THE TOP OF THE CHAIN - all asset groups
 
-        $rows = $this->view->unit->assetgroups();
+        $rows = $this->view->get('unit')->assetgroups();
 
         // Establish the hierarchy of the menu
         $children = [

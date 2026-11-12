@@ -149,7 +149,7 @@ class Modules extends AdminController
         $moduleArchive = Module\Archive::getInstance();
         $this->view->set('order', $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'position'  => $this->view->module->get('position'),
+            'position'  => $this->view->get('module')->get('position'),
             'state'     => [0,1,2],
             'orderby'   => 'ordering',
         ]));

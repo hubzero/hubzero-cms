@@ -136,7 +136,7 @@ class Preferences extends AdminController
 
         foreach ($classes as $class) {
             $options[] = Html::select('option', $class->id, $class->alias, 'value', 'text');
-            if ($class->id == $this->view->row->class_id) {
+            if ($class->id == $this->view->get('row')->class_id) {
                 $selected = $class->id;
             }
         }

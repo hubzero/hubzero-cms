@@ -245,11 +245,11 @@ class Solr extends SiteController
         }
 
         $this->view->set('pagination', new \Hubzero\Pagination\Paginator($numFound, $start, $limit));
-        $this->view->pagination->setAdditionalUrlParam('terms', $terms);
-        $this->view->pagination->setAdditionalUrlParam('type', $type);
+        $this->view->get('pagination')->setAdditionalUrlParam('terms', $terms);
+        $this->view->get('pagination')->setAdditionalUrlParam('type', $type);
         foreach ($childTerms as $index => $child) {
-            $this->view->pagination->setAdditionalUrlParam('tags', $tagString);
-            $this->view->pagination->setAdditionalUrlParam('tags', $child['title']);
+            $this->view->get('pagination')->setAdditionalUrlParam('tags', $tagString);
+            $this->view->get('pagination')->setAdditionalUrlParam('tags', $child['title']);
         }
 
         if (count($results) > 0) {

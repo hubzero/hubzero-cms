@@ -710,10 +710,10 @@ class Filefsv1r0 extends ApiController
             $view->set('file', isset($collector[0]) ? $collector[0] : null);
 
             // Get last revision
-            if (!$view->file->get('converted') && !$hash) {
+            if (!$view->get('file')->get('converted') && !$hash) {
                 $params['file'] = $view->file;
                 $hash = $this->repo->getLastRevision($params);
-                $view->file->set('hash', $hash);
+                $view->get('file')->set('hash', $hash);
             }
             $view->set('option', $this->option);
             $view->set('model', $this->model);

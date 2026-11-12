@@ -230,12 +230,12 @@ class Events extends AdminController
 
         // Load the event object
         $this->view->set('row', new Event($this->database));
-        $this->view->row->load($id);
+        $this->view->get('row')->load($id);
 
         // Fail if checked out not by 'me'
         if (
-            $this->view->row->checked_out
-            && $this->view->row->checked_out <> User::get('id')
+            $this->view->get('row')->checked_out
+            && $this->view->get('row')->checked_out <> User::get('id')
         ) {
             $this->redirect = 'index.php?option=' . $this->option;
             $this->message = Lang::txt('COM_EVENTS_CAL_LANG_WARN_CHECKEDOUT');
@@ -243,32 +243,32 @@ class Events extends AdminController
 
         $this->css('calendar.css');
 
-        if ($this->view->row->id) {
-            $this->view->row->checkout(User::get('id'));
+        if ($this->view->get('row')->id) {
+            $this->view->get('row')->checkout(User::get('id'));
 
             if (!$this->view->row->publish_down || trim($this->view->row->publish_down) == '0000-00-00 00:00:00') {
-                $this->view->row->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
+                $this->view->get('row')->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
             }
 
-            $start_publish = Date::of($this->view->row->publish_up)->toLocal('Y-m-d');
-            $start_time = Date::of($this->view->row->publish_up)->toLocal('H:i');
+            $start_publish = Date::of($this->view->get('row')->publish_up)->toLocal('Y-m-d');
+            $start_time = Date::of($this->view->get('row')->publish_up)->toLocal('H:i');
 
             // make sure the never setting doesn't throw an error
-            if ($this->view->row->publish_down != 'Never') {
-                $stop_publish = Date::of($this->view->row->publish_down)->toLocal('Y-m-d');
-                $end_time = Date::of($this->view->row->publish_down)->toLocal('H:i');
+            if ($this->view->get('row')->publish_down != 'Never') {
+                $stop_publish = Date::of($this->view->get('row')->publish_down)->toLocal('Y-m-d');
+                $end_time = Date::of($this->view->get('row')->publish_down)->toLocal('H:i');
             } else {
                 $end_time = '00:00';
                 $stop_publish = '0000-00-00';
             }
         } else {
-            $this->view->row->state = 0;
-            $this->view->row->time_zone = Config::get('offset');
-            $this->view->row->content = '';
-            $this->view->row->title = '';
-            $this->view->row->adresse_info = '';
-            $this->view->row->contact_info = '';
-            $this->view->row->extra_info = '';
+            $this->view->get('row')->state = 0;
+            $this->view->get('row')->time_zone = Config::get('offset');
+            $this->view->get('row')->content = '';
+            $this->view->get('row')->title = '';
+            $this->view->get('row')->adresse_info = '';
+            $this->view->get('row')->contact_info = '';
+            $this->view->get('row')->extra_info = '';
             $start_publish = Date::format('Y-m-d');
             $stop_publish = Date::format('Y-m-d');
             $start_time = "08:00";
@@ -285,10 +285,10 @@ class Events extends AdminController
                 // explore the text and pull out all matches
                 array_push(
                     $this->view->fields[$i],
-                    $this->parseTag($this->view->row->content, $this->view->fields[$i][0]),
+                    $this->parseTag($this->view->get('row')->content, $this->view->fields[$i][0]),
                 );
                 // clean the original text of any matches
-                $this->view->row->content = str_replace(
+                $this->view->get('row')->content = str_replace(
                     '<ef:'
                         . $this->view->fields[$i][0]
                         . '>'
@@ -297,10 +297,10 @@ class Events extends AdminController
                         . $this->view->fields[$i][0]
                         . '>',
                     '',
-                    $this->view->row->content,
+                    $this->view->get('row')->content,
                 );
             }
-            $this->view->row->content = trim($this->view->row->content);
+            $this->view->get('row')->content = trim($this->view->get('row')->content);
         }
 
         list($start_hrs, $start_mins) = explode(':', $start_time);
@@ -352,9 +352,9 @@ class Events extends AdminController
         $this->view->times['end_pm'] = $end_pm;
 
         // only load tags if the event exists already
-        if ($this->view->row->id != null) {
+        if ($this->view->get('row')->id != null) {
             // Get tags on this event
-            $rt = new Tags($this->view->row->id);
+            $rt = new Tags($this->view->get('row')->id);
             $this->view->set('tags', $rt->render('string'));
         }
 

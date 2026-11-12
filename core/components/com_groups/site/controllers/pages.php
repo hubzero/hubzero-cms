@@ -150,18 +150,18 @@ class Pages extends Base
 
         // load page object
         $this->view->set('page', new Page($pageid));
-        $this->view->set('version', $this->view->page->version());
+        $this->view->set('version', $this->view->get('page')->version());
 
         //are we adding or editing
-        $new = ($this->view->page->get('id') === null && $pageid == null) ? true : false;
+        $new = ($this->view->get('page')->get('id') === null && $pageid == null) ? true : false;
 
         // make sure page exists
-        if (!$this->view->page->exists() && !$new) {
+        if (!$this->view->get('page')->exists() && !$new) {
             App::abort(404, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
         }
 
         // make sure page belongs to group - if editing
-        if (!$this->view->page->belongsToGroup($this->group) && !$new) {
+        if (!$this->view->get('page')->belongsToGroup($this->group) && !$new) {
             App::abort(403, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
         }
 
@@ -178,17 +178,17 @@ class Pages extends Base
         // publicly by default. ('default' privacy would otherwise inherit the
         // overview tab's access, which can be public even on a restricted
         // group.) The author can still change this in the form.
-        if ($new && !$this->view->page->get('privacy')) {
+        if ($new && !$this->view->get('page')->get('privacy')) {
             $isPrivateGroup = ($this->group->get('join_policy') != 0
                 || $this->group->get('discoverability') == 1);
 
             if ($isPrivateGroup) {
-                $this->view->page->set('privacy', 'members');
+                $this->view->get('page')->set('privacy', 'members');
             }
         }
 
         // checkout page
-        Helpers\Pages::checkout($this->view->page->get('id'));
+        Helpers\Pages::checkout($this->view->get('page')->get('id'));
 
         // get a list of all pages for page ordering
         $pageArchive = Page\Archive::getInstance();
@@ -501,12 +501,12 @@ class Pages extends Base
         $this->view->set('page', new Page($pageid));
 
         // make sure page exists
-        if (!$this->view->page->exists()) {
+        if (!$this->view->get('page')->exists()) {
             App::abort(404, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
         }
 
         // make sure page belongs to group - if editing
-        if (!$this->view->page->belongsToGroup($this->group)) {
+        if (!$this->view->get('page')->belongsToGroup($this->group)) {
             App::abort(403, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
         }
 

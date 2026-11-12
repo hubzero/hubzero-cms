@@ -425,10 +425,10 @@ class Team extends Plugin
         }
 
         // Set curation
-        $view->publication->setCuration();
+        $view->get('publication')->setCuration();
 
         // Make sure block exists, else use default
-        if (!$view->publication->_curationModel->setBlock($block, $step)) {
+        if (!$view->get('publication')->_curationModel->setBlock($block, $step)) {
             $block = 'authors';
         }
 
@@ -450,7 +450,7 @@ class Team extends Plugin
         $view->set('team', $objO->getOwners($this->model->get('id'), $view->filters));
 
         // Get current authors
-        $pa = $view->publication->table('Author');
+        $pa = $view->get('publication')->table('Author');
         $view->set('authors', $pa->getAuthors($vid));
 
         // Exclude any owners?

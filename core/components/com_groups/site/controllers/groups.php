@@ -253,16 +253,16 @@ class Groups extends Base
         }
 
         // Ensure the group is published
-        if (!$this->view->group->get('published')) {
+        if (!$this->view->get('group')->get('published')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Ensure the group has been published or has been approved
-        if (!$this->view->group->get('approved')) {
+        if (!$this->view->get('group')->get('approved')) {
             // Get list of members & managers & invitees
-            $managers = $this->view->group->get('managers');
-            $members  = $this->view->group->get('members');
-            $invitees = $this->view->group->get('invitees');
+            $managers = $this->view->get('group')->get('managers');
+            $members  = $this->view->get('group')->get('members');
+            $invitees = $this->view->get('group')->get('invitees');
             $members_invitees = array_merge($members, $invitees);
             $managers_members_invitees = array_merge($managers, $members, $invitees);
 
@@ -283,7 +283,7 @@ class Groups extends Base
         }
 
         // Get the group params
-        $this->view->set('gparams', new \Hubzero\Config\Registry($this->view->group->get('params')));
+        $this->view->set('gparams', new \Hubzero\Config\Registry($this->view->get('group')->get('params')));
 
         // Check authorization
         $this->view->set('authorized', Helpers\View::authorize($this->view->group));
@@ -291,21 +291,21 @@ class Groups extends Base
         // Get active tab
         $this->view->set('tab', Helpers\View::getTab($this->view->group));
         $this->view->set('trueTab', strtolower(Request::getString('active', 'overview')));
-        if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview') {
+        if ($this->view->get('group')->get('approved') != 1 && $this->view->trueTab != 'overview') {
             $this->unapprovedGroupTask();
 
             return;
         }
 
         // Record the user
-        if (!User::isGuest() && in_array(User::get('id'), $this->view->group->get('members'))) {
-            Recent::hit(User::get('id'), $this->view->group->get('gidNumber'));
+        if (!User::isGuest() && in_array(User::get('id'), $this->view->get('group')->get('members'))) {
+            Recent::hit(User::get('id'), $this->view->get('group')->get('gidNumber'));
         }
 
         // Get group pages if any
         $pageArchive = Page\Archive::getInstance();
         $pages = $pageArchive->pages('list', [
-            'gidNumber' => $this->view->group->get('gidNumber'),
+            'gidNumber' => $this->view->get('group')->get('gidNumber'),
             'state'     => [0,1],
             'orderby'   => 'lft ASC',
         ]);
@@ -367,7 +367,7 @@ class Groups extends Base
         }
 
         // Is this a super group?
-        if ($this->view->group->isSuperGroup()) {
+        if ($this->view->get('group')->isSuperGroup()) {
             // Use group template file if we have it
             Request::setVar('tmpl', 'group');
 
@@ -440,10 +440,10 @@ class Groups extends Base
             $this->view->set('group', new Group());
 
             // set some group vars for view
-            $this->view->group->set('cn', Request::getString('suggested_cn', ''));
-            $this->view->group->set('join_policy', $this->config->get('join_policy'));
-            $this->view->group->set('discoverability', $this->config->get('discoverability', 0));
-            $this->view->group->set('discussion_email_autosubscribe', null);
+            $this->view->get('group')->set('cn', Request::getString('suggested_cn', ''));
+            $this->view->get('group')->set('join_policy', $this->config->get('join_policy'));
+            $this->view->get('group')->set('discoverability', $this->config->get('discoverability', 0));
+            $this->view->get('group')->set('discussion_email_autosubscribe', null);
 
             $this->view->set('tags', '');
 
@@ -459,21 +459,21 @@ class Groups extends Base
             $this->view->set('group', Group::getInstance($this->cn));
 
             // Ensure we found the group info
-            if (!$this->view->group || !$this->view->group->get('gidNumber')) {
+            if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
                 $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
             }
 
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
             if (
-                $this->view->group->published == 2
+                $this->view->get('group')->published == 2
                 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.edit'))
             ) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
 
             // Get the group's interests (tags)
-            $gt = new Tags($this->view->group->get('gidNumber'));
+            $gt = new Tags($this->view->get('group')->get('gidNumber'));
             $this->view->set('tags', $gt->render('string'));
 
             // Set title
@@ -484,8 +484,8 @@ class Groups extends Base
         $this->view->set('lid', time() . rand(0, 1000));
         if ($this->lid != '') {
             $this->view->set('lid', $this->lid);
-        } elseif ($this->view->group->get('gidNumber')) {
-            $this->view->set('lid', $this->view->group->get('gidNumber'));
+        } elseif ($this->view->get('group')->get('gidNumber')) {
+            $this->view->set('lid', $this->view->get('group')->get('gidNumber'));
         }
 
         // Are we passing a group from save method
@@ -543,7 +543,7 @@ class Groups extends Base
         $customAnswers = [];
         foreach ($this->view->customFields as $field) {
             $fieldName = $field->get('name');
-            $customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->group->get('gidNumber'));
+            $customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->get('group')->get('gidNumber'));
         }
         $this->view->set('customAnswers', $customAnswers);
         // Display view
@@ -1026,7 +1026,7 @@ class Groups extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->group->get('gidNumber')) {
+        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -1036,12 +1036,12 @@ class Groups extends Base
         }
 
         // Get the group params
-        $gparams = new Registry($this->view->group->get('params'));
+        $gparams = new Registry($this->view->get('group')->get('params'));
 
         // If membership is managed in separate place disallow action
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-            App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+            App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->get('group')->get('cn')));
         }
 
         // Start log

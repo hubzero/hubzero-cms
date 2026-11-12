@@ -134,11 +134,11 @@ class Zones extends AdminController
 
         $this->view->set('row', $row);
 
-        if (!$this->view->row->exists()) {
-            $this->view->row->set('state', 'down');
+        if (!$this->view->get('row')->exists()) {
+            $this->view->get('row')->set('state', 'down');
         }
 
-        $this->view->row->params = new Registry($this->view->row->get('params'));
+        $this->view->get('row')->params = new Registry($this->view->get('row')->get('params'));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

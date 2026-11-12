@@ -77,7 +77,7 @@ class Students extends AdminController
         }*/
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
         $limit = $this->view->filters['limit'];
@@ -145,7 +145,7 @@ class Students extends AdminController
 
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
         // Set any errors
@@ -178,8 +178,8 @@ class Students extends AdminController
                 $id = (!empty($id)) ? $id[0] : 0;
             }
 
-            $course_id  = $this->view->offering->get('course_id');
-            $section_id = $this->view->offering->section()->get('id');
+            $course_id  = $this->view->get('offering')->get('course_id');
+            $section_id = $this->view->get('offering')->section()->get('id');
 
             // $course_id, $offering, $section_id
             $model = \Components\Courses\Models\Student::getInstance($id, null, null, null);
@@ -189,7 +189,7 @@ class Students extends AdminController
 
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
         // Set any errors
@@ -418,7 +418,7 @@ class Students extends AdminController
         $this->view->filters['offering_id'] = $this->view->filters['offering'];
         $this->view->set(
             'course',
-            \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id')),
+            \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
         if (!$this->view->filters['offering_id']) {

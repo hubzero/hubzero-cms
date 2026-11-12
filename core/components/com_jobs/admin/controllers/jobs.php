@@ -129,12 +129,12 @@ class Jobs extends AdminController
 
         // Is this a new job?
         if (!$id) {
-            $this->view->row->created      = Date::toSql();
-            $this->view->row->created_by   = User::get('id');
-            $this->view->row->modified_by  = 0;
-            $this->view->row->publish_up   = Date::toSql();
-            $this->view->row->employerid   = 1; // admin
-        } elseif (!$this->view->row->load($id)) {
+            $this->view->get('row')->created      = Date::toSql();
+            $this->view->get('row')->created_by   = User::get('id');
+            $this->view->get('row')->modified_by  = 0;
+            $this->view->get('row')->publish_up   = Date::toSql();
+            $this->view->get('row')->employerid   = 1; // admin
+        } elseif (!$this->view->get('row')->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
@@ -142,11 +142,11 @@ class Jobs extends AdminController
             );
         }
 
-        $this->view->set('job', $this->view->row->getOpening($id, User::get('id'), 1));
+        $this->view->set('job', $this->view->get('row')->getOpening($id, User::get('id'), 1));
 
         // Get employer information
-        if ($this->view->row->employerid != 1) {
-            if (!$this->view->employer->loadEmployer($this->view->row->employerid)) {
+        if ($this->view->get('row')->employerid != 1) {
+            if (!$this->view->get('employer')->loadEmployer($this->view->get('row')->employerid)) {
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                     Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
@@ -155,16 +155,16 @@ class Jobs extends AdminController
             }
         } else {
             // site admin
-            $this->view->employer->uid             = 1;
-            $this->view->employer->subscriptionid  = 1;
-            $this->view->employer->companyName     = Config::get('sitename');
-            $this->view->employer->companyLocation = '';
-            $this->view->employer->companyWebsite  = $live_site;
+            $this->view->get('employer')->uid             = 1;
+            $this->view->get('employer')->subscriptionid  = 1;
+            $this->view->get('employer')->companyName     = Config::get('sitename');
+            $this->view->get('employer')->companyLocation = '';
+            $this->view->get('employer')->companyWebsite  = $live_site;
         }
 
         // Get subscription info
 
-        $subId = $this->view->employer->subscriptionid;
+        $subId = $this->view->get('employer')->subscriptionid;
         $this->view->set('subscription', \Components\Services\Models\Subscription::oneOrNew($subId));
 
         // Get job types and categories

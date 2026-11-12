@@ -322,7 +322,7 @@ class Databases extends Plugin
         $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // On error
-        if (!$view->publication->exists()) {
+        if (!$view->get('publication')->exists()) {
             // Output error
             $view = new \Hubzero\Plugin\View([
                 'folder' => 'projects',
@@ -337,20 +337,20 @@ class Databases extends Plugin
         }
 
         // pid= resolves any publication on the hub; only this project's are selected for
-        if ((int) $view->publication->get('project_id') !== (int) $this->model->get('id')) {
+        if ((int) $view->get('publication')->get('project_id') !== (int) $this->model->get('id')) {
             throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
-        $view->publication->attachments();
+        $view->get('publication')->attachments();
 
         // Get curation model
-        $view->publication->setCuration();
+        $view->get('publication')->setCuration();
 
         // Make sure block exists, else use default
-        $view->publication->_curationModel->setBlock($block, $step);
+        $view->get('publication')->_curationModel->setBlock($block, $step);
 
         // Set pub assoc and load curation
-        $view->publication->_curationModel->setPubAssoc($view->publication);
+        $view->get('publication')->_curationModel->setPubAssoc($view->publication);
 
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases', 'selector');
         if (!$ajax) {

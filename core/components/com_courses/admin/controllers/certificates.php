@@ -35,13 +35,13 @@ class Certificates extends AdminController
 
         $this->view->set('certificate', Certificate::getInstance($this->view->cert_id, $this->view->course_id));
 
-        if (!$this->view->certificate->exists()) {
+        if (!$this->view->get('certificate')->exists()) {
             $this->addTask($this->view->certificate);
 
             return;
         }
 
-        if (!$this->view->certificate->hasFile()) {
+        if (!$this->view->get('certificate')->hasFile()) {
             $this->editTask($this->view->certificate);
 
             return;
@@ -166,12 +166,12 @@ class Certificates extends AdminController
 
         $this->view->set('row', $model);
 
-        if (!$this->view->row->get('course_id')) {
-            $this->view->row->set('course_id', Request::getInt('course', 0));
+        if (!$this->view->get('row')->get('course_id')) {
+            $this->view->get('row')->set('course_id', Request::getInt('course', 0));
         }
 
-        if (!$this->view->row->exists()) {
-            $this->view->row->store();
+        if (!$this->view->get('row')->exists()) {
+            $this->view->get('row')->store();
         }
 
         // Set any errors

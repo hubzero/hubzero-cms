@@ -114,9 +114,9 @@ class Roles extends AdminController
 
         $this->view->set('row', $row);
 
-        if (!$this->view->row->id) {
-            $this->view->row->created_by = User::get('id');
-            $this->view->row->created    = Date::toSql();
+        if (!$this->view->get('row')->id) {
+            $this->view->get('row')->created_by = User::get('id');
+            $this->view->get('row')->created    = Date::toSql();
         }
 
         $model = \Components\Courses\Models\Courses::getInstance();

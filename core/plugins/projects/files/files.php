@@ -584,7 +584,7 @@ class Files extends Plugin
         if ($pid !== 0) {
             $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
             // On error
-            if (!$view->publication->exists()) {
+            if (!$view->get('publication')->exists()) {
                 // Output error
                 $view = new \Hubzero\Plugin\View([
                     'folder'  => 'projects',
@@ -598,13 +598,13 @@ class Files extends Plugin
                 return $view->loadTemplate();
             }
 
-            $view->publication->attachments();
+            $view->get('publication')->attachments();
 
             // Get curation model
-            $view->publication->setCuration();
+            $view->get('publication')->setCuration();
             $elId = $element;
             // Get requirements
-            $element = $view->publication->curation('blocks', $step, 'elements', $element);
+            $element = $view->get('publication')->curation('blocks', $step, 'elements', $element);
             $params = $element->params;
             $max = $params->max;
             $min = $params->min;
@@ -615,10 +615,10 @@ class Files extends Plugin
             $reuse = isset($params->typeParams->reuse) ? $params->typeParams->reuse : 1;
 
             // Make sure block exists, else use default
-            $view->publication->_curationModel->setBlock($block, $step);
+            $view->get('publication')->_curationModel->setBlock($block, $step);
             $attModel = new \Components\Publications\Models\Attachments($this->database);
             // Get attached items
-            $attachments = $view->publication->attachments();
+            $attachments = $view->get('publication')->attachments();
             $attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
             $attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
             $route = $this->model->isProvisioned()
@@ -629,7 +629,7 @@ class Files extends Plugin
             // Set params
             $used = [];
             if (!$reuse && $view->publication->_attachments && $view->publication->_attachments['elements']) {
-                foreach ($view->publication->_attachments['elements'] as $o => $elms) {
+                foreach ($view->get('publication')->_attachments['elements'] as $o => $elms) {
                     if ($o != $elId) {
                         foreach ($elms as $elm) {
                             $used[] = $elm->path;
@@ -639,8 +639,8 @@ class Files extends Plugin
             }
             $hiddenFields = [
                 ['name' => 'p', 'value' => $props],
-                ['name' => 'vid', 'value' => $view->publication->get('version_id')],
-                ['name' => 'version', 'value' => $view->publication->get('version_number')],
+                ['name' => 'vid', 'value' => $view->get('publication')->get('version_id')],
+                ['name' => 'version', 'value' => $view->get('publication')->get('version_number')],
                 ['id' => 'maxitems', 'name' => 'maxitems', 'value' => $max],
                 ['id' => 'minitems', 'name' => 'minitems', 'value' => $min],
                 ['name' => 'section', 'value' => $block],
@@ -653,7 +653,7 @@ class Files extends Plugin
             ];
             if ($this->model->isProvisioned()) {
                 $extraFields = [
-                    ['name' => 'id', 'value' => $view->publication->get('id')],
+                    ['name' => 'id', 'value' => $view->get('publication')->get('id')],
                     ['name' => 'option', 'value' => 'com_publications'],
                     ['name' => 'ajax', 'value' => '0'],
                 ];
@@ -1497,25 +1497,25 @@ class Files extends Plugin
         // Get remote revision history
         $view->set('connected', false);
         if (!empty($this->remoteService)) {
-            if ($view->file->get('converted')) {
+            if ($view->get('file')->get('converted')) {
                 $this->connect->sortRemoteRevisions(
-                    $view->file->get('remoteId'),
-                    $view->file->get('converted'),
-                    $view->file->get('author'),
+                    $view->get('file')->get('remoteId'),
+                    $view->get('file')->get('converted'),
+                    $view->get('file')->get('author'),
                     $this->uid,
                     $this->remoteService,
-                    $view->file->get('localPath'),
+                    $view->get('file')->get('localPath'),
                     $versions,
                     $timestamps,
                 );
-            } elseif ($view->file->get('originalId')) {
+            } elseif ($view->get('file')->get('originalId')) {
                 $this->connect->sortRemoteRevisions(
-                    $view->file->get('originalId'),
+                    $view->get('file')->get('originalId'),
                     0,
                     '',
                     $this->uid,
                     $this->remoteService,
-                    $view->file->get('localPath'),
+                    $view->get('file')->get('localPath'),
                     $versions,
                     $timestamps,
                     1,
@@ -1821,10 +1821,10 @@ class Files extends Plugin
             $view->set('file', isset($collector[0]) ? $collector[0] : null);
 
             // Get last revision
-            if (!$view->file->get('converted') && !$hash) {
+            if (!$view->get('file')->get('converted') && !$hash) {
                 $params['file'] = $view->file;
                 $hash = $this->repo->getLastRevision($params);
-                $view->file->set('hash', $hash);
+                $view->get('file')->set('hash', $hash);
             }
             $view->set('option', $this->componentOption);
             $view->set('model', $this->model);

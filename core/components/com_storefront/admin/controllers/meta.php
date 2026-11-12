@@ -116,7 +116,7 @@ class Meta extends AdminController
         }
 
         // Load meta
-        $this->view->set('meta', $this->view->row->getMeta());
+        $this->view->set('meta', $this->view->get('row')->getMeta());
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -124,7 +124,7 @@ class Meta extends AdminController
         }
 
         // See what layout to load
-        if ($this->view->row->getTypeInfo()->name == 'Software Download') {
+        if ($this->view->get('row')->getTypeInfo()->name == 'Software Download') {
             // Software
             $layout = 'edit-software';
         } else {
