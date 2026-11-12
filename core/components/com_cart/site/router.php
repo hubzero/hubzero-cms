@@ -18,8 +18,8 @@ class Router extends Base
     /**
      * Turn querystring parameters into an SEF route
      *
-     * @param   array  &$query  Querystring
-     * @return  array
+     * @param   array<string, mixed>  &$query  Querystring
+     * @return  array<int, mixed>
      */
     public function build(&$query)
     {
@@ -40,8 +40,8 @@ class Router extends Base
     /**
      * Parse a SEF route
      *
-     * @param   array  $segments  Exploded route
-     * @return  array
+     * @param   array<int, string>  $segments  Exploded route
+     * @return  array<string, mixed>
      */
     public function parse(&$segments)
     {

@@ -18,8 +18,8 @@ class Router extends Base
     /**
      * Build the route for the component.
      *
-     * @param   array  &$query  An array of URL arguments
-     * @return  array
+     * @param   array<string, mixed>  &$query  An array of URL arguments
+     * @return  array<int, mixed>
      */
     public function build(&$query)
     {
@@ -36,8 +36,8 @@ class Router extends Base
     /**
      * Parse the segments of a URL.
      *
-     * @param   array  &$segments  The segments of the URL to parse.
-     * @return  array
+     * @param   array<int, string>  &$segments  The segments of the URL to parse.
+     * @return  array<string, mixed>
      */
     public function parse(&$segments)
     {

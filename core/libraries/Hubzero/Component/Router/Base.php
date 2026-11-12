@@ -16,8 +16,8 @@ abstract class Base implements RouterInterface
     /**
      * Generic method to preprocess a URL
      *
-     * @param   array  $query  An associative array of URL arguments
-     * @return  array  The URL arguments to use to assemble the subsequent URL.
+     * @param   array<string, mixed>  $query  An associative array of URL arguments
+     * @return  array<string, mixed>  The URL arguments to use to assemble the subsequent URL.
      */
     public function preprocess($query)
     {
