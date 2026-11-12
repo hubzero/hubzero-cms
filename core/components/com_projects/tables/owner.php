@@ -1287,7 +1287,7 @@ class Owner extends Table
      *
      * @param   array   $exclude
      * @param   string  $get
-     * @param   date    $when
+     * @param   string|null  $when  the day, as Y-m-d
      * @return  mixed
      */
     public function getTeamStats($exclude = [], $get = 'total', $when = null)

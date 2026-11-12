@@ -18,7 +18,7 @@ class Migration20190430000000ComProjects extends Base
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var  string
      **/
     public static $table = '#__projects';
 

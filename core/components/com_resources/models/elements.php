@@ -681,8 +681,8 @@ class Elements
      *                                 The default is 'params' if not supplied.
      * @param   string  $group         An optional group to render.
      *                                 The default group is used if not supplied.
-     * @return  array                  An array of the label, the form element
-     *                                 and the tooltip.
+     * @return  string|object          HTML of the options; an object describing
+     *                                 the element if its type is unknown.
      */
     public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
     {

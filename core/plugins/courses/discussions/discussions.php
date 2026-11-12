@@ -2362,7 +2362,7 @@ class Discussions extends Plugin
             $post->set('scope', $this->forum->get('scope'));
             $post->set('created_by', User::get('id'));
         } elseif ($post->get('created_by') != User::get('id') && !$this->params->get('access-edit-thread')) {
-            App::redirect(Route::url($this->base . '&unit=manage&b=' . $section . '&c=' . $category));
+            App::redirect(Route::url($this->base . '&unit=manage&b=' . $section . '&c=' . $category->get('alias')));
         }
 
         return $this

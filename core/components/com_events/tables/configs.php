@@ -149,15 +149,16 @@ class Configs
     /**
      * Get a configuration value
      *
-     * @param   string  $f  Property name
-     * @return  string|null
+     * @param   string  $f        Property name
+     * @param   mixed   $default  What to give when it has no value
+     * @return  mixed
      */
-    public function getCfg($f = '')
+    public function getCfg($f = '', $default = null)
     {
         if ($f) {
-            return $this->$f;
-        } else {
-            return null;
+            return $this->$f ?? $default;
         }
+
+        return $default;
     }
 }

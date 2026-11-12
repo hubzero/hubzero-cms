@@ -260,7 +260,7 @@ class Tool extends Model
      *
      * @param   string   $property
      * @param   string   $statusModel
-     * @return  object
+     * @return  mixed  the status, or the one property asked for
      */
     public function status($property = null, $statusModel = null)
     {

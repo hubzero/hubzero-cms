@@ -18,7 +18,7 @@ class Migration20190228114147ComTools extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  string
      **/
     public static $table = '#__recent_tools';
 
