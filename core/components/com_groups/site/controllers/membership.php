@@ -253,9 +253,11 @@ class Membership extends Base
                             . $this->database->quote($l . '%')
                             . " LIMIT 1;",
                     );
-                    $uid = $this->database->loadResult();
-                    if (!$this->database->query()) {
-                        $this->setNotification($this->database->getErrorMsg(), 'error');
+                    try {
+                        $uid = $this->database->loadResult();
+                    } catch (\Exception $e) {
+                        $uid = null;
+                        $this->setNotification($e->getMessage(), 'error');
                     }
 
                     // If we found an ID, add it to the invitees list

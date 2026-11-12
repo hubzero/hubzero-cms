@@ -730,8 +730,12 @@ class Post extends Relational
                     ->whereEquals('scope', $parent->get('scope'))
                     ->whereEquals('scope_id', $parent->get('scope_id'))
                     ->whereEquals('thread', $parent->get('thread'));
-                if (!$query->execute()) {
-                    $this->addError($query->getError());
+                try {
+                    if (!$query->execute()) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    $this->addError($e->getMessage());
                     return false;
                 }
 
@@ -748,8 +752,12 @@ class Post extends Relational
                     ->whereEquals('scope', $parent->get('scope'))
                     ->whereEquals('scope_id', $parent->get('scope_id'))
                     ->whereEquals('thread', $parent->get('thread'));
-                if (!$query->execute()) {
-                    $this->addError($query->getError());
+                try {
+                    if (!$query->execute()) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    $this->addError($e->getMessage());
                     return false;
                 }
 
@@ -785,8 +793,12 @@ class Post extends Relational
                     ])
                     ->whereEquals('parent', $this->get('id'))
                     ->where('state', '!=', self::STATE_DELETED);
-                if (!$query->execute()) {
-                    $this->addError($query->getError());
+                try {
+                    if (!$query->execute()) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    $this->addError($e->getMessage());
                     return false;
                 }
 
@@ -797,8 +809,12 @@ class Post extends Relational
                     ->set(['state' => $this->get('state')])
                     ->whereEquals('post_id', $this->get('id'))
                     ->where('state', '!=', self::STATE_DELETED);
-                if (!$query->execute()) {
-                    $this->addError($query->getError());
+                try {
+                    if (!$query->execute()) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    $this->addError($e->getMessage());
                     return false;
                 }
             }

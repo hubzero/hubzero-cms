@@ -167,11 +167,12 @@ class Databases extends Plugin
             $db_opt_ro['prefix'] = '';
             $db_ro = \Hubzero\Database\Driver::getInstance($db_opt_ro);
 
-            if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0) {
-                $this->configured = false;
-            } else {
-                $this->configured = true;
-            }
+            // Connections are made on first use; make them now so wrong
+            // credentials are found here, and caught below
+            $db_rw->connect();
+            $db_ro->connect();
+
+            $this->configured = true;
         } catch (\Exception $e) {
             $this->configured = false;
         }

@@ -80,8 +80,12 @@ class Host extends Relational
             ->whereEquals('host', $this->get('host'))
             ->whereEquals('uidNumber', $this->get('uidNumber'));
 
-        if (!$query->execute()) {
-            $this->addError($query->getError());
+        try {
+            if (!$query->execute()) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage());
             return false;
         }
 

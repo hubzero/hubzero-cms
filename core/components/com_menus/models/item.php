@@ -501,8 +501,12 @@ class Item extends Nested
                 ->set(['lft' => new Raw('lft + 2')])
                 ->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val']);
 
-            if (!$query->execute()) {
-                $this->addError($query->getError());
+            try {
+                if (!$query->execute()) {
+                    return false;
+                }
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage());
                 return false;
             }
 
@@ -517,8 +521,12 @@ class Item extends Nested
                     $reposition->right_where['val'],
                 );
 
-            if (!$query->execute()) {
-                $this->addError($query->getError());
+            try {
+                if (!$query->execute()) {
+                    return false;
+                }
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage());
                 return false;
             }
 

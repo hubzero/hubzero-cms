@@ -90,8 +90,12 @@ class Map extends Relational
             ->whereEquals('group_id', $this->get('group_id'))
             ->whereEquals('user_id', $this->get('user_id'));
 
-        if (!$query->execute()) {
-            $this->addError($query->getError());
+        try {
+            if (!$query->execute()) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage());
             return false;
         }
 

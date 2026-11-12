@@ -28,11 +28,18 @@ class DataviewList
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
         $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-        $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
+        // The connection is made on first use; make it now to learn whether it can be
+        $jdb = null;
+        try {
+            $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
+            $jdb->connect();
+        } catch (\Exception $e) {
+            $jdb = null;
+        }
 
         Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
-        if (!$jdb->getErrorMsg()) {
+        if ($jdb) {
             Toolbar::custom('new', 'new', 'new', 'New Dataview', false);
         }
 
@@ -143,7 +150,7 @@ class DataviewList
 
         <?php
 
-        if (get_class($jdb) === 'JException' || $jdb->getErrorMsg()) {
+        if (!$jdb) {
             print "<h3>Invalid Database connection information</h3>";
             return;
         } else {

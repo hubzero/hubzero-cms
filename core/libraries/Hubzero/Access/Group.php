@@ -221,8 +221,12 @@ class Group extends Relational
             ->delete($this->getTableName())
             ->whereIn('id', $ids);
 
-        if (!$query->execute()) {
-            $this->addError($query->getError());
+        try {
+            if (!$query->execute()) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage());
             return false;
         }
 
