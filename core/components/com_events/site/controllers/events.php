@@ -348,6 +348,8 @@ class Events extends SiteController
 
     /**
      * Default Task
+     *
+     * @return  void
      */
     public function displayTask()
     {

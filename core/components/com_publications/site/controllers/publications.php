@@ -1569,7 +1569,9 @@ class Publications extends SiteController
         $version   = Models\Orm\Version::oneOrFail($vid);
         $sourcePub = new Models\Publication(null, 'default', $version->get('id'));
         if (!$sourcePub->access('view')) {
-            return $this->blockAccess();
+            $this->blockAccess();
+
+            return;
         }
 
         // Get project model
@@ -2220,7 +2222,9 @@ class Publications extends SiteController
         // Make sure the actor is allowed to view the lft (source) version
         $lsource = new Models\Publication(null, 'default', $lversion->get('id'));
         if (!$lsource->access('view')) {
-            return $this->blockAccess();
+            $this->blockAccess();
+
+            return;
         }
 
         // Load the rgt version and make sure the user has access
@@ -2237,7 +2241,9 @@ class Publications extends SiteController
         $rpublica = new Models\Publication(null, 'default', $rversion->get('id'));
 
         if (!$rpublica->access('view')) {
-            return $this->blockAccess();
+            $this->blockAccess();
+
+            return;
         }
 
         $rpublica->setCuration();
@@ -2319,6 +2325,7 @@ class Publications extends SiteController
     /**
      * Block access to restricted publications
      *
+     * @return  void
      */
     protected function blockAccess()
     {

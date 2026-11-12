@@ -295,6 +295,8 @@ class Collections extends AdminController
      * Set the access level of an entry
      *
      * @param   integer  $access  Access level to set
+     *
+     * @return  void
      */
     public function accessTask($access = 0)
     {

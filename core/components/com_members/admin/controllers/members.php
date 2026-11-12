@@ -272,6 +272,8 @@ class Members extends AdminController
      * Edit a member's information
      *
      * @param   object  $user
+     *
+     * @return  void
      */
     public function editTask($user = null)
     {
@@ -1138,6 +1140,8 @@ class Members extends AdminController
     /**
      * Run through SQL statements of deidentifying a member by userId
      * Task is ran through the toolbar
+     *
+     * @return  void
      */
     public function deidentifyTask()
     {

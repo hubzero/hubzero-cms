@@ -443,6 +443,8 @@ class Articles extends AdminController
      * Displays a form for editing an entry
      *
      * @param   mixed  $article
+     *
+     * @return  void
      */
     public function editTask($article = null)
     {

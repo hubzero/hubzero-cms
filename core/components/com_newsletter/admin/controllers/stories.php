@@ -168,6 +168,8 @@ class Stories extends AdminController
 
     /**
      * Save auto Task
+     *
+     * @return  void
      */
     public function saveAutoTask()
     {

@@ -561,6 +561,8 @@ class Newsletters extends AdminController
 
     /**
      * Display send newsletter form
+     *
+     * @return  void
      */
     public function sendNewsletterTask()
     {
@@ -980,7 +982,9 @@ class Newsletters extends AdminController
         // Save mailing object
         if (!$mailing->save()) {
             Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_FAIL'));
-            return $this->sendNewsletterTask();
+            $this->sendNewsletterTask();
+
+            return;
         }
 
         // create recipients

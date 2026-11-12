@@ -152,6 +152,8 @@ class Polls extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $poll  Poll object
+     *
+     * @return  void
      */
     public function editTask($poll = null)
     {

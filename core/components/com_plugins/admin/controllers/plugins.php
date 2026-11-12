@@ -184,6 +184,8 @@ class Plugins extends AdminController
      * Method to edit an existing record.
      *
      * @param   object  $model
+     *
+     * @return  void
      */
     public function editTask($model = null)
     {

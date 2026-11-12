@@ -201,6 +201,8 @@ class Event extends Model
 
     /**
      * Export Event in iCal Format
+     *
+     * @return  void
      */
     public function export()
     {

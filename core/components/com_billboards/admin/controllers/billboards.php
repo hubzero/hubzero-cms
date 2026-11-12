@@ -61,6 +61,8 @@ class BillBoards extends AdminController
      * Edit a billboard
      *
      * @param   object  $billboard
+     *
+     * @return  void
      */
     public function editTask($billboard = null)
     {

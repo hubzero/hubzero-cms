@@ -413,6 +413,8 @@ class Groups extends Base
 
     /**
      *  Show group edit
+     *
+     * @return  void
      */
     public function editTask()
     {
@@ -1004,6 +1006,8 @@ class Groups extends Base
 
     /**
      * Show confirm delete view
+     *
+     * @return  void
      */
     public function deleteTask()
     {
