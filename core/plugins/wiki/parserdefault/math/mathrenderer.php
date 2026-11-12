@@ -82,7 +82,7 @@ class MathRenderer
     /**
      * MathML output
      *
-     * @var  string
+     * @var  string|null
      */
     public $mathml = '';
 
@@ -156,7 +156,7 @@ class MathRenderer
      * This will return either an image tag with link to image (complicated formulas)
      * or html (simple)
      *
-     * @return     string
+     * @return     string|null
      */
     public function render()
     {

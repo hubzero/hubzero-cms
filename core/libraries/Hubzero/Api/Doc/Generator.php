@@ -34,7 +34,7 @@ class Generator
     /**
      * Var to hold output
      *
-     * @var  array
+     * @var  array|string|false
      */
     private $output = [];
 

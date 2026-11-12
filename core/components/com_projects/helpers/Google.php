@@ -158,7 +158,7 @@ class Google extends Obj
      * @param   string   $parentId    Parent id
      * @param   array    &$metadata   Collector array
      * @param   boolean  $convert     Convert for remote editing?
-     * @return  string   (id) or false
+     * @return  string|false   (id) or false
      */
     public static function insertFile(
         $apiService,
@@ -724,7 +724,7 @@ class Google extends Obj
      *
      * @param   array   $resource  Remote resource
      * @param   string  $ext       Export ext
-     * @return  string
+     * @return  string|false
      */
     public static function getDownloadUrl($resource = [], $ext = 'pdf')
     {

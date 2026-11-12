@@ -47,7 +47,7 @@ class Storefront extends Plugin
      * Email SKUs and Products publish down notifications
      *
      * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
-     * @return  bool
+     * @return  bool|null
      */
     public function emailPublishDownNotifications(\Components\Cron\Models\Job $job)
     {
@@ -222,7 +222,7 @@ class Storefront extends Plugin
      *
      * @param  boolean  $skusInfo     [description]
      * @param  boolean  $productsInfo [description]
-     * @return boolean
+     * @return boolean|null
      **/
     private function sendNotifications($skusInfo, $productsInfo)
     {
@@ -277,7 +277,7 @@ class Storefront extends Plugin
      *
      * @param   array   $notificationsIndex
      * @param   string  $scope
-     * @return  bool
+     * @return  bool|null
      */
     private function recordNotifications($notificationsIndex, $scope)
     {

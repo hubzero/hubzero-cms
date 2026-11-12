@@ -277,7 +277,7 @@ class Elements
      *
      * @param   string  $setup  A path to the XML setup file.
      * @param   string  $group
-     * @return  object
+     * @return  object|bool
      */
     public function loadSetup($setup, $group = '_default')
     {
@@ -518,7 +518,7 @@ class Elements
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public function render($name = 'nbtag', $group = '_default')
     {
@@ -583,7 +583,7 @@ class Elements
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array
+     * @return  array|false
      */
     public function renderToArray($name = 'nbtag', $group = '_default')
     {
@@ -604,7 +604,7 @@ class Elements
      * Return the schema
      *
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  object
+     * @return  object|false
      */
     public function getSchema($group = '_default')
     {
@@ -620,7 +620,7 @@ class Elements
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array   An array of all parameters, each as array of the label, the form element and the tooltip.
+     * @return  array|false   An array of all parameters, each as array of the label, the form element and the tooltip.
      */
     public function getElements($name = 'nbtag', $group = '_default')
     {
@@ -717,7 +717,7 @@ class Elements
      * @param   string $type   The element type.
      * @param   boolean $new  False (default) to reuse parameter elements; true to load the parameter element type
      *                        again.
-     * @return  object
+     * @return  object|false
      */
     public function loadElement($type, $new = false)
     {

@@ -70,7 +70,7 @@ class RefreshToken implements GrantTypeInterface
   *
   * @param   \OAuth2\RequestInterface $request   Request object
   * @param   \OAuth2\ResponseInterface $response  Response object
-  * @return  bool    Result of auth
+  * @return  bool|null    Result of auth
   */
     public function validateRequest(RequestInterface $request, ResponseInterface $response)
     {

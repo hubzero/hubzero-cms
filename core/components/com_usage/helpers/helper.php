@@ -72,7 +72,7 @@ class Helper
      * @param   mixed    $t
      * @param   mixed    $enddate
      * @param   integer  $raw
-     * @return  string
+     * @return  string|false
      */
     public static function toplist($db, $top, $t = 0, $enddate = 0, $raw = 0)
     {

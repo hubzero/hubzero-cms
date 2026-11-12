@@ -90,7 +90,7 @@ class Blocks extends Obj
      * @param   string   $name
      * @param   integer  $blockId
      * @param   boolean  $new
-     * @return  object
+     * @return  object|false
      */
     public function loadBlock($name, $blockId = 0, $new = false)
     {
@@ -131,7 +131,7 @@ class Blocks extends Obj
      *
      * @param   string   $name  Name of block to render
      * @param   boolean  $new
-     * @return  object
+     * @return  object|false
      */
     public function getManifest($name, $new = false)
     {
@@ -150,7 +150,7 @@ class Blocks extends Obj
      * Get default element manifest for block
      *
      * @param   string  $name  Name of block to render
-     * @return  object
+     * @return  object|false
      */
     public function getElementManifest($name)
     {
@@ -222,7 +222,7 @@ class Blocks extends Obj
      * @param   string   $manifest
      * @param   object   $pub
      * @param   integer  $blockId
-     * @return  string   HTML
+     * @return  string|false   HTML
      */
     public function renderBlock($name, $viewname = 'edit', $manifest = null, $pub = null, $blockId = 0)
     {

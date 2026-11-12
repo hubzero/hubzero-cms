@@ -312,7 +312,7 @@ class Course extends Table
      * @param   string   $type   Status in course
      * @param   integer  $limit  Number of records
      * @param   integer  $start  Where to start in record paging
-     * @return  array
+     * @return  array|false
      */
     public function getUserCourses($uid, $type = 'all', $limit = null, $start = 0)
     {

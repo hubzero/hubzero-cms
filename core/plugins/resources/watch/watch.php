@@ -54,7 +54,7 @@ class Watch extends Plugin
      * @param   object   $resource  Current resource
      * @param   string   $option    Name of the component
      * @param   integer  $miniview  View style
-     * @return  array
+     * @return  array|null
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {

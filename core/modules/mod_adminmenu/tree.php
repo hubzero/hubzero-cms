@@ -220,7 +220,7 @@ class Tree extends \Hubzero\Base\Obj
      * a custom image path is passed as the identifier
      *
      * @param   string  $identifier  Icon identification string
-     * @return  string  CSS class name
+     * @return  string|null  CSS class name
      */
     public function getIconClass($identifier)
     {

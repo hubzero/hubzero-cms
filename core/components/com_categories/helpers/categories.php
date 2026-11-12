@@ -106,7 +106,7 @@ class Categories
      *
      * @param   string  $extension  Name of the categories extension
      * @param   array   $options    An array of options
-     * @return  object  Categories object
+     * @return  object|false  Categories object
      */
     public static function getInstance($extension, $options = [])
     {

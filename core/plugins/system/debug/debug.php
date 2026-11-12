@@ -592,7 +592,7 @@ class Debug extends Plugin
     /**
      * Display logged queries.
      *
-     * @return  string
+     * @return  string|null
      */
     protected function displayQueries()
     {

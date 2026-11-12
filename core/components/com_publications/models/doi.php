@@ -198,7 +198,7 @@ class Doi extends Obj
      * Build service call path
      *
      * @param   string  $doi
-     * @return  string
+     * @return  string|false
      */
     public function getServicePath($doi = null)
     {
@@ -1043,7 +1043,7 @@ class Doi extends Obj
      *
      * @param  string  $doi
      *
-     * @return string $doi
+     * @return string|false $doi
      */
     public function registerMetadata($doi = null)
     {
@@ -1172,7 +1172,7 @@ class Doi extends Obj
      * Start input
      *
      * @param   string  $status  DOI status [draft/reserved, findable/public, registered/unavailable]
-     * @return  string  response string
+     * @return  string|false  response string
      */
     public function startInput($status = 'public')
     {
@@ -1469,7 +1469,7 @@ class Doi extends Obj
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
      *
-     * @return  string|false|null
+     * @return  string|null|bool
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {

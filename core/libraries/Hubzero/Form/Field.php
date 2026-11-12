@@ -81,14 +81,14 @@ abstract class Field
     /**
      * The input for the form field.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $input;
 
     /**
      * The label for the form field.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $label;
 

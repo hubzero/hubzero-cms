@@ -182,7 +182,7 @@ class Editor extends Obj
      * @param   string   $asset    The object asset
      * @param   object   $author   The author.
      * @param   array    $params   Associative array of editor parameters.
-     * @return  string
+     * @return  string|null
      */
     public function display(
         $name,
@@ -242,7 +242,7 @@ class Editor extends Obj
      * Save the editor content
      *
      * @param   string  $editor  The name of the editor control
-     * @return  string
+     * @return  string|null
      */
     public function save($editor)
     {

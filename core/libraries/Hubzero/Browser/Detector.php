@@ -20,7 +20,7 @@ namespace Hubzero\Browser;
 class Detector
 {
     /**
-     * @var integer  Major version number
+     * @var integer|string  Major version number
      */
     protected $majorVersion = 0;
 
@@ -60,7 +60,7 @@ class Detector
     protected $platform = '';
 
     /**
-     * @var string  Platform version the browser is running on
+     * @var string|float|int  Platform version the browser is running on
      */
     protected $platformVersion = '';
 

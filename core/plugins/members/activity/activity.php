@@ -454,7 +454,7 @@ class Activity extends Plugin
     /**
      * Show settings form
      *
-     * @return string
+     * @return string|null
      */
     protected function settingsAction()
     {

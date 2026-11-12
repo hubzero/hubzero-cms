@@ -61,7 +61,7 @@ class WikiMacro
     /**
      * Container for errors
      *
-     * @var  array
+     * @var  array|null
      */
     protected $arguments = null;
 

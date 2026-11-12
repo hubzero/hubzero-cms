@@ -73,7 +73,7 @@ class Option
     /**
      * Get ID
      *
-     * @return  int     option ID
+     * @return  int|false     option ID
      */
     public function getId()
     {
@@ -98,7 +98,7 @@ class Option
     /**
      * Get Option Group ID
      *
-     * @return  int     option group ID
+     * @return  int|false     option group ID
      */
     public function getOptionGroupId()
     {
@@ -123,7 +123,7 @@ class Option
     /**
      * Get name
      *
-     * @return  string      collection name
+     * @return  string|false      collection name
      */
     public function getName()
     {

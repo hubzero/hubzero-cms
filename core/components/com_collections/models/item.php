@@ -631,7 +631,7 @@ class Item extends Base
      * Get the item type
      *
      * @param   string  $type  Return type as?
-     * @return  string
+     * @return  string|bool
      */
     public function is($type)
     {

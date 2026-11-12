@@ -28,7 +28,7 @@ class Geo extends Base
     /**
      * Flag for if JS has been pushed to document or not
      *
-     * @var  string
+     * @var  string|bool
      */
     protected $script = false;
 

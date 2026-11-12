@@ -235,7 +235,7 @@ class Override extends Obj
      * Method to delete one or more overrides
      *
      * @param   array    $cids  Array of keys to delete
-     * @return  integer  Number of successfully deleted overrides, boolean false if an error occured
+     * @return  integer|false  Number of successfully deleted overrides, boolean false if an error occured
      */
     public function delete($cids)
     {

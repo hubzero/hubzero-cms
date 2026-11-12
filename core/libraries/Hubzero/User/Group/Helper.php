@@ -238,7 +238,7 @@ class Helper
      *
      * @param   object  $group
      * @param   string  $role
-     * @return  array|null
+     * @return  array|null|false
      */
     public static function searchRoles($group, $role = '')
     {

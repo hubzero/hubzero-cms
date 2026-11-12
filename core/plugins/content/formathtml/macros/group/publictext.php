@@ -53,7 +53,7 @@ class Publictext extends GroupMacro
     /**
      * Generate macro output
      *
-     * @return  string
+     * @return  string|null
      */
     public function render()
     {

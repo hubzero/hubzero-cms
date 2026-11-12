@@ -48,7 +48,7 @@ class Hidden extends Element
      * @param   object  &$xmlElement   Element object
      * @param   string  $control_name  Control name
      * @param   string  $name          Element name
-     * @return  string
+     * @return  string|false
      */
     public function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
     {

@@ -45,7 +45,7 @@ class Economy extends Obj
      * Get a list of payees for a wish
      *
      * @param   integer  $wishid  Wish ID
-     * @return  array
+     * @return  array|null
      */
     public function getPayees($wishid)
     {
@@ -63,7 +63,7 @@ class Economy extends Obj
      *
      * @param   integer  $wishid  Wish ID
      * @param   integer  $uid     User ID
-     * @return  integer
+     * @return  integer|null
      */
     public function getTotalPayment($wishid, $uid)
     {

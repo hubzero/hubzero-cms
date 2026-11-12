@@ -118,7 +118,7 @@ class Set extends Obj implements Iterator
     /**
      * Current plugin
      *
-     * @var string
+     * @var string|null
      */
     private $current_plugin;
 
@@ -813,7 +813,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array Return description (if any) ...
+     * @return     array|bool Return description (if any) ...
      */
 
     #[\ReturnTypeWillChange]

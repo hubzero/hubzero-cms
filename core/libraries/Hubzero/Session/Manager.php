@@ -292,7 +292,7 @@ class Manager extends Obj
     /**
      * Get session name
      *
-     * @return  string  The session name
+     * @return  string|null  The session name
      */
     public function getName()
     {
@@ -306,7 +306,7 @@ class Manager extends Obj
     /**
      * Get session id
      *
-     * @return  string  The session name
+     * @return  string|null  The session name
      */
     public function getId()
     {
@@ -432,7 +432,7 @@ class Manager extends Obj
      *
      * @param   string   $name       Name of variable
      * @param   string   $namespace  Namespace to use, default to 'default'
-     * @return  boolean  True if the variable exists
+     * @return  boolean|null  True if the variable exists
      */
     public function has($name, $namespace = 'default')
     {

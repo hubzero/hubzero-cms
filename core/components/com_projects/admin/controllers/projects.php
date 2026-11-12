@@ -1414,7 +1414,7 @@ class Projects extends AdminController
      * Get the grant agency identifier on CrossRef
      * @param   string   $grantAgency
      *
-     * @return  string   grant agency identifier
+     * @return  string|false   grant agency identifier
      */
     public function getGrantAgencyId($grantAgency)
     {

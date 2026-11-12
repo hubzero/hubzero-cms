@@ -872,7 +872,7 @@ class Translator extends Obj
     /**
      * Determine who called the translator.
      *
-     * @return  array  Caller information.
+     * @return  array|null  Caller information.
      */
     protected function getCallerInfo()
     {
@@ -921,7 +921,7 @@ class Translator extends Obj
      * Get a list of language files that have been loaded.
      *
      * @param   string  $extension  An optional extension name.
-     * @return  array
+     * @return  array|null
      */
     public function getPaths($extension = null)
     {
@@ -1289,7 +1289,7 @@ class Translator extends Obj
      * Parse XML file for language information.
      *
      * @param   string  $path  Path to the XML files.
-     * @return  array   Array holding the found metadata as a key => value pair.
+     * @return  array|null   Array holding the found metadata as a key => value pair.
      */
     public static function parseXMLLanguageFile($path)
     {
@@ -1321,7 +1321,7 @@ class Translator extends Obj
     /**
      * Tries to detect the language.
      *
-     * @return  string  locale or null if not found
+     * @return  string|null  locale or null if not found
      */
     public function detect()
     {

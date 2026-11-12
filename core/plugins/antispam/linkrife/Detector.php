@@ -142,7 +142,7 @@ class Detector implements DetectorInterface
     /**
      * Get the link validation setting
      *
-     * @return  integer
+     * @return  integer|bool
      */
     public function getLinkValidation()
     {

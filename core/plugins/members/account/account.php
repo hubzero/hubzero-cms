@@ -662,7 +662,7 @@ class Account extends Plugin
     /**
      * Get information about the password expiration
      *
-     * @return  array  password expiration information
+     * @return  array|false  password expiration information
      */
     private function getPassInfo()
     {
@@ -904,7 +904,7 @@ class Account extends Plugin
      * Read SSH key
      *
      * @param   string  &$error  Language key describing why the key couldn't be read
-     * @return  string  .ssh/authorized_keys file content
+     * @return  string|false  .ssh/authorized_keys file content
      */
     private function readKey(&$error = null)
     {

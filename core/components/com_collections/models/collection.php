@@ -70,7 +70,7 @@ class Collection extends Base
     /**
      * Following
      *
-     * @var object|null
+     * @var object|null|bool
      */
     private $followingFlag = null;
 

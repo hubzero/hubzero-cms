@@ -518,7 +518,7 @@ class Publication extends Obj
      *
      * @param   string  $key  Field to return
      * @param   string  $as   What data to return
-     * @return  string
+     * @return  string|null
      */
     protected function date($key, $as = '')
     {
@@ -1738,7 +1738,7 @@ class Publication extends Obj
      * @param   int     $tagger_id
      * @param   int     $strength
      * @param   int     $admin
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public function getTagsForEditing($tagger_id = 0, $strength = 0, $admin = 0)
     {
@@ -1755,7 +1755,7 @@ class Publication extends Obj
      * Get tag cloud
      *
      * @param   boolean|int $admin
-     * @return  string   HTML
+     * @return  string|false   HTML
      */
     public function getTagCloud($admin = 0)
     {
@@ -2336,7 +2336,7 @@ class Publication extends Obj
     /**
      * Get series that the publication belongs to
      *
-     * @return  string  HTML or false
+     * @return  string|false  HTML or false
      */
     public function getSeries()
     {
@@ -2355,7 +2355,7 @@ class Publication extends Obj
     /**
      * Get tags that belongs to the publication
      *
-     * @return  array or false
+     * @return  array|false or false
      */
     public function getTagsOfPublication()
     {

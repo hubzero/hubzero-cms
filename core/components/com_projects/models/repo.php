@@ -317,7 +317,7 @@ class Repo extends Obj
     /**
      * Build file metadata object
      *
-     * @return  object
+     * @return  object|false
      */
     public function getMetadata($item = null, $type = 'file', $params = [])
     {

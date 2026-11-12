@@ -217,7 +217,7 @@ class Captcha extends Plugin
      * Displays either an image or text-based CAPTCHA
      *
      * @param  string  $ext
-     * @return string
+     * @return string|null
      */
     public function onGetCaptcha($ext = 'com')
     {
@@ -398,7 +398,7 @@ class Captcha extends Plugin
     /**
      * Displays either a CAPTCHA image or form field
      *
-     * @return  string
+     * @return  string|bool
      */
     private function generateImageCaptcha()
     {

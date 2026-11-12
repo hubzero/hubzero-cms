@@ -1907,7 +1907,7 @@ class Members extends AdminController
      * Perform querying of research organization id on ror.org
      * @param   string   $organization
      *
-     * @return  string   organization id
+     * @return  string|false   organization id
      */
     public function getOrganizationId($organization)
     {

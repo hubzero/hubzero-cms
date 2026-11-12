@@ -90,7 +90,7 @@ class Domains extends Plugin
      * @param   mixed    $t
      * @param   mixed    $enddate
      * @param   integer  $raw
-     * @return  string
+     * @return  string|false
      */
     private function toplist(&$db, $top, $t = 0, $enddate = 0, $raw = 0)
     {

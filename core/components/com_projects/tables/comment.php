@@ -80,7 +80,7 @@ class Comment extends Table
      * @param   integer  $activityid
      * @param   string|int $lastvisit
      * @param   integer  $parent_activity
-     * @return  object
+     * @return  object|false
      */
     public function getComments($itemid = null, $tbl = 'blog', $activityid = 0, $lastvisit = 0, $parent_activity = 0)
     {
@@ -143,7 +143,7 @@ class Comment extends Table
      *
      * @param   integer  $itemid
      * @param   string   $tbl
-     * @return  array
+     * @return  array|false
      */
     public function collectActivities($itemid = null, $tbl = 'blog')
     {

@@ -654,7 +654,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     string $property Parameter description (if any) ...
-     * @return   string Return description (if any) ...
+     * @return   string|null Return description (if any) ...
      */
     public function __get($property = null)
     {
@@ -897,7 +897,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     string $revision Parameter description (if any) ...
-     * @return   string Return description (if any) ...
+     * @return   string|bool Return description (if any) ...
      */
     public function getRevision($revision = 'dev')
     {
@@ -1488,7 +1488,7 @@ class Tool
      * @param   string   $newversion
      * @param   string   &$err
      * @param   integer  $id
-     * @return  string
+     * @return  string|bool
      */
     public static function validateVersion($newversion, &$err, $id)
     {

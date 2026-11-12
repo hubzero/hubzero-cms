@@ -85,7 +85,7 @@ class Compiler extends Obj
      * @param   string   $outputDir
      * @param   integer  $getPath
      * @param   string   &$tempBase
-     * @return  string   compressed data
+     * @return  string|false   compressed data
      */
     public function compileTex(
         $fullpath = '',

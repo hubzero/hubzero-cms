@@ -34,7 +34,7 @@ class Format
     /**
      * Description for '_template_keys'
      *
-     * @var  array
+     * @var  array|string
      */
     protected $templateKeys = [
         "type" => "{TYPE}",

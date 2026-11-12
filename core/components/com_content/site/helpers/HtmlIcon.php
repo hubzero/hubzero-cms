@@ -88,7 +88,7 @@ class HtmlIcon
      * @param   object  $article  The article in question.
      * @param   object  $params   The article parameters
      * @param   array   $attribs  Not used??
-     * @return  string  The HTML for the article edit icon.
+     * @return  string|null  The HTML for the article edit icon.
      */
     public static function edit($article, $params, $attribs = [])
     {

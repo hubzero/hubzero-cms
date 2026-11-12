@@ -116,7 +116,7 @@ class Content extends Base
     /**
      * Save block content
      *
-     * @return  string  HTML
+     * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
@@ -310,7 +310,7 @@ class Content extends Base
     /**
      * Save element
      *
-     * @return  object
+     * @return  object|bool
      */
     public function saveElement($elementId, $elementparams, $pub = null, $params = null)
     {

@@ -2209,7 +2209,7 @@ class Events extends SiteController
      * Check if an email address is valid
      *
      * @param   string   $email   Email address to check
-     * @return  integer  1 = valid, 0 = invalid
+     * @return  integer|bool  1 = valid, 0 = invalid
      */
     private function validEmail($email)
     {

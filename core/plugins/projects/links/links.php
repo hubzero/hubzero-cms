@@ -84,7 +84,7 @@ class Links extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array|null|false   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -749,7 +749,7 @@ class Links extends Plugin
     /**
      * Browser for within publications
      *
-     * @return  string
+     * @return  string|false
      */
     public function browser()
     {
@@ -1076,7 +1076,7 @@ class Links extends Plugin
      * @param   string   &$url
      * @param   boolean  $rawData
      * @param   string   $format
-     * @return  string
+     * @return  string|null
      */
     public function getDoiMetadata($doi, $citation, &$url, $rawData = false, $format = 'apa')
     {

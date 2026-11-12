@@ -49,7 +49,7 @@ class Xcache extends Store
      * Read the data for a particular session identifier from the SessionHandler backend.
      *
      * @param   string  $id  The session identifier.
-     * @return  string  The session data.
+     * @return  string|null  The session data.
      */
     #[\ReturnTypeWillChange]
     public function read($id)

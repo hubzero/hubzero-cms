@@ -383,7 +383,7 @@ class Project
      * Property accessor
      *
      * @param   string  $property
-     * @return  string
+     * @return  string|null
      */
     public function __get($property = null)
     {

@@ -105,7 +105,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * SessionHandler backend.
      *
      * @param   string|false  $id  The session identifier.
-     * @return  string  The session data.
+     * @return  string|false  The session data.
      */
 
     #[\ReturnTypeWillChange]

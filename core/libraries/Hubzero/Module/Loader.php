@@ -529,7 +529,7 @@ class Loader
      * @param   object  $moduleparams  Module parameters
      * @param   object  $cacheparams   Module cache parameters - id or url parameters, depending on the module cache
      *                                 mode
-     * @return  string
+     * @return  string|bool
      */
     public function cache($module, $moduleparams, $cacheparams)
     {

@@ -73,7 +73,7 @@ class MasterType extends Table
      * Get record id by alias name
      *
      * @param   string  $alias
-     * @return  integer
+     * @return  integer|false
      */
     public function getTypeId($alias = '')
     {
@@ -88,7 +88,7 @@ class MasterType extends Table
      * Get record alias by id
      *
      * @param   integer|string $id
-     * @return  integer
+     * @return  integer|false
      */
     public function getTypeAlias($id = '')
     {
@@ -271,7 +271,7 @@ class MasterType extends Table
      * Check type usage
      *
      * @param   integer  $id  type id
-     * @return  integer
+     * @return  integer|false
      */
     public function checkUsage($id = null)
     {

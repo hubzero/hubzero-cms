@@ -58,7 +58,7 @@ class File extends Obj
      * Declarations do not have files or paths.
      * These will be raw scripts or styles.
      *
-     * @var  string
+     * @var  string|bool
      */
     protected $declaration = false;
 

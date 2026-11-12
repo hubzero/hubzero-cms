@@ -23,7 +23,7 @@ class File extends Obj
     /**
      * Cache for the template information.
      *
-     * @var  object
+     * @var  object|false
      */
     private $template = null;
 

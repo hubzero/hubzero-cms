@@ -62,7 +62,7 @@ class Image extends Plugin
      * @param   string  $name   The name of the field. Not Used.
      * @param   string  $id     The id of the field.
      * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
-     * @return  string
+     * @return  string|bool
      */
     public function onDisplay($name = null, $id = 'image_captcha_1', $class = '')
     {

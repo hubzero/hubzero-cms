@@ -55,7 +55,7 @@ class Serials
      *
      * @param   integer  $sID    SKU ID
      * @param   integer $qty  Number of serials to mark
-     * @return  array
+     * @return  array|bool
      */
     public static function releaseSerials($sId, $qty = 1)
     {

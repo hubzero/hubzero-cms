@@ -228,7 +228,7 @@ class Project extends Model
      *
      * @param   string  $key  Field to return
      * @param   string  $as   What data to return
-     * @return  string
+     * @return  string|null
      */
     protected function date($key, $as = '')
     {

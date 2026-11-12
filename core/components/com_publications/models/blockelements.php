@@ -84,7 +84,7 @@ class BlockElements extends Obj
      * @param   object   $status
      * @param   string   $viewname
      * @param   integer  $order
-     * @return  object
+     * @return  object|false
      */
     public function drawElement(
         $name,
@@ -168,7 +168,7 @@ class BlockElements extends Obj
      *
      * @param   string   $name
      * @param   boolean  $new
-     * @return  object
+     * @return  object|false
      */
     public function loadElement($name, $new = false)
     {

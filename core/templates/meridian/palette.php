@@ -27,7 +27,7 @@ class Palette
     /**
      * The colour the hub picked, as three channels
      *
-     * @var  array
+     * @var  array|null
      */
     protected $rgb;
 

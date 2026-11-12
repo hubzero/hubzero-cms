@@ -115,7 +115,7 @@ class DoiService extends Obj
      * Build service call path
      *
      * @param   string  $doi
-     * @return  string
+     * @return  string|false
      */
     public function getServicePath($doi = null)
     {
@@ -499,7 +499,7 @@ class DoiService extends Obj
     /**
      * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
      *
-     * @return  string  $doi
+     * @return  string|false  $doi
      */
     public function registerMetadata()
     {
@@ -629,7 +629,7 @@ class DoiService extends Obj
      * Start input
      *
      * @param   string  $status  DOI status [public, reserved]
-     * @return  string  response string
+     * @return  string|false  response string
      */
     public function startInput($status = 'public')
     {
@@ -836,7 +836,7 @@ class DoiService extends Obj
      * @param   string   $doi
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
-     * @return  string|false|null
+     * @return  string|null|bool
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {

@@ -185,7 +185,7 @@ class Activity extends Table
      * @param   boolean  $commentable
      * @param   boolean  $admin
      * @param   boolean  $managers_only
-     * @return  integer  (activity id) or false
+     * @return  integer|false  (activity id) or false
      */
     public function recordActivity(
         $projectid = null,

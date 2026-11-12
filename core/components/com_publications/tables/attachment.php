@@ -72,7 +72,7 @@ class Attachment extends Table
      * Get attachment used as default publication thumbnail
      *
      * @param   integer  $versionid  pub version id
-     * @return  object
+     * @return  object|bool
      */
     public function getDefault($versionid)
     {
@@ -229,7 +229,7 @@ class Attachment extends Table
      *
      * @param   integer  $vid   pub version id
      * @param   array    $find
-     * @return  object
+     * @return  object|false
      */
     public function getConnections($vid = null, $find = [])
     {
@@ -257,7 +257,7 @@ class Attachment extends Table
      *
      * @param   integer  $versionid  pub version id
      * @param   array    $filters
-     * @return  object
+     * @return  object|false
      */
     public function getAttachments($versionid, $filters = [])
     {
@@ -490,7 +490,7 @@ class Attachment extends Table
      * @param   integer  $vid
      * @param   integer  $elementId
      * @param   integer  $uid
-     * @return  object   object or FALSE
+     * @return  object|bool   object or FALSE
      */
     public function copyAttachment($att = null, $vid = null, $elementId = null, $uid = 0)
     {

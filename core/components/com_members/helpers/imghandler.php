@@ -322,7 +322,7 @@ class ImgHandler extends Obj
      *
      * @param      string $image Image name
      * @param      string $tn    Thumbnail prefix
-     * @return     string
+     * @return     string|false
      */
     public function createThumbName($image = null, $tn = '_thumb')
     {

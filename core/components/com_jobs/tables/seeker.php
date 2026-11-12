@@ -255,7 +255,7 @@ class Seeker extends Table
      * @param   integer  $uid    User ID
      * @param   integer  $eid    Employer ID
      * @param   integer  $admin  Admin access?
-     * @return  array
+     * @return  array|false
      */
     public function getSeeker($uid, $eid = 0, $admin = 0)
     {

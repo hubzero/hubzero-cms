@@ -167,7 +167,7 @@ class Formatwiki extends Plugin
      * Try to determine if a string is wiki syntax
      *
      * @param   string $content Content to check
-     * @return  string
+     * @return  string|bool
      */
     private function isWiki($content)
     {

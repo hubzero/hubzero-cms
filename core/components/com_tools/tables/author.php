@@ -120,7 +120,7 @@ class Author extends Table
      * @param   string   $toolname  Tool name
      * @param   string   $revision  Tool revision
      * @param   array    $authors   Author list
-     * @return  array
+     * @return  array|null
      */
     public function getToolAuthors($version = '', $rid = 0, $toolname = '', $revision = '', $authors = [])
     {

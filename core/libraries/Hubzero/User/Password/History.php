@@ -35,7 +35,7 @@ class History
      * Get an instance of a user's password History
      *
      * @param   mixed  $instance  User ID (integer) or username (string)
-     * @return  object
+     * @return  object|false
      */
     public static function getInstance($instance)
     {

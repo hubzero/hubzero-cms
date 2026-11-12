@@ -247,7 +247,7 @@ class Publications extends Plugin
      * Archive publications beyond grace period
      *
      * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
-     * @return  boolean
+     * @return  boolean|null
      */
     public function runMkAip(\Components\Cron\Models\Job $job)
     {

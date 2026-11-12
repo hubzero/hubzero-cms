@@ -38,7 +38,7 @@ class Helper
      * Generate Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
      *
      * @param   object  $mailingRecipientObject  Mailing Recipient Object
-     * @return  string  Email Token for verify and tracking
+     * @return  string|false  Email Token for verify and tracking
      */
     public static function generateMailingToken($mailingRecipientObject)
     {
@@ -66,7 +66,7 @@ class Helper
      *
      * @param   string  $emailAddress        Confirmation Email Address
      * @param   array   $mailinglistObject  Mailing list
-     * @return  string
+     * @return  string|false
      */
     public static function generateConfirmationToken($emailAddress, $mailinglistObject)
     {
@@ -89,7 +89,7 @@ class Helper
      * Parse Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
      *
      * @param   string  $mailingToken  String Mailing token
-     * @return  object  Mailing Recipient Object
+     * @return  object|false  Mailing Recipient Object
      */
     public static function parseMailingToken($mailingToken)
     {
@@ -142,7 +142,7 @@ class Helper
      *
      * @param   string  $email  Confirmation Email Address
      * @param   string  $token  Confirmation Token
-     * @return  array
+     * @return  array|false
      */
     public static function parseConfirmationToken($confirmationToken)
     {

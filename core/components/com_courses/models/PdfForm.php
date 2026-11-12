@@ -35,7 +35,7 @@ class PdfForm
     /**
      * Form ID
      *
-     * @var int
+     * @var int|null
      **/
     private $id = null;
 

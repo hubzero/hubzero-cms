@@ -36,7 +36,7 @@ class Scaffolding extends Base implements CommandInterface
     /**
      * The type of scaffolding item that we're making
      *
-     * @var  string
+     * @var  string|false
      **/
     private $type = false;
 

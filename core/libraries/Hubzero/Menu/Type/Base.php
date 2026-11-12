@@ -172,7 +172,7 @@ class Base extends Obj
     /**
      * Get menu item by id.
      *
-     * @return  object  The item object.
+     * @return  object|null  The item object.
      */
     public function getActive()
     {

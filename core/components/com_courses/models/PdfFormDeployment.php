@@ -238,7 +238,7 @@ class PdfFormDeployment
     /**
      * Get respondent object
      *
-     * @return object
+     * @return object|false
      **/
     public function getRespondent($member_id, $attempt = 1)
     {

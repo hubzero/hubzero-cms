@@ -112,7 +112,7 @@ class Utils
      * Create a user's home director (if it doesn't exist)
      *
      * @param      string $username User for which to create home directory
-     * @return     array
+     * @return     array|bool
      */
     public static function createHomeDirectory($username)
     {

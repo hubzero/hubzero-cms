@@ -60,7 +60,7 @@ class Watch extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -259,7 +259,7 @@ class Watch extends Plugin
      * @param   string   $area        Project area of activity
      * @param   array    $activities  Project activities (array of IDs)
      * @param   integer  $actor       Uid of team member posting the activity (to exclude from subscribers)
-     * @return  array
+     * @return  array|false|null
      */
     public function onWatch($project, $area = '', $activities = [], $actor = 0)
     {

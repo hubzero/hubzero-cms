@@ -101,7 +101,7 @@ class Blog extends Table
      * @param   integer  $projectid
      * @param   array    $filters
      * @param   integer  $id
-     * @return  string
+     * @return  string|false
      */
     private function buildQuery($projectid = 0, $filters = [], $id = 0)
     {
@@ -146,7 +146,7 @@ class Blog extends Table
      *
      * @param   integer  $projectid
      * @param   array    $filters
-     * @return  integer
+     * @return  integer|false
      */
     public function getCount($projectid = 0, $filters = [])
     {

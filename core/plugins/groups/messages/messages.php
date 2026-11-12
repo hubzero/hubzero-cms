@@ -305,7 +305,7 @@ class Messages extends Plugin
     /**
      * Show a form for creating a message
      *
-     * @return     string
+     * @return     string|false
      */
     protected function create()
     {

@@ -47,7 +47,7 @@ class Novnc extends Plugin
      * @param   object  $tool
      * @param   object  $session
      * @param   boolean $readOnly
-     * @return  string
+     * @return  string|null
      */
     public function onToolSessionView($tool, $session, $readOnly = false)
     {

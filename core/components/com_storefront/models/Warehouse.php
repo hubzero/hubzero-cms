@@ -651,7 +651,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   int $pId         Product ID
      * @param   bool $showInactive        Flag whether to show inactive product info
-     * @return  object      Product info
+     * @return  object|false      Product info
      */
     public function getProductInfo($pId, $showInactive = false)
     {
@@ -953,7 +953,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   $pId                        Product ID
      * @param   $options                    Selected options (optional for products with no options)
      * @param   $throwExceptionOnNomatch    Should the exception be thrown if no match found (default: true)
-     * @return  SKU ID
+     * @return  SKU|false ID
      */
     public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
     {
@@ -1143,7 +1143,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all info for SKU provided, including options
      *
      * @param   int         SKU ID
-     * @return  array       info
+     * @return  array|false       info
      */
     public function getSkuInfo($sId, $showInactive = true)
     {

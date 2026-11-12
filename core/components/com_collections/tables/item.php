@@ -300,7 +300,7 @@ class Item extends Table
      * Get a repost count
      *
      * @param   mixed    $id
-     * @return  integer
+     * @return  integer|false
      */
     public function getReposts($id = null)
     {
@@ -331,7 +331,7 @@ class Item extends Table
      * Get a record count
      *
      * @param   array    $id  Filters to construct query from
-     * @return  integer
+     * @return  integer|false
      */
     public function getVote($id = null)
     {

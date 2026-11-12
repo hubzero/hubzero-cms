@@ -251,7 +251,7 @@ class Migration
     /**
      * Setup database connect, test, return object
      *
-     * @return  object
+     * @return  object|false
      **/
     public function getDBO()
     {
@@ -300,7 +300,7 @@ class Migration
      *
      * @param   string  $extension  Only look for migrations for this extension
      * @param   string  $file       The specific file to run
-     * @return  array
+     * @return  array|bool
      **/
     public function find($extension = null, $file = null)
     {

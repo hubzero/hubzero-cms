@@ -140,7 +140,7 @@ class Screenshot extends Table
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   string   $version    Version number or name
-     * @return  integer
+     * @return  integer|false
      */
     public function getLastOrdering($versionid = null, $pid = null, $version = 'default')
     {
@@ -288,7 +288,7 @@ class Screenshot extends Table
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   string   $version    Version name or number
-     * @return  object
+     * @return  object|false
      */
     public function getScreenshots($versionid = null, $pid = null, $version = 'default')
     {
@@ -326,7 +326,7 @@ class Screenshot extends Table
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   string   $version    Version name or number
-     * @return  array
+     * @return  array|false
      */
     public function getFiles($versionid = null, $pid = null, $version = 'default')
     {

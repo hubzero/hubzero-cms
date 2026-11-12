@@ -31,7 +31,7 @@ class GradeBook extends Table
      *
      * @param      string $member_id
      * @param      string $asset_id
-     * @return     array
+     * @return     array|bool
      */
     public function loadByUserAndAssetId($member_id, $asset_id)
     {

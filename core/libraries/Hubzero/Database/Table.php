@@ -226,7 +226,7 @@ abstract class Table extends \stdClass
      *
      * @param   integer  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
-     * @return  string   Error message
+     * @return  string|false   Error message
      */
     public function getError($i = null, $toString = true)
     {

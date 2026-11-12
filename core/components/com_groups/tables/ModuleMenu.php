@@ -29,7 +29,7 @@ class ModuleMenu extends Table
     /**
      * Get pages of module menu
      *
-     * @return  array
+     * @return  array|null
      */
     public function getMenu($filters = [])
     {

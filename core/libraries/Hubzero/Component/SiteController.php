@@ -114,7 +114,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Redirection URL
      *
-     * @var  string
+     * @var  string|null
      * @deprecated
      */
     protected $redirect = null;
@@ -122,7 +122,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The message to display
      *
-     * @var  string
+     * @var  string|null
      * @deprecated
      */
     protected $message = null;

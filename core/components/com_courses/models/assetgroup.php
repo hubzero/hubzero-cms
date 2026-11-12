@@ -132,7 +132,7 @@ class Assetgroup extends Base
      * @param   mixed   $idx
      * @param   boolean $populate
      * @param   array   $filters
-     * @return  array
+     * @return  array|false
      */
     public function children($idx = null, $populate = false, $filters = [])
     {

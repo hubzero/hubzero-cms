@@ -479,7 +479,7 @@ class Course extends Base
      * Return a list of user IDs for a list of usernames
      *
      * @param     array $users List of user IDs or usernames
-     * @return    array List of user IDs
+     * @return    array|false List of user IDs
      */
     private function userIds($users)
     {

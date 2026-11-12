@@ -24,56 +24,56 @@ class Composer
     /**
      * Composer\Composer object
      *
-     * @var object
+     * @var object|null
      */
     private static $composer = null;
 
     /**
      * Composer\Factory object
      *
-     * @var object
+     * @var object|null
      */
     private static $factory = null;
 
     /**
      * Composer\Repository\RepositoryManager object
      *
-     * @var object
+     * @var object|null
      */
     private static $repositoryManager = null;
 
     /**
      * Composer\Repository\WriteableRepositoryInterface object
      *
-     * @var object
+     * @var object|null
      */
     private static $localRepository = null;
 
     /**
      * Array of repositories not including the local repo
      *
-     * @var array
+     * @var array|null
      */
     private static $remoteRepositories = null;
 
     /**
      * Composer\IO\BaseIO object needed to interact with composer
      *
-     * @var object
+     * @var object|null
      */
     private static $io = null;
 
     /**
      * Composer\Installer object to perform installation operations
      *
-     * @var object
+     * @var object|null
      */
     private static $installer = null;
 
     /**
      * Composer\EventDispatcher\EventDispatcher object to dispatch messages to composer
      *
-     * @var object
+     * @var object|null
      */
     private static $dispatcher = null;
 

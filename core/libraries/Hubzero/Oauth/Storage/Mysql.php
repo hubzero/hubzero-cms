@@ -37,7 +37,7 @@ class Mysql implements
      * Get Access token data
      *
      * @param   string  $access_token  Access token
-     * @return  array   Access token data
+     * @return  array|false   Access token data
      */
     public function getAccessToken($access_token)
     {
@@ -209,7 +209,7 @@ class Mysql implements
      * Get authorization code details by code
      *
      * @param   string  $code  Authorization code
-     * @return  array   Code details
+     * @return  array|false   Code details
      */
     public function getAuthorizationCode($code)
     {
@@ -305,7 +305,7 @@ class Mysql implements
      * Get user information
      *
      * @param   string  $username  User's username
-     * @return  array   User info
+     * @return  array|false   User info
      */
     public function getUserDetails($username)
     {
@@ -329,7 +329,7 @@ class Mysql implements
      * Get username from email address
      *
      * @param   string  $enteredUsername  Email address
-     * @return  string  User's username
+     * @return  string|null  User's username
      */
     private function getUsernameFromEmail($enteredUsername)
     {
@@ -348,7 +348,7 @@ class Mysql implements
      * Load refresh token details by token
      *
      * @param   string  $refresh_token  Refresh token
-     * @return  array   Refresh token details
+     * @return  array|false   Refresh token details
      */
     public function getRefreshToken($refresh_token)
     {
@@ -557,7 +557,7 @@ class Mysql implements
      *
      * In separate function so we can call it multiple times.
      *
-     * @return  array  Client detials
+     * @return  array|false  Client detials
      */
     private function findInternalClient()
     {

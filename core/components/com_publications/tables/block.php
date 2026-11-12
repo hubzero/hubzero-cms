@@ -46,7 +46,7 @@ class Block extends Table
      * Get record id by name
      *
      * @param   string   $name
-     * @return  integer
+     * @return  integer|false
      */
     public function getBlockId($name = '')
     {

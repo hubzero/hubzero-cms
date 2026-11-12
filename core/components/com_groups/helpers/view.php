@@ -705,7 +705,7 @@ class View
      *
      * @param   object  $group
      * @param   string  $tab
-     * @return  string
+     * @return  string|null
      */
     public static function superGroupComponents($group, $tab = '')
     {
@@ -772,7 +772,7 @@ class View
      * Display Super Group Pages
      *
      * @param   object  $group
-     * @return  string
+     * @return  string|null
      */
     public static function superGroupPhpPages($group)
     {

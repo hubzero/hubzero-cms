@@ -63,7 +63,7 @@ class Stats extends Table
      * @param   integer  $year
      * @param   integer  $month
      * @param   string   $week
-     * @return  array
+     * @return  array|false
      */
     public function getLog($year = null, $month = null, $week = '')
     {

@@ -39,7 +39,7 @@ class Media extends Base
     /**
      * Upload a file to the profile via AJAX
      *
-     * @return  string
+     * @return  string|null
      */
     public function doajaxuploadTask()
     {

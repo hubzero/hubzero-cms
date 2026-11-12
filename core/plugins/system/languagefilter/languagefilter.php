@@ -76,7 +76,7 @@ class Languagefilter extends Plugin
     /**
      * Cookie
      *
-     * @var  string
+     * @var  string|false
      */
     protected static $cookie;
 

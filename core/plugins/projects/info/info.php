@@ -50,7 +50,7 @@ class Info extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -120,7 +120,7 @@ class Info extends Plugin
      * Event call to get content for public project page
      *
      * @param   object  $model
-     * @return  string
+     * @return  string|null
      */
     public function onProjectPublicList($model)
     {

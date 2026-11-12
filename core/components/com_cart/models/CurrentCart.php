@@ -397,7 +397,7 @@ class CurrentCart extends Cart
     /**
      * Get existing or create a new transaction (if doesn't exist)
      *
-     * @return array of items in the transaction, FALSE on failed attempt
+     * @return array|false of items in the transaction, FALSE on failed attempt
      */
     public function getTransaction()
     {

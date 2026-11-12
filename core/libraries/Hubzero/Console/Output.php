@@ -39,7 +39,7 @@ class Output
      * While in interactive mode, output each line as it's given
      * rather than pooling and waiting until render is called.
      *
-     * @var  string
+     * @var  string|bool
      **/
     private $isInteractive = true;
 

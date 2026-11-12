@@ -130,7 +130,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * The cumulative query timer (in miliseconds)
      *
-     * @var int
+     * @var int|float
      */
     protected $timer = 0;
 
@@ -141,7 +141,7 @@ abstract class Driver implements LoggerAwareInterface
      * For PDO-based drivers, this will be a PdoConnection instance.
      * For other drivers, this may be a different implementation.
      *
-     * @var ConnectionInterface|object|resource
+     * @var ConnectionInterface|object|resource|null
      */
     protected $connection;
 
@@ -354,7 +354,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param       string  $method  The called method name
      * @param       array   $args    The array of arguments passed to the method
-     * @return      string
+     * @return      string|null
      * @deprecated  2.0.0
      * @throws      \Hubzero\Database\Exception\BadMethodCallException
      */
@@ -1737,7 +1737,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
-     * @return  array
+     * @return  array|null
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -1926,7 +1926,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the string version of the query
      *
-     * @return  string
+     * @return  string|null
      **/
     public function toString()
     {

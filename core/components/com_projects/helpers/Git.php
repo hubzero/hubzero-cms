@@ -65,7 +65,7 @@ class Git extends Obj
      * Init Git repository
      *
      * @param   string  $path  Repo path
-     * @return  string
+     * @return  string|bool
      */
     public function iniGit($path = null)
     {
@@ -104,7 +104,7 @@ class Git extends Obj
      * Make Git call
      *
      * @param   string  $call
-     * @return  array   to be parsed
+     * @return  array|false   to be parsed
      */
     public function callGit($call = '')
     {
@@ -123,7 +123,7 @@ class Git extends Obj
      * Exec call
      *
      * @param   string  $call
-     * @return  array   to be parsed
+     * @return  array|false   to be parsed
      */
     protected function exec($call = '')
     {
@@ -224,7 +224,7 @@ class Git extends Obj
      *
      * @param   string  $name   Author name
      * @param   string  $email  Author email
-     * @return  string  Unescaped "Name <email>"; gitCommit() escapes it
+     * @return  string|false  Unescaped "Name <email>"; gitCommit() escapes it
      */
     public function getGitAuthor($name = '', $email = '')
     {
@@ -318,7 +318,7 @@ class Git extends Obj
      * @param   string   $where       To file path
      * @param   string   $type        'file' or 'folder'
      * @param   string   &$commitMsg
-     * @return  integer
+     * @return  integer|false
      */
     public function gitMove($from = '', $where = '', $type = 'file', &$commitMsg = '')
     {
@@ -742,7 +742,7 @@ class Git extends Obj
     /**
      * List deleted files
      *
-     * @return  array  to be parsed
+     * @return  array|false  to be parsed
      */
     public function listDeleted()
     {
@@ -1388,7 +1388,7 @@ class Git extends Obj
      *
      * @param   string   $fpath  file name or commit hash
      * @param   integer  $max
-     * @return  string
+     * @return  string|false
      */
     public function showTextContent($fpath = '', $max = 10000)
     {

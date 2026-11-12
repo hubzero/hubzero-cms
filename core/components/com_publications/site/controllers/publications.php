@@ -298,7 +298,7 @@ class Publications extends SiteController
      * Get notifications
      *
      * @param   string  $type
-     * @return  string  Message if it exist
+     * @return  string|false  Message if it exist
      */
     public function getNotifications($type = 'success')
     {

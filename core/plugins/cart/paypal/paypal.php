@@ -47,7 +47,7 @@ class Paypal extends Plugin
     /**
      * Return a list of filters that can be applied
      *
-     * @return  array
+     * @return  array|bool
      */
     public function onProcessPayment($transaction, $user)
     {

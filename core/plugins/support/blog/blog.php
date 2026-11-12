@@ -39,7 +39,7 @@ class Blog extends Plugin
      * @param      string $refid    ID of the database table row
      * @param      string $category Element type (determines table to look in)
      * @param      string $parent   If the element has a parent element
-     * @return     array
+     * @return     array|null
      */
     public function getReportedItem($refid, $category, $parent)
     {
@@ -76,7 +76,7 @@ class Blog extends Plugin
      *
      * @param      string $refid    ID of the database table row
      * @param      string $category Element type (determines table to look in)
-     * @return     string
+     * @return     string|null
      */
     public function onReportItem($refid, $category)
     {
@@ -119,7 +119,7 @@ class Blog extends Plugin
      * @param      string $parent   If the element has a parent element
      * @param      string $category Element type (determines table to look in)
      * @param      string $message  If the element has a parent element
-     * @return     string
+     * @return     string|null
      */
     public function deleteReportedItem($refid, $parent, $category, $message)
     {

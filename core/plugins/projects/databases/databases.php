@@ -390,7 +390,7 @@ class Databases extends Plugin
     /**
      * List project databases available for publishing
      *
-     * @return  array
+     * @return  array|false
      */
     public function browser()
     {
@@ -1344,7 +1344,7 @@ class Databases extends Plugin
      * @param   integer  $identifier  Database ID or name
      * @param   object   $project     Project object
      * @param   string   $base_path   File-repository base path
-     * @return  integer
+     * @return  integer|false
      */
     public function cloneDatabase($identifier = 0, $project = null, $base_path = null)
     {

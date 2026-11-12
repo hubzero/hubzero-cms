@@ -79,7 +79,7 @@ class Session extends Table
      *
      * @param   string  $sess        Session number
      * @param   string  $authorized  Admin authorization?
-     * @return  object
+     * @return  object|false
      */
     public function loadSession($sess = null, $authorized = null)
     {
@@ -113,7 +113,7 @@ class Session extends Table
      *
      * @param   string  $sess        Session number
      * @param   string  $authorized  Admin authorization?
-     * @return  object
+     * @return  object|false
      */
     public function checkSession($sess = null, $authorized = null)
     {
@@ -150,7 +150,7 @@ class Session extends Table
      *
      * @param   string   $username  Username to look for
      * @param   string   $appname   App to look for
-     * @return  integer
+     * @return  integer|false
      */
     public function getCount($username = null, $appname = null)
     {
@@ -184,7 +184,7 @@ class Session extends Table
      * @param   string  $username    Username to look for
      * @param   string  $appname     App to look for
      * @param   string  $authorized  Admin authorization?
-     * @return  array
+     * @return  array|false
      */
     public function getRecords($username = null, $appname = null, $authorized = null)
     {
@@ -223,7 +223,7 @@ class Session extends Table
      * Get the time left until the session times out
      *
      * @param   integer  $sess  Sess ID
-     * @return  integer
+     * @return  integer|false
      */
     public function getTimeout($sess)
     {

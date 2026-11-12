@@ -51,7 +51,7 @@ class Relationship
     /**
      * The related model
      *
-     * @var  \Hubzero\Database\Relational|static
+     * @var  \Hubzero\Database\Relational|static|null
      **/
     protected $related = null;
 

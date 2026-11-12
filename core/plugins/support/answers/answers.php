@@ -50,7 +50,7 @@ class Answers extends Plugin
      * @param      string $refid    ID of the database table row
      * @param      string $category Element type (determines table to look in)
      * @param      string $parent   If the element has a parent element
-     * @return     array
+     * @return     array|null
      */
     public function getReportedItem($refid, $category, $parent)
     {
@@ -163,7 +163,7 @@ class Answers extends Plugin
      *
      * @param      string  $category Element type (determines text)
      * @param      integer $parentid ID of element to retrieve
-     * @return     string
+     * @return     string|null
      */
     public function getTitle($category, $parentid)
     {
@@ -191,7 +191,7 @@ class Answers extends Plugin
      *
      * @param      string $refid    ID of the database table row
      * @param      string $category Element type (determines table to look in)
-     * @return     string
+     * @return     string|null
      */
     public function onReportItem($refid, $category)
     {
@@ -268,7 +268,7 @@ class Answers extends Plugin
      * @param      integer $parentid    If the element has a parent element
      * @param      string  $category    Element type (determines table to look in)
      * @param      string  $message     Message to user to append to
-     * @return     string
+     * @return     string|null|false
      */
     public function deleteReportedItem($referenceid, $parentid, $category, $message)
     {

@@ -1022,7 +1022,7 @@ class Behavior
     /**
      * Internal method to translate the JavaScript Calendar
      *
-     * @return  string  JavaScript that translates the object
+     * @return  string|false  JavaScript that translates the object
      */
     protected static function calendarTranslation()
     {

@@ -142,7 +142,7 @@ class Citations extends Base
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  string   HTML
+     * @return  string|bool   HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {

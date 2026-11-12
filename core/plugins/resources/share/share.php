@@ -54,7 +54,7 @@ class Share extends Plugin
      * @param   string  $option  Name of the component
      * @param   array   $areas   Active area(s)
      * @param   string  $rtrn    Data to be returned
-     * @return  array
+     * @return  array|null
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {

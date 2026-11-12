@@ -35,7 +35,7 @@ class RemoteFile extends Table
      * @param   string   $service
      * @param   string   $local_dirpath
      * @param   string   $converted
-     * @return  array
+     * @return  array|false
      */
     public function getRemoteConnections($projectid = null, $service = '', $local_dirpath = '', $converted = 'na')
     {
@@ -88,7 +88,7 @@ class RemoteFile extends Table
      * @param   integer  $projectid  Project ID
      * @param   string   $service
      * @param   string   $converted
-     * @return  array
+     * @return  array|false
      */
     public function getFileCount($projectid = null, $service = '', $converted = 'na')
     {
@@ -115,7 +115,7 @@ class RemoteFile extends Table
      * @param   string   $service
      * @param   string   $subdir
      * @param   boolean  $remoteEdit
-     * @return  array
+     * @return  array|false
      */
     public function getRemoteFiles($projectid = null, $service = '', $subdir = '', $remoteEdit = false)
     {

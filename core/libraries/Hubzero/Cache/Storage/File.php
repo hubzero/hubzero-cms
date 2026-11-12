@@ -380,7 +380,7 @@ class File extends None
      * Get the full path for the given cache key.
      *
      * @param   string  $key
-     * @return  string
+     * @return  string|bool
      */
     protected function writeCacheFile($filename, $data)
     {

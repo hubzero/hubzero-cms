@@ -706,7 +706,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for Solr
      *
-     * @return  object
+     * @return  object|false
      */
     public function searchResult()
     {

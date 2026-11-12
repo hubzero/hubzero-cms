@@ -31,7 +31,7 @@ class Access extends Table
      *
      * @param   integer  $vid       pub version id
      * @param   integer  $group_id  group id
-     * @return  object or FALSE
+     * @return  object|bool or FALSE
      */
     public function loadEntry($vid = null, $group_id = null)
     {
@@ -77,7 +77,7 @@ class Access extends Table
      * @param   integer  $pid       pub id
      * @param   string   $version   version name or number
      * @param   string   $sysgroup  name of system group
-     * @return  object
+     * @return  object|false
      */
     public function getGroups($vid = null, $pid = null, $version = 'default', $sysgroup = '')
     {
@@ -120,7 +120,7 @@ class Access extends Table
      * @param   integer  $vid       pub version id
      * @param   array|string $groups
      * @param   string|int $sysgroup  name of system group
-     * @return  integer
+     * @return  integer|false
      */
     public function saveGroups($vid = null, $groups = '', $sysgroup = 0)
     {

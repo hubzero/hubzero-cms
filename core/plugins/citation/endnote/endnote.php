@@ -40,7 +40,7 @@ class Endnote extends Plugin
      * @param   array    $file
      * @param   string   $scope
      * @param   integer  $scope_id
-     * @return  array
+     * @return  array|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
     {
@@ -66,7 +66,7 @@ class Endnote extends Plugin
      * SProcess EndNote on import
      *
      * @param   array  $raw_citations_text
-     * @return  array
+     * @return  array|null
      */
     protected function onImportProcessEndnote($raw_citations_text)
     {

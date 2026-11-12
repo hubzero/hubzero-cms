@@ -1322,7 +1322,7 @@ class Citations extends Plugin
     /**
      * Applies filters to Citations model and returns applied filters
      * @param array  $filters array of POST values
-     * @return  array sanitized and validated filter values
+     * @return  array|false sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {

@@ -42,7 +42,7 @@ class Slider extends Macro
     /**
      * Generate macro output
      *
-     * @return  string
+     * @return  string|null
      */
     public function render()
     {

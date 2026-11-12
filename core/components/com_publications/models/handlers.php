@@ -362,7 +362,7 @@ class Handlers extends Obj
      * Initialize
      *
      * @param   string  $name
-     * @return  object
+     * @return  object|false
      */
     public function ini($name)
     {
@@ -381,7 +381,7 @@ class Handlers extends Obj
      *
      * @param   string   $name
      * @param   boolean  $new
-     * @return  object
+     * @return  object|false
      */
     public function loadHandler($name, $new = false)
     {

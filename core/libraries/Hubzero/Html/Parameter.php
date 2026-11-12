@@ -112,7 +112,7 @@ class Parameter extends Registry
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public function render($name = 'params', $group = '_default')
     {
@@ -153,7 +153,7 @@ class Parameter extends Registry
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array
+     * @return  array|false
      */
     public function renderToArray($name = 'params', $group = '_default')
     {
@@ -189,7 +189,7 @@ class Parameter extends Registry
     /**
      * Get the number of params in each group.
      *
-     * @return  array  Array of all group names as key and parameters count as value.
+     * @return  array|false  Array of all group names as key and parameters count as value.
      */
     public function getGroups()
     {
@@ -210,7 +210,7 @@ class Parameter extends Registry
      *
      * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
      * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-     * @return  array   An array of all parameters, each as array of the label, the form element and the tooltip.
+     * @return  array|false   An array of all parameters, each as array of the label, the form element and the tooltip.
      */
     public function getParams($name = 'params', $group = '_default')
     {
@@ -261,7 +261,7 @@ class Parameter extends Registry
      * Loads an XML setup file and parses it.
      *
      * @param   string  $path  A path to the XML setup file.
-     * @return  object
+     * @return  object|bool
      */
     public function loadSetupFile($path)
     {
@@ -293,7 +293,7 @@ class Parameter extends Registry
      * @param   string   $type  The element type.
      * @param   boolean  $new   False (default) to reuse parameter elements; true to load the
      *                          parameter element type again.
-     * @return  object
+     * @return  object|false
      */
     public function loadElement($type, $new = false)
     {

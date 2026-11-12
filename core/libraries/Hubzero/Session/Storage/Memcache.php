@@ -35,7 +35,7 @@ class Memcache extends Store
     /**
      * Use compression?
      *
-     * @var  int
+     * @var  int|false
      */
     private $compress = false;
 
@@ -140,7 +140,7 @@ class Memcache extends Store
      *
      * @param   string   $id    The session identifier.
      * @param   string   $data  The session data.
-     * @return  boolean  True on success, false otherwise.
+     * @return  boolean|null  True on success, false otherwise.
      */
     #[\ReturnTypeWillChange]
     public function write($id, $data)

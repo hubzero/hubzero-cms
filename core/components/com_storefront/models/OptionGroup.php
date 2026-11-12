@@ -73,7 +73,7 @@ class OptionGroup
     /**
      * Get option group id (if set)
      *
-     * @return  int     option group ID
+     * @return  int|false     option group ID
      */
     public function getId()
     {
@@ -98,7 +98,7 @@ class OptionGroup
     /**
      * Get option group name
      *
-     * @return  string      collection name
+     * @return  string|false      collection name
      */
     public function getName()
     {

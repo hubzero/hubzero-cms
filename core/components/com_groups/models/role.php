@@ -158,7 +158,7 @@ class Role extends Relational
     /**
      * Delete record and associated content
      *
-     * @return  object
+     * @return  object|bool
      */
     public function destroy()
     {

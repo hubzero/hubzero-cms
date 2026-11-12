@@ -86,7 +86,7 @@ class Collection
     /**
      * Get collection type
      *
-     * @return  int     Collection type
+     * @return  int|false     Collection type
      */
     public function getType()
     {
@@ -111,7 +111,7 @@ class Collection
     /**
      * Get collection id (if set)
      *
-     * @return  int     collection ID
+     * @return  int|false     collection ID
      */
     public function getId()
     {
@@ -136,7 +136,7 @@ class Collection
     /**
      * Get collection name
      *
-     * @return  string      collection name
+     * @return  string|false      collection name
      */
     public function getName()
     {
@@ -171,7 +171,7 @@ class Collection
     /**
      * Get collection alias
      *
-     * @return  string      collection alias
+     * @return  string|false      collection alias
      */
     public function getAlias()
     {
@@ -249,7 +249,7 @@ class Collection
      * TODO: Something tells me that this is not used. Check and kill this
      * and the $warehouse->addCollection($this) method
      *
-     * @return object   info
+     * @return object|null   info
      */
     public function add()
     {
@@ -275,7 +275,7 @@ class Collection
     /**
      * Save collection info
      *
-     * @return object   info
+     * @return object|bool   info
      */
     public function save()
     {

@@ -109,7 +109,7 @@ class Authors extends Base
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  string   HTML
+     * @return  string|bool   HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
@@ -269,7 +269,7 @@ class Authors extends Base
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  string   HTML
+     * @return  string|bool   HTML
      */
     public function reorder($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
@@ -787,7 +787,7 @@ class Authors extends Base
      * Perform querying of research organization id on ror.org
      * @param   string   $organization
      *
-     * @return  string   organization id
+     * @return  string|false   organization id
      */
     public function getOrganizationId($organization)
     {

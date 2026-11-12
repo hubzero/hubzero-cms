@@ -356,7 +356,7 @@ class Owner extends Table
      * Get project creator
      *
      * @param   integer  $projectid
-     * @return  object
+     * @return  object|false
      */
     public function getCreator($projectid = null)
     {

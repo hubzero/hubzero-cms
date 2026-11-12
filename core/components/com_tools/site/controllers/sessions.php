@@ -373,7 +373,7 @@ class Sessions extends SiteController
      *
      * @param   string   $path
      * @param   boolean  $isFile
-     * @return  string
+     * @return  string|false
      */
     private function normalizePath($path, $isFile = false)
     {

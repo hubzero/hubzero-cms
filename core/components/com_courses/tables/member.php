@@ -369,7 +369,7 @@ class Member extends Table
      * Get a count of course offerings
      *
      * @param  array $section_id
-     * @return object Return course units
+     * @return object|bool Return course units
      */
     public function deleteBySection($section_id)
     {

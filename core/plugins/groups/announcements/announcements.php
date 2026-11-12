@@ -781,7 +781,7 @@ class Announcements extends Plugin
      *
      * @param   object   $group
      * @param   string   $active
-     * @return  object
+     * @return  object|null
      */
     public function onGroupsApiCreate($group, $active)
     {
@@ -861,7 +861,7 @@ class Announcements extends Plugin
      * @param   object   $group
      * @param   string   $active
      * @param   integer  $id
-     * @return  object
+     * @return  object|null
      */
     public function onGroupsApiRead($group, $active, $id)
     {
@@ -887,7 +887,7 @@ class Announcements extends Plugin
      * @param   object   $group
      * @param   string   $active
      * @param   integer  $id
-     * @return  object
+     * @return  object|null
      */
     public function onGroupsApiUpdate($group, $active, $id)
     {
@@ -974,7 +974,7 @@ class Announcements extends Plugin
      * @param   object   $group
      * @param   string   $active
      * @param   integer  $id
-     * @return  object
+     * @return  object|null|bool
      */
     public function onGroupsApiDelete($group, $active, $id)
     {

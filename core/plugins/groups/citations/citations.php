@@ -1517,7 +1517,7 @@ class Citations extends Plugin
      *
      * @param   array    $filters   Array of POST values
      * @param   integer  $scope_id  Value of scope id
-     * @return  array    Sanitized and validated filter values
+     * @return  array|false    Sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {
@@ -1713,7 +1713,7 @@ class Citations extends Plugin
      *
      * @param   object  $group    Current group
      * @param   object  $profile  USer profile
-     * @return  string
+     * @return  string|null
      */
     public function onGroupMemberAfter($group, $profile)
     {

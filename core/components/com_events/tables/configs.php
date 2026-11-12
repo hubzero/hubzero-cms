@@ -150,7 +150,7 @@ class Configs
      * Get a configuration value
      *
      * @param   string  $f  Property name
-     * @return  string
+     * @return  string|null
      */
     public function getCfg($f = '')
     {

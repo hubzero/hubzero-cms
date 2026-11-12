@@ -334,7 +334,7 @@ class Tags extends Cloud
      * @param   string   $tag    Tag
      * @param   integer  $id     Resource ID
      * @param   string   $alias  Resource alias
-     * @return  integer
+     * @return  integer|false
      */
     public function checkTagUsage($tag, $id = 0, $alias = '')
     {

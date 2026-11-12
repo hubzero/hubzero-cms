@@ -21,7 +21,7 @@ class Profiler
     /**
      * The start time.
      *
-     * @var  integer
+     * @var  integer|float
      */
     protected $started = 0;
 

@@ -47,7 +47,7 @@ class GroupMacro extends WikiMacro
      * Returns description of macro, use, and accepted arguments
      * this should be overriden by extended classes
      *
-     * @return     string
+     * @return     string|null
      */
     public function description()
     {

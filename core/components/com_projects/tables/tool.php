@@ -241,7 +241,7 @@ class Tool extends Table
      * @param   string   $identifier
      * @param   integer  $projectid
      * @param   integer  $instanceId
-     * @return  object
+     * @return  object|false
      */
     public function getFullRecord($identifier = null, $projectid = 0, $instanceId = 0)
     {
@@ -290,7 +290,7 @@ class Tool extends Table
      * Get ID
      *
      * @param   string  $name
-     * @return  integer
+     * @return  integer|false
      */
     public function getId($name = null)
     {

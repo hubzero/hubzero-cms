@@ -27,7 +27,7 @@ class Enclosure extends Obj
     /**
      * Length enclosure element
      *
-     * @var  string
+     * @var  string|int|false
      */
     public $length = '';
 

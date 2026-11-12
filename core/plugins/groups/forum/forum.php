@@ -2565,7 +2565,7 @@ class Forum extends Plugin
     /**
      * Display settings
      *
-     * @return  string
+     * @return  string|null
      */
     private function settings()
     {

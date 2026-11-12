@@ -110,7 +110,7 @@ class Todo extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -198,7 +198,7 @@ class Todo extends Plugin
      * Event call to get side content for main project page
      *
      * @param   object  $model
-     * @return  string
+     * @return  string|false
      */
     public function onProjectMiniList($model)
     {

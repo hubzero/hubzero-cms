@@ -150,7 +150,7 @@ class Builder
      * Search added paths for a callable class
      *
      * @param   string  $cls
-     * @return  string  Fully resolved class name
+     * @return  string|null  Fully resolved class name
      */
     protected function find($cls)
     {

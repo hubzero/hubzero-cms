@@ -42,7 +42,7 @@ class Impact extends Plugin
     /**
      * Publication stats
      *
-     * @var boolean
+     * @var boolean|null
      */
     protected $stats = null;
 

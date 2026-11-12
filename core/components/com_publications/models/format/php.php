@@ -53,7 +53,7 @@ class PHP extends Base
      *
      * @param   string  $data     PHP Class formatted string to convert.
      * @param   array   $options  Options used by the formatter.
-     * @return  object   Data object.
+     * @return  object|bool   Data object.
      */
     public function stringToObject($data, $options = [])
     {

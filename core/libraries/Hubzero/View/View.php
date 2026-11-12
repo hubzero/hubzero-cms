@@ -110,7 +110,7 @@ class View extends Obj
     /**
      * The output of the template script.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $renderedOutput = null;
 

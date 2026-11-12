@@ -849,7 +849,7 @@ class Course extends SiteController
      * Get a course's availability
      *
      * @param   object  $course  CoursesCourse
-     * @return  string
+     * @return  string|null|bool
      */
     public function courseavailabilityTask($course = null)
     {

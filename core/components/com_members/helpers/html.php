@@ -128,7 +128,7 @@ class Html
      * Transform a date to an epoch
      *
      * @param   string   $datestr  Datetime (YYYY-MM-DD hh:mm:ss)
-     * @return  integer
+     * @return  integer|null
      */
     public static function date2epoch($datestr)
     {

@@ -107,7 +107,7 @@ class None extends Plugin
      * Inserts at cursor
      *
      * @param   string  $id
-     * @return  string
+     * @return  string|bool
      */
     public function onGetInsertMethod($id)
     {

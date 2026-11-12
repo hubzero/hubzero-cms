@@ -847,7 +847,7 @@ class Ldap
     /**
      * Remove all groups
      *
-     * @return  array
+     * @return  array|false
      */
     public static function deleteAllGroups()
     {
@@ -974,7 +974,7 @@ class Ldap
     /**
      * Remove all users
      *
-     * @return  array
+     * @return  array|false
      */
     public static function deleteAllUsers()
     {

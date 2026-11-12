@@ -123,7 +123,7 @@ class Asset extends Base
      *
      * @param   integer $course  Course ID
      * @param   boolean $withUrl Append the URL?
-     * @return  string
+     * @return  string|false
      */
     public function path($course = 0, $withUrl = true)
     {
@@ -609,7 +609,7 @@ class Asset extends Base
     /**
      * Specific child asset handler object of type
      *
-     * @return object child asset handler
+     * @return object|false child asset handler
      */
     public function loadHandler()
     {

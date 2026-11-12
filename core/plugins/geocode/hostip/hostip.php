@@ -24,7 +24,7 @@ class Hostip extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object
+     * @return object|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

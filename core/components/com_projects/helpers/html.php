@@ -357,7 +357,7 @@ class Html extends Obj
      * Check if file is binary
      *
      * @param   string  $file
-     * @return  integer
+     * @return  integer|bool
      */
     public static function isBinary($file)
     {
@@ -625,7 +625,7 @@ class Html extends Obj
      * @param      string $path
      * @param      string $append
      * @param      string $ext
-     * @return     string
+     * @return     string|false
      */
     public static function fixFileName($path = null, $append = '', $ext = '')
     {
@@ -1094,7 +1094,7 @@ class Html extends Obj
      *
      * @param   string|null  $projectAlias
      * @param   string       $case
-     * @return  string
+     * @return  string|false
      */
     public static function getProjectRepoPath($projectAlias = '', $case = 'files', $exists = true)
     {

@@ -1021,7 +1021,7 @@ class Setup extends Base
     /**
      * Load team editor
      *
-     * @return  string
+     * @return  string|false
      */
     protected function loadTeamEditor()
     {
@@ -1127,7 +1127,7 @@ class Setup extends Base
     /**
      * Verify project name (AJAX)
      *
-     * @return  boolean
+     * @return  boolean|null
      */
     public function verifyTask()
     {
@@ -1261,7 +1261,7 @@ class Setup extends Base
      * Get the grant agency identifier on CrossRef
      * @param   string   $grantAgency
      *
-     * @return  string   grant agency identifier
+     * @return  string|false   grant agency identifier
      */
     public function getGrantAgencyId($grantAgency)
     {

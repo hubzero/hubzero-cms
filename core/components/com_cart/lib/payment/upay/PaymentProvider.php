@@ -94,7 +94,7 @@ class PaymentProvider
      * Set the postback info ($_POST) that came from the payment gateway (whatever uPay posted back)
      *
      * @param   array $postBack
-     * @return  int transaction ID if $_POST data is valid, false otherwise
+     * @return  int|false transaction ID if $_POST data is valid, false otherwise
      */
     public function setPostBack($postBack)
     {

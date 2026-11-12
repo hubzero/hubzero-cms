@@ -116,7 +116,7 @@ class Tool extends Model
      * Returns a reference to a tool model
      *
      * @param   object  $result
-     * @return  object
+     * @return  object|false
      */
     public static function mapInstance($result)
     {
@@ -342,7 +342,7 @@ class Tool extends Model
      *
      * @param   string  $key  Field to return
      * @param   string  $as   What data to return
-     * @return  string
+     * @return  string|null
      */
     protected function date($key, $as = '')
     {

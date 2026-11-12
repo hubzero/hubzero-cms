@@ -60,7 +60,7 @@ class Nogit extends Obj
      * Init Git repository
      *
      * @param   string  $path  Repo path
-     * @return  string
+     * @return  string|bool
      */
     public function iniGit($path = null)
     {
@@ -80,7 +80,7 @@ class Nogit extends Obj
      * Make a call
      *
      * @param   string  $call
-     * @return  array   to be parsed
+     * @return  array|false   to be parsed
      */
     public function call($call = '')
     {
@@ -99,7 +99,7 @@ class Nogit extends Obj
      * Exec call
      *
      * @param   string  $call
-     * @return  array   to be parsed
+     * @return  array|false   to be parsed
      */
     protected function exec($call = '')
     {
@@ -349,7 +349,7 @@ class Nogit extends Obj
      * @param   string  $file    file path
      * @param   string  $hash    Git hash
      * @param   string  $return
-     * @return  string
+     * @return  string|false
      */
     public function gitLog($file = '', $hash = '', $return = 'date')
     {

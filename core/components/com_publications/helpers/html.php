@@ -32,7 +32,7 @@ class Html
      * @param   string   $base
      * @param   string   $filedir
      * @param   boolean|int $root
-     * @return  string
+     * @return  string|false
      */
     public static function buildPubPath($pid = null, $vid = null, $base = '', $filedir = '', $root = 0)
     {
@@ -128,7 +128,7 @@ class Html
      * Draw supporting docs quick links
      *
      * @param   object  $publication
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public static function drawSupportingItems($publication = null)
     {
@@ -175,7 +175,7 @@ class Html
      *
      * @param   object  $publication  Publication model
      * @param   string  $class        CSS class for the license hyperlink
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public static function showLicense($publication, $class = "showinbox")
     {
@@ -466,7 +466,7 @@ class Html
      * Show access message
      *
      * @param   object  $publication  Publication object
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public static function showAccessMessage($publication)
     {
@@ -734,7 +734,7 @@ class Html
      *
      * @param   string  $cat_alias
      * @param   string  $typetitle
-     * @return  string  HTML
+     * @return  string|false  HTML
      */
     public static function writePubCategory($cat_alias = '', $typetitle = '')
     {
@@ -1237,7 +1237,7 @@ class Html
      * @param   int  $publication_id
      * @param   int  $publication_version_id
      *
-     * @return  array or false
+     * @return  array|false or false
      */
     public static function getdatabaseFiles($publication_id, $publication_version_id)
     {
@@ -1352,7 +1352,7 @@ class Html
      * @param   array  $attachments
      * @param   array  $mimeTypes
      *
-     * @return  null or false
+     * @return  null|false or false
      */
     public static function getMIMEtypesOfPrimarySupportFiles(
         $publication_id,
@@ -1401,7 +1401,7 @@ class Html
      * @param   array  $attachments
      * @param   array  $mimeTypes
      *
-     * @return  null or false
+     * @return  null|false or false
      */
     public static function getMIMEtypesOfGalleryFile(
         $publication_id,

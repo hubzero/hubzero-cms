@@ -138,7 +138,7 @@ class License extends Base
     /**
      * Save block content
      *
-     * @return  string  HTML
+     * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {

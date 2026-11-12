@@ -277,7 +277,7 @@ class Coupon
     /**
      * Add coupon to the warehouse
      *
-     * @return object   info
+     * @return object|null   info
      */
     public function add()
     {

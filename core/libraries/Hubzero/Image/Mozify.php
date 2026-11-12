@@ -46,7 +46,7 @@ class Mozify extends Obj
     /**
      * Mosaix size
      *
-     * @var  integer
+     * @var  integer|string
      */
     private $mosaicSize      = 5;
 
@@ -97,7 +97,7 @@ class Mozify extends Obj
     /**
      * Mozify!
      *
-     * @return  string
+     * @return  string|null
      */
     public function mozify()
     {
@@ -120,7 +120,7 @@ class Mozify extends Obj
     /**
      * Convert an image to a mosaic
      *
-     * @return  string
+     * @return  string|null
      */
     public function mosaic()
     {

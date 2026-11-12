@@ -156,7 +156,7 @@ class Review extends Table
      * @param   integer  $pid        Pub ID
      * @param   integer  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
-     * @return  object
+     * @return  object|false
      */
     public function countRatings($pid = null, $uid = null, $versionid = '')
     {

@@ -63,7 +63,7 @@ class Notes extends Plugin
      * @param   object   $course    Current course
      * @param   object   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
-     * @return  object
+     * @return  object|null
      */
     public function onCourse($course, $offering, $describe = false)
     {
@@ -153,7 +153,7 @@ class Notes extends Plugin
      * @param   object  $course
      * @param   object  $unit
      * @param   object  $lecture
-     * @return  string
+     * @return  string|null
      */
     public function onCourseAfterLecture($course, $unit, $lecture)
     {

@@ -482,7 +482,7 @@ class Git extends Models\Adapter
      * Checkin file change
      *
      * @param   array  $params
-     * @return  bool
+     * @return  bool|null
      */
     public function checkin($params = [])
     {
@@ -539,7 +539,7 @@ class Git extends Models\Adapter
      * Restore file revision
      *
      * @param   array  $params
-     * @return  array
+     * @return  array|bool
      */
     public function restore($params = [])
     {
@@ -579,7 +579,7 @@ class Git extends Models\Adapter
      * Diff revisions
      *
      * @param   array  $params
-     * @return  array
+     * @return  array|false
      */
     public function diff($params = [])
     {

@@ -82,7 +82,7 @@ class OneToMany extends Relationship
      * Saves all of the given models
      *
      * @param   array  $models  An array of models being associated and saved
-     * @return  array
+     * @return  array|bool
      **/
     public function saveAll($models)
     {

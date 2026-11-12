@@ -950,7 +950,7 @@ class BibTex
      * Is there a warning?
      *
      * @access public
-     * @return true   if there is, false otherwise
+     * @return bool   if there is, false otherwise
      */
     public function hasWarning()
     {

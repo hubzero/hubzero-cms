@@ -49,7 +49,7 @@ class Related extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   integer  $miniview     View style
-     * @return  array
+     * @return  array|false
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {

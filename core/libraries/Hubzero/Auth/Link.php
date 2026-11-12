@@ -294,7 +294,7 @@ class Link extends Relational
      * Also include auth domain name for easy display of domain name
      *
      * @param   integer  $user_id  ID of user to return accounts for
-     * @return  array    Array of auth link entries for the given user_id
+     * @return  array|false    Array of auth link entries for the given user_id
      */
     public static function findByUserId($user_id = null)
     {

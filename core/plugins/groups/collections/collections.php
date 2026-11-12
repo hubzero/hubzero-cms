@@ -784,7 +784,7 @@ class Collections extends Plugin
      * Start following something
      *
      * @param   string  $what
-     * @return  string
+     * @return  string|null
      */
     private function follow($what = 'collection')
     {
@@ -852,7 +852,7 @@ class Collections extends Plugin
      * Stop following soemthing
      *
      * @param   string  $what
-     * @return  string
+     * @return  string|null
      */
     private function unfollow($what = 'collection')
     {
@@ -1053,7 +1053,7 @@ class Collections extends Plugin
      * Display a form for editing an entry
      *
      * @param   object  $entry
-     * @return  string
+     * @return  string|null
      */
     private function edit($entry = null)
     {
@@ -1417,7 +1417,7 @@ class Collections extends Plugin
     /**
      * Repost an entry
      *
-     * @return  string
+     * @return  string|null
      */
     private function repost()
     {
@@ -1970,7 +1970,7 @@ class Collections extends Plugin
     /**
      * Save a comment
      *
-     * @return  string
+     * @return  string|null
      */
     private function savecomment()
     {
@@ -2108,7 +2108,7 @@ class Collections extends Plugin
     /**
      * Delete a comment
      *
-     * @return  string
+     * @return  string|null
      */
     private function deletecomment()
     {
@@ -2336,7 +2336,7 @@ class Collections extends Plugin
      * Display a form for editing a collection
      *
      * @param   object  $row
-     * @return  string
+     * @return  string|null
      */
     private function editcollection($row = null)
     {

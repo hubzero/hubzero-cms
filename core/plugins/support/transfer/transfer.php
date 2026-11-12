@@ -37,7 +37,7 @@ class Transfer extends Plugin
      * @param   integer  $from_id
      * @param   string   $to_type
      * @param   integer  $rid
-     * @return  integer
+     * @return  integer|false|null
      */
     public function transferItem($from_type, $from_id, $to_type, $rid = 0, $deactivate = 1)
     {

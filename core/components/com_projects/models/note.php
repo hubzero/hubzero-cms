@@ -33,7 +33,7 @@ class Note extends \Components\Wiki\Models\Book
     /**
      * Project id
      *
-     * @var  string
+     * @var  string|int
      */
     private $project_id = '';
 
@@ -293,7 +293,7 @@ class Note extends \Components\Wiki\Models\Book
      * Get path to wiki page images and files
      *
      * @param   integer  $id
-     * @return  string
+     * @return  string|false
      */
     public function getWikiPath($id = 0)
     {

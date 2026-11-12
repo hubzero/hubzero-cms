@@ -455,7 +455,7 @@ class Attachments extends Obj
      *
      * @param   string   $name
      * @param   boolean  $new
-     * @return  object
+     * @return  object|false
      */
     public function loadAttach($name, $new = false)
     {

@@ -52,7 +52,7 @@ class Review extends Base
     /**
      * Display block content
      *
-     * @return  string  HTML
+     * @return  string|null  HTML
      */
     public function display($pub = null, $manifest = null, $viewname = 'review', $blockId = 0)
     {
@@ -124,7 +124,7 @@ class Review extends Base
     /**
      * Save block content
      *
-     * @return  string  HTML
+     * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {

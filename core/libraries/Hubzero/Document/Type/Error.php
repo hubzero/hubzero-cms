@@ -92,7 +92,7 @@ class Error extends Base
      *
      * @param   boolean  $cache   If true, cache the output
      * @param   array    $params  Associative array of attributes
-     * @return  string   The rendered data
+     * @return  string|null   The rendered data
      */
     public function render($cache = false, $params = [])
     {

@@ -137,7 +137,7 @@ class Publications extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
     {
@@ -1810,7 +1810,7 @@ class Publications extends Plugin
     /**
      * Check if there is available space for publishing
      *
-     * @return     string
+     * @return     string|bool
      */
     protected function overQuota()
     {
@@ -2233,7 +2233,7 @@ class Publications extends Plugin
      *
      * @param   object   $pub
      * @param   integer  $originalStatus
-     * @return  string
+     * @return  string|null
      */
     public function onAfterChangeState($pub, $originalStatus = 3)
     {
@@ -2741,7 +2741,7 @@ class Publications extends Plugin
     /**
      * Get member path
      *
-     * @return     string
+     * @return     string|null
      */
     protected function getMemberPath()
     {
@@ -2766,7 +2766,7 @@ class Publications extends Plugin
      * Prep file directory (provisioned project)
      *
      * @param      boolean  $force
-     * @return     boolean
+     * @return     boolean|null
      */
     protected function prepDir($force = true)
     {

@@ -118,7 +118,7 @@ class Menutype extends Obj
      *
      * @param   string  $file
      * @param   string  $component
-     * @return  array
+     * @return  array|false
      */
     protected function getTypeOptionsFromXML($file, $component)
     {
@@ -191,7 +191,7 @@ class Menutype extends Obj
      * Method to get type options from MVC
      *
      * @param   object  $component
-     * @return  array
+     * @return  array|false
      */
     protected function getTypeOptionsFromMVC($component)
     {

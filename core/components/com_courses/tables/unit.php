@@ -63,7 +63,7 @@ class Unit extends Table
     /**
      * Override the check function to do a little input cleanup
      *
-     * @return return true
+     * @return bool  True
      */
     public function check()
     {

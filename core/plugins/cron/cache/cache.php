@@ -70,7 +70,7 @@ class Cache extends Plugin
      * Trash all expired cache data
      *
      * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
-     * @return  boolean
+     * @return  boolean|null
      */
     public function trashExpiredData(\Components\Cron\Models\Job $job)
     {
@@ -87,7 +87,7 @@ class Cache extends Plugin
      * Clean out old system CSS files
      *
      * @param   \Components\Cron\Models\Job $job  \Components\Cron\Models\Job
-     * @return  boolean
+     * @return  boolean|null
      */
     public function cleanSystemCss(\Components\Cron\Models\Job $job)
     {

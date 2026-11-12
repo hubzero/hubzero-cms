@@ -42,7 +42,7 @@ class Node extends Obj
     /**
      * Node Id
      *
-     * @var  string
+     * @var  string|null
      */
     public $id = null;
 

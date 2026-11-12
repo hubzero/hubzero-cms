@@ -24,7 +24,7 @@ class Forum extends Plugin
      * @param   integer  $refid     Comment ID
      * @param   string   $category  Item type (kb)
      * @param   integer  $parent    Parent ID
-     * @return  array
+     * @return  array|null
      */
     public function getReportedItem($refid, $category, $parent)
     {
@@ -113,7 +113,7 @@ class Forum extends Plugin
      *
      * @param   string  $refid     ID of the database table row
      * @param   string  $category  Element type (determines table to look in)
-     * @return  string
+     * @return  string|null
      */
     public function onReportItem($refid, $category)
     {

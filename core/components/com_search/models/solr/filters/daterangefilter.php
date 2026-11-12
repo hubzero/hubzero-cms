@@ -66,7 +66,7 @@ class Daterangefilter extends Filter
      *
      * @param   object   $query  Solarium object that builds the solr query
      * @param   array   $selectedFilters  list of options currently selected
-     * @return  string
+     * @return  string|bool
      */
     public function applyFilters($query, $selectedFilters)
     {

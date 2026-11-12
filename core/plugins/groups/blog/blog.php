@@ -845,7 +845,7 @@ class Blog extends Plugin
     /**
      * Delete an entry
      *
-     * @return  string
+     * @return  string|null
      */
     private function delete()
     {
@@ -1064,7 +1064,7 @@ class Blog extends Plugin
     /**
      * Delete a comment
      *
-     * @return  string
+     * @return  string|null
      */
     private function deletecomment()
     {
@@ -1156,7 +1156,7 @@ class Blog extends Plugin
     /**
      * Display blog settings
      *
-     * @return  string
+     * @return  string|null
      */
     private function settings()
     {

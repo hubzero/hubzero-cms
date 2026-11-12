@@ -148,7 +148,7 @@ class Document extends Obj
     /**
      * Get Template Buffer
      *
-     * @return  string
+     * @return  string|null
      */
     private function getBuffer($tag, $type = null, $name = null, $params = [])
     {

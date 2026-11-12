@@ -155,7 +155,7 @@ class Page extends Relational
     /**
      * Create a page hit
      *
-     * @return  object
+     * @return  object|bool
      */
     public function hit()
     {

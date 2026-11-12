@@ -291,7 +291,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Whether or not we're caching query results
      *
-     * @var string
+     * @var string|bool
      **/
     private $noCache = false;
 

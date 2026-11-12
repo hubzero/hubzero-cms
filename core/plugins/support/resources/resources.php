@@ -39,7 +39,7 @@ class Resources extends Plugin
      * @param   integer  $refid     Comment ID
      * @param   string   $category  Item type (kb)
      * @param   integer  $parent    Parent ID
-     * @return  array
+     * @return  array|null
      */
     public function getReportedItem($refid, $category, $parent)
     {
@@ -120,7 +120,7 @@ class Resources extends Plugin
      *
      * @param   string   $category  Element type (determines text)
      * @param   integer  $parentid  ID of element to retrieve
-     * @return  string
+     * @return  string|null
      */
     public function getTitle($category, $parentid)
     {
@@ -146,7 +146,7 @@ class Resources extends Plugin
      *
      * @param   string  $refid     ID of the database table row
      * @param   string  $category  Element type (determines table to look in)
-     * @return  string
+     * @return  string|null
      */
     public function onReportItem($refid, $category)
     {
@@ -189,7 +189,7 @@ class Resources extends Plugin
      * @param      integer $parentid    If the element has a parent element
      * @param      string  $category    Element type (determines table to look in)
      * @param      string  $message     Message to user to append to
-     * @return     string
+     * @return     string|null|false
      */
     public function deleteReportedItem($referenceid, $parentid, $category, $message)
     {

@@ -86,7 +86,7 @@ class SingleSkuProduct extends Product
     /**
      * Update product info
      *
-     * @return object   info
+     * @return object|bool   info
      */
     public function update()
     {

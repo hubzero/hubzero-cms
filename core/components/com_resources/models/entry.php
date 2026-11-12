@@ -169,14 +169,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Tool
      *
-     * @var  object
+     * @var  object|null
      */
     public $thistool = null;
 
     /**
      * Tool
      *
-     * @var  object
+     * @var  object|null
      */
     public $curtool = null;
 

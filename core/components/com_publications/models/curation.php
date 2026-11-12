@@ -1039,7 +1039,7 @@ class Curation extends Obj
      * @param   string   $name     Block name
      * @param   object   $pub      Publication object
      * @param   integer  $blockId  Numeric block ID
-     * @return  object
+     * @return  object|false
      */
     public function getStatus($name, $pub, $blockId = 0)
     {
@@ -1220,7 +1220,7 @@ class Curation extends Obj
      * @param   integer  $elementId  Element ID in question
      * @param   object   $pub        Publication object
      * @param   integer  $blockId    Numeric block ID
-     * @return  object
+     * @return  object|false
      */
     public function getElementStatus($name, $elementId, $pub, $blockId)
     {

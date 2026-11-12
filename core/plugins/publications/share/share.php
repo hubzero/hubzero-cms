@@ -53,7 +53,7 @@ class Share extends Plugin
      * @param   string   $rtrn
      * @param   string   $version
      * @param   boolean  $extended
-     * @return  array
+     * @return  array|null
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {

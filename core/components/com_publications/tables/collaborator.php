@@ -52,7 +52,7 @@ class Collaborator extends Table
      * @param   string  $orcid
      * @param   string  $accessToken
      *
-     * @return  object or false
+     * @return  object|false or false
      */
     public function saveORCIDRecord($name, $orcid, $accessToken)
     {

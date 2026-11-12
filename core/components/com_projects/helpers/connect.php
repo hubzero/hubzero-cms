@@ -409,7 +409,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   boolean  $force
-     * @return  object
+     * @return  object|false
      */
     public function startClient($service = 'google', $uid = 0, $force = false)
     {
@@ -481,7 +481,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
-     * @return  object
+     * @return  object|false
      */
     public function getAPI($service = 'google', $uid = 0)
     {
@@ -571,7 +571,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   array    $shared   Array of emails with whom master remote folder is shared
-     * @return  String
+     * @return  String|bool
      */
     public function getRemoteDirectory($service = 'google', $uid = 0, $shared = [])
     {
@@ -706,7 +706,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   string|int $id       Remote ID
-     * @return  string
+     * @return  string|false
      */
     public function loadRemoteResource($service = 'google', $uid = 0, $id = 0)
     {
@@ -863,7 +863,7 @@ class Connect extends Obj
      * @param   array    $local      Array of local file info
      * @param   string   $parentId   Parent folder ID
      * @param   boolean  $convert    Convert for remote editing? (Google only)
-     * @return  array
+     * @return  array|false
      */
     public function updateRemoteFile(
         $projectid = null,
@@ -975,7 +975,7 @@ class Connect extends Obj
      * @param   string   $remoteid   Remote resource ID
      * @param   array    $local      Array of local file info
      * @param   string   $parentId   Parent folder ID
-     * @return  array
+     * @return  array|false
      */
     public function renameRemoteItem(
         $projectid = null,
@@ -1059,7 +1059,7 @@ class Connect extends Obj
      * @param   string   $remoteid   Remote resource ID
      * @param   array    $local      Array of local file info
      * @param   string   $parentId   Parent folder ID
-     * @return  array
+     * @return  array|false
      */
     public function moveRemoteItem(
         $projectid = null,
@@ -1181,7 +1181,7 @@ class Connect extends Obj
      * @param   string   $path            Path to folder
      * @param   string   $parentId        Parent folder ID
      * @param   array    &$remoteFolders  Collector array
-     * @return  integer (folder ID)
+     * @return  integer|false|null (folder ID)
      */
     public function createRemoteFolder(
         $projectid = null,
@@ -1270,7 +1270,7 @@ class Connect extends Obj
      * @param   integer  $uid             User ID
      * @param   array    $local           Array of local file info
      * @param   array    &$remoteFolders  Collector array
-     * @return  integer
+     * @return  integer|false
      */
     public function prepRemoteParent(
         $projectid = null,
@@ -1328,7 +1328,7 @@ class Connect extends Obj
      * @param   string|int $id       Remote ID
      * @param   integer  $uid      User ID
      * @param   string   $service  Service name (google)
-     * @return  array
+     * @return  array|false
      */
     public function getFileHistory($id = 0, $uid = 0, $service = 'google')
     {
@@ -1375,7 +1375,7 @@ class Connect extends Obj
      * @param   integer  $revision  remote revision ID
      * @param   integer  $uid       User ID
      * @param   string   $service   Service name (google)
-     * @return  array
+     * @return  array|false
      */
     public function getFileRevision($id = 0, $revision = 0, $uid = 0, $service = 'google')
     {
@@ -1604,7 +1604,7 @@ class Connect extends Obj
      * @param   array    $deletes        Collector array for deleted items
      * @param   array    $connections    Array of local-remote connections
      * @param   string   $path           Path
-     * @return  integer  change ID
+     * @return  integer|false  change ID
      */
     public function getChangedItems($service, $uid, $startChangeId, &$remotes, &$deletes, $connections = [], $path = '')
     {
@@ -1645,7 +1645,7 @@ class Connect extends Obj
      * @param   integer  $uid          User ID
      * @param   string   $since        last sync date
      * @param   array    $connections  Array of local-remote connections
-     * @return  array
+     * @return  array|false
      */
     public function getRemoteItems($service = 'google', $uid = 0, $since = '', $connections = [])
     {
@@ -1755,7 +1755,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   string   $url      Request URL
-     * @return  string
+     * @return  string|false|null
      */
     public function sendHttpRequest($service = 'google', $uid = 0, $url = '')
     {
@@ -1796,7 +1796,7 @@ class Connect extends Obj
      * @param   string  $service  Service name (google or dropbox)
      * @param   string  $remote   Remote resource array
      * @param   string  $path     Project repo path
-     * @return  string or boolean
+     * @return  string|bool or boolean
      */
     public function downloadFileCurl($service = 'google', $uid = 0, $url = '', $path = '')
     {
@@ -1836,7 +1836,7 @@ class Connect extends Obj
      * @param   array    $remote      Remote resource array
      * @param   string   $path        Project repo path
      * @param   boolean  $getContent  Output file content? Or write to file
-     * @return  string or boolean
+     * @return  string|bool or boolean
      */
     public function downloadFile($service = 'google', $uid = 0, $remote = [], $path = '', $getContent = false)
     {
@@ -1870,7 +1870,7 @@ class Connect extends Obj
      * @param   string   $path        Project repo path
      * @param   string   $ext         Extension
      * @param   boolean  $getContent  Output file content? Or write to file
-     * @return  string or boolean
+     * @return  string|bool or boolean
      */
     public function importFile(
         $service = 'google',
@@ -2066,7 +2066,7 @@ class Connect extends Obj
      *
      * @param   string  $service  Service name (google or dropbox)
      * @param   string  $return   URL to return to after authorization
-     * @return  string  URL
+     * @return  string|false  URL
      */
     public function createAuthUrl($service, $return = '')
     {

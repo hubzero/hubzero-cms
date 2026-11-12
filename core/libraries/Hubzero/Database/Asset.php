@@ -59,7 +59,7 @@ class Asset
     /**
      * Gets the asset id for the object instance
      *
-     * @return  int
+     * @return  int|false
      **/
     public function getId()
     {

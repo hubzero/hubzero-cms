@@ -63,7 +63,7 @@ class Toolbar extends Obj
     /**
      * Push button onto the end of the toolbar array.
      *
-     * @return  string  The set value.
+     * @return  string|bool  The set value.
      */
     public function appendButton()
     {

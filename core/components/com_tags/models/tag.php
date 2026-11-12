@@ -519,7 +519,7 @@ class Tag extends Relational
     /**
      * Delete entry and associated data
      *
-     * @return  object
+     * @return  object|bool
      */
     public function destroy()
     {
@@ -551,7 +551,7 @@ class Tag extends Relational
     /**
      * Save entry
      *
-     * @return  object
+     * @return  object|bool
      */
     public function save()
     {

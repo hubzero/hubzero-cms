@@ -80,7 +80,7 @@ class Recent extends Relational
      *
      * @param   integer  $uid
      * @param   string   $tool
-     * @return  object
+     * @return  object|bool
      */
     public static function hit($uid, $tool)
     {

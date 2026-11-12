@@ -170,7 +170,7 @@ class Pages
      * for use with displaying the correct content
      *
      * @param    $group    \Hubzero\User\Group Object
-     * @return   string
+     * @return   string|null
      */
     public static function getActivePage($group, $pages = [])
     {

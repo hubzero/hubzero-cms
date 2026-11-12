@@ -206,7 +206,7 @@ class Asset
      * @param   string   $attribs    The target attribute to use
      * @param   array|false $relative   An associative array of attributes to add
      * @param   boolean  $path_only  If set to true, it tries to find an override for the file in the template
-     * @return  string
+     * @return  string|null
      */
     public static function image($file, $alt, $attribs = null, $relative = false, $path_only = false)
     {

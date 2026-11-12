@@ -99,7 +99,7 @@ class Filesystem
      *
      * @param   string  $path
      * @param   string  $contents
-     * @return  int
+     * @return  int|bool
      */
     public function write($path, $contents)
     {

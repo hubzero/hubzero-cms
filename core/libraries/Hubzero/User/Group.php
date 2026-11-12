@@ -1330,7 +1330,7 @@ class Group extends Obj
      * Get emails for users
      *
      * @param   string  $tbl
-     * @return  array
+     * @return  array|false
      */
     public function getEmails($tbl = 'managers')
     {
@@ -1362,7 +1362,7 @@ class Group extends Obj
      *
      * @param   string  $tbl
      * @param   string  $q
-     * @return  array
+     * @return  array|false
      */
     public function search($tbl = '', $q = '')
     {

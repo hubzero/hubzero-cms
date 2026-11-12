@@ -75,7 +75,7 @@ class FileWriter
      *
      * @param   string  $client
      * @param   string  $group
-     * @return  string
+     * @return  string|null
      */
     private function getPath($client, $group)
     {

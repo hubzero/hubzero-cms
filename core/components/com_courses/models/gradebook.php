@@ -586,7 +586,7 @@ class GradeBook extends Base
      *
      * @param      int $member_id (optional)
      * @param      bool $section only (optional)
-     * @return     array
+     * @return     array|false
      **/
     public function passing($section = true, $member_id = null)
     {

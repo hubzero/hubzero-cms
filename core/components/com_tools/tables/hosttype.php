@@ -146,7 +146,7 @@ class Hosttype extends Table
      * can be overloaded/supplemented by the child class
      *
      * @param   integer  $oid
-     * @return  true     if successful otherwise returns and error message
+     * @return  bool     if successful otherwise returns and error message
      */
     public function delete($oid = null)
     {

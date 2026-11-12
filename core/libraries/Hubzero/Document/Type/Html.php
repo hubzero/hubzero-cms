@@ -80,7 +80,7 @@ class Html extends Base
     /**
      * Integer with caching setting
      *
-     * @var  integer
+     * @var  integer|bool
      */
     protected $caching = null;
 
@@ -126,7 +126,7 @@ class Html extends Base
      * Set the HTML document head data
      *
      * @param   array   $data  The document head data in array form
-     * @return  object  instance of $this to allow chaining
+     * @return  object|null  instance of $this to allow chaining
      */
     public function setHeadData($data)
     {
@@ -156,7 +156,7 @@ class Html extends Base
      * Merge the HTML document head data
      *
      * @param   array   $data  The document head data in array form
-     * @return  object  instance of $this to allow chaining
+     * @return  object|null  instance of $this to allow chaining
      */
     public function mergeHeadData($data)
     {
@@ -280,7 +280,7 @@ class Html extends Base
      * @param   string  $type     The type of renderer
      * @param   string  $name     The name of the element to render
      * @param   array   $attribs  Associative array of remaining attributes.
-     * @return  The output of the renderer
+     * @return  The|null output of the renderer
      */
     public function getBuffer($type = null, $name = null, $attribs = [])
     {

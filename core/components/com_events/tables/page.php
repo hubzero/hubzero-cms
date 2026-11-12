@@ -96,7 +96,7 @@ class Page extends Table
      * Get all pages for an event
      *
      * @param   integer  $event_id  Event ID
-     * @return  array
+     * @return  array|false
      */
     public function loadPages($event_id = null)
     {

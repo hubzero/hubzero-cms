@@ -78,7 +78,7 @@ class Book extends Obj
      * This is largely Help pages
      *
      * @param   string  $option  Component name
-     * @return  string
+     * @return  string|null
      */
     public function scribe($option)
     {

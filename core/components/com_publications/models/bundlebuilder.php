@@ -1303,7 +1303,7 @@ class BundleBuilder
      * its files flat) — callers must NOT fall back to a stray standalone.
      *
      * @param   string  $outerPath
-     * @return  string
+     * @return  string|null
      */
     protected function servedInnerName($outerPath)
     {

@@ -194,7 +194,7 @@ class Tool extends Table
      * Get a ticket ID for a tool
      *
      * @param   string   $toolid
-     * @return  integer
+     * @return  integer|false
      */
     public function getTicketId($toolid = null)
     {
@@ -209,7 +209,7 @@ class Tool extends Table
      * Get a resource ID for a tool
      *
      * @param   integer  $toolid
-     * @return  integer
+     * @return  integer|false
      */
     public function getResourceId($toolid = null)
     {
@@ -255,7 +255,7 @@ class Tool extends Table
      * Get a tool ID from a resource
      *
      * @param   integer  $rid
-     * @return  integer
+     * @return  integer|false
      */
     public function getToolIdFromResource($rid = null)
     {

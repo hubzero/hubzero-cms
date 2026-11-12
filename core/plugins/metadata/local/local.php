@@ -40,7 +40,7 @@ class Local extends Plugin
      *
      * @param   \Hubzero\Filesystem\File $file        The file to which the metadata pertains
      * @param   int                      $maxEntries  The maximum number of entries to return
-     * @return  array
+     * @return  array|false
      **/
     public function onMetadataGet(\Hubzero\Filesystem\File $file, $maxEntries = 1)
     {

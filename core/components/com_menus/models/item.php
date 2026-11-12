@@ -559,7 +559,7 @@ class Item extends Nested
      * @param   integer  $leftId    The left id to start with in building the tree.
      * @param   integer  $level     The level to assign to the current nodes.
      * @param   string   $path      The path to the current nodes.
-     * @return  integer  1 + value of root rgt on success, false on failure
+     * @return  integer|false  1 + value of root rgt on success, false on failure
      */
     public function rebuild($parentId, $leftId = 0, $level = 0, $path = '')
     {

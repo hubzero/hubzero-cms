@@ -127,7 +127,7 @@ class Substitute extends Relational
     /**
      * Save entry
      *
-     * @return  object
+     * @return  object|bool
      */
     public function save()
     {

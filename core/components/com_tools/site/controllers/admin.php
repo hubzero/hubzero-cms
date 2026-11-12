@@ -51,7 +51,7 @@ class Admin extends SiteController
      * Get the most recent message
      *
      * @param      integer $i Option message index
-     * @return     string  Error message
+     * @return     string|false  Error message
      */
     public function getMessage($i = null)
     {
