@@ -1240,7 +1240,7 @@ class Connections
         $view->set('subdir', $this->subdir);
         $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
 
-        if (count($view->items) == 0) {
+        if (count($view->get('items')) == 0) {
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
         }
 
@@ -1316,7 +1316,7 @@ class Connections
         $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
         $view->set('connection', $this->connection);
 
-        if (count($view->items) == 0) {
+        if (count($view->get('items')) == 0) {
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
         }
 

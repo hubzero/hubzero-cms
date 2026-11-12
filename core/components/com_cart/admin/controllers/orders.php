@@ -95,7 +95,7 @@ class Orders extends AdminController
         $this->view->filters['count'] = false;
         $this->view->set('rows', Cart::getAllTransactions($this->view->filters));
 
-        if (!$this->view->rows) {
+        if (!$this->view->get('rows')) {
             $this->view->rows = [];
         }
 
@@ -433,7 +433,7 @@ class Orders extends AdminController
             ),
         ]);
 
-        if ($this->view->filters['order']) {
+        if ($this->view->get('filters')['order']) {
             $this->view->filters['report-from'] = '';
             $this->view->filters['report-to'] = '';
         }

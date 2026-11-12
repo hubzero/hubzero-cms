@@ -69,7 +69,7 @@ class Locations extends AdminController
             ),
         ]);
 
-        if ($this->view->filters['tmpl'] == 'component') {
+        if ($this->view->get('filters')['tmpl'] == 'component') {
             $this->view->setLayout('component');
         } else {
             // Get paging variables
@@ -134,7 +134,7 @@ class Locations extends AdminController
 
         $this->view->set('zone', Request::getInt('zone', 0));
         if (!$this->view->get('row')->exists()) {
-            $this->view->get('row')->set('zone_id', $this->view->zone);
+            $this->view->get('row')->set('zone_id', $this->view->get('zone'));
         }
         $this->view->set('tmpl', Request::getCmd('tmpl', ''));
 

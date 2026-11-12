@@ -60,7 +60,7 @@ class Membership extends AdminController
         ]);
 
         // Ensure we have a group ID
-        if (!$this->view->filters['gid']) {
+        if (!$this->view->get('filters')['gid']) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
@@ -148,7 +148,7 @@ class Membership extends AdminController
         // Membership terms for the whole roster in one query, so the list can
         // show and filter on them without asking per row
         $this->view->set('expiration_supported', \Hubzero\User\Group\Membership::supported());
-        $this->view->set('expirations', $this->view->expiration_supported
+        $this->view->set('expirations', $this->view->get('expiration_supported')
             ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
             : []);
 
@@ -162,7 +162,7 @@ class Membership extends AdminController
         // set already includes invite-email pseudo-rows that have no
         // membership row to join against.
         if ($this->view->expiration_supported && $this->view->filters['term'] != '') {
-            $terms = $this->view->expirations;
+            $terms = $this->view->get('expirations');
             $want  = $this->view->filters['term'];
             $soon  = time() + (30 * 86400);
 
@@ -181,11 +181,11 @@ class Membership extends AdminController
 
                 return true;
             };
-            $this->view->set('rows', array_filter((array) $this->view->rows, $wanted));
+            $this->view->set('rows', array_filter((array) $this->view->get('rows'), $wanted));
 
             // The count no longer matches the filtered set; pagination is
             // against the filtered rows
-            $this->view->set('total', count($this->view->rows));
+            $this->view->set('total', count($this->view->get('rows')));
         }
 
         // Set any errors

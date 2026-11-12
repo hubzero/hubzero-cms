@@ -153,7 +153,7 @@ class Manage extends AdminController
 
         // Get a list of all groups
         $this->view->set('rows', []);
-        if ($this->view->total > 0) {
+        if ($this->view->get('total') > 0) {
             if ($rows = Group::find($this->view->filters)) {
                 $this->view->set('rows', $rows);
             }

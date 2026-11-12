@@ -79,7 +79,7 @@ class Membership extends Base
         // Load the group page
         $this->view->set('group', Group::getInstance($this->cn));
 
-        if (!$this->view->group) {
+        if (!$this->view->get('group')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -90,7 +90,7 @@ class Membership extends Base
         }
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -162,7 +162,7 @@ class Membership extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -335,7 +335,7 @@ class Membership extends Base
         $eview->set('option', $this->option);
         $eview->set('sitename', Config::get('sitename'));
         $eview->set('user', User::getInstance());
-        $eview->set('group', $this->view->group);
+        $eview->set('group', $this->view->get('group'));
         $eview->set('msg', $msg);
 
         $plain = $eview->loadTemplate(false);
@@ -454,7 +454,7 @@ class Membership extends Base
             $eview2->set('option', $this->option);
             $eview2->set('sitename', Config::get('sitename'));
             $eview2->set('user', User::getInstance());
-            $eview2->set('group', $this->view->group);
+            $eview2->set('group', $this->view->get('group'));
             $eview2->set('msg', $msg);
             $eview2->set('token', $mbr['token']);
 
@@ -581,7 +581,7 @@ class Membership extends Base
         $this->view->set('group', \Hubzero\User\Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -723,7 +723,7 @@ class Membership extends Base
         $eview->set('option', $this->option);
         $eview->set('sitename', Config::get('sitename'));
         $eview->set('user', User::getInstance());
-        $eview->set('group', $this->view->group);
+        $eview->set('group', $this->view->get('group'));
         $body = $eview->loadTemplate();
         $body = str_replace("\n", "\r\n", $body);
 
@@ -804,7 +804,7 @@ class Membership extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -855,7 +855,7 @@ class Membership extends Base
         $eview->set('option', $this->option);
         $eview->set('sitename', Config::get('sitename'));
         $eview->set('user', User::getInstance());
-        $eview->set('group', $this->view->group);
+        $eview->set('group', $this->view->get('group'));
         $message = $eview->loadTemplate();
         $message = str_replace("\n", "\r\n", $message);
 
@@ -945,7 +945,7 @@ class Membership extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -1110,7 +1110,7 @@ class Membership extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -1200,7 +1200,7 @@ class Membership extends Base
         $eview->set('option', $this->option);
         $eview->set('sitename', Config::get('sitename'));
         $eview->set('user', User::getInstance());
-        $eview->set('group', $this->view->group);
+        $eview->set('group', $this->view->get('group'));
         $eview->set('row', $row);
         $html = $eview->loadTemplate();
         $html = str_replace("\n", "\r\n", $html);

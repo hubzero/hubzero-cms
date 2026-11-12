@@ -64,7 +64,7 @@ class Collections extends SiteController
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
         ]);
-        if ($this->view->filters['id']) {
+        if ($this->view->get('filters')['id']) {
             $this->view->filters['object_type'] = 'site';
         }
 
@@ -110,7 +110,7 @@ class Collections extends SiteController
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
         ]);
-        if ($this->view->filters['id']) {
+        if ($this->view->get('filters')['id']) {
             $this->view->filters['object_type'] = 'site';
         }
 
@@ -150,7 +150,7 @@ class Collections extends SiteController
             'state'   => 1,
             'access'  => (!User::isGuest() ? [0, 1] : 0),
         ]);
-        if ($this->view->filters['id']) {
+        if ($this->view->get('filters')['id']) {
             $this->view->filters['object_type'] = 'site';
         }
 

@@ -291,7 +291,7 @@ class Groups extends Base
         // Get active tab
         $this->view->set('tab', Helpers\View::getTab($this->view->group));
         $this->view->set('trueTab', strtolower(Request::getString('active', 'overview')));
-        if ($this->view->get('group')->get('approved') != 1 && $this->view->trueTab != 'overview') {
+        if ($this->view->get('group')->get('approved') != 1 && $this->view->get('trueTab') != 'overview') {
             $this->unapprovedGroupTask();
 
             return;
@@ -316,7 +316,7 @@ class Groups extends Base
         // Add the overview content
         $overviewContent = '';
         $activePage      = null;
-        if ($this->view->tab == 'overview') {
+        if ($this->view->get('tab') == 'overview') {
             // Add home page to pages list
             $pages = Helpers\Pages::addHomePage($this->view->group, $pages);
 
@@ -324,7 +324,7 @@ class Groups extends Base
             $activePage = Helpers\Pages::getActivePage($this->view->group, $pages);
 
             // Are we on the login?
-            if ($this->view->trueTab == 'login') {
+            if ($this->view->get('trueTab') == 'login') {
                 $overviewContent = Helpers\View::superGroupLogin($this->view->group);
             }
 
@@ -378,10 +378,10 @@ class Groups extends Base
             // parse & render
             $superGroupTemplate = new Helpers\Template();
             $superGroupTemplate
-                ->set('group', $this->view->group)
-                ->set('tab', $this->view->trueTab)
-                ->set('content', $this->view->content)
-                ->set('page', $this->view->activePage)
+                ->set('group', $this->view->get('group'))
+                ->set('tab', $this->view->get('trueTab'))
+                ->set('content', $this->view->get('content'))
+                ->set('page', $this->view->get('activePage'))
                 ->parse()
                 ->render();
 
@@ -459,7 +459,7 @@ class Groups extends Base
             $this->view->set('group', Group::getInstance($this->cn));
 
             // Ensure we found the group info
-            if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+            if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
                 $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
             }
 
@@ -499,7 +499,7 @@ class Groups extends Base
             . DS
             . trim($this->config->get('uploadpath', '/site/groups'), DS)
             . DS
-            . $this->view->lid
+            . $this->view->get('lid')
             . DS
             . 'uploads';
 
@@ -541,7 +541,7 @@ class Groups extends Base
         $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
         $this->view->set('customFields', Field::all()->ordered('ordering'));
         $customAnswers = [];
-        foreach ($this->view->customFields as $field) {
+        foreach ($this->view->get('customFields') as $field) {
             $fieldName = $field->get('name');
             $customAnswers[$fieldName] = $field->collectGroupAnswers($this->view->get('group')->get('gidNumber'));
         }
@@ -1026,7 +1026,7 @@ class Groups extends Base
         $this->view->set('group', Group::getInstance($this->cn));
 
         // Ensure we found the group info
-        if (!$this->view->group || !$this->view->get('group')->get('gidNumber')) {
+        if (!$this->view->get('group') || !$this->view->get('group')->get('gidNumber')) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 

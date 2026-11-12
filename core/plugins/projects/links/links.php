@@ -708,7 +708,7 @@ class Links extends Plugin
             $this->model->get('id'),
         ));
 
-        if (!$view->publication) {
+        if (!$view->get('publication')) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
         }
 

@@ -512,7 +512,7 @@ class Publications extends Plugin
         // Load handler
         $modelHandler = new \Components\Publications\Models\Handlers($this->database);
         $view->set('handler', $modelHandler->ini($handler));
-        if (!$view->handler) {
+        if (!$view->get('handler')) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER'));
         } else {
             // Perform request

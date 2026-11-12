@@ -126,7 +126,7 @@ class Downloads extends AdminController
 
         // Clean filters -- reset to default if needed
         $allowedSorting = ['product', 'dName', 'dDownloaded', 'dStatus'];
-        if (!in_array($this->view->filters['sort'], $allowedSorting)) {
+        if (!in_array($this->view->get('filters')['sort'], $allowedSorting)) {
             $this->view->filters['sort'] = 'dDownloaded';
         }
 

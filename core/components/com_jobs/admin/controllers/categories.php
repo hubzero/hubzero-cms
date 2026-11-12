@@ -62,7 +62,7 @@ class Categories extends AdminController
 
         // Get records
         $this->view->set('rows', $jc->getCats($this->view->filters['sort'], $this->view->filters['sort_Dir'], 1));
-        $this->view->set('total', count($this->view->rows));
+        $this->view->set('total', count($this->view->get('rows')));
 
         // Output the HTML
         $this->view->display();

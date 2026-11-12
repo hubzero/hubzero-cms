@@ -89,7 +89,7 @@ class Assets extends AdminController
 
         // A scope id of 0 here means "every scope", but the table now reads a
         // zero as "match nothing", so drop the key instead of passing it.
-        $where = $this->view->filters;
+        $where = $this->view->get('filters');
 
         if (empty($where['asset_scope_id'])) {
             unset($where['asset_scope_id']);
@@ -122,7 +122,7 @@ class Assets extends AdminController
 
         // print_r($a);
 
-        $this->view->set('total', count($this->view->rows));
+        $this->view->set('total', count($this->view->get('rows')));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

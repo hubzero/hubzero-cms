@@ -159,7 +159,7 @@ class Citations extends SiteController
             'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED'),
         ]);
-        if (!in_array($this->view->filters['filter'], array_keys($this->view->filter))) {
+        if (!in_array($this->view->get('filters')['filter'], array_keys($this->view->get('filter')))) {
             $this->view->filters['filter'] = '';
         }
 
@@ -172,7 +172,7 @@ class Citations extends SiteController
             'author ASC'   => Lang::txt('COM_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL'),
         ]);
-        if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts))) {
+        if (!in_array($this->view->get('filters')['sort'], array_keys($this->view->get('sorts')))) {
             $this->view->filters['sort'] = 'created DESC';
         }
 

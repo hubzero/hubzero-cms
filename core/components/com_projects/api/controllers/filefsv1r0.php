@@ -711,14 +711,14 @@ class Filefsv1r0 extends ApiController
 
             // Get last revision
             if (!$view->get('file')->get('converted') && !$hash) {
-                $params['file'] = $view->file;
+                $params['file'] = $view->get('file');
                 $hash = $this->repo->getLastRevision($params);
                 $view->get('file')->set('hash', $hash);
             }
             $view->set('option', $this->option);
             $view->set('model', $this->model);
 
-            if (!($view->file instanceof \Components\Projects\Models\File)) {
+            if (!($view->get('file') instanceof \Components\Projects\Models\File)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
             }
             return $view->loadTemplate();

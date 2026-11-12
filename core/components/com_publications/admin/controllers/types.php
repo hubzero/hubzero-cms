@@ -197,7 +197,7 @@ class Types extends AdminController
             $database = App::get('db');
 
             $this->view->set('row', new \Components\Publications\Tables\MasterType($database));
-            $row = $this->view->row;
+            $row = $this->view->get('row');
 
             // Load object
             if (!$id || !$this->view->get('row')->load($id)) {
@@ -212,7 +212,7 @@ class Types extends AdminController
             $this->view->set('curation', new \Components\Publications\Models\Curation(
                 $this->view->get('row')->curation,
             ));
-            $curation = $this->view->curation;
+            $curation = $this->view->get('curation');
 
             // Go back to the confirmation page
             if (!$confirm) {

@@ -749,8 +749,8 @@ class Files extends Plugin
         }
 
         $partial = Request::getInt('partial', 0);
-        if ($ajax && $view->showCons && $partial) {
-            return $view->connections;
+        if ($ajax && $view->get('showCons') && $partial) {
+            return $view->get('connections');
         }
         return $view->loadTemplate();
     }
@@ -1529,7 +1529,7 @@ class Files extends Plugin
         // Get file previews
         $i = 0;
         foreach ($versions as $v) {
-            $revision = $view->file;
+            $revision = $view->get('file');
             $revision->set('localPath', $v['base']);
             $revision->set('name', $v['file']);
             $revision->set('fullPath', $this->repo->get('path') . DS . $v['base']);
@@ -1822,14 +1822,14 @@ class Files extends Plugin
 
             // Get last revision
             if (!$view->get('file')->get('converted') && !$hash) {
-                $params['file'] = $view->file;
+                $params['file'] = $view->get('file');
                 $hash = $this->repo->getLastRevision($params);
                 $view->get('file')->set('hash', $hash);
             }
             $view->set('option', $this->componentOption);
             $view->set('model', $this->model);
 
-            if (!($view->file instanceof \Components\Projects\Models\File)) {
+            if (!($view->get('file') instanceof \Components\Projects\Models\File)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
             }
             return $view->loadTemplate();
@@ -2195,10 +2195,10 @@ class Files extends Plugin
                 // Fix up object width & height
                 list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile);
 
-                $xRatio = $view->oWidth / $width;
-                $yRatio = $view->oHeight / $height;
+                $xRatio = $view->get('oWidth') / $width;
+                $yRatio = $view->get('oHeight') / $height;
 
-                if ($xRatio * $height < $view->oHeight) {
+                if ($xRatio * $height < $view->get('oHeight')) {
                     // Resize the image based on width
                     $view->oHeight = ceil($xRatio * $height);
                 } else {
@@ -2676,7 +2676,7 @@ class Files extends Plugin
                 ));
             }
 
-            $view->set('dirsize', $view->totalspace);
+            $view->set('dirsize', $view->get('totalspace'));
         }
 
         // Get publication usage

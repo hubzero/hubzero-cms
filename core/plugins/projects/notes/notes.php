@@ -318,7 +318,7 @@ class Notes extends Plugin
 
         // Default view to first available note if no page is requested
         if (!$this->pagename && $this->task != 'new' && $this->task != 'save') {
-            $this->pagename = $view->firstNote ? $view->firstNote : '';
+            $this->pagename = $view->get('firstNote') ? $view->get('firstNote') : '';
         }
 
         // Are we saving?
@@ -362,7 +362,7 @@ class Notes extends Plugin
             }
         }
 
-        if (!$view->content) {
+        if (!$view->get('content')) {
             $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->controllerName);
             // Instantiate controller
             $controller = new $controllerName([
@@ -508,7 +508,7 @@ class Notes extends Plugin
         $view->set('publicStamp', $this->note->getPublicStamp($page->get('id'), true));
         $view->set('option', $this->componentOption);
 
-        if (!$view->publicStamp) {
+        if (!$view->get('publicStamp')) {
             $this->setError(Lang::txt('PLG_PROJECTS_NOTES_ERROR_SHARE'));
 
             // Output error

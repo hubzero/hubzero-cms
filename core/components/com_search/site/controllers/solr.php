@@ -258,9 +258,9 @@ class Solr extends SiteController
             $this->view->set('facets', $searchComponents);
             $this->view->set('facetCounts', $facetCounts);
             $this->view->set('total', 0);
-            foreach ($this->view->facets as $facet) {
+            foreach ($this->view->get('facets') as $facet) {
                 $facetIndex = $facet->getQueryName();
-                $this->view->set('total', $this->view->total + $facetCounts[$facetIndex]);
+                $this->view->set('total', $this->view->get('total') + $facetCounts[$facetIndex]);
             }
         } else {
             $this->view->set('queryString', '');

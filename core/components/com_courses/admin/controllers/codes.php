@@ -76,9 +76,9 @@ class Codes extends AdminController
         );
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor(
-            $this->view->filters['start'] / $this->view->filters['limit'],
-        ) * $this->view->filters['limit']) : 0);
+        $this->view->filters['start'] = ($this->view->get('filters')['limit'] != 0 ? (floor(
+            $this->view->get('filters')['start'] / $this->view->get('filters')['limit'],
+        ) * $this->view->get('filters')['limit']) : 0);
 
         $this->view->filters['count'] = true;
 

@@ -106,8 +106,8 @@ class Sections extends AdminController
         );
 
         // In case limit has been changed, adjust limitstart accordingly
-        $limit = $this->view->filters['limit'];
-        $start = $this->view->filters['start'];
+        $limit = $this->view->get('filters')['limit'];
+        $start = $this->view->get('filters')['start'];
         $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
         $this->view->filters['count'] = true;

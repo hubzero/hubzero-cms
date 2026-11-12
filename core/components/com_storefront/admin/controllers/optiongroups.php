@@ -69,7 +69,7 @@ class Optiongroups extends AdminController
         // For all records here get options
         $options = new \stdClass();
         $warehouse = new Warehouse();
-        foreach ($this->view->rows as $r) {
+        foreach ($this->view->get('rows') as $r) {
             $key = $r->ogId;
             $allOptions = $warehouse->getOptionGroupOptions($key, 'rows', false);
 

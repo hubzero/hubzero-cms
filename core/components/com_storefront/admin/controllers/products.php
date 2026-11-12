@@ -85,7 +85,7 @@ class Products extends AdminController
         // For all records here get SKUs
         $skus = new \stdClass();
         $warehouse = new Warehouse();
-        foreach ($this->view->rows as $r) {
+        foreach ($this->view->get('rows') as $r) {
             $key = $r->pId;
             $allSkus = $warehouse->getProductSkus($r->pId, 'all', false);
 

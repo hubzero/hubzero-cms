@@ -264,7 +264,7 @@ class Posts extends SiteController
 
         // If not being called through AJAX
         // push scripts and styles to document
-        if (!$this->view->no_html) {
+        if (!$this->view->get('no_html')) {
             $filters = [
                 'count'   => true,
                 'access'  => 0,

@@ -67,7 +67,7 @@ class Students extends AdminController
             'offering',
             \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
         );
-        $this->view->filters['offering_id'] = $this->view->filters['offering'];
+        $this->view->filters['offering_id'] = $this->view->get('filters')['offering'];
         /*if (!$this->view->offering->exists())
         {
             App::redirect(
@@ -112,7 +112,7 @@ class Students extends AdminController
 
         //$this->view->offering->students($this->view->filters);
         $this->view->set('rows', $tbl->find($this->view->filters));
-        if ($this->view->rows) {
+        if ($this->view->get('rows')) {
             foreach ($this->view->rows as $key => $row) {
                 $this->view->rows[$key] = new \Components\Courses\Models\Student($row);
             }
@@ -415,7 +415,7 @@ class Students extends AdminController
             'offering',
             \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']),
         );
-        $this->view->filters['offering_id'] = $this->view->filters['offering'];
+        $this->view->filters['offering_id'] = $this->view->get('filters')['offering'];
         $this->view->set(
             'course',
             \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
@@ -433,7 +433,7 @@ class Students extends AdminController
 
         //$this->view->offering->students($this->view->filters);
         $this->view->set('rows', $tbl->find($this->view->filters));
-        if ($this->view->rows) {
+        if ($this->view->get('rows')) {
             foreach ($this->view->rows as $key => $row) {
                 $this->view->rows[$key] = new \Components\Courses\Models\Student($row);
             }

@@ -292,7 +292,7 @@ class Team extends Plugin
         if (!$edit) {
             $view->filters['online']   = 1;
         }
-        if ($view->filters['limit'] > $view->total) {
+        if ($view->filters['limit'] > $view->get('total')) {
             $view->filters['start'] = 0;
         }
         // Get all active team members

@@ -208,13 +208,13 @@ class Tickets extends SiteController
         // Users
         $this->view->set('users', null);
 
-        if ($this->view->group == '_none_') {
+        if ($this->view->get('group') == '_none_') {
             $query = "SELECT DISTINCT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
 					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . " AND s.group_id=0
 					ORDER BY a.name";
-        } elseif ($this->view->group) {
+        } elseif ($this->view->get('group')) {
             $query = "SELECT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__xgroups_members` AS gm ON gm.uidNumber=a.id
@@ -263,12 +263,12 @@ class Tickets extends SiteController
         $startmonth = 1;
 
         $this->view->set('start', Request::getString('start', $first . '-01'));
-        if ($this->view->start != $first . '-01') {
-            if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->start)) {
+        if ($this->view->get('start') != $first . '-01') {
+            if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->get('start'))) {
                 $this->view->set('start', $first . '-01');
             }
 
-            if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs)) {
+            if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->get('start'), $regs)) {
                 $startmonth = date("m", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
                 $startyear = $first = date("Y", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
                 //$end = $year . '-' . $month;
@@ -282,7 +282,7 @@ class Tickets extends SiteController
         $endyear++;
 
         $end = '';
-        if ($this->view->end) {
+        if ($this->view->get('end')) {
             if (!preg_match("/^([0-9]{4})-([0-9]{2})$/", $this->view->end)) {
                 $this->view->end = '';
             }
@@ -307,7 +307,7 @@ class Tickets extends SiteController
         $sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, open, status, owner
 				FROM `#__support_tickets`
 				WHERE report!=''
-				AND type=" . $this->view->type; // . " AND open=1";
+				AND type=" . $this->view->get('type'); // . " AND open=1";
         if ($this->view->group == '_none_') {
             $sql .= " AND `group_id`=0";
         } elseif ($this->view->group) {
@@ -317,7 +317,7 @@ class Tickets extends SiteController
             }
             $sql .= " AND `group_id`=" . $this->database->quote($gidNumber);
         }
-        if ($this->view->start && $end) {
+        if ($this->view->get('start') && $end) {
             $sql .= " AND created >= "
                 . $this->database->quote($this->view->start . '-01 00:00:00')
                 . " AND created < "
@@ -374,7 +374,7 @@ class Tickets extends SiteController
             }
             $sql .= " AND t.`group_id`=" . $this->database->quote($gidNumber);
         }
-        if ($this->view->start && $end) {
+        if ($this->view->get('start') && $end) {
             $sql .= " AND t.closed >= "
                 . $this->database->quote($this->view->start . '-01 00:00:00')
                 . " AND t.closed < "

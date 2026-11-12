@@ -1458,9 +1458,9 @@ class Publications extends SiteController
         }
 
         if ($ajax) {
-            echo $this->view->content;
+            echo $this->view->get('content');
             return;
-        } elseif (!$this->view->content && isset($content[0]['referer']) && $content[0]['referer'] != '') {
+        } elseif (!$this->view->get('content') && isset($content[0]['referer']) && $content[0]['referer'] != '') {
             App::redirect($content[0]['referer']);
         } elseif (empty($content)) {
             // plugin disabled?

@@ -155,7 +155,7 @@ class Screenshots extends SiteController
 
         // Incoming child ID
         $this->view->set('file', basename(str_replace('\\', '/', (string) Request::getString('filename', ''))));
-        if (!$this->view->file) {
+        if (!$this->view->get('file')) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
             $this->displayTask($pid, $version);
 
@@ -181,11 +181,11 @@ class Screenshots extends SiteController
         $this->view->set('wpath', DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir);
 
         // Make sure wpath is preceded by app
-        if (substr($this->view->wpath, 0, 4) != DS . 'app') {
-            $this->view->set('wpath', DS . 'app' . $this->view->wpath);
+        if (substr($this->view->get('wpath'), 0, 4) != DS . 'app') {
+            $this->view->set('wpath', DS . 'app' . $this->view->get('wpath'));
         }
 
-        $this->view->set('upath', PATH_ROOT . $this->view->wpath);
+        $this->view->set('upath', PATH_ROOT . $this->view->get('wpath'));
 
         // Instantiate a new screenshot object
         $shot = Screenshot::oneByFilename($this->view->file, $pid, $vid);
@@ -807,8 +807,8 @@ class Screenshots extends SiteController
         }
 
         // Make sure wpath is preceded by app
-        if (substr($this->view->wpath, 0, 4) != DS . 'app') {
-            $this->view->set('wpath', DS . 'app' . $this->view->wpath);
+        if (substr($this->view->get('wpath'), 0, 4) != DS . 'app') {
+            $this->view->set('wpath', DS . 'app' . $this->view->get('wpath'));
         }
 
         // get config

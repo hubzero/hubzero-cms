@@ -748,7 +748,7 @@ class Projects extends Base
             $this->view->set('pub', $pub);
             $this->view->set('suggested', $name);
             $this->view->set('verified', $verified);
-            $this->view->set('suggested', $verified ? $this->view->suggested : '');
+            $this->view->set('suggested', $verified ? $this->view->get('suggested') : '');
             $this->view->set('title', $this->title);
             $this->view->set('active', $this->active);
             $this->view->set('task', $this->task);

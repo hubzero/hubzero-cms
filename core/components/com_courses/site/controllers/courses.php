@@ -130,7 +130,7 @@ class Courses extends SiteController
 
         // Output HTML
         $allCoursesCount = count($all_courses);
-        $popularCoursesCount = count($this->view->popularcourses);
+        $popularCoursesCount = count($this->view->get('popularcourses'));
         $this->view->set('more_courses', ($allCoursesCount > $popularCoursesCount));
         $this->view->set('config', $this->config);
         $this->view->set('database', $this->database);
@@ -154,17 +154,17 @@ class Courses extends SiteController
             'sortby' => strtolower(Request::getWord('sortby', 'title')),
             'group'  => Request::getString('group', ''),
         ]);
-        if ($this->view->filters['group']) {
+        if ($this->view->get('filters')['group']) {
             $group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
             if ($group) {
                 $this->view->filters['group_id'] = $group->get('gidNumber');
             }
         }
         $validSorts = ['alias', 'title', 'popularity'];
-        if (!in_array($this->view->filters['sortby'], $validSorts)) {
+        if (!in_array($this->view->get('filters')['sortby'], $validSorts)) {
             $this->view->filters['sortby'] = 'title';
         }
-        switch ($this->view->filters['sortby']) {
+        switch ($this->view->get('filters')['sortby']) {
             case 'popularity':
                 $this->view->filters['sort']  = 'students';
                 $this->view->filters['sort_Dir'] = 'DESC';
@@ -172,7 +172,7 @@ class Courses extends SiteController
             case 'title':
             case 'alias':
             default:
-                $this->view->filters['sort']  = $this->view->filters['sortby'];
+                $this->view->filters['sort']  = $this->view->get('filters')['sortby'];
                 $this->view->filters['sort_Dir'] = 'ASC';
                 break;
         }

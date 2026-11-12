@@ -554,7 +554,7 @@ class Logo extends AdminController
         $this->view->set('dir', $id);
         $this->view->set('path', $this->path($this->view->type, $id));
 
-        switch ($this->view->type) {
+        switch ($this->view->get('type')) {
             case 'section':
                 $model = \Components\Courses\Models\Section::getInstance($id);
                 $this->view->set('file', $model->params('logo'));

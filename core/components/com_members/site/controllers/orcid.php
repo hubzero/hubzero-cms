@@ -463,7 +463,7 @@ class Orcid extends SiteController
             return;
         }
 
-        echo json_encode($this->view->orcid_records_html);
+        echo json_encode($this->view->get('orcid_records_html'));
 
         exit();
     }

@@ -161,7 +161,7 @@ class Course extends SiteController
                     ->set('name', $page->get('url'))
                     ->set('title', $page->get('title'));
 
-                if ($page->get('url') == $this->view->active) {
+                if ($page->get('url') == $this->view->get('active')) {
                     $plg->set('html', $page->content('parsed'));
                     $plg->set('isPage', true);
                 }

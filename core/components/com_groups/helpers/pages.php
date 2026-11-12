@@ -95,7 +95,7 @@ class Pages
         $view->set('privateDesc', $view->get('group')->getDescription('parsed', 0, 'private'));
 
         // make sure we have a public desc
-        if ($view->publicDesc == '') {
+        if ($view->get('publicDesc') == '') {
             $view->publicDesc = $view->get('group')->get('description');
         }
 

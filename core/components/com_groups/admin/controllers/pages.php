@@ -566,7 +566,7 @@ class Pages extends AdminController
         if ($return != 0) {
             $this->view->setLayout('errors');
             $this->view->set('error', (isset($output[0])) ? $output[0] : '');
-            $this->view->set('error', str_replace($file, '"' . $page->get('title') . '"', $this->view->error));
+            $this->view->set('error', str_replace($file, '"' . $page->get('title') . '"', $this->view->get('error')));
             $this->view->set('page', $page);
             $this->view->option = $this->option;
             $this->view->controller = $this->controller;

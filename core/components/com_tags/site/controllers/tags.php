@@ -154,7 +154,7 @@ class Tags extends SiteController
             'start' => Request::getInt('limitstart', 0),
             'sort'  => Request::getCmd('sort', 'date'),
         ]);
-        if (!in_array($this->view->filters['sort'], ['date', 'title'])) {
+        if (!in_array($this->view->get('filters')['sort'], ['date', 'title'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters['sort']));
         }
 
@@ -178,7 +178,7 @@ class Tags extends SiteController
 
             if (!$area) {
                 $query = '';
-                if ($this->view->categories) {
+                if ($this->view->get('categories')) {
                     $s = [];
                     foreach ($this->view->categories as $response) {
                         $this->view->total += $response['total'];
@@ -205,7 +205,7 @@ class Tags extends SiteController
                     $query .= "(";
                     $query .= implode(") UNION (", $s);
                     $query .= ") ORDER BY ";
-                    switch ($this->view->filters['sort']) {
+                    switch ($this->view->get('filters')['sort']) {
                         case 'title':
                             $query .= 'title ASC, publish_up';
                             break;
@@ -218,8 +218,8 @@ class Tags extends SiteController
                             break;
                     }
                     if (
-                        $this->view->filters['limit'] != 'all'
-                        && $this->view->filters['limit'] > 0
+                        $this->view->get('filters')['limit'] != 'all'
+                        && $this->view->get('filters')['limit'] > 0
                     ) {
                         $query .= " LIMIT " . $this->view->filters['start'] . "," . $this->view->filters['limit'];
                     }
@@ -227,7 +227,7 @@ class Tags extends SiteController
                 $this->database->setQuery($query);
                 $this->view->set('results', $this->database->loadObjectList());
             } else {
-                if ($this->view->categories) {
+                if ($this->view->get('categories')) {
                     foreach ($this->view->categories as $response) {
                         $this->view->total += $response['total'];
                     }

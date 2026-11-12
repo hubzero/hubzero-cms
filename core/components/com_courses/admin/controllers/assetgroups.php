@@ -108,7 +108,7 @@ class Assetgroups extends AdminController
             0 => [],
         ];
 
-        $levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
+        $levellimit = ($this->view->get('filters')['limit'] == 0) ? 500 : $this->view->get('filters')['limit'];
 
         // first pass - collect children
         foreach ($rows as $v) {

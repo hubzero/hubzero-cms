@@ -131,7 +131,7 @@ class Articles extends SiteController
             'search'   => Request::getString('search', ''),
         ]);
 
-        if (!in_array($this->view->filters['sort'], ['recent', 'popularity'])) {
+        if (!in_array($this->view->get('filters')['sort'], ['recent', 'popularity'])) {
             $this->view->filters['sort'] = 'recent';
         }
         if (!User::isGuest()) {

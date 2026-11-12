@@ -1250,7 +1250,7 @@ class Profiles extends SiteController
 
                     $resourcemessage = 'session limit from ' . $oldlimit . ' to ' . $newlimit . ' sessions ';
 
-                    if ($this->view->authorized == 'admin') {
+                    if ($this->view->get('authorized') == 'admin') {
                         $preferences->class_id = 0;
                         $preferences->jobs     = $newlimit;
                         $preferences->store();

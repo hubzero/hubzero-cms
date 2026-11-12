@@ -663,7 +663,7 @@ class Pages extends AdminController
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
-                $folders[] = Html::select('option', substr($dir, strlen($this->view->path)));
+                $folders[] = Html::select('option', substr($dir, strlen($this->view->get('path'))));
             }
         }
         sort($folders);

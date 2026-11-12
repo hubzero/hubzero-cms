@@ -329,7 +329,7 @@ class Items extends AdminController
         $authorTblObj = new Tables\Author($this->database);
         $this->view->set('author', $authorTblObj->getAuthorById($author_id));
 
-        if ($this->task == 'editauthor' && !$this->view->author) {
+        if ($this->task == 'editauthor' && !$this->view->get('author')) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
         }
 
@@ -1507,7 +1507,7 @@ class Items extends AdminController
         // Load publication model
         $this->view->set('pub', new Models\Publication($id, 'default'));
 
-        if (!$this->view->pub) {
+        if (!$this->view->get('pub')) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),

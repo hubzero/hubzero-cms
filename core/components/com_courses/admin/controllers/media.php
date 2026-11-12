@@ -432,7 +432,7 @@ class Media extends AdminController
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $this->view->set('course_id', Request::getInt('course', 0));
         $this->view->set('listdir', Request::getInt('listdir', 0));
-        if (!$this->view->listdir) {
+        if (!$this->view->get('listdir')) {
             echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
             return;
         }
@@ -452,7 +452,7 @@ class Media extends AdminController
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
-                $folders[] = Html::select('option', substr($dir, strlen($this->view->path)));
+                $folders[] = Html::select('option', substr($dir, strlen($this->view->get('path'))));
             }
         }
         sort($folders);
@@ -489,7 +489,7 @@ class Media extends AdminController
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $this->view->set('course_id', Request::getInt('course', 0));
         $this->view->set('listdir', Request::getInt('listdir', 0));
-        if (!$this->view->listdir) {
+        if (!$this->view->get('listdir')) {
             echo '<p class="error">' . Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY') . '</p>';
             return;
         }

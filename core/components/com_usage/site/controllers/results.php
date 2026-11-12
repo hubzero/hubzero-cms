@@ -73,7 +73,7 @@ class Results extends SiteController
         // Trigger the functions that return the areas we'll be using
         $this->view->set('cats', Event::trigger('usage.onUsageAreas'));
 
-        if (is_array($this->view->cats)) {
+        if (is_array($this->view->get('cats'))) {
             if (!$this->task || $this->task == 'default') {
                 $hasCats = isset($this->view->cats[0]) && is_array($this->view->cats[0]);
                 $this->task = $hasCats ? key($this->view->cats[0]) : 'overview';
