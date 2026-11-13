@@ -1609,7 +1609,7 @@ class Publication extends Obj
     /**
      * Get version count
      *
-     * @return  int
+     * @return  string|bool|null
      */
     public function versionCount()
     {

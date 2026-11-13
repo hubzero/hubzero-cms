@@ -920,7 +920,7 @@ class Course extends Base
     /**
      * Get a course logo
      *
-     * @return     string
+     * @return     object
      */
     public function certificate()
     {

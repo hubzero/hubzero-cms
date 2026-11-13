@@ -744,7 +744,7 @@ class Profile extends Obj
      * Constructor
      *
      * @param   mixed    $user  User data
-     * @return  bool  True on success, False on error
+     * @return  bool|null  True on success, False on error
      */
     public function __construct($user = null)
     {

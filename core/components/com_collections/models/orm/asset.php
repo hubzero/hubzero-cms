@@ -269,7 +269,7 @@ class Asset extends Relational
     /**
      * Is the file an image?
      *
-     * @return  string
+     * @return  int|bool
      */
     public function size()
     {

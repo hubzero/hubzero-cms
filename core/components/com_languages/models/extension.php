@@ -176,7 +176,7 @@ class Extension extends Relational
     /**
      * Get language path
      *
-     * @return  object
+     * @return  string
      */
     public function path($client_id = 0)
     {
@@ -195,7 +195,7 @@ class Extension extends Relational
      * Method to get the folders
      *
      * @param   integer  $client_id
-     * @return  object    Languages folders
+     * @return  array    Languages folders
      */
     public function folders($client_id = 0)
     {
@@ -218,7 +218,7 @@ class Extension extends Relational
     /**
      * Method to get Languages item data
      *
-     * @return  array
+     * @return  \Hubzero\Base\Obj
      */
     public function info()
     {

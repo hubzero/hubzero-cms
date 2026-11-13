@@ -119,7 +119,7 @@ class Terms extends Obj
     /**
      * Get a section
      *
-     * @return  string
+     * @return  array|null
      */
     public function getSection()
     {

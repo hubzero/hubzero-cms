@@ -61,7 +61,7 @@ class Log extends Relational
      * Generates automatic owned by field value
      *
      * @param   array  $data  The data being saved
-     * @return  int
+     * @return  string
      */
     public function automaticTimestamp($data)
     {

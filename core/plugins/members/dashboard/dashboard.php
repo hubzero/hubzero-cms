@@ -153,7 +153,7 @@ class Dashboard extends Plugin
     /**
      * Display Member Dashboard
      *
-     * @return Void
+     * @return string
      */
     public function displayAction()
     {

@@ -174,7 +174,7 @@ class Manager extends Obj
     /**
      * Get expiration time in minutes
      *
-     * @return  string  The session expiration time in minutes
+     * @return  int  The session expiration time in minutes
      */
     public function getExpire()
     {

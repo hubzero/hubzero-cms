@@ -184,7 +184,7 @@ class Account extends Plugin
     /**
      * Primary/default view function
      *
-     * @return  object  Return
+     * @return  string  Return
      */
     private function renderOverview()
     {

@@ -441,7 +441,7 @@ class Asset extends Base
      * Get a count or list of parents for this entry
      *
      * @param   array $filters Filters to apply to results query
-     * @return  int|object
+     * @return  string|array|null
      */
     public function parents($filters = [])
     {
