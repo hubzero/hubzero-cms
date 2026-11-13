@@ -20,4 +20,13 @@ interface DispatcherInterface
      * @return  object  The event after being passed through all listeners.
      */
     public function trigger($event, $args = []);
+
+    /**
+     * Add a listener, for the events named or for those its methods are named after
+     *
+     * @param   object|\Closure  $listener  The listener
+     * @param   array|string     $events    Event names (as keys, with priorities), or one name
+     * @return  mixed
+     */
+    public function addListener($listener, $events = []);
 }

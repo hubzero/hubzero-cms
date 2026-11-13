@@ -49,7 +49,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var Iterator|null
      */
     public $assetgroups = null;
 
@@ -206,7 +206,7 @@ class Unit extends Base
      *
      * @param   mixed $idx     Index value
      * @param   array $filters Filters to apply to results query
-     * @return  array
+     * @return  mixed  The list, one asset group, or a list of ids or titles, as asked
      */
     public function assetgroups($idx = null, $filters = [])
     {
