@@ -408,7 +408,7 @@ class Media extends Base
             } else {
                 // Authorization required
                 if (!$this->model->access('member')) {
-                    return;
+                    return null;
                 }
 
                 // basename after urldecode, as deleteimgTask does: the value

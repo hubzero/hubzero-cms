@@ -185,7 +185,7 @@ class Members extends Plugin
     public static function onSearchCustom($request, &$results)
     {
         if (($section = $request->getTerms()->getSection()) && $section[0] != 'members') {
-            return;
+            return null;
         }
 
         $terms = $request->getTermAr();

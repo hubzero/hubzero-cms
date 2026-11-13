@@ -34,7 +34,7 @@ class Xhubtags extends Plugin
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
         if (($article instanceof \Hubzero\Base\Obj) || !in_array($context, ['com_content.article', 'text'])) {
-            return;
+            return null;
         }
 
         // Fix asset paths

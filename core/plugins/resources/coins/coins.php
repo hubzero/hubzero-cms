@@ -34,19 +34,19 @@ class Coins extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         if (!App::isSite()) {
-            return;
+            return null;
         }
 
         if (Request::getWord('tmpl') || Request::getWord('format') || Request::getInt('no_html')) {
-            return;
+            return null;
         }
 
         if (!$model->id) {
-            return;
+            return null;
         }
 
         if (!$model->type->params->get('plg_coins')) {
-            return;
+            return null;
         }
 
         $arr = [

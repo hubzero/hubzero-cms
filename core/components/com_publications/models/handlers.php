@@ -164,7 +164,7 @@ class Handlers extends Obj
             return false;
         }
         // TBD
-        return;
+        return null;
     }
 
     /**

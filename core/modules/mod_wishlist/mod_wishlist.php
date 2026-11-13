@@ -33,7 +33,7 @@ class Wishlist extends Module
     public function display()
     {
         if (!\Hubzero\Facades\App::isAdmin()) {
-            return;
+            return null;
         }
 
         $wishlist = intval($this->params->get('wishlist', 0));

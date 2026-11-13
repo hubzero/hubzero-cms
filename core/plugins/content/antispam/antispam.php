@@ -38,17 +38,17 @@ class Antispam extends Plugin
     {
         // Only run for site
         if (!App::isSite()) {
-            return;
+            return null;
         }
 
         // Don't bother with super admins
         if (User::authorise('core.admin')) {
-            return;
+            return null;
         }
 
         // Check if administrators are whitelisted
         if ($this->params->get('wl_groups') == 'admin' && User::authorise('core.manage')) {
-            return;
+            return null;
         }
         // Check the users whitelist
         $wl_usernames = ($this->params->get('wl_usernames'));
@@ -58,7 +58,7 @@ class Antispam extends Plugin
 
             if (in_array(User::get('username'), $usernames)) {
                 // user whitelisted, do not check for spam
-                return;
+                return null;
             }
         }
 
@@ -67,7 +67,7 @@ class Antispam extends Plugin
 
             $content = ltrim($article->get($key) == null ? '' : $article->get($key));
         } elseif (is_object($article) || is_array($article)) {
-            return;
+            return null;
         } else {
             $content = $article;
         }
@@ -76,7 +76,7 @@ class Antispam extends Plugin
         $content = trim($content);
 
         if (!$content) {
-            return;
+            return null;
         }
 
         // Get the detector manager

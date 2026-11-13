@@ -774,7 +774,7 @@ class Posts extends SiteController
     {
         if (User::isGuest()) {
             $this->loginTask();
-            return;
+            return null;
         }
 
         $model = new Archive('member', User::get('id'));
@@ -820,7 +820,7 @@ class Posts extends SiteController
             $this->view->set('item_id', $item_id);
 
             $this->view->display();
-            return;
+            return null;
         }
 
         Request::checkToken();

@@ -773,7 +773,7 @@ class Members extends Plugin
         // Only admins can demote the last manager
         if ($this->authorized != 'admin' && $nummanagers <= 1) {
             $this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_LAST_MANAGER'));
-            return;
+            return null;
         }
 
         // Set a flag for emailing any changes made
@@ -837,7 +837,7 @@ class Members extends Plugin
         // Make sure there's always at least one manager left
         if ($this->authorized != 'admin' && count($users) >= count($managers)) {
             $this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_LAST_MANAGER'));
-            return;
+            return null;
         }
 
         // Remove users from managers list
@@ -1112,7 +1112,7 @@ class Members extends Plugin
         // Only admins can demote the last manager
         if ($this->authorized != 'admin' && (count($managers) == 1 && count($intersect) > 0)) {
             $this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_LAST_MANAGER'));
-            return;
+            return null;
         }
 
         foreach ($mbrs as $mbr) {
@@ -2059,7 +2059,7 @@ class Members extends Plugin
         if (!$uid || !$role) {
             $this->setError('You must select a role.');
             $this->assignrole();
-            return;
+            return null;
         }
 
         // As saveRole()/removerole(): #__xgroups_roles is global and the id comes

@@ -354,7 +354,7 @@ class Processor extends Obj
         $y       = 0;
 
         if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height)) {
-            return;
+            return null;
         }
 
         if ($new_dimension < 1) {

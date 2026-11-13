@@ -546,7 +546,7 @@ class Pages extends Plugin
         if (User::isGuest()) {
             $this->files();
 
-            return;
+            return null;
         }
 
         if (Request::getInt('no_html', 0)) {
@@ -561,7 +561,7 @@ class Pages extends Plugin
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE'));
             $this->files();
 
-            return;
+            return null;
         }
 
         // Ensure we have an ID to work with
@@ -570,7 +570,7 @@ class Pages extends Plugin
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
             $this->files();
 
-            return;
+            return null;
         }
 
         // Incoming file
@@ -579,7 +579,7 @@ class Pages extends Plugin
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
             $this->files();
 
-            return;
+            return null;
         }
 
         // Build the upload path if it doesn't exist
@@ -590,7 +590,7 @@ class Pages extends Plugin
                 $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
                 $this->files();
 
-                return;
+                return null;
             }
         }
 
@@ -607,7 +607,7 @@ class Pages extends Plugin
             );
             $this->files();
 
-            return;
+            return null;
         }
 
         // Make the filename safe
@@ -623,7 +623,7 @@ class Pages extends Plugin
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
             $this->files();
 
-            return;
+            return null;
         }
 
         // Upload new files

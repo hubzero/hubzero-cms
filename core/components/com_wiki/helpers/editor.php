@@ -167,7 +167,7 @@ class Editor extends Obj
         $this->load();
 
         if (is_null($this->editor)) {
-            return;
+            return null;
         }
 
         $return = '';

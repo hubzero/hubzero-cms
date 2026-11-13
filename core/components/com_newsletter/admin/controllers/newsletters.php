@@ -806,7 +806,7 @@ class Newsletters extends AdminController
      * @param   array    $newsletterContacts
      * @param   object   $newsletterMailinglist
      * @param   boolean  $sendingTest
-     * @return  object|bool
+     * @return  object|bool|null
      */
     private function send(
         $newsletter,

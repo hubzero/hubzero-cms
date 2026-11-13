@@ -317,7 +317,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('MEMBERS_NO_ID'));
             $this->displayTask('', $id);
 
-            return;
+            return null;
         }
 
         // Before anything touches the filesystem: $path is built from this id, so
@@ -331,7 +331,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('MEMBERS_NO_FILE'));
             $this->displayTask('', $id);
 
-            return;
+            return null;
         }
 
         // Build upload path
@@ -343,7 +343,7 @@ class Media extends SiteController
                 $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
                 $this->displayTask('', $id);
 
-                return;
+                return null;
             }
         }
 
@@ -360,7 +360,7 @@ class Media extends SiteController
             );
             $this->displayTask($file['name'], $id);
 
-            return;
+            return null;
         }
 
         // Make the filename safe
@@ -375,7 +375,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
             $this->displayTask($file['name'], $id);
 
-            return;
+            return null;
         }
 
         // Do we have an old file we're replacing?
@@ -396,7 +396,7 @@ class Media extends SiteController
                         $this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
                         $this->displayTask($file['name'], $id);
 
-                        return;
+                        return null;
                     }
                 }
 
@@ -406,7 +406,7 @@ class Media extends SiteController
                         $this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
                         $this->displayTask($file['name'], $id);
 
-                        return;
+                        return null;
                     }
                 }
             }
@@ -465,7 +465,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
             $this->displayTask('', $id);
 
-            return;
+            return null;
         }
 
         $this->requireSelfOrAdmin($id);
@@ -475,7 +475,7 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
             $this->displayTask('', $id);
 
-            return;
+            return null;
         }
 
         // Build the file path

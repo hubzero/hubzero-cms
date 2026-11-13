@@ -957,7 +957,7 @@ class Citations extends SiteController
             if (!$no_html) {
                 $this->displayTask();
 
-                return;
+                return null;
             } else {
                 return json_encode(['status' => '1']);
             }

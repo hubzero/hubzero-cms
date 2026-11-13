@@ -397,13 +397,13 @@ class Projects extends Base
                 $view->set('task', $this->task);
                 $view->set('option', $this->option);
                 $view->display();
-                return;
+                return null;
             } else {
                 // Error
                 $this->setError(Lang::txt('COM_PROJECTS_PROJECT_OWNER_DELETED'));
                 $this->title = Lang::txt('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
                 $this->showError();
-                return;
+                return null;
             }
         }
 
@@ -427,7 +427,7 @@ class Projects extends Base
         if ($this->model->isDeleted()) {
             $this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
             $this->introTask();
-            return;
+            return null;
         }
 
         // Check if project is in setup
@@ -452,7 +452,7 @@ class Projects extends Base
         if (User::isGuest() && $action == 'login') {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
             $this->login();
-            return;
+            return null;
         }
 
         // Determine layout to load
@@ -467,7 +467,7 @@ class Projects extends Base
             if (!$this->_publishing) {
                 $this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
                 $this->introTask();
-                return;
+                return null;
             }
 
             // Redirect to publication
@@ -528,7 +528,7 @@ class Projects extends Base
                     // Error - different email
                     $this->setError(Lang::txt('COM_PROJECTS_INVITE_DIFFERENT_EMAIL'));
                     $this->showError();
-                    return;
+                    return null;
                 }
             }
         }
@@ -544,7 +544,7 @@ class Projects extends Base
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
                 $this->login();
-                return;
+                return null;
             }
             if (!$this->model->access('member') && !$reviewer) {
                 throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -598,7 +598,7 @@ class Projects extends Base
                 if ($ajax) {
                     // Plugin not active in this project
                     echo '<p class="error">' . Lang::txt('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
-                    return;
+                    return null;
                 }
 
                 App::redirect(Route::url($this->model->link()));
@@ -621,7 +621,7 @@ class Projects extends Base
                         if ($ajax) {
                             // AJAX output
                             echo $section['html'];
-                            return;
+                            return null;
                         } else {
                             // Normal output
                             $viewContent = $this->view->get('content');
@@ -676,7 +676,7 @@ class Projects extends Base
         }
 
         $this->view->display();
-        return;
+        return null;
     }
 
     /**
@@ -838,7 +838,7 @@ class Projects extends Base
         if (User::isGuest()) {
             $this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
             $this->login();
-            return;
+            return null;
         }
 
         // Delete, suspend, reinstate and fixownership change the project, so
@@ -926,7 +926,7 @@ class Projects extends Base
             if ($this->task == 'delete') {
                 $this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
                 $this->introTask();
-                return;
+                return null;
             }
         }
 

@@ -42,7 +42,7 @@ class Wishvoters extends Module
         // Cannot rank a wish if list/wish is not found
         if (!$listid) {
             echo '<p class="warning">' . Lang::txt('MOD_WISHVOTERS_ERROR_LOADING') . '</p>';
-            return;
+            return null;
         }
 
         $database = \Hubzero\Facades\App::get('db');

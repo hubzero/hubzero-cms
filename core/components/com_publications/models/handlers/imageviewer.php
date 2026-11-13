@@ -410,7 +410,7 @@ class ImageViewer extends Base
 
         // No file found
         if (!is_file($fpath)) {
-            return;
+            return null;
         }
 
         // Check if image

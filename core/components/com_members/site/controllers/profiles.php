@@ -1632,7 +1632,7 @@ class Profiles extends SiteController
             }
             $this->editTask($member);
 
-            return;
+            return null;
         }
 
         // Incoming profile edits
@@ -1708,7 +1708,7 @@ class Profiles extends SiteController
             }
             $this->editTask($member);
 
-            return;
+            return null;
         }
 
         // Save profile data
@@ -1720,7 +1720,7 @@ class Profiles extends SiteController
             }
             $this->editTask($member);
 
-            return;
+            return null;
         }
 
         $email = $member->get('email');
@@ -1782,7 +1782,7 @@ class Profiles extends SiteController
         if ($declineTOU) {
             App::get('auth')->logout();
             echo json_encode(['loggedout' => true]);
-            return;
+            return null;
         }
 
         if ($no_html) {

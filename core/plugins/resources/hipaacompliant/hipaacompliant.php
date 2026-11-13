@@ -28,11 +28,11 @@ class Hipaacompliant extends Plugin
     {
         // Check authorization
         if (!$resource->id) {
-            return;
+            return null;
         }
 
         if (strtolower(Request::method()) != 'post') {
-            return;
+            return null;
         }
 
         $compliant = Request::getInt('hipaacompliant', 0, 'post');

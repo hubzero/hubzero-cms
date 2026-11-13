@@ -2026,7 +2026,7 @@ class Forum extends Plugin
     public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle)
     {
         if (empty($emails)) {
-            return;
+            return null;
         }
 
         $from = [];
