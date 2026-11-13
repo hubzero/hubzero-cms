@@ -321,6 +321,12 @@ class Batchcreate extends AdminController
      */
     public function parse($dryRun = 1, $api = 0)
     {
+        // processTask() has checked the master type exists before calling this
+        $mastertype = $this->mastertype;
+        if (!$mastertype) {
+            return '';
+        }
+
         // Initialize output
         $output = null;
 
@@ -336,7 +342,7 @@ class Batchcreate extends AdminController
         $objL   = new Tables\License($this->database);
 
         // Get curation model for the type
-        $curationModel = new \Components\Publications\Models\Curation($this->mastertype->curation);
+        $curationModel = new \Components\Publications\Models\Curation($mastertype->curation);
 
         // Get defaults from manifest
         $title = $curationModel && isset($curationModel->manifest->params->default_title)
@@ -376,7 +382,7 @@ class Batchcreate extends AdminController
                 $catId = $objCat->getCatId($category);
 
                 $item['category'] = $category;
-                $item['type']     = $this->mastertype->alias;
+                $item['type']     = $mastertype->alias;
                 $item['errors']   = [];
                 $item['tags']     = [];
                 $item['authors']  = [];
@@ -384,7 +390,7 @@ class Batchcreate extends AdminController
 
                 // Publication properties
                 $item['publication'] = new Tables\Publication($this->database);
-                $item['publication']->master_type = $this->mastertype->id;
+                $item['publication']->master_type = $mastertype->id;
                 $item['publication']->category    = $catId ? $catId : $cat;
                 $item['publication']->project_id  = $this->project->get('id');
                 $item['publication']->created_by  = $this->_uid;

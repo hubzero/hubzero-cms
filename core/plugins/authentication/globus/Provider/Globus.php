@@ -119,7 +119,7 @@ class Globus extends AbstractProvider
     /**
      * Generate a user object from a successful user details request.
      *
-     * @param object $response
+     * @param array $response
      * @param AccessToken $token
      * @return GlobusResourceOwner
      */

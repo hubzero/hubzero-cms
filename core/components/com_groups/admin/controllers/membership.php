@@ -171,7 +171,7 @@ class Membership extends AdminController
         // Filtering on the term is done here rather than in the query: the row
         // set already includes invite-email pseudo-rows that have no
         // membership row to join against.
-        if ($this->view->get('expiration_supported') && $this->view->filters['term'] != '') {
+        if ($this->view->get('expiration_supported') && $this->view->get('filters')['term'] != '') {
             $terms = $this->view->get('expirations');
             $want  = $this->view->get('filters')['term'];
             $soon  = time() + (30 * 86400);

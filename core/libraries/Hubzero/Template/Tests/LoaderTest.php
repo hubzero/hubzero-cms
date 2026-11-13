@@ -448,7 +448,7 @@ class LoaderTest extends TestCase
             $this->seed($pdo);
         }
 
-        /** @var SqliteDriver $driver */
+        /** @var SqliteDriver&\PHPUnit\Framework\MockObject\MockObject $driver */
         $driver = $this
             ->getMockBuilder(SqliteDriver::class)
             ->disableOriginalConstructor()

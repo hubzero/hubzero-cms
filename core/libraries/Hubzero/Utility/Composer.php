@@ -474,6 +474,11 @@ class Composer
     {
         $remoteRepos = self::getRemoteRepositories();
         foreach ($remoteRepos as $repo) {
+            // Only a configurable repository has a URL to compare
+            if (!$repo instanceof \Composer\Repository\ConfigurableRepositoryInterface) {
+                continue;
+            }
+
             $config = $repo->getRepoConfig();
             if ($config['url'] == $url) {
                 return $repo;

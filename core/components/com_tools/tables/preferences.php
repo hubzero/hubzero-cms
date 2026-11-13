@@ -68,9 +68,11 @@ class Preferences extends Table
     }
 
     /**
-     * Load an entry from the database and bind to $this
+     * Get one of the user's preferences, or all of them
      *
-     * @return  boolean  True if data was retrieved and loaded
+     * @param   string  $key      The preference wanted; none for the whole registry
+     * @param   mixed   $default  What to give when it is not set
+     * @return  mixed   The value, or the registry of preferences
      */
     public function param($key = '', $default = null)
     {
