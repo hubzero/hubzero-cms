@@ -22,8 +22,8 @@ class Php extends \HTMLPurifier_Filter
      * Pre-filter hook
      *
      * @param   string  $html
-     * @param   array   $config
-     * @param   string  $context
+     * @param   \HTMLPurifier_Config   $config
+     * @param   \HTMLPurifier_Context  $context
      * @return  string
      */
     public function preFilter($html, $config, $context)
@@ -38,8 +38,8 @@ class Php extends \HTMLPurifier_Filter
      * Post-filter hook
      *
      * @param   string  $html
-     * @param   array   $config
-     * @param   string  $context
+     * @param   \HTMLPurifier_Config   $config
+     * @param   \HTMLPurifier_Context  $context
      * @return  string
      */
     public function postFilter($html, $config, $context)

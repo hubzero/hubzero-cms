@@ -169,7 +169,7 @@ class OneToMany extends Relationship
     /**
      * Sorts the relations into arrays keyed by the related key
      *
-     * @param   array  $relations  The relations to sort
+     * @param   iterable|object  $relations  The relations to sort
      * @return  array
      **/
     protected function getResultsByRelatedKey($relations)

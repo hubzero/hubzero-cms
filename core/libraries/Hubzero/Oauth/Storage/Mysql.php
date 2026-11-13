@@ -71,7 +71,7 @@ class Mysql implements
      * @param   string  $access_token  Access token
      * @param   string  $client_id     Client Id
      * @param   string  $user_id       User identifier
-     * @param   string  $expires       Access token expiration date/time
+     * @param   int     $expires       Access token expiration date/time
      * @param   string  $scope         Access token granted scope
      * @return  bool
      */
@@ -239,7 +239,7 @@ class Mysql implements
      * @param   string  $client_id     Client id
      * @param   int     $user_id       User identifier
      * @param   string  $redirect_uri  Redirect URI after authorization
-     * @param   string  $expires       Code expiration
+     * @param   int     $expires       Code expiration
      * @param   string  $scope         Code scope
      * @return  bool
      */
@@ -382,7 +382,7 @@ class Mysql implements
      * @param   string  $refresh_token  Refresh Token
      * @param   string  $client_id      Client id
      * @param   int     $user_id        User identifier
-     * @param   string  $expires        Expires timestamp
+     * @param   int     $expires        Expires timestamp
      * @param   string  $scope          Token scope
      * @return  bool
      */
