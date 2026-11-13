@@ -327,7 +327,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * Run a filter over each of the items
      *
      * @param   Closure  $callback
-     * @return  ItemList
+     * @return  static
      */
     public function filter(Closure $callback)
     {
@@ -341,7 +341,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Merge Item Lists
      *
-     * @return  ItemList
+     * @return  static
      */
     public function merge()
     {
@@ -357,7 +357,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Reverse data order.
      *
-     * @return  ItemList
+     * @return  static
      */
     public function reverse()
     {

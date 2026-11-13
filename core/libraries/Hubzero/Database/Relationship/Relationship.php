@@ -348,7 +348,7 @@ class Relationship
      * @param   string   $name        The relationship name that we'll use to attach to the rows
      * @param   \Closure  $constraint  The constraint function to limit related items
      * @param   string   $subs        The nested relationships that should be passed on to the child
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     public function seedWithRelation($rows, $name, $constraint = null, $subs = null)
     {

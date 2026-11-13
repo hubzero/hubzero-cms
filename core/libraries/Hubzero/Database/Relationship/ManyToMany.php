@@ -18,7 +18,7 @@ class ManyToMany extends OneToManyThrough
     /**
      * Fetches the results of relationship
      *
-     * @return  \Hubzero\Database\Relational
+     * @return  \Hubzero\Database\Rows
      **/
     public function rows()
     {

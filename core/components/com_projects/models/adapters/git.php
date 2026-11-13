@@ -220,7 +220,7 @@ class Git extends Models\Adapter
      * Get file content and write to specified location
      *
      * @param   array  $params
-     * @return  array
+     * @return  bool
      */
     public function content($params = [])
     {

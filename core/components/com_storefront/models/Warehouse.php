@@ -219,7 +219,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if collection exists
      *
      * @param   mixed   $cId  collection ID or alias
-     * @return  int     cId on success, null if no match found
+     * @return  string|null     cId on success, null if no match found
      */
     public function collectionExists($cId, $showInactive = false)
     {
@@ -329,7 +329,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if product exists
      *
      * @param   int|string  $product  product ID or alias
-     * @return  int     pId on success, null if no match found
+     * @return  string|null     pId on success, null if no match found
      */
     public function productExists($product, $showInactive = false)
     {
@@ -467,7 +467,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if coupon exists
      *
      * @param   string $code      coupon code
-     * @return  int         coupon ID on success, null if no match found
+     * @return  string|null         coupon ID on success, null if no match found
      */
     public function couponExists($code)
     {
@@ -1295,7 +1295,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get course by alias
      *
      * @param   int $alias                         course ID
-     * @return  Course   Instance of a product
+     * @return  string|null  The id of the SKU for that course, null if there is none
      */
     public function getCourseByAlias($alias)
     {

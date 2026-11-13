@@ -633,7 +633,7 @@ class GradeBook extends Base
      * Get count of passing
      *
      * @param      bool $section only (optional)
-     * @return     object  (int) passing, (int) failing
+     * @return     int|string  (int) passing, (int) failing
      **/
     public function countPassing($section = true)
     {
@@ -656,7 +656,7 @@ class GradeBook extends Base
      * Get count of failing
      *
      * @param      bool $section only (optional)
-     * @return     object  (int) passing, (int) failing
+     * @return     int|string  (int) passing, (int) failing
      **/
     public function countFailing($section = true)
     {

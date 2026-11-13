@@ -161,7 +161,7 @@ class Importer
      * @param   \Components\Resources\Models\Import $import
      * @param   array    $callbacks
      * @param   integer  $dryRun
-     * @return  void
+     * @return  array
      */
     public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun = 1)
     {

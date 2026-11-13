@@ -175,7 +175,7 @@ class Iterator implements \Countable, \Iterator
     /**
      * Return the array count
      *
-     * @return array
+     * @return int
      */
 
     #[\ReturnTypeWillChange]
