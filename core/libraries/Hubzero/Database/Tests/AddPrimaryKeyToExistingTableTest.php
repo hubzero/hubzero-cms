@@ -34,7 +34,7 @@ class AddPrimaryKeyToExistingTableTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(BaseSqlDriver $driver): void
     {
-        if ($driver->getDriverName() === 'db2') {
+        if (strtolower($driver->getDriverType()) === 'db2') {
             self::markTestSkipped('Not supported on this database');
         }
 

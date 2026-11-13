@@ -67,7 +67,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ->string('data', 2048)
             ->string('created', 50)
             ->integer('created_by')
-            ->string('log', 1024, true) // nullable
+            ->string('log', 1024)->nullable()
             ->execute();
 
         // Create revisionable_posts table
@@ -91,7 +91,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ->string('data', 2048)
             ->string('created', 50)
             ->integer('created_by')
-            ->string('log', 1024, true) // nullable
+            ->string('log', 1024)->nullable()
             ->execute();
     }
 
