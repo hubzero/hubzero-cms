@@ -224,11 +224,14 @@ class Handler
         if (is_subclass_of($handler, self::class) && method_exists($handler, 'create')) {
             // Run create and return the results
             $object = $handler::newWithoutHandlers($this->db);
-            return $object->create();
-        } else {
-            // Oops, provided class doesn't have a create method
-            return ['error' => 'This filetype/content does not have a create method'];
+
+            if (method_exists($object, 'create')) {
+                return $object->create();
+            }
         }
+
+        // Oops, provided class doesn't have a create method
+        return ['error' => 'This filetype/content does not have a create method'];
     }
 
     /**

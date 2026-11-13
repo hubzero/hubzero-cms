@@ -91,7 +91,7 @@ class Languagecode extends Plugin
      * Injects language selection into a form
      *
      * @param   object   $form  The form to be altered.
-     * @param   array    $data  The associated data for the form.
+     * @param   object|array  $data  The associated data for the form: an object, or empty
      * @return  boolean
      */
     public function onContentPrepareForm($form, $data)
@@ -112,7 +112,11 @@ class Languagecode extends Plugin
         }
 
         // Mark the plugin as being edited
-        User::setState('plg_system_language_code.edit', $data->name == 'plg_system_languagecode');
+        // (the data may be empty when the form is reloaded, in which case it does not name the plugin)
+        User::setState(
+            'plg_system_language_code.edit',
+            is_object($data) && isset($data->name) && $data->name == 'plg_system_languagecode',
+        );
 
         // Get site languages
         $languages = Lang::getKnownLanguages(PATH_CORE);
