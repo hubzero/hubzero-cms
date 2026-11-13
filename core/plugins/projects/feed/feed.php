@@ -48,7 +48,7 @@ class Feed extends Plugin
     /**
      * Store internal message
      *
-     * @var  array
+     * @var  string|null
      */
     protected $msg = null;
 

@@ -30,7 +30,7 @@ class Calendar extends Model
     /**
      * Table
      *
-     * @var string
+     * @var object|null
      */
     protected $table = null;
 

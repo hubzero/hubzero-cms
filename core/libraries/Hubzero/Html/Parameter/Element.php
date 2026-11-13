@@ -31,14 +31,14 @@ class Element extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object
+     * @var  object|null
      */
     protected $parent = null;
 
     /**
      * Constructor
      *
-     * @param   string  $parent  Element parent
+     * @param   object|null  $parent  The parameter set the element belongs to
      * @return  void
      */
     public function __construct($parent = null)

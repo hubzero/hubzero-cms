@@ -85,7 +85,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var array|null
      */
     private $pages = null;
 
@@ -106,7 +106,7 @@ class Course extends Base
     /**
      * Certificate
      *
-     * @var string
+     * @var object|null
      */
     private $certificate = null;
 

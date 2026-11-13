@@ -54,7 +54,7 @@ class Section extends Base
     /**
      * List of members
      *
-     * @var object|null
+     * @var array|null
      */
     private $members = null;
 

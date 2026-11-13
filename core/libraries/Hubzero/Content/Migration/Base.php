@@ -86,7 +86,7 @@ class Base
     /**
      * Available callbacks
      *
-     * @var  object
+     * @var  array
      **/
     protected $callbacks = [];
 

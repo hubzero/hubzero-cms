@@ -26,7 +26,7 @@ class Usage
     /**
      * Publication ID
      *
-     * @var string
+     * @var int|null
      */
     public $pubid = null;
 
@@ -40,7 +40,7 @@ class Usage
     /**
      * Resource rating
      *
-     * @var string
+     * @var int|null
      */
     public $rating = null;
 

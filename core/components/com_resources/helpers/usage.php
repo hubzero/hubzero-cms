@@ -25,7 +25,7 @@ class Usage
     /**
      * Resource ID
      *
-     * @var string
+     * @var int|null
      */
     public $resid = null;
 
@@ -39,7 +39,7 @@ class Usage
     /**
      * Resource rating
      *
-     * @var string
+     * @var int|null
      */
     public $rating = null;
 

@@ -45,7 +45,7 @@ class Detector implements DetectorInterface
     /**
      * Validate found links?
      *
-     * @var  boolean
+     * @var  int
      */
     protected $linkValidation = 0;
 

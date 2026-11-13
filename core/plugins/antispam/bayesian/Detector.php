@@ -39,7 +39,7 @@ class Detector implements DetectorInterface
      * percentage ratio is greater than the specified
      * ratio, it is considered a "Link Overflow"
      *
-     * @var  int
+     * @var  float
      */
     protected $threshold = 0.95;
 

@@ -25,7 +25,7 @@ class Cache extends Plugin
     /**
      * Constructor
      *
-     * @var  object
+     * @var  string|null
      */
     private $id = null;
 

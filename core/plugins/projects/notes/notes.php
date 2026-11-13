@@ -46,14 +46,14 @@ class Notes extends Plugin
     /**
      * Name of project group
      *
-     * @var  array
+     * @var  string|null
      */
     protected $group = null;
 
     /**
      * Name of master scope
      *
-     * @var  array
+     * @var  string|null
      */
     protected $masterScope = null;
 
@@ -74,14 +74,14 @@ class Notes extends Plugin
     /**
      * Controller name
      *
-     * @var  array
+     * @var  string|null
      */
     protected $controllerName = null;
 
     /**
      * Store internal message
      *
-     * @var  array|null
+     * @var  string|null
      */
     protected $msg = null;
 

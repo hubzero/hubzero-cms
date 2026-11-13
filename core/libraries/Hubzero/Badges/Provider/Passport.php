@@ -53,7 +53,7 @@ class Passport implements ProviderInterface
     /**
      * Request connection
      *
-     * @var  resource
+     * @var  \OAuth|null
      */
     private $request = null;
 

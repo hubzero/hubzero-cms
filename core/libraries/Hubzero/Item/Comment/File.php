@@ -34,7 +34,7 @@ class File extends Relational
     /**
      * File size
      *
-     * @var  string
+     * @var  int|false|null
      */
     protected $size = null;
 

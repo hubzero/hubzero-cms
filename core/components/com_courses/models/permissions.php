@@ -31,7 +31,7 @@ class Permissions extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var array|null
      */
     private $managers = null;
 
@@ -45,7 +45,7 @@ class Permissions extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var array|null
      */
     private $students = null;
 

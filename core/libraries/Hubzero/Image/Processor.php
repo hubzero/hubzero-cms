@@ -28,7 +28,7 @@ class Processor extends Obj
     /**
      * Manipulated image data
      *
-     * @var  string
+     * @var  \GdImage|false|null
      */
     private $resource = null;
 
@@ -42,7 +42,7 @@ class Processor extends Obj
     /**
      * EXIF image data
      *
-     * @var  string
+     * @var  array|false|null
      */
     private $exif_data = null;
 

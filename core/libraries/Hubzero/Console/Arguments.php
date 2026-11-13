@@ -21,7 +21,7 @@ class Arguments
     /**
      * Raw command line arguments (PHP $argv)
      *
-     * @var  array|null
+     * @var  object|null
      **/
     private $raw = null;
 

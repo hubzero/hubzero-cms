@@ -145,7 +145,7 @@ class WikiParser
     /**
      * Flag for last section state
      *
-     * @var bool
+     * @var string|null
      */
     private $mLastSection;
 

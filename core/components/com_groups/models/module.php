@@ -38,7 +38,7 @@ class Module extends Model
     /**
      * Menu Items
      *
-     * @var array
+     * @var \Hubzero\Base\Model\ItemList|null
      */
     private $menu_items = null;
 

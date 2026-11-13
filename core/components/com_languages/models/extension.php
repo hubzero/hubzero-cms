@@ -69,21 +69,21 @@ class Extension extends Relational
     /**
      * The language's details from its XML manifest, read by info()
      *
-     * @var  array|null
+     * @var  \Hubzero\Base\Obj|null
      */
     protected $data = null;
 
     /**
      * Language path
      *
-     * @var  object
+     * @var  string|null
      */
     protected $path = null;
 
     /**
      * Language folders
      *
-     * @var  object
+     * @var  array|null
      */
     protected $folders = null;
 

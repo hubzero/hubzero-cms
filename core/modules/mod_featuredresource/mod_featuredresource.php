@@ -28,7 +28,7 @@ class Featuredresource extends Module
     /**
      * Container for properties
      *
-     * @var  array
+     * @var  int
      */
     public $id = 0;
 

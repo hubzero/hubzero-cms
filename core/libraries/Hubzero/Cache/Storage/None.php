@@ -16,7 +16,7 @@ class None implements StorageInterface
     /**
      * The file cache directory
      *
-     * @var string
+     * @var array
      */
     protected $options = [];
 

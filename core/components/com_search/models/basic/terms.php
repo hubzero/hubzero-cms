@@ -27,7 +27,7 @@ class Terms extends Obj
     /**
      * Positive chunks
      *
-     * @var  string
+     * @var  array|null
      */
     private $positive_chunks;
 
@@ -55,7 +55,7 @@ class Terms extends Obj
     /**
      * Search section
      *
-     * @var  string
+     * @var  array|null
      */
     private $section = null;
 

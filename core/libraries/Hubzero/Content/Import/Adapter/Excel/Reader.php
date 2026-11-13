@@ -36,7 +36,7 @@ class Reader implements Iterator
      * Excel uses alpha chars for column names, so this
      * will be the name od the last column. e.g., "F"
      *
-     * @var  string
+     * @var  int
      */
     private $cols = 0;
 

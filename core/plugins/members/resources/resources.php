@@ -44,7 +44,7 @@ class Resources extends Plugin
     /**
      * Record count
      *
-     * @var integer
+     * @var array|null
      */
     private $total = null;
 

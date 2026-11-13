@@ -21,7 +21,7 @@ class Reader implements Iterator
     /**
      * CSV file
      *
-     * @var  string
+     * @var  resource|false|null
      */
     private $file;
 

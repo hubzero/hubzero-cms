@@ -62,7 +62,7 @@ class Offering extends Base
     /**
      * Iterator
      *
-     * @var object|null
+     * @var array|null
      */
     private $pages = null;
 
@@ -83,7 +83,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var array|null
      */
     private $members = null;
 

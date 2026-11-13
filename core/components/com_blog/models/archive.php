@@ -33,7 +33,7 @@ class Archive extends Obj
     /**
      * File space path
      *
-     * @var  string
+     * @var  object|null
      */
     private $adapter;
 

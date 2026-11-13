@@ -29,7 +29,7 @@ class Asset extends Base
     /**
      * File size
      *
-     * @var  string
+     * @var  int|false|null
      */
     protected $size = null;
 
