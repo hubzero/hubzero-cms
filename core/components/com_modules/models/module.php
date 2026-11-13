@@ -647,15 +647,17 @@ class Module extends Relational
     /**
      * Checks back in the current model
      *
-     * @return  void
+     * @return  bool
      **/
     public function checkin()
     {
         if (!$this->isNew()) {
-            $this
+            return (bool) $this
                 ->set('checked_out', 0)
                 ->set('checked_out_time', null)
                 ->save();
         }
+
+        return true;
     }
 }

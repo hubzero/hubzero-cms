@@ -409,7 +409,7 @@ class Calendar extends Model
      * Delete Calendar
      *
      * @param  boolean  $deleteEvents
-     * @return void
+     * @return bool
      */
     public function delete($deleteEvents = false)
     {
@@ -427,7 +427,7 @@ class Calendar extends Model
         }
 
         // delete calendar
-        parent::delete();
+        return parent::delete();
     }
 
     /**

@@ -63,7 +63,7 @@ class Category extends Table
      * @param   integer  $oid     Category ID
      * @param   integer  $state
      * @param   integer  $userId
-     * @return  void
+     * @return  bool
      */
     public function publish($oid = null, $state = 1, $userId = 0)
     {
@@ -72,6 +72,8 @@ class Category extends Table
         }
         $this->db->setQuery("UPDATE $this->tableName SET published=1 WHERE id=" . $this->db->quote($oid));
         $this->db->query();
+
+        return true;
     }
 
     /**

@@ -45,7 +45,10 @@ class Separator extends Button
     /**
      * Empty implementation (not required for separator)
      *
-     * @return  void
+     * @return  string
      */
-    public function fetchButton() {}
+    public function fetchButton()
+    {
+        return '';
+    }
 }

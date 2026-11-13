@@ -56,7 +56,7 @@ class Group extends Table
      * @param   string  $cn
      * @param   string  $toolid
      * @param   string  $role
-     * @return  void
+     * @return  bool
      */
     public function save($cn, $toolid = '', $role = '')
     {
@@ -69,6 +69,8 @@ class Group extends Table
             . ")";
         $this->db->setQuery($query);
         $this->db->query();
+
+        return true;
     }
 
     /**

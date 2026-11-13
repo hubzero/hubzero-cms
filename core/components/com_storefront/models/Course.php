@@ -73,7 +73,7 @@ class Course extends SingleSkuProduct
      * Verify course
      *
      * @param  string $action       action (optional)
-     * @return void
+     * @return bool
      */
     public function verify($action = null)
     {
@@ -87,6 +87,6 @@ class Course extends SingleSkuProduct
             }
         }
 
-        parent::verify();
+        return parent::verify();
     }
 }

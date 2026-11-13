@@ -143,7 +143,7 @@ class WinCache extends None
     /**
      * Force garbage collect expired cache data as items are removed only on get/add/delete/info etc
      *
-     * @return  void
+     * @return  bool
      */
     public function gc()
     {
@@ -156,6 +156,8 @@ class WinCache extends None
                 wincache_ucache_get($key['key_name']);
             }
         }
+
+        return true;
     }
 
     /**

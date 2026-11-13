@@ -153,7 +153,7 @@ class Apc extends None
     /**
      * Force garbage collect expired cache data as items are removed only on fetch!
      *
-     * @return  void
+     * @return  bool
      */
     public function gc()
     {
@@ -168,6 +168,8 @@ class Apc extends None
                 $this->apcu ? apcu_fetch($key['info']) : apc_fetch($key['info']);
             }
         }
+
+        return true;
     }
 
     /**

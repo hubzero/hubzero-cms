@@ -60,7 +60,7 @@ class Event extends Table
      * @param   integer  $oid    Event ID
      * @param   integer  $state
      * @param   integer  $userId
-     * @return  void
+     * @return  bool
      */
     public function publish($oid = null, $state = 1, $userId = 0)
     {
@@ -69,6 +69,8 @@ class Event extends Table
         }
         $this->db->setQuery("UPDATE $this->tableName SET state=1 WHERE id=" . $this->db->quote($oid));
         $this->db->query();
+
+        return true;
     }
 
     /**
