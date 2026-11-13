@@ -100,8 +100,8 @@ class AbstractRenderer implements Renderable
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array  $arr
-     * @return  array
+     * @param   array|string  $arr
+     * @return  array|string|null
      */
     protected function deflate($arr)
     {

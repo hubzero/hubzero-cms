@@ -132,7 +132,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      * @param   string  $client_id    Authorized client
      * @param   string  $user_id      User identifier
      * @param   string  $scope        Client application scope
-     * @return  string  Access token
+     * @return  array  Access token
      */
     public function createAccessToken(AccessTokenInterface $accessToken, $client_id, $user_id, $scope)
     {

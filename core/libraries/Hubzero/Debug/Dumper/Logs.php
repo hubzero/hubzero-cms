@@ -47,7 +47,7 @@ class Logs extends AbstractRenderer
      * Render a list of messages
      *
      * @param   array  $messages
-     * @return  void
+     * @return  string  Nothing: the messages go to the log
      */
     public function render($messages = null)
     {
@@ -60,6 +60,8 @@ class Logs extends AbstractRenderer
         foreach ($messages as $item) {
             $this->logger->debug(print_r($item['var'], true));
         }
+
+        return '';
     }
 
     /**

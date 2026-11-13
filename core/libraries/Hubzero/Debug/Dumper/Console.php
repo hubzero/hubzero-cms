@@ -27,7 +27,7 @@ class Console extends AbstractRenderer
      * Render a list of messages
      *
      * @param   array  $messages
-     * @return  void
+     * @return  string  Nothing: the messages are written out directly
      */
     public function render($messages = null)
     {
@@ -42,6 +42,8 @@ class Console extends AbstractRenderer
             echo print_r($item['var'], true); //$this->_deflate($item['var']);
         }
         echo '-----';
+
+        return '';
     }
 
     /**
