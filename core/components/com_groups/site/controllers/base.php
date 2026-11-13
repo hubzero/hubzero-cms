@@ -101,7 +101,7 @@ class Base extends SiteController
     /**
      * Override Default Build Pathway Method
      *
-     * @param       object $pages    Array of group pages, if any
+     * @param       \Hubzero\Base\Model\ItemList|array{} $pages  The group's pages, if any
      * @return      void
      */
     public function buildPathway($pages = [])
@@ -187,7 +187,7 @@ class Base extends SiteController
     /**
      * Override default build title
      *
-     * @param   object  $pages  Array of group pages, if any
+     * @param   \Hubzero\Base\Model\ItemList|array{}  $pages  The group's pages, if any
      * @return  void
      */
     public function buildTitle($pages = [])

@@ -109,7 +109,7 @@ class Courses extends Macro
      * @param  object  $courses  Courses list
      * @return string
      */
-    private function renderCourses($courses = [])
+    private function renderCourses($courses)
     {
         $html = '<div class="course-list">';
 

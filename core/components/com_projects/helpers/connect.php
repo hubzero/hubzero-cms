@@ -1952,7 +1952,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   array    $remote   Remote resource array
-     * @param   object|null  $config  Component configuration
+     * @param   object|array{}|null  $config  Component configuration
      * @param   string   $alias    Project alias name
      * @return  bool
      */
