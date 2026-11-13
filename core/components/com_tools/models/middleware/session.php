@@ -29,7 +29,7 @@ class Session extends Base
     /**
      * \Hubzero\ItemList
      *
-     * @var  object
+     * @var  array
      */
     private $cache = [
         'shared.count' => null,

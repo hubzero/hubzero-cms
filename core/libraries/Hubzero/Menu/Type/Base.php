@@ -26,9 +26,9 @@ class Base extends Obj
     protected $items = [];
 
     /**
-     * Identifier of the default menu item
+     * Identifiers of the default menu items, by language
      *
-     * @var  integer
+     * @var  array
      */
     protected $defaultItem = [];
 

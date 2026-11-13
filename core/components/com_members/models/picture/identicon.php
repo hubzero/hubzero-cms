@@ -32,7 +32,7 @@ class Identicon
     /**
      * File size
      *
-     * @var  string
+     * @var  int
      */
     protected $pictureSize = 200;
 
@@ -46,7 +46,7 @@ class Identicon
     /**
      * Thumbnail size
      *
-     * @var  string
+     * @var  int
      */
     protected $thumbnailSize = 50;
 

@@ -47,7 +47,7 @@ class Databases extends Plugin
     /**
      * Store output message
      *
-     * @var  array
+     * @var  string
      */
     public $dataviewer = 'dataviewer';
 

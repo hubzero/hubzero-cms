@@ -25,7 +25,7 @@ class Review extends \Hubzero\Base\Model
     /**
      * ResourcesReview
      *
-     * @var object
+     * @var string
      */
     protected $tableClass = '\\Components\\Publications\\Tables\\Review';
 

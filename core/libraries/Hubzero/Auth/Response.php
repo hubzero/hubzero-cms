@@ -18,7 +18,7 @@ class Response extends Obj
     /**
      * Response status (see status codes)
      *
-     * @var  string
+     * @var  int
      */
     public $status = Status::FAILURE;
 

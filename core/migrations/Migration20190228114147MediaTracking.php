@@ -19,7 +19,7 @@ class Migration20190228114147MediaTracking extends Base
     /**
      * List of tables
      *
-     * @var  array
+     * @var  string
      **/
     public static $table = '#__media_tracking_detailed';
 

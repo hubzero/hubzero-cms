@@ -33,7 +33,7 @@ class Manager extends Obj
     /**
      * Maximum age of unused session in minutes
      *
-     * @var  string
+     * @var  int
      */
     protected $expire = 15;
 

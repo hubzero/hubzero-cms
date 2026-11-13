@@ -26,7 +26,7 @@ class Middleware extends Obj
     /**
      * \Hubzero\ItemList
      *
-     * @var object
+     * @var array
      */
     private $cache = [
         'zones.count' => null,

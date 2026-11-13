@@ -23,9 +23,9 @@ class Video extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Affects constructor behavior. If true, language files will be loaded automatically.
+     * File extensions this handler takes
      *
-     * @var  boolean
+     * @var  array
      */
     public static $extensions = [
         'mp4',

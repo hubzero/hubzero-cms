@@ -104,7 +104,7 @@ class Node extends Obj
     /**
      * The time at which the category was checked out
      *
-     * @var  string
+     * @var  int
      */
     public $checked_out_time = 0;
 

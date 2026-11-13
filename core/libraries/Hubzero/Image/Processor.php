@@ -35,7 +35,7 @@ class Processor extends Obj
     /**
      * Image type (png, gif, jpg)
      *
-     * @var  string
+     * @var  int
      */
     private $image_type = IMAGETYPE_PNG;
 

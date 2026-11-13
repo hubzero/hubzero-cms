@@ -28,7 +28,7 @@ class View extends AbstractView
     /**
      * The name of the view
      *
-     * @var  array
+     * @var  string
      */
     protected $viewName = 'pagination';
 

@@ -19,7 +19,7 @@ class User extends Base
     /**
      * URL segments
      *
-     * @var string
+     * @var array
      */
     protected $segments = [
         'option' => 'com_members',

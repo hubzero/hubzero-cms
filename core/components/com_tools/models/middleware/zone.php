@@ -28,7 +28,7 @@ class Zone extends Base
     /**
      * \Hubzero\ItemList
      *
-     * @var object
+     * @var array
      */
     private $cache = [
         'locations.count' => null,

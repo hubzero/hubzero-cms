@@ -20,7 +20,7 @@ class Comment extends Model
     /**
      * ForumTablePost
      *
-     * @var object
+     * @var string
      */
     protected $tableClass = '\\Components\\Projects\\Tables\\Comment';
 

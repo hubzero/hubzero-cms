@@ -34,7 +34,7 @@ class Initialcon implements Resolver
     /**
      * File size
      *
-     * @var  string
+     * @var  int
      */
     protected $pictureSize = 200;
 
@@ -48,7 +48,7 @@ class Initialcon implements Resolver
     /**
      * Thumbnail size
      *
-     * @var  string
+     * @var  int
      */
     protected $thumbnailSize = 50;
 

@@ -45,7 +45,7 @@ class Miner extends Obj implements Provider
     /**
      * Data source aliases
      *
-     * @var  object
+     * @var  array
      */
     protected $provides = [
         'resources',

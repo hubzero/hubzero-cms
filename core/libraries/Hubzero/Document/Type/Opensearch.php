@@ -36,7 +36,7 @@ class Opensearch extends Base
      *
      * optional
      *
-     * @var  object
+     * @var  array
      */
     private $images = [];
 

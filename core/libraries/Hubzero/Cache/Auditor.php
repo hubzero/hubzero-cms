@@ -23,7 +23,7 @@ class Auditor
     /**
      * Cached item size
      *
-     * @var  string
+     * @var  string|int
      */
     public $size = 0;
 

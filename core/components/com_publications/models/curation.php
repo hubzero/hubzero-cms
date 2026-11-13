@@ -64,7 +64,7 @@ class Curation extends Obj
     /**
      * Blocks
      *
-     * @var  object
+     * @var  object|array
      */
     public $blocks = [];
 
@@ -78,7 +78,7 @@ class Curation extends Obj
     /**
      * Current block
      *
-     * @var  object
+     * @var  object|array
      */
     public $block = [];
 
