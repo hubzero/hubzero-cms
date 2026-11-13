@@ -525,7 +525,7 @@ class Resources extends SiteController
     /**
      * Strip some unwanted and potentially harmful items out of text
      *
-     * @param   string  &$text  Text to clean
+     * @param   string|null  &$text  Text to clean
      * @return  string
      */
     public function txtClean(&$text)

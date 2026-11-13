@@ -651,7 +651,7 @@ class Citations extends Plugin
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
         }
 
         if (!$this->params->get('access-manage')) {
@@ -1056,7 +1056,7 @@ class Citations extends Plugin
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
         }
 
         if (!$this->params->get('access-manage')) {
@@ -1190,7 +1190,7 @@ class Citations extends Plugin
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginAction();
+            $this->loginAction();
         }
 
         if (!$this->params->get('access-manage')) {

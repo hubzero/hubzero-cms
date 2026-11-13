@@ -1943,7 +1943,7 @@ class Collections extends Plugin
         // its de-duplication row on the user id, which is 0 for a guest: every
         // guest would share one row and toggle it against the others.
         if (User::isGuest()) {
-            return $this->login();
+            $this->login();
         }
 
         // Require POST

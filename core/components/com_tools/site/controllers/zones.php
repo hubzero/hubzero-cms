@@ -83,18 +83,18 @@ class Zones extends SiteController
         $file = self::normalizePath('/' . trim($file, '/'), true);
 
         if (empty($file)) {
-            return $this->notFoundTask();
+            $this->notFoundTask();
         }
 
         $zone = new \Components\Tools\Models\Middleware\Zone(Request::getInt('id', 0));
         if (!$zone->exists()) {
-            return $this->notFoundTask();
+            $this->notFoundTask();
         }
 
         $file = $zone->logo('path') . '/' . ltrim($file, '/');
 
         if (!is_file($file) || !is_readable($file)) {
-            return $this->notFoundTask();
+            $this->notFoundTask();
         }
 
         $xserver = new \Hubzero\Content\Server();

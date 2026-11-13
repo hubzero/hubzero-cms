@@ -1181,7 +1181,7 @@ class Setup extends Base
      * Convert Microsoft characters and strip disallowed content
      * This includes script tags, HTML comments, xhubtags, and style tags
      *
-     * @param   string  &$text  Text to clean
+     * @param   string|null  &$text  Text to clean
      * @return  string
      */
     private function txtClean(&$text)
