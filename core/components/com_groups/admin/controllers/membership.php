@@ -74,9 +74,7 @@ class Membership extends AdminController
 
         $viewFilters = $this->view->get('filters');
         $viewFilters['gidNumber'] = $group->get('gidNumber');
-        $this->view->set('filters', $viewFilters);
 
-        $viewFilters = $this->view->get('filters');
         $viewFilters['search'] = urldecode(trim(Request::getState(
             $this->option . '.' . $this->controller . '.search',
             'search',
@@ -87,9 +85,7 @@ class Membership extends AdminController
             'status',
             '',
         ));
-        $this->view->set('filters', $viewFilters);
         // Sorting options
-        $viewFilters = $this->view->get('filters');
         $viewFilters['sort'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sort',
             'filter_order',
@@ -100,9 +96,7 @@ class Membership extends AdminController
             'filter_order_Dir',
             'ASC',
         ));
-        $this->view->set('filters', $viewFilters);
         // Filters for returning results
-        $viewFilters = $this->view->get('filters');
         $viewFilters['limit'] = Request::getState(
             $this->option . '.' . $this->controller . '.limit',
             'limit',
@@ -115,17 +109,17 @@ class Membership extends AdminController
             0,
             'int',
         );
-        $this->view->set('filters', $viewFilters);
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor(
-            $this->view->filters['start'] / $this->view->filters['limit'],
-        ) * $this->view->filters['limit']) : 0);
+        $viewFilters['start'] = ($viewFilters['limit'] != 0 ? (floor(
+            $viewFilters['start'] / $viewFilters['limit'],
+        ) * $viewFilters['limit']) : 0);
+        $this->view->set('filters', $viewFilters);
 
         $tbl = new Tables\Group($this->database);
 
-        $this->view->set('total', $tbl->countMembers($this->view->filters));
+        $this->view->set('total', $tbl->countMembers($viewFilters));
 
-        $this->view->set('rows', $tbl->findMembers($this->view->filters));
+        $this->view->set('rows', $tbl->findMembers($viewFilters));
 
         //add invite emails to list
         if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee') {
