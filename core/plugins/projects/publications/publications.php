@@ -1071,13 +1071,13 @@ class Publications extends Plugin
 
         // Do we have a choice?
         if (count($choices) <= 1) {
-            App::redirect(Route::url($view->route . '&action=edit'));
+            App::redirect(Route::url($view->get('route') . '&action=edit'));
         }
 
         // Append breadcrumbs
         Pathway::append(
             stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
-            Route::url($view->route . '&action=start'),
+            Route::url($view->get('route') . '&action=start'),
         );
 
         // Output HTML

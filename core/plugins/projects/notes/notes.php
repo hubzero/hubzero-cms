@@ -341,7 +341,11 @@ class Notes extends Plugin
         Request::setVar('project', $this->model);
         Request::setVar('candelete', $canDelete);
 
-        if (!$view->page->get('id') && $this->task == 'view' && $view->page->get('namespace') != 'special') {
+        if (
+            !$view->get('page')->get('id')
+            && $this->task == 'view'
+            && $view->get('page')->get('namespace') != 'special'
+        ) {
             // Output HTML (wrap for notes)
             $nview = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',

@@ -50,7 +50,7 @@ $view = $this;
 
 // The attribute that marks the current value in the form fields below
 $approvedSelected = function ($value) use ($view) {
-    if ($view->params->get('approved', 1) == $value) {
+    if ($view->get('params')->get('approved', 1) == $value) {
         return ' selected="selected"';
     }
 
@@ -58,7 +58,7 @@ $approvedSelected = function ($value) use ($view) {
 };
 
 $emailnewSelected = function ($value) use ($view) {
-    if ($view->params->get('emailnew', 0) == $value) {
+    if ($view->get('params')->get('emailnew', 0) == $value) {
         return ' selected="selected"';
     }
 

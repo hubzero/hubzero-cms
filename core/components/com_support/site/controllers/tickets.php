@@ -312,7 +312,7 @@ class Tickets extends SiteController
             $sql .= " AND `group_id`=0";
         } elseif ($this->view->get('group')) {
             $gidNumber = 0;
-            if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
+            if ($group = \Hubzero\User\Group::getInstance($this->view->get('group'))) {
                 $gidNumber = $group->get('gidNumber');
             }
             $sql .= " AND `group_id`=" . $this->database->quote($gidNumber);
@@ -365,9 +365,9 @@ class Tickets extends SiteController
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
 				AND t.type=" . $this->database->quote($this->view->type) . " AND t.open=0";
-        if ($this->view->group == '_none_') {
+        if ($this->view->get('group') == '_none_') {
             $sql .= " AND t.`group_id`=0";
-        } elseif ($this->view->group) {
+        } elseif ($this->view->get('group')) {
             $gidNumber = 0;
             if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
                 $gidNumber = $group->get('gidNumber');

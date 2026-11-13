@@ -629,11 +629,16 @@ class Files extends Plugin
             $route = $this->model->isProvisioned()
                 ? 'index.php?option=com_publications&task=submit&active=files'
                 : $this->model->link('files');
-            $filterUrl .= '&pid=' . $view->publication->get('id') . '&vid=' . $view->publication->get('version_id');
+            $filterUrl .= '&pid=' . $view->get('publication')->get('id')
+                . '&vid=' . $view->get('publication')->get('version_id');
 
             // Set params
             $used = [];
-            if (!$reuse && $view->publication->_attachments && $view->publication->_attachments['elements']) {
+            if (
+                !$reuse
+                && $view->get('publication')->_attachments
+                && $view->get('publication')->_attachments['elements']
+            ) {
                 foreach ($view->get('publication')->_attachments['elements'] as $o => $elms) {
                     if ($o != $elId) {
                         foreach ($elms as $elm) {

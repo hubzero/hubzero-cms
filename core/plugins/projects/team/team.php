@@ -409,7 +409,10 @@ class Team extends Plugin
         $view->set('publication', new \Components\Publications\Models\Publication($pid, null, $vid));
 
         // The publication must belong to this project
-        if (!$view->publication->exists() || $view->publication->get('project_id') != $this->model->get('id')) {
+        if (
+            !$view->get('publication')->exists()
+            || $view->get('publication')->get('project_id') != $this->model->get('id')
+        ) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 
             // Output error

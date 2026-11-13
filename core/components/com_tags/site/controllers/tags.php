@@ -155,7 +155,7 @@ class Tags extends SiteController
             'sort'  => Request::getCmd('sort', 'date'),
         ]);
         if (!in_array($this->view->get('filters')['sort'], ['date', 'title'])) {
-            App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters['sort']));
+            App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->get('filters')['sort']));
         }
 
         $parent = Request::getString('parent', '');
@@ -232,7 +232,7 @@ class Tags extends SiteController
                     foreach ($this->view->get('categories') as $response) {
                         $this->view->total += $response['total'];
                     }
-                    foreach ($this->view->categories as $response) {
+                    foreach ($this->view->get('categories') as $response) {
                         //$this->view->total += $response['total'];
 
                         if (is_array($response['results']) && !empty($response['results']) && !$parent) {

@@ -175,7 +175,7 @@ class Media extends Base
         // regular groups can only access inside /uploads
         //if (!$this->group->isSuperGroup())
         //{
-        $pathInfo = pathinfo($this->view->activeFolder);
+        $pathInfo = pathinfo($this->view->get('activeFolder'));
         if ($pathInfo['dirname'] != '/uploads') {
             $this->view->activeFolder = '/uploads';
         }
@@ -379,7 +379,7 @@ class Media extends Base
 
         $this->view->set('relpath', \Hubzero\Filesystem\Util::normalizePath($this->view->get('relpath')));
         $this->view->set('relpath', explode('/', $this->view->get('relpath')));
-        foreach ($this->view->relpath as $i => $p) {
+        foreach ($this->view->get('relpath') as $i => $p) {
             $this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
         }
         $this->view->relpath = implode(DS, $this->view->relpath);

@@ -674,7 +674,7 @@ class Pipeline extends SiteController
             'title',
             Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL'),
         );
-        Document::setTitle($this->view->title);
+        Document::setTitle($this->view->get('title'));
 
         if (Pathway::count() <= 0) {
             Pathway::append(

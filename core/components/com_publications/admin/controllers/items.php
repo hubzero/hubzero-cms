@@ -1523,7 +1523,7 @@ class Items extends AdminController
         }
 
         // Get versions
-        $this->view->set('versions', $this->view->pub->version->getVersions($id, $filters = ['withdev' => 1]));
+        $this->view->set('versions', $this->view->get('pub')->version->getVersions($id, $filters = ['withdev' => 1]));
 
         // Set any errors
         if ($this->getError()) {

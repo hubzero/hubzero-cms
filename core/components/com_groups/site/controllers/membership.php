@@ -397,7 +397,11 @@ class Membership extends Base
                         '<a href="'
                             . $url
                             . '">'
-                            . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                            . htmlspecialchars(
+                                (string) $this->view->get('group')->get('description'),
+                                ENT_QUOTES,
+                                'UTF-8',
+                            )
                             . '</a>',
                     ),
                     'details'     => [
@@ -432,7 +436,11 @@ class Membership extends Base
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars(
+                            (string) $this->view->get('group')->get('description'),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
                         . '</a>',
                 ),
                 'details'     => [
@@ -642,7 +650,10 @@ class Membership extends Base
             $this->buildPathway();
 
             $this->view
-                ->set('title', Lang::txt('COM_GROUPS_ACCEPT_INVITE') . ': ' . $this->view->group->get('description'))
+                ->set(
+                    'title',
+                    Lang::txt('COM_GROUPS_ACCEPT_INVITE') . ': ' . $this->view->get('group')->get('description'),
+                )
                 ->set('token', $invite ? $token : '')
                 ->setLayout('accept')
                 ->display();
@@ -704,7 +715,11 @@ class Membership extends Base
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars(
+                            (string) $this->view->get('group')->get('description'),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
                         . '</a>',
                 ),
                 'details'     => [
@@ -768,7 +783,9 @@ class Membership extends Base
         if ($return == 'browse') {
             App::redirect(Route::url('index.php?option=' . $this->option));
         } else {
-            App::redirect(Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->group->get('cn')));
+            App::redirect(
+                Route::url('index.php?option=' . $this->option . '&cn=' . $this->view->get('group')->get('cn')),
+            );
         }
     }
 
@@ -873,7 +890,14 @@ class Membership extends Base
         if (
             !Event::trigger(
                 'xmessage.onSendMessage',
-                ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option],
+                [
+                    'groups_cancelled_me',
+                    $subject,
+                    $message,
+                    $from,
+                    $this->view->get('group')->get('managers'),
+                    $this->option,
+                ],
             )
         ) {
             $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
@@ -900,7 +924,11 @@ class Membership extends Base
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars(
+                            (string) $this->view->get('group')->get('description'),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
                         . '</a>',
                 ),
                 'details'     => [
@@ -999,7 +1027,10 @@ class Membership extends Base
                 $this->buildPathway();
 
                 $this->view
-                    ->set('title', Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->view->group->get('description'))
+                    ->set(
+                        'title',
+                        Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->view->get('group')->get('description'),
+                    )
                     ->setLayout('join')
                     ->display();
                 return;
@@ -1041,7 +1072,11 @@ class Membership extends Base
                         '<a href="'
                             . $url
                             . '">'
-                            . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                            . htmlspecialchars(
+                                (string) $this->view->get('group')->get('description'),
+                                ENT_QUOTES,
+                                'UTF-8',
+                            )
                             . '</a>',
                     ),
                     'details'     => [
@@ -1178,7 +1213,11 @@ class Membership extends Base
                     '<a href="'
                         . $url
                         . '">'
-                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . htmlspecialchars(
+                            (string) $this->view->get('group')->get('description'),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
                         . '</a>',
                 ),
                 'details'     => [

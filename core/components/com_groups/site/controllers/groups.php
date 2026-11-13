@@ -230,8 +230,8 @@ class Groups extends Base
         // Check to make sure we were able to load group
         if (
             !is_object($this->view->get('group'))
-            || !$this->view->group->get('gidNumber')
-            || !$this->view->group->get('cn')
+            || !$this->view->get('group')->get('gidNumber')
+            || !$this->view->get('group')->get('cn')
         ) {
             $this->suggestNonExistingGroupTask();
             return;
@@ -242,7 +242,7 @@ class Groups extends Base
         // it: Group::getInstance() returns false for an unknown cn, and this
         // block has been moved above that check before now, which turns every
         // hit on a missing group into a warning in the error log.
-        if (is_object($this->view->group)) {
+        if (is_object($this->view->get('group'))) {
             $gparams       = new Registry($this->view->group->get('params'));
             $page_template = $gparams->get('page_template');
 
@@ -486,7 +486,10 @@ class Groups extends Base
             $this->view->set('tags', $gt->render('string'));
 
             // Set title
-            $this->view->set('title', Lang::txt('COM_GROUPS_EDIT_TITLE', $this->view->group->get('description')));
+            $this->view->set(
+                'title',
+                Lang::txt('COM_GROUPS_EDIT_TITLE', $this->view->get('group')->get('description')),
+            );
         }
 
         // Create dir for uploads
@@ -1057,7 +1060,10 @@ class Groups extends Base
         }
 
         // Start log
-        $this->view->set('log', Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->group->get('members'))));
+        $this->view->set(
+            'log',
+            Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG', count($this->view->get('group')->get('members'))),
+        );
 
         // Trigger the functions that delete associated content
         // Should return logs of what was deleted
@@ -1076,7 +1082,10 @@ class Groups extends Base
         $this->view->set('notifications', ($this->getNotifications()) ? $this->getNotifications() : []);
 
         // Set some vars for view
-        $this->view->set('title', Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description'));
+        $this->view->set(
+            'title',
+            Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->get('group')->get('description'),
+        );
         $this->view->set('msg', Request::getString('msg', ''));
 
         // Display view
