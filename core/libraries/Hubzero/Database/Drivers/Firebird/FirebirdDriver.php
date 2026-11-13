@@ -400,7 +400,7 @@ class FirebirdDriver extends BaseSqlDriver
 
         // Explicitly set ATTR_CASE on the connection to ensure it takes effect
         // This forces all column names in result sets to lowercase for consistency
-        if ($this->connection instanceof \Hubzero\Database\ConnectionInterface) {
+        if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
             $this->connection->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
         }
     }

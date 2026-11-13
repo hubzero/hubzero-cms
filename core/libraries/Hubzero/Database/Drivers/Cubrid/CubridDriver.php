@@ -1384,7 +1384,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     {
         if ($this->transactionDepth == 0) {
             // Use PDO's native transaction support
-            if ($this->connection instanceof ConnectionInterface) {
+            if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
                 $this->connection->getPdo()->beginTransaction();
             } else {
                 $this->connection->beginTransaction();
@@ -2353,7 +2353,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      */
     public function escape($text, $extra = false)
     {
-        if ($this->connection instanceof ConnectionInterface) {
+        if ($this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
             $pdo = $this->connection->getPdo();
         } else {
             $pdo = $this->connection;

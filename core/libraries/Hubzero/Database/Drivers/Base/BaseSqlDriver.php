@@ -1574,6 +1574,19 @@ abstract class BaseSqlDriver extends PdoDriver
     }
 
     /**
+     * Check if this database can drop a column with ALTER TABLE
+     *
+     * Most can. SQLite before 3.35 cannot, and says so in its own driver.
+     * (No return type here: the SQLite driver's override declares none.)
+     *
+     * @return  bool
+     */
+    public function supportsDropColumn()
+    {
+        return true;
+    }
+
+    /**
      * Check if this database supports full-text search indexes
      *
      * MySQL supports FULLTEXT indexes on InnoDB (5.6+) and MyISAM.
