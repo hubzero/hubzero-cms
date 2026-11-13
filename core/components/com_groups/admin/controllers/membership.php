@@ -173,7 +173,7 @@ class Membership extends AdminController
         // membership row to join against.
         if ($this->view->get('expiration_supported') && $this->view->filters['term'] != '') {
             $terms = $this->view->get('expirations');
-            $want  = $this->view->filters['term'];
+            $want  = $this->view->get('filters')['term'];
             $soon  = time() + (30 * 86400);
 
             $wanted = function ($row) use ($terms, $want, $soon) {
