@@ -125,7 +125,7 @@ class Sponsors extends Plugin
      * @param   string  $option      Component name
      * @param   string  $controller  Controller name
      * @param   string  $task        Task to perform
-     * @return  void
+     * @return  mixed
      */
     public function onManage($option, $controller = 'plugins', $task = 'default')
     {

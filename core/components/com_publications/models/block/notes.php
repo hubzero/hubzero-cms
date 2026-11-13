@@ -47,7 +47,7 @@ class Notes extends Base
     /**
      * Get default manifest for the block
      *
-     * @return  void
+     * @return  mixed
      */
     public function getManifest($new = false)
     {

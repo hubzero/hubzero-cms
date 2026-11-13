@@ -31,7 +31,7 @@ class SoftwareAuditor extends BaseAuditor
     /**
      * Main handler. Does all the checks
      *
-     * @return  void
+     * @return  mixed
      */
     public function audit()
     {

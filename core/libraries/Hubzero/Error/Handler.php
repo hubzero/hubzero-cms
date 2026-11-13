@@ -201,7 +201,7 @@ class Handler
      * Handle an uncaught exception.
      *
      * @param   object  $exception
-     * @return  void
+     * @return  mixed
      */
     public function handleException($exception)
     {

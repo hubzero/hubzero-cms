@@ -59,7 +59,7 @@ class SolrHelper
 
         $this->query = $this->connection->createSelect();
 
-        return $this;
+        return;
     }
     /**
      * parseDocumentID - returns a friendly way to access the type and id from a solr ID

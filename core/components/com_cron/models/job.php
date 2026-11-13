@@ -324,7 +324,7 @@ class Job extends Relational
     /**
      * Get the last run timestamp
      *
-     * @return  void
+     * @return  mixed
      */
     public function lastRun($format = 'Y-m-d H:i:s')
     {

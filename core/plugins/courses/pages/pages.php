@@ -282,7 +282,7 @@ class Pages extends Plugin
     /**
      * Save a record
      *
-     * @return  void
+     * @return  mixed
      */
     public function save()
     {
@@ -350,7 +350,7 @@ class Pages extends Plugin
     /**
      * Delete a record
      *
-     * @return  void
+     * @return  mixed
      */
     public function delete()
     {
@@ -697,7 +697,7 @@ class Pages extends Plugin
     /**
      * Delete a file in the wiki
      *
-     * @return  void
+     * @return  mixed
      */
     public function fileDelete()
     {

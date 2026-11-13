@@ -1828,7 +1828,7 @@ class Members extends Plugin
     /**
      * Save a member role
      *
-     * @return  void
+     * @return  mixed
      */
     public function saveRole()
     {

@@ -412,7 +412,7 @@ class Application extends Container
      * Boot the given service provider.
      *
      * @param   \Hubzero\Base\ServiceProvider $provider
-     * @return  void
+     * @return  mixed
      */
     protected function bootProvider(ServiceProvider $provider)
     {

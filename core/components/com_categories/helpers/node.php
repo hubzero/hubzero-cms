@@ -277,10 +277,10 @@ class Node extends Obj
                 $this->constructor = &$constructor;
             }
 
-            return true;
+            return;
         }
 
-        return false;
+        return;
     }
 
     /**

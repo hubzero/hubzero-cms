@@ -109,7 +109,7 @@ class Database implements StorageInterface
      *
      * @param   int   $id         Rate limit record id
      * @param   int   $increment  Increment amount
-     * @return  void
+     * @return  mixed
      */
     public function incrementRateLimitData($id, $increment = 1)
     {
@@ -127,7 +127,7 @@ class Database implements StorageInterface
      * @param   int     $id       Rate limit record id
      * @param   int     $toCount  Reset count
      * @param   string  $toDate   Reset date string
-     * @return  void
+     * @return  mixed
      */
     public function resetShort($id, $toCount, $toDate)
     {
@@ -145,7 +145,7 @@ class Database implements StorageInterface
      * @param   int     $id       Rate limit record id
      * @param   int     $toCount  Reset count
      * @param   string  $toDate   Reset date string
-     * @return  void
+     * @return  mixed
      */
     public function resetLong($id, $toCount, $toDate)
     {

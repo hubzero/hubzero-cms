@@ -179,7 +179,7 @@ class Migration
         // Setup the database connection
         if (!$this->db = $this->getDBO()) {
             $this->log('Error: database connection failed.', 'error');
-            return false;
+            return;
         }
 
         // This is the database that migrations will run against

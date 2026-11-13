@@ -32,7 +32,7 @@ class Index
             $adapter = "\\Hubzero\\Search\\Adapters\\" . ucfirst($engine) . 'IndexAdapter';
             $this->adapter = new $adapter($config);
         }
-        return $this;
+        return;
     }
 
     /**
@@ -85,7 +85,7 @@ class Index
      *
      * @param mixed $document
      * @access public
-     * @return void
+     * @return mixed
      */
     public function index($document, $overwrite = null, $commitWithin = 3000, $buffer = 1500)
     {

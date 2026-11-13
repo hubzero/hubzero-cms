@@ -259,7 +259,7 @@ class SolrQueryAdapter implements QueryInterface
      * getNumFound
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function getNumFound()
     {
@@ -271,7 +271,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $name
      * @access public
-     * @return void
+     * @return mixed
      */
     public function getFacetCount($name)
     {
@@ -486,7 +486,7 @@ class SolrQueryAdapter implements QueryInterface
      * lastInsert - Returns the timestamp of the latest indexed document
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function lastInsert()
     {

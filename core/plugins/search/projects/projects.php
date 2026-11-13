@@ -95,7 +95,7 @@ class Projects extends Plugin
      * @param   string   $type
      * @param   integer  $id
      * @param   boolean  $run
-     * @return  void
+     * @return  mixed
      */
     public function onIndex($type, $id, $run = false)
     {

@@ -98,7 +98,7 @@ class SolrIndexAdapter implements IndexInterface
      * lastInsert - Returns the timestamp of the last document indexed
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function lastInsert()
     {
@@ -244,7 +244,7 @@ class SolrIndexAdapter implements IndexInterface
      * @param mixed $document
      * @param mixed $commitWithin
      * @access public
-     * @return void
+     * @return mixed
      */
     public function updateIndex($document, $commitWithin = 3000)
     {

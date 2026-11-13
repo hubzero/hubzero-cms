@@ -120,7 +120,7 @@ class Note extends \Components\Wiki\Models\Book
      * Get default project note
      *
      * @param      string $prefix
-     * @return     void
+     * @return     mixed
      */
     public function getFirstNote($prefix = '')
     {

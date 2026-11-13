@@ -47,7 +47,7 @@ class ImageViewer extends Base
      * Get default params for the handler
      *
      * @param   array  $savedConfig
-     * @return  void
+     * @return  mixed
      */
     public function getConfig($savedConfig = [])
     {

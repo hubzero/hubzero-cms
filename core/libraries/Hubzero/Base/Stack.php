@@ -101,7 +101,7 @@ class Stack
      * Final callback
      *
      * @param   \Closure $callback  Callback after stack is run
-     * @return  void    Result of callback
+     * @return  mixed    Result of callback
      */
     public function then(\Closure $callback)
     {

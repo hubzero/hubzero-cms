@@ -150,7 +150,7 @@ class Events extends Plugin
      * @param integer $id
      * @param boolean $run
      * @access public
-     * @return void
+     * @return mixed
      */
     public function onIndex($type, $id, $run = false)
     {

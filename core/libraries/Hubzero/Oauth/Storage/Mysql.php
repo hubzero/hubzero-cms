@@ -265,7 +265,7 @@ class Mysql implements
      * Remove invalid authorization code
      *
      * @param   string  $code  Authorization code
-     * @return  void
+     * @return  mixed
      */
     public function expireAuthorizationCode($code)
     {
@@ -409,7 +409,7 @@ class Mysql implements
      * Remove refresh token
      *
      * @param   string  $refresh_token  Refresh Token
-     * @return  void
+     * @return  mixed
      */
     public function unsetRefreshToken($refresh_token)
     {

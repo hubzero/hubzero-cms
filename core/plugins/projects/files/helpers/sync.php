@@ -43,7 +43,7 @@ class Sync extends \Hubzero\Base\Obj
     public function __construct($connect = null)
     {
         if (empty($connect)) {
-            return false;
+            return;
         }
         $this->db      = App::get('db');
         $this->connect = $connect;

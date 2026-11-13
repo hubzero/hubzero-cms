@@ -399,7 +399,7 @@ class Item extends Base
      * Add a tag to the list
      *
      * @param   object $tag
-     * @return  void
+     * @return  mixed
      */
     public function addTag($tag = null, $user_id = 0, $admin = 0)
     {

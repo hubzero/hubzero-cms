@@ -515,7 +515,7 @@ class Password
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  void
+     * @return  mixed
      */
     public function set($key, $value)
     {

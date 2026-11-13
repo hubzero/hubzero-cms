@@ -93,7 +93,7 @@ class Prerequisite extends Base
         }
 
         if (!isset($member_id)) {
-            return false;
+            return;
         }
 
         $this->progress = $gradebook->progress($member_id);

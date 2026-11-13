@@ -752,7 +752,7 @@ class Profile extends Obj
             return $this->load($user);
         }
 
-        return true;
+        return;
     }
 
     /**
