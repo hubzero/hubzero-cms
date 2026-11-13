@@ -489,26 +489,6 @@ class SiteController extends Obj implements ControllerInterface
     }
 
     /**
-     * Method to check admin access permission
-     *
-     * @return  boolean  True on success
-     * @deprecated
-     */
-    protected function authorize()
-    {
-        // Check if they are logged in
-        if ($this->juser->isGuest()) {
-            return false;
-        }
-
-        if ($this->juser->authorise('core.admin', $this->option)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Does the current user hold a view access level?
      *
      * @param   int   $level  A #__viewlevels id (1 is Public)
