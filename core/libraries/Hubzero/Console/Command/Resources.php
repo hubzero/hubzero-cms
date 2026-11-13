@@ -20,11 +20,11 @@ use Hubzero\Facades\Component;
  **/
 class Resources extends Base implements CommandInterface
 {
-    /**
+    /*
      * Resources object
      *
      * @var  object
-     **/
+     */
     // private $resources;
 
     /**

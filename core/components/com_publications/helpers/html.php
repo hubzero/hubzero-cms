@@ -683,11 +683,11 @@ class Html
      * @param   string   $icon     Class to add
      * @param   object   $pub      The publication
      * @param   string   $url       Link text
-     * @param   string   $xtra      Extra parameters to add (deprecated)
      * @param   string   $title     Link title
-     * @param   string   $action    Link action
      * @param   boolean  $disabled  Is the button disable?
      * @param   string   $pop       Pop-up content
+     * @param   string   $action    Link action
+     * @param   boolean  $showArchive  Show the archive link too?
      */
     public static function drawLauncher(
         $icon,
@@ -1399,7 +1399,6 @@ class Html
      *
      * @param   object  $publication_id    publication model
      * @param   int  $publication_version_id
-     * @param   array  $attachments
      * @param   array  $mimeTypes
      *
      * @return  null|false or false

@@ -538,7 +538,8 @@ class Offering extends SiteController
         // If requesting a file from a wiki type asset, then serve that up directly
         $isWiki = $asset->get('subtype') == 'wiki';
         if ($isWiki && Request::getString('file', false)) {
-            echo $asset->download($this->course);
+            // download() sends the file itself and returns nothing
+            $asset->download($this->course);
         }
 
         echo $asset->render($this->course);

@@ -58,7 +58,9 @@ class Redirect extends Plugin
             exit();
 
             // Render the error page.
-            return $renderer->render($error);
+            $renderer->render($error);
+
+            return;
         }
 
         // Get the full current URI.
@@ -71,7 +73,9 @@ class Redirect extends Plugin
             || (strpos($current, '=http://') !== false)
         ) {
             // Render the error page.
-            return $renderer->render($error);
+            $renderer->render($error);
+
+            return;
         }
 
         if (file_exists(Component::path('com_redirect') . DS . 'models' . DS . 'link.php')) {

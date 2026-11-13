@@ -70,5 +70,7 @@ class DefaultHandler extends Plugin
             $return = Event::trigger('citation.onImport', [$new_file, $scope, $scope_id]);
             return $return[0];
         }
+
+        return null;
     }
 }

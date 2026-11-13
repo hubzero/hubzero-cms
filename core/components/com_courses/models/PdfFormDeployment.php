@@ -17,7 +17,7 @@ class PdfFormDeployment
     /**
      * Length of crumb indentifier for a form
      *
-     * @var constant
+     * @var int
      **/
     public const CRUMB_LEN = 20;
 

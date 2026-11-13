@@ -44,7 +44,7 @@ class Notices extends Module
         $date = new \Hubzero\Utility\Date();
         $now = $date->toLocal('U');
 
-        $difference = $the_countdown_date - $now;
+        $difference = $the_countdown_date - (int) $now;
         if ($difference < 0) {
             $difference = 0;
         }

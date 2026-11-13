@@ -88,7 +88,7 @@ class Kml
         $s = $cood[0];
         $dir = $cood[1];
 
-        $dc = $d + ($m / 60) + ($s / (60 * 60));
+        $dc = (float) $d + ((float) $m / 60) + ((float) $s / (60 * 60));
 
         if ($dir == "S" || $dir == "W") {
             $dc = $dc * -1;
