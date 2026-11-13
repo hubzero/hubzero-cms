@@ -783,6 +783,10 @@ class Assetv1r0 extends Base
         $toolHandler = null;
         if ($asset->get('type') == 'tool') {
             $toolHandler = $asset->loadHandler();
+
+            if (!$toolHandler) {
+                App::abort(500, 'Asset handler could not be loaded.');
+            }
         }
 
         $basePath = $toolHandler !== null ? $asset->get('path') . '/' : $asset->path($this->course->get('id'));
