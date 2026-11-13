@@ -1192,9 +1192,9 @@ class Articles extends SiteController
 
         // PREPARE THE DATA
         // Get the metrics for the structural page layout.
-        $numLeading = $params->def('num_leading_articles', 1);
-        $numIntro   = $params->def('num_intro_articles', 4);
-        $numLinks   = $params->def('num_links', 4);
+        $numLeading = (int) $params->def('num_leading_articles', 1);
+        $numIntro   = (int) $params->def('num_intro_articles', 4);
+        $numLinks   = (int) $params->def('num_links', 4);
 
         $query = Article::allByFilters($filters);
 

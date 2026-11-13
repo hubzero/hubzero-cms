@@ -294,7 +294,7 @@ class Git
             array_unshift($upcomingArgs, "HEAD..{$this->upstream}");
             $upcomingTotal = $this->call('rev-list', $upcomingArgs);
             $upcomingTotal = trim($upcomingTotal);
-            $total += $upcomingTotal;
+            $total = (int) $total + (int) $upcomingTotal;
         }
 
         return trim($total);

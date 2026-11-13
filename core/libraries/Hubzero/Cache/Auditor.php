@@ -53,7 +53,7 @@ class Auditor
      */
     public function tally($size)
     {
-        $this->size = number_format($this->size + $size, 2, '.', '');
+        $this->size = number_format((float) $this->size + (float) $size, 2, '.', '');
         $this->count++;
     }
 }

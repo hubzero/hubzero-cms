@@ -213,10 +213,10 @@ class DiffFormatter
     public function blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
         if ($xlen > 1) {
-            $xbeg .= "," . ($xbeg + $xlen - 1);
+            $xbeg .= "," . ((int) $xbeg + $xlen - 1);
         }
         if ($ylen > 1) {
-            $ybeg .= "," . ($ybeg + $ylen - 1);
+            $ybeg .= "," . ((int) $ybeg + $ylen - 1);
         }
 
         return $xbeg . ($xlen ? ($ylen ? 'c' : 'd') : 'a') . $ybeg;

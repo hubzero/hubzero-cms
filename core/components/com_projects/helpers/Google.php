@@ -788,7 +788,7 @@ class Google extends Obj
 
             // Append duplicate count to file name
             $appended = \Components\Projects\Helpers\Html::getAppendedNumber($fpath);
-            $num = $appended ? $appended + 1 : 1;
+            $num = $appended ? (int) $appended + 1 : 1;
 
             if ($appended) {
                 $fpath = \Components\Projects\Helpers\Html::cleanFileNum($fpath, $appended);

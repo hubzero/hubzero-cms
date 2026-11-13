@@ -137,7 +137,7 @@ class Memberships
 
         // Split ttl into parts
         $ttlParts = explode(' ', $ttl);
-        $ttlParts[0] = $qty * $ttlParts[0];
+        $ttlParts[0] = $qty * (int) $ttlParts[0];
 
         $ttl = implode(' ', $ttlParts);
         return $ttl;

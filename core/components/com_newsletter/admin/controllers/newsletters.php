@@ -956,7 +956,7 @@ class Newsletters extends AdminController
 
             // Make sure its in 24 time
             if ($schedulerMeridian == 'pm') {
-                $schedulerHour += 12;
+                $schedulerHour = (int) $schedulerHour + 12;
             }
 
             // Build scheduled time

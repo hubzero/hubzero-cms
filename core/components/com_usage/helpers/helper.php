@@ -364,7 +364,7 @@ class Helper
                 if ($month <= 9) {
                     return "FY " . $year;
                 } else {
-                    return "FY " . ($year + 1);
+                    return "FY " . ((int) $year + 1);
                 }
             case 'calyear':
                 return $year;
@@ -542,9 +542,9 @@ class Helper
      */
     public static function seldateShift($seldate, $period, $right)
     {
-        $year  = substr($seldate, 0, 4);
-        $month = substr($seldate, 5, 2);
-        $day   = substr($seldate, 8, 2);
+        $year  = (int) substr($seldate, 0, 4);
+        $month = (int) substr($seldate, 5, 2);
+        $day   = (int) substr($seldate, 8, 2);
         if ($right) {
             switch ($period) {
                 case 'fiscalyear':
