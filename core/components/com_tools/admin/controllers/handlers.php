@@ -196,7 +196,7 @@ class Handlers extends AdminController
                 $handler = Handler::oneOrFail($id);
 
                 // Delete the rules first, then the handler itself
-                if (!$handler->rules->destroyAll() || !$handler->destroy()) {
+                if (!$handler->rules()->rows()->destroyAll() || !$handler->destroy()) {
                     App::redirect(
                         Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                         Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED'),

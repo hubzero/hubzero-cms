@@ -640,7 +640,9 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
         switch (strtolower($type)) {
             case 'category':
-                $link = 'index.php?option=com_publications&category=' . $this->publication->category->url_alias;
+                // "category" is also the column holding the category's id, so ask for the relationship
+                $link = 'index.php?option=com_publications&category='
+                    . $this->publication->category()->row()->get('url_alias');
                 break;
 
             case 'thumb':

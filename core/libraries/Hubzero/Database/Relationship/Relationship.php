@@ -344,7 +344,7 @@ class Relationship
      * This is used when pre-loading relationship content
      * via ({@link \Hubzero\Database\Relational::with()})
      *
-     * @param   array    $rows        The rows that we'll be seeding
+     * @param   \Hubzero\Database\Rows  $rows  The rows that we'll be seeding
      * @param   string   $name        The relationship name that we'll use to attach to the rows
      * @param   \Closure  $constraint  The constraint function to limit related items
      * @param   string   $subs        The nested relationships that should be passed on to the child
@@ -393,8 +393,8 @@ class Relationship
     /**
      * Sorts the relations into arrays keyed by the related key
      *
-     * @param   array  $relations  The relations to sort
-     * @return  array
+     * @param   object  $relations  The relations to sort
+     * @return  array|\Hubzero\Database\Rows
      **/
     protected function getResultsByRelatedKey($relations)
     {

@@ -87,7 +87,10 @@ class OneToMany extends Relationship
     public function saveAll($models)
     {
         foreach ($models as $model) {
-            if (!$this->associate($model)->save()) {
+            // associate() hands back what it was given
+            $this->associate($model);
+
+            if (!$model->save()) {
                 return false;
             }
         }
