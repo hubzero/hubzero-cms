@@ -40,7 +40,7 @@ class Identicon
     private $hash;
 
     /**
-     * @var  integer
+     * @var  array
      */
     private $color;
 

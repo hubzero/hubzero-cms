@@ -91,7 +91,7 @@ class Detector implements DetectorInterface
     /**
      *  Tests for spam.
      *
-     * @param   string  $data  Content to test
+     * @param   array  $data  Content to test
      * @return  bool    True if the comment is spam, false if not
      */
     public function detect($data)

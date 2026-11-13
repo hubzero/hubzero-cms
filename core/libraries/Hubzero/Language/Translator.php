@@ -739,7 +739,7 @@ class Translator extends Obj
             $line = trim($line);
 
             // Ignore comment lines.
-            if (!strlen($line) || $line['0'] == ';') {
+            if (!strlen($line) || $line[0] == ';') {
                 continue;
             }
 

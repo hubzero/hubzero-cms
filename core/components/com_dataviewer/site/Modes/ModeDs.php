@@ -56,7 +56,7 @@ class ModeDs
 
             $td = json_decode($r['table_definition'], true);
 
-            $dd['db'] = DvConfig::$dv_conf['db'];
+            $dd = ['db' => DvConfig::$dv_conf['db']];
             $dd['db']['name'] = 'ds_' . $r['datastore_id'];
             $dd['table'] = $td['name'];
             $dd['title'] = $r['name'];

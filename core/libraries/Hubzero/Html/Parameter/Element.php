@@ -59,7 +59,7 @@ class Element extends Obj
     /**
      * Method to render an xml element
      *
-     * @param   string  &$xmlElement   Name of the element
+     * @param   \SimpleXMLElement  &$xmlElement   Name of the element
      * @param   string  $value         Value of the element
      * @param   string  $control_name  Name of the control
      * @return  array   Attributes of an element

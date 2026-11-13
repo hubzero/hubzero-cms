@@ -99,7 +99,7 @@ class Memberships
     /**
      * Calculate and return new expiration date for a SKU
      *
-     * @param   string  $currentExpiration  Current subscription expiration (MySQL format)
+     * @param   array|false|null  $currentExpiration  Current subscription expiration (MySQL format)
      * @param   array   $item               SKU/Cart info
      * @return  string  Calculated new expiration (MySQL format)
      */

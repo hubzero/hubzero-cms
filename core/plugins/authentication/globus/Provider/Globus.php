@@ -90,7 +90,7 @@ class Globus extends AbstractProvider
      *
      * @throws IdentityProviderException
      * @param  ResponseInterface $response
-     * @param  string $data Parsed response data
+     * @param  array|string $data Parsed response data
      * @return void
      */
     protected function checkResponse(ResponseInterface $response, $data)

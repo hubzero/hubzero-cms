@@ -45,7 +45,7 @@ class Initialcon
     private $string;
 
     /**
-     * @var  integer
+     * @var  array
      */
     private $color;
 

@@ -83,7 +83,7 @@ class ModeDb
         }
 
         if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
-            $dd['title'] = 'Table : ' . $dv_id;
+            $dd = ['title' => 'Table : ' . $dv_id];
             $dd['table'] = $dv_id;
 
             $hasManagers = isset(DvConfig::$dv_conf['_managers']) && DvConfig::$dv_conf['_managers'] !== false;

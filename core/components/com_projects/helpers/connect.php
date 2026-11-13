@@ -284,7 +284,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   boolean  $active   Only get active service
-     * @return  boolean  false or array with configs
+     * @return  array|false  false or array with configs
      */
     public function getConfigs($service = 'google', $active = true)
     {

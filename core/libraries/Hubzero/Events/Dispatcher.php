@@ -410,7 +410,7 @@ class Dispatcher implements DispatcherInterface
      * Trigger an event.
      *
      * @param   mixed  $event  The event object or name.
-     * @return  array  The event after being passed through all listeners.
+     * @return  string  The event after being passed through all listeners.
      */
     protected function resolveEventName($event)
     {

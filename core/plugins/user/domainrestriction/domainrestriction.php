@@ -38,7 +38,7 @@ class Domainrestriction extends Plugin
      *
      * @param   array    $user     Holds the new user data.
      * @param   boolean  $isNew    True if a new user is stored.
-     * @param   boolean  $new  True if user was succesfully stored in the database.
+     * @param   array  $new  True if user was succesfully stored in the database.
      * @return  bool
      */
     public function onUserBeforeSave($user, $isNew, $new)

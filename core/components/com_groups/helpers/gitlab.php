@@ -125,7 +125,7 @@ class Gitlab
      * Get a Group by name
      *
      * @param   string   $name
-     * @return  boolean
+     * @return  array|false
      */
     public function group($name)
     {
@@ -162,7 +162,7 @@ class Gitlab
      * Get Project by Name
      *
      * @param   string   $name
-     * @return  boolean
+     * @return  array|false
      */
     public function project($name)
     {
