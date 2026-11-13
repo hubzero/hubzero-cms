@@ -505,6 +505,7 @@ class Curation extends SiteController
         }
 
         $this->pub->version->set('state', 1);
+        $this->pub->version->set('main', 1);
         $this->pub->version->set('accepted', Date::toSql());
         $this->pub->version->set('reviewed', Date::toSql());
         $this->pub->version->set('reviewed_by', User::get('id'));
@@ -551,6 +552,9 @@ class Curation extends SiteController
         if (!$this->pub->version->store()) {
             throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
         }
+
+        // The approved version is the main one now
+        $this->pub->version->removeMainFlagFromOthers();
 
         // Async: pre-warm the download-bundle build so it is ready before a
         // user asks for it (gated; when async is off the synchronous bundle

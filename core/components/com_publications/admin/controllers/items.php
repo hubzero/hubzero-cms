@@ -906,6 +906,11 @@ class Items extends AdminController
 
                     $this->model->version->state = 1;
 
+                    // A newly published version becomes the main one
+                    if ($action == 'publish') {
+                        $this->model->version->main = 1;
+                    }
+
                     // Is service enabled? - Issue/update a DOI
                     if ($doiService->on()) {
                         if (
@@ -1273,6 +1278,10 @@ class Items extends AdminController
                     'error',
                 );
             } elseif ($action) {
+                if ($action == 'publish') {
+                    $this->model->version->removeMainFlagFromOthers();
+                }
+
                 if ($this->model->version->state != 1) {
                     $this->model->_curationModel->removeLink();
                 } elseif (($action == 'republish' || $action == 'publish') && !$this->model->isEmbargoed()) {

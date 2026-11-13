@@ -409,6 +409,24 @@ class Version extends Table
     }
 
     /**
+     * Leave this version as its publication's only main version
+     *
+     * @return  bool
+     */
+    public function removeMainFlagFromOthers()
+    {
+        if (!$this->id || !$this->publication_id) {
+            return false;
+        }
+        $query  = "UPDATE $this->tableName SET main = 0 ";
+        $query .= "WHERE publication_id=" . $this->db->quote($this->publication_id);
+        $query .= " AND id != " . $this->db->quote($this->id) . " AND main = 1";
+        $this->db->setQuery($query);
+        $this->db->query();
+        return true;
+    }
+
+    /**
      * Get title for new draft
      *
      * @param   integer  $projectid  Project ID

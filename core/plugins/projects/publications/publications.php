@@ -2010,9 +2010,9 @@ class Publications extends Plugin
             }
         }
 
-        // Main version?
-        $main = $this->task == 'republish' ? $pub->version->main : 1;
-        $main_vid = $pub->version->getMainVersionId($pid); // current default version
+        // Main version? A version becomes the main one when it is published,
+        // not while it waits for approval (decided below, once the state is known)
+        $main = $pub->version->main;
 
         // Save version before changes
         $originalStatus = $pub->version->state;
@@ -2068,6 +2068,10 @@ class Publications extends Plugin
             && (!$pub->version->get('accepted') || $pub->version->get('accepted') == '0000-00-00 00:00:00')
         ) {
             $pub->version->set('accepted', Date::toSql());
+        }
+
+        if ($state == 1 && $this->task != 'republish') {
+            $main = 1;
         }
 
         // Save state
@@ -2173,8 +2177,8 @@ class Publications extends Plugin
             }
 
             // Remove main flag from previous default version
-            if ($main && $main_vid && $main_vid != $pub->version->get('id')) {
-                $pub->version->removeMainFlag($main_vid);
+            if ($state == 1 && $main) {
+                $pub->version->removeMainFlagFromOthers();
             }
         }
 

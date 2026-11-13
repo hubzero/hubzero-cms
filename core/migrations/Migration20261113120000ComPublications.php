@@ -15,8 +15,9 @@ use Hubzero\Content\Migration\Base;
  *
  * From July 2015 the main flag was never taken off the previous version when
  * a newer one was published, so a publication collected one main version per
- * release. The newest of them is the one meant to be main; the others lose
- * the flag.
+ * release. The newest published one of them is the one meant to be main
+ * (the newest of any state where none is published); the others lose the
+ * flag.
  **/
 class Migration20261113120000ComPublications extends Base
 {
@@ -38,12 +39,13 @@ class Migration20261113120000ComPublications extends Base
             . ' FROM ' . $this->db->quoteName('#__publication_versions')
             . ' WHERE ' . $this->db->quoteName('main') . ' = 1'
             . ' ORDER BY ' . $this->db->quoteName('publication_id') . ' ASC, '
+            . 'CASE WHEN ' . $this->db->quoteName('state') . ' = 1 THEN 0 ELSE 1 END ASC, '
             . $this->db->quoteName('version_number') . ' DESC, '
             . $this->db->quoteName('id') . ' DESC';
         $this->db->setQuery($query);
         $rows = $this->db->loadObjectList();
 
-        // The first row of each publication is its newest main version.
+        // The first row of each publication is the main version it keeps.
         $kept  = [];
         $extra = [];
         foreach ($rows ?: [] as $row) {
