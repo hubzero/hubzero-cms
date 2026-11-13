@@ -89,7 +89,7 @@ class Job extends Table
      * @param   integer  $uid
      * @param   integer  $onlypublished
      * @param   mixed    $admin
-     * @return  object
+     * @return  string|null
      */
     public function countMyActiveOpenings($uid = null, $onlypublished = 0, $admin = 0)
     {
@@ -116,7 +116,7 @@ class Job extends Table
      * @param   integer  $uid           User ID
      * @param   integer  $admin         Admin access?
      * @param   string   $subscription  Subscription code
-     * @return  object
+     * @return  array|string|null
      */
     public function getOpenings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
     {

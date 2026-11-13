@@ -354,7 +354,7 @@ class Item extends Table
      * Get a total of all likes
      *
      * @param   array    $filters  Filters to construct query from
-     * @return  integer
+     * @return  string|null
      */
     public function getLikes($filters = [])
     {
@@ -375,7 +375,7 @@ class Item extends Table
      * Get a total of all dislikes
      *
      * @param   array    $filters  Filters to construct query from
-     * @return  integer
+     * @return  string|null
      */
     public function getDislikes($filters = [])
     {

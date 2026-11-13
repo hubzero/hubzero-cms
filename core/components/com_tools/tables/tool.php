@@ -127,7 +127,7 @@ class Tool extends Table
      *
      * @param   array    $filters
      * @param   boolean  $admin
-     * @return  integer
+     * @return  string|null
      */
     public function getToolCount($filters = [], $admin = false)
     {

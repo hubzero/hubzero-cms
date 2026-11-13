@@ -235,7 +235,7 @@ class MasterType extends Table
      * Get record counts
      *
      * @param   array  $filters  Filters to build query from
-     * @return  array
+     * @return  string|null
      */
     public function getCount($filters = [])
     {

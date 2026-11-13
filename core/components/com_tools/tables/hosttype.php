@@ -191,7 +191,7 @@ class Hosttype extends Table
      * Get a record count
      *
      * @param   array   $filters  Filters to build SQL from
-     * @return  integer
+     * @return  string|null
      */
     public function getCount($filters = [])
     {

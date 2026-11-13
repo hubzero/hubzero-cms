@@ -77,7 +77,7 @@ class AssetGroup extends Table
     /**
      * Get the last page in the ordering
      *
-     * @return     integer
+     * @return     string|null
      */
     public function getHighestOrder($unit_id, $parent = 0)
     {
@@ -136,7 +136,7 @@ class AssetGroup extends Table
      * Get a record count
      *
      * @param     array $filters Filters to build query from
-     * @return    integer
+     * @return    string|null
      */
     public function count($filters = [])
     {

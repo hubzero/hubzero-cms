@@ -93,7 +93,7 @@ class Category extends Table
      * Get a count of categories in a section
      *
      * @param   integer  $section  Section ID
-     * @return  integer
+     * @return  string|null
      */
     public function getCategoryCount($section = null)
     {

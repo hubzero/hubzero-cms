@@ -306,7 +306,7 @@ class Member extends Table
      * Get an object list of course units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return string|null Return course units
      */
     public function count($filters = [])
     {
@@ -321,7 +321,7 @@ class Member extends Table
      * Get an object list of course units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return array|null Return course units
      */
     public function find($filters = [])
     {

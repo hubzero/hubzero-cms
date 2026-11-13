@@ -226,7 +226,7 @@ class Group extends Table
      * Get count of members
      *
      * @param   array    $filters
-     * @return  integer  Return course units
+     * @return  string|null  Return course units
      */
     public function countMembers($filters = [])
     {
@@ -285,7 +285,7 @@ class Group extends Table
      * Get a cn
      *
      * @param   string  $id  gid
-     * @return  object  Return cn
+     * @return  string|null  Return cn
      */
     public function getName($id)
     {

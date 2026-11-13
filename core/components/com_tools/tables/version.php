@@ -384,7 +384,7 @@ class Version extends Table
      * @param   string   $revision
      * @param   string   $toolname
      * @param   string   $instance
-     * @return  object
+     * @return  array|null
      */
     public function getVersionInfo($id, $revision = '', $toolname = '', $instance = '')
     {

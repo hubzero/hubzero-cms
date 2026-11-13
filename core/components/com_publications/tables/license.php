@@ -108,7 +108,7 @@ class License extends Table
      * Get record counts
      *
      * @param   array  $filters  Filters to build query from
-     * @return  array
+     * @return  string|null
      */
     public function getCount($filters = [])
     {
@@ -154,7 +154,7 @@ class License extends Table
      * Get licenses
      *
      * @param   array   $filters  Filters to build query from
-     * @return  object
+     * @return  array|null
      */
     public function getLicenses($filters = [])
     {
@@ -218,7 +218,7 @@ class License extends Table
     /**
      * Get default license
      *
-     * @return  object
+     * @return  array|null
      */
     public function getDefaultLicense()
     {

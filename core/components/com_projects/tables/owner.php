@@ -1272,7 +1272,7 @@ class Owner extends Table
      * Match user by name, return user id if match found
      *
      * @param   string   $name
-     * @return  integer  user ID or null
+     * @return  string|null  user ID or null
      */
     public function matchName($name = '')
     {

@@ -343,7 +343,7 @@ class Attachment extends Table
      * Get attachments count
      *
      * @param   integer  $versionid  pub version id
-     * @return  int
+     * @return  string|null
      */
     public function getAttachmentsCount($versionid)
     {
@@ -769,7 +769,7 @@ class Attachment extends Table
     /**
      * Get the last number in an ordering
      *
-     * @return  integer
+     * @return  string|null
      */
     public function getLastOrder()
     {

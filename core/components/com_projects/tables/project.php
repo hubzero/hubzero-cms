@@ -375,7 +375,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete
-     * @return  integer
+     * @return  string|null
      */
     public function getCount($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
@@ -397,7 +397,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete
-     * @return  object
+     * @return  array|null
      */
     public function getRecords($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
@@ -485,7 +485,7 @@ class Project extends Table
      * @param   integer  $uid
      * @param   array    $filters
      * @param   integer  $setup_complete
-     * @return  object
+     * @return  string|array|null
      */
     public function getGroupProjects($groupid = 0, $uid = 0, $filters = [], $setup_complete = 3)
     {

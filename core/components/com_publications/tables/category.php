@@ -53,7 +53,7 @@ class Category extends Table
      * Get record count
      *
      * @param   array   $filters
-     * @return  integer
+     * @return  string|null
      */
     public function getCount($filters = [])
     {
@@ -68,7 +68,7 @@ class Category extends Table
      * Get records
      *
      * @param   array   $filters
-     * @return  object
+     * @return  array|null
      */
     public function getCategories($filters = [])
     {
@@ -150,7 +150,7 @@ class Category extends Table
     /**
      * Get contributable categories
      *
-     * @return  object
+     * @return  array|null
      */
     public function getContribCategories()
     {

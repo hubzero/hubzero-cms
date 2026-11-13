@@ -162,7 +162,7 @@ class Asset extends Table
      * Get an object list of course units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return string|null Return course units
      */
     public function count($filters = [])
     {
@@ -180,7 +180,7 @@ class Asset extends Table
      * Get an object list of course units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return array|null Return course units
      */
     public function find($filters = [])
     {
@@ -216,7 +216,7 @@ class Asset extends Table
      * @param  string $scope
      * @param  int    $scope_id
      * @param  array  $filters
-     * @return object Return course assets
+     * @return array|null Return course assets
      */
     public function findByScope($scope, $scope_id, $filters = [])
     {

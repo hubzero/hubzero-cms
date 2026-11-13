@@ -90,7 +90,7 @@ class AssetAssociation extends Table
     /**
      * Get the last page in the ordering
      *
-     * @return     integer
+     * @return     string|null
      */
     public function getHighestOrdering($scope_id, $scope)
     {
@@ -133,7 +133,7 @@ class AssetAssociation extends Table
      * Get a count of records
      *
      * @param  array $filters
-     * @return integer
+     * @return string|null
      */
     public function count($filters = [])
     {
@@ -148,7 +148,7 @@ class AssetAssociation extends Table
      * Get an object list of course units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return array|null Return course units
      */
     public function find($filters = [])
     {

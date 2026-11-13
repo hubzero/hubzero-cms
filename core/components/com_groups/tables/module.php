@@ -74,7 +74,7 @@ class Module extends Table
      * Get count of modules matching filters
      *
      * @param   array  $filters
-     * @return  int
+     * @return  string|null
      */
     public function count($filters = [])
     {

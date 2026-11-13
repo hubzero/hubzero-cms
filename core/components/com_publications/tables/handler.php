@@ -54,7 +54,7 @@ class Handler extends Table
      *
      * @param   integer  $vid  pub version id
      * @param   array|int $elementid
-     * @return  object
+     * @return  array|null
      */
     public function getHandlers($vid = null, $elementid = 0)
     {

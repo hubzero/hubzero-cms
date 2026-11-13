@@ -140,7 +140,7 @@ class Unit extends Table
      * Get a count of course offering units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return string|null Return course units
      */
     public function count($filters = [])
     {
@@ -155,7 +155,7 @@ class Unit extends Table
      * Get an object list of course offering units
      *
      * @param  array $filters
-     * @return object Return course units
+     * @return array|null Return course units
      */
     public function find($filters = [])
     {
@@ -179,7 +179,7 @@ class Unit extends Table
      * Get the last page in the ordering
      *
      * @param      string  $offering_id
-     * @return     integer
+     * @return     string|null
      */
     public function getHighestOrdering($offering_id)
     {

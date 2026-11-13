@@ -143,7 +143,7 @@ class SectionDate extends Table
      * Get a count of entries
      *
      * @param   array    $filters
-     * @return  integer
+     * @return  string|null
      */
     public function count($filters = [])
     {

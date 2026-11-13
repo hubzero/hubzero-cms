@@ -134,7 +134,7 @@ class Following extends Table
      * Get a record count
      *
      * @param   array    $filters  Filters to construct query from
-     * @return  integer
+     * @return  string|null
      */
     public function count($filters = [])
     {

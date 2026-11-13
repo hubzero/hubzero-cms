@@ -98,7 +98,7 @@ class SessionClass extends Table
     /**
      * Get a user count
      *
-     * @return  integer
+     * @return  string|null
      */
     public function userCount()
     {

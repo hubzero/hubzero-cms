@@ -68,7 +68,7 @@ class PageCategory extends Table
      * Get count of records matching filters
      *
      * @param   array  $filters
-     * @return  int
+     * @return  array|null
      */
     public function count($filters = [])
     {

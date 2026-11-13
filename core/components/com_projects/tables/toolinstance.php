@@ -110,7 +110,7 @@ class ToolInstance extends Table
      * Get all instances
      *
      * @param   integer  $includedev
-     * @return  object
+     * @return  array|null
      */
     public function getAll($includedev = 1)
     {
@@ -160,7 +160,7 @@ class ToolInstance extends Table
      *
      * @param   string  $parent_name
      * @param   string  $property
-     * @return  object
+     * @return  string|null
      */
     public function getDevInstanceProperty($parent_name, $property)
     {

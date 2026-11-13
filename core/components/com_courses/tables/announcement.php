@@ -156,7 +156,7 @@ class Announcement extends Table
      * Get a count of records
      *
      * @param     array $filters
-     * @return    integer
+     * @return    string|null
      */
     public function count($filters = [])
     {

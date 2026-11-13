@@ -41,7 +41,7 @@ class Type extends Table
     /**
      * Get types
      *
-     * @return  object  or null
+     * @return  array|null  or null
      */
     public function getTypes()
     {

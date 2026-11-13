@@ -122,7 +122,7 @@ class Comment extends Table
      * @param   integer  $itemid
      * @param   integer  $parent_activity
      * @param   string   $comment
-     * @return  integer
+     * @return  string|null
      */
     public function checkDuplicate($uid = 0, $tbl = null, $itemid = 0, $parent_activity = 0, $comment = null)
     {

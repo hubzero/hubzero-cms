@@ -217,7 +217,7 @@ class Offering extends Table
      * Get a count of course offerings
      *
      * @param   array    $filters
-     * @return  integer
+     * @return  string|null
      */
     public function count($filters = [])
     {

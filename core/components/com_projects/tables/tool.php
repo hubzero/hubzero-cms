@@ -204,7 +204,7 @@ class Tool extends Table
      * @param   array    $filters
      * @param   boolean  $admin
      * @param   integer  $count
-     * @return  integer
+     * @return  string|null
      */
     public function getRecordCount($filters = [], $admin = false, $count = 1)
     {

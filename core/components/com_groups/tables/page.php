@@ -79,7 +79,7 @@ class Page extends Table
      * Get count of pages matching filters
      *
      * @param   array   $filters
-     * @return  int
+     * @return  string|null
      */
     public function count($filters = [])
     {

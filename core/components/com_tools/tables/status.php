@@ -31,7 +31,7 @@ class Status extends Table
     /**
      * Get a count of current sessions
      *
-     * @return integer
+     * @return object|null
      */
     public function getLastSession()
     {
@@ -44,7 +44,7 @@ class Status extends Table
     /**
      * Get a count of current sessions
      *
-     * @return integer
+     * @return string|null
      */
     public function getSessionCount()
     {
@@ -57,7 +57,7 @@ class Status extends Table
     /**
      * Get a count of used displays
      *
-     * @return integer
+     * @return string|null
      */
     public function getUsedDisplayCount()
     {
@@ -70,7 +70,7 @@ class Status extends Table
     /**
      * Get a count of ready displays
      *
-     * @return integer
+     * @return string|null
      */
     public function getReadyDisplayCount()
     {
@@ -83,7 +83,7 @@ class Status extends Table
     /**
      * Get a count of absent displays
      *
-     * @return integer
+     * @return string|null
      */
     public function getAbsentDisplayCount()
     {
@@ -96,7 +96,7 @@ class Status extends Table
     /**
      * Get a count of broken displays
      *
-     * @return integer
+     * @return string|null
      */
     public function getBrokenDisplayCount()
     {

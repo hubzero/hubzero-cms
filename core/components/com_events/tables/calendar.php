@@ -60,7 +60,7 @@ class Calendar extends Table
      * Get count of calendars matching filters
      *
      * @param   array  $filters
-     * @return  int
+     * @return  string|null
      */
     public function count($filters = [])
     {

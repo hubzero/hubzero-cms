@@ -315,7 +315,7 @@ class Session extends Table
      * Get a record count
      *
      * @param   array   $filters  Filters to determien hwo to build query
-     * @return  integer
+     * @return  string|null
      */
     public function getAllCount($filters = [])
     {
