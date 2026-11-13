@@ -50,7 +50,7 @@ class General extends Base
      * Retrieve a property from the internal item object
      *
      * @param   string  $key  Property to retrieve
-     * @return  string
+     * @return  mixed
      */
     public function item($key = '')
     {

@@ -137,7 +137,7 @@ class Todo extends Model
      *
      * @param   string  $rtrn
      * @param   array   $filters
-     * @return  array
+     * @return  \Hubzero\Base\ItemList|int|null
      */
     public function entries($rtrn = 'list', $filters = [])
     {

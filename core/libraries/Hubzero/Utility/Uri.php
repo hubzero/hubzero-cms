@@ -315,7 +315,7 @@ class Uri
      *
      * @param   string  $name     Name of the query variable to get.
      * @param   string  $default  Default value to return if the variable is not set.
-     * @return  array   Query variables.
+     * @return  mixed   Query variables.
      */
     public function getUriVar($name, $default = null)
     {
@@ -371,7 +371,7 @@ class Uri
      * Returns flat query string.
      *
      * @param   boolean  $toArray  True to return the query as a key => value pair array.
-     * @return  string   Query string.
+     * @return  string|array   Query string.
      */
     public function getQuery($toArray = false)
     {

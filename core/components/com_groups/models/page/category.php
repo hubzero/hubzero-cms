@@ -75,7 +75,7 @@ class Category extends Model
      *
      * @param   string   $rtrn   What do we want back
      * @param   boolean  $clear  Fetch an updated list
-     * @return  object   \Hubzero\Base\ItemList
+     * @return  object|int   \Hubzero\Base\ItemList
      */
     public function getPages($rtrn = 'list', $clear = false)
     {

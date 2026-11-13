@@ -270,7 +270,7 @@ trait HasUuid
      * relationship introspection without causing ArgumentCountError.
      *
      * @param   string|null  $uuid  The UUID to filter by
-     * @return  $this
+     * @return  static
      */
     public function whereUuid(?string $uuid = null)
     {
@@ -287,7 +287,7 @@ trait HasUuid
      * relationship introspection without causing ArgumentCountError.
      *
      * @param   array|null  $uuids  Array of UUIDs to filter by
-     * @return  $this
+     * @return  static
      */
     public function whereUuidIn(?array $uuids = null)
     {
@@ -304,7 +304,7 @@ trait HasUuid
      * relationship introspection without causing ArgumentCountError.
      *
      * @param   array|null  $uuids  Array of UUIDs to exclude
-     * @return  $this
+     * @return  static
      */
     public function whereUuidNotIn(?array $uuids = null)
     {

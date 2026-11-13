@@ -306,7 +306,7 @@ class Provider
      * Result is stored in OAuthProvider instance's consumer_secret property
      * Consumer data record is stored in _consumer_data property
      *
-     * @return  OAUTH_OK on success
+     * @return  int  OAUTH_OK on success
      *      If consumer_key doesn't exist returns OAUTH_CONSUMER_KEY_UNKNOWN
      *      If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
      *      If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
@@ -350,7 +350,7 @@ class Provider
      *
      * Validate timestamp and nonce assocaited with OAuthProvider instance
      *
-     * @return  OAUTH_OK on success
+     * @return  int  OAUTH_OK on success
      *      If timestamp is invalid (expired) returns OAUTH_BAD_TIMESTAMP
      *      If nonce has been seen before returns OAUTH_BAD_NONCE
      *      If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
@@ -396,7 +396,7 @@ class Provider
      *
      * If token is valid stores full token record in _token_data property
      *
-     * @return  OAUTH_OK on success
+     * @return  int  OAUTH_OK on success
      *      If token not found returns OAUTH_TOKEN_REJECTED
      *      If token has expired or is otherwise unusable returns OAUTH_TOKEN_REJECTED
      *      If request verifier doesn't match token's verifier returns OAUTH_VERIFIER_INVALID

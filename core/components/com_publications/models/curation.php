@@ -973,7 +973,7 @@ class Curation extends Obj
      * @param   string   $name      Block name
      * @param   integer  $blockId   Numeric block ID
      * @param   integer  $activeId  Active block ID
-     * @return  boolean
+     * @return  bool|int
      */
     public function isBlockComing($name, $blockId = 0, $activeId = 1)
     {
@@ -1189,7 +1189,7 @@ class Curation extends Obj
      * @param   integer  $blockId    Numeric block ID
      * @param   integer  $activeId   Active element ID
      * @param   integer  $elementId  Element ID in question
-     * @return  boolean
+     * @return  bool|int
      */
     public function isComing($name, $blockId = 0, $activeId = 1, $elementId = 0)
     {

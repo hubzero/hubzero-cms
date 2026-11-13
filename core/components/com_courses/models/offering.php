@@ -302,7 +302,7 @@ class Offering extends Base
      *
      * @param      array $filters  Filters; with 'count' set, the sections are counted
      * @param      bool  $clear    Fetch the list again
-     * @return     ($filters is array{} ? Iterator : int|Iterator)  The sections, or how many there are
+     * @return     ($filters is array{} ? Iterator : int|string|Iterator|null)  The sections, or how many there are
      */
     public function sections($filters = [], $clear = false)
     {
@@ -374,7 +374,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @return     object|\Traversable
+     * @return     object|string|null
      */
     public function units($filters = [], $clear = false)
     {
@@ -842,7 +842,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @return     array
+     * @return     array|string|null
      */
     public function pages($filters = [], $reload = false)
     {

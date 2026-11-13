@@ -110,7 +110,7 @@ class Review extends \Hubzero\Base\Model
      * Return a formatted timestamp
      *
      * @param   string   $as  What format to return
-     * @return  boolean
+     * @return  string
      */
     public function created($as = '')
     {

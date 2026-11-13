@@ -189,7 +189,7 @@ class Git
      * @param   string       $search     Filter by search string
      * @param   string|null  $format     Format of response, or null for git's default
      * @param   bool         $count      Return count of entires
-     * @return  array
+     * @return  array|string
      **/
     public function log(
         $length = null,

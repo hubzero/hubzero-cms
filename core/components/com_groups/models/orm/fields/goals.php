@@ -333,7 +333,7 @@ class Goals extends Radio
      * Render the supplied value
      *
      * @param   string  $careerplan_id
-     * @return  string
+     * @return  string|null
      */
     public function getValue($careerplan_id)
     {

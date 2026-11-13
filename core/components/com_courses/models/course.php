@@ -626,7 +626,7 @@ class Course extends Base
      * Get a list of pages for a course
      *
      * @param      array $filters Filters to apply
-     * @return     array
+     * @return     array|string|null
      */
     public function pages($filters = [])
     {

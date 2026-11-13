@@ -63,7 +63,7 @@ class Number
      *
      * @param   integer $num
      * @param   integer $decimals
-     * @return  string
+     * @return  string|int
      */
     public static function quantity($num, $decimals = 0)
     {

@@ -833,7 +833,7 @@ class Publication extends Obj
      * Get unlinked contributors
      *
      * @param   boolean  $incSubmitter
-     * @return  string
+     * @return  string|array
      */
     public function getUnlinkedContributors($incSubmitter = false)
     {
@@ -997,7 +997,7 @@ class Publication extends Obj
     /**
      * Get publication attachments count
      *
-     * @return  int
+     * @return  int|array
      */
     public function attachmentsCount()
     {

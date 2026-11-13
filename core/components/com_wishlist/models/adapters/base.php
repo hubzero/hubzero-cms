@@ -100,7 +100,7 @@ abstract class Base extends Obj
      * Retrieve a property from the internal item object
      *
      * @param   string  $key  Property to retrieve
-     * @return  string
+     * @return  mixed
      */
     public function item($key = '')
     {

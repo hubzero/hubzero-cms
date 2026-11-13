@@ -160,7 +160,7 @@ class Changelog extends Obj
     /**
      * Get the whole log
      *
-     * @return  object
+     * @return  array|null
      */
     public function lists()
     {

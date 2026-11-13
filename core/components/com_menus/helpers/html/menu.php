@@ -33,7 +33,7 @@ class HtmlMenu
     /**
      * Get a list of the available menus.
      *
-     * @return  string
+     * @return  array
      */
     public static function menus()
     {
@@ -200,7 +200,7 @@ class HtmlMenu
      *
      * @param   boolean  $all         True if all can be selected
      * @param   boolean  $unassigned  True if unassigned can be selected
-     * @return  string
+     * @return  array
      */
     public static function linkoptions($all = false, $unassigned = false)
     {

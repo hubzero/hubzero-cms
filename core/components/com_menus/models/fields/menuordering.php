@@ -28,7 +28,7 @@ class MenuOrdering extends Select
      * Method to get the list of siblings in a menu.
      * The method requires that parent be set.
      *
-     * @return  array  The field option objects or false if the parent field has not been set
+     * @return  array|false  The field option objects or false if the parent field has not been set
      */
     protected function getOptions()
     {

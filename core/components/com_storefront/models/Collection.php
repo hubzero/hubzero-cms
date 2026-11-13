@@ -206,7 +206,7 @@ class Collection
     /**
      * Get collection active status
      *
-     * @return  bool        collection status
+     * @return  mixed        collection status
      */
     public function getActiveStatus()
     {

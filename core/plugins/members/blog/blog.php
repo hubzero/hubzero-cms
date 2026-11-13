@@ -221,7 +221,7 @@ class Blog extends Plugin
      * Parse an SEF URL into its component bits
      * stripping out the path leading up to the blog plugin
      *
-     * @return  string
+     * @return  array
      */
     private function parseUrl()
     {

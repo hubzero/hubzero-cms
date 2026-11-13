@@ -51,7 +51,7 @@ abstract class Base extends Obj
      *
      * @param   string  $key      Property to retrieve
      * @param   mixed   $default
-     * @return  string
+     * @return  mixed
      */
     public function item($key = '', $default = null)
     {

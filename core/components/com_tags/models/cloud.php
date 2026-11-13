@@ -426,7 +426,7 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   string   $rtrn     Format to render
      * @param   array    $filters  Filters to apply
      * @param   boolean  $clear    Clear cached data?
-     * @return  string
+     * @return  string|array
      */
     public function render($rtrn = 'html', $filters = [], $clear = false)
     {

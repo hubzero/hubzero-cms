@@ -1135,7 +1135,7 @@ class Detector
     /**
      * Retrieve the current browser's version.
      *
-     * @return  string  The current browser's version.
+     * @return  string|int  The current browser's version.
      */
     public function version($for = '')
     {

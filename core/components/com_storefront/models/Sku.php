@@ -654,7 +654,7 @@ class Sku
     /**
      * Get restricted flag
      *
-     * @return  bool    Restricted flag
+     * @return  mixed    Restricted flag
      */
     public function getRestricted()
     {

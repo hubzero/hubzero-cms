@@ -233,7 +233,7 @@ class Youtube extends Module
      *
      * @param   string  $url
      * @param   object  $params
-     * @return  object
+     * @return  mixed
      */
     private function feed($url, $params)
     {

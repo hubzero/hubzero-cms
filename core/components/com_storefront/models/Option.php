@@ -155,7 +155,7 @@ class Option
     /**
      * Get option group active status
      *
-     * @return  bool        collection status
+     * @return  mixed        collection status
      */
     public function getActiveStatus()
     {

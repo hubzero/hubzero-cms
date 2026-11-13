@@ -314,7 +314,7 @@ class MarkdownParser
      * Returns a unique ID as a placeholder for content retrieval later on
      *
      * @param      string  $matches Content to store
-     * @return     integer Unique ID
+     * @return     string Unique ID
      */
     private function dataPull($matches)
     {

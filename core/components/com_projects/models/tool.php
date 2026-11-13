@@ -227,7 +227,7 @@ class Tool extends Model
      * @param   string   $property
      * @param   string   $as
      * @param   boolean  $statusChange
-     * @return  boolean
+     * @return  mixed
      */
     public function lastUpdate($property = null, $as = null, $statusChange = false)
     {
@@ -376,7 +376,7 @@ class Tool extends Model
      * @param   string   $rtrn
      * @param   array    $filters
      * @param   boolean  $admin
-     * @return  array
+     * @return  mixed
      */
     public function entries($rtrn = 'list', $filters = [], $admin = false)
     {

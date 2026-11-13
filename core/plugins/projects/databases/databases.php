@@ -186,7 +186,7 @@ class Databases extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @return  mixed   Return array of html
      */
     public function onProject($model, $action = 'view', $areas = null, $params = [])
     {
@@ -294,7 +294,7 @@ class Databases extends Plugin
     /**
      * Browser within publications NEW
      *
-     * @return  string
+     * @return  string|array
      */
     public function select()
     {

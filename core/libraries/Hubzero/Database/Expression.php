@@ -791,7 +791,7 @@ final class Expression
      * Set an alias for this expression
      *
      * @param string $alias The alias name
-     * @return $this
+     * @return static
      */
     public function as(string $alias): static
     {

@@ -68,7 +68,7 @@ class Commentsv1r0 extends ApiController
      * Convert a date string to a timestamp format
      *
      * @param   string  $val  Date string (e.g., 'year', 'month', 'week', 'day', or Y-m-d)
-     * @return  string|null
+     * @return  string|array|null
      */
     private function toTimestamp($val = null)
     {

@@ -283,7 +283,7 @@ class Session extends Base
      * Get associated tool information
      *
      * @param   string   $what  What data to return
-     * @return  boolean
+     * @return  string
      */
     public function app($what = null)
     {

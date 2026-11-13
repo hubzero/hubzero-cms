@@ -218,7 +218,7 @@ class Base extends Obj
      * @param   mixed    $values      The value(s) of the field. If an array, need to match field names
      *                                each attribute may have multiple values to lookup for.
      * @param   boolean  $firstonly   If true, only returns the first item found
-     * @return  array
+     * @return  array|object
      */
     public function getItems($attributes, $values, $firstonly = false)
     {

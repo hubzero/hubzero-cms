@@ -1608,7 +1608,7 @@ class File extends Base
      * @param   object   $objPA
      * @param   object   $configs
      * @param   integer  $suffix
-     * @return  boolean
+     * @return  int
      */
     public function checkForDuplicate($copyFrom, $objPA, $configs, $suffix = 0)
     {

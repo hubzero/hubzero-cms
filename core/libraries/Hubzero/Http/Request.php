@@ -212,7 +212,7 @@ class Request extends BaseRequest
      * @param   string   $name      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  integer  Request variable
+     * @return  float  Request variable
      */
     public function getFloat($name, $default = 0.0, $hash = 'input')
     {

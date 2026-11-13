@@ -632,7 +632,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      array $tags
      *
-     * @return     object
+     * @return     array|null
      */
     public function getPickedTags($tags = [])
     {

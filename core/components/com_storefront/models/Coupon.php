@@ -144,7 +144,7 @@ class Coupon
     /**
      * Get active status
      *
-     * @return  bool        status
+     * @return  mixed        status
      */
     public function getActiveStatus()
     {
