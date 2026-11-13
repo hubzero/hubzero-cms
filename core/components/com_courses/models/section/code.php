@@ -53,7 +53,7 @@ class Code extends Base
             $this->table = new $cls($this->db);
 
             if (is_numeric($oid) || is_string($oid)) {
-                $this->table->load($oid, $section_id);
+                $this->table->loadForSection($oid, $section_id);
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }

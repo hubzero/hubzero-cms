@@ -97,7 +97,7 @@ class Collection extends Base
         $this->table = new $tbl($this->db);
 
         if (is_numeric($oid) || is_string($oid)) {
-            $this->table->load($oid, $object_id, $object_type);
+            $this->table->loadForObject($oid, $object_id, $object_type);
         } elseif (is_object($oid)) {
             $this->bind($oid);
 

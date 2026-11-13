@@ -30,6 +30,18 @@ class Following extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadFollowing() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadFollowing($keys);
+    }
+
+    /**
      * Load a record and bind to $this
      *
      * @param   string   $oid             Record alias
@@ -38,7 +50,7 @@ class Following extends Table
      * @param   string   $follower_type   Follower type
      * @return  boolean  True on success
      */
-    public function load($oid = null, $following_type = null, $follower_id = null, $follower_type = null)
+    public function loadFollowing($oid = null, $following_type = null, $follower_id = null, $follower_type = null)
     {
         if ($oid === null) {
             return false;

@@ -184,7 +184,7 @@ class Offering extends Base
                     $section = substr($oid, $dot + 1);
                     $oid = substr($oid, 0, $dot);
                 }
-                $this->table->load($oid, $course_id);
+                $this->table->loadForCourse($oid, $course_id);
             } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }

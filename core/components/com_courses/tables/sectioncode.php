@@ -71,6 +71,18 @@ class SectionCode extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForSection() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForSection($keys);
+    }
+
+    /**
      * Populate the current object with a database record if found
      * Accepts either an alias or an ID
      *
@@ -78,7 +90,7 @@ class SectionCode extends Table
      * @param   integer  $section_id  Unique section ID
      * @return  boolean  True on success
      */
-    public function load($oid = null, $section_id = null)
+    public function loadForSection($oid = null, $section_id = null)
     {
         if (empty($oid)) {
             return false;

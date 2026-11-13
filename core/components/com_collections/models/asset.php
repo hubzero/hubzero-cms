@@ -55,7 +55,7 @@ class Asset extends Base
         $this->table = new $tbl($this->db);
 
         if (is_numeric($oid) || is_string($oid)) {
-            $this->table->load($oid, $item_id);
+            $this->table->loadForItem($oid, $item_id);
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }

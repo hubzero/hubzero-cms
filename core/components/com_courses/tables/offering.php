@@ -65,13 +65,25 @@ class Offering extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForCourse() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForCourse($keys);
+    }
+
+    /**
      * Load a record and bind to $this
      *
      * @param   mixed    $oid        Record ID or alias
      * @param   integer  $course_id  Course ID
      * @return  boolean  True on success
      */
-    public function load($oid = null, $course_id = null)
+    public function loadForCourse($oid = null, $course_id = null)
     {
         if ($oid === null) {
             return false;

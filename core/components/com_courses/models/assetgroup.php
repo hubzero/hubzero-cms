@@ -116,7 +116,7 @@ class Assetgroup extends Base
             return $this->table->{'__' . $property};
         } elseif (in_array($property, self::$sectionKeys)) {
             $tbl = new Tables\SectionDate($this->db);
-            $tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
+            $tbl->loadForScope($this->get('id'), 'asset_group', $this->get('section_id'));
 
             $this->set('publish_up', $tbl->get('publish_up', ''));
             $this->set('publish_down', $tbl->get('publish_down', ''));
@@ -344,7 +344,7 @@ class Assetgroup extends Base
 
         if ($value && $this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
+            $dt->loadForScope($this->get('id'), $this->scope, $this->get('section_id'));
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
             if (!$dt->store()) {
@@ -383,7 +383,7 @@ class Assetgroup extends Base
 
         if ($this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
+            $dt->loadForScope($this->get('id'), $this->scope, $this->get('section_id'));
             if ($dt->id) {
                 if (!$dt->delete()) {
                     $this->setError($dt->getError());

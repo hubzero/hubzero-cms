@@ -28,13 +28,25 @@ class Session extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForUser() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForUser($keys);
+    }
+
+    /**
      * Load a record and bind it to $this object
      *
      * @param   integer  $sess      Session number
      * @param   string   $username  User to delete for
      * @return  boolean  False if errors, True if success
      */
-    public function load($sess = null, $username = null)
+    public function loadForUser($sess = null, $username = null)
     {
         if ($sess == null) {
             $sess = $this->sessnum;

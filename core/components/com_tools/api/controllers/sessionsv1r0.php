@@ -1188,7 +1188,7 @@ class Sessionsv1r0 extends ApiController
         //not exist until the first view() call, and the Middleware\Session model
         //has no loadSession() anyway.
         $ms = new \Components\Tools\Tables\Session($mwdb);
-        if (!$ms->load($app->sess, $result->get('username')) || !$ms->appname) {
+        if (!$ms->loadForUser($app->sess, $result->get('username')) || !$ms->appname) {
             throw new Exception(Lang::txt('Session Doesn\'t Exist.'), 404);
         }
         $row = $ms;
@@ -1315,7 +1315,7 @@ class Sessionsv1r0 extends ApiController
         // viewperm does not exist until the first view() call, which is exactly
         // what the interstitial is waiting to make.
         $row   = new \Components\Tools\Tables\Session($mwdb);
-        $alive = $row->load($sess, $username);
+        $alive = $row->loadForUser($sess, $username);
 
         $steps = [
             'session' => 'wait',
@@ -1460,7 +1460,7 @@ class Sessionsv1r0 extends ApiController
 
         // Ownership comes from the session row itself (see stateTask)
         $row = new \Components\Tools\Tables\Session($mwdb);
-        if (!$row->load($sess, $username) || !$row->sessnum) {
+        if (!$row->loadForUser($sess, $username) || !$row->sessnum) {
             throw new Exception(Lang::txt('Session Doesn\'t Exist.'), 404);
         }
 

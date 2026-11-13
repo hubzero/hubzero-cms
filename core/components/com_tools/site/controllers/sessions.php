@@ -1059,7 +1059,7 @@ class Sessions extends SiteController
         // If a username is given, check that the user owns this session.
         if ($user != '') {
             $ms = new \Components\Tools\Tables\Session($mwdb);
-            $ms->load($sess, User::get('username'));
+            $ms->loadForUser($sess, User::get('username'));
 
             if (!$ms->sesstoken) {
                 App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
@@ -1567,7 +1567,7 @@ class Sessions extends SiteController
         if ($this->config->get('access-admin-session')) {
             $ms->load($sess);
         } else {
-            $ms->load($sess, User::get('username'));
+            $ms->loadForUser($sess, User::get('username'));
         }
 
         // Did we get a result form the database?
@@ -1701,7 +1701,7 @@ class Sessions extends SiteController
             if ($this->config->get('access-manage-session')) {
                 $ms->load($id);
             } else {
-                $ms->load($id, User::get('username'));
+                $ms->loadForUser($id, User::get('username'));
             }
 
             // Only rename when a matching (owned) session was found

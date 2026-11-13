@@ -78,13 +78,25 @@ class Asset extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForItem() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForItem($keys);
+    }
+
+    /**
      * Load a record
      *
      * @param   integer  $oid      ID
      * @param   integer  $item_id  Item ID
      * @return  boolean  True upon success, False if errors
      */
-    public function load($oid = null, $item_id = null)
+    public function loadForItem($oid = null, $item_id = null)
     {
         if (is_numeric($oid)) {
             return parent::load($oid);

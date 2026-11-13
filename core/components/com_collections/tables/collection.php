@@ -32,6 +32,18 @@ class Collection extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForObject() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForObject($keys);
+    }
+
+    /**
      * Load a record and bind to $this
      *
      * @param   mixed    $oid          Record alias
@@ -39,7 +51,7 @@ class Collection extends Table
      * @param   string   $object_type  Object type
      * @return  boolean  True on success
      */
-    public function load($oid = null, $object_id = null, $object_type = null)
+    public function loadForObject($oid = null, $object_id = null, $object_type = null)
     {
         if ($oid === null) {
             return false;
@@ -190,7 +202,7 @@ class Collection extends Table
         $this->state     = intval($this->state);
 
         $tbl = new self($this->db);
-        $tbl->load($this->alias, $this->object_id, $this->object_type);
+        $tbl->loadForObject($this->alias, $this->object_id, $this->object_type);
 
         if (!$this->id) {
             if ($tbl->id && $tbl->state != 2) {

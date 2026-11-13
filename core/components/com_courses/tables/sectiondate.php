@@ -30,6 +30,18 @@ class SectionDate extends Table
     }
 
     /**
+     * Load a record and bind it to this object
+     *
+     * @param   mixed    $keys   Record ID, or whatever loadForScope() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
+     */
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForScope($keys);
+    }
+
+    /**
      * Load a record and bind to $this
      *
      * @param   mixed    $oid
@@ -37,7 +49,7 @@ class SectionDate extends Table
      * @param   integer  $section_id
      * @return  boolean  True on success
      */
-    public function load($oid = null, $scope = null, $section_id = null)
+    public function loadForScope($oid = null, $scope = null, $section_id = null)
     {
         if ($oid === null) {
             return false;
