@@ -99,10 +99,7 @@ class Viewperm extends Table
             $query .=  " AND viewuser=" . $this->db->quote($username);
         }
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            $this->setError(get_class($this) . '::delete failed - ' . $this->db->getErrorMsg());
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -114,12 +111,7 @@ class Viewperm extends Table
      */
     public function update($updateNulls = false)
     {
-        $ret = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
-
-        if (!$ret) {
-            $this->setError(get_class($this) . '::update failed - ' . $this->db->getErrorMsg());
-            return false;
-        }
+        $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
         return true;
     }
 
@@ -130,12 +122,7 @@ class Viewperm extends Table
      */
     public function insert()
     {
-        $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
-
-        if (!$ret) {
-            $this->setError(get_class($this) . '::insert failed - ' . $this->db->getErrorMsg());
-            return false;
-        }
+        $this->db->insertObject($this->tableName, $this, $this->tableKey);
         return true;
     }
 }

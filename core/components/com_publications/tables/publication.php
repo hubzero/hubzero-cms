@@ -46,7 +46,6 @@ class Publication extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -66,7 +65,6 @@ class Publication extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -568,10 +566,7 @@ class Publication extends Table
                 . " WHERE id="
                 . $this->db->quote($this->id),
         );
-        if (!$this->db->query()) {
-            echo $this->db->getErrorMsg();
-            exit();
-        }
+        $this->db->query();
     }
 
     /**
@@ -588,10 +583,7 @@ class Publication extends Table
 
         // Delete ratings
         $this->db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($id));
-        if (!$this->db->query()) {
-            echo $this->db->getErrorMsg();
-            exit();
-        }
+        $this->db->query();
     }
 
     /**

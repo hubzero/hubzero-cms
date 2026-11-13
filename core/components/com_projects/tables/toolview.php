@@ -49,7 +49,6 @@ class ToolView extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

@@ -121,7 +121,6 @@ class Log extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -152,7 +151,6 @@ class Log extends Table
             . " AND `scope`=" . $this->db->quote($scope),
         );
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

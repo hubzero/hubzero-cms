@@ -66,10 +66,7 @@ class ModuleMenu extends Table
         // add menu items for each page
         $sql = "INSERT INTO {$this->tableName}(`moduleid`,`pageid`) VALUES " . implode(',', $values);
         $this->db->setQuery($sql);
-        if (!$this->db->query()) {
-            $this->setError($this->db->getError());
-            return false;
-        }
+        $this->db->query();
 
         // everything went smoothly
         return true;
@@ -92,10 +89,7 @@ class ModuleMenu extends Table
         // delete any menu items matching module id
         $sql = "DELETE FROM {$this->tableName} WHERE `moduleid`=" . $this->db->quote($moduleid);
         $this->db->setQuery($sql);
-        if (!$this->db->query()) {
-            $this->setError($this->db->getError());
-            return false;
-        }
+        $this->db->query();
 
         // everything went smoothly
         return true;

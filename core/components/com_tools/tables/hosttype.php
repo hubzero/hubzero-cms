@@ -66,21 +66,16 @@ class Hosttype extends Table
         $k = $this->tableKey;
 
         if ($insert) {
-            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
+            $this->db->insertObject($this->tableName, $this, $this->tableKey);
         } else {
             if ($this->$k) {
-                $ret = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
+                $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
             } else {
-                $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
+                $this->db->insertObject($this->tableName, $this, $this->tableKey);
             }
         }
 
-        if (!$ret) {
-            $this->setError(get_class($this) . '::store failed - ' . $this->db->getErrorMsg());
-            return false;
-        } else {
-            return true;
-        }
+        return true;
     }
 
     /**
@@ -162,7 +157,6 @@ class Hosttype extends Table
         if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

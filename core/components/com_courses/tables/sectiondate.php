@@ -200,7 +200,6 @@ class SectionDate extends Table
 
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

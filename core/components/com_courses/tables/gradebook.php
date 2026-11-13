@@ -45,7 +45,6 @@ class GradeBook extends Table
         if ($result = $db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($db->getErrorMsg());
             return false;
         }
     }

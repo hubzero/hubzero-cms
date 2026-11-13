@@ -94,7 +94,6 @@ class Resume extends Table
         $query  = "DELETE FROM `$this->tableName` WHERE id=" . $this->db->quote($id);
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

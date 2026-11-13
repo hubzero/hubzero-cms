@@ -97,7 +97,6 @@ class Category extends Table
         $query .= " WHERE id=" . $this->db->quote($id);
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

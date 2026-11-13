@@ -85,7 +85,6 @@ class Screenshot extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -193,24 +192,16 @@ class Screenshot extends Table
             $this->db->setQuery("UPDATE $this->tableName SET ordering=" . $this->db->quote($ordering) . "
 				WHERE filename=" . $this->db->quote($filename) . " AND publication_id="
                 . $this->db->quote($pid) . " AND publication_version_id=" . $this->db->quote($versionid));
-            if ($this->db->query()) {
-                $ret = true;
-            } else {
-                $ret = false;
-            }
+            $this->db->query();
         } else {
             $this->ordering               = $ordering;
             $this->publication_id         = $pid;
             $this->publication_version_id = $versionid;
             $this->filename               = $this->db->quote($filename);
-            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
+            $this->db->insertObject($this->tableName, $this, $this->tableKey);
         }
-        if (!$ret) {
-            $this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->db->getErrorMsg());
-            return false;
-        } else {
-            return true;
-        }
+
+        return true;
     }
 
     /**
@@ -252,7 +243,6 @@ class Screenshot extends Table
         $query .= " WHERE publication_version_id=" . $this->db->quote($versionid);
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

@@ -64,7 +64,6 @@ class Page extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -87,7 +86,6 @@ class Page extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -123,7 +121,6 @@ class Page extends Table
         }
         $this->db->setQuery("DELETE FROM $this->tableName WHERE event_id=" . intval($event_id));
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -160,7 +157,6 @@ class Page extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

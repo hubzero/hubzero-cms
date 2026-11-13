@@ -72,7 +72,6 @@ class ZoneLocations extends Table
         if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

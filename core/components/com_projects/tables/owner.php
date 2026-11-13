@@ -828,7 +828,6 @@ class Owner extends Table
             $query .= " WHERE projectid=" . $this->db->quote($projectid);
             $this->db->setQuery($query);
             if (!$this->db->query()) {
-                $this->setError($this->db->getErrorMsg());
                 return false;
             }
             return true;
@@ -1278,7 +1277,7 @@ class Owner extends Table
     public function matchName($name = '')
     {
         $query = 'SELECT id FROM `#__users` WHERE name = ' . $this->db->quote($name);
-        $this->db->setQuery($query, 0, 1);
+        $this->db->setQuery($query);
         return $this->db->loadResult();
     }
 

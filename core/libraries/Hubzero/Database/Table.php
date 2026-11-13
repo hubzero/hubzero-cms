@@ -42,7 +42,7 @@ abstract class Table extends \stdClass
     /**
      * Database connector object.
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver|null
      */
     protected $db;
 
@@ -724,15 +724,6 @@ abstract class Table extends \stdClass
             Event::trigger($this->getTableName() . '_new', ['table' => $this]);
         }
 
-        // If the store failed return false.
-        if (!$stored) {
-            $e = new Exception(
-                'Store failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-            return false;
-        }
-
         Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 
         // If the table is not set to track assets return true.
@@ -795,13 +786,7 @@ abstract class Table extends \stdClass
             $query->whereEquals($k, (int) $this->$k);
             $this->db->setQuery($query->toString());
 
-            if (!$this->db->execute()) {
-                $e = new Exception(
-                    'Failed to update asset ID: ' . $this->db->getErrorMsg(),
-                );
-                $this->setError($e);
-                return false;
-            }
+            $this->db->execute();
         }
 
         return true;
@@ -902,14 +887,7 @@ abstract class Table extends \stdClass
         $query->whereEquals($this->tableKey, $pk);
         $this->db->setQuery($query->toString());
 
-        // Check for a database error.
-        if (!$this->db->execute()) {
-            $e = new Exception(
-                'Delete failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-            return false;
-        }
+        $this->db->execute();
 
         return true;
     }
@@ -958,13 +936,7 @@ abstract class Table extends \stdClass
         $query->whereEquals($this->tableKey, $pk);
         $this->db->setQuery($query->toString());
 
-        if (!$this->db->execute()) {
-            $e = new Exception(
-                'Checkout failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-            return false;
-        }
+        $this->db->execute();
 
         // Set table values in the object.
         $this->checked_out = (int) $userId;
@@ -1020,14 +992,7 @@ abstract class Table extends \stdClass
         $query->whereEquals($this->tableKey, $pk);
         $this->db->setQuery($query->toString());
 
-        // Check for a database error.
-        if (!$this->db->execute()) {
-            $e = new Exception(
-                'Checkin failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-            return false;
-        }
+        $this->db->execute();
 
         // Set table values in the object.
         $this->checked_out = $data['checked_out'];
@@ -1068,14 +1033,7 @@ abstract class Table extends \stdClass
         $query->whereEquals($this->tableKey, $pk);
         $this->db->setQuery($query->toString());
 
-        // Check for a database error.
-        if (!$this->db->execute()) {
-            $e = new Exception(
-                'Hit update failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-            return false;
-        }
+        $this->db->execute();
 
         // Set table values in the object.
         $this->hits++;
@@ -1165,16 +1123,6 @@ abstract class Table extends \stdClass
         $this->db->setQuery($query->toString());
         $max = (int) $this->db->loadResult();
 
-        // Check for a database error.
-        if ($this->db->getErrorNum()) {
-            $e = new Exception(
-                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-
-            return false;
-        }
-
         // Return the largest ordering value + 1.
         return ($max + 1);
     }
@@ -1214,16 +1162,6 @@ abstract class Table extends \stdClass
         $this->db->setQuery($query->toString());
         $rows = $this->db->loadObjectList();
 
-        // Check for a database error.
-        if ($this->db->getErrorNum()) {
-            $e = new Exception(
-                'Reorder failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-
-            return false;
-        }
-
         // Compact the ordering values.
         foreach ($rows as $i => $row) {
             // Make sure the ordering is a positive integer.
@@ -1239,16 +1177,7 @@ abstract class Table extends \stdClass
                     $query->whereEquals($this->tableKey, $row->$k);
                     $this->db->setQuery($query->toString());
 
-                    // Check for a database error.
-                    if (!$this->db->execute()) {
-                        $e = new Exception(
-                            'Reorder update row ' . $i . ' failed for '
-                            . get_class($this) . ': ' . $this->db->getErrorMsg(),
-                        );
-                        $this->setError($e);
-
-                        return false;
-                    }
+                    $this->db->execute();
                 }
             }
         }
@@ -1304,7 +1233,7 @@ abstract class Table extends \stdClass
         }
 
         // Select the first row with the criteria.
-        $this->db->setQuery($query->toString(), 0, 1);
+        $this->db->setQuery($query->toString());
         $row = $this->db->loadObject();
 
         // If a row is found, move the item.
@@ -1316,15 +1245,7 @@ abstract class Table extends \stdClass
             $query->whereEquals($this->tableKey, $this->$k);
             $this->db->setQuery($query->toString());
 
-            // Check for a database error.
-            if (!$this->db->execute()) {
-                $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-                );
-                $this->setError($e);
-
-                return false;
-            }
+            $this->db->execute();
 
             // Update the ordering field for the row to this instance's ordering value.
             $query = $this->db->getQuery();
@@ -1333,15 +1254,7 @@ abstract class Table extends \stdClass
             $query->whereEquals($this->tableKey, $row->$k);
             $this->db->setQuery($query->toString());
 
-            // Check for a database error.
-            if (!$this->db->execute()) {
-                $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-                );
-                $this->setError($e);
-
-                return false;
-            }
+            $this->db->execute();
 
             // Update the instance value.
             $this->ordering = $row->ordering;
@@ -1353,15 +1266,7 @@ abstract class Table extends \stdClass
             $query->whereEquals($this->tableKey, $this->$k);
             $this->db->setQuery($query->toString());
 
-            // Check for a database error.
-            if (!$this->db->execute()) {
-                $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-                );
-                $this->setError($e);
-
-                return false;
-            }
+            $this->db->execute();
         }
 
         return true;
@@ -1422,15 +1327,7 @@ abstract class Table extends \stdClass
 
         $this->db->setQuery($query->toString());
 
-        // Check for a database error.
-        if (!$this->db->execute()) {
-            $e = new Exception(
-                'Publish failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
-            );
-            $this->setError($e);
-
-            return false;
-        }
+        $this->db->execute();
 
         // If checkin is supported and all rows were adjusted, check them in.
         if ($checkin && (count($pks) == $this->db->getAffectedRows())) {
@@ -1489,15 +1386,8 @@ abstract class Table extends \stdClass
             }
 
             // Get the row object from the query.
-            $this->db->setQuery((string) $query->toString(), 0, 1);
+            $this->db->setQuery((string) $query->toString());
             $row = $this->db->loadObject();
-
-            // Check for a database error.
-            if ($this->db->getErrorNum()) {
-                $this->setError($this->db->getErrorMsg());
-
-                return false;
-            }
 
             $msg = [];
             $i = 0;

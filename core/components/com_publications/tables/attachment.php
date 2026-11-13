@@ -91,7 +91,6 @@ class Attachment extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -395,7 +394,6 @@ class Attachment extends Table
 
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -441,7 +439,6 @@ class Attachment extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -573,7 +570,6 @@ class Attachment extends Table
         $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -808,7 +804,6 @@ class Attachment extends Table
                     . $this->db->quote($row->id);
                 $this->db->setQuery($sql);
                 if (!$this->db->query()) {
-                    $this->setError($this->db->getErrorMsg());
                     return false;
                 }
             }

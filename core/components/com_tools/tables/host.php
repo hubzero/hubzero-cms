@@ -61,7 +61,7 @@ class Host extends Table
         $k = $this->tableKey;
 
         if ($insert) {
-            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
+            $this->db->insertObject($this->tableName, $this, $this->tableKey);
         } else {
             if ($this->$k) {
                 //$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
@@ -81,17 +81,12 @@ class Host extends Table
                     $tmp[] = $this->db->quoteName($ky) . '=' . $val;
                 }
                 $this->db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
-                $ret = $this->db->query();
+                $this->db->query();
             } else {
-                $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
+                $this->db->insertObject($this->tableName, $this, $this->tableKey);
             }
         }
-        if (!$ret) {
-            $this->setError(get_class($this) . '::store failed - ' . $this->db->getErrorMsg());
-            return false;
-        } else {
-            return true;
-        }
+        return true;
     }
 
     /**
@@ -114,7 +109,6 @@ class Host extends Table
         if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

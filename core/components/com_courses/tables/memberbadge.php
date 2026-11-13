@@ -44,7 +44,6 @@ class MemberBadge extends Table
             return $this->bind($result);
         }
 
-        $this->setError($this->db->getErrorMsg());
         return false;
     }
 }

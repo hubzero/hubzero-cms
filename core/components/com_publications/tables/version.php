@@ -60,7 +60,6 @@ class Version extends Table
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -404,10 +403,8 @@ class Version extends Table
         $query  = "UPDATE $this->tableName SET main = 0 ";
         $query .= $unpublish ? ", state = 0 " : "";
         $query .= "WHERE id=" . $this->db->quote($vid) . " AND main = 1 LIMIT 1 ";
+        // The query is prepared but has not been run since 2015 (#8439).
         $this->db->setQuery($query);
-        if ($this->db->getError()) {
-            return false;
-        }
         return true;
     }
 
@@ -431,7 +428,7 @@ class Version extends Table
 
         $this->db->setQuery($query);
         $result = $this->db->loadResult();
-        $result = $result ? ($result + 1) : 1;
+        $result = $result ? ((int) $result + 1) : 1;
 
         $title .= ' (' . $result . ')';
 

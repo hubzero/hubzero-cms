@@ -175,7 +175,6 @@ class SessionClassGroup extends Table
 
         $this->db->setQuery("DELETE FROM `$this->tableName` WHERE `class_id`=" . $this->db->quote($class_id));
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
 
@@ -199,7 +198,6 @@ class SessionClassGroup extends Table
 
         $this->db->setQuery("DELETE FROM `$this->tableName` WHERE `group_id`=" . $this->db->quote($group_id));
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
 

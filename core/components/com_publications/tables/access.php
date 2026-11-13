@@ -187,7 +187,6 @@ class Access extends Table
         $query .= $sysgroup ? " AND group_id !=" . $this->db->quote($sysgroup) : "";
         $this->db->setQuery($query);
         if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
