@@ -70,9 +70,11 @@ class Membership extends AdminController
 
         // Load the group page
         $group = new Group();
-        $group->read($this->view->filters['gid']);
+        $group->read($this->view->get('filters')['gid']);
 
-        $this->view->filters['gidNumber'] = $group->get('gidNumber');
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['gidNumber'] = $group->get('gidNumber');
+        $this->view->set('filters', $viewFilters);
 
         $this->view->filters['search']  = urldecode(trim(Request::getState(
             $this->option . '.' . $this->controller . '.search',
@@ -128,19 +130,25 @@ class Membership extends AdminController
             //add invite emails to list
             $added = 0;
             foreach ($inviteemails as $inviteemail) {
-                $this->view->rows[$inviteemail['email']]            = new \stdClass();
-                $this->view->rows[$inviteemail['email']]->name      = $inviteemail['email'];
-                $this->view->rows[$inviteemail['email']]->username  = null;
-                $this->view->rows[$inviteemail['email']]->email     = $inviteemail['email'];
-                $this->view->rows[$inviteemail['email']]->uidNumber = null;
-                $this->view->rows[$inviteemail['email']]->role      = 'inviteemail';
+                $invited = new \stdClass();
+                $invited->name      = $inviteemail['email'];
+                $invited->username  = null;
+                $invited->email     = $inviteemail['email'];
+                $invited->uidNumber = null;
+                $invited->role      = 'inviteemail';
+
+                $viewRows = $this->view->get('rows');
+                $viewRows[$inviteemail['email']] = $invited;
+                $this->view->set('rows', $viewRows);
 
                 $added++;
             }
 
             // Make sure the number of emails added are appended to the total
             // so that pagination will be correct
-            $this->view->total += $added;
+            $viewTotal = $this->view->get('total');
+            $viewTotal += $added;
+            $this->view->set('total', $viewTotal);
         }
 
         $this->view->set('group', $group);

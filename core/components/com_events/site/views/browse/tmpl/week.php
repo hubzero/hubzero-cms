@@ -39,7 +39,7 @@ $template = $this;
 
 // The attribute that marks the current value in the form fields below
 $categorySelected = function ($value) use ($template) {
-    if ($template->category == $value) {
+    if ($template->get('category') == $value) {
         return ' selected="selected"';
     }
 

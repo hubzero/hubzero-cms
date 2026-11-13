@@ -392,7 +392,9 @@ class Import extends SiteController
         }
         $this->view->set('citations', $citations);
 
-        $this->view->openurl['link'] = '';
+        $viewOpenurl = $this->view->get('openurl');
+        $viewOpenurl['link'] = '';
+        $this->view->set('openurl', $viewOpenurl);
         $this->view->openurl['text'] = '';
         $this->view->openurl['icon'] = '';
 

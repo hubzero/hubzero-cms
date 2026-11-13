@@ -42,7 +42,8 @@ class Points extends AdminController
         $lastmonth = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m');
 
         // Get overall earnings
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Earnings - Total',
             'class'         => 'earntotal',
             'alltimepts'    => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, ''),
@@ -53,6 +54,7 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall earnings on Answers
         $this->view->stats[] = [

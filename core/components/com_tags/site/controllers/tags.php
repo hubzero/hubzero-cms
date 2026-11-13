@@ -170,9 +170,9 @@ class Tags extends SiteController
         } else {
             $this->view->set('categories', Event::trigger('tags.onTagView', [
                 $tags,
-                $this->view->filters['limit'],
-                $this->view->filters['start'],
-                $this->view->filters['sort'],
+                $this->view->get('filters')['limit'],
+                $this->view->get('filters')['start'],
+                $this->view->get('filters')['sort'],
                 $area,
             ]));
 
@@ -181,7 +181,9 @@ class Tags extends SiteController
                 if ($this->view->get('categories')) {
                     $s = [];
                     foreach ($this->view->get('categories') as $response) {
-                        $this->view->total += $response['total'];
+                        $viewTotal = $this->view->get('total');
+                        $viewTotal += $response['total'];
+                        $this->view->set('total', $viewTotal);
 
                         if (is_array($response['sql'])) {
                             continue;
@@ -230,7 +232,9 @@ class Tags extends SiteController
             } else {
                 if ($this->view->get('categories')) {
                     foreach ($this->view->get('categories') as $response) {
-                        $this->view->total += $response['total'];
+                        $viewTotal = $this->view->get('total');
+                        $viewTotal += $response['total'];
+                        $this->view->set('total', $viewTotal);
                     }
                     foreach ($this->view->get('categories') as $response) {
                         //$this->view->total += $response['total'];

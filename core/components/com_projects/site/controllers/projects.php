@@ -624,7 +624,9 @@ class Projects extends Base
                             return;
                         } else {
                             // Normal output
-                            $this->view->content .= $section['html'];
+                            $viewContent = $this->view->get('content');
+                            $viewContent .= $section['html'];
+                            $this->view->set('content', $viewContent);
                         }
                     }
                 }

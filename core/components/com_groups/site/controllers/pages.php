@@ -119,7 +119,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->set('notifications', ($this->view->notifications) ? $this->view->get('notifications') : []);
+        $this->view->set('notifications', ($this->view->get('notifications')) ? $this->view->get('notifications') : []);
         $this->view->set('group', $this->group);
         $this->view->set('config', $this->config);
 
@@ -222,7 +222,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->set('notifications', ($this->view->notifications) ? $this->view->get('notifications') : []);
+        $this->view->set('notifications', ($this->view->get('notifications')) ? $this->view->get('notifications') : []);
         $this->view->set('group', $this->group);
         $this->view->set('config', $this->config);
 
@@ -518,7 +518,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->set('notifications', $this->getNotifications());
-        $this->view->set('notifications', ($this->view->notifications) ? $this->view->get('notifications') : []);
+        $this->view->set('notifications', ($this->view->get('notifications')) ? $this->view->get('notifications') : []);
         $this->view->set('group', $this->group);
 
         //display layout

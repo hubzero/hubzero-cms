@@ -226,7 +226,7 @@ class Todo extends Plugin
             'sortdir'  => 'ASC',
         ]);
 
-        $view->set('items', $this->todo->entries('list', $view->filters));
+        $view->set('items', $this->todo->entries('list', $view->get('filters')));
         $view->set('model', $model);
         return $view->loadTemplate();
     }

@@ -101,7 +101,7 @@ class Assetgroups extends AdminController
             \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
-        $rows = $this->view->get('unit')->assetgroups(null, $this->view->filters);
+        $rows = $this->view->get('unit')->assetgroups(null, $this->view->get('filters'));
 
         // establish the hierarchy of the menu
         $children = [

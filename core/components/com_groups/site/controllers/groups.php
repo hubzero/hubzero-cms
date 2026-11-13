@@ -110,7 +110,9 @@ class Groups extends Base
             $mytags = $mt->render('string');
 
             // Get users groups
-            $this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
+            $viewMygroups = $this->view->get('mygroups');
+            $viewMygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
+            $this->view->set('mygroups', $viewMygroups);
             $this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
             $this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
             $this->view->mygroups = array_filter($this->view->mygroups);
@@ -243,7 +245,7 @@ class Groups extends Base
         // block has been moved above that check before now, which turns every
         // hit on a missing group into a warning in the error log.
         if (is_object($this->view->get('group'))) {
-            $gparams       = new Registry($this->view->group->get('params'));
+            $gparams       = new Registry($this->view->get('group')->get('params'));
             $page_template = $gparams->get('page_template');
 
             if ($page_template) {
@@ -252,7 +254,7 @@ class Groups extends Base
         }
 
         // Ensure it's an allowable group type to display
-        if (!in_array($this->view->group->get('type'), [1, 3])) {
+        if (!in_array($this->view->get('group')->get('type'), [1, 3])) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -1067,9 +1069,11 @@ class Groups extends Base
 
         // Trigger the functions that delete associated content
         // Should return logs of what was deleted
-        $logs = Event::trigger('groups.onGroupDeleteCount', [$this->view->group]);
+        $logs = Event::trigger('groups.onGroupDeleteCount', [$this->view->get('group')]);
         if (count($logs) > 0) {
-            $this->view->log .= '<br />' . implode('<br />', $logs);
+            $viewLog = $this->view->get('log');
+            $viewLog .= '<br />' . implode('<br />', $logs);
+            $this->view->set('log', $viewLog);
         }
 
         // Build the title

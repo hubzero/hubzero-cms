@@ -151,7 +151,9 @@ class Citations extends SiteController
 
         if (User::authorise('core.manage', $this->option)) {
             $this->view->set('isAdmin', true);
-            $this->view->filters['published'] = [0, 1];
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['published'] = [0, 1];
+            $this->view->set('filters', $viewFilters);
         }
 
         $this->view->set('filter', [
@@ -160,7 +162,9 @@ class Citations extends SiteController
             'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED'),
         ]);
         if (!in_array($this->view->get('filters')['filter'], array_keys($this->view->get('filter')))) {
-            $this->view->filters['filter'] = '';
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['filter'] = '';
+            $this->view->set('filters', $viewFilters);
         }
 
         // Sort Filter
@@ -173,7 +177,9 @@ class Citations extends SiteController
             'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL'),
         ]);
         if (!in_array($this->view->get('filters')['sort'], array_keys($this->view->get('sorts')))) {
-            $this->view->filters['sort'] = 'created DESC';
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['sort'] = 'created DESC';
+            $this->view->set('filters', $viewFilters);
         }
 
         // Handling ids of the the boxes checked for download
@@ -182,10 +188,14 @@ class Citations extends SiteController
 
         // If it's new search remove all user citation checkmarks
         if (isset($_POST['filter'])) {
-            $this->view->filters['idlist'] = "";
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['idlist'] = "";
+            $this->view->set('filters', $viewFilters);
             $session->set('idlist', $this->view->filters['idlist']);
         } else {
-            $this->view->filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['idlist'] = Request::getString('idlist', $session->get('idlist'));
+            $this->view->set('filters', $viewFilters);
             $session->set('idlist', $this->view->filters['idlist']);
         }
 
@@ -379,7 +389,7 @@ class Citations extends SiteController
             App::abort(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
         }
 
-        $this->view->set('associations', $this->view->citation
+        $this->view->set('associations', $this->view->get('citation')
             ->resources()
             ->whereEquals('#__citations_assoc.tbl', 'resource'));
         $this->view->set('sponsors', $this->view->get('citation')->sponsors);

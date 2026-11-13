@@ -121,7 +121,9 @@ class Jobs extends AdminController
 
         // Grab some filters for returning to place after editing
         $this->view->set('return', []);
-        $this->view->return['sortby'] = Request::getString('sortby', 'added');
+        $viewReturn = $this->view->get('return');
+        $viewReturn['sortby'] = Request::getString('sortby', 'added');
+        $this->view->set('return', $viewReturn);
 
         $this->view->set('row', new Job($this->database));
 

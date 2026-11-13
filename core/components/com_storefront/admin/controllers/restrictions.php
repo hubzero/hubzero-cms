@@ -69,7 +69,9 @@ class Restrictions extends AdminController
         ]);
 
         // Get record count
-        $this->view->filters['return'] = 'count';
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['return'] = 'count';
+        $this->view->set('filters', $viewFilters);
         $this->view->set('total', RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId));
 
         // Get records

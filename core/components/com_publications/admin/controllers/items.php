@@ -154,7 +154,9 @@ class Items extends AdminController
 
         // Grab some filters for returning to place after editing
         $this->view->set('return', []);
-        $this->view->return['category'] = Request::getString('category', '');
+        $viewReturn = $this->view->get('return');
+        $viewReturn['category'] = Request::getString('category', '');
+        $this->view->set('return', $viewReturn);
         $this->view->return['sortby']   = Request::getString('sortby', '');
         $this->view->return['status']   = Request::getString('status', '');
 
@@ -1507,7 +1509,9 @@ class Items extends AdminController
 
         // Grab some filters for returning to place after editing
         $this->view->set('return', []);
-        $this->view->return['cat']    = Request::getString('cat', '');
+        $viewReturn = $this->view->get('return');
+        $viewReturn['cat'] = Request::getString('cat', '');
+        $this->view->set('return', $viewReturn);
         $this->view->return['sortby'] = Request::getString('sortby', '');
         $this->view->return['status'] = Request::getString('status', '');
 

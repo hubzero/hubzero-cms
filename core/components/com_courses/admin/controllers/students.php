@@ -67,7 +67,9 @@ class Students extends AdminController
             'offering',
             \Components\Courses\Models\Offering::getInstance($this->view->get('filters')['offering']),
         );
-        $this->view->filters['offering_id'] = $this->view->get('filters')['offering'];
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['offering_id'] = $this->view->get('filters')['offering'];
+        $this->view->set('filters', $viewFilters);
         /*if (!$this->view->offering->exists())
         {
             App::redirect(

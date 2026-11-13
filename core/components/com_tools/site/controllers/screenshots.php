@@ -804,7 +804,9 @@ class Screenshots extends SiteController
         $this->view->set('wpath', DS . trim($this->rconfig->get('uploadpath'), DS) . $path);
         if ($vid) {
             $upath .= DS . $vid;
-            $this->view->wpath .= DS . $vid;
+            $viewWpath = $this->view->get('wpath');
+            $viewWpath .= DS . $vid;
+            $this->view->set('wpath', $viewWpath);
         }
         $this->view->set('upath', $upath);
 

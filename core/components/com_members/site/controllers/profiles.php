@@ -1041,7 +1041,9 @@ class Profiles extends SiteController
 
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
-                $this->view->password_rules[] = $rule['description'];
+                $viewPassword_rules = $this->view->get('password_rules');
+                $viewPassword_rules[] = $rule['description'];
+                $this->view->set('password_rules', $viewPassword_rules);
             }
         }
 

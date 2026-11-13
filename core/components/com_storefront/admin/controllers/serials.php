@@ -66,7 +66,9 @@ class Serials extends AdminController
         //print_r($this->view->filters); die;
 
         // Get record count
-        $this->view->filters['return'] = 'count';
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['return'] = 'count';
+        $this->view->set('filters', $viewFilters);
         $this->view->set('total', SerialsHelper::getSkuSerials($this->view->filters, $sId));
 
         // Get records

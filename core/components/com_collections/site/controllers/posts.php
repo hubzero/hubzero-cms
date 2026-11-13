@@ -271,7 +271,9 @@ class Posts extends SiteController
                 'state'   => 1,
                 'user_id' => User::get('id'),
             ];
-            $this->view->counts['collections'] = $this->model->collections($filters);
+            $viewCounts = $this->view->get('counts');
+            $viewCounts['collections'] = $this->model->collections($filters);
+            $this->view->set('counts', $viewCounts);
             $this->view->counts['posts'] = $this->model->posts($filters);
         }
 

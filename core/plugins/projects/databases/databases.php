@@ -353,7 +353,7 @@ class Databases extends Plugin
         $view->get('publication')->_curationModel->setBlock($block, $step);
 
         // Set pub assoc and load curation
-        $view->get('publication')->_curationModel->setPubAssoc($view->publication);
+        $view->get('publication')->_curationModel->setPubAssoc($view->get('publication'));
 
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases', 'selector');
         if (!$ajax) {

@@ -200,7 +200,7 @@ class Tickets extends SiteController
 				FROM `#__support_tickets` AS s
 				LEFT JOIN `#__xgroups` AS g ON g.gidNumber=s.`group_id`
 				WHERE s.`group_id` > 0
-				AND s.type=" . $this->database->quote($this->view->type) . "
+				AND s.type=" . $this->database->quote($this->view->get('type')) . "
 				ORDER BY g.description ASC";
         $this->database->setQuery($sql);
         $this->view->set('groups', $this->database->loadObjectList());
@@ -209,23 +209,24 @@ class Tickets extends SiteController
         $this->view->set('users', null);
 
         if ($this->view->get('group') == '_none_') {
+            $quotedType = $this->database->quote($this->view->get('type'));
             $query = "SELECT DISTINCT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
-					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . " AND s.group_id=0
+					WHERE a.block = '0' AND s.type=" . $quotedType . " AND s.group_id=0
 					ORDER BY a.name";
         } elseif ($this->view->get('group')) {
             $query = "SELECT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__xgroups_members` AS gm ON gm.uidNumber=a.id
 					INNER JOIN `#__xgroups` AS g ON g.gidNumber=gm.gidNumber
-					WHERE g.cn=" . $this->database->quote($this->view->group) . "
+					WHERE g.cn=" . $this->database->quote($this->view->get('group')) . "
 					ORDER BY a.name";
         } else {
             $query = "SELECT DISTINCT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
-					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . "
+					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->get('type')) . "
 					ORDER BY a.name";
         }
 
@@ -255,7 +256,7 @@ class Tickets extends SiteController
         $sql = "SELECT YEAR(created)
 				FROM `#__support_tickets`
 				WHERE report!=''
-				AND type='{$this->view->type}' ORDER BY created ASC LIMIT 1";
+				AND type='{$this->view->get('type')}' ORDER BY created ASC LIMIT 1";
         $this->database->setQuery($sql);
         $first = intval($this->database->loadResult());
 
@@ -319,7 +320,7 @@ class Tickets extends SiteController
         }
         if ($this->view->get('start') && $end) {
             $sql .= " AND created >= "
-                . $this->database->quote($this->view->start . '-01 00:00:00')
+                . $this->database->quote($this->view->get('start') . '-01 00:00:00')
                 . " AND created < "
                 . $this->database->quote($end . '-01 00:00:00');
         }
@@ -364,19 +365,19 @@ class Tickets extends SiteController
             . "MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
-				AND t.type=" . $this->database->quote($this->view->type) . " AND t.open=0";
+				AND t.type=" . $this->database->quote($this->view->get('type')) . " AND t.open=0";
         if ($this->view->get('group') == '_none_') {
             $sql .= " AND t.`group_id`=0";
         } elseif ($this->view->get('group')) {
             $gidNumber = 0;
-            if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
+            if ($group = \Hubzero\User\Group::getInstance($this->view->get('group'))) {
                 $gidNumber = $group->get('gidNumber');
             }
             $sql .= " AND t.`group_id`=" . $this->database->quote($gidNumber);
         }
         if ($this->view->get('start') && $end) {
             $sql .= " AND t.closed >= "
-                . $this->database->quote($this->view->start . '-01 00:00:00')
+                . $this->database->quote($this->view->get('start') . '-01 00:00:00')
                 . " AND t.closed < "
                 . $this->database->quote($end . '-01 00:00:00');
         }

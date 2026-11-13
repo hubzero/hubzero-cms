@@ -728,7 +728,7 @@ class Pipeline extends SiteController
 
         $this->view->set('editversion', Request::getString('editversion', ''));
         // do not allow to edit all versions just yet, will default to dev
-        $this->view->set('editversion', ($this->view->editversion == 'current') ? 'current' : 'dev');
+        $this->view->set('editversion', ($this->view->get('editversion') == 'current') ? 'current' : 'dev');
 
         // check access rights
         if ($this->_toolid && !$this->checkAccess($this->_toolid)) {
@@ -736,7 +736,7 @@ class Pipeline extends SiteController
         }
 
         // get tool status
-        $obj->getToolStatus($this->_toolid, $this->option, $status, $this->view->editversion);
+        $obj->getToolStatus($this->_toolid, $this->option, $status, $this->view->get('editversion'));
 
         if ($this->_toolid && !$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));

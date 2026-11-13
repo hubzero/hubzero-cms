@@ -279,7 +279,9 @@ class Team extends Plugin
         $view->set('total', count($this->model->team()));
 
         // Instantiate project owner
-        $view->filters['limit']   = Request::getInt('limit', Config::get('list_limit'));
+        $viewFilters = $view->get('filters');
+        $viewFilters['limit'] = Request::getInt('limit', Config::get('list_limit'));
+        $view->set('filters', $viewFilters);
         $view->filters['start']   = Request::getInt('limitstart', 0);
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
@@ -345,7 +347,9 @@ class Team extends Plugin
         ]);
 
         $view->set('filters', []);
-        $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
+        $viewFilters = $view->get('filters');
+        $viewFilters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
+        $view->set('filters', $viewFilters);
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
         if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
             $view->filters['sortdir'] = 'ASC';
@@ -443,7 +447,9 @@ class Team extends Plugin
 
         // Instantiate project owner
         $objO = $this->model->table('Owner');
-        $view->filters['limit']         =  0;
+        $viewFilters = $view->get('filters');
+        $viewFilters['limit'] =  0;
+        $view->set('filters', $viewFilters);
         $view->filters['start']         = Request::getInt('t_limitstart', 0);
         $view->filters['sortby']        = Request::getString('t_sortby', 'name');
         $view->filters['sortdir']       = Request::getString('t_sortdir', 'ASC');
@@ -1050,7 +1056,9 @@ class Team extends Plugin
             // Get groups project owner belongs to
             $view->set('groups', \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1));
             if ($this->model->groupOwner()) {
-                $view->groups[] = $this->model->groupOwner();
+                $viewGroups = $view->get('groups');
+                $viewGroups[] = $this->model->groupOwner();
+                $view->set('groups', $viewGroups);
             }
 
             $view->set('option', $this->componentOption);

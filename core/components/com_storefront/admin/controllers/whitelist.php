@@ -69,7 +69,9 @@ class Whitelist extends AdminController
         ]);
 
         // Get record count
-        $this->view->filters['return'] = 'count';
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['return'] = 'count';
+        $this->view->set('filters', $viewFilters);
         $this->view->set('total', RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId));
 
         // Get records

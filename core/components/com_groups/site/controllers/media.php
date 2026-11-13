@@ -177,7 +177,7 @@ class Media extends Base
         //{
         $pathInfo = pathinfo($this->view->get('activeFolder'));
         if ($pathInfo['dirname'] != '/uploads') {
-            $this->view->activeFolder = '/uploads';
+            $this->view->set('activeFolder', '/uploads');
         }
         //}
 
@@ -380,9 +380,11 @@ class Media extends Base
         $this->view->set('relpath', \Hubzero\Filesystem\Util::normalizePath($this->view->get('relpath')));
         $this->view->set('relpath', explode('/', $this->view->get('relpath')));
         foreach ($this->view->get('relpath') as $i => $p) {
-            $this->view->relpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
+            $viewRelpath = $this->view->get('relpath');
+            $viewRelpath[$i] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $p);
+            $this->view->set('relpath', $viewRelpath);
         }
-        $this->view->relpath = implode(DS, $this->view->relpath);
+        $this->view->set('relpath', implode(DS, $this->view->get('relpath')));
 
         //build path to the group folder
         $this->path = rtrim($this->path, DS) . $this->view->relpath;

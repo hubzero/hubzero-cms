@@ -351,7 +351,7 @@ class Publications extends Plugin
             'sortdir' => 'DESC',
         ]);
 
-        $view->set('items', $pub->entries('list', $view->filters));
+        $view->set('items', $pub->entries('list', $view->get('filters')));
         $view->set('model', $model);
         return $view->loadTemplate();
     }
@@ -387,7 +387,7 @@ class Publications extends Plugin
             'sortdir' => 'DESC',
         ]);
 
-        $view->set('items', $pub->entries('list', $view->filters));
+        $view->set('items', $pub->entries('list', $view->get('filters')));
         $view->set('model', $model);
         return $view->loadTemplate();
     }
@@ -518,11 +518,11 @@ class Publications extends Plugin
         } else {
             // Perform request
             if ($action) {
-                $modelHandler->update($view->handler, $view->publication, $element, $action);
+                $modelHandler->update($view->get('handler'), $view->get('publication'), $element, $action);
             }
 
             // Load editor
-            $view->set('editor', $modelHandler->loadEditor($view->handler, $view->publication, $element));
+            $view->set('editor', $modelHandler->loadEditor($view->get('handler'), $view->get('publication'), $element));
         }
 
         $view->set('option', $this->componentOption);

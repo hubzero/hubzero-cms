@@ -451,7 +451,7 @@ class Files extends Plugin
         ]);
 
         // Retrieve items
-        $view->set('files', $this->repo->filelist($view->params));
+        $view->set('files', $this->repo->filelist($view->get('params')));
         $view->set('model', $model);
         return $view->loadTemplate();
     }
@@ -521,7 +521,7 @@ class Files extends Plugin
         ]);
 
         // Retrieve items
-        $view->set('items', $this->repo->filelist($view->params));
+        $view->set('items', $this->repo->filelist($view->get('params')));
 
         $view->set('publishing', false); // do not show publishing info
         $view->set('title', $this->area['title']);
@@ -1153,7 +1153,9 @@ class Files extends Plugin
                     $type = array_key_first($element);
                     $item = $element[$type];
                     // Build metadata object
-                    $view->items[] = $this->repo->getMetadata($item, $type, $params);
+                    $viewItems = $view->get('items');
+                    $viewItems[] = $this->repo->getMetadata($item, $type, $params);
+                    $view->set('items', $viewItems);
                 }
             }
 
@@ -1369,7 +1371,9 @@ class Files extends Plugin
                     $type = array_key_first($element);
                     $item = $element[$type];
                     // Build metadata object
-                    $view->items[] = $this->repo->getMetadata($item, $type, $params);
+                    $viewItems = $view->get('items');
+                    $viewItems[] = $this->repo->getMetadata($item, $type, $params);
+                    $view->set('items', $viewItems);
                 }
             }
             return $view->loadTemplate();
@@ -2283,7 +2287,7 @@ class Files extends Plugin
                     if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg')) {
                         $hi = new \Hubzero\Image\Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
                         if (count($hi->getErrors()) == 0) {
-                            $hi->resize($view->oWidth, false, false, true);
+                            $hi->resize($view->get('oWidth'), false, false, true);
                             $hi->save(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
                         } else {
                             return false;

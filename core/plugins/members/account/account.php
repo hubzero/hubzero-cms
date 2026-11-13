@@ -523,7 +523,9 @@ class Account extends Plugin
         $view->set('password_rules', []);
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
-                $view->password_rules[] = $rule['description'];
+                $viewPassword_rules = $view->get('password_rules');
+                $viewPassword_rules[] = $rule['description'];
+                $view->set('password_rules', $viewPassword_rules);
             }
         }
 

@@ -1563,7 +1563,7 @@ class Calendar extends Plugin
             //declare subject
             $subject = Lang::txt(
                 "["
-                    . $email->sitename
+                    . $email->get('sitename')
                     . "] Group \"{$this->group->get('description')}\" Event Registration: "
                     . $eventsEvent->title,
             );

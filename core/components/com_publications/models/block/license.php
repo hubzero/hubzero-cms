@@ -121,12 +121,12 @@ class License extends Base
         // Get selected license
         $view->set('license', $objL->getPubLicense($pub->version_id));
 
-        $view->set('selections', $objL->getBlockLicenses($this->manifest, $view->license));
+        $view->set('selections', $objL->getBlockLicenses($this->manifest, $view->get('license')));
 
         // Pre-select single available license
         if (!$view->get('license') && count($view->get('selections')) == 1) {
             $view->set('license', new \Components\Publications\Tables\License($this->parent->db));
-            $view->get('license')->load($view->selections[0]->id);
+            $view->get('license')->load($view->get('selections')[0]->id);
         }
 
         if ($this->getError()) {
