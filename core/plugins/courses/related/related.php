@@ -59,12 +59,12 @@ class Related extends Plugin
         $database->setQuery($query);
         if ($courses = $database->loadObjectList()) {
             $view = $this->view('default', 'overview');
-            $view->option = Request::getCmd('option', 'com_courses');
-            $view->controller = Request::getWord('controller', 'course');
-            $view->course = $course;
-            $view->name = $this->pluginName;
-            $view->courses = $courses;
-            $view->ids = $ids;
+            $view->set('option', Request::getCmd('option', 'com_courses'));
+            $view->set('controller', Request::getWord('controller', 'course'));
+            $view->set('course', $course);
+            $view->set('name', $this->pluginName);
+            $view->set('courses', $courses);
+            $view->set('ids', $ids);
 
             // Return the output
             return $view->loadTemplate();

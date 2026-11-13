@@ -109,12 +109,12 @@ class Guide extends Plugin
             }
 
             $this->view = $this->view('default', $this->pluginName);
-            $this->view->option = Request::getCmd('option', 'com_courses');
-            $this->view->controller = Request::getWord('controller', 'course');
-            $this->view->course = $course;
-            $this->view->offering = $offering;
-            $this->view->config = $this->params;
-            $this->view->plugin = $this->pluginName;
+            $this->view->set('option', Request::getCmd('option', 'com_courses'));
+            $this->view->set('controller', Request::getWord('controller', 'course'));
+            $this->view->set('course', $course);
+            $this->view->set('offering', $offering);
+            $this->view->set('config', $this->params);
+            $this->view->set('plugin', $this->pluginName);
 
             switch ($action) {
                 case 'mark':

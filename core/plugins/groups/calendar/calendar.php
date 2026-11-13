@@ -320,28 +320,28 @@ class Calendar extends Plugin
         $view = $this->view('display', 'calendar');
 
         //push the calendar content to view
-        $view->month        = $this->month;
-        $view->year         = $this->year;
-        $view->calendar     = $this->calendar;
-        $view->user         = $this->user;
-        $view->authorized   = $this->authorized;
-        $view->members      = $this->members;
-        $view->option       = $this->option;
-        $view->group        = $this->group;
-        $view->params       = $this->params;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('calendar', $this->calendar);
+        $view->set('user', $this->user);
+        $view->set('authorized', $this->authorized);
+        $view->set('members', $this->members);
+        $view->set('option', $this->option);
+        $view->set('group', $this->group);
+        $view->set('params', $this->params);
 
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $view->calendars = $eventsCalendarArchive->calendars('list', [
+        $view->set('calendars', $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber'),
-        ]);
+        ]));
 
         // event calendar model
         $eventsCalendar = \Components\Events\Models\Calendar::getInstance();
 
         //define our filters
-        $view->filters = [
+        $view->set('filters', [
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber'),
             'orderby'  => 'publish_up DESC',
@@ -349,15 +349,17 @@ class Calendar extends Plugin
             // the row, so a list that does not ask for published events lists
             // the deleted ones too
             'state'    => [1],
-        ];
+        ]);
 
         // get events count
-        $view->eventsCount = $eventsCalendar->events('count', $view->filters);
+        $view->set('eventsCount', $eventsCalendar->events('count', $view->get('filters')));
 
         // get events for no js
-        $view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
-        $view->filters['start'] = Request::getInt('limitstart', 0);
-        $view->events = $eventsCalendar->events('list', $view->filters);
+        $viewFilters = $view->get('filters');
+        $viewFilters['limit'] = Request::getInt('limit', Config::get('list_limit'));
+        $viewFilters['start'] = Request::getInt('limitstart', 0);
+        $view->set('filters', $viewFilters);
+        $view->set('events', $eventsCalendar->events('list', $view->get('filters')));
 
         // add hub fancyselect lib
         $this->js('jquery.fancyselect.min', 'system');
@@ -583,20 +585,20 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0, 'get');
 
         //load event data
-        $view->event = new \Components\Events\Models\Event($eventId);
+        $view->set('event', new \Components\Events\Models\Event($eventId));
 
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $view->calendars = $eventsCalendarArchive->calendars('list', [
+        $view->set('calendars', $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber'),
             'readonly'  => 0,
-        ]);
+        ]));
 
         // do we have access to edit
-        if ($view->event->get('id')) {
+        if ($view->get('event')->get('id')) {
             //check to see if user has the correct permissions to edit
-            if ($this->user->get('id') != $view->event->get('created_by') && $this->authorized != 'manager') {
+            if ($this->user->get('id') != $view->get('event')->get('created_by') && $this->authorized != 'manager') {
                 //do not have permission to edit the event
                 App::redirect(
                     Route::url(
@@ -615,7 +617,7 @@ class Calendar extends Plugin
             }
 
             // make sure this event is editable
-            $eventCalendar = $view->event->calendar();
+            $eventCalendar = $view->get('event')->calendar();
             if ($eventCalendar->isSubscription()) {
                 App::redirect(
                     Route::url(
@@ -624,47 +626,47 @@ class Calendar extends Plugin
                             . '&cn='
                             . $this->group->get('cn')
                             . '&active=calendar&action=details&event_id='
-                            . $view->event->get('id'),
+                            . $view->get('event')->get('id'),
                     ),
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
                     'error',
                 );
             } else {
-                $allDay = $view->event->get('allday');
-                $endDate = $view->event->get('publish_down');
+                $allDay = $view->get('event')->get('allday');
+                $endDate = $view->get('event')->get('publish_down');
                 if ($allDay == '1' && !empty($endDate)) {
                     $newEndDate = Date::of($endDate)->modify('-24 hours')->toSql();
-                    $view->event->set('publish_down', $newEndDate);
+                    $view->get('event')->set('publish_down', $newEndDate);
                 }
             }
         }
 
         //are we passing an events array back from save
         if (isset($this->event)) {
-            $view->event = $this->event;
+            $view->set('event', $this->event);
         }
 
-        $timezone = $view->event->get('time_zone');
-        if ($view->event->get('allday') == "1") {
+        $timezone = $view->get('event')->get('time_zone');
+        if ($view->get('event')->get('allday') == "1") {
             $timezone = 'UTC';
         }
 
-        $view->timezone = $timezone ? $timezone : Config::get('offset');
+        $view->set('timezone', $timezone ? $timezone : Config::get('offset'));
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->calendar   = $this->calendar;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->params     = $this->params;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('calendar', $this->calendar);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('params', $this->params);
 
         //load com_events params file for registration fields
-        $view->registrationFields = new \Hubzero\Html\Parameter(
-            $view->event->get('params'),
+        $view->set('registrationFields', new \Hubzero\Html\Parameter(
+            $view->get('event')->get('params'),
             Component::path('com_events') . DS . 'events.xml',
-        );
+        ));
 
         //added need scripts and stylesheets
         $this->js('fileupload/jquery.fileupload', 'system');
@@ -1042,13 +1044,13 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0, 'get');
 
         //load event data
-        $view->event = new \Components\Events\Models\Event($eventId);
+        $view->set('event', new \Components\Events\Models\Event($eventId));
 
         // make sure we have event, and that it is this group's
         if (
-            !$view->event->get('id')
-            || $view->event->get('scope') != 'group'
-            || $view->event->get('scope_id') != $this->group->get('gidNumber')
+            !$view->get('event')->get('id')
+            || $view->get('event')->get('scope') != 'group'
+            || $view->get('event')->get('scope_id') != $this->group->get('gidNumber')
         ) {
             App::redirect(
                 Route::url(
@@ -1068,18 +1070,21 @@ class Calendar extends Plugin
 
         //get registrants count
         $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
-        $view->registrants = $eventsRespondent->getCount();
+        $view->set('registrants', $eventsRespondent->getCount());
 
         //get calendar
-        $view->calendar = \Components\Events\Models\Calendar::getInstance($view->event->get('calendar_id'));
+        $view->set(
+            'calendar',
+            \Components\Events\Models\Calendar::getInstance($view->get('event')->get('calendar_id')),
+        );
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->user      = $this->user;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('user', $this->user);
 
         //get any errors if there are any
         foreach ($this->getErrors() as $error) {
@@ -1310,13 +1315,13 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0);
 
         //load event data
-        $view->event = new \Components\Events\Models\Event($eventId);
+        $view->set('event', new \Components\Events\Models\Event($eventId));
 
         // The id names any event on the hub; only this group's take registrations here
         if (
-            !$view->event->get('id')
-            || $view->event->get('scope') != 'group'
-            || $view->event->get('scope_id') != $this->group->get('gidNumber')
+            !$view->get('event')->get('id')
+            || $view->get('event')->get('scope') != 'group'
+            || $view->get('event')->get('scope_id') != $this->group->get('gidNumber')
         ) {
             App::redirect(
                 Route::url(
@@ -1336,10 +1341,11 @@ class Calendar extends Plugin
 
         //get registrants count
         $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
-        $view->registrants = $eventsRespondent->getCount();
+        $view->set('registrants', $eventsRespondent->getCount());
 
         //do we have a registration deadline
-        if (!$view->event->get('registerby') || $view->event->get('registerby') == '0000-00-00 00:00:00') {
+        $registerBy = $view->get('event')->get('registerby');
+        if (!$registerBy || $registerBy == '0000-00-00 00:00:00') {
             App::redirect(
                 Route::url(
                     'index.php?option='
@@ -1347,7 +1353,7 @@ class Calendar extends Plugin
                         . '&cn='
                         . $this->group->get('cn')
                         . '&active=calendar&action=details&event_id='
-                        . $view->event->get('id'),
+                        . $view->get('event')->get('id'),
                 ),
                 Lang::txt('This event does not have registration.'),
                 'warning',
@@ -1356,7 +1362,7 @@ class Calendar extends Plugin
 
         //make sure registration is open
         $now        = Date::toUnix();
-        $registerby = Date::of($view->event->get('registerby'))->toUnix();
+        $registerby = Date::of($view->get('event')->get('registerby'))->toUnix();
 
         if ($registerby >= $now) {
             //get the password
@@ -1364,8 +1370,8 @@ class Calendar extends Plugin
 
             //is the event restricted
             if (
-                $view->event->get('restricted') != ''
-                && $view->event->get('restricted') != $password
+                $view->get('event')->get('restricted') != ''
+                && $view->get('event')->get('restricted') != $password
                 && !isset($this->register)
             ) {
                 //if we entered a password and it was bad lets tell the user
@@ -1379,33 +1385,35 @@ class Calendar extends Plugin
         }
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->user       = $this->user;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('user', $this->user);
 
-        $view->register   = (isset($this->register)) ? $this->register : null;
-        $view->arrival    = (isset($this->arrival)) ? $this->arrival : null;
-        $view->departure  = (isset($this->departure)) ? $this->departure : null;
-        $view->dietary    = (isset($this->dietary)) ? $this->dietary : null;
-        $view->dinner     = (isset($this->dinner)) ? $this->dinner : null;
-        $view->disability = (isset($this->disability)) ? $this->disability : null;
-        $view->race       = (isset($this->race)) ? $this->race : null;
+        $view->set('register', (isset($this->register)) ? $this->register : null);
+        $view->set('arrival', (isset($this->arrival)) ? $this->arrival : null);
+        $view->set('departure', (isset($this->departure)) ? $this->departure : null);
+        $view->set('dietary', (isset($this->dietary)) ? $this->dietary : null);
+        $view->set('dinner', (isset($this->dinner)) ? $this->dinner : null);
+        $view->set('disability', (isset($this->disability)) ? $this->disability : null);
+        $view->set('race', (isset($this->race)) ? $this->race : null);
 
         //add params to view
-        $view->params = new \Hubzero\Config\Registry($view->event->get('params'));
+        $view->set('params', new \Hubzero\Config\Registry($view->get('event')->get('params')));
 
         if (!$this->user->get('guest')) {
             $profile = \Hubzero\User\User::oneOrNew($this->user->get('id'));
 
-            $view->register['first_name']  = $profile->get('givenName');
-            $view->register['last_name']   = $profile->get('surname');
-            $view->register['affiliation'] = $profile->get('organization');
-            $view->register['email']       = $profile->get('email');
-            $view->register['telephone']   = $profile->get('phone');
-            $view->register['website']     = $profile->get('url');
+            $viewRegister = $view->get('register');
+            $viewRegister['first_name'] = $profile->get('givenName');
+            $viewRegister['last_name'] = $profile->get('surname');
+            $viewRegister['affiliation'] = $profile->get('organization');
+            $viewRegister['email'] = $profile->get('email');
+            $viewRegister['telephone'] = $profile->get('phone');
+            $viewRegister['website'] = $profile->get('url');
+            $view->set('register', $viewRegister);
         }
 
         //get any errors if there are any
@@ -1587,26 +1595,26 @@ class Calendar extends Plugin
         // only send if show email is on
         if ($params->get('show_email', 1) == 1) {
             $email = $this->view('register_email_user', 'calendar');
-            $email->option     = $this->option;
-            $email->group      = $this->group;
-            $email->params     = $params;
-            $email->event      = $eventsEvent;
-            $email->sitename   = Config::get('sitename');
-            $email->siteurl    = Config::get('live_site');
-            $email->register   = $register;
-            $email->race       = $race;
-            $email->dietary    = $dietary;
-            $email->disability = $disability;
-            $email->arrival    = $arrival;
-            $email->departure  = $departure;
-            $email->dinner     = $dinner;
+            $email->set('option', $this->option);
+            $email->set('group', $this->group);
+            $email->set('params', $params);
+            $email->set('event', $eventsEvent);
+            $email->set('sitename', Config::get('sitename'));
+            $email->set('siteurl', Config::get('live_site'));
+            $email->set('register', $register);
+            $email->set('race', $race);
+            $email->set('dietary', $dietary);
+            $email->set('disability', $disability);
+            $email->set('arrival', $arrival);
+            $email->set('departure', $departure);
+            $email->set('dinner', $dinner);
             $message           = str_replace("\n", "\r\n", $email->loadTemplate());
 
             // build to, from, & subject
             $to      = User::get('email');
             $from    = [
                 'email' => 'groups@' . $_SERVER['HTTP_HOST'],
-                'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description'),
+                'name'  => $email->get('sitename') . ' Group Calendar: ' . $this->group->get('description'),
             ];
             $subject = Lang::txt('Thank you for Registering for the "%s" event', $eventsEvent->title);
 
@@ -1673,19 +1681,19 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0, 'get');
 
         //load event data, and check who is asking
-        $view->event = $this->registrantEvent($eventId);
+        $view->set('event', $this->registrantEvent($eventId));
 
         //get registrants count
         $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
-        $view->registrants = $eventsRespondent->getRecords();
+        $view->set('registrants', $eventsRespondent->getRecords());
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->user      = $this->user;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('user', $this->user);
 
         //get any errors if there are any
         foreach ($this->getErrors() as $error) {
@@ -1823,13 +1831,13 @@ class Calendar extends Plugin
         $view = $this->view('display', 'calendars');
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->user       = $this->user;
-        $view->calendars  = $calendars;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('user', $this->user);
+        $view->set('calendars', $calendars);
 
         //get any errors if there are any
         foreach ($this->getErrors() as $error) {
@@ -1870,27 +1878,27 @@ class Calendar extends Plugin
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
 
-        $view->calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
+        $view->set('calendar', \Components\Events\Models\Calendar::getInstance($calendarId));
 
         // A new calendar (calendar_id=0, the Add calendar form) has no row to
         // belong to anything yet; only an existing one has to be this group's.
         if (
             $calendarId
-            && (!$view->calendar->get('id')
-            || (string) $view->calendar->get('scope') !== 'group'
-            || (int) $view->calendar->get('scope_id') !== (int) $this->group->get('gidNumber'))
+            && (!$view->get('calendar')->get('id')
+            || (string) $view->get('calendar')->get('scope') !== 'group'
+            || (int) $view->get('calendar')->get('scope_id') !== (int) $this->group->get('gidNumber'))
         ) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
 
 
         //push some vars to the view
-        $view->month      = $this->month;
-        $view->year       = $this->year;
-        $view->group      = $this->group;
-        $view->option     = $this->option;
-        $view->authorized = $this->authorized;
-        $view->user       = $this->user;
+        $view->set('month', $this->month);
+        $view->set('year', $this->year);
+        $view->set('group', $this->group);
+        $view->set('option', $this->option);
+        $view->set('authorized', $this->authorized);
+        $view->set('user', $this->user);
 
         //get any errors if there are any
         foreach ($this->getErrors() as $error) {

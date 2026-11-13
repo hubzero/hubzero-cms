@@ -172,7 +172,7 @@ class Plugin
      *
      * @param   string  $layout  View layout
      * @param   string  $name    View name
-     * @return  object
+     * @return  View
      */
     public function view($layout = 'default', $name = '')
     {

@@ -247,129 +247,140 @@ class Members extends Plugin
 
                 $view = $this->view('default', 'browse');
 
-                $view->membership_control = $this->membership_control;
+                $view->set('membership_control', $this->membership_control);
 
-                $view->option = $option;
-                $view->group = $group;
-                $view->authorized = $authorized;
+                $view->set('option', $option);
+                $view->set('group', $group);
+                $view->set('authorized', $authorized);
                 $this->database = App::get('db');
 
-                $view->q = Request::getString('q', '');
-                $view->filter = Request::getWord('filter', '');
-                if (!in_array($view->filter, ['members', 'managers', 'invitees', 'pending'])) {
-                    $view->filter = '';
+                $view->set('q', Request::getString('q', ''));
+                $view->set('filter', Request::getWord('filter', ''));
+                if (!in_array($view->get('filter'), ['members', 'managers', 'invitees', 'pending'])) {
+                    $view->set('filter', '');
                 }
-                $view->role_filter = Request::getInt('role_filter', '');
+                $view->set('role_filter', Request::getInt('role_filter', ''));
 
-                if ($view->authorized != 'manager' && $view->authorized != 'admin') {
-                    $view->filter = ($view->filter == 'managers') ? $view->filter : 'members';
+                if ($view->get('authorized') != 'manager' && $view->get('authorized') != 'admin') {
+                    $view->set('filter', ($view->get('filter') == 'managers') ? $view->get('filter') : 'members');
                 }
 
                 try {
                     // Get messages plugin access level
-                    $view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
+                    $view->set('messages_acl', \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages'));
                 } catch (\Exception $e) {
                     // Plugin is not enabled.
-                    $view->messages_acl = 'nobody';
+                    $view->set('messages_acl', 'nobody');
                 }
 
                 //get all member roles
-                $view->member_roles = $this->getRoles();
+                $view->set('member_roles', $this->getRoles());
 
                 $group_inviteemails = new \Hubzero\User\Group\InviteEmail();
-                $view->current_inviteemails = $group_inviteemails->getInviteEmails(
+                $view->set('current_inviteemails', $group_inviteemails->getInviteEmails(
                     $this->group->get('gidNumber'),
                     true,
-                );
+                ));
 
                 // Membership terms, fetched for the whole roster in one query
-                $view->expiration_enabled = \Hubzero\User\Group\Membership::enabled()
-                    && \Hubzero\User\Group\Membership::supported();
-                $view->expirations = $view->expiration_enabled
+                $view->set('expiration_enabled', \Hubzero\User\Group\Membership::enabled()
+                    && \Hubzero\User\Group\Membership::supported());
+                $view->set('expirations', $view->get('expiration_enabled')
                     ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
-                    : [];
+                    : []);
 
                 // The same predicate the action enforces, so the link cannot be
                 // offered where the action would refuse it. Kept separate from
                 // expiration_enabled, which only governs *showing* a term - a
                 // member should still see their own end date on a closed group.
-                $view->can_set_expiration = $this->canSetExpiration();
+                $view->set('can_set_expiration', $this->canSetExpiration());
 
                 // Flag a term from the point the hub starts warning about it -
                 // the widest threshold - so the list agrees with the mail the
                 // member has already had. The narrowest threshold is often a
                 // single day, which is too late to be a useful signal.
                 $warnDays = \Hubzero\User\Group\Membership::warningDays();
-                $view->expiration_warn_days = $warnDays ? max($warnDays) : 30;
+                $view->set('expiration_warn_days', $warnDays ? max($warnDays) : 30);
 
-                switch ($view->filter) {
+                switch ($view->get('filter')) {
                     case 'invitees':
-                        $view->groupusers = ($view->q) ? $group->search('invitees', $view->q) : $group->get('invitees');
-                        foreach ($view->current_inviteemails as $ie) {
-                            $view->groupusers[] = $ie;
+                        $view->set(
+                            'groupusers',
+                            ($view->get('q')) ? $group->search('invitees', $view->get('q')) : $group->get('invitees'),
+                        );
+                        foreach ($view->get('current_inviteemails') as $ie) {
+                            $viewGroupusers = $view->get('groupusers');
+                            $viewGroupusers[] = $ie;
+                            $view->set('groupusers', $viewGroupusers);
                         }
-                        $view->managers = [];
+                        $view->set('managers', []);
                         break;
                     case 'pending':
-                        $view->groupusers = ($view->q)
-                            ? $group->search('applicants', $view->q)
-                            : $group->get('applicants');
-                        $view->managers   = [];
+                        $view->set('groupusers', ($view->get('q'))
+                            ? $group->search('applicants', $view->get('q'))
+                            : $group->get('applicants'));
+                        $view->set('managers', []);
                         break;
                     case 'managers':
-                        $view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
-                        $view->groupusers = ($view->role_filter)
-                            ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter)
-                            : $view->groupusers;
-                        $view->managers   = $group->get('managers');
+                        $view->set(
+                            'groupusers',
+                            ($view->get('q')) ? $group->search('managers', $view->get('q')) : $group->get('managers'),
+                        );
+                        $view->set('groupusers', ($view->get('role_filter'))
+                            ? \Hubzero\User\Group\Helper::searchRoles($group, $view->get('role_filter'))
+                            : $view->get('groupusers'));
+                        $view->set('managers', $group->get('managers'));
                         break;
                     case 'members':
                     default:
                         // Require a search query or role filter before returning the member list.
                         // Managers/admins see the full list so they can administer membership.
-                        if ($view->authorized == 'manager' || $view->authorized == 'admin') {
-                            $view->groupusers = ($view->q)
-                                ? $group->search('members', $view->q)
-                                : $group->get('members');
-                            $view->groupusers = ($view->role_filter)
-                                ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter)
-                                : $view->groupusers;
-                        } elseif ($view->q) {
-                            $view->groupusers = $group->search('members', $view->q);
-                        } elseif ($view->role_filter) {
-                            $view->groupusers = \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter);
+                        if ($view->get('authorized') == 'manager' || $view->get('authorized') == 'admin') {
+                            $view->set('groupusers', ($view->get('q'))
+                                ? $group->search('members', $view->get('q'))
+                                : $group->get('members'));
+                            $view->set('groupusers', ($view->get('role_filter'))
+                                ? \Hubzero\User\Group\Helper::searchRoles($group, $view->get('role_filter'))
+                                : $view->get('groupusers'));
+                        } elseif ($view->get('q')) {
+                            $view->set('groupusers', $group->search('members', $view->get('q')));
+                        } elseif ($view->get('role_filter')) {
+                            $view->set(
+                                'groupusers',
+                                \Hubzero\User\Group\Helper::searchRoles($group, $view->get('role_filter')),
+                            );
                         } else {
-                            $view->groupusers = [];
-                            $view->prompt_filter = true;
+                            $view->set('groupusers', []);
+                            $view->set('prompt_filter', true);
                         }
-                        $view->managers   = $group->get('managers');
+                        $view->set('managers', $group->get('managers'));
                         break;
                 }
 
                 //if we dont want to display system users
                 //filter values through callback above and then reset array keys
-                if ($this->display_system_users == 'no' && is_array($view->groupusers)) {
-                    $view->groupusers = array_map([$this, "isSystemUser"], $view->groupusers);
-                    $view->groupusers = array_values(array_filter($view->groupusers));
+                if ($this->display_system_users == 'no' && is_array($view->get('groupusers'))) {
+                    $view->set('groupusers', array_map([$this, "isSystemUser"], $view->get('groupusers')));
+                    $view->set('groupusers', array_values(array_filter($view->get('groupusers'))));
                 }
 
-                if (!$view->groupusers) {
-                    $view->groupusers = [];
+                if (!$view->get('groupusers')) {
+                    $view->set('groupusers', []);
                 }
 
                 // sort users before display
-                $view->groupusers = $this->sortAlphabetically($view->groupusers);
+                $view->set('groupusers', $this->sortAlphabetically($view->get('groupusers')));
 
-                $view->limit = Request::getInt('limit', $this->params->get('display_limit', 50));
-                $view->start = Request::getInt('limitstart', 0);
-                $view->start = ($view->limit == 0) ? 0 : $view->start;
-                $view->no_html = Request::getInt('no_html', 0);
-                $view->params = $this->params;
+                $view->set('limit', Request::getInt('limit', $this->params->get('display_limit', 50)));
+                $view->set('start', Request::getInt('limitstart', 0));
+                $view->set('start', ($view->get('limit') == 0) ? 0 : $view->get('start'));
+                $view->set('no_html', Request::getInt('no_html', 0));
+                $view->set('params', $this->params);
 
-                if ($view->limit > 9223372036854775807 || $view->start > 9223372036854775807) {
+                if ($view->get('limit') > 9223372036854775807 || $view->get('start') > 9223372036854775807) {
                     App::abort(404, Lang::txt('Pagination value beyond the bounds of supported integer values.'));
                 }
-                if (intval($view->limit) < 0 || intval($view->start) < 0) {
+                if (intval($view->get('limit')) < 0 || intval($view->get('start')) < 0) {
                     App::abort(404, Lang::txt('Invalid pagination value.'));
                 }
 
@@ -926,16 +937,18 @@ class Members extends Plugin
         $users = array_values(array_filter(array_map('intval', (array) $users)));
 
         $view = $this->view('default', 'expiration');
-        $view->option     = $this->componentOption;
-        $view->group      = $this->group;
-        $view->authorized = $this->authorized;
-        $view->users      = $users;
-        $view->filter     = Request::getWord('filter', 'members');
-        $view->maxDays    = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
-        $view->current    = [];
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('users', $users);
+        $view->set('filter', Request::getWord('filter', 'members'));
+        $view->set('maxDays', (int) Component::params('com_groups')->get('membership_max_term_days', 0));
+        $view->set('current', []);
 
         foreach ($users as $uid) {
-            $view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor($this->group->get('gidNumber'), $uid);
+            $viewCurrent = $view->get('current');
+            $viewCurrent[$uid] = \Hubzero\User\Group\Membership::expiresFor($this->group->get('gidNumber'), $uid);
+            $view->set('current', $viewCurrent);
         }
 
         foreach ($this->getErrors() as $error) {
@@ -1055,10 +1068,10 @@ class Members extends Plugin
 
         // Cancel membership confirmation screen
         $view = $this->view('default', 'remove');
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', []);
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('users', Request::getArray('users', []));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1256,11 +1269,11 @@ class Members extends Plugin
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'deny');
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', []);
-        $view->responses = $this->getDenyResponses();
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('users', Request::getArray('users', []));
+        $view->set('responses', $this->getDenyResponses());
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1318,12 +1331,12 @@ class Members extends Plugin
         );
 
         $view = $this->view('default', 'responses');
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->responses = is_array($responses) ? $responses : $this->getDenyResponses();
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('responses', is_array($responses) ? $responses : $this->getDenyResponses());
         // Users on their way to being denied, so saving can return to that form
-        $view->users = Request::getArray('users', []);
+        $view->set('users', Request::getArray('users', []));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1542,10 +1555,10 @@ class Members extends Plugin
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'cancel');
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', []);
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('users', Request::getArray('users', []));
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -2018,12 +2031,12 @@ class Members extends Plugin
 
         $roles = $this->getRoles();
 
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->uid = $uid;
-        $view->roles = $roles;
-        $view->no_html = Request::getInt('no_html', 0);
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('uid', $uid);
+        $view->set('roles', $roles);
+        $view->set('no_html', Request::getInt('no_html', 0));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);

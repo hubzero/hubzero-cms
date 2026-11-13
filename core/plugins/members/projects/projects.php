@@ -198,17 +198,17 @@ class Projects extends Plugin
         // Build the final HTML
         $view = $this->view('default', 'browse');
 
-        $view->projects = $this->model->table()->getUserProjectIds($this->user->get('id'));
-        $view->newcount = $this->model->table()->getUpdateCount($view->projects, $this->user->get('id'));
+        $view->set('projects', $this->model->table()->getUserProjectIds($this->user->get('id')));
+        $view->set('newcount', $this->model->table()->getUpdateCount($view->get('projects'), $this->user->get('id')));
 
         $invites = $this->model->table('Owner')->checkInvitesByEmail($this->user->get('email'));
 
         if ($which == 'all') {
             $this->filters['which'] = 'owned';
-            $view->owned = $this->model->entries('list', $this->filters);
+            $view->set('owned', $this->model->entries('list', $this->filters));
 
             $this->filters['which'] = 'other';
-            $view->rows = $this->model->entries('list', $this->filters);
+            $view->set('rows', $this->model->entries('list', $this->filters));
         } else {
             // Get records
             $options = ['owned', 'other', 'group'];
@@ -216,16 +216,16 @@ class Projects extends Plugin
                 $which = 'owned';
             }
             $this->filters['which'] = $which;
-            $view->rows = $this->model->entries('list', $this->filters);
+            $view->set('rows', $this->model->entries('list', $this->filters));
         }
 
-        $view->invites = $invites;
-        $view->which   = $which;
-        $view->total   = $this->total;
-        $view->user    = $this->user;
-        $view->filters = $this->filters;
-        $view->config  = $this->config;
-        $view->option  = 'com_projects';
+        $view->set('invites', $invites);
+        $view->set('which', $which);
+        $view->set('total', $this->total);
+        $view->set('user', $this->user);
+        $view->set('filters', $this->filters);
+        $view->set('config', $this->config);
+        $view->set('option', 'com_projects');
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -246,9 +246,9 @@ class Projects extends Plugin
         // Get all projects user has access to
         $projects = $this->model->table()->getUserProjectIds($this->user->get('id'));
 
-        $view->filters = [
+        $view->set('filters', [
             'limit' => Request::getInt('limit', 25, 'request'),
-        ];
+        ]);
 
         // Get shared updates feed from blog plugin
         $results = Event::trigger(
@@ -258,17 +258,17 @@ class Projects extends Plugin
                 $this->model,
                 $projects,
                 $this->user->get('id'),
-                $view->filters,
+                $view->get('filters'),
             ],
         );
 
-        $view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;
-        $view->newcount     = $this->model->table()->getUpdateCount(
+        $view->set('content', !empty($results) && isset($results[0]) ? $results[0] : null);
+        $view->set('newcount', $this->model->table()->getUpdateCount(
             $projects,
             $this->user->get('id'),
-        );
-        $view->projectcount = $this->total;
-        $view->uid          = $this->user->get('id');
+        ));
+        $view->set('projectcount', $this->total);
+        $view->set('uid', $this->user->get('id'));
 
         if ($this->getError()) {
             $view->setError($this->getError());

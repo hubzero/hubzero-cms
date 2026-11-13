@@ -102,40 +102,44 @@ class Courses extends Plugin
         // Build the HTML
         if ($returnhtml) {
             $view = $this->view('default', 'display');
-            $view->option = $option;
-            $view->member = $member;
-            $view->roles = $roles;
-            $view->hasRoles = $hasRoles;
+            $view->set('option', $option);
+            $view->set('member', $member);
+            $view->set('roles', $roles);
+            $view->set('hasRoles', $hasRoles);
 
-            $view->filters = [];
-            $view->filters['limit'] = Request::getState(
+            $view->set('filters', []);
+            $viewFilters = $view->get('filters');
+            $viewFilters['limit'] = Request::getState(
                 $option . '.plugin.courses.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             );
-            $view->filters['start'] = Request::getState(
+            $viewFilters['start'] = Request::getState(
                 $option . '.plugin.courses.limitstart',
                 'limitstart',
                 0,
                 'int',
             );
-            $view->filters['task'] = strtolower(Request::getCmd('action', ''));
-            $view->filters['sort'] = strtolower(Request::getWord('sort', 'enrolled'));
-            if (!in_array($view->filters['sort'], ['enrolled', 'title'])) {
-                $view->filters['sort'] = 'enrolled';
+            $viewFilters['task'] = strtolower(Request::getCmd('action', ''));
+            $viewFilters['sort'] = strtolower(Request::getWord('sort', 'enrolled'));
+            $view->set('filters', $viewFilters);
+            if (!in_array($view->get('filters')['sort'], ['enrolled', 'title'])) {
+                $viewFilters = $view->get('filters');
+                $viewFilters['sort'] = 'enrolled';
+                $view->set('filters', $viewFilters);
             }
 
-            $view->total = 0;
-            $view->results = null;
-            $view->active = null;
-            $view->results = null;
+            $view->set('total', 0);
+            $view->set('results', null);
+            $view->set('active', null);
+            $view->set('results', null);
 
-            if ($view->hasRoles >= 1) {
+            if ($view->get('hasRoles') >= 1) {
                 $found = false;
-                if ($view->filters['task']) {
+                if ($view->get('filters')['task']) {
                     foreach ($roles as $i => $role) {
-                        if ($view->filters['task'] == $role->alias && $role->total > 0) {
+                        if ($view->get('filters')['task'] == $role->alias && $role->total > 0) {
                             $found = true;
                         }
                     }
@@ -143,21 +147,23 @@ class Courses extends Plugin
                 if (!$found) {
                     foreach ($roles as $i => $role) {
                         if ($role->total > 0) {
-                            $view->filters['task'] = $role->alias;
+                            $viewFilters = $view->get('filters');
+                            $viewFilters['task'] = $role->alias;
+                            $view->set('filters', $viewFilters);
                             break;
                         }
                     }
                 }
             }
-            foreach ($view->roles as $i => $role) {
-                if ($view->filters['task'] == $role->alias) {
-                    $view->active = $view->roles[$i];
-                    $view->total = $view->roles[$i]->total;
+            foreach ($view->get('roles') as $i => $role) {
+                if ($view->get('filters')['task'] == $role->alias) {
+                    $view->set('active', $view->get('roles')[$i]);
+                    $view->set('total', $view->get('roles')[$i]->total);
                 }
             }
 
-            if (!is_null($view->active)) {
-                $view->results = $this->getData('list', $view->active->alias, $view->filters);
+            if (!is_null($view->get('active'))) {
+                $view->set('results', $this->getData('list', $view->get('active')->alias, $view->get('filters')));
             }
 
             foreach ($this->getErrors() as $error) {

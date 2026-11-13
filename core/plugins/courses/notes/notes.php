@@ -95,10 +95,10 @@ class Notes extends Plugin
                 ->set('offering', $offering)
                 ->set('no_html', Request::getInt('no_html', 0));
 
-            $this->view->filters = [
+            $this->view->set('filters', [
                 'section_id' => $offering->section()->get('id'),
                 'search'     => Request::getString('search', ''),
-            ];
+            ]);
 
             $result = null;
 
@@ -126,7 +126,7 @@ class Notes extends Plugin
                 }
             }
 
-            if ($this->view->no_html && $result) {
+            if ($this->view->get('no_html') && $result) {
                 $note = new \stdClass();
                 $note->id = $result;
                 $note->success = true;

@@ -165,15 +165,15 @@ class Usage extends Plugin
             $view = $this->view('default', 'browse');
 
             // Pass the view some info
-            $view->option     = $option;
-            $view->resource   = $model;
-            $view->stats      = $stats;
-            $view->chart_path = $this->params->get('chart_path', '');
-            $view->map_path   = $this->params->get('map_path', '');
-            $view->dthis      = $dthis;
-            $view->period     = $period;
-            $view->params     = $this->params;
-            $view->organizations = $types;
+            $view->set('option', $option);
+            $view->set('resource', $model);
+            $view->set('stats', $stats);
+            $view->set('chart_path', $this->params->get('chart_path', ''));
+            $view->set('map_path', $this->params->get('map_path', ''));
+            $view->set('dthis', $dthis);
+            $view->set('period', $period);
+            $view->set('params', $this->params);
+            $view->set('organizations', $types);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }

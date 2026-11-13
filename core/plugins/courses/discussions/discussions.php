@@ -886,7 +886,7 @@ class Discussions extends Plugin
             $view->set('lecture', $this->lecture->get('alias'));
         }
 
-        $view->attach     = Attachment::blank();
+        $view->set('attach', Attachment::blank());
 
         $thread->html = $view->loadTemplate();
 

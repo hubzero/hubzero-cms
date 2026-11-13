@@ -337,19 +337,19 @@ class Resources extends Plugin
                     $view = $this->view('default', 'results');
 
                     // Pass the view some info
-                    $view->option = $option;
-                    $view->group = $group;
-                    $view->authorized = $authorized;
-                    $view->totals = $totals;
-                    $view->results = $results;
-                    $view->cats = $cats;
-                    $view->active = $active;
-                    $view->limitstart = $limitstart;
-                    $view->limit = $limit;
-                    $view->total = $total;
-                    $view->sort = $sort;
-                    $view->sortdir = $sortdir;
-                    $view->access = $access;
+                    $view->set('option', $option);
+                    $view->set('group', $group);
+                    $view->set('authorized', $authorized);
+                    $view->set('totals', $totals);
+                    $view->set('results', $results);
+                    $view->set('cats', $cats);
+                    $view->set('active', $active);
+                    $view->set('limitstart', $limitstart);
+                    $view->set('limit', $limit);
+                    $view->set('total', $total);
+                    $view->set('sort', $sort);
+                    $view->set('sortdir', $sortdir);
+                    $view->set('access', $access);
 
                     foreach ($this->getErrors() as $error) {
                         $view->setError($error);

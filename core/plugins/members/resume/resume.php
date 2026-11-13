@@ -380,21 +380,21 @@ class Resume extends Plugin
         $stats = $jobstats->getStats($member->get('id'), 'seeker');
 
         $view = $this->view('default', 'resume');
-        $view->self   = $self;
-        $view->js     = $js;
-        $view->jt     = $jt;
-        $view->jc     = $jc;
-        $view->resume = $resume;
-        $view->file   = $file;
-        $view->stats  = $stats;
-        $view->config = $this->config;
-        $view->member = $member;
-        $view->option = $option;
-        $view->edittitle = $edittitle;
-        $view->emp    = $emp;
-        $view->editpref = $editpref;
-        $view->path = $path;
-        $view->params = $this->params;
+        $view->set('self', $self);
+        $view->set('js', $js);
+        $view->set('jt', $jt);
+        $view->set('jc', $jc);
+        $view->set('resume', $resume);
+        $view->set('file', $file);
+        $view->set('stats', $stats);
+        $view->set('config', $this->config);
+        $view->set('member', $member);
+        $view->set('option', $option);
+        $view->set('edittitle', $edittitle);
+        $view->set('emp', $emp);
+        $view->set('editpref', $editpref);
+        $view->set('path', $path);
+        $view->set('params', $this->params);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -657,12 +657,12 @@ class Resume extends Plugin
                 $seeker = $js->getSeeker($oid, User::get('id'));
 
                 $view = $this->view('seeker', 'resume');
-                $view->seeker = $seeker[0];
-                $view->emp    = 1;
-                $view->admin  = 0;
-                $view->option = 'com_members';
-                $view->list   = 1;
-                $view->params = $this->params;
+                $view->set('seeker', $seeker[0]);
+                $view->set('emp', 1);
+                $view->set('admin', 0);
+                $view->set('option', 'com_members');
+                $view->set('list', 1);
+                $view->set('params', $this->params);
                 $view->display();
             }
         }

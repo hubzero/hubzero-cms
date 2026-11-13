@@ -167,7 +167,7 @@ class Dashboard extends Plugin
         $preferences = $this->loadPreferences();
 
         // var to hold modules
-        $view->modules = [];
+        $view->set('modules', []);
 
         // check to see if which modules to display
         foreach ($preferences as $preference) {
@@ -188,12 +188,14 @@ class Dashboard extends Plugin
                     $module->params = $params->toString();
                 }
 
-                $view->modules[] = $module;
+                $viewModules = $view->get('modules');
+                $viewModules[] = $module;
+                $view->set('modules', $viewModules);
             }
         }
 
-        $view->admin  = App::isAdmin();
-        $view->params = $this->params;
+        $view->set('admin', App::isAdmin());
+        $view->set('params', $this->params);
 
         // return rendered view
         return $view->loadTemplate();
@@ -252,8 +254,8 @@ class Dashboard extends Plugin
         $view = $this->view('module', 'display');
 
         // get application location
-        $view->admin  = App::isAdmin();
-        $view->module = $module;
+        $view->set('admin', App::isAdmin());
+        $view->set('module', $module);
         $content      = $view->loadTemplate();
 
         $stylesheets = [];
@@ -289,15 +291,15 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'add');
 
         // load dashboard modules
-        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
+        $view->set('modules', $this->loadModules($this->params->get('position', 'memberDashboard')));
 
         // load user preferences
         $preferences = $this->loadPreferences();
 
         // get list of install member modules
-        $view->mymodules = array_map(function ($mod) {
+        $view->set('mymodules', array_map(function ($mod) {
             return $mod->module;
-        }, $preferences);
+        }, $preferences));
 
         // return rendered view
         return $view->loadTemplate();
@@ -398,7 +400,7 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'manage');
 
         // var to hold modules
-        $view->modules = [];
+        $view->set('modules', []);
 
         // load dashboard modules
         $dashboardModules = $this->loadModules($this->params->get('position', 'memberDashboard'));
@@ -420,11 +422,13 @@ class Dashboard extends Plugin
                 $module->positioning->size_x = $preference->size_x;
                 $module->positioning->size_y = $preference->size_y;
 
-                $view->modules[] = $module;
+                $viewModules = $view->get('modules');
+                $viewModules[] = $module;
+                $view->set('modules', $viewModules);
             }
         }
 
-        $view->admin = App::isAdmin();
+        $view->set('admin', App::isAdmin());
 
         // return rendered view
         return $view->loadTemplate();
@@ -468,16 +472,16 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'add');
 
         // load dashboard modules
-        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
+        $view->set('modules', $this->loadModules($this->params->get('position', 'memberDashboard')));
 
         // get default prefs
         $preferences = $this->params->get('defaults', '[]');
         $preferences = json_decode($preferences);
 
         // get list of default modules
-        $view->mymodules = array_map(function ($mod) {
+        $view->set('mymodules', array_map(function ($mod) {
             return $mod->module;
-        }, $preferences);
+        }, $preferences));
 
         // return rendered view
         return $view->loadTemplate();
@@ -511,8 +515,8 @@ class Dashboard extends Plugin
         $view = $this->view('module', 'display');
 
         // get application location
-        $view->admin  = App::isAdmin();
-        $view->module = $module;
+        $view->set('admin', App::isAdmin());
+        $view->set('module', $module);
 
         // return content
         echo json_encode(['html' => $view->loadTemplate()]);
@@ -530,7 +534,7 @@ class Dashboard extends Plugin
         $view = $this->view('push', 'manage');
 
         // get list of modules
-        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
+        $view->set('modules', $this->loadModules($this->params->get('position', 'memberDashboard')));
 
         // return rendered view
         return $view->loadTemplate();

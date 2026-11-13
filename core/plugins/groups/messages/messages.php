@@ -218,12 +218,12 @@ class Messages extends Plugin
         $view = $this->view('default', 'sent');
 
         // Pass some info to the view
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->rows = $rows;
-        $view->filters = $filters;
-        $view->total = $total;
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('rows', $rows);
+        $view->set('filters', $filters);
+        $view->set('total', $total);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -288,11 +288,11 @@ class Messages extends Plugin
         $view = $this->view('default', 'message');
 
         // Pass the view some info
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->xmessage = $xmessage;
-        $view->no_html = Request::getInt('no_html', 0);
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('xmessage', $xmessage);
+        $view->set('no_html', Request::getInt('no_html', 0));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -329,15 +329,15 @@ class Messages extends Plugin
         $members = $this->group->get('members');
 
         // Pass the view some info
-        $view->option = $this->componentOption;
-        $view->group = $this->group;
-        $view->authorized = $this->authorized;
-        $view->params = $this->params;
+        $view->set('option', $this->componentOption);
+        $view->set('group', $this->group);
+        $view->set('authorized', $this->authorized);
+        $view->set('params', $this->params);
 
-        $view->member_roles = $member_roles;
-        $view->members = $members;
-        $view->users = Request::getArray('users', ['all']);
-        $view->no_html = Request::getInt('no_html', 0);
+        $view->set('member_roles', $member_roles);
+        $view->set('members', $members);
+        $view->set('users', Request::getArray('users', ['all']));
+        $view->set('no_html', Request::getInt('no_html', 0));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);

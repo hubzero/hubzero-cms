@@ -222,16 +222,16 @@ class Usage extends Plugin
             $query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber="
                 . $database->quote($group->get('gidNumber'));
             $database->setQuery($query);
-            $view->pages = $database->loadAssocList();
+            $view->set('pages', $database->loadAssocList());
 
-            $view->option = $option;
-            $view->group = $group;
-            $view->authorized = $authorized;
-            $view->database = $database;
+            $view->set('option', $option);
+            $view->set('group', $group);
+            $view->set('authorized', $authorized);
+            $view->set('database', $database);
 
-            $view->pid = $pid;
-            $view->start = $start;
-            $view->end = $end;
+            $view->set('pid', $pid);
+            $view->set('start', $start);
+            $view->set('end', $end);
 
             foreach ($this->getErrors() as $error) {
                 $view->setError($error);

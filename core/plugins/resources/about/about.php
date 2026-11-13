@@ -99,11 +99,11 @@ class About extends Plugin
 
             // Instantiate a view
             $view = $this->view('default', 'index');
-            $view->option   = $option;
-            $view->model    = $model;
-            $view->database = App::get('db');
-            $view->plugin   = $this->params;
-            $view->tags     = $tags;
+            $view->set('option', $option);
+            $view->set('model', $model);
+            $view->set('database', App::get('db'));
+            $view->set('plugin', $this->params);
+            $view->set('tags', $tags);
 
             // Return the output
             $arr['html'] = $view->loadTemplate();

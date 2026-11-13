@@ -175,16 +175,16 @@ class Contributions extends Plugin
             }
 
             $view = $this->view('default', 'display');
-            $view->totals  = $totals;
-            $view->results = $results;
-            $view->cats    = $cats;
-            $view->active  = $active;
-            $view->option  = $option;
-            $view->start   = $limitstart;
-            $view->limit   = $limit;
-            $view->total   = $total;
-            $view->member  = $member;
-            $view->sort    = $sort;
+            $view->set('totals', $totals);
+            $view->set('results', $results);
+            $view->set('cats', $cats);
+            $view->set('active', $active);
+            $view->set('option', $option);
+            $view->set('start', $limitstart);
+            $view->set('limit', $limit);
+            $view->set('total', $total);
+            $view->set('member', $member);
+            $view->set('sort', $sort);
             if ($this->getError()) {
                 $view->setError($this->getError());
             }

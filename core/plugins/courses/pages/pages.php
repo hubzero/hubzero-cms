@@ -115,11 +115,11 @@ class Pages extends Plugin
             }
 
             $this->view = $this->view('default', 'pages');
-            $this->view->option     = Request::getCmd('option', 'com_courses');
-            $this->view->controller = Request::getWord('controller', 'course');
-            $this->view->course     = $course;
-            $this->view->offering   = $offering;
-            $this->view->config     = $course->config();
+            $this->view->set('option', Request::getCmd('option', 'com_courses'));
+            $this->view->set('controller', Request::getWord('controller', 'course'));
+            $this->view->set('course', $course);
+            $this->view->set('offering', $offering);
+            $this->view->set('config', $course->config());
 
             switch ($action) {
                 case 'add':

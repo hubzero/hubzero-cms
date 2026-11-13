@@ -193,22 +193,22 @@ class Account extends Plugin
 
         // Get linked accounts, if any
         \Plugin::import('authentication');
-        $view->domains_avail = \Plugin::byType('authentication');
-        $view->hzalaccounts  = \Hubzero\Auth\Link::findByUserId($this->user->get('id'));
+        $view->set('domains_avail', \Plugin::byType('authentication'));
+        $view->set('hzalaccounts', \Hubzero\Auth\Link::findByUserId($this->user->get('id')));
 
         // Put the used domains into an array with details available from the providers (if applicable)
-        $view->domains_used = [];
-        $view->domain_names = [];
-        if ($view->hzalaccounts) {
+        $view->set('domains_used', []);
+        $view->set('domain_names', []);
+        if ($view->get('hzalaccounts')) {
             \Plugin::import('authentication');
 
             $i = 0;
-            foreach ($view->hzalaccounts as $authenticators) {
+            foreach ($view->get('hzalaccounts') as $authenticators) {
                 $plugin = \Plugin::byType('authentication', $authenticators['auth_domain_name']);
 
                 // Make sure we got the plugin
                 if (!is_object($plugin)) {
-                    unset($view->hzalaccounts[$i]);
+                    unset($view->get('hzalaccounts')[$i]);
                     continue;
                 }
 
@@ -222,8 +222,12 @@ class Account extends Plugin
                     }
                 }
 
-                $view->domains_used[] = ['name' => $authenticators['auth_domain_name'], 'details' => $details];
-                $view->domain_names[] = $authenticators['auth_domain_name'];
+                $viewDomains_used = $view->get('domains_used');
+                $viewDomains_used[] = ['name' => $authenticators['auth_domain_name'], 'details' => $details];
+                $view->set('domains_used', $viewDomains_used);
+                $viewDomain_names = $view->get('domain_names');
+                $viewDomain_names[] = $authenticators['auth_domain_name'];
+                $view->set('domain_names', $viewDomain_names);
 
                 // Increment index
                 $i++;
@@ -231,10 +235,12 @@ class Account extends Plugin
         }
 
         // Get unused domains
-        $view->domains_unused = [];
-        foreach ($view->domains_avail as $domain) {
-            if ($domain->name != 'hubzero' && !in_array($domain->name, $view->domain_names)) {
-                $view->domains_unused[] = $domain;
+        $view->set('domains_unused', []);
+        foreach ($view->get('domains_avail') as $domain) {
+            if ($domain->name != 'hubzero' && !in_array($domain->name, $view->get('domain_names'))) {
+                $viewDomains_unused = $view->get('domains_unused');
+                $viewDomains_unused[] = $domain;
+                $view->set('domains_unused', $viewDomains_unused);
             }
         }
 
@@ -244,24 +250,24 @@ class Account extends Plugin
             // A password has already been set, now check if they're logged in with a linked account
             if (isset($this->user->auth_link_id)) {
                 // Logged in with linked account
-                $view->passtype = 'changelocal';
+                $view->set('passtype', 'changelocal');
             } else {
                 // Logged in with hub
-                $view->passtype = 'changehub';
+                $view->set('passtype', 'changehub');
             }
         } else {
             // No password has been set...
-            $view->passtype = 'set';
+            $view->set('passtype', 'set');
         }
 
         // Get password expiration information
-        $view->passinfo = $this->getPassInfo();
+        $view->set('passinfo', $this->getPassInfo());
 
         // Get the ssh key if it exists
         $keyError = null;
 
-        $view->key      = $this->readKey($keyError);
-        $view->keyError = $keyError;
+        $view->set('key', $this->readKey($keyError));
+        $view->set('keyError', $keyError);
 
         // Get the password rules
         $password_rules = \Hubzero\Password\Rule::all()
@@ -269,18 +275,20 @@ class Account extends Plugin
             ->rows();
 
         // Get the password rule descriptions
-        $view->password_rules = [];
+        $view->set('password_rules', []);
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
-                $view->password_rules[] = $rule['description'];
+                $viewPassword_rules = $view->get('password_rules');
+                $viewPassword_rules[] = $rule['description'];
+                $view->set('password_rules', $viewPassword_rules);
             }
         }
 
         // A few more things...
-        $view->option        = $this->option;
-        $view->member        = $this->member;
-        $view->params        = $this->params;
-        $view->notifications = [];
+        $view->set('option', $this->option);
+        $view->set('member', $this->member);
+        $view->set('params', $this->params);
+        $view->set('notifications', []);
 
         // Set any errors
         $view->setErrors($this->getErrors());

@@ -655,10 +655,10 @@ class Collections extends Plugin
             ->set('model', $this->model);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'limit' => Request::getInt('limit', Config::get('list_limit')),
             'start' => Request::getInt('limitstart', 0),
-        ];
+        ]);
 
         // Filters for returning results
         $filters = [
@@ -671,31 +671,37 @@ class Collections extends Plugin
         ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $viewFilters = $view->get('filters');
+            $viewFilters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $view->set('filters', $viewFilters);
             if (in_array(User::get('id'), $this->group->get('members'))) {
-                $view->filters['access'] = [0, 1, 4];
+                $viewFilters = $view->get('filters');
+                $viewFilters['access'] = [0, 1, 4];
+                $view->set('filters', $viewFilters);
             }
-            $filters['access'] = $view->filters['access'];
-            $count['access'] = $view->filters['access'];
+            $filters['access'] = $view->get('filters')['access'];
+            $count['access'] = $view->get('filters')['access'];
         }
 
         $filters['count'] = true;
-        $view->total = $this->model->collections($filters);
+        $view->set('total', $this->model->collections($filters));
 
         $filters['count'] = false;
-        $view->rows = $this->model->collections($filters);
+        $view->set('rows', $this->model->collections($filters));
 
-        $view->posts = 0;
-        if ($view->rows) {
-            foreach ($view->rows as $row) {
-                $view->posts += $row->get('posts');
+        $view->set('posts', 0);
+        if ($view->get('rows')) {
+            foreach ($view->get('rows') as $row) {
+                $viewPosts = $view->get('posts');
+                $viewPosts += $row->get('posts');
+                $view->set('posts', $viewPosts);
             }
         }
 
-        $view->followers = $this->model->followers($count);
+        $view->set('followers', $this->model->followers($count));
 
         if ($this->params->get('access-can-follow')) {
-            $view->following = $this->model->following($count);
+            $view->set('following', $this->model->following($count));
         }
 
         foreach ($this->getErrors() as $error) {
@@ -721,59 +727,77 @@ class Collections extends Plugin
             ->set('model', $this->model);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'limit'         => Request::getInt('limit', Config::get('list_limit')),
             'start'         => Request::getInt('limitstart', 0),
             'user_id'       => User::get('id'),
             'search'        => Request::getString('search', ''),
             'state'         => 1,
             'collection_id' => Request::getVar('board', 0),
-        ];
+        ]);
 
-        $view->collection = $this->model->collection($view->filters['collection_id']);
-        if (!$view->collection->exists()) {
+        $view->set('collection', $this->model->collection($view->get('filters')['collection_id']));
+        if (!$view->get('collection')->exists()) {
             App::abort(404, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
         }
 
-        $view->filters['collection_id'] = $view->collection->get('id');
+        $viewFilters = $view->get('filters');
+        $viewFilters['collection_id'] = $view->get('collection')->get('id');
+        $view->set('filters', $viewFilters);
 
-        $view->filters['sort'] = Request::getWord('sort', $view->collection->get('sort'));
-        if (!in_array($view->filters['sort'], ['created', 'ordering'])) {
-            $view->filters['sort'] = 'created';
+        $viewFilters = $view->get('filters');
+        $viewFilters['sort'] = Request::getWord('sort', $view->get('collection')->get('sort'));
+        $view->set('filters', $viewFilters);
+        if (!in_array($view->get('filters')['sort'], ['created', 'ordering'])) {
+            $viewFilters = $view->get('filters');
+            $viewFilters['sort'] = 'created';
+            $view->set('filters', $viewFilters);
         }
-        $view->filters['sort_Dir'] = ($view->filters['sort'] == 'ordering' ? 'asc' : 'desc');
+        $viewFilters = $view->get('filters');
+        $viewFilters['sort_Dir'] = ($view->get('filters')['sort'] == 'ordering' ? 'asc' : 'desc');
+        $view->set('filters', $viewFilters);
 
         $count = [
             'count' => true,
-            'collection_id' => $view->collection->get('id'),
+            'collection_id' => $view->get('collection')->get('id'),
         ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $viewFilters = $view->get('filters');
+            $viewFilters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $view->set('filters', $viewFilters);
             if (in_array(User::get('id'), $this->group->get('members'))) {
-                $view->filters['access'] = [0, 1, 4];
+                $viewFilters = $view->get('filters');
+                $viewFilters['access'] = [0, 1, 4];
+                $view->set('filters', $viewFilters);
             }
-            $count['access'] = $view->filters['access'];
+            $count['access'] = $view->get('filters')['access'];
         }
         if ($this->authorized) {
             $count['access'] = -1;
-            $view->filters['access'] = -1;
+            $viewFilters = $view->get('filters');
+            $viewFilters['access'] = -1;
+            $view->set('filters', $viewFilters);
         }
 
-        $view->collections = $this->model->collections($count);
-        $view->posts       = $this->model->posts($count);
-        $view->followers   = $this->model->followers($count);
+        $view->set('collections', $this->model->collections($count));
+        $view->set('posts', $this->model->posts($count));
+        $view->set('followers', $this->model->followers($count));
         if ($this->params->get('access-can-follow')) {
-            $view->following   = $this->model->following($count);
+            $view->set('following', $this->model->following($count));
         }
 
-        $view->filters['count'] = true;
-        $view->count = $view->collection->posts($view->filters);
+        $viewFilters = $view->get('filters');
+        $viewFilters['count'] = true;
+        $view->set('filters', $viewFilters);
+        $view->set('count', $view->get('collection')->posts($view->get('filters')));
 
-        $view->filters['count'] = null;
-        $view->rows = $view->collection->posts($view->filters);
+        $viewFilters = $view->get('filters');
+        $viewFilters['count'] = null;
+        $view->set('filters', $viewFilters);
+        $view->set('rows', $view->get('collection')->posts($view->get('filters')));
 
-        $view->scope = $view->collection->get('alias');
+        $view->set('scope', $view->get('collection')->get('alias'));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -934,7 +958,7 @@ class Collections extends Plugin
             ->set('model', $this->model);
 
         // Filters for returning results
-        $view->filters = [
+        $view->set('filters', [
             'limit'       => Request::getInt('limit', Config::get('list_limit')),
             'start'       => Request::getInt('limitstart', 0),
             'search'      => Request::getString('search', ''),
@@ -944,7 +968,7 @@ class Collections extends Plugin
             'user_id'     => User::get('id'),
             'sort'        => 'created',
             'sort_Dir'    => 'desc',
-        ];
+        ]);
 
         // Filters for returning results
         $count = [
@@ -952,29 +976,35 @@ class Collections extends Plugin
         ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $viewFilters = $view->get('filters');
+            $viewFilters['access'] = (User::isGuest() ? 0 : [0, 1]);
+            $view->set('filters', $viewFilters);
             if (in_array(User::get('id'), $this->group->get('members'))) {
-                $view->filters['access'] = [0, 1, 4];
+                $viewFilters = $view->get('filters');
+                $viewFilters['access'] = [0, 1, 4];
+                $view->set('filters', $viewFilters);
             }
-            $count['access'] = $view->filters['access'];
+            $count['access'] = $view->get('filters')['access'];
         }
         if ($this->authorized) {
             $count['access'] = -1;
-            $view->filters['access'] = -1;
+            $viewFilters = $view->get('filters');
+            $viewFilters['access'] = -1;
+            $view->set('filters', $viewFilters);
         }
 
-        $view->collections = $this->model->collections($count);
-        $view->posts       = $this->model->posts($count);
-        $view->followers   = $this->model->followers($count);
+        $view->set('collections', $this->model->collections($count));
+        $view->set('posts', $this->model->posts($count));
+        $view->set('followers', $this->model->followers($count));
         if ($this->params->get('access-can-follow')) {
-            $view->following   = $this->model->following($count);
+            $view->set('following', $this->model->following($count));
         }
 
-        $view->collection = \Components\Collections\Models\Collection::getInstance();
+        $view->set('collection', \Components\Collections\Models\Collection::getInstance());
 
-        $view->count = $view->posts;
-        $view->rows  = $view->collection->posts($view->filters);
-        $view->scope = 'posts';
+        $view->set('count', $view->get('posts'));
+        $view->set('rows', $view->get('collection')->posts($view->get('filters')));
+        $view->set('scope', 'posts');
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1090,12 +1120,12 @@ class Collections extends Plugin
         // threads $this->no_html through its form action, so it is the right
         // template for the AJAX case too.
         $view = $this->view('edit', 'post');
-        $view->name        = $this->pluginName;
-        $view->option      = $this->option;
-        $view->group       = $this->group;
-        $view->task        = $this->action;
-        $view->params      = $this->params;
-        $view->no_html     = $no_html;
+        $view->set('name', $this->pluginName);
+        $view->set('option', $this->option);
+        $view->set('group', $this->group);
+        $view->set('task', $this->action);
+        $view->set('params', $this->params);
+        $view->set('no_html', $no_html);
 
         $id = Request::getInt('post', 0);
 
@@ -1114,24 +1144,24 @@ class Collections extends Plugin
             }
         }
 
-        $view->collection = $this->model->collection(Request::getString('board', 0));
+        $view->set('collection', $this->model->collection(Request::getString('board', 0)));
 
-        $view->collections = $this->model->collections();
-        if (!$view->collections->total()) {
-            $view->collection->setup($this->group->get('cn'), 'group');
-            $view->collections = $this->model->collections();
-            $view->collection = $this->model->collection(Request::getString('board', 0));
+        $view->set('collections', $this->model->collections());
+        if (!$view->get('collections')->total()) {
+            $view->get('collection')->setup($this->group->get('cn'), 'group');
+            $view->set('collections', $this->model->collections());
+            $view->set('collection', $this->model->collection(Request::getString('board', 0)));
         }
 
-        $view->entry = (is_object($entry) ? $entry : $view->collection->post($id));
+        $view->set('entry', (is_object($entry) ? $entry : $view->get('collection')->post($id)));
         if ($typedItem) {
-            $view->entry->item($typedItem);
+            $view->get('entry')->item($typedItem);
             if (isset($posted['description']) && is_string($posted['description'])) {
-                $view->entry->set('description', $posted['description']);
+                $view->get('entry')->set('description', $posted['description']);
             }
         }
-        if (!$view->collection->exists() && $view->entry->exists()) {
-            $view->collection = $this->model->collection($view->entry->get('collection_id'));
+        if (!$view->get('collection')->exists() && $view->get('entry')->exists()) {
+            $view->set('collection', $this->model->collection($view->get('entry')->get('collection_id')));
         }
 
         if ($remove = Request::getInt('remove', 0)) {
@@ -1148,7 +1178,7 @@ class Collections extends Plugin
             // user strip the assets off any item on the hub -- from the original
             // and from every repost of it. The edit form no longer offers the
             // delete link to a non-owner, so this refuses nothing the page shows.
-            $item = $view->entry->item();
+            $item = $view->get('entry')->item();
 
             if ($item->get('created_by') != User::get('id')) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -1480,16 +1510,16 @@ class Collections extends Plugin
 
             $view = $this->view('repost', 'post');
 
-            $view->myboards      = $this->model->mine();
-            $view->groupboards   = $this->model->mine('groups');
+            $view->set('myboards', $this->model->mine());
+            $view->set('groupboards', $this->model->mine('groups'));
 
-            $view->name          = $this->pluginName;
-            $view->option        = $this->option;
-            $view->group         = $this->group;
-            $view->no_html       = $no_html;
-            $view->post_id       = $post_id;
-            $view->collection_id = $collection_id;
-            $view->item_id       = $item_id;
+            $view->set('name', $this->pluginName);
+            $view->set('option', $this->option);
+            $view->set('group', $this->group);
+            $view->set('no_html', $no_html);
+            $view->set('post_id', $post_id);
+            $view->set('collection_id', $collection_id);
+            $view->set('item_id', $item_id);
 
             if ($no_html) {
                 $view->display();
@@ -1871,14 +1901,14 @@ class Collections extends Plugin
 
             // Output HTML
             $view = $this->view('delete', 'post');
-            $view->option   = $this->option;
-            $view->group    = $this->group;
-            $view->task     = $this->action;
-            $view->params   = $this->params;
-            $view->post     = $post;
-            $view->no_html  = $no_html;
-            $view->name     = $this->pluginName;
-            $view->collection = $collection;
+            $view->set('option', $this->option);
+            $view->set('group', $this->group);
+            $view->set('task', $this->action);
+            $view->set('params', $this->params);
+            $view->set('post', $post);
+            $view->set('no_html', $no_html);
+            $view->set('name', $this->pluginName);
+            $view->set('collection', $collection);
 
             foreach ($this->getErrors() as $error) {
                 $view->setError($error);
@@ -2367,27 +2397,27 @@ class Collections extends Plugin
 
         $view = $this->view('edit', 'collection');
 
-        $view->name       = $this->pluginName;
-        $view->option     = $this->option;
-        $view->group      = $this->group;
-        $view->task       = $this->action;
-        $view->params     = $this->params;
-        $view->no_html = Request::getInt('no_html', 0);
+        $view->set('name', $this->pluginName);
+        $view->set('option', $this->option);
+        $view->set('group', $this->group);
+        $view->set('task', $this->action);
+        $view->set('params', $this->params);
+        $view->set('no_html', Request::getInt('no_html', 0));
 
         if (is_object($row)) {
-            $view->entry = $row;
+            $view->set('entry', $row);
         } else {
-            $view->entry = $this->model->collection(Request::getString('board', ''));
+            $view->set('entry', $this->model->collection(Request::getString('board', '')));
         }
-        if (!$view->entry->exists()) {
-            $view->entry->set('access', $this->params->get('access-plugin'));
+        if (!$view->get('entry')->exists()) {
+            $view->get('entry')->set('access', $this->params->get('access-plugin'));
         }
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
         }
 
-        if ($view->no_html) {
+        if ($view->get('no_html')) {
             $view->display();
             exit();
         }

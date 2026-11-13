@@ -69,14 +69,15 @@ class Comments extends Plugin
         }
 
         $this->view = $this->view('default', 'view');
-        $this->view->option   = $this->option   = $option;
-        $this->view->obj      = $this->obj      = $obj;
-        $this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
-        $this->view->obj_type = $this->obj_type = substr($option, 4);
-        $this->view->url      = $this->url      = ($url ? $url : Route::url(
+        $this->view->set('option', $this->option   = $option);
+        $this->view->set('obj', $this->obj      = $obj);
+        $this->obj_id = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
+        $this->view->set('obj_id', $this->obj_id);
+        $this->view->set('obj_type', $this->obj_type = substr($option, 4));
+        $this->view->set('url', $this->url      = ($url ? $url : Route::url(
             'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments',
-        ));
-        $this->view->depth    = 0;
+        )));
+        $this->view->set('depth', 0);
 
         $this->authorize();
 

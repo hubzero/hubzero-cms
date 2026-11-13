@@ -86,19 +86,19 @@ class Usage extends Plugin
         if ($returnhtml) {
             $view = $this->view('default', 'summary');
 
-            $view->member = $member;
-            $view->option = $option;
-            $view->contribution = $this->firstLastContribution($member->get('id'));
-            $view->rank = $this->getRank($member->get('id'));
+            $view->set('member', $member);
+            $view->set('option', $option);
+            $view->set('contribution', $this->firstLastContribution($member->get('id')));
+            $view->set('rank', $this->getRank($member->get('id')));
 
-            $view->total_tool_users = $this->getTotalStats($member->get('id'), 'tool_users', 14);
-            $view->total_andmore_users = $this->getTotalStats($member->get('id'), 'andmore_users', 14);
-            $view->citation_count = self::getCitationcount(null, $member->get('id'));
+            $view->set('total_tool_users', $this->getTotalStats($member->get('id'), 'tool_users', 14));
+            $view->set('total_andmore_users', $this->getTotalStats($member->get('id'), 'andmore_users', 14));
+            $view->set('citation_count', self::getCitationcount(null, $member->get('id')));
 
             $cluster = self::getClassroomUsage($member->get('id'));
-            $view->cluster_classes = $cluster['classes'];
-            $view->cluster_users = $cluster['users'];
-            $view->cluster_schools = $cluster['schools'];
+            $view->set('cluster_classes', $cluster['classes']);
+            $view->set('cluster_users', $cluster['users']);
+            $view->set('cluster_schools', $cluster['schools']);
 
             $access = [0, 3];
 
@@ -115,9 +115,9 @@ class Usage extends Plugin
 					ORDER BY r.publish_up DESC';
 
             $database->setQuery($sql);
-            $view->tool_stats = $database->loadObjectList();
-            $view->tool_total_12 = $this->getTotalStats($member->get('id'), 'tool_users', 12);
-            $view->tool_total_14 = $this->getTotalStats($member->get('id'), 'tool_users', 14);
+            $view->set('tool_stats', $database->loadObjectList());
+            $view->set('tool_total_12', $this->getTotalStats($member->get('id'), 'tool_users', 12));
+            $view->set('tool_total_14', $this->getTotalStats($member->get('id'), 'tool_users', 14));
 
             $sql = "SELECT DISTINCT r.id, r.type AS type_id, r.title, r.publish_up, rt.type
 					FROM `#__resources` AS r
@@ -129,9 +129,9 @@ class Usage extends Plugin
 					ORDER BY r.publish_up DESC";
 
             $database->setQuery($sql);
-            $view->andmore_stats = $database->loadObjectList();
-            $view->andmore_total_12 = $this->getTotalStats($member->get('id'), 'andmore_users', 12);
-            $view->andmore_total_14 = $this->getTotalStats($member->get('id'), 'andmore_users', 14);
+            $view->set('andmore_stats', $database->loadObjectList());
+            $view->set('andmore_total_12', $this->getTotalStats($member->get('id'), 'andmore_users', 12));
+            $view->set('andmore_total_14', $this->getTotalStats($member->get('id'), 'andmore_users', 14));
 
             foreach ($this->getErrors() as $error) {
                 $view->setError($error);

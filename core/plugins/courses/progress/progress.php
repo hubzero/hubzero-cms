@@ -92,10 +92,10 @@ class Progress extends Plugin
 
         // Instantiate a vew
         $this->view = $this->view('student', 'report');
-        $this->view->course = $course;
-        $this->view->member = $this->member;
-        $this->view->option = 'com_courses';
-        $this->view->base = $this->base;
+        $this->view->set('course', $course);
+        $this->view->set('member', $this->member);
+        $this->view->set('option', 'com_courses');
+        $this->view->set('base', $this->base);
 
         switch (Request::getWord('action')) {
             case 'assessmentdetails':

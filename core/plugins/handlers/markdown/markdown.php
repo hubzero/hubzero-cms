@@ -76,7 +76,7 @@ class Markdown extends Plugin
             $rendered = $source;
         }
 
-        $view->rendered = $rendered;
+        $view->set('rendered', $rendered);
 
         return $view;
     }

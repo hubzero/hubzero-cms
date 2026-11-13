@@ -72,18 +72,18 @@ class Reviews extends Plugin
             $database = App::get('db');
 
             $this->view = $this->view('default', 'view');
-            $this->view->database = $this->database = $database;
-            $this->view->option   = $this->option;
-            $this->view->controller = $this->controller;
-            $this->view->obj      = $this->obj      = $course;
-            $this->view->obj_type = $this->obj_type = substr($this->option, 4);
-            $this->view->url      = $this->url      = Route::url(
+            $this->view->set('database', $this->database = $database);
+            $this->view->set('option', $this->option);
+            $this->view->set('controller', $this->controller);
+            $this->view->set('obj', $this->obj      = $course);
+            $this->view->set('obj_type', $this->obj_type = substr($this->option, 4));
+            $this->view->set('url', $this->url      = Route::url(
                 $course->link() . '&active=' . $this->pluginName,
                 false,
                 true,
-            );
-            $this->view->depth    = 0;
-            $this->view->tbl      = $tbl;
+            ));
+            $this->view->set('depth', 0);
+            $this->view->set('tbl', $tbl);
 
             $this->authorize();
 

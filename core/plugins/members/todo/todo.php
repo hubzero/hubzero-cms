@@ -164,13 +164,13 @@ class Todo extends Plugin
     private function browse()
     {
         $view = $this->view('default', 'browse');
-        $view->option = $this->option;
-        $view->member = $this->member;
-        $view->config = $this->params;
-        $view->model = $this->model;
-        $view->todo = $this->todo;
-        $view->filters = $this->filters;
-        $view->projects = $this->projects;
+        $view->set('option', $this->option);
+        $view->set('member', $this->member);
+        $view->set('config', $this->params);
+        $view->set('model', $this->model);
+        $view->set('todo', $this->todo);
+        $view->set('filters', $this->filters);
+        $view->set('projects', $this->projects);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -187,11 +187,11 @@ class Todo extends Plugin
     protected function new()
     {
         $view = $this->view('default', 'new');
-        $view->option = $this->option;
-        $view->todo = $this->todo;
-        $view->model = $this->model;
-        $view->member = $this->member;
-        $view->config = $this->params;
+        $view->set('option', $this->option);
+        $view->set('todo', $this->todo);
+        $view->set('model', $this->model);
+        $view->set('member', $this->member);
+        $view->set('config', $this->params);
 
         $filters = [
             'mine' => 1,
@@ -199,7 +199,7 @@ class Todo extends Plugin
             'editor' => 1,
             'sortby' => 'title',
         ];
-        $view->projects = $this->model->entries('list', $filters);
+        $view->set('projects', $this->model->entries('list', $filters));
 
         if ($this->getError()) {
             $view->setError($this->getError());

@@ -170,18 +170,18 @@ class Impact extends Plugin
 
         // Get pub stats for each publication
         $pubLog = new \Components\Publications\Tables\Log($this->database);
-        $view->pubstats = $this->stats ? $this->stats : $pubLog->getAuthorStats($uid, 0, false);
+        $view->set('pubstats', $this->stats ? $this->stats : $pubLog->getAuthorStats($uid, 0, false));
 
         // Get date of first log
-        $view->firstlog = $pubLog->getFirstLogDate();
+        $view->set('firstlog', $pubLog->getFirstLogDate());
 
-        $view->totals = $pubLog->getTotals($uid);
+        $view->set('totals', $pubLog->getTotals($uid));
 
         // Output HTML
-        $view->option = $this->componentOption;
-        $view->database = $this->database;
-        $view->uid = $uid;
-        $view->pubconfig = Component::params('com_publications');
+        $view->set('option', $this->componentOption);
+        $view->set('database', $this->database);
+        $view->set('uid', $uid);
+        $view->set('pubconfig', Component::params('com_publications'));
 
         if ($this->getError()) {
             $view->setError($this->getError());

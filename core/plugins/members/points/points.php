@@ -91,13 +91,13 @@ class Points extends Plugin
         if ($returnhtml) {
             $view = $this->view('default', 'history');
 
-            $view->sum = $BTL->summary();
+            $view->set('sum', $BTL->summary());
 
-            $view->credit = $BTL->creditSummary();
-            $funds = $view->sum - $view->credit;
+            $view->set('credit', $BTL->creditSummary());
+            $funds = $view->get('sum') - $view->get('credit');
 
-            $view->funds = ($funds > 0) ? $funds : 0;
-            $view->hist  = $BTL->history(0);
+            $view->set('funds', ($funds > 0) ? $funds : 0);
+            $view->set('hist', $BTL->history(0));
             if ($this->getError()) {
                 $view->setError($this->getError());
             }

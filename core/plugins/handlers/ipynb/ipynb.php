@@ -64,7 +64,7 @@ class Ipynb extends Plugin
         // Create view
         $view = $this->view('view', 'ipynb');
 
-        $view->file = $file;
+        $view->set('file', $file);
 
         return $view;
     }

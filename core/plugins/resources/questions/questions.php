@@ -141,8 +141,8 @@ class Questions extends Plugin
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = $this->view('default', 'metadata');
-            $view->resource = $this->model;
-            $view->count    = $this->count;
+            $view->set('resource', $this->model);
+            $view->set('count', $this->count);
 
             $arr['metadata'] = $view->loadTemplate();
         }

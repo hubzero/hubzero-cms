@@ -312,69 +312,69 @@ class Citations extends Plugin
             );
         } elseif ((int) $count == 0 && $isManager && isset($display) && $total <= 0) {
             $view = $this->view('intro', 'browse');
-            $view->group = $this->group;
-            $view->isManager = ($this->authorized == 'manager') ? true : false;
+            $view->set('group', $this->group);
+            $view->set('isManager', ($this->authorized == 'manager') ? true : false);
         } else {
             // initialize the view
             $view = $this->view('default', 'browse');
 
             // push objects to the view
-            $view->group     = $this->group;
-            $view->option    = $this->option;
-            $view->task      = $this->pluginName;
-            $view->database  = $this->database;
-            $view->title     = Lang::txt(strtoupper($this->pluginName));
-            $view->isManager = ($this->authorized == 'manager') ? true : false;
-            $view->config    = $config;
+            $view->set('group', $this->group);
+            $view->set('option', $this->option);
+            $view->set('task', $this->pluginName);
+            $view->set('database', $this->database);
+            $view->set('title', Lang::txt(strtoupper($this->pluginName)));
+            $view->set('isManager', ($this->authorized == 'manager') ? true : false);
+            $view->set('config', $config);
         }
 
         // get applied filters
-        $view->filters = $obj['filters'];
+        $view->set('filters', $obj['filters']);
 
         // only display published citations to non-managers.
-        if ($view->isManager) {
+        if ($view->get('isManager')) {
             // get filtered citations
-            $view->citations = $obj['citations']->paginated()->rows();
+            $view->set('citations', $obj['citations']->paginated()->rows());
         } else {
-            $view->citations = $obj['citations']
+            $view->set('citations', $obj['citations']
                 ->where('published', '=', \Components\Citations\Models\Citation::STATE_PUBLISHED)
                 ->paginated()
-                ->rows();
+                ->rows());
         }
 
         // get the earliest year we have citations for
-        $view->earliest_year = 2001;
+        $view->set('earliest_year', 2001);
 
         // Contribution filter
-        $view->filterlist = [
+        $view->set('filterlist', [
             'all'    => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
             'member' => Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIB'),
-        ];
+        ]);
 
         // set default values for required filters for this view.
-        $view->filters['search'] = isset($view->filters['search']) ? $view->filters['search'] : "";
-        $view->filters['type'] = isset($view->filters['type']) ? $view->filters['type'] : "";
-        $view->filters['tag'] = isset($view->filters['tag']) ? $view->filters['tag'] : "";
-        $view->filters['author'] = isset($view->filters['author']) ? $view->filters['author'] : "";
-        $view->filters['publishedin'] = isset($view->filters['publishedin']) ? $view->filters['publishedin'] : "";
-        $view->filters['year_start'] = isset($view->filters['year_start']) ? $view->filters['year_start'] : "";
-        $view->filters['year_end'] = isset($view->filters['year_end']) ? $view->filters['year_end'] : "";
-        $view->filters['startuploaddate'] = isset($view->filters['startuploaddate'])
-            ? $view->filters['startuploaddate']
-            : "";
-        $view->filters['enduploaddate'] = isset($view->filters['enduploaddate']) ? $view->filters['enduploaddate'] : "";
-        $view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : 'year DESC';
-        $view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
+        $viewFilters = $view->get('filters');
+        $viewFilters['search'] = $viewFilters['search'] ?? "";
+        $viewFilters['type'] = $viewFilters['type'] ?? "";
+        $viewFilters['tag'] = $viewFilters['tag'] ?? "";
+        $viewFilters['author'] = $viewFilters['author'] ?? "";
+        $viewFilters['publishedin'] = $viewFilters['publishedin'] ?? "";
+        $viewFilters['year_start'] = $viewFilters['year_start'] ?? "";
+        $viewFilters['year_end'] = $viewFilters['year_end'] ?? "";
+        $viewFilters['startuploaddate'] = $viewFilters['startuploaddate'] ?? "";
+        $viewFilters['enduploaddate'] = $viewFilters['enduploaddate'] ?? "";
+        $viewFilters['sort'] = isset($view->get('filters')['sort']) ? $view->get('filters')['sort'] : 'year DESC';
+        $viewFilters['filter'] = $viewFilters['filter'] ?? "";
+        $view->set('filters', $viewFilters);
 
         // Sort Filter
-        $view->sorts = [
+        $view->set('sorts', [
             //'sec_cnt DESC' => Lang::txt('PLG_GROUPS_CITATIONS_CITEDBY'),
             'year DESC'      => Lang::txt('PLG_GROUPS_CITATIONS_YEAR'),
             'created DESC' => Lang::txt('PLG_GROUPS_CITATIONS_NEWEST'),
             'title ASC'      => Lang::txt('PLG_GROUPS_CITATIONS_TITLE'),
             'author ASC'     => Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('PLG_GROUPS_CITATIONS_JOURNAL'),
-        ];
+        ]);
 
         // Handling ids of the the boxes checked for download
         $referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
@@ -382,43 +382,49 @@ class Citations extends Plugin
 
         // If it's new search remove all user citation checkmarks
         if (isset($_POST['filter'])) {
-            $view->filters['idlist'] = "";
-            $session->set('idlist', $view->filters['idlist']);
+            $viewFilters = $view->get('filters');
+            $viewFilters['idlist'] = "";
+            $view->set('filters', $viewFilters);
+            $session->set('idlist', $view->get('filters')['idlist']);
         } else {
-            $view->filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
-            $session->set('idlist', $view->filters['idlist']);
+            $viewFilters = $view->get('filters');
+            $viewFilters['idlist'] = Request::getString('idlist', $session->get('idlist'));
+            $view->set('filters', $viewFilters);
+            $session->set('idlist', $view->get('filters')['idlist']);
         }
 
         // Reset the filter if the user came from a different section
         if (strpos($referer, "/citations/browse") == false) {
-            $view->filters['idlist'] = "";
-            $session->set('idlist', $view->filters['idlist']);
+            $viewFilters = $view->get('filters');
+            $viewFilters['idlist'] = "";
+            $view->set('filters', $viewFilters);
+            $session->set('idlist', $view->get('filters')['idlist']);
         }
 
         // get the preferred labeling scheme
-        $view->label = $this->params->get('labeling_scheme', "both");
+        $view->set('label', $this->params->get('labeling_scheme', "both"));
 
-        if ($view->label == "none") {
-            $view->citations_label_class = "no-label";
-        } elseif ($view->label == "number") {
-            $view->citations_label_class = "number-label";
-        } elseif ($view->label == "type") {
-            $view->citations_label_class = "type-label";
-        } elseif ($view->label == "both") {
-            $view->citations_label_class = "both-label";
+        if ($view->get('label') == "none") {
+            $view->set('citations_label_class', "no-label");
+        } elseif ($view->get('label') == "number") {
+            $view->set('citations_label_class', "number-label");
+        } elseif ($view->get('label') == "type") {
+            $view->set('citations_label_class', "type-label");
+        } elseif ($view->get('label') == "both") {
+            $view->set('citations_label_class', "both-label");
         } else {
-            $view->citations_label_class = "both-label";
+            $view->set('citations_label_class', "both-label");
         }
 
         // enable coins support
-        $view->coins = 1;
+        $view->set('coins', 1);
 
         // types
         $ct = \Components\Citations\Models\Type::all();
-        $view->types = $ct;
+        $view->set('types', $ct);
 
         // OpenURL
-        $view->openurl = $this->handleOpenURL();
+        $view->set('openurl', $this->handleOpenURL());
 
         // Output HTML
         foreach ($this->getErrors() as $error) {
@@ -448,11 +454,11 @@ class Citations extends Plugin
         }
 
         // push objects to view
-        $view->group     = $this->group;
-        $view->isManager = ($this->authorized == 'manager') ? true : false;
-        $view->config    = new \Hubzero\Config\Registry($this->group->get('params'));
+        $view->set('group', $this->group);
+        $view->set('isManager', ($this->authorized == 'manager') ? true : false);
+        $view->set('config', new \Hubzero\Config\Registry($this->group->get('params')));
 
-        if ($view->isManager == false) {
+        if ($view->get('isManager') == false) {
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
@@ -462,10 +468,10 @@ class Citations extends Plugin
 
         // get the citation types
         $citationsType = \Components\Citations\Models\Type::all();
-        $view->types = $citationsType->rows()->toObject();
+        $view->set('types', $citationsType->rows()->toObject());
 
         $fields = [];
-        foreach ($view->types as $type) {
+        foreach ($view->get('types') as $type) {
             if (isset($type->fields)) {
                 $f = $type->fields;
                 if (strpos($f, ',') !== false) {
@@ -487,29 +493,29 @@ class Citations extends Plugin
         $pubAuthor = false;
 
         // Is user authorized to edit citations?
-        if (!$view->isManager && !$pubAuthor) {
+        if (!$view->get('isManager') && !$pubAuthor) {
             $id = 0;
         }
 
         // Load the object
-        $view->row = \Components\Citations\Models\Citation::oneorNew($id);
+        $view->set('row', \Components\Citations\Models\Citation::oneorNew($id));
 
         // make sure title isnt too long
         $maxTitleLength = 30;
-        $shortenedTitle = (strlen($view->row->title) > $maxTitleLength)
-            ? substr($view->row->title, 0, $maxTitleLength) . '&hellip;'
-            : $view->row->title;
+        $shortenedTitle = (strlen($view->get('row')->title) > $maxTitleLength)
+            ? substr($view->get('row')->title, 0, $maxTitleLength) . '&hellip;'
+            : $view->get('row')->title;
 
         // Set the pathway
         if ($id && $id != 0) {
-            Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
+            Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->get('row')->id);
             Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_EDIT'));
         } else {
             Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
         }
 
         // non-owner redirect
-        if (!$view->row->isNew() &&  $view->row->scope != 'group') {
+        if (!$view->get('row')->isNew() &&  $view->get('row')->scope != 'group') {
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                 Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
@@ -524,26 +530,26 @@ class Citations extends Plugin
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $view->title = Lang::txt(strtoupper($this->pluginName))
+        $view->set('title', Lang::txt(strtoupper($this->pluginName))
             . ': '
-            . Lang::txt(strtoupper($this->pluginName) . '_' . strtoupper($this->action));
+            . Lang::txt(strtoupper($this->pluginName) . '_' . strtoupper($this->action)));
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
         if (!$id) {
-            $view->row->uid = User::get('id');
+            $view->get('row')->uid = User::get('id');
 
             // tags & badges
-            $view->tags   = [];
-            $view->badges = [];
+            $view->set('tags', []);
+            $view->set('badges', []);
 
-            $view->row->id = -time();
+            $view->get('row')->id = -time();
         } else {
-            if ($view->row->relatedAuthors->count()) {
-                $view->authors = $view->row->relatedAuthors()->order('ordering', 'asc');
-            } elseif ($view->row->relatedAuthors->count() == 0 && $view->row->author != '') {
+            if ($view->get('row')->relatedAuthors->count()) {
+                $view->set('authors', $view->get('row')->relatedAuthors()->order('ordering', 'asc'));
+            } elseif ($view->get('row')->relatedAuthors->count() == 0 && $view->get('row')->author != '') {
                 // formats the author for the multi-author plugin
-                $authors = explode(';', $view->row->author);
+                $authors = explode(';', $view->get('row')->author);
 
                 $authorString = '';
                 $totalAuths = count($authors);
@@ -567,11 +573,11 @@ class Citations extends Plugin
 
                     $x = $x + 1;
                 }
-                $view->authorString = $authorString;
+                $view->set('authorString', $authorString);
             }
             // tags & badges
-            $view->tags = \Components\Citations\Helpers\Format::citationTags($view->row, false);
-            $view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, false);
+            $view->set('tags', \Components\Citations\Helpers\Format::citationTags($view->get('row'), false));
+            $view->set('badges', \Components\Citations\Helpers\Format::citationBadges($view->get('row'), false));
         }
 
         // Output HTML
@@ -1082,25 +1088,28 @@ class Citations extends Plugin
             $view = $this->view('default', 'settings');
 
             // pass the group through
-            $view->group = $this->group;
+            $view->set('group', $this->group);
 
             // get group settings
             $params = json_decode($this->group->get('params'));
 
-            $view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
-            $view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
-            $view->citations_show_tags = (isset($params->citations_show_tags) ? $params->citations_show_tags : "true");
-            $view->citations_show_badges = (isset(
+            $view->set('include_coins', (isset($params->include_coins) ? $params->include_coins : "false"));
+            $view->set('coins_only', (isset($params->coins_only) ? $params->coins_only : "false"));
+            $view->set(
+                'citations_show_tags',
+                (isset($params->citations_show_tags) ? $params->citations_show_tags : "true"),
+            );
+            $view->set('citations_show_badges', (isset(
                 $params->citations_show_badges,
-            ) ? $params->citations_show_badges : "true");
+            ) ? $params->citations_show_badges : "true"));
             $citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
             // intended for the case that the group's custom
             // format is removed from the `#__citations_format`
             try {
-                $view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
+                $view->set('currentFormat', \Components\Citations\Models\Format::oneOrFail($citationsFormat));
             } catch (\Exception $e) {
-                $view->currentFormat = \Components\Citations\Models\Format::all()->where('style', 'like', 'ieee');
+                $view->set('currentFormat', \Components\Citations\Models\Format::all()->where('style', 'like', 'ieee'));
             }
 
             // get the name of the current format (see if it's custom)
@@ -1111,20 +1120,20 @@ class Citations extends Plugin
 
             if ($custom > 0) {
                 // show the menu entry for the custom
-                $view->customFormat = true;
+                $view->set('customFormat', true);
             } else {
                 // show menu item for new custom format
-                $view->customFormat = false;
+                $view->set('customFormat', false);
             }
 
             // get formats
-            $view->formats = \Components\Citations\Models\Format::all()
+            $view->set('formats', \Components\Citations\Models\Format::all()
                 ->where('style', 'NOT LIKE', '%custom-group-%')
                 ->where('style', 'NOT LIKE', '%custom-member-%')
                 ->orWhere('style', '=', $name)
-                ->rows()->toObject();
+                ->rows()->toObject());
 
-            $view->templateKeys = \Components\Citations\Models\Format::all()->getTemplateKeys();
+            $view->set('templateKeys', \Components\Citations\Models\Format::all()->getTemplateKeys());
 
             // Output HTML
             foreach ($this->getErrors() as $error) {
@@ -1144,12 +1153,12 @@ class Citations extends Plugin
     {
         // instansiate the view
         $view = $this->view('display', 'import');
-        $view->group = $this->group;
-        $view->messages = null;
-        $view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', []);
-        $view->isManager = ($this->authorized == 'manager') ? true : false;
+        $view->set('group', $this->group);
+        $view->set('messages', null);
+        $view->set('accepted_files', Event::trigger('citation.onImportAcceptedFiles', []));
+        $view->set('isManager', ($this->authorized == 'manager') ? true : false);
 
-        if ($view->isManager == false) {
+        if ($view->get('isManager') == false) {
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                 Lang::txt('This function can only be performed by a group manager.'),
@@ -1173,8 +1182,8 @@ class Citations extends Plugin
     {
         // instansiate the view
         $view = $this->view('review', 'import');
-        $view->group = $this->group;
-        $view->messages = null;
+        $view->set('group', $this->group);
+        $view->set('messages', null);
 
         Request::checkToken();
 
@@ -1277,8 +1286,8 @@ class Citations extends Plugin
             }
         }
 
-        $view->citations_require_attention = $citations[0]['attention'];
-        $view->citations_require_no_attention = $citations[0]['no_attention'];
+        $view->set('citations_require_attention', $citations[0]['attention']);
+        $view->set('citations_require_no_attention', $citations[0]['no_attention']);
 
         // get group ID
         $group = Request::getString('group');
@@ -1297,8 +1306,8 @@ class Citations extends Plugin
     {
         // instansiate the view
         $view = $this->view('saved', 'import');
-        $view->group = $this->group;
-        $view->messages = null;
+        $view->set('group', $this->group);
+        $view->set('messages', null);
         $config  = new \Hubzero\Config\Registry($this->group->get('params'));
 
         Request::checkToken();
@@ -1358,8 +1367,8 @@ class Citations extends Plugin
             );
 
             // view variables
-            $view->citations_require_attention = $citations_action_attention;
-            $view->citation_require_no_attention = $citations_action_no_attention;
+            $view->set('citations_require_attention', $citations_action_attention);
+            $view->set('citation_require_no_attention', $citations_action_no_attention);
 
             // if we have citations not getting saved
             if (count($results['not_saved']) > 0) {

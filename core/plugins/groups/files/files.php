@@ -213,21 +213,21 @@ class Files extends Plugin
             ->set('notifications', []);
 
         //get rel path to start
-        $view->activeFolder = Request::getString('path', '/');
+        $view->set('activeFolder', Request::getString('path', '/'));
 
         // make sure we have an active folder
-        if ($view->activeFolder == '') {
-            $view->activeFolder = '/uploads';
+        if ($view->get('activeFolder') == '') {
+            $view->set('activeFolder', '/uploads');
         }
 
-        $view->activeFolder = '/' . trim($view->activeFolder, '/');
+        $view->set('activeFolder', '/' . trim($view->get('activeFolder'), '/'));
 
         // regular groups can only access inside /uploads
         //if (!$this->group->isSuperGroup())
         //{
-        $pathInfo = pathinfo($view->activeFolder);
+        $pathInfo = pathinfo($view->get('activeFolder'));
         if ($pathInfo['dirname'] != '/uploads') {
-            $view->activeFolder = '/uploads';
+            $view->set('activeFolder', '/uploads');
         }
         //}
 
@@ -245,8 +245,8 @@ class Files extends Plugin
 
         // build recursive folder trees
         $folderTree       = $this->buildFolderTree($folders);
-        $view->folderTree = $this->buildFolderTreeHtml($folderTree);
-        $view->folderList = $this->buildFolderTreeSelect($folderTree);
+        $view->set('folderTree', $this->buildFolderTreeHtml($folderTree));
+        $view->set('folderList', $this->buildFolderTreeSelect($folderTree));
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);

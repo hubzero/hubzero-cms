@@ -116,8 +116,8 @@ class Script extends Plugin
 
         // Create view
         $view = $this->view('view', 'script');
-        $view->file = $file;
-        $view->ext  = $ext;
+        $view->set('file', $file);
+        $view->set('ext', $ext);
 
         return $view;
     }
