@@ -26,6 +26,7 @@ use Hubzero\Facades\Request;
  * @uses \Hubzero\Database\Relational
  *
  * @property  string                    $username    A column of #__users
+ * @property  string|null               $email       A column of #__users
  * @property  \Hubzero\Config\Registry  $params      From transformParams()
  * @property  \Hubzero\User\Reputation  $reputation  From the reputation() relationship
  *

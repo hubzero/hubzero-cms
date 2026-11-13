@@ -143,8 +143,6 @@ class Register extends SiteController
             return;
         }
 
-        $xprofile->loadRegistration($xregistration);
-
         $params = Component::params('com_members');
 
         $hubHomeDir = rtrim($params->get('homedir'), '/');
@@ -155,14 +153,8 @@ class Register extends SiteController
             $xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
         }
 
-        if ($xprofile->get('regIP') == '') {
-            $xprofile->set('regIP', (string) Request::ip());
-        }
-
-        if ($xprofile->get('regHost') == '') {
-            if (isset($_SERVER['REMOTE_HOST'])) {
-                $xprofile->set('regHost', Request::getString('REMOTE_HOST', '', 'server'));
-            }
+        if ($xprofile->get('registerIP') == '') {
+            $xprofile->set('registerIP', (string) Request::ip());
         }
 
         if ($xprofile->get('registerDate') == '') {
@@ -173,6 +165,15 @@ class Register extends SiteController
             $code = \Components\Members\Helpers\Utility::genemailconfirm();
             $xprofile->set('activation', $code);
             $updateEmail = true;
+        }
+
+        // Copy the account's own fields from the form, as updateTask() does
+        // (after the comparison above, which needs the address as it was)
+        $keys = ['email', 'name', 'surname', 'givenName', 'middleName', 'usageAgreement', 'sendEmail'];
+        foreach ($keys as $key) {
+            if ($xregistration->get($key) !== null) {
+                $xprofile->set($key, $xregistration->get($key));
+            }
         }
 
         $xprofile->save();

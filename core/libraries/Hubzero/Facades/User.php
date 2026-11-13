@@ -14,7 +14,7 @@ namespace Hubzero\Facades;
  * Calls the facade does not know go to the current user, a Hubzero\User\User;
  * that model's own static finders can be reached through it as well.
  *
- * @method static object   getInstance(mixed $id = null)
+ * @method static \Hubzero\User\User   getInstance(mixed $id = null)
  * @method static mixed    get(string $key, mixed $default = null)
  * @method static object   set(string|array $key, mixed $value = null)
  * @method static bool     isGuest()
