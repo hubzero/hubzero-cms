@@ -102,7 +102,9 @@ class Units extends AdminController
         $viewFilters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
         $this->view->set('filters', $viewFilters);
 
-        $this->view->filters['count'] = true;
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['count'] = true;
+        $this->view->set('filters', $viewFilters);
 
         $this->view->set('total', $this->view->get('offering')->units($this->view->filters));
 

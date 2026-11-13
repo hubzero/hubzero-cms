@@ -387,7 +387,7 @@ class Media extends Base
         $this->view->set('relpath', implode(DS, $this->view->get('relpath')));
 
         //build path to the group folder
-        $this->path = rtrim($this->path, DS) . $this->view->relpath;
+        $this->path = rtrim($this->path, DS) . $this->view->get('relpath');
 
         // if we have a directory
         if (is_dir($this->path)) {

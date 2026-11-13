@@ -120,7 +120,7 @@ class Citations extends SiteController
         $earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
         // Incoming
-        $this->view->set('filters', [
+        $filters = [
             // Search/filtering params
             'id'              => Request::getInt('id', 0),
             'tag'             => Request::getString('tag', '', 'request'),
@@ -147,13 +147,11 @@ class Citations extends SiteController
             'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
             'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
             'scope'           => 'hub',
-        ]);
+        ];
 
         if (User::authorise('core.manage', $this->option)) {
             $this->view->set('isAdmin', true);
-            $viewFilters = $this->view->get('filters');
-            $viewFilters['published'] = [0, 1];
-            $this->view->set('filters', $viewFilters);
+            $filters['published'] = [0, 1];
         }
 
         $this->view->set('filter', [
@@ -161,10 +159,8 @@ class Citations extends SiteController
             'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED'),
         ]);
-        if (!in_array($this->view->get('filters')['filter'], array_keys($this->view->get('filter')))) {
-            $viewFilters = $this->view->get('filters');
-            $viewFilters['filter'] = '';
-            $this->view->set('filters', $viewFilters);
+        if (!in_array($filters['filter'], array_keys($this->view->get('filter')))) {
+            $filters['filter'] = '';
         }
 
         // Sort Filter
@@ -176,10 +172,8 @@ class Citations extends SiteController
             'author ASC'   => Lang::txt('COM_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL'),
         ]);
-        if (!in_array($this->view->get('filters')['sort'], array_keys($this->view->get('sorts')))) {
-            $viewFilters = $this->view->get('filters');
-            $viewFilters['sort'] = 'created DESC';
-            $this->view->set('filters', $viewFilters);
+        if (!in_array($filters['sort'], array_keys($this->view->get('sorts')))) {
+            $filters['sort'] = 'created DESC';
         }
 
         // Handling ids of the the boxes checked for download
@@ -188,72 +182,68 @@ class Citations extends SiteController
 
         // If it's new search remove all user citation checkmarks
         if (isset($_POST['filter'])) {
-            $viewFilters = $this->view->get('filters');
-            $viewFilters['idlist'] = "";
-            $this->view->set('filters', $viewFilters);
-            $session->set('idlist', $this->view->filters['idlist']);
+            $filters['idlist'] = "";
+            $session->set('idlist', $filters['idlist']);
         } else {
-            $viewFilters = $this->view->get('filters');
-            $viewFilters['idlist'] = Request::getString('idlist', $session->get('idlist'));
-            $this->view->set('filters', $viewFilters);
-            $session->set('idlist', $this->view->filters['idlist']);
+            $filters['idlist'] = Request::getString('idlist', $session->get('idlist'));
+            $session->set('idlist', $filters['idlist']);
         }
 
         // Reset the filter if the user came from a different section
         // === : a referer that *starts* with the browse path matches at
         // position 0, which == false reads as no match at all
         if (strpos($referer, "/citations/browse") === false) {
-            $this->view->filters['idlist'] = "";
-            $session->set('idlist', $this->view->filters['idlist']);
+            $filters['idlist'] = "";
+            $session->set('idlist', $filters['idlist']);
         }
 
         // Convert upload dates to correct time format
         if (
-            !is_string($this->view->filters['startuploaddate'])
+            !is_string($filters['startuploaddate'])
             || !preg_match(
                 "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
-                $this->view->filters['startuploaddate'],
+                $filters['startuploaddate'],
             )
-            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['startuploaddate'])
+            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['startuploaddate'])
         ) {
-            $this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
+            $filters['startuploaddate'] = '0000-00-00 00:00:00';
         }
         if (
-            $this->view->filters['startuploaddate'] == '0000-00-00'
-            || $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00'
-            || $this->view->filters['startuploaddate'] == ''
+            $filters['startuploaddate'] == '0000-00-00'
+            || $filters['startuploaddate'] == '0000-00-00 00:00:00'
+            || $filters['startuploaddate'] == ''
         ) {
-            $this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
+            $filters['startuploaddate'] = '0000-00-00 00:00:00';
         } else {
-            $this->view->filters['startuploaddate'] = Date::of(
-                $this->view->filters['startuploaddate'],
+            $filters['startuploaddate'] = Date::of(
+                $filters['startuploaddate'],
             )->format('Y-m-d 00:00:00');
         }
 
         if (
-            !is_string($this->view->filters['enduploaddate'])
+            !is_string($filters['enduploaddate'])
             || !preg_match(
                 "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
-                $this->view->filters['enduploaddate'],
+                $filters['enduploaddate'],
             )
-            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['enduploaddate'])
+            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['enduploaddate'])
         ) {
-            $this->view->filters['enduploaddate'] = '';
+            $filters['enduploaddate'] = '';
         }
         if (
-            $this->view->filters['enduploaddate'] == '0000-00-00'
-            || $this->view->filters['enduploaddate'] == '0000-00-00 00:00:00'
-            || $this->view->filters['enduploaddate'] == ''
+            $filters['enduploaddate'] == '0000-00-00'
+            || $filters['enduploaddate'] == '0000-00-00 00:00:00'
+            || $filters['enduploaddate'] == ''
         ) {
-            $this->view->filters['enduploaddate'] = Date::of('now')->modify('+1 DAY')->format('Y-m-d 00:00:00');
+            $filters['enduploaddate'] = Date::of('now')->modify('+1 DAY')->format('Y-m-d 00:00:00');
         } else {
-            $this->view->filters['enduploaddate'] = Date::of(
-                $this->view->filters['enduploaddate'],
+            $filters['enduploaddate'] = Date::of(
+                $filters['enduploaddate'],
             )->format('Y-m-d 00:00:00');
         }
 
         // Make sure the end date for the upload search isn't before the start date
-        if ($this->view->filters['startuploaddate'] > $this->view->filters['enduploaddate']) {
+        if ($filters['startuploaddate'] > $filters['enduploaddate']) {
             App::redirect(
                 Route::url('index.php?option=com_citations&task=browse'),
                 Lang::txt('COM_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
@@ -262,13 +252,14 @@ class Citations extends SiteController
         }
 
         // Clean up filters a little
-        array_walk($this->view->filters, function (&$val, $key) {
+        array_walk($filters, function (&$val, $key) {
             if (!is_array($val)) {
                 $val = trim($val == null ? '' : $val);
                 $val = str_replace('"', '', $val);
             }
         });
-        $citations = Citation::getFilteredRecords($this->view->filters);
+        $citations = Citation::getFilteredRecords($filters);
+        $this->view->set('filters', $filters);
         $citations = $citations->paginated('limitstart', 'limit')->rows();
 
         // Get records

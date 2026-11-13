@@ -82,9 +82,11 @@ class Students extends AdminController
             \Components\Courses\Models\Course::getInstance($this->view->get('offering')->get('course_id')),
         );
 
-        $limit = $this->view->filters['limit'];
-        $start = $this->view->filters['start'];
-        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
+        $limit = $this->view->get('filters')['limit'];
+        $start = $this->view->get('filters')['start'];
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
+        $this->view->set('filters', $viewFilters);
         //$this->view->filters['role'] = 'student';
 
         //$this->view->filters['count'] = true;

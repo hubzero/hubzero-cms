@@ -274,7 +274,9 @@ class Posts extends SiteController
             $viewCounts = $this->view->get('counts');
             $viewCounts['collections'] = $this->model->collections($filters);
             $this->view->set('counts', $viewCounts);
-            $this->view->counts['posts'] = $this->model->posts($filters);
+            $viewCounts = $this->view->get('counts');
+            $viewCounts['posts'] = $this->model->posts($filters);
+            $this->view->set('counts', $viewCounts);
         }
 
         // Push error messages ot the view

@@ -57,7 +57,8 @@ class Points extends AdminController
         $this->view->set('stats', $viewStats);
 
         // Get overall earnings on Answers
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Earnings: Answers',
             'class'         => 'earn',
             'alltimepts'    => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, ''),
@@ -68,6 +69,7 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall earnings on Wishes
         $this->view->stats[] = [

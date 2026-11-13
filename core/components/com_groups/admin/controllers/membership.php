@@ -76,11 +76,13 @@ class Membership extends AdminController
         $viewFilters['gidNumber'] = $group->get('gidNumber');
         $this->view->set('filters', $viewFilters);
 
-        $this->view->filters['search']  = urldecode(trim(Request::getState(
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['search'] = urldecode(trim(Request::getState(
             $this->option . '.' . $this->controller . '.search',
             'search',
             '',
         )));
+        $this->view->set('filters', $viewFilters);
         $this->view->filters['status'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.status',
             'status',

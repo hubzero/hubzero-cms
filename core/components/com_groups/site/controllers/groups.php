@@ -113,7 +113,9 @@ class Groups extends Base
             $viewMygroups = $this->view->get('mygroups');
             $viewMygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
             $this->view->set('mygroups', $viewMygroups);
-            $this->view->mygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
+            $viewMygroups = $this->view->get('mygroups');
+            $viewMygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
+            $this->view->set('mygroups', $viewMygroups);
             $this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
             $this->view->mygroups = array_filter($this->view->mygroups);
 

@@ -282,7 +282,9 @@ class Team extends Plugin
         $viewFilters = $view->get('filters');
         $viewFilters['limit'] = Request::getInt('limit', Config::get('list_limit'));
         $view->set('filters', $viewFilters);
-        $view->filters['start']   = Request::getInt('limitstart', 0);
+        $viewFilters = $view->get('filters');
+        $viewFilters['start'] = Request::getInt('limitstart', 0);
+        $view->set('filters', $viewFilters);
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
         $view->filters['status']  = Request::getString('status', 'active');
@@ -350,7 +352,9 @@ class Team extends Plugin
         $viewFilters = $view->get('filters');
         $viewFilters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
         $view->set('filters', $viewFilters);
-        $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
+        $viewFilters = $view->get('filters');
+        $viewFilters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
+        $view->set('filters', $viewFilters);
         if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
             $view->filters['sortdir'] = 'ASC';
         }
@@ -450,7 +454,9 @@ class Team extends Plugin
         $viewFilters = $view->get('filters');
         $viewFilters['limit'] =  0;
         $view->set('filters', $viewFilters);
-        $view->filters['start']         = Request::getInt('t_limitstart', 0);
+        $viewFilters = $view->get('filters');
+        $viewFilters['start'] = Request::getInt('t_limitstart', 0);
+        $view->set('filters', $viewFilters);
         $view->filters['sortby']        = Request::getString('t_sortby', 'name');
         $view->filters['sortdir']       = Request::getString('t_sortdir', 'ASC');
         $view->filters['status']        = 'active';

@@ -72,10 +72,12 @@ class Restrictions extends AdminController
         $viewFilters = $this->view->get('filters');
         $viewFilters['return'] = 'count';
         $this->view->set('filters', $viewFilters);
-        $this->view->set('total', RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId));
+        $this->view->set('total', RestrictionsHelper::getPermittedSkuUsers($this->view->get('filters'), $sId));
 
         // Get records
-        $this->view->filters['return'] = 'list';
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['return'] = 'list';
+        $this->view->set('filters', $viewFilters);
         $this->view->set('rows', RestrictionsHelper::getPermittedSkuUsers($this->view->filters, $sId));
 
         // Output the HTML

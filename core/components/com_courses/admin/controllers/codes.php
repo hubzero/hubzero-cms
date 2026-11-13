@@ -85,7 +85,9 @@ class Codes extends AdminController
         ) * $this->view->get('filters')['limit']) : 0);
         $this->view->set('filters', $viewFilters);
 
-        $this->view->filters['count'] = true;
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['count'] = true;
+        $this->view->set('filters', $viewFilters);
 
         $this->view->set('total', $this->view->get('section')->codes($this->view->filters));
 

@@ -395,7 +395,9 @@ class Import extends SiteController
         $viewOpenurl = $this->view->get('openurl');
         $viewOpenurl['link'] = '';
         $this->view->set('openurl', $viewOpenurl);
-        $this->view->openurl['text'] = '';
+        $viewOpenurl = $this->view->get('openurl');
+        $viewOpenurl['text'] = '';
+        $this->view->set('openurl', $viewOpenurl);
         $this->view->openurl['icon'] = '';
 
         //get any messages
