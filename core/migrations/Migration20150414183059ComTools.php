@@ -37,7 +37,7 @@ class Migration20150414183059ComTools extends Base
 
             // Set the first zone as default
             $mwdb
-                ->getQuery(true)
+                ->getQuery()
                 ->update('zones')
                 ->set(['is_default' => 1])
                 ->where('type', '=', 'local')

@@ -12,7 +12,7 @@ namespace Hubzero\Facades;
  * Component loader facade
  *
  * @method static bool   isEnabled(string $option, bool $strict = false)
- * @method static object params(string $option, bool $strict = false)
+ * @method static \Hubzero\Config\Registry params(string $option, bool $strict = false)
  * @method static string path(string $option)
  * @method static string canonical(string $option)
  * @method static string render(string $option, array $params = [])

@@ -20,6 +20,21 @@ use Hubzero\Facades\User;
  * and render that date in a variety of formats.
  *
  * @since  2.0
+ *
+ * Read through __get():
+ *
+ * @property-read mixed $daysinmonth
+ * @property-read mixed $dayofweek
+ * @property-read mixed $dayofyear
+ * @property-read mixed $isleapyear
+ * @property-read mixed $day
+ * @property-read mixed $hour
+ * @property-read mixed $minute
+ * @property-read mixed $second
+ * @property-read mixed $month
+ * @property-read mixed $ordinal
+ * @property-read mixed $week
+ * @property-read mixed $year
  */
 class Date extends DateTime
 {

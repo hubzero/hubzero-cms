@@ -149,7 +149,7 @@ class AddComponentEntry extends Macro
             // language, and that is what to look for: the same entry has been
             // filed under more than one menutype and title over the years.
             $existing = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu')
                 ->whereEquals('client_id', 1)

@@ -25,7 +25,7 @@ abstract class Macro
     /**
      * Database connection
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $db = null;
 

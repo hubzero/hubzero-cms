@@ -53,9 +53,9 @@ $month = $now->toLocal('m');
 $day   = $now->toLocal('d');
 
 //$nextMonth = date("m", mktime(0, 0, 0, $month, $day + 7, $year));
-$nextYear  = date("Y", mktime(0, 0, 0, $month + 1, $day, $year));
-$nextMonth = date("m", mktime(0, 0, 0, $month + 1, $day, $year));
-$nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
+$nextYear  = date("Y", mktime(0, 0, 0, (int) $month + 1, (int) $day, (int) $year));
+$nextMonth = date("m", mktime(0, 0, 0, (int) $month + 1, (int) $day, (int) $year));
+$nextDay   = date("d", mktime(0, 0, 0, (int) $month + 1, (int) $day, (int) $year));
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>

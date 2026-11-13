@@ -204,7 +204,7 @@ class Base
     /**
      * Return a middleware database object
      *
-     * @return  object|false  The middleware database, or false if it is not configured
+     * @return  \Hubzero\Database\Driver|false  The middleware database, or false if it is not configured
      */
     public function getMWDBO()
     {

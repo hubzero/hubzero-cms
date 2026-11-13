@@ -50,7 +50,7 @@ class Date extends Facade
      * @param   mixed    $date       The date, or 'now'
      * @param   mixed    $tz         Time zone, as a name, an offset or a DateTimeZone
      * @param   boolean  $ignoreDst  Keep the zone's standard offset all year rather than converting to DST
-     * @return  object
+     * @return  \Hubzero\Utility\Date
      */
     public static function of($date = 'now', $tz = null, $ignoreDst = false)
     {

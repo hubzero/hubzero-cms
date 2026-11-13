@@ -39,7 +39,7 @@ class InstallModule extends Macro
 
         if (!$always) {
             $existing = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__modules')
                 ->whereEquals('module', $module)
@@ -51,7 +51,7 @@ class InstallModule extends Macro
         }
 
         $last = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('ordering')
             ->from('#__modules')
             ->whereEquals('position', $position)
@@ -60,7 +60,7 @@ class InstallModule extends Macro
             ->value('ordering');
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__modules')
             ->set([
                 'title'     => $title,
@@ -81,7 +81,7 @@ class InstallModule extends Macro
 
         foreach ((array) $menus as $menu) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__modules_menu')
                 ->set([
                     'moduleid' => $id,

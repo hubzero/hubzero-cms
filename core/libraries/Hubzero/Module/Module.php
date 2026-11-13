@@ -24,7 +24,7 @@ class Module
     /**
      * Registry
      *
-     * @var  object
+     * @var  \Hubzero\Config\Registry|null
      */
     public $params = null;
 
