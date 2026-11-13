@@ -177,9 +177,8 @@ class FactoryTest extends AbstractDriverTestCase
         $value = Factory::randomFloat(0, 1, 3);
         $parts = explode('.', (string) $value);
 
-        if (isset($parts[1])) {
-            $this->assertLessThanOrEqual(3, strlen($parts[1]));
-        }
+        // A whole number has no decimal part at all, which is within three places too
+        $this->assertLessThanOrEqual(3, strlen($parts[1] ?? ''));
     }
 
     #[Test]
