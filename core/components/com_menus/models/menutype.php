@@ -366,9 +366,11 @@ class Menutype extends Obj
                 // Only add the layout request argument if not the default layout.
                 if ($layout != 'default') {
                     // If the template is set, add in format template:layout so we save the template name
-                    $o->request['layout'] = isset($templateName[$file])
+                    $oRequest = $o->get('request');
+                    $oRequest['layout'] = isset($templateName[$file])
                         ? $templateName[$file] . ':' . $layout
                         : $layout;
+                    $o->set('request', $oRequest);
                 }
 
                 // Load layout metadata if it exists.
@@ -388,11 +390,11 @@ class Menutype extends Obj
 
                             // Populate the title and description if they exist.
                             if (!empty($menu['title'])) {
-                                $o->title = trim((string) $menu['title']);
+                                $o->set('title', trim((string) $menu['title']));
                             }
 
                             if (!empty($menu->message[0])) {
-                                $o->description = trim((string) $menu->message[0]);
+                                $o->set('description', trim((string) $menu->message[0]));
                             }
                         }
                     }

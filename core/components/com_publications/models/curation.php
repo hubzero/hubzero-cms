@@ -1363,11 +1363,11 @@ class Curation extends Obj
         // Was item updated by authors?
         if ($record->reviewed && $record->updated > $record->reviewed) {
             $status->lastupdate = $record->updated;
-            $status->updated_by = $record->updated_by;
+            $status->set('updated_by', $record->updated_by);
         }
         if ($status->status == 3) {
             $status->lastupdate = $record->updated;
-            $status->updated_by = $record->updated_by;
+            $status->set('updated_by', $record->updated_by);
         }
         if (
             $record->review_status == 3

@@ -122,7 +122,7 @@ class Membership extends AdminController
         $this->view->set('rows', $tbl->findMembers($viewFilters));
 
         //add invite emails to list
-        if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee') {
+        if ($this->view->get('filters')['status'] == '' || $this->view->get('filters')['status'] == 'invitee') {
             //get group invite emails
             $hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail();
             $inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
@@ -160,11 +160,13 @@ class Membership extends AdminController
             ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
             : []);
 
-        $this->view->filters['term'] = trim(Request::getState(
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['term'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.term',
             'term',
             '',
         ));
+        $this->view->set('filters', $viewFilters);
 
         // Filtering on the term is done here rather than in the query: the row
         // set already includes invite-email pseudo-rows that have no
