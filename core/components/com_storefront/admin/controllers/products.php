@@ -465,15 +465,15 @@ class Products extends AdminController
             );
         }
 
-        // Load the article
-        $row = new \Components\Storefront\Models\Collection($id);
-        $row->set('access', $access);
-
-        // Check and store the changes
-        if (!$row->store(true)) {
+        // Load the product, set its access level and save it; a product says what is wrong by throwing
+        try {
+            $row = new Product($id);
+            $row->setAccessLevel($access);
+            $row->save();
+        } catch (\Exception $e) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
-                $row->getError(),
+                $e->getMessage(),
                 'error',
             );
         }

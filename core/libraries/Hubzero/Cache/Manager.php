@@ -16,6 +16,10 @@ use Closure;
  *
  * Inspired by Laravel's Manager class
  * http://laravel.com
+ *
+ * Calls it does not define are passed to the default storage.
+ *
+ * @mixin Storage\None
  */
 class Manager
 {
