@@ -51,13 +51,14 @@ class Session extends Base
             $cls = $this->tableClass;
             $this->table = new $cls($this->db);
 
-            if (!($this->table instanceof \Hubzero\Database\Table)) {
+            // It is asked for loadSession() below, which the sessions table has
+            if (!($this->table instanceof \Components\Tools\Tables\Session)) {
                 $this->logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); '
-                    . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
+                    . Lang::txt('Table class must be an instance of \\Components\\Tools\\Tables\\Session.'),
                 );
                 throw new \LogicException(
-                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
+                    Lang::txt('Table class must be an instance of \\Components\\Tools\\Tables\\Session.'),
                 );
             }
 

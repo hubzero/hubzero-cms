@@ -79,7 +79,8 @@ class LegacyTest extends TestCase
 
         $file = $loader->read($path . '/Legacy/configuration.php');
 
-        $this->assertInstanceOf('JConfig', $file);
+        // JConfig is declared by the configuration file itself
+        $this->assertSame('JConfig', get_class($file));
 
         // Verify paths are present and valid strings
         $this->assertIsString($file->tmp_path);

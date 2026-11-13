@@ -220,8 +220,8 @@ class Handler
             return ['error' => 'There is no option available to handle this filetype/content'];
         }
 
-        // Make sure the class exists and has a create method
-        if (method_exists($handler, 'create')) {
+        // Make sure the class is a handler and has a create method
+        if (is_subclass_of($handler, self::class) && method_exists($handler, 'create')) {
             // Run create and return the results
             $object = $handler::newWithoutHandlers($this->db);
             return $object->create();

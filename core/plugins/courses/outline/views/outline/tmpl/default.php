@@ -7,6 +7,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Components\Courses\Models\Assets\Tool as ToolHandler;
 
 // @phpcs:disable PSR1.Files.SideEffects
 /**
@@ -405,7 +406,8 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                             $children = '';
                                                             if ($a->get('type') == 'tool') {
                                                                 $handler = $a->loadHandler();
-                                                                if (method_exists($handler, 'files')) {
+                                                                // Only the tool handler lists files
+                                                                if ($handler instanceof ToolHandler) {
                                                                     $files = $handler->files($a);
                                                                     if (!empty($files)) {
                                                                         $children = '<ul>';

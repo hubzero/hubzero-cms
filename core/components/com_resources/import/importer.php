@@ -16,9 +16,9 @@ use Hubzero\Facades\Lang;
 class Importer
 {
     /**
-     * ResourceImportInterface Object
+     * The adapter in use, once one is set or detected
      *
-     * @var  object
+     * @var  \Components\Resources\Import\Interfaces\Adapter|null
      */
     private $adapter;
 

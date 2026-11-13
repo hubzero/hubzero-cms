@@ -20,7 +20,7 @@ namespace Hubzero\Facades;
  * @method static string setLanguage(string $lang)
  * @method static array  getErrorFiles()
  * @method static array  getLanguages(string $key = null)
- * @method static string getLanguagePath(string $basePath = PATH_APP, string $language = null, string $client = null)
+ * @method static string getLanguagePath(mixed ...$args)  Takes $basePath (PATH_APP if not given), $language, $client
  * @method static bool   exists(string $lang, string $basePath = '', string $client = null)
  * @method static bool   hasKey(string $string)
  * @method static string translate(string $string, bool $jsSafe = false, bool $interpretBackSlashes = true)

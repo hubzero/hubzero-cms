@@ -300,7 +300,9 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @return     int|\Traversable
+     * @param      array $filters  Filters; with 'count' set, the sections are counted
+     * @param      bool  $clear    Fetch the list again
+     * @return     ($filters is array{} ? Iterator : int|Iterator)  The sections, or how many there are
      */
     public function sections($filters = [], $clear = false)
     {
