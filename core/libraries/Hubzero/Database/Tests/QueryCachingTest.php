@@ -440,6 +440,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         ]);
 
         // Build schema/data on first instance
+        $this->assertInstanceOf(BaseSqlDriver::class, $driverA);
         $driverA->dropTable('users', true);
         $driverA
             ->createTable('users')
@@ -474,6 +475,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         ]);
 
         // Recreate minimal schema/data for query execution on recreated in-memory driver
+        $this->assertInstanceOf(BaseSqlDriver::class, $driverARecreated);
         $driverARecreated->dropTable('users', true);
         $driverARecreated
             ->createTable('users')

@@ -199,10 +199,10 @@ class Legacy extends Registry
     }
 
     /**
-     * Determine if the given configuration value exists.
+     * Read a legacy configuration file
      *
      * @param   string  $file     Path to file to load
-     * @return  bool
+     * @return  object  The configuration, with its tmp and log paths moved under the app path
      */
     public function read($file)
     {

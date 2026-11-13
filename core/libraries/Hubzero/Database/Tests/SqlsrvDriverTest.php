@@ -919,8 +919,8 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('ss_fk_child');
         $this->assertNotEmpty($fks);
 
+        /** @var \Hubzero\Database\Drivers\Sqlsrv\SqlsrvDriver $driver */
         $this->assertTrue(
-            /** @var \Hubzero\Database\Drivers\Sqlsrv\SqlsrvDriver $driver */
             $driver->dropConstraint('ss_fk_child', 'fk_ss_child_parent'),
         );
     }

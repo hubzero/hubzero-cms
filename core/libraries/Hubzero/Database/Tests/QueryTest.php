@@ -1580,7 +1580,7 @@ class QueryTest extends AbstractDriverTestCase
             ->from('users')
             ->join('groups', 'created_by', 'id', 'inner')
             ->whereIsNotNull('name')
-            ->group('cn', 'id')
+            ->group('cn')
             ->having('foo', '=', 3)
             ->clear('from')
             ->clear('where')
