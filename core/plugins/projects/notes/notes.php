@@ -60,7 +60,7 @@ class Notes extends Plugin
     /**
      * Name of page
      *
-     * @var  array
+     * @var  string|null
      */
     protected $pagename = null;
 

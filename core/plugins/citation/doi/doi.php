@@ -212,7 +212,7 @@ class Doi extends Plugin
     /**
      * Get DOI metadata XML from DataCite
      *
-     * @param   array   $doi
+     * @param   string  $doi
      * @return  mixed   XML or false
      */
     protected function getDoiXml($doi)

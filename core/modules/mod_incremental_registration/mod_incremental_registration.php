@@ -27,14 +27,14 @@ class IncrementalRegistration extends Module
     /**
      * Path to template overrides
      *
-     * @var array
+     * @var string
      */
     private $tpl_path = '/core/templates/system/html/mod_incremental_registration';
 
     /**
      * Path to module directory
      *
-     * @var array
+     * @var string
      */
     private $mod_path = '/core/modules/mod_incremental_registration/assets';
 

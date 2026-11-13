@@ -759,7 +759,7 @@ class Format
      * Output a tagcloud of badges associated with a citation
      *
      * @param   boolean  $includeHtml
-     * @return  string   HTML
+     * @return  string|array   HTML, or the raw tags when $includeHtml is false
      */
     public static function citationBadges(&$cite, $includeHtml = true)
     {
@@ -800,7 +800,7 @@ class Format
      *
      * @param   object  $cite  Citation
      * @param   object|bool $includeHtml  Database
-     * @return  string  HTML
+     * @return  string|array  HTML, or the raw tags when $includeHtml is false
      */
     public static function citationTags(&$cite, $includeHtml = true)
     {
