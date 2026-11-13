@@ -24,7 +24,7 @@ class Import extends Base
     /**
      * Import column to field mapping
      *
-     * @var  object
+     * @var  array|null
      */
     private $fields = null;
 

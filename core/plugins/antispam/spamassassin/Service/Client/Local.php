@@ -195,7 +195,7 @@ class Local
          */
         if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches)) {
             $result->protocolVersion = $matches[1];
-            $result->responseCode = $matches[2];
+            $result->responseCode = (int) $matches[2];
             $result->responseMessage = $matches[3];
 
             if ($result->responseCode != 0) {
@@ -209,7 +209,7 @@ class Local
         }
 
         if (preg_match('/Content-length: (\d+)/', $header, $matches)) {
-            $result->contentLength = $matches[1];
+            $result->contentLength = (int) $matches[1];
         }
 
         if (

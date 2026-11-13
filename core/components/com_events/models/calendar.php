@@ -58,7 +58,7 @@ class Calendar extends Model
     /**
      * Events Count
      *
-     * @var int
+     * @var string|null
      */
     private $events_count = null;
 

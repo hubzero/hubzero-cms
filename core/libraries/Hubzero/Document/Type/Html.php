@@ -59,7 +59,7 @@ class Html extends Base
     /**
      * File name
      *
-     * @var  array
+     * @var  string|null
      */
     public $file = null;
 

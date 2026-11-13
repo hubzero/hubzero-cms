@@ -29,7 +29,7 @@ class Address extends Field
     /**
      * The form field type.
      *
-     * @var  string
+     * @var  array|null
      */
     protected static $countries = null;
 

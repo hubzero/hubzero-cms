@@ -51,7 +51,7 @@ class Team extends Plugin
     /**
      * Store internal message
      *
-     * @var  array|null
+     * @var  string|null
      */
     protected $msg = null;
 

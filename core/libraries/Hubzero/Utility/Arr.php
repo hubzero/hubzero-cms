@@ -30,7 +30,7 @@ class Arr
     /**
      * Option to set the object key to sort on.
      *
-     * @var  string
+     * @var  array|null
      */
     protected static $sortKey;
 

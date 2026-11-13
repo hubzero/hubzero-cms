@@ -26,7 +26,7 @@ class Awards
     /**
      * Awards
      *
-     * @var  array
+     * @var  array|int
      */
     private $awards;
 

@@ -25,7 +25,7 @@ class Item extends Obj
     /**
      * The number of rows as a base offset.
      *
-     * @var  integer
+     * @var  int|string
      */
     public $base;
 
@@ -46,7 +46,7 @@ class Item extends Obj
     /**
      * The prefix used for request variables.
      *
-     * @var  integer
+     * @var  string
      */
     public $rel;
 

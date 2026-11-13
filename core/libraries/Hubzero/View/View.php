@@ -59,7 +59,7 @@ class View extends Obj
     /**
      * Root directory of the override
      *
-     * @var  string
+     * @var  array|null
      */
     protected $overrideRoot = null;
 

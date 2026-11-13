@@ -44,7 +44,7 @@ class Category extends Model
     /**
      * Page count
      *
-     * @var integer|null
+     * @var string|null
      */
     private $pages_count = null;
 

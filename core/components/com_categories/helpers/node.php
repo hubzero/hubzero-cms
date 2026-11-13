@@ -237,14 +237,14 @@ class Node extends Obj
     /**
      * Category left of this one
      *
-     * @var  integer
+     * @var  object|false|null
      */
     protected $leftSibling = null;
 
     /**
      * Category right of this one
      *
-     * @var  integer
+     * @var  object|null
      */
     protected $rightSibling = null;
 

@@ -32,7 +32,7 @@ class Archive extends Model
     /**
      * Version Count
      *
-     * @var int|null
+     * @var string|null
      */
     private $versions_count = null;
 

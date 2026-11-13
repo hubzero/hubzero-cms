@@ -57,7 +57,7 @@ class Item extends Base
     /**
      * Container for properties
      *
-     * @var array|null
+     * @var ItemList|null
      */
     private $assets = null;
 

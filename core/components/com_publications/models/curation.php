@@ -92,7 +92,7 @@ class Curation extends Obj
     /**
      * Current block blockId
      *
-     * @var  string
+     * @var  int|string|null
      */
     public $blockorder = null;
 

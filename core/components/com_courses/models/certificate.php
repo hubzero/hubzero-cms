@@ -41,7 +41,7 @@ class Certificate extends Base
     /**
      * Properties object
      *
-     * @var string
+     * @var object|null
      */
     protected $properties = null;
 

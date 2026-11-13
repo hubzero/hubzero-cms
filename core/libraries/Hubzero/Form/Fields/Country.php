@@ -27,7 +27,7 @@ class Country extends Select
     /**
      * The form field type.
      *
-     * @var  string
+     * @var  array|null
      */
     protected static $countries = null;
 
