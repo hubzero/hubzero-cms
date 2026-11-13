@@ -403,14 +403,22 @@ class Migration20130829211856ComPublications extends Base
         if (!$schema->tableExists('#__publication_stats')) {
             $schema
                 ->createTable('#__publication_stats')
-                ->id('id', 'bigIncrements')
-                ->bigInteger('publication_id')
+                // As this migration always made it: a bigint id under a unique
+                // key named "id", not a primary key. Migration20160906101100Core
+                // turns that key into the primary key and renames pub_stats, and
+                // expects to find both.
+                ->bigInteger('id')->notNull()->autoIncrement()
+                ->bigInteger('publication_id')->notNull()
                 ->tinyInteger('publication_version')->nullable()
                 ->bigInteger('users')->nullable()
                 ->bigInteger('downloads')->nullable()
                 ->datetime('datetime')->default('0000-00-00 00:00:00')
-                ->tinyInteger('period')->default(-1)
+                ->tinyInteger('period')->notNull()->default(-1)
                 ->timestamp('processed_on')
+                ->notNull()
+                ->defaultExpression(\Hubzero\Database\Expression::currentTimestamp())
+                ->onUpdate('CURRENT_TIMESTAMP')
+                ->uniqueIndex('id', 'id')
                 ->uniqueIndex('pub_stats', ['publication_id', 'datetime', 'period'])
                 ->execute();
         }
