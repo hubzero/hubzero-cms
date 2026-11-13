@@ -360,7 +360,7 @@ class Processor extends Obj
         if ($new_dimension < 1) {
             $percent = $new_dimension;
         } elseif (substr($new_dimension, -1) == '%') {
-            $percent = (substr($new_dimension, 0, -1) / 100);
+            $percent = ((float) substr($new_dimension, 0, -1) / 100);
         }
 
         if ($percent !== false) {
@@ -482,14 +482,14 @@ class Processor extends Obj
      * Convert a fraction to decimal
      *
      * @param   string   $str  Fraction to convert
-     * @return  integer
+     * @return  float|string  The value, or what was given if it is not a fraction
      */
     private function geoFrac2dec($str)
     {
         list($n, $d) = explode('/', $str);
 
         if (!empty($d)) {
-            return $n / $d;
+            return (float) $n / (float) $d;
         }
 
         return $str;
