@@ -166,7 +166,7 @@ class GithubAdapter implements FilesystemAdapter
     private function contents()
     {
         $this->authenticate();
-        return $this->client->api('repo')->contents();
+        return $this->client->repo()->contents();
     }
 
     /**
@@ -479,7 +479,7 @@ class GithubAdapter implements FilesystemAdapter
         // additional calls would be needed to page through it.
         $info = $this->readCall(function () {
             $this->authenticate();
-            return $this->client->api('git')->trees()->show(
+            return $this->client->git()->trees()->show(
                 $this->vendor,
                 $this->package,
                 $this->reference,
@@ -577,7 +577,7 @@ class GithubAdapter implements FilesystemAdapter
             $this->authenticate();
             // Omit 'sha' so GitHub uses the repository's actual default branch
             // (which may be "main", not the legacy "master").
-            return $this->client->api('repo')->commits()->all(
+            return $this->client->repo()->commits()->all(
                 $this->vendor,
                 $this->package,
                 ['path' => $path],

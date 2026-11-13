@@ -113,7 +113,9 @@ class Slack extends Plugin
         );
 
         try {
-            $client->attach($data)->send();
+            // attach() is passed on to the message being built; the client sends it
+            $client->attach($data);
+            $client->send();
         } catch (\Exception $e) {
             // Fail silently
             return false;

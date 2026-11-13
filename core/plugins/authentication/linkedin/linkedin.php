@@ -196,6 +196,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         if ($token) {
             try {
+                /** @var \League\OAuth2\Client\Provider\LinkedInResourceOwner $owner */
                 $owner = $this->provider->getResourceOwner($token);
 
                 $id        = $owner->getId();
@@ -312,6 +313,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         if ($token) {
             try {
+                /** @var \League\OAuth2\Client\Provider\LinkedInResourceOwner $owner */
                 $owner = $this->provider->getResourceOwner($token);
                 $id    = $owner->getId();
                 $email = $owner->getEmail();

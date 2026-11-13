@@ -199,6 +199,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         if ($token) {
             try {
+                /** @var \Smolblog\OAuth2\Client\Provider\TwitterUser $owner */
                 $owner = $this->provider->getResourceOwner($token);
 
                 $id       = $owner->getId();
@@ -313,6 +314,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         if ($token) {
             try {
+                /** @var \Smolblog\OAuth2\Client\Provider\TwitterUser $owner */
                 $owner = $this->provider->getResourceOwner($token);
                 $id    = $owner->getId();
             } catch (\Exception $e) {

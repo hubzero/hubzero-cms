@@ -82,7 +82,7 @@ class Verb
         // debugging...
         //       echo "celery-task-meta-".$task["id"]."\n";
 
-        $redis->lPush('celery', json_encode($bodyTask));
+        $redis->lpush('celery', [json_encode($bodyTask)]);
     }
 
     public static function metricsVerb($params)
