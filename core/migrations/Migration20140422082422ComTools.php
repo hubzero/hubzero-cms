@@ -30,10 +30,10 @@ class Migration20140422082422ComTools extends Base
 
         if ($mwSchema->tableExists('session')) {
             if (!$mwSchema->hasColumn('session', 'params')) {
-                $mwSchema->addColumn('params')->text()->nullable();
+                $mwSchema->addColumn('session', 'params')->text()->nullable();
             }
             if (!$mwSchema->hasColumn('session', 'zone_id')) {
-                $mwSchema->addColumn('zone_id')->integer()->notNull()->default(0);
+                $mwSchema->addColumn('session', 'zone_id')->integer()->notNull()->default(0);
             }
         }
     }
