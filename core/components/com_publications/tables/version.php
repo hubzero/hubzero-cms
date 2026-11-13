@@ -403,8 +403,8 @@ class Version extends Table
         $query  = "UPDATE $this->tableName SET main = 0 ";
         $query .= $unpublish ? ", state = 0 " : "";
         $query .= "WHERE id=" . $this->db->quote($vid) . " AND main = 1 LIMIT 1 ";
-        // The query is prepared but has not been run since 2015 (#8439).
         $this->db->setQuery($query);
+        $this->db->query();
         return true;
     }
 
