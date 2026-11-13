@@ -263,7 +263,7 @@ class Groups extends Plugin
      * @param  string $uid
      * @param  string $type
      * @param  string $cat
-     * @return boolean
+     * @return array|false|null
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {

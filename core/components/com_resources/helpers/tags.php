@@ -416,7 +416,7 @@ class Tags extends Cloud
      * Get a tag cloud for an object
      *
      * @param   integer  $limit
-     * @return  string
+     * @return  mixed
      */
     public function getTopTags($limit)
     {

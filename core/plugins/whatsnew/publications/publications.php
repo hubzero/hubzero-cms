@@ -45,7 +45,7 @@ class Publications extends Plugin
     /**
      * Results total
      *
-     * @var  integer
+     * @var  array|null
      */
     private $total = null;
 

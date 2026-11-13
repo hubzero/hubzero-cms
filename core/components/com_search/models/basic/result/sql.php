@@ -43,7 +43,7 @@ class Sql extends SearchResult
     /**
      * Return results as associative array
      *
-     * @return  object
+     * @return  AssocList
      * @throws  Exception
      */
     public function toAssociative()

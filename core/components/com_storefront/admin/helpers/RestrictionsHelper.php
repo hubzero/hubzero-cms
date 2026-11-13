@@ -65,7 +65,7 @@ class RestrictionsHelper
      * Check if the user is whitelisted for the SKUs provided.
      *
      * @param   int    $uId      User ID
-     * @param   int    $sIds     SKUs IDs
+     * @param   array    $sIds     SKUs IDs
      * @return  mixed
      */
     public static function checkWhitelistedSkusUser($uId, $sIds)

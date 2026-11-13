@@ -154,7 +154,7 @@ class Format
     /**
      * Function to get the formatter template keys being used
      *
-     * @return  string  Template string that is being used to format citations
+     * @return  array  Template string that is being used to format citations
      */
     public function getTemplateKeys()
     {

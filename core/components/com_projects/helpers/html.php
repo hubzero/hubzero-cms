@@ -488,8 +488,8 @@ class Html extends Obj
     /**
      * Search for value in array
      *
-     * @param   string  $needle
-     * @param   string  $haystack
+     * @param   array  $needle
+     * @param   array  $haystack
      * @return  boolean
      */
     public static function myArraySearch($needle, $haystack)

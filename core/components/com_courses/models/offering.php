@@ -374,7 +374,7 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
-     * @return     object|string|null
+     * @return     mixed
      */
     public function units($filters = [], $clear = false)
     {

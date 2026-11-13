@@ -192,7 +192,7 @@ class Publication extends Obj
             $this->category();
 
             // Map values for easy access
-            foreach ($this->version as $field => $value) {
+            foreach (get_object_vars($this->version) as $field => $value) {
                 $this->$field = $value;
             }
             $this->version_id        = $this->version->id;
@@ -201,7 +201,7 @@ class Publication extends Obj
             $this->curatorgroup      = $this->type->curatorgroup;
 
             // Map master values
-            foreach ($this->publication as $field => $value) {
+            foreach (get_object_vars($this->publication) as $field => $value) {
                 if (isset($this->$field)) {
                     $masterField = 'master_' . $field;
                     $this->$masterField = $value;
