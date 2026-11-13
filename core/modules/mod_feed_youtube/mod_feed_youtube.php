@@ -51,9 +51,9 @@ class FeedYoutube extends Module
 
         if ($rssDoc != false) {
             // Channel header and link
-            $this->feed->title        = $rssDoc->getTitle();
-            $this->feed->link         = $rssDoc->getLink();
-            $this->feed->description  = $rssDoc->getDescription();
+            $this->feed->title        = $rssDoc->get_title();
+            $this->feed->link         = $rssDoc->get_link();
+            $this->feed->description  = $rssDoc->get_description();
 
             // Channel image if exists
             $this->feed->image        = new \stdClass();
@@ -61,7 +61,7 @@ class FeedYoutube extends Module
             $this->feed->image->title = $rssDoc->get_image_title();
 
             // Items
-            $items = $rssDoc->getItems();
+            $items = $rssDoc->get_items();
 
             // Feed elements
             if ($this->params->get('pick_random', 0)) {

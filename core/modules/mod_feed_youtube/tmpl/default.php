@@ -94,11 +94,11 @@ if ($this->feed) {
         <li>
             <?php
             $thumb = null;
-            if (!is_null($currItem->getLink())) {
+            if (!is_null($currItem->get_link())) {
                 // Get video id
                 $match = [];
                 $vid = 0;
-                preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->getLink(), $match);
+                preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link(), $match);
                 if (count($match) > 1 && strlen($match[1]) > 11) {
                     $vid = substr($match[1], 0, 11);
                 }
@@ -118,15 +118,15 @@ if ($this->feed) {
 
                 // Display with thumbnails
                 if ($vid) { ?>
-                    <a href="<?php echo $currItem->getLink(); ?>" rel="external">
+                    <a href="<?php echo $currItem->get_link(); ?>" rel="external">
                         <img src="<?php echo $thumb; ?>" alt="" />
                     </a>
-                    <a href="<?php echo $currItem->getLink(); ?>" rel="external">
-                        <span><?php echo $currItem->getTitle(); ?></span>
+                    <a href="<?php echo $currItem->get_link(); ?>" rel="external">
+                        <span><?php echo $currItem->get_title(); ?></span>
                     </a>
                 <?php } else { ?>
-                    <a href="<?php echo $currItem->getLink(); ?>" rel="external">
-                        <span><?php echo $currItem->getTitle(); ?></span>
+                    <a href="<?php echo $currItem->get_link(); ?>" rel="external">
+                        <span><?php echo $currItem->get_title(); ?></span>
                     </a>
                     <?php
                 }

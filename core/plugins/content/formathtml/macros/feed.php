@@ -124,7 +124,7 @@ class Feed extends Macro
         // to http(s) targets.
 
         // Display title
-        $title = $feed->getTitle();
+        $title = $feed->get_title();
         $link  = $this->safeLink($feed->get_permalink());
         if ($title) {
             $html .= '<h3><a rel="external" href="'
@@ -135,13 +135,13 @@ class Feed extends Macro
         }
 
         // Display description
-        $desc = $feed->getDescription();
+        $desc = $feed->get_description();
         if ($desc) {
             $html .= '<p>' . \Hubzero\Utility\Sanitize::html($desc) . '</p>';
         }
 
         // Add each item
-        foreach ($feed->getItems(0, $limit) as $item) {
+        foreach ($feed->get_items(0, $limit) as $item) {
             $html .= $this->renderItem($item);
         }
 
@@ -160,8 +160,8 @@ class Feed extends Macro
     private function renderItem($item)
     {
         $html  = '<div class="item">';
-        $html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->getTitle()) . '</h4>';
-        $html .= '<p>' . \Hubzero\Utility\Sanitize::html((string) $item->getDescription()) . '</p>';
+        $html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->get_title()) . '</h4>';
+        $html .= '<p>' . \Hubzero\Utility\Sanitize::html((string) $item->get_description()) . '</p>';
         $html .= '<a rel="external" href="' . $this->safeLink($item->get_permalink()) . '">Read More &rsaquo;</a>';
         $html .= '</div>';
         return $html;

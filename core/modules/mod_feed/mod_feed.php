@@ -46,9 +46,9 @@ class Feed extends Module
 
         if ($rssDoc != false) {
             // Channel header and link
-            $feed->title        = $rssDoc->getTitle();
-            $feed->link         = $rssDoc->getLink();
-            $feed->description  = $rssDoc->getDescription();
+            $feed->title        = $rssDoc->get_title();
+            $feed->link         = $rssDoc->get_link();
+            $feed->description  = $rssDoc->get_description();
 
             // Channel image if exists
             $feed->image = new stdClass();
@@ -56,7 +56,7 @@ class Feed extends Module
             $feed->image->title = $rssDoc->get_image_title();
 
             // Items
-            $items = $rssDoc->getItems();
+            $items = $rssDoc->get_items();
 
             // Feed elements
             $feed->items = array_slice($items, 0, $this->params->get('rssitems', 5));
