@@ -27,7 +27,7 @@ abstract class OauthClient extends Plugin
     /**
      * Check login status of current user with regards to provider
      *
-     * @return  array  $status
+     * @return  void
      */
     abstract public function status();
 
