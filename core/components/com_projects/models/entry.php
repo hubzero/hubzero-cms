@@ -138,7 +138,6 @@ class Entry extends Model
     {
         if (empty($this->project)) {
             $this->project = new \Components\Projects\Models\Project($this->get('projectid'));
-            $this->project->_params = new \Hubzero\Config\Registry($this->project->params);
         }
 
         return $get ? $this->project->get($get) : $this->project;

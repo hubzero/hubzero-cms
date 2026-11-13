@@ -257,6 +257,21 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     }
 
     /**
+     * This project's connections that the current user may see: their own and the shared ones
+     *
+     * The same rows connections()->thatICanView() finds, asked of the
+     * connection model directly so the result is known to be one.
+     *
+     * @return  Connection
+     **/
+    public function connectionsICanView()
+    {
+        return Connection::all()
+            ->whereEquals('project_id', $this->get('id'))
+            ->thatICanView();
+    }
+
+    /**
      * Defines a one to many relationship between projects and description fields
      *
      * @return  \Hubzero\Database\Relationship\OneToMany

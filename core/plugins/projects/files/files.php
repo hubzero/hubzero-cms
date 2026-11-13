@@ -136,8 +136,7 @@ class Files extends Plugin
 
             if ($model->exists()) {
                 $connections = \Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))
-                    ->connections()
-                    ->thatICanView();
+                    ->connectionsICanView();
 
                 if ($connections->count()) {
                     foreach ($connections as $connection) {
@@ -838,7 +837,7 @@ class Files extends Plugin
             'layout'  => 'connections',
         ]);
         $view->set('model', $this->model);
-        $view->set('connections', Project::oneOrFail($this->model->get('id'))->connections()->thatICanView());
+        $view->set('connections', Project::oneOrFail($this->model->get('id'))->connectionsICanView());
 
         return $view->loadTemplate();
     }

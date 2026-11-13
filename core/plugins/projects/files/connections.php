@@ -174,7 +174,7 @@ class Connections
         // Assign vars
         $view->set('model', $this->model);
         $view->set('params', $this->params);
-        $view->set('connections', Project::oneOrFail($this->model->get('id'))->connections()->thatICanView());
+        $view->set('connections', Project::oneOrFail($this->model->get('id'))->connectionsICanView());
 
         // Load and return view content
         return $view->loadTemplate();
