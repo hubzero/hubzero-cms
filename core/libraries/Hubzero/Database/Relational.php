@@ -7056,9 +7056,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             if (!empty($orphanedIds)) {
                 // Delete orphaned models
-                $relatedClass = get_class($relationship->getRelated());
+                $related = $relationship->getRelated();
                 foreach ($orphanedIds as $orphanId) {
-                    $orphan = $relatedClass::one($orphanId);
+                    $orphan = $related::one($orphanId);
                     if ($orphan && !$orphan->isNew() && !$orphan->destroy()) {
                         $this->setErrors($orphan->getErrors());
                         return false;

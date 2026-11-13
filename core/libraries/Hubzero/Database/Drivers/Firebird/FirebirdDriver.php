@@ -2324,7 +2324,7 @@ class FirebirdDriver extends BaseSqlDriver
      */
     public function connected()
     {
-        if (!$this->connection instanceof \Hubzero\Database\ConnectionInterface) {
+        if (!$this->connection instanceof \Hubzero\Database\Connection\PdoConnection) {
             return false;
         }
 

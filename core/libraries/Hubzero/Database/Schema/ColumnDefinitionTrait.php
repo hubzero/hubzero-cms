@@ -719,7 +719,11 @@ trait ColumnDefinitionTrait
         }
 
         // COMMENT (MySQL-family only)
-        if ($driver->supportsColumnComments() && isset($this->columnModifiers['comment'])) {
+        if (
+            $driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
+            && $driver->supportsColumnComments()
+            && isset($this->columnModifiers['comment'])
+        ) {
             $parts[] = "COMMENT '" . addslashes($this->columnModifiers['comment']) . "'";
         }
 
@@ -748,7 +752,10 @@ trait ColumnDefinitionTrait
         }
 
         if (is_bool($value)) {
-            return $driver->formatBooleanLiteral($value);
+            // Each SQL driver writes booleans its own way; the usual way otherwise
+            return $driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
+                ? $driver->formatBooleanLiteral($value)
+                : ($value ? 'TRUE' : 'FALSE');
         }
 
         if (is_numeric($value)) {

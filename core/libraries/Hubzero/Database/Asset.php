@@ -17,9 +17,9 @@ use Hubzero\Facades\Event;
 class Asset
 {
     /**
-     * The database model
+     * The database model: one with a name to title its asset by, and rules if it carries any
      *
-     * @var  \Hubzero\Database\Relational|static
+     * @var  \Hubzero\Database\Relational&object{name: mixed, assetRules: mixed}
      **/
     private $model = null;
 

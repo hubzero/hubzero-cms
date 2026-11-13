@@ -29,6 +29,10 @@ namespace Hubzero\Database\Schema;
  * // Via foreignId() convenience method
  * $table->foreignId('user_id')->constrained();  // Creates column + FK
  * ```
+ *
+ * Calls it does not define finish the key and go on to the table builder.
+ *
+ * @mixin TableBuilder
  */
 class ForeignKeyBuilder
 {

@@ -379,6 +379,19 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Test to see if this driver can be used on this machine
+     *
+     * A driver that needs an extension says so by overriding this. One that
+     * does not say is taken to be usable.
+     *
+     * @return  bool
+     */
+    public static function test()
+    {
+        return true;
+    }
+
+    /**
      * Returns a driver instance based on the given options
      *
      * There are three global options and then the rest are specific to the database driver:
