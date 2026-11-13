@@ -25,6 +25,8 @@ use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
  * - No NVARCHAR(MAX) - use TEXT for large strings
  * - Page size limits VARCHAR to ~4096 bytes
  * - sp_rename for renaming tables and columns
+ *
+ * @property AseDriver $driver  The driver this grammar writes for
  */
 class AseGrammar extends BaseSchemaGrammar
 {

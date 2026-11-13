@@ -24,6 +24,8 @@ use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
  * - Different constraint syntax
  * - Uses BIT instead of BOOLEAN
  *
+ *
+ * @property SqlsrvDriver $driver  The driver this grammar writes for
  */
 class SqlsrvGrammar extends BaseSchemaGrammar
 {

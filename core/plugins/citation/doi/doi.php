@@ -347,8 +347,11 @@ class Doi extends Plugin
             $query = "//ns:relatedIdentifier[text()=" . "'" . $relatedIdentifierVal
                 . "'" . " and @relatedIdentifierType=" . "'" . $relatedIdentifierType . "'" . "]";
             $nodeList = $xpath->query($query);
-            $nodeList->item(0)->setAttribute("relationType", $relationType);
-            $nodeList->item(0)->setAttribute("resourceTypeGeneral", $resourceTypeGeneral);
+            $node = $nodeList ? $nodeList->item(0) : null;
+            if ($node instanceof \DOMElement) {
+                $node->setAttribute("relationType", $relationType);
+                $node->setAttribute("resourceTypeGeneral", $resourceTypeGeneral);
+            }
             $xmlStr = $dom->saveXML();
 
             $result = $this->regMetadata($xmlStr);

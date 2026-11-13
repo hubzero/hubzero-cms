@@ -21,6 +21,8 @@ use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
  * - TEXT
  * - REAL
  * - BLOB
+ *
+ * @property SqliteDriver $driver  The driver this grammar writes for
  */
 class SqliteGrammar extends BaseSchemaGrammar
 {

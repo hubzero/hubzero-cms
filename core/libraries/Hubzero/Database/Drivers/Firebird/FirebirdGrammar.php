@@ -15,6 +15,8 @@ use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
 
 /**
  * Firebird-specific DDL grammar
+ *
+ * @property FirebirdDriver $driver  The driver this grammar writes for
  */
 class FirebirdGrammar extends BaseSchemaGrammar
 {

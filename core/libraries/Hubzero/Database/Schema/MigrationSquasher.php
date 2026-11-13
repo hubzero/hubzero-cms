@@ -591,8 +591,9 @@ class MigrationSquasher
      */
     protected function driverSupportsEngine(): bool
     {
-        $driverName = strtolower($this->driver->getName() ?? '');
-        return in_array($driverName, ['mysql', 'mariadb', 'percona']);
+        // The driver says so itself; it has no getName()
+        return $this->driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
+            && $this->driver->supportsEngine();
     }
 
     /**
@@ -602,8 +603,8 @@ class MigrationSquasher
      */
     protected function driverSupportsCharset(): bool
     {
-        $driverName = strtolower($this->driver->getName() ?? '');
-        return in_array($driverName, ['mysql', 'mariadb', 'percona']);
+        return $this->driver instanceof \Hubzero\Database\Drivers\Base\BaseSqlDriver
+            && $this->driver->supportsTableCharset();
     }
 
     /**

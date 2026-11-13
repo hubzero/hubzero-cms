@@ -15,6 +15,8 @@ use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
 
 /**
  * Informix-specific DDL grammar
+ *
+ * @property InformixDriver $driver  The driver this grammar writes for
  */
 class InformixGrammar extends BaseSchemaGrammar
 {

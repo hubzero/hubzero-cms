@@ -167,6 +167,8 @@ use Hubzero\Facades\User;
  *
  * @method static static select(string $column, string $as = null, bool $count = false)
  * @method static static deselect()
+ * @method static static from(string $table, string $as = null)
+ * @method static static delete(string $table)
  * @method static static join(string $table, string $leftKey = null, string $rightKey = null, string $type = 'inner')
  * @method static static where(string $column, string $operator, mixed $value, string $logical = 'and', int $depth = 0)
  * @method static static orWhere(string $column, string $operator, mixed $value, int $depth = 0)
