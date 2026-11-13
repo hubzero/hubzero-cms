@@ -67,6 +67,9 @@ use Hubzero\Facades\Route;
  *
  * @property  string                                  $name      The title, through transformName()
  * @property  \Components\Categories\Models\Category  $category  The category, through category()
+ *
+ * @property mixed $params       Not a column: the article's parameters, set for display
+ * @property mixed $articletext  Not a column: the text to edit, set by the edit form
  */
 class Article extends Relational implements \Hubzero\Search\Searchable
 {

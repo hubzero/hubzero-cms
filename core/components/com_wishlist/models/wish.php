@@ -34,6 +34,8 @@ use Hubzero\Facades\Request;
  * @property-read  mixed  $proposer  What proposer() gives
  * @property  int|string|null  $ranking
  * @property  int|string|null  $wishlist
+ *
+ * @property mixed $bonus  Not a column: the bonus points offered, when the query selects them
  */
 class Wish extends Relational
 {

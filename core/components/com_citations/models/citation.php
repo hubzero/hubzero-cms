@@ -110,6 +110,8 @@ use Hubzero\Facades\Lang;
  * @property  null  $search_string  {SECONDARY LINK}
  *
  * @property-read  mixed  $sponsors  What sponsors() gives
+ *
+ * @property mixed $tempId  Not a column: the temporary id its authors were saved under, while it has no id
  */
 class Citation extends Relational implements \Hubzero\Search\Searchable
 {

@@ -72,6 +72,8 @@ use Hubzero\Facades\Route;
  * @property  int                                $toolpublished  The tool version's state, set by compileToolInfo()
  *
  * @method \Components\Resources\Models\Type type() Through __call(), from transformType()
+ *
+ * @property mixed $typetitle  Not a column: the type's title, when the query selects it
  */
 class Entry extends Relational implements \Hubzero\Search\Searchable
 {

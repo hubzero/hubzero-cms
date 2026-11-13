@@ -1339,7 +1339,7 @@ class Curation extends Obj
     {
         $status = new Status();
         $status->status     = 2; // unreviewed
-        $status->updated_by = 0;
+        $status->set('updated_by', 0);
 
         if ($props === null || $items === null) {
             return $status;

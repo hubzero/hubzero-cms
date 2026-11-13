@@ -18,6 +18,8 @@ use Hubzero\Facades\Component;
 
 /**
  * User quota model
+ *
+ * @property mixed $user_count  Not a column: how many users, when the query counts them
  */
 class Quota extends Relational
 {
