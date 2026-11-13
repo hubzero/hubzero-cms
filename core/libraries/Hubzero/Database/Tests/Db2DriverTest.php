@@ -912,6 +912,7 @@ class Db2DriverTest extends AbstractDriverTestCase
             )
         ");
 
+        /** @var \Hubzero\Database\Drivers\Db2\Db2Driver $driver */
         $this->assertTrue($driver->addForeignKey(
             'd2_fk_child',
             'fk_d2_child_parent',
@@ -923,6 +924,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('d2_fk_child');
         $this->assertNotEmpty($fks);
 
+        /** @var \Hubzero\Database\Drivers\Db2\Db2Driver $driver */
         $this->assertTrue($driver->dropForeignKey('d2_fk_child', 'fk_d2_child_parent'));
     }
 

@@ -70,9 +70,9 @@ class AssignTest extends TestCase
         $this->assertTrue($view->assign('rows', [1, 2]));
         $this->assertTrue($view->assign((object) ['total' => 2]));
 
-        $this->assertSame('A title', $view->title);
-        $this->assertSame([1, 2], $view->rows);
-        $this->assertSame(2, $view->total);
+        $this->assertSame('A title', $view->get('title'));
+        $this->assertSame([1, 2], $view->get('rows'));
+        $this->assertSame(2, $view->get('total'));
     }
 
     /**

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * Test Owner model
+ *
+ * @property mixed $name  Column of the test table
  */
 class ThroughOwner extends Relational
 {

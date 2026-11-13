@@ -980,6 +980,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $driver->exec("CREATE TABLE ix_fk_parent (id SERIAL PRIMARY KEY, name VARCHAR(100))");
         $driver->exec("CREATE TABLE ix_fk_child (id SERIAL PRIMARY KEY, parent_id INTEGER)");
 
+        /** @var \Hubzero\Database\Drivers\Informix\InformixDriver $driver */
         $this->assertTrue($driver->addForeignKey(
             'ix_fk_child',
             'fk_ix_child_parent',
@@ -991,6 +992,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('ix_fk_child');
         $this->assertNotEmpty($fks);
 
+        /** @var \Hubzero\Database\Drivers\Informix\InformixDriver $driver */
         $this->assertTrue($driver->dropForeignKey('ix_fk_child', 'fk_ix_child_parent'));
     }
 
@@ -1186,6 +1188,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $this->assertFalse($driver->supportsEngine());
         $this->assertFalse($driver->supportsColumnPositioning());
         $this->assertTrue($driver->supportsSequences());
+        /** @var \Hubzero\Database\Drivers\Informix\InformixDriver $driver */
         $this->assertTrue($driver->supportsCheckConstraints());
         $this->assertTrue($driver->supportsWindowFunctions());
         $this->assertTrue($driver->supportsCTE());

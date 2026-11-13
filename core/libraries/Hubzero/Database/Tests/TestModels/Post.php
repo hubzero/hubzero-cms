@@ -15,6 +15,7 @@ use Hubzero\Database\Relational;
  *
  * @property-read  mixed  $tags  What tags() gives
  * @property-read  mixed  $user  What user() gives
+ * @property-read  mixed  $email  The user's, when forwardTo('user') is in effect
  */
 class Post extends Relational
 {

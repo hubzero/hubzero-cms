@@ -507,6 +507,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         }
 
         // MariaDB always has InnoDB
+        /** @var \Hubzero\Database\Drivers\Mariadb\MariadbDriver $driver */
         $this->assertTrue($driver->hasEngine('InnoDB'));
     }
 

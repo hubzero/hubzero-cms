@@ -12,6 +12,10 @@ use Hubzero\Database\Relational;
 
 /**
  * Test Country model
+ *
+ * @property mixed $id    Column of the test table
+ * @property mixed $name  Column of the test table
+ * @property mixed $code  Column of the test table
  */
 class ThroughCountry extends Relational
 {

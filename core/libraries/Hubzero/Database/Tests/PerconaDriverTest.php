@@ -437,6 +437,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
             return;
         }
 
+        /** @var \Hubzero\Database\Drivers\Percona\PerconaDriver $driver */
         $this->assertTrue($driver->hasEngine('InnoDB'));
     }
 

@@ -848,6 +848,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('pg_fk_child');
         $this->assertNotEmpty($fks);
 
+        /** @var \Hubzero\Database\Drivers\Pgsql\PgsqlDriver $driver */
         $this->assertTrue($driver->dropConstraint('pg_fk_child', 'fk_pg_child_parent'));
     }
 
@@ -1067,6 +1068,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         $this->assertFalse($driver->supportsColumnPositioning());
         $this->assertFalse($driver->supportsEngine());
         $this->assertTrue($driver->supportsDropColumn());
+        /** @var \Hubzero\Database\Drivers\Pgsql\PgsqlDriver $driver */
         $this->assertTrue($driver->supportsRenameColumn());
         $this->assertTrue($driver->supportsJson());
         $this->assertTrue($driver->supportsWindowFunctions());

@@ -672,6 +672,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
+        /** @var \Hubzero\Database\Drivers\Mysql\MysqlDriver $driver */
         $this->assertTrue($driver->hasEngine('InnoDB'));
     }
 
