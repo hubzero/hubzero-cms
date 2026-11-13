@@ -47,22 +47,30 @@ class Google extends Obj
     /**
      * Insert permission
      *
+     * Written for Drive v3 and not yet run against a Drive account.
+     *
      * @param   object  $apiService  Drive API service instance
-     * @param   string  $fileId          Remote id
-     * @param   string  $value       File title
-     * @param   string  $type    Parent id
-     * @param   array   &$role   Collector array
-     * @return  mixed   string (id) or false
+     * @param   string  $fileId      Remote id
+     * @param   string  $value       Who it is for: an e-mail address (user, group) or a domain (domain)
+     * @param   string  $type        user, group, domain or anyone
+     * @param   string  $role        The role to give, such as reader or writer
+     * @return  mixed   The permission made, or null
      */
     public static function insertPermission($apiService, $fileId, $value, $type, $role)
     {
         $newPermission = new Google_Service_Drive_Permission();
-        $newPermission->setValue($value);
         $newPermission->setType($type);
         $newPermission->setRole($role);
 
+        // v3 names who the permission is for by kind; v2 had one "value"
+        if ($type == 'domain') {
+            $newPermission->setDomain($value);
+        } elseif ($type == 'user' || $type == 'group') {
+            $newPermission->setEmailAddress($value);
+        }
+
         try {
-            return $apiService->permissions->insert($fileId, $newPermission);
+            return $apiService->permissions->create($fileId, $newPermission);
         } catch (Exception $e) {
             echo 'An error occurred: ' . $e->getMessage();
         }
@@ -409,9 +417,11 @@ class Google extends Obj
             return false;
         }
 
-        // Removing parent ID from file so that the file gets removed from project folder
+        // Removing parent ID from file so that the file gets removed from project folder.
+        // Drive v3 has no parents resource: a parent is taken away by updating the file.
+        // (Written for v3 and not yet run against a Drive account.)
         try {
-            $apiService->parents->delete($id, $folderId);
+            $apiService->files->update($id, new Google_Service_Drive_DriveFile(), ['removeParents' => $folderId]);
             return true;
         } catch (Exception $e) {
             return false;
@@ -428,29 +438,31 @@ class Google extends Obj
     public static function deleteAllParents($apiService, $id = 0)
     {
         // Check for what we need
-        if (!$apiService || !isset($apiService->parents) || !$id) {
+        if (!$apiService || !$id) {
             return false;
         }
 
+        // Drive v3 has no parents resource: the file lists its parents, and they are
+        // taken away by updating the file. (Written for v3 and not yet run against a
+        // Drive account; Drive may refuse to leave a file with no parent at all.)
         try {
-            $parents = $apiService->parents->listParents($id);
+            $file    = $apiService->files->get($id, ['fields' => 'parents']);
+            $parents = $file->getParents();
 
-            if (!empty($parents['items'])) {
-                foreach ($parents['items'] as $parent) {
-                    $folderId = $parent['id'];
-
-                    try {
-                        $apiService->parents->delete($id, $folderId);
-                        return true;
-                    } catch (Exception $e) {
-                        return false;
-                    }
-                }
+            if (empty($parents)) {
+                return false;
             }
+
+            $apiService->files->update(
+                $id,
+                new Google_Service_Drive_DriveFile(),
+                ['removeParents' => implode(',', $parents)],
+            );
+
+            return true;
         } catch (Exception $e) {
             return false;
         }
-        return false;
     }
 
     /**

@@ -640,7 +640,8 @@ class Connect extends Obj
                         $permission->setRole('writer');
                         $permission->setType('user');
                         $permission->setEmailAddress($email);
-                        $params = ['sendNotificationEmails' => 'false'];
+                        // Drive v3 spells this without the final "s"; the v2 name is refused as an unknown parameter
+                        $params = ['sendNotificationEmail' => 'false'];
 
                         try {
                             $perm = $apiService->permissions->create($folderID, $permission, $params);
