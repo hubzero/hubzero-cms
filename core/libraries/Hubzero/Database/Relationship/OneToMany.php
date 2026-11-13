@@ -132,10 +132,10 @@ class OneToMany extends Relationship
     /**
      * Loads the relationship content with the provided data
      *
-     * @param   array   $rows  The rows that we'll be seeding
+     * @param   \Hubzero\Database\Rows   $rows  The rows that we'll be seeding
      * @param   string  $data  The data to seed
      * @param   string  $name  The name of the relationship
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     public function seedWithData($rows, $data, $name)
     {
@@ -147,10 +147,10 @@ class OneToMany extends Relationship
     /**
      * Seeds the given rows with data
      *
-     * @param   array   $rows  The rows to seed on to
+     * @param   \Hubzero\Database\Rows   $rows  The rows to seed on to
      * @param   array   $data  The data from which to seed
      * @param   string  $name  The relationship name
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      **/
     protected function seed($rows, $data, $name)
     {

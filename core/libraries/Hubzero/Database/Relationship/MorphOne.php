@@ -98,7 +98,7 @@ class MorphOne extends Relationship
     /**
      * Fetch the related model
      *
-     * @return \Hubzero\Database\Relational|null
+     * @return \Hubzero\Database\Relational|\Hubzero\Database\Rows|null
      */
     public function rows()
     {
@@ -145,7 +145,7 @@ class MorphOne extends Relationship
      *
      * @param  \Hubzero\Database\Relational  $model     The related model
      * @param  \Closure|null                 $callback  Optional callback
-     * @return \Hubzero\Database\Relational
+     * @return \Hubzero\Database\Relational|array|\Hubzero\Database\Rows
      */
     public function associate($model, $callback = null)
     {

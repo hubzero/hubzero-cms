@@ -177,7 +177,7 @@ class Relationship
     /**
      * Fetch results of relationship
      *
-     * @return  \Hubzero\Database\Relational
+     * @return  \Hubzero\Database\Relational|\Hubzero\Database\Rows
      **/
     public function rows()
     {
