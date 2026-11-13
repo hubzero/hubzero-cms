@@ -361,7 +361,7 @@ class Links extends Plugin
      * @param   integer  $vid
      * @param   integer  $cid
      * @param   boolean  $returnStatus
-     * @return  boolean
+     * @return  bool|array
      */
     public function unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
     {
@@ -418,7 +418,7 @@ class Links extends Plugin
      * @param   string   $format
      * @param   integer  $actor
      * @param   boolean  $returnStatus
-     * @return  boolean
+     * @return  bool|array
      */
     public function attachCitation($vid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
     {

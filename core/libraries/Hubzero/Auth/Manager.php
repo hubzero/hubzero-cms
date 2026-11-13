@@ -51,7 +51,7 @@ class Manager
      *
      * @param   array    $credentials  Array('username' => string, 'password' => string)
      * @param   array    $options      Array('remember' => boolean)
-     * @return  boolean  True on success.
+     * @return  bool|\Exception  True on success.
      */
     public function login($credentials, $options = [])
     {

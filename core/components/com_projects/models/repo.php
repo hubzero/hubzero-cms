@@ -814,7 +814,7 @@ class Repo extends Obj
      * Insert file into the repo
      *
      * @param   array    $params
-     * @return  boolean
+     * @return  bool|array
      */
     public function insert($params = [])
     {
@@ -1164,7 +1164,7 @@ class Repo extends Obj
     /**
      * Add files to repo from extracted archive
      *
-     * @return  boolean
+     * @return  bool|int
      */
     protected function addFromExtracted($extractPath, $zipName, $target, $params, &$available)
     {

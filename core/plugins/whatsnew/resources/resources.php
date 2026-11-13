@@ -97,7 +97,7 @@ class Resources extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   array    $areas       Active area(s)
      * @param   array    $tagids      Array of tag IDs
-     * @return  array
+     * @return  array|\Hubzero\Database\Rows
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {

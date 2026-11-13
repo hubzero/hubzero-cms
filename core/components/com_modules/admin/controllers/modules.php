@@ -1211,7 +1211,7 @@ class Modules extends AdminController
      * @param   integer  $value      The new value matching a module position.
      * @param   array    $pks        An array of row IDs.
      * @param   array    $contexts   An array of item contexts.
-     * @return  boolean  True if successful, false otherwise and internal error is set.
+     * @return  bool|array  True if successful, false otherwise and internal error is set.
      */
     protected function batchCopy($value, $pks, $contexts)
     {

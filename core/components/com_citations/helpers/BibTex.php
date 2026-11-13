@@ -273,7 +273,7 @@ class BibTex
      * Parses what is stored in content and clears the content if the parsing is successful.
      *
      * @access public
-     * @return boolean true on success and Exception if there was a problem
+     * @return bool|\Exception true on success and Exception if there was a problem
      */
     public function parse()
     {

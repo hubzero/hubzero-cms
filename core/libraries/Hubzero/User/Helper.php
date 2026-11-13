@@ -214,7 +214,7 @@ class Helper
      * @param   string   $domain_username
      * @param   string   $domain
      * @param   integer  $uidNumber
-     * @return  boolean
+     * @return  bool|int
      */
     public static function mapXDomainUser($domain_username, $domain, $uidNumber)
     {
@@ -361,7 +361,7 @@ class Helper
      * @param   string  $uid
      * @param   string  $type
      * @param   string  $cat
-     * @return  boolean
+     * @return  bool|array
      */
     public static function getCourses($uid, $type = 'all', $cat = null)
     {

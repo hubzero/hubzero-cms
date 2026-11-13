@@ -210,7 +210,7 @@ class Miner extends Obj implements Provider
      * ID of the data type.
      *
      * @param   string   $identifier
-     * @return  integer
+     * @return  int|string
      */
     public function match($identifier)
     {

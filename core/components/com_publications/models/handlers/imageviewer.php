@@ -203,7 +203,7 @@ class ImageViewer extends Base
      * Show attachments in an image band (gallery)
      *
      * @param   object  $pub
-     * @return  bool
+     * @return  bool|string|null
      */
     public function showImageBand($pub)
     {

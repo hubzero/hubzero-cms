@@ -774,7 +774,7 @@ class Ldap
     /**
      * Sync all groups
      *
-     * @return  boolean
+     * @return  bool|array
      */
     public static function syncAllGroups()
     {
@@ -811,7 +811,7 @@ class Ldap
     /**
      * Sync all users
      *
-     * @return  boolean
+     * @return  bool|array
      */
     public static function syncAllUsers()
     {

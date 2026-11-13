@@ -44,7 +44,7 @@ class Wiki extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   array    $areas       Active area(s)
      * @param   array    $tagids      Array of tag IDs
-     * @return  array
+     * @return  array|int
      */
     public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {

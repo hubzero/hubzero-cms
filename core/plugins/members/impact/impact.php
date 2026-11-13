@@ -237,7 +237,7 @@ class Impact extends Plugin
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
      * @param  array   $areas      Areas to return data for
-     * @return array
+     * @return array|int|object
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {

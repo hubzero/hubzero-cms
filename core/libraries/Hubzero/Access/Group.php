@@ -131,7 +131,7 @@ class Group extends Relational
      *
      * @param   integer  $parent_id  The root of the tree to rebuild.
      * @param   integer  $left       The left id to start with in building the tree.
-     * @return  boolean  True on success
+     * @return  bool|int  True on success
      */
     public function rebuild($parent_id = 0, $left = 0)
     {

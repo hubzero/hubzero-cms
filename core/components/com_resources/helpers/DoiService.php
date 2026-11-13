@@ -663,7 +663,7 @@ class DoiService extends Obj
      *
      * @param   string   $url
      * @param   array    $postvals
-     * @return  boolean
+     * @return  bool|string
      */
     public function runCurl($url, $postvals = null)
     {

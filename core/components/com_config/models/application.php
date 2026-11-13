@@ -136,7 +136,7 @@ class Application extends Obj
      * Method to save the configuration data.
      *
      * @param   array $data  An array containing all global config data.
-     * @return  bool   True on success, false on failure.
+     * @return  bool|array   True on success, false on failure.
      */
     public function save($data)
     {

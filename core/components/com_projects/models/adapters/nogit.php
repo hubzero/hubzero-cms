@@ -180,7 +180,7 @@ class Nogit extends Models\Adapter
      * Get last file revision
      *
      * @param   array   $params
-     * @return  boolean
+     * @return  bool|string
      */
     public function getLastRevision($params = [])
     {

@@ -841,7 +841,7 @@ class Data extends Base
      * @param   object   $pub
      * @param   object    $blockParams
      * @param   boolean  $authorized
-     * @return  boolean
+     * @return  bool|string
      */
     public function drawPackageList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
     {

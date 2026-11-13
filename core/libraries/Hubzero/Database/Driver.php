@@ -2934,7 +2934,7 @@ abstract class Driver implements LoggerAwareInterface
      * @param   object  &$object  A reference to an object whose public properties match the table fields
      * @param   string  $key      The name of the primary key
      * @param   bool    $nulls    True to update null fields or false to ignore them
-     * @return  bool
+     * @return  bool|$this
      */
     public function updateObject($table, &$object, $key, $nulls = false)
     {

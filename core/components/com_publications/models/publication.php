@@ -2524,7 +2524,7 @@ class Publication extends Obj
      * @param   string  $orcidID
      * @param   string  $accessToken
      *
-     * @return  boolean or string
+     * @return  bool|string or string
      */
     public function addPubToORCID($orcidID, $accessToken)
     {

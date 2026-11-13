@@ -50,7 +50,7 @@ class Offline extends Plugin
      *
      * @param   object  $transaction
      * @param   object  $user
-     * @return  bool
+     * @return  bool|array
      */
     public function onSelectedPayment($transaction, $user)
     {
@@ -80,7 +80,7 @@ class Offline extends Plugin
     /**
      * Return a list of filters that can be applied
      *
-     * @return  bool
+     * @return  bool|array
      */
     public function onPostback($postData)
     {
