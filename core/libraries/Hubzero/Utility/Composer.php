@@ -200,7 +200,7 @@ class Composer
     /**
      * Return an array of repositories containing remote packages
      *
-     * @return  array   Array of Composer\Repository\RepositoryInterfaces containing remote packages
+     * @return  \Composer\Repository\RepositoryInterface[]  The repositories containing remote packages
      */
     private static function getRemoteRepositories()
     {
@@ -424,7 +424,7 @@ class Composer
         $remoteRepos = self::getRemoteRepositories();
         $remotePackages = [];
         foreach ($remoteRepos as $repo) {
-            if (method_exists($repo, "getRepoConfig")) {
+            if ($repo instanceof \Composer\Repository\ConfigurableRepositoryInterface) {
                 $config = $repo->getRepoConfig();
                 if (is_array($config) && isset($config['type']) && $config['type'] != 'composer') {
                     $packages = $repo->getPackages();

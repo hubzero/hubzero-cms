@@ -666,7 +666,7 @@ class Applications extends SiteController
         $request->request['grant_type'] = 'authorization_code';
 
         // Ask OAuth for an access token to be added to the application
-        $response = $server->handleTokenRequest($request);
+        $server->handleTokenRequest($request, $response);
 
         $this->view
             ->setLayout('view')

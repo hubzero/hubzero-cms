@@ -265,7 +265,10 @@ class IdPBindingTest extends Basic
         $this->assertInstanceOf(LogoutResponse::class, $message);
         $this->assertSame('logout-1', $message->getInResponseTo());
         $this->assertSame('state-123', $message->getRelayState());
-        $this->assertTrue($message->getSignature()->validate(
+        // A signature read from a message is a reader, which is the kind that can be checked
+        $signature = $message->getSignature();
+        $this->assertInstanceOf(\LightSaml\Model\XmlDSig\AbstractSignatureReader::class, $signature);
+        $this->assertTrue($signature->validate(
             KeyHelper::createPublicKey(X509Certificate::fromFile($this->dir . '/idp.crt')),
         ));
     }

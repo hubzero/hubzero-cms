@@ -28,9 +28,10 @@ class Oauthv1r0 extends ApiController
     {
         $server = new Server(new MysqlStorage());
 
-        $server->handleTokenRequest(
-            \OAuth2\Request::createFromGlobals(),
-        )->send();
+        // The server fills in the response it is handed; sending is ours to do
+        $response = new \OAuth2\Response();
+        $server->handleTokenRequest(\OAuth2\Request::createFromGlobals(), $response);
+        $response->send();
 
         exit();
     }

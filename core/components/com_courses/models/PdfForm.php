@@ -355,8 +355,8 @@ class PdfForm
 
                 // Reset page proportions to get new width and height
                 $im->setImagePage(0, 0, 0, 0);
-                $widths[]                     = $im->width + 20;
-                $crop[$this->pages]['height'] = $im->height + 20;
+                $widths[]                     = $im->getImageWidth() + 20;
+                $crop[$this->pages]['height'] = $im->getImageHeight() + 20;
                 $crop[$this->pages]['x']      = $imagePage['x'] - 10;
                 $crop[$this->pages]['y']      = $imagePage['y'] - 10;
             }
