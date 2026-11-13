@@ -394,11 +394,9 @@ class Import extends SiteController
 
         $viewOpenurl = $this->view->get('openurl');
         $viewOpenurl['link'] = '';
-        $this->view->set('openurl', $viewOpenurl);
-        $viewOpenurl = $this->view->get('openurl');
         $viewOpenurl['text'] = '';
+        $viewOpenurl['icon'] = '';
         $this->view->set('openurl', $viewOpenurl);
-        $this->view->openurl['icon'] = '';
 
         //get any messages
         $this->view->set('messages', Notify::messages('citations'));

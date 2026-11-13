@@ -82,36 +82,40 @@ class Membership extends AdminController
             'search',
             '',
         )));
-        $this->view->set('filters', $viewFilters);
-        $this->view->filters['status'] = trim(Request::getState(
+        $viewFilters['status'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.status',
             'status',
             '',
         ));
+        $this->view->set('filters', $viewFilters);
         // Sorting options
-        $this->view->filters['sort']         = trim(Request::getState(
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['sort'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sort',
             'filter_order',
             'name',
         ));
-        $this->view->filters['sort_Dir']     = trim(Request::getState(
+        $viewFilters['sort_Dir'] = trim(Request::getState(
             $this->option . '.' . $this->controller . '.sortdir',
             'filter_order_Dir',
             'ASC',
         ));
+        $this->view->set('filters', $viewFilters);
         // Filters for returning results
-        $this->view->filters['limit']  = Request::getState(
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['limit'] = Request::getState(
             $this->option . '.' . $this->controller . '.limit',
             'limit',
             Config::get('list_limit'),
             'int',
         );
-        $this->view->filters['start']  = Request::getState(
+        $viewFilters['start'] = Request::getState(
             $this->option . '.' . $this->controller . '.limitstart',
             'limitstart',
             0,
             'int',
         );
+        $this->view->set('filters', $viewFilters);
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor(
             $this->view->filters['start'] / $this->view->filters['limit'],

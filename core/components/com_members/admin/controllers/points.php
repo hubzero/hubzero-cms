@@ -72,7 +72,8 @@ class Points extends AdminController
         $this->view->set('stats', $viewStats);
 
         // Get overall earnings on Wishes
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Earnings: Wish List',
             'class'         => 'earn',
             'alltimepts'    => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, ''),
@@ -83,9 +84,11 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall spending
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Spending - Total',
             'class'         => 'spendtotal',
             'alltimepts'    => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, ''),
@@ -96,9 +99,11 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall spending in Store
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Spending: Store',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, ''),
@@ -109,9 +114,11 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall spending on Answers
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Spending: Answers',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, ''),
@@ -122,9 +129,11 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get overall spending on Wishes
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Spending: Wish List',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, ''),
@@ -135,9 +144,11 @@ class Points extends AdminController
             'lastmonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get royalties
-        $this->view->stats[] = [
+        $viewStats = $this->view->get('stats');
+        $viewStats[] = [
             'memo'          => 'Royalties - Total',
             'class'         => 'royaltytotal',
             'alltimepts'    => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, ''),
@@ -168,6 +179,7 @@ class Points extends AdminController
             ),
             'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
+        $this->view->set('stats', $viewStats);
 
         // Get royalties on answers
         $this->view->stats[] = [

@@ -273,8 +273,6 @@ class Posts extends SiteController
             ];
             $viewCounts = $this->view->get('counts');
             $viewCounts['collections'] = $this->model->collections($filters);
-            $this->view->set('counts', $viewCounts);
-            $viewCounts = $this->view->get('counts');
             $viewCounts['posts'] = $this->model->posts($filters);
             $this->view->set('counts', $viewCounts);
         }

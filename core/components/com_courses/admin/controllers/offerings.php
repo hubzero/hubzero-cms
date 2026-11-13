@@ -111,11 +111,13 @@ class Offerings extends AdminController
         $viewFilters['count'] = true;
         $this->view->set('filters', $viewFilters);
 
-        $this->view->set('total', $this->view->get('course')->offerings($this->view->filters));
+        $this->view->set('total', $this->view->get('course')->offerings($this->view->get('filters')));
 
-        $this->view->filters['count'] = false;
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['count'] = false;
+        $this->view->set('filters', $viewFilters);
 
-        $this->view->set('rows', $this->view->get('course')->offerings($this->view->filters));
+        $this->view->set('rows', $this->view->get('course')->offerings($this->view->get('filters')));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

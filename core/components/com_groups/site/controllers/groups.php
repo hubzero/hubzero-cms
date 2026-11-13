@@ -112,12 +112,10 @@ class Groups extends Base
             // Get users groups
             $viewMygroups = $this->view->get('mygroups');
             $viewMygroups['members'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
-            $this->view->set('mygroups', $viewMygroups);
-            $viewMygroups = $this->view->get('mygroups');
             $viewMygroups['invitees'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'invitees', 1);
+            $viewMygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
             $this->view->set('mygroups', $viewMygroups);
-            $this->view->mygroups['applicants'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'applicants', 1);
-            $this->view->mygroups = array_filter($this->view->mygroups);
+            $this->view->set('mygroups', array_filter($this->view->get('mygroups')));
 
             // Get groups user may be interested in
             $this->view->set('interestinggroups', Group\Helper::getGroupsMatchingTagString(

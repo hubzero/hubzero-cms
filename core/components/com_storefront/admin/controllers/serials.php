@@ -75,7 +75,7 @@ class Serials extends AdminController
         $viewFilters = $this->view->get('filters');
         $viewFilters['return'] = 'list';
         $this->view->set('filters', $viewFilters);
-        $this->view->set('rows', SerialsHelper::getSkuSerials($this->view->filters, $sId));
+        $this->view->set('rows', SerialsHelper::getSkuSerials($this->view->get('filters'), $sId));
 
         // Output the HTML
         $this->view->display();

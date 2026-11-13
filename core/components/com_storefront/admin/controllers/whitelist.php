@@ -78,7 +78,7 @@ class Whitelist extends AdminController
         $viewFilters = $this->view->get('filters');
         $viewFilters['return'] = 'list';
         $this->view->set('filters', $viewFilters);
-        $this->view->set('rows', RestrictionsHelper::getWhitelistedSkuUsers($this->view->filters, $sId));
+        $this->view->set('rows', RestrictionsHelper::getWhitelistedSkuUsers($this->view->get('filters'), $sId));
 
         // Output the HTML
         $this->view->display();

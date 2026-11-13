@@ -281,27 +281,26 @@ class Team extends Plugin
         // Instantiate project owner
         $viewFilters = $view->get('filters');
         $viewFilters['limit'] = Request::getInt('limit', Config::get('list_limit'));
-        $view->set('filters', $viewFilters);
-        $viewFilters = $view->get('filters');
         $viewFilters['start'] = Request::getInt('limitstart', 0);
-        $view->set('filters', $viewFilters);
-        $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
-        $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
-        $view->filters['status']  = Request::getString('status', 'active');
-        if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
-            $view->filters['sortdir'] = 'ASC';
+        $viewFilters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
+        $viewFilters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
+        $viewFilters['status'] = Request::getString('status', 'active');
+        if (!in_array($viewFilters['sortdir'], ['ASC', 'DESC'])) {
+            $viewFilters['sortdir'] = 'ASC';
         }
-        if (!in_array($view->filters['sortby'], ['group', 'added', 'date', 'role', 'name', 'status'])) {
-            $view->filters['sortby'] = 'name';
+        if (!in_array($viewFilters['sortby'], ['group', 'added', 'date', 'role', 'name', 'status'])) {
+            $viewFilters['sortby'] = 'name';
         }
         if (!$edit) {
-            $view->filters['online']   = 1;
+            $viewFilters['online'] = 1;
         }
-        if ($view->filters['limit'] > $view->get('total')) {
-            $view->filters['start'] = 0;
+        if ($viewFilters['limit'] > $view->get('total')) {
+            $viewFilters['start'] = 0;
         }
+        $view->set('filters', $viewFilters);
+
         // Get all active team members
-        $view->set('team', $this->model->team($view->filters, true));
+        $view->set('team', $this->model->team($viewFilters, true));
 
         // Get managers count
         $view->set('managers_count', count($this->model->table('Owner')->getIds($this->model->get('id'), $role = 1)));
@@ -351,15 +350,17 @@ class Team extends Plugin
         $view->set('filters', []);
         $viewFilters = $view->get('filters');
         $viewFilters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
-        $view->set('filters', $viewFilters);
-        $viewFilters = $view->get('filters');
         $viewFilters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
         $view->set('filters', $viewFilters);
-        if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
-            $view->filters['sortdir'] = 'ASC';
+        if (!in_array($view->get('filters')['sortdir'], ['ASC', 'DESC'])) {
+            $viewFilters = $view->get('filters');
+            $viewFilters['sortdir'] = 'ASC';
+            $view->set('filters', $viewFilters);
         }
-        if (!in_array($view->filters['sortby'], ['role', 'name'])) {
-            $view->filters['sortby'] = 'name';
+        if (!in_array($view->get('filters')['sortby'], ['role', 'name'])) {
+            $viewFilters = $view->get('filters');
+            $viewFilters['sortby'] = 'name';
+            $view->set('filters', $viewFilters);
         }
 
         $view->set('params', $this->model->params);
@@ -453,17 +454,15 @@ class Team extends Plugin
         $objO = $this->model->table('Owner');
         $viewFilters = $view->get('filters');
         $viewFilters['limit'] =  0;
-        $view->set('filters', $viewFilters);
-        $viewFilters = $view->get('filters');
         $viewFilters['start'] = Request::getInt('t_limitstart', 0);
+        $viewFilters['sortby'] = Request::getString('t_sortby', 'name');
+        $viewFilters['sortdir'] = Request::getString('t_sortdir', 'ASC');
+        $viewFilters['status'] = 'active';
+        $viewFilters['pub_versionid'] = $vid;
         $view->set('filters', $viewFilters);
-        $view->filters['sortby']        = Request::getString('t_sortby', 'name');
-        $view->filters['sortdir']       = Request::getString('t_sortdir', 'ASC');
-        $view->filters['status']        = 'active';
-        $view->filters['pub_versionid'] = $vid;
 
         // Get all active team members
-        $view->set('team', $objO->getOwners($this->model->get('id'), $view->filters));
+        $view->set('team', $objO->getOwners($this->model->get('id'), $view->get('filters')));
 
         // Get current authors
         $pa = $view->get('publication')->table('Author');

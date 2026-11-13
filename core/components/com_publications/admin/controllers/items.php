@@ -156,11 +156,9 @@ class Items extends AdminController
         $this->view->set('return', []);
         $viewReturn = $this->view->get('return');
         $viewReturn['category'] = Request::getString('category', '');
-        $this->view->set('return', $viewReturn);
-        $viewReturn = $this->view->get('return');
         $viewReturn['sortby'] = Request::getString('sortby', '');
+        $viewReturn['status'] = Request::getString('status', '');
         $this->view->set('return', $viewReturn);
-        $this->view->return['status']   = Request::getString('status', '');
 
         // Instantiate a publication object
         $this->view->set('model', new Models\Publication($id, $version));
@@ -1513,11 +1511,9 @@ class Items extends AdminController
         $this->view->set('return', []);
         $viewReturn = $this->view->get('return');
         $viewReturn['cat'] = Request::getString('cat', '');
-        $this->view->set('return', $viewReturn);
-        $viewReturn = $this->view->get('return');
         $viewReturn['sortby'] = Request::getString('sortby', '');
+        $viewReturn['status'] = Request::getString('status', '');
         $this->view->set('return', $viewReturn);
-        $this->view->return['status'] = Request::getString('status', '');
 
         // Load publication model
         $this->view->set('pub', new Models\Publication($id, 'default'));

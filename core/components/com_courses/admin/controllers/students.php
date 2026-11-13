@@ -99,23 +99,29 @@ class Students extends AdminController
                 $this->view->filters['section_id'][] = $section->get('id');
             }
         }*/
-        if (!$this->view->filters['offering_id']) {
-            $this->view->filters['offering_id'] = null;
+        if (!$this->view->get('filters')['offering_id']) {
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['offering_id'] = null;
+            $this->view->set('filters', $viewFilters);
         }
-        if (!$this->view->filters['section_id']) {
-            $this->view->filters['section_id'] = null;
+        if (!$this->view->get('filters')['section_id']) {
+            $viewFilters = $this->view->get('filters');
+            $viewFilters['section_id'] = null;
+            $this->view->set('filters', $viewFilters);
         }
-        $this->view->filters['student'] = 1;
+        $viewFilters = $this->view->get('filters');
+        $viewFilters['student'] = 1;
+        $this->view->set('filters', $viewFilters);
 
         $tbl = new Tables\Member($this->database);
 
         //$this->view->offering->students($this->view->filters);
-        $this->view->set('total', $tbl->count($this->view->filters));
+        $this->view->set('total', $tbl->count($this->view->get('filters')));
 
         //$this->view->filters['count'] = false;
 
         //$this->view->offering->students($this->view->filters);
-        $rows = $tbl->find($this->view->filters);
+        $rows = $tbl->find($this->view->get('filters'));
         if ($rows) {
             foreach ($rows as $key => $row) {
                 $rows[$key] = new \Components\Courses\Models\Student($row);
