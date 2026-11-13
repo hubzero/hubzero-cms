@@ -73,7 +73,7 @@ class MasterType extends Table
      * Get record id by alias name
      *
      * @param   string  $alias
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getTypeId($alias = '')
     {
@@ -88,7 +88,7 @@ class MasterType extends Table
      * Get record alias by id
      *
      * @param   integer|string $id
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getTypeAlias($id = '')
     {

@@ -290,7 +290,7 @@ class Tool extends Table
      * Get ID
      *
      * @param   string  $name
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getId($name = null)
     {

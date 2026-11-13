@@ -162,7 +162,7 @@ class Log extends Table
      * @param      integer $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @param      string  $action      Action to filters results by
-     * @return     integer|null
+     * @return     string|null
      */
     public function logCount($scope_id = null, $scope = 'course', $action = '')
     {

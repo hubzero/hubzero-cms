@@ -88,7 +88,7 @@ class RemoteFile extends Table
      * @param   integer  $projectid  Project ID
      * @param   string   $service
      * @param   string   $converted
-     * @return  array|false
+     * @return  string|false|null
      */
     public function getFileCount($projectid = null, $service = '', $converted = 'na')
     {

@@ -173,7 +173,7 @@ class License extends Table
      *
      * @param   object  $manifest
      * @param   object  $selected
-     * @return  object|false
+     * @return  array|false|null
      */
     public function getBlockLicenses($manifest = null, $selected = null)
     {

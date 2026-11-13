@@ -281,7 +281,7 @@ class Todo extends Plugin
 
         // Get last order
         $lastorder = $objTD->getLastOrder($model->get('id'));
-        $objTD->priority = $lastorder ? $lastorder + 1 : 1;
+        $objTD->priority = $lastorder ? (int) $lastorder + 1 : 1;
 
         // Store content
         if (!$objTD->store()) {

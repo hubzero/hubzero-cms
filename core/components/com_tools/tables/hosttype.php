@@ -132,7 +132,8 @@ class Hosttype extends Table
 
         // Set the query and execute the update.
         $this->db->setQuery(sprintf($statement, implode(",", $fields), $where));
-        return $this->db->execute();
+        $this->db->execute();
+        return true;
     }
 
     /**

@@ -231,7 +231,7 @@ class Todo extends Table
      * Get last item order
      *
      * @param   integer  $projectid
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getLastOrder($projectid = null)
     {

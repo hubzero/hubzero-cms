@@ -898,7 +898,7 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   string   $email
-     * @return  boolean  true if record found
+     * @return  string|false|null  the matched value if a record is found
      */
     public function checkInvited($projectid = null, $email = '')
     {
@@ -923,7 +923,7 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   string   $name
-     * @return  boolean  true if record found
+     * @return  string|false|null  the matched value if a record is found
      */
     public function checkInvitedByName($projectid = null, $name = '')
     {
@@ -1424,7 +1424,7 @@ class Owner extends Table
      * @param   string  $identifier
      * @param   string  $code
      * @param   string  $email
-     * @return  boolean
+     * @return  string|false|null
      */
     public function matchInvite($identifier = null, $code = '', $email = '')
     {

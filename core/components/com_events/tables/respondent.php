@@ -230,7 +230,8 @@ class Respondent extends Table
             return false;
         }
         $this->db->setQuery("DELETE FROM $this->tableName WHERE event_id=" . $this->db->quote(intval($event_id)));
-        return $this->db->query();
+        $this->db->query();
+        return true;
     }
 
     /**

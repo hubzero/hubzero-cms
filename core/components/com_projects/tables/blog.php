@@ -146,7 +146,7 @@ class Blog extends Table
      *
      * @param   integer  $projectid
      * @param   array    $filters
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getCount($projectid = 0, $filters = [])
     {

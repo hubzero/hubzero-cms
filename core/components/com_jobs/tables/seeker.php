@@ -76,7 +76,7 @@ class Seeker extends Table
      * Get a shortlist count for a yser
      *
      * @param   integer  $uid  User ID
-     * @return  integer
+     * @return  int|string|null
      */
     public function countShortlistedBy($uid = 0)
     {

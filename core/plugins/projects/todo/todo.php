@@ -498,7 +498,7 @@ class Todo extends Plugin
 
             // Get last order
             $lastorder = $objTD->getLastOrder($this->model->get('id'));
-            $neworder = $lastorder ? $lastorder + 1 : 1;
+            $neworder = $lastorder ? (int) $lastorder + 1 : 1;
             $objTD->priority = $todoid ? $objTD->priority : $neworder;
 
             // Get list name

@@ -230,7 +230,7 @@ class Attachment extends Table
      *
      * @param   integer  $vid   pub version id
      * @param   array    $find
-     * @return  object|false
+     * @return  array|false|null
      */
     public function getConnections($vid = null, $find = [])
     {
@@ -258,7 +258,7 @@ class Attachment extends Table
      *
      * @param   integer  $versionid  pub version id
      * @param   array    $filters
-     * @return  object|false
+     * @return  array|string|false|null
      */
     public function getAttachments($versionid, $filters = [])
     {

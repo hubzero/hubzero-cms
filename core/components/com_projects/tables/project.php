@@ -650,7 +650,7 @@ class Project extends Table
      *
      * @param   array    $projects
      * @param   integer  $uid
-     * @return  integer
+     * @return  int|string|null
      */
     public function getUpdateCount($projects = [], $uid = 0)
     {

@@ -190,7 +190,7 @@ class Member extends Table
      * Check if a token exists
      *
      * @param      string $token
-     * @return     integer
+     * @return     int|string|null
      */
     public function tokenExists($token)
     {

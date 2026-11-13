@@ -188,7 +188,7 @@ class Version extends Table
      *
      * @param   integer  $pid     Pub ID
      * @param   array    $filters  Query filters
-     * @return  object|false
+     * @return  array|false|null
      */
     public function getVersions($pid, $filters = [])
     {
@@ -253,7 +253,7 @@ class Version extends Table
      * Get pub id
      *
      * @param   integer  $vid  Pub version ID
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getPubId($vid = null)
     {
@@ -269,7 +269,7 @@ class Version extends Table
      * Get ID of main version
      *
      * @param   integer  $pid  Pub ID
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getMainVersionId($pid = null)
     {
@@ -286,7 +286,7 @@ class Version extends Table
      * Get published version number
      *
      * @param   integer  $pid  Pub ID
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getPublishedVersionNumber($pid = null)
     {
@@ -303,7 +303,7 @@ class Version extends Table
      * Get published version count
      *
      * @param   integer  $pid  Pub ID
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getPublishedCount($pid = null)
     {
@@ -320,7 +320,7 @@ class Version extends Table
      * Get version count
      *
      * @param   integer  $pid  Pub ID
-     * @return  integer|false
+     * @return  string|false|null
      */
     public function getCount($pid = null)
     {
