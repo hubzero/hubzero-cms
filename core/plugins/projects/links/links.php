@@ -1077,7 +1077,7 @@ class Links extends Plugin
      * @param   string   &$url
      * @param   boolean  $rawData
      * @param   string   $format
-     * @return  string|null
+     * @return  mixed  The metadata as an object; raw, or as a citation string, when asked; null if not found
      */
     public function getDoiMetadata($doi, $citation, &$url, $rawData = false, $format = 'apa')
     {

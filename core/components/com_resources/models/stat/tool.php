@@ -16,6 +16,8 @@ use Hubzero\Facades\Lang;
  * Resource stats tools model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $users
  */
 class Tool extends Relational
 {
