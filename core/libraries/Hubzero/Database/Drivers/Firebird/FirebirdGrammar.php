@@ -265,16 +265,6 @@ class FirebirdGrammar extends BaseSchemaGrammar
             $sql .= ' NOT NULL';
         }
 
-        // CHECK constraint for SET/ENUM types
-        $checkValues = $column->getParameter('check_values');
-        if (!empty($checkValues)) {
-            $quotedValues = array_map(function ($v) {
-                return "'" . str_replace("'", "''", $v) . "'";
-            }, $checkValues);
-            $columnName = $this->wrap($column->getName());
-            $sql .= ' CHECK (' . $columnName . ' IN (' . implode(', ', $quotedValues) . '))';
-        }
-
         // Primary key (inline)
         if ($column->isPrimaryKey() && !$column->isAutoIncrement()) {
             $sql .= ' PRIMARY KEY';
@@ -300,28 +290,11 @@ class FirebirdGrammar extends BaseSchemaGrammar
         $type = $column->getType();
         $params = $column->getParameters();
 
-        // Handle MySQL SET() type - convert to VARCHAR with CHECK constraint
-        if (preg_match('/^SET\((.+)\)$/i', $type, $matches)) {
-            // Extract the longest value to determine VARCHAR length
-            $values = str_getcsv($matches[1], ',', "'");
-            $maxLen = max(array_map('strlen', $values));
-            $length = max($maxLen, 20); // Minimum 20 chars
-
-            // Store the CHECK constraint values for later use
-            $column->setParameter('check_values', $values);
-
-            return "VARCHAR({$length})";
-        }
-
-        // Handle MySQL ENUM() type similarly
-        if (preg_match('/^ENUM\((.+)\)$/i', $type, $matches)) {
-            $values = str_getcsv($matches[1], ',', "'");
-            $maxLen = max(array_map('strlen', $values));
-            $length = max($maxLen, 20);
-
-            $column->setParameter('check_values', $values);
-
-            return "VARCHAR({$length})";
+        // MySQL's SET() and ENUM() have no Firebird counterpart. As the Firebird
+        // driver does, and every other database here, keep the value as text
+        // and leave the list of allowed values to the application.
+        if (preg_match('/^(SET|ENUM)\s*\(/i', $type)) {
+            return 'VARCHAR(255)';
         }
 
         $firebirdType = $this->typeMap[$type] ?? 'VARCHAR(255)';
