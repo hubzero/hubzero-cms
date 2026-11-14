@@ -2345,7 +2345,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * Most drivers: quote("test'value") → 'test''value' (with surrounding quotes)
      * PDO_CUBRID: quote("test'value") → test''value (without surrounding quotes)
      *
-     * @param   string|null  $text   The string to be escaped (null is escaped as an empty string)
+     * @param   string|int|float|bool|null  $text   The string to be escaped (null is escaped as an empty string)
      * @param   bool         $extra  Optional parameter to escape extra chars (%, _)
      * @return  string       The escaped string
      */

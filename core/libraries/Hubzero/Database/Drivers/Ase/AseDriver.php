@@ -465,7 +465,7 @@ class AseDriver extends BaseSqlDriver
      * PHP int or float is passed, return the raw numeric string without
      * single quotes so ASE treats it as a numeric literal.
      *
-     * @param   mixed  $text    The value to quote
+     * @param   string|int|float|bool|null  $text    The value to quote
      * @param   bool   $escape  True to escape
      * @return  string
      */

@@ -1353,7 +1353,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Quotes and optionally escape a string to database requirements for insertion into the database
      *
-     * @param   string  $text    The string to quote
+     * @param   string|int|float|bool|null  $text    The string to quote
      * @param   bool    $escape  True to escape the string, false to leave it unchanged
      * @return  string
      */
@@ -3399,18 +3399,18 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Escapes a string for usage in an SQL statement
      *
-     * @param   string|null  $text   The string to be escaped (null is escaped as an empty string)
+     * @param   string|int|float|bool|null  $text   The string to be escaped (null is escaped as an empty string)
      * @param   boolean      $extra  Optional parameter to provide extra escaping
      * @return  string
      */
     public function escape($text, $extra = false)
     {
         if ($this->connection instanceof ConnectionInterface) {
-            return $this->connection->escape($text ?? '', $extra);
+            return $this->connection->escape((string) ($text ?? ''), $extra);
         }
 
         // Backward compatibility: raw PDO
-        $result = substr($this->connection->quote($text ?? ''), 1, -1);
+        $result = substr($this->connection->quote((string) ($text ?? '')), 1, -1);
 
         if ($extra) {
             $result = addcslashes($result, '%_');
