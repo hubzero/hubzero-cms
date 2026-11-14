@@ -208,17 +208,17 @@ class Event implements ArrayAccess, Countable
     #[\ReturnTypeWillChange]
     public function serialize()
     {
-        return $this->__serialize();
+        return serialize($this->__serialize());
     }
 
     /**
      * Serialize the event.
      *
-     * @return  string  The serialized event.
+     * @return  array  The event's name, arguments and stopped flag.
      */
     public function __serialize()
     {
-        return serialize([$this->name, $this->arguments, $this->stopped]);
+        return [$this->name, $this->arguments, $this->stopped];
     }
 
     /**
