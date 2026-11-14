@@ -501,7 +501,7 @@ class Profilesv1r1 extends ApiController
 
         $result = User::getInstance($userid);
 
-        if (!$result || !$result->get('id')) {
+        if (!$result->get('id')) {
             throw new Exception(Lang::txt('No such user'), 404);
         }
 
@@ -538,7 +538,7 @@ class Profilesv1r1 extends ApiController
         }
         $result = User::getInstance($userid);
 
-        if (!$result || !$result->get('id')) {
+        if (!$result->get('id')) {
             throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
         }
 

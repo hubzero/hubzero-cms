@@ -40,7 +40,7 @@ else
 if (!$isRegister) {
     // Instantiate a new profile object
     $profile = User::getInstance();
-    if ($profile) {
+    if ($profile->get('id')) {
         $fname = $fname ?: (string) $profile->get('givenName');
         $lname = $lname ?: (string) $profile->get('surname');
         $email = $email ?: $profile->get('email');

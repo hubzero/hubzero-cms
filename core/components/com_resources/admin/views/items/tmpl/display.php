@@ -445,7 +445,7 @@ $this->css();
                          . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
                          : '';
 
-                if ($editor) {
+                if ($editor->get('id')) {
                     $info .= Lang::txt('COM_RESOURCES_CHECKED_OUT_BY') . ': ' . $this->escape($editor->get('name'));
                 }
             } else {

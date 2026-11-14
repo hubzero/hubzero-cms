@@ -1227,7 +1227,7 @@ class Groups extends Base
         $groupMembers = [];
         foreach ($members as $member) {
             $profile = User::getInstance($member);
-            if ($profile) {
+            if ($profile->get('id')) {
                 $groupMembers[$profile->get('email')] = $profile->get('name');
             }
         }

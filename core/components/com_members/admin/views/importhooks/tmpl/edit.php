@@ -138,7 +138,8 @@ $eventSelected = function ($value) use ($view) {
                             <th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDBY'); ?></th>
                             <td>
                                 <?php
-                                if ($created_by = User::getInstance($this->hook->get('created_by'))) {
+                                $created_by = User::getInstance($this->hook->get('created_by'));
+                                if ($created_by->get('id')) {
                                     echo $created_by->get('name');
                                 }
                                 ?>

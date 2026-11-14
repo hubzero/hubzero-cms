@@ -415,7 +415,7 @@ class Query extends Relational
                 } elseif (strtolower($expr->fldval) == 'owner') {
                     $vuser = User::getInstance($expr->val);
 
-                    if ($vuser) {
+                    if ($vuser->get('id')) {
                         $expr->val = $vuser->get('id');
                     }
                 }

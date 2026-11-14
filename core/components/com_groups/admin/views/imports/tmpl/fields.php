@@ -87,7 +87,8 @@ $this->js();
                         <th><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
                         <td>
                             <?php
-                            if ($created_by = User::getInstance($this->import->get('created_by'))) {
+                            $created_by = User::getInstance($this->import->get('created_by'));
+                            if ($created_by->get('id')) {
                                 echo $created_by->get('name');
                             }
                             ?>

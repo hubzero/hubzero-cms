@@ -51,7 +51,7 @@ class Managers extends Obj
 
                 $member = User::getInstance($gid);
 
-                if (!$member || !$member->get('id')) {
+                if (!$member->get('id')) {
                     $this->setError(Lang::txt('COM_GROUPS_IMPORT_ERROR_MEMBER_NOT_FOUND', $gid));
                     continue;
                 }
@@ -97,7 +97,7 @@ class Managers extends Obj
         foreach ($record->managers as $gid) {
             $member = User::getInstance($gid);
 
-            if (!$member || !$member->get('id')) {
+            if (!$member->get('id')) {
                 $this->setError(Lang::txt('COM_GROUPS_IMPORT_ERROR_MEMBER_NOT_FOUND', $gid));
                 continue;
             }

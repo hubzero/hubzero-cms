@@ -1465,7 +1465,7 @@ class Questions extends SiteController
         foreach ($apu as $u) {
             $user = User::getInstance($u);
 
-            if ($user) {
+            if ($user->get('id')) {
                 $recipients[] = $user->get('id');
             }
         }

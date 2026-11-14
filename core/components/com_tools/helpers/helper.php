@@ -114,7 +114,7 @@ class Helper
         if (is_array($uids)) {
             foreach ($uids as $uid) {
                 $user = User::getInstance($uid);
-                if ($user && $user->get('username')) {
+                if ($user->get('username')) {
                     $logins[] = $user->get('username');
                 }
             }

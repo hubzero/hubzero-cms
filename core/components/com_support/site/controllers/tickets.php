@@ -1123,7 +1123,7 @@ class Tickets extends SiteController
         // Log activity
         $creator = User::getInstance($row->get('login'));
 
-        if ($creator && $creator->get('id')) {
+        if ($creator->get('id')) {
             Event::trigger('system.logActivity', [
                 'activity' => [
                     'action'      => 'created',
@@ -1197,7 +1197,7 @@ class Tickets extends SiteController
                         foreach ($group->get('managers') as $manager) {
                             $manager = User::getInstance($manager);
 
-                            if (!$manager || !$manager->get('id')) {
+                            if (!$manager->get('id')) {
                                 continue;
                             }
 
@@ -1875,7 +1875,7 @@ class Tickets extends SiteController
         ];
 
         $creator = User::getInstance($ticket->get('login'));
-        if ($creator && $creator->get('id')) {
+        if ($creator->get('id')) {
             $recipients[] = ['user', $creator->get('id')];
         }
         if ($ticket->get('owner')) {

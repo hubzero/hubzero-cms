@@ -818,7 +818,7 @@ class Batchcreate extends AdminController
                 $item['errors'][] = $error;
             } else {
                 $profile = User::getInstance($uid);
-                if (!$profile || !$profile->get('id')) {
+                if (!$profile->get('id')) {
                     $error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND') . ': ' . trim($uid);
                     $item['errors'][] = $error;
                 } else {

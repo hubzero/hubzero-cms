@@ -221,7 +221,7 @@ class Messages extends AdminController
         $id = Request::getInt('id', 0);
 
         $member = User::getInstance($id);
-        if (!$member || !$member->get('id')) {
+        if (!$member->get('id')) {
             // Output messsage and redirect
             App::abort(404, Lang::txt('Unknown or invalid member ID'));
         }
@@ -307,7 +307,7 @@ class Messages extends AdminController
         $id = Request::getInt('id', 0);
 
         $member = User::getInstance($id);
-        if (!$member || !$member->get('id')) {
+        if (!$member->get('id')) {
             // Output messsage and redirect
             App::abort(404, Lang::txt('Unknown or invalid member ID'));
         }

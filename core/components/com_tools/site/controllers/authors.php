@@ -142,7 +142,7 @@ class Authors extends SiteController
         if (!$authid && $username) {
             $profile = User::getInstance($username);
 
-            if (!$profile) {
+            if (!$profile->get('id')) {
                 $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
                 if ($show) {
                     $this->displayTask($id);
@@ -164,7 +164,7 @@ class Authors extends SiteController
                 // Perform a check to see if they have a contributors page. If not, we'll need to make one
                 $profile = User::getInstance($authid);
 
-                if ($profile) {
+                if ($profile->get('id')) {
                     $author->set('authorid', $authid);
                     $author->set('name', (string) $profile->get('name'));
                     $author->set('role', (string) $role);

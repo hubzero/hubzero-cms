@@ -124,7 +124,7 @@ class Ticket extends Relational
 
         if ($data['owner'] && is_string($data['owner'])) {
             $owner = User::getInstance($data['owner']);
-            if ($owner && $owner->get('id')) {
+            if ($owner->get('id')) {
                 $data['owner'] = (int) $owner->get('id');
             }
         }

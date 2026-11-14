@@ -210,7 +210,7 @@ class Membership extends Base
             if (!is_numeric($l) && strpos($l, '@') === false) {
                 // load by username
                 $profile = User::getInstance($l);
-                if ($profile && $profile->get('id')) {
+                if ($profile->get('id')) {
                     unset($la[$k]);
                     $la[] = $profile->get('id');
                 }
@@ -352,7 +352,8 @@ class Membership extends Base
         $groupInvitees = [];
         $activity = [];
         foreach ($invitees as $invitee) {
-            if ($profile = User::getInstance($invitee)) {
+            $profile = User::getInstance($invitee);
+            if ($profile->get('id')) {
                 $groupInvitees[$profile->get('email')] = $profile->get('name');
 
                 // This list is joined into an activity description, which the
@@ -756,7 +757,7 @@ class Membership extends Base
         $managers = [];
         foreach ($this->view->get('group')->get('managers') as $m) {
             $profile = User::getInstance($m);
-            if ($profile) {
+            if ($profile->get('id')) {
                 $managers[$profile->get('email')] = $profile->get('name');
             }
         }
@@ -1258,7 +1259,7 @@ class Membership extends Base
         $managers = [];
         foreach ($this->view->get('group')->get('managers') as $m) {
             $profile = User::getInstance($m);
-            if ($profile) {
+            if ($profile->get('id')) {
                 $managers[$profile->get('email')] = $profile->get('name');
             }
         }

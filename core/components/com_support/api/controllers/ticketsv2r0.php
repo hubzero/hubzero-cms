@@ -247,7 +247,7 @@ class Ticketsv2r0 extends ApiController
         $result = User::getInstance($userid);
 
         //make sure we have a user
-        if (!$result || !$result->get('id')) {
+        if (!$result->get('id')) {
             // an anonymous caller is a 401, not a server error
             throw new Exception(Lang::txt('User not found.'), 401);
         }

@@ -541,7 +541,7 @@ $formAction = Route::url(
                 }
                 $anon = 0;
                 $profile = User::getInstance($user->id);
-                if (!$profile) {
+                if (!$profile->get('id')) {
                     $anon = 1;
                 }
                 $userChartId = $this->option . '-data-user' . $user->id;

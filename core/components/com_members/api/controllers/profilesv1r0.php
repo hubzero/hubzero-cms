@@ -415,7 +415,7 @@ class Profilesv1r0 extends ApiController
         $userid = Request::getInt('id', 0);
         $result = User::getInstance($userid);
 
-        if (!$result || !$result->get('id')) {
+        if (!$result->get('id')) {
             throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
         }
 

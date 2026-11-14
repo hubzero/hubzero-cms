@@ -167,7 +167,8 @@ $this->css('import');
                                 ?>
                                 <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
                                 <?php
-                                if ($created_by = User::getInstance($lastRun->get('ran_by'))) {
+                                $created_by = User::getInstance($lastRun->get('ran_by'));
+                                if ($created_by->get('id')) {
                                     echo $created_by->get('name');
                                 }
                                 ?>

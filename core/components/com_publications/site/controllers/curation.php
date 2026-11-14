@@ -378,7 +378,7 @@ class Curation extends SiteController
             // Make sure owner profile exists
             if ($owner) {
                 $ownerProfile  = User::getInstance($owner);
-                if (!$ownerProfile) {
+                if (!$ownerProfile->get('id')) {
                     $this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
                 }
             } elseif ($selected && Request::getString('owner', '')) {

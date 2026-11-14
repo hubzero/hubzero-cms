@@ -232,7 +232,7 @@ class DoiService extends Obj
             $orcid = (isset($authors[0]->orcid) ? $authors[0]->orcid : '');
         } elseif ($uid) {
             $user = User::getInstance($uid);
-            if ($user && $user->get('id')) {
+            if ($user->get('id')) {
                 $name  = $user->get('name');
                 $orcid = $user->get('orcid');
             }

@@ -420,7 +420,7 @@ class Projectsv2r0 extends ApiController
         if ($row->get('owned_by_user')) {
             $owner = User::getInstance($row->get('owned_by_user'));
 
-            if (!$owner || !$owner->get('id')) {
+            if (!$owner->get('id')) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ERROR_OWNER_NOT_FOUND'), 409);
             }
         }
@@ -925,7 +925,7 @@ class Projectsv2r0 extends ApiController
         if ($row->get('owned_by_user')) {
             $owner = User::getInstance($row->get('owned_by_user'));
 
-            if (!$owner || !$owner->get('id')) {
+            if (!$owner->get('id')) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ERROR_OWNER_NOT_FOUND'), 409);
             }
         }

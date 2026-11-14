@@ -210,7 +210,7 @@ class Admin
 
         // Load the current username if available.
         $user = User::getInstance($value);
-        if (!$user || !$user->get('id')) {
+        if (!$user->get('id')) {
             $user->set('name', Lang::txt('JLIB_FORM_SELECT_USER'));
         }
 

@@ -239,7 +239,7 @@ class Utils
         if (is_array($uids)) {
             foreach ($uids as $uid) {
                 $user = User::getInstance($uid);
-                if ($user) {
+                if ($user->get('id')) {
                     $logins[] = $user->get('username');
                 }
             }

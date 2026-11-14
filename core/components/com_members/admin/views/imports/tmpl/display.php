@@ -145,7 +145,8 @@ $this->css('import');
                             <time datetime="<?php echo $import->get('created_at'); ?>"><?php echo $val; ?></time><br />
                             <strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
                             <?php
-                            if ($created_by = User::getInstance($import->get('created_by'))) {
+                            $created_by = User::getInstance($import->get('created_by'));
+                            if ($created_by->get('id')) {
                                 echo $created_by->get('name');
                             }
                             ?>
@@ -165,7 +166,8 @@ $this->css('import');
                                 <time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo $val; ?></time><br />
                                 <strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
                                 <?php
-                                if ($created_by = User::getInstance($lastRun->get('ran_by'))) {
+                                $created_by = User::getInstance($lastRun->get('ran_by'));
+                                if ($created_by->get('id')) {
                                     echo $created_by->get('name');
                                 }
                                 ?>

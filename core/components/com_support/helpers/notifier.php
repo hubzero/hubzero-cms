@@ -120,7 +120,7 @@ class Notifier
                     foreach ($group->get('managers') as $manager) {
                         $manager = User::getInstance($manager);
 
-                        if (!$manager || !$manager->get('id')) {
+                        if (!$manager->get('id')) {
                             continue;
                         }
 

@@ -298,7 +298,7 @@ class Sessionsv1r0 extends ApiController
         $result = User::getInstance($userid);
 
         // make sure we have a user
-        if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid') {
+        if ($result->isNew() || strstr($result->get('email'), '@') == '@invalid') {
             throw new Exception(Lang::txt('COM_TOOLS_ERROR_USER_NOT_FOUND'), 404);
         }
 

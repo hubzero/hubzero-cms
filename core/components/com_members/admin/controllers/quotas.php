@@ -569,7 +569,7 @@ class Quotas extends AdminController
         $quota = Quota::oneOrNew($id);
         $user  = User::getInstance($quota->get('user_id'));
 
-        if (!$user || !$user->get('id')) {
+        if (!$user->get('id')) {
             return $return;
         }
 

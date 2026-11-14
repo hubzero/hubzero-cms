@@ -576,7 +576,7 @@ class Html
         if ($userid) {
             $user = User::getInstance($userid);
 
-            if ($user) {
+            if ($user->get('id')) {
                 if (($user->get('email')) && ($agenda_viewmail == 'YES')) {
                     $contactlink = '<a href="mailto:' . $user->get('email') . '">' . $user->get('name') . '</a>';
                 } else {

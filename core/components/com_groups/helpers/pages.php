@@ -253,7 +253,7 @@ class Pages
 
         foreach ($approvers as $approver) {
             $profile = User::getInstance($approver);
-            if ($profile) {
+            if ($profile->get('id')) {
                 $emails[$profile->get('email')] = $profile->get('name');
             }
         }
@@ -346,7 +346,7 @@ class Pages
         // get all manager email addresses
         foreach ($group->get('managers') as $m) {
             $profile = User::getInstance($m);
-            if ($profile) {
+            if ($profile->get('id')) {
                 $managers[$profile->get('email')] = $profile->get('name');
             }
         }

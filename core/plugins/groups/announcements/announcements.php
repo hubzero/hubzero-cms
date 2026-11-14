@@ -647,7 +647,8 @@ class Announcements extends Plugin
         // Get all group members
         $groupMembers = [];
         foreach ($group->get('members') as $member) {
-            if ($profile = User::getInstance($member)) {
+            $profile = User::getInstance($member);
+            if ($profile->get('id')) {
                 // Skip invalid emails
                 if (preg_match('/^-[0-9]+@invalid$/', $profile->get('email'))) {
                     continue;
