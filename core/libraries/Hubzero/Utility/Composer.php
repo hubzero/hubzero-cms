@@ -317,7 +317,7 @@ class Composer
     /**
      * Update a package or list of packages
      *
-     * @param       array   $packageName   List of packages to be updated
+     * @param       array|null|string   $packageName   List of packages to be updated
      * @return  boolean Indicates success or failure
      */
     private static function runUpdate($packageName)

@@ -565,7 +565,7 @@ class Pages
      * Display Group Page
      *
      * @param    Object    $group    \Hubzero\User\Group Object
-     * @param    Object    $page     \Components\Groups\Models\Page Object
+     * @param    Object|null    $page     \Components\Groups\Models\Page Object
      * @return   String
      */
     public static function displayPage($group, $page, $markHit = true)

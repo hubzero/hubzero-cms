@@ -126,7 +126,7 @@ class Loader
     /**
      * Make sure component name follows naming conventions
      *
-     * @param   string  $option  The element value for the extension
+     * @param   string|array  $option  The element value for the extension
      * @return  string
      */
     public function canonical($option)

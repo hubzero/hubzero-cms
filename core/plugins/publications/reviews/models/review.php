@@ -154,7 +154,7 @@ class Review extends \Hubzero\Base\Model
     /**
      * Get a list or count of comments
      *
-     * @param   string   $rtrn     Data format to return
+     * @param   string|array   $rtrn     Data format to return
      * @param   array    $filters  Filters to apply to data fetch
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed

@@ -135,7 +135,7 @@ class Dispatcher implements DispatcherInterface
      * In the case of a closure, you must specify at least one event name.
      *
      * @param   object|Closure  $listener  The listener
-     * @param   array           $events    An associative array of event names as keys
+     * @param   array|string           $events    An associative array of event names as keys
      *                                     and the corresponding listener priority as values.
      * @return  Dispatcher  This method is chainable.
      * @throws  InvalidArgumentException

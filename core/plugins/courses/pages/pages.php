@@ -646,7 +646,7 @@ class Pages extends Plugin
     /**
      * Build and return the file path
      *
-     * @param   boolean  $page
+     * @param   boolean|object  $page
      * @return  string
      */
     private function path($page = null)

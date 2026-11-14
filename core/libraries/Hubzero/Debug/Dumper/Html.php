@@ -62,7 +62,7 @@ class Html extends AbstractRenderer
     /**
      * Turn an array into a pretty print format
      *
-     * @param   array  $arr
+     * @param   array|string  $arr
      * @return  string
      */
     protected function deflate($arr)

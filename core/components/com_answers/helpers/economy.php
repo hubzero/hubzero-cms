@@ -63,7 +63,7 @@ class Economy extends Obj
     /**
      * Calculate the market value
      *
-     * @param   integer  $id    Question ID
+     * @param   integer|null  $id    Question ID
      * @param   string   $type  Transaction type
      * @return  mixed
      */
@@ -128,7 +128,7 @@ class Economy extends Obj
     /**
      * Distribute points
      *
-     * @param   integer  $qid       Question ID
+     * @param   integer|null  $qid       Question ID
      * @param   integer  $Q_owner   Question owner
      * @param   integer  $BA_owner  Account owner
      * @param   string   $type      Transaction type

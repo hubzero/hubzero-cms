@@ -299,7 +299,7 @@ class Transfer extends Plugin
     /**
      * Get a resource ID via a tag
      *
-     * @param   string  $tag  Tag
+     * @param   string|null  $tag  Tag
      * @return  mixed   False on error, Integer on success
      */
     public function getResourceIdFromTag($tag)
@@ -321,7 +321,7 @@ class Transfer extends Plugin
     /**
      * Get a resource ID via a group's alias (CN)
      *
-     * @param   string  $groupname  Group CN
+     * @param   string|null  $groupname  Group CN
      * @return  mixed   False on error, Integer on success
      */
     public function getResourceIdFromGroup($groupname)

@@ -592,7 +592,7 @@ class File extends Obj
     /**
      * Get folder structure level
      *
-     * @param   string   $dirPath
+     * @param   string|null   $dirPath
      * @return  integer
      */
     public function getDirLevel($dirPath = '')

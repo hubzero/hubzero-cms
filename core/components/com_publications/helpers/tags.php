@@ -100,7 +100,7 @@ class Tags extends \Hubzero\Base\Obj
      *    a) if not, creates a database entry for the tag
      * 2) Adds a reference linking tag with object
      *
-     * @param      integer $tagger_id Tagger ID
+     * @param      integer|null $tagger_id Tagger ID
      * @param      integer $object_id Object ID
      * @param      string  $tag       Tag
      * @param      integer $strength  Tag strength
@@ -297,7 +297,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Get the ID of a normalized tag
      *
-     * @param      string $tag Normalized tag
+     * @param      string|null $tag Normalized tag
      * @return     mixed False if errors, integer on success
      */
     public function getTagId($tag)
@@ -314,7 +314,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Get the ID of a raw tag
      *
-     * @param      string $tag Raw tag
+     * @param      string|null $tag Raw tag
      * @return     mixed False if errors, integer on success
      */
     public function getRawTagId($tag)
@@ -787,7 +787,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Turn a string of tags to an array
      *
-     * @param      string $tag Tag string
+     * @param      string|array $tag Tag string
      * @return     mixed
      */
     public function parseTopTags($tag, $remove = '')

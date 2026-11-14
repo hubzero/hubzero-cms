@@ -239,7 +239,7 @@ class Auditor
      * Used to normalize string before passing
      * it to detectors
      *
-     * @param   array   $data
+     * @param   array|string   $data
      * @return  array
      */
     protected function prepareData($data)

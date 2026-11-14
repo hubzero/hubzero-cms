@@ -252,7 +252,7 @@ class Seeker extends Table
     /**
      * Get a seeker
      *
-     * @param   integer  $uid    User ID
+     * @param   integer|null  $uid    User ID
      * @param   integer  $eid    Employer ID
      * @param   integer  $admin  Admin access?
      * @return  array|false

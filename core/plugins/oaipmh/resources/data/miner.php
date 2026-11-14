@@ -524,7 +524,7 @@ class Miner extends Obj implements Provider
      * Build the identifier URI for a resource
      *
      * @param   integer  $id
-     * @param   string   $doi
+     * @param   string|object   $doi
      * @param   integer  $rev
      * @return  string
      */

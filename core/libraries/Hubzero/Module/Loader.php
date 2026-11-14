@@ -161,7 +161,7 @@ class Loader
      * Render modules for a position
      *
      * @param   string  $position  Position to render modules for
-     * @param   string  $style     Module style (deprecated?)
+     * @param   string|array  $style     Module style (deprecated?)
      * @return  string  HTML
      */
     public function position($position, $style = 'none')
@@ -182,7 +182,7 @@ class Loader
      * Render module by name
      *
      * @param   string  $name   Module name
-     * @param   string  $style  Module style (deprecated?)
+     * @param   string|array  $style  Module style (deprecated?)
      * @return  string  HTML
      */
     public function name($name, $style = 'none')

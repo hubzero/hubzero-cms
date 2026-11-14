@@ -26,7 +26,7 @@ class Ticketstate extends Element
      * Fetch the element
      *
      * @param   string  $name          Element name
-     * @param   string  $value         Element value
+     * @param   string|null  $value         Element value
      * @param   object  &$node         XMLElement node object containing the settings for the element
      * @param   string  $control_name  Control name
      * @return  string

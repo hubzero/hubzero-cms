@@ -558,8 +558,8 @@ class Validate
      * Only uses getmxrr() checking for deep validation if PHP 5.3.0+ is used, or
      * any PHP version on a non-windows distribution
      *
-     * @param   string   $check  Value to check
-     * @param   boolean  $deep   Perform a deeper validation (if true), by also checking availability of host
+     * @param   string|array   $check  Value to check
+     * @param   boolean|null  $deep   Perform a deeper validation (if true), by also checking availability of host
      * @param   string   $regex  Regex to use (if none it will use built in regex)
      * @return  boolean  Success
      */
@@ -729,7 +729,7 @@ class Validate
     /**
      * Runs a regular expression match.
      *
-     * @param   string   $check  Value to check against the $regex expression
+     * @param   string|null   $check  Value to check against the $regex expression
      * @param   string   $regex  Regular expression
      * @return  boolean  Success of match
      * @codeCoverageIgnore
@@ -820,7 +820,7 @@ class Validate
      * - (Unicode) one half of a surrogate pair in UTF-16 encoding.
      * - (Unicode) any code point to which no character has been assigned.
      *
-     * @param   string  $source  The source string.
+     * @param   string|null  $source  The source string.
      * @return  boolean
      */
     public static function properName($source)

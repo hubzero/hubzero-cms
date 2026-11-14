@@ -147,7 +147,7 @@ class Searchable extends AdminController
     /**
      * Edit a search category
      *
-     * @param   integer  $obj
+     * @param   integer|object  $obj
      *
      * @return  void
      */

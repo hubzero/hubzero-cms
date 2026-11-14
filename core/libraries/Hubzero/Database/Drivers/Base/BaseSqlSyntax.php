@@ -1709,7 +1709,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a values element on the query
      *
-     * @param   array  $data  The data to be inserted
+     * @param   array|string  $data  The data to be inserted
      * @return  void
      */
     public function setValues($data)

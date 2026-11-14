@@ -178,7 +178,7 @@ class SafePath
      *
      * @param   string   $path     Path returned by file()
      * @param   string   $content  File content
-     * @param   integer  $mode     Mode for the resulting file, null to leave it to the umask
+     * @param   integer|null  $mode     Mode for the resulting file, null to leave it to the umask
      * @return  boolean
      */
     public static function write($path, $content, $mode = 0600)

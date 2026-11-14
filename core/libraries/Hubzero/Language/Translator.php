@@ -246,7 +246,7 @@ class Translator extends Obj
     /**
      * Returns a language object.
      *
-     * @param   string   $lang   The language to use.
+     * @param   string|null   $lang   The language to use.
      * @param   boolean  $debug  The debug mode.
      * @return  object   The Language object.
      */
@@ -1619,7 +1619,7 @@ class Translator extends Obj
      * Translate a string into the current language and stores it in the JavaScript language store.
      *
      * @param   string   $string                The language key.
-     * @param   boolean  $jsSafe                Ensure the output is JavaScript safe.
+     * @param   boolean|array  $jsSafe                Ensure the output is JavaScript safe.
      * @param   boolean  $interpretBackSlashes  Interpret \t and \n.
      * @return  mixed
      */

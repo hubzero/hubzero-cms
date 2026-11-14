@@ -128,7 +128,7 @@ class Parser extends Obj
      * depth, a keyword (here|inline|sidebar|off) sets the placement mode.
      * Last value of each type wins. Unrecognized tokens are ignored.
      *
-     * @param   string  $args  Raw argument string (contents of the parentheses)
+     * @param   string|null  $args  Raw argument string (contents of the parentheses)
      * @return  array   array('mode' => string, 'depth' => int)
      */
     public static function parseTocArgs($args)
@@ -157,7 +157,7 @@ class Parser extends Obj
      * Detect an explicit [[TableOfContents(...)]] macro in raw wiki text and
      * return its resolved mode/depth, or null when the page has no such macro.
      *
-     * @param   string  $pagetext  Raw wiki markup
+     * @param   string|null  $pagetext  Raw wiki markup
      * @return  array|null  array('mode' => string, 'depth' => int) or null
      */
     public static function tocDirective($pagetext)

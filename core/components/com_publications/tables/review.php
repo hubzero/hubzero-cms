@@ -61,7 +61,7 @@ class Review extends Table
     /**
      * Load record
      *
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $pid        Pub ID
      * @param   integer  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
      * @return  mixed    False if error, Object on success
@@ -91,7 +91,7 @@ class Review extends Table
     /**
      * Load record
      *
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $pid        Pub ID
      * @param   integer  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
      * @return  mixed

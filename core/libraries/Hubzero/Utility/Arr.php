@@ -69,7 +69,7 @@ class Arr
     /**
      * Utility function to map an array to a stdClass object.
      *
-     * @param   array   &$array  The array to map.
+     * @param   array|object   &$array  The array to map.
      * @param   string  $class   Name of the class to create
      * @return  object  The object mapped from the given array
      */

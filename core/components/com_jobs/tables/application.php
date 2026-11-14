@@ -29,7 +29,7 @@ class Application extends Table
     /**
      * Get job applications
      *
-     * @param   integer  $jobid  Job ID
+     * @param   integer|null  $jobid  Job ID
      * @return  mixed    False if errors, Array upon success
      */
     public function getApplications($jobid)

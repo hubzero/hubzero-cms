@@ -637,7 +637,7 @@ class Request extends BaseRequest
      * Retrieve a parameter item from a given source.
      *
      * @param   string  $source
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */

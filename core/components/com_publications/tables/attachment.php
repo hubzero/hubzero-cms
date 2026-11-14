@@ -71,7 +71,7 @@ class Attachment extends Table
     /**
      * Get attachment used as default publication thumbnail
      *
-     * @param   integer  $versionid  pub version id
+     * @param   integer|null  $versionid  pub version id
      * @return  object|bool
      */
     public function getDefault($versionid)
@@ -169,7 +169,7 @@ class Attachment extends Table
     /**
      * Get attachments
      *
-     * @param   integer  $versionid  pub version id
+     * @param   integer|null  $versionid  pub version id
      * @return  mixed    Array or bool
      */
     public function sortAttachments($versionid)
@@ -255,7 +255,7 @@ class Attachment extends Table
     /**
      * Get attachments
      *
-     * @param   integer  $versionid  pub version id
+     * @param   integer|null  $versionid  pub version id
      * @param   array    $filters
      * @return  array|string|false|null
      */
@@ -341,7 +341,7 @@ class Attachment extends Table
     /**
      * Get attachments count
      *
-     * @param   integer  $versionid  pub version id
+     * @param   integer|null  $versionid  pub version id
      * @return  string|null
      */
     public function getAttachmentsCount($versionid)
@@ -808,7 +808,7 @@ class Attachment extends Table
     /**
      * Get array of series that the publication belongs to
      *
-     * @param   integer  $versionId  Publication version ID
+     * @param   integer|null  $versionId  Publication version ID
      *
      * @return  mixed    series  or false
      */

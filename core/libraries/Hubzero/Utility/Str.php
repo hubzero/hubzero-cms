@@ -171,7 +171,7 @@ class Str
      * - `regex` a custom regex rule that is used to match words, default is '|$tag|iu'
      *
      * @param   string  $text     Text to search the phrase in
-     * @param   string  $phrase   The phrase that will be searched
+     * @param   string|array  $phrase   The phrase that will be searched
      * @param   array   $options  An array of html attributes and options.
      * @return  string  The highlighted text
      */

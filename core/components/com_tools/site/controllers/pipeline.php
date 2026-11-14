@@ -704,7 +704,7 @@ class Pipeline extends SiteController
     /**
      * Show an edit form
      *
-     * @param   object  $tool
+     * @param   object|array  $tool
      * @return  void
      */
     public function editTask($tool = null)

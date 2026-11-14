@@ -101,7 +101,7 @@ class Version extends Table
     /**
      * Get versions for a tool
      *
-     * @param   string  $alias  Tool name
+     * @param   string|null  $alias  Tool name
      * @return  mixed   False on error, array on success
      */
     public function getVersions($alias)
@@ -154,7 +154,7 @@ class Version extends Table
     /**
      * Load a record by tool name
      *
-     * @param   string   $alias  Tool name
+     * @param   string|null   $alias  Tool name
      * @return  boolean
      */
     public function loadFromName($alias)
@@ -378,7 +378,7 @@ class Version extends Table
      * Get tool version information
      *
      * @param   integer  $id
-     * @param   string   $revision
+     * @param   string|null   $revision
      * @param   string   $toolname
      * @param   string   $instance
      * @return  array|null

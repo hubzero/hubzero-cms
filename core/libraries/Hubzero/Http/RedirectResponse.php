@@ -52,7 +52,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Flash a piece of data to the session.
      *
-     * @param   string  $key
+     * @param   string|array  $key
      * @param   mixed   $value
      * @return  object
      */

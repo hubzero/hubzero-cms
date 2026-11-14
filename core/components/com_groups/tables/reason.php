@@ -30,7 +30,7 @@ class Reason extends Table
     /**
      * Load a record based on group ID and user ID and bind to $this
      *
-     * @param   integer  $uid  User ID
+     * @param   integer|null  $uid  User ID
      * @param   integer  $gid  Group ID
      * @return  boolean  True on success
      */
@@ -52,7 +52,7 @@ class Reason extends Table
     /**
      * Delete an entry based on group ID and user ID
      *
-     * @param   integer  $uid  User ID
+     * @param   integer|null  $uid  User ID
      * @param   integer  $gid  Group ID
      * @return  boolean  True on success
      */

@@ -1047,7 +1047,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Handles both the new format (with 'attributes' and 'original' keys)
      * and the old format (flat attributes array) for backward compatibility.
      *
-     * @param   array  $data  The data to build from
+     * @param   array|string  $data  The data to build from
      * @return  void
      **/
     #[\ReturnTypeWillChange]
@@ -2090,7 +2090,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This must be used when setting data to be saved. Otherwise, the properties
      * will be attached directly to the model itself and not included in the save.
      *
-     * @param   array|string  $key    The key to set, or array of key/value pairs
+     * @param   array|string|object  $key    The key to set, or array of key/value pairs
      * @param   mixed         $value  The value to set if key is string
      * @return  static
      **/

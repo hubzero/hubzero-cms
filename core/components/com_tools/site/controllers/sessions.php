@@ -52,7 +52,7 @@ class Sessions extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   integer  $session  Session ID
+     * @param   integer|object  $session  Session ID
      * @return  void
      */
     protected function buildPathway($session = null)
@@ -107,7 +107,7 @@ class Sessions extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   integer  $session  Session ID
+     * @param   integer|object  $session  Session ID
      * @return  void
      */
     protected function buildTitle($session = null)

@@ -687,7 +687,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Update tags
      *
-     * @param   string   $tags
+     * @param   string|array   $tags
      * @param   string   $label
      * @param   integer  $strength
      * @return  void

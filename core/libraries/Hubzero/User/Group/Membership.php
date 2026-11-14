@@ -630,7 +630,7 @@ class Membership
      *
      * @param   integer  $gidNumber
      * @param   integer  $uidNumber
-     * @param   string   $expires
+     * @param   string|null   $expires
      * @param   string   $reason
      * @param   integer  $wasManager
      * @param   integer  $actor

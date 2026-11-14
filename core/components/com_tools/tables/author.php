@@ -115,7 +115,7 @@ class Author extends Table
     /**
      * Get a list of the authors on a tool
      *
-     * @param   string   $version   Tool version
+     * @param   string|object   $version   Tool version
      * @param   integer  $rid       Resource ID
      * @param   string   $toolname  Tool name
      * @param   string   $revision  Tool revision

@@ -26,7 +26,7 @@ class Tags extends Cloud
     /**
      * Turn a string of tags to an array
      *
-     * @param   string $tag Tag string
+     * @param   string|array $tag Tag string
      * @param   string $remove
      * @return  mixed
      */

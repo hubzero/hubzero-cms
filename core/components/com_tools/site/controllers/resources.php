@@ -328,7 +328,7 @@ class Resources extends SiteController
     /**
      * Update the associated resource page for this tool
      *
-     * @param   integer  $rid        Resource ID
+     * @param   integer|null  $rid        Resource ID
      * @param   array    $status     Fields to update
      * @param   integer  $published  Published state
      * @param   integer  $newtool    Updating for a new tool?

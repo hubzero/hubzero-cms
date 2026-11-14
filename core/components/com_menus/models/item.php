@@ -1360,7 +1360,7 @@ class Item extends Nested
      *
      * @param   integer  $referenceId  The primary key of the node to reference new location by.
      * @param   string   $position     Location type string. ['before', 'after', 'first-child', 'last-child']
-     * @param   integer  $pk           The primary key of the node to move.
+     * @param   integer|null  $pk           The primary key of the node to move.
      * @return  boolean  True on success.
      */
     public function moveByReference($referenceId, $position = 'after', $pk = 0)

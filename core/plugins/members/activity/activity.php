@@ -59,7 +59,7 @@ class Activity extends Plugin
      * @param  object $user   User
      * @param  object $member Members Profile
      * @param  string $option Component name
-     * @param  string $areas  Plugins to return data
+     * @param  string|array $areas  Plugins to return data
      * @return array
      */
     public function onMembers($user, $member, $option, $areas)

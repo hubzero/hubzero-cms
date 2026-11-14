@@ -186,7 +186,7 @@ class Version extends Table
     /**
      * Get records
      *
-     * @param   integer  $pid     Pub ID
+     * @param   integer|null  $pid     Pub ID
      * @param   array    $filters  Query filters
      * @return  array|false|null
      */
@@ -353,7 +353,7 @@ class Version extends Table
     /**
      * Get previous version publication
      *
-     * @param   integer $pid    Pub ID
+     * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
      * @return  object|false
      */
@@ -372,7 +372,7 @@ class Version extends Table
     /**
      * Get next version publication
      *
-     * @param   integer $pid    Pub ID
+     * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
      * @return  object|false
      */
@@ -484,7 +484,7 @@ class Version extends Table
     /**
      * Get record
      *
-     * @param   integer  $pid      Pub ID
+     * @param   integer|null  $pid      Pub ID
      * @param   string   $version  Version number or name
      * @return  mixed    object or False
      */

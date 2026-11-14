@@ -851,7 +851,7 @@ class Project extends Table
     /**
      * Check if name is unique
      *
-     * @param   string   $name
+     * @param   string|null   $name
      * @param   integer  $pid
      * @return  boolean
      */

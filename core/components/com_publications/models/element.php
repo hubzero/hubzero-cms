@@ -142,7 +142,7 @@ class Element extends Obj
     /**
      * Display a value
      *
-     * @param   string  $value  Data
+     * @param   string|array  $value  Data
      * @return  string  Formatted string.
      */
     public function display($value)

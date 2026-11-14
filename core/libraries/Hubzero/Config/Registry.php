@@ -148,7 +148,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Get a registry value.
      *
-     * @param   string  $path     Registry path (e.g. config.cache.file)
+     * @param   string|null  $path     Registry path (e.g. config.cache.file)
      * @param   mixed   $default  Optional default value, returned if the internal value is null.
      * @return  mixed   Value of entry or null
      */
@@ -286,7 +286,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Load a string into the registry
      *
-     * @param   string   $data     String to load into the registry
+     * @param   string|array|object   $data     String to load into the registry
      * @param   string   $format   Format of the string
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success

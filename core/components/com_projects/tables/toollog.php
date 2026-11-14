@@ -32,7 +32,7 @@ class ToolLog extends Table
      *
      * @param   string   $parent_name
      * @param   integer  $parent_id
-     * @param   integer  $instance_id
+     * @param   integer|null  $instance_id
      * @param   array    $filters
      * @return  array|false|null   list
      */
@@ -83,7 +83,7 @@ class ToolLog extends Table
     /**
      * Get last update
      *
-     * @param   integer  $instance_id
+     * @param   integer|null  $instance_id
      * @param   string   $parent_name
      * @param   integer  $parent_id
      * @param   integer  $status_changed

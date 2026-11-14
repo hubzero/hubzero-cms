@@ -79,7 +79,7 @@ class Handler extends Plugin
      *
      * @param   string   $type               Message type (maps to #__xmessage_component table)
      * @param   string   $subject            Message subject
-     * @param   string   $message            Message to send
+     * @param   string|array   $message            Message to send
      * @param   array    $from               Message 'from' data (e.g., name, address)
      * @param   array    $to         List of user IDs
      * @param   string   $component          Component name

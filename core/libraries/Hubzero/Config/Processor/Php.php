@@ -67,7 +67,7 @@ class Php extends Base
     /**
      * Converts an object into a php class or array string.
      *
-     * @param   object  $object   Data Source Object
+     * @param   object|string  $object   Data Source Object
      * @param   array   $options  Parameters used by the formatter
      * @return  string  Config class formatted string
      */

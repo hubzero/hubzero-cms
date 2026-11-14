@@ -79,7 +79,7 @@ class Detector implements DetectorInterface
      * Set the second argument to true to treat
      * the added word as a regular expression.
      *
-     * @param   string  $vars   List of blacklisted words
+     * @param   string|array  $vars   List of blacklisted words
      * @param   bool    $regex  Flags word as regex pattern
      * @return  object
      */

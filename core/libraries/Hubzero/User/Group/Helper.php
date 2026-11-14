@@ -109,7 +109,7 @@ class Helper
      * Gets groups matching tag string
      *
      * @param   string  $usertags
-     * @param   string  $usergroups
+     * @param   string|array  $usergroups
      * @return  string
      */
     public static function getGroupsMatchingTagString($usertags, $usergroups)

@@ -481,7 +481,7 @@ class Attachments extends Obj
     /**
      * Bundle elements
      *
-     * @param   object  $zip
+     * @param   object|null  $zip
      * @param   array   $elements
      * @param   object  $pub
      * @param   string  $readme

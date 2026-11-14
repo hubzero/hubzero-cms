@@ -84,7 +84,7 @@ class Xml extends Base
     /**
      * Converts an object into an XML formatted string.
      *
-     * @param   object  $object   Data source object.
+     * @param   object|string  $object   Data source object.
      * @param   array   $options  Options used by the formatter.
      * @return  string  XML formatted string.
      */
@@ -110,7 +110,7 @@ class Xml extends Base
     /**
      * Parse a XML formatted string and convert it into an object.
      *
-     * @param   string  $data     XML formatted string to convert.
+     * @param   string|object  $data     XML formatted string to convert.
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */

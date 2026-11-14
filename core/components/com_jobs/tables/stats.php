@@ -253,7 +253,7 @@ class Stats extends Table
     /**
      * Delete records for an item
      *
-     * @param   integer  $itemid    Job ID
+     * @param   integer|null  $itemid    Job ID
      * @param   string   $category  Job category
      * @return  boolean  True upon success
      */

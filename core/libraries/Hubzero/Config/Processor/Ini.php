@@ -93,7 +93,7 @@ class Ini extends Base
      * levels deep.  Therefore we will only go through the first two levels of
      * the object.
      *
-     * @param   object  $object   Data source object.
+     * @param   object|string  $object   Data source object.
      * @param   array   $options  Options used by the formatter.
      * @return  string  INI formatted string.
      */
@@ -131,7 +131,7 @@ class Ini extends Base
     /**
      * Parse an INI formatted string and convert it into an object.
      *
-     * @param   string  $data     INI formatted string to convert.
+     * @param   string|object  $data     INI formatted string to convert.
      * @param   mixed   $options  An array of options used by the formatter, or a boolean setting to process sections.
      * @return  object  Data object.
      */

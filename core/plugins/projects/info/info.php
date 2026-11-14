@@ -49,7 +49,7 @@ class Info extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string  $areas   Plugins to return data
+     * @param   string|array  $areas   Plugins to return data
      * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)

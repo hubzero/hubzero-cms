@@ -29,7 +29,7 @@ class Prefs extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $uid       User ID
+     * @param   integer|null  $uid       User ID
      * @param   string   $category  Category
      * @return  boolean  True upon success
      */

@@ -148,7 +148,7 @@ class Elements
     /**
      * Get a registry value.
      *
-     * @param   string  $path     Registry path
+     * @param   string|null  $path     Registry path
      * @param   mixed   $default  Optional default value, returned if the internal value is null.
      * @return  mixed   Value of entry or null
      */

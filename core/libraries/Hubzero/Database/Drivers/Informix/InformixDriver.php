@@ -872,9 +872,9 @@ class InformixDriver extends BaseSqlDriver
      *
      * Informix uses single quotes for string literals
      *
-     * @param   string  $text   The string to quote
+     * @param   string|array  $text   The string to quote
      * @param   bool    $escape Whether to escape special characters
-     * @return  string
+     * @return  string|array
      */
     public function quote($text, $escape = true)
     {

@@ -111,7 +111,7 @@ class Yaml extends Base
     /**
      * Converts an object into a YAML formatted string.
      *
-     * @param   object  $object   Data source object.
+     * @param   object|string  $object   Data source object.
      * @param   array   $options  Options used by the formatter.
      * @return  string  YAML formatted string.
      */
@@ -152,7 +152,7 @@ class Yaml extends Base
     /**
      * Parse a YAML formatted string and convert it into an object.
      *
-     * @param   string  $data     YAML formatted string to convert.
+     * @param   string|object  $data     YAML formatted string to convert.
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */

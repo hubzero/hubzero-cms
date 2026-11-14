@@ -55,7 +55,7 @@ class Tags extends Cloud
     /**
      * Check tag existence for tickets
      *
-     * @param   integer  $id         Resource ID
+     * @param   integer|array  $id         Resource ID
      * @param   integer  $tagger_id  Tagger ID
      * @param   integer  $strength   Tag strength
      * @param   integer  $admin      Admin flag

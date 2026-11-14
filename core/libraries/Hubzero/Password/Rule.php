@@ -594,7 +594,7 @@ class Rule extends Relational
      * Check if a word is based on a username
      *
      * @param   string  $word
-     * @param   string  $username
+     * @param   string|null  $username
      * @return  bool
      */
     public static function isBasedOnUsername($word, $username)

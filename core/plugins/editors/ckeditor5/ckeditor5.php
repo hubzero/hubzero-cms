@@ -384,7 +384,7 @@ class Ckeditor5 extends Plugin
      * Build a config object
      *
      * @param   string $delimiter
-     * @param   string $input
+     * @param   string|array $input
      * @return  array
      */
     private function split($delimiter, $input)

@@ -136,7 +136,7 @@ class Notes extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string  $areas   Plugins to return data
+     * @param   string|array  $areas   Plugins to return data
      * @param   string  $tool    Name of tool wiki belongs to
      * @return  array|null   Return array of html
      */

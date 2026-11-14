@@ -49,7 +49,7 @@ class Tool extends Table
     /**
      * Load a tool by name
      *
-     * @param   string   $toolname
+     * @param   string|null   $toolname
      * @return  boolean
      */
     public function loadFromName($toolname)

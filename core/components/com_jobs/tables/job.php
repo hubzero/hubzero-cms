@@ -303,7 +303,7 @@ class Job extends Table
     /**
      * Delete an open job
      *
-     * @param   integer  $jid  Job ID
+     * @param   integer|null  $jid  Job ID
      * @return  boolean  True upon success
      */
     public function deleteOpening($jid)
@@ -324,7 +324,7 @@ class Job extends Table
     /**
      * Get job opening
      *
-     * @param   integer  $jid      Job ID
+     * @param   integer|null  $jid      Job ID
      * @param   integer  $uid      User ID
      * @param   integer  $admin    Admin access?
      * @param   string   $jobcode  Job code

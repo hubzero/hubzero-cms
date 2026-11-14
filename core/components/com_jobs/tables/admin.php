@@ -29,7 +29,7 @@ class Admin extends Table
     /**
      * Check if a user is an admin for a job
      *
-     * @param   integer  $uid  User ID
+     * @param   integer|null  $uid  User ID
      * @param   integer  $jid  Job ID
      * @return  boolean  True if admin
      */
@@ -52,7 +52,7 @@ class Admin extends Table
     /**
      * Get a list of administrators
      *
-     * @param   integer  $jid  Job ID
+     * @param   integer|null  $jid  Job ID
      * @return  array|false
      */
     public function getAdmins($jid)

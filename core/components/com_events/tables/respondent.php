@@ -62,7 +62,7 @@ class Respondent extends Table
     /**
      * Get racial information for a user
      *
-     * @param    integer  $resp_id
+     * @param    integer|array  $resp_id
      * @return   mixed
      */
     public static function getRacialIdentification($resp_id)

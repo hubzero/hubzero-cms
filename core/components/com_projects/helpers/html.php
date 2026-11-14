@@ -173,8 +173,8 @@ class Html extends Obj
     /**
      * Get file extension
      *
-     * @param   string  $file
-     * @return  string
+     * @param   string|null  $file
+     * @return  string|null
      */
     public static function getFileExtension($file = '')
     {
@@ -183,6 +183,8 @@ class Html extends Obj
 
             return strtolower(substr($file, $dot));
         }
+
+        return null;
     }
 
     /**
@@ -867,7 +869,7 @@ class Html extends Obj
      *
      * @param   string  $email
      * @param   string  $subject
-     * @param   string  $body
+     * @param   string|array  $body
      * @param   array   $from
      * @return  bool
      */

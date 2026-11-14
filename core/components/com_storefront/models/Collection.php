@@ -400,7 +400,7 @@ class Collection
     /**
      * Set collection image
      *
-     * @param   array $img       Product images
+     * @param   array|object $img       Product images
      * @return  bool        true
      */
     public function setImage($img)

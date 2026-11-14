@@ -30,7 +30,7 @@ class Employer extends Table
     /**
      * Check if a user is an employer
      *
-     * @param   string   $uid
+     * @param   string|null   $uid
      * @param   integer  $admin
      * @return  boolean
      */

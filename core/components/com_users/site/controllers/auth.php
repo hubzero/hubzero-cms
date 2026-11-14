@@ -339,7 +339,7 @@ class Auth extends SiteController
     /**
      * Is the provided string base64 encoded?
      *
-     * @param   string  $str
+     * @param   string|null  $str
      * @return  bool
      **/
     protected function isBase64($str)

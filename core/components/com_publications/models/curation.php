@@ -1757,7 +1757,7 @@ class Curation extends Obj
     /**
      * Save update
      *
-     * @param   object   $data       Data to save
+     * @param   object|null   $data       Data to save
      * @param   integer  $elementId  Element ID
      * @param   string   $name       Block name
      * @param   object   $pub        Publication object

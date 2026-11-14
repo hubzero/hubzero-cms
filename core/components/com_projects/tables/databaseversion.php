@@ -29,7 +29,7 @@ class DatabaseVersion extends Table
     /**
      * Get max version number
      *
-     * @param    string  $dbname
+     * @param    string|null  $dbname
      * @return   mixed   integer or NULL
      */
     public function getMaxVersion($dbname = '')

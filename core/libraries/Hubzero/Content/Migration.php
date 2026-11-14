@@ -821,7 +821,7 @@ class Migration
     /**
      * Put the session's SQL mode back as it was found
      *
-     * @param   string  $sqlMode  The mode captured before the run, or null
+     * @param   string|null  $sqlMode  The mode captured before the run, or null
      * @return  void
      */
     protected function restoreSqlMode($sqlMode)

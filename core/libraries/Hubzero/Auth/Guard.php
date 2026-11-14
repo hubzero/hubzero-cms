@@ -76,7 +76,7 @@ class Guard
      * [!] Based on Joomla's event dispatcher
      *     This is here purely for compatibility.
      *
-     * @param   object  $observer  An observer object to attach
+     * @param   object|array  $observer  An observer object to attach
      * @return  void
      * @todo    Update plugins to not need this and remove method
      */

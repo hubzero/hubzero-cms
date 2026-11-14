@@ -370,7 +370,7 @@ class Log extends Relational
     /**
      * Get all logs for a recipient
      *
-     * @param   string   $scope
+     * @param   string|array   $scope
      * @param   integer  $scope_id
      * @return  static
      */

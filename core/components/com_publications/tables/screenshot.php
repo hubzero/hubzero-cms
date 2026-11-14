@@ -45,7 +45,7 @@ class Screenshot extends Table
     /**
      * Load record
      *
-     * @param   string   $filename   File name
+     * @param   string|null   $filename   File name
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   string   $version    Version number or name
@@ -92,7 +92,7 @@ class Screenshot extends Table
     /**
      * Get record
      *
-     * @param   string   $filename   File name
+     * @param   string|null   $filename   File name
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   string   $version    Version number or name
@@ -173,7 +173,7 @@ class Screenshot extends Table
     /**
      * Save record
      *
-     * @param   string   $filename   File name
+     * @param   string|null   $filename   File name
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $pid        Pub ID
      * @param   integer  $ordering   Ordering
@@ -207,7 +207,7 @@ class Screenshot extends Table
     /**
      * Delete record
      *
-     * @param   string   $filename   File name
+     * @param   string|null   $filename   File name
      * @param   integer  $versionid  Pub version ID
      * @return  mixed
      */

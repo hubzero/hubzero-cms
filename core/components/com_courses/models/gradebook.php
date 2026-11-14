@@ -328,8 +328,8 @@ class GradeBook extends Base
     /**
      * Calculate scores for each unit and the course as a whole
      *
-     * @param      int $member_id
-     * @param      int $asset_id
+     * @param      int|array $member_id
+     * @param      int|null $asset_id
      * @return     boolean true on success, false otherwise
      */
     public function calculateScores($member_id = null, $asset_id = null)
@@ -678,7 +678,7 @@ class GradeBook extends Base
     /**
      * Check whether or not the student is passing the course and has completed all items
      *
-     * @param      int $member_id
+     * @param      int|array $member_id
      * @return     array
      **/
     public function isEligibleForRecognition($member_id = null)
