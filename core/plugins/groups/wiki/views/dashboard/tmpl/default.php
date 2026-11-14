@@ -28,7 +28,7 @@ if ($this->rows) { ?>
         foreach ($this->rows as $row) {
             $name = Lang::txt('WIKI_AUTHOR_UNKNOWN');
             $user = User::getInstance($row->created_by);
-            if (is_object($user) && $user->get('name')) {
+            if ($user->get('name')) {
                 $name = $this->escape($user->get('name'));
             }
 

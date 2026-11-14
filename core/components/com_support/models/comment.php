@@ -307,7 +307,7 @@ class Comment extends Relational
         if (is_numeric($to)) {
             $user = User::getInstance($to);
 
-            if (is_object($user) && $user->get('id')) {
+            if ($user->get('id')) {
                 if (isset($this->cache['recipients.added'][$user->get('email')])) {
                     return $this;
                 }
@@ -335,7 +335,7 @@ class Comment extends Relational
             } else {
                 // Username
                 $user = User::getInstance($to);
-                if (is_object($user) && $user->get('id')) {
+                if ($user->get('id')) {
                     if (isset($this->cache['recipients.added'][$user->get('email')])) {
                         return $this;
                     }

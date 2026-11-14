@@ -116,15 +116,13 @@ class Reviews extends Obj
         $user = User::getInstance($review->author);
 
         // Reward review author
-        if (is_object($user)) {
-            $BTL = new Teller($user->get('id'));
+        $BTL = new Teller($user->get('id'));
 
-            if (intval($points) > 0) {
-                $msg = ($type == 'royalty')
-                    ? Lang::txt('Royalty payment for posting a review on resource #%s', $review->rid)
-                    : Lang::txt('Commission for posting a review on resource #%s', $review->rid);
-                $BTL->deposit($points, $msg, $cat, $review->id);
-            }
+        if (intval($points) > 0) {
+            $msg = ($type == 'royalty')
+                ? Lang::txt('Royalty payment for posting a review on resource #%s', $review->rid)
+                : Lang::txt('Commission for posting a review on resource #%s', $review->rid);
+            $BTL->deposit($points, $msg, $cat, $review->id);
         }
         return true;
     }

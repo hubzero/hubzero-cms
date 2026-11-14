@@ -436,7 +436,7 @@ class Html
             foreach ($members as $member) {
                 $uid = ($obj) ? $member->uidNumber : $member;
                 $user = User::getInstance($uid);
-                if (is_object($user)) {
+                if ($user->get('id')) {
                     $login = $user->get('username');
                 } else {
                     $login = Lang::txt('COM_TOOLS_UNKNOWN');

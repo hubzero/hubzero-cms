@@ -112,7 +112,7 @@ class Enrollment extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 if (in_array($uid, $managers)) {

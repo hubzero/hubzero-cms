@@ -166,7 +166,7 @@ class Economy extends Obj
             // give main share
             if ($wish->assigned && $mainshare) {
                 $o = User::getInstance($wish->assigned);
-                if (is_object($o) && $o->get('id')) {
+                if ($o->get('id')) {
                     $BTLM = new Teller($wish->assigned);
                     $msg = Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist);
                     $BTLM->deposit($mainshare, $msg, 'wish', $wishid);
@@ -205,7 +205,7 @@ class Economy extends Obj
         // Points for wish author (needs to be granted by another person)
         if ($wish->ranking > 0 && $wish->proposed_by != User::get('id') && $wish->proposed_by) {
             $o = User::getInstance($wish->proposed_by);
-            if (is_object($o) && $o->get('id')) {
+            if ($o->get('id')) {
                 $BTLA = new Teller($wish->proposed_by);
                 $msg = Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist);
                 $BTLA->deposit($wish->ranking, $msg, 'wish', $wishid);

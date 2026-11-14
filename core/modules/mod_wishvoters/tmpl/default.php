@@ -37,10 +37,8 @@ $this->css();
             if ($k <= intval($this->params->get('limit', 10))) {
                 $name = Lang::txt('MOD_WISHVOTERS_UNKNOWN');
                 $auser = User::getInstance($row->userid);
-                if (is_object($auser)) {
-                    $name  = $auser->get('name');
-                    $login = $auser->get('username');
-                }
+                $name  = $auser->get('name');
+                $login = $auser->get('username');
                 ?>
                     <li>
                         <span class="lnum"><?php echo $k; ?>.</span>

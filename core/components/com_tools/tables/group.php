@@ -226,7 +226,7 @@ class Group extends Table
         if (count($members) > 0) {
             foreach ($members as $member) {
                 $user = User::getInstance($member);
-                if (is_object($user)) {
+                if ($user->get('id')) {
                     if ($id) {
                         $teamlist[$i]->uidNumber = $user->get('id');
                     } else {

@@ -473,7 +473,7 @@ class Membership extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 // Loop through existing members and make sure the user isn't already a member
@@ -554,7 +554,7 @@ class Membership extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 // Loop through existing managers and make sure the user isn't already a manager
@@ -640,7 +640,7 @@ class Membership extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $users[] = $targetuser->get('id');
             } else {
                 $this->setError(Lang::txt('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
@@ -719,7 +719,7 @@ class Membership extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 if (in_array($uid, $members)) {
@@ -810,7 +810,7 @@ class Membership extends AdminController
                 $targetuser = User::getInstance($mbr);
 
                 // Ensure we found an account
-                if (is_object($targetuser)) {
+                if ($targetuser->get('id')) {
                     $uid = $targetuser->get('id');
                     if (in_array($uid, $invitees)) {
                         $users[] = $uid;
@@ -883,7 +883,7 @@ class Membership extends AdminController
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 // Remove record of reason wanting to join group
                 $reason = new Tables\Reason($this->database);
                 $reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));

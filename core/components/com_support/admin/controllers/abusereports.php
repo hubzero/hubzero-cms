@@ -372,7 +372,7 @@ class Abusereports extends AdminController
             if ($ar) {
                 $ruser = User::getInstance($report->get('created_by'));
 
-                if (is_object($ruser) && $ruser->get('id')) {
+                if ($ruser->get('id')) {
                     $BTL = new \Hubzero\Bank\Teller($ruser->get('id'));
                     $BTL->deposit($ar, Lang::txt('COM_SUPPORT_ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
                 }

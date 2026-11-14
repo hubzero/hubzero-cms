@@ -535,7 +535,7 @@ class Members extends Plugin
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 // Only a pending applicant of this group can be approved
@@ -662,7 +662,7 @@ class Members extends Plugin
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 // Only a member of this group can be promoted
@@ -799,7 +799,7 @@ class Members extends Plugin
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
                 $admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
                 $admchange .= (count($mbrs) > 1) ? "\r\n" : '';
@@ -1133,7 +1133,7 @@ class Members extends Plugin
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
                 $admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
                 $admchange .= (count($mbrs) > 1) ? "\r\n" : '';
@@ -1459,7 +1459,7 @@ class Members extends Plugin
             $targetuser = User::getInstance($mbr);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
                 $admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
                 $admchange .= (count($mbrs) > 1) ? "\r\n" : '';
@@ -1613,7 +1613,7 @@ class Members extends Plugin
                 $targetuser = User::getInstance($mbr);
 
                 // Ensure we found an account
-                if (is_object($targetuser) && $targetuser->get('id')) {
+                if ($targetuser->get('id')) {
                     $admchange .= "\t\t" . $targetuser->get('name') . "\r\n";
                     $admchange .= "\t\t" . $targetuser->get('username') . ' (' . $targetuser->get('email') . ')';
                     $admchange .= (count($mbrs) > 1) ? "\r\n" : '';

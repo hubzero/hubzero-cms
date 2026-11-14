@@ -1062,7 +1062,7 @@ class Password
             } else {
                 $user = \User::getInstance($user);
 
-                if (is_object($user) && !empty($user->password)) {
+                if (!empty($user->password)) {
                     $passhash = $user->password;
                 }
             }

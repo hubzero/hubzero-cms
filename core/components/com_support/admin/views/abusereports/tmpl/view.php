@@ -32,7 +32,7 @@ $link = '';
 if (is_object($this->reported)) {
     $author = User::getInstance($this->reported->author);
 
-    if (is_object($author) && $author->get('username')) {
+    if ($author->get('username')) {
         $this->set('title', $this->title . ($author->get('username')));
     } else {
         $this->set('title', $this->title . (Lang::txt('COM_SUPPORT_UNKNOWN')));

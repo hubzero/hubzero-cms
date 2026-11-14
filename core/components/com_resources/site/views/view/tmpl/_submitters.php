@@ -81,7 +81,7 @@ if ($this->contributors) {
         //{
         if ($this->badges) {
             $xuser = User::getInstance($contributor->id);
-            if (is_object($xuser) && $xuser->get('name')) {
+            if ($xuser->get('name')) {
                 // get users groups
                 // in reverse to get the highest levels first
                 $groupIds = Hubzero\Access\Access::getGroupsByUser($xuser->id, false);

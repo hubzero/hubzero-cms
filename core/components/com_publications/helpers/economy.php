@@ -74,7 +74,7 @@ class Economy extends Obj
         $user = User::getInstance($con->user_id);
 
         // Reward review author
-        if (is_object($user) && $user->get('id')) {
+        if ($user->get('id')) {
             $BTL = new Teller($user->get('id'));
 
             if (intval($points) > 0) {

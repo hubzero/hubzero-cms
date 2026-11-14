@@ -334,34 +334,32 @@ class Answers extends Plugin
                     if ($responders) {
                         foreach ($responders as $r) {
                             $zuser = User::getInstance($r);
-                            if (is_object($zuser)) {
-                                if (
-                                    \Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email'))
-                                    && $email
-                                ) {
-                                    $admin_email = Config::get('mailfrom');
-                                    $sub  = Lang::txt(
-                                        'PLG_SUPPORT_ANSWERS_SUBJECT',
-                                        Config::get('sitename'),
-                                        $referenceid,
-                                    );
-                                    $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
-                                    $hub  = [
-                                        'email' => $admin_email,
-                                        'name'  => $from,
-                                    ];
+                            if (
+                                \Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email'))
+                                && $email
+                            ) {
+                                $admin_email = Config::get('mailfrom');
+                                $sub  = Lang::txt(
+                                    'PLG_SUPPORT_ANSWERS_SUBJECT',
+                                    Config::get('sitename'),
+                                    $referenceid,
+                                );
+                                $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
+                                $hub  = [
+                                    'email' => $admin_email,
+                                    'name'  => $from,
+                                ];
 
-                                    $mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
-                                    $mes .= '----------------------------' . "\r\n\r\n";
-                                    $mes .= Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
+                                $mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
+                                $mes .= '----------------------------' . "\r\n\r\n";
+                                $mes .= Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
-                                    \Components\Support\Helpers\Utilities::sendEmail(
-                                        $hub,
-                                        $zuser->get('email'),
-                                        $sub,
-                                        $mes,
-                                    );
-                                }
+                                \Components\Support\Helpers\Utilities::sendEmail(
+                                    $hub,
+                                    $zuser->get('email'),
+                                    $sub,
+                                    $mes,
+                                );
                             }
                         }
                     }
@@ -372,9 +370,7 @@ class Answers extends Plugin
 
                     if ($asker) {
                         $quser = User::getInstance($asker);
-                        if (is_object($quser)) {
-                            $asker_id = $quser->get('id');
-                        }
+                        $asker_id = $quser->get('id');
 
                         if (isset($asker_id)) {
                             // Remove hold

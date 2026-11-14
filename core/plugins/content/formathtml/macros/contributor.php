@@ -78,7 +78,7 @@ class Contributor extends Macro
                 // No, then we must have a username
                 // Get user's name
                 $cuser = User::getInstance($n);
-                if (is_object($cuser)) {
+                if ($cuser->get('id')) {
                     $name = $cuser->get('name');
                     $id   = $cuser->get('id');
                 } else {

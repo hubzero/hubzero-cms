@@ -2569,7 +2569,7 @@ class Tickets extends SiteController
             }
             if (!$found) {
                 $ou = User::getInstance($active);
-                if (is_object($ou) && $ou->get('id')) {
+                if ($ou->get('id')) {
                     $m = new \stdClass();
                     $m->value = $ou->get('id');
                     $m->text  = $ou->get('name');

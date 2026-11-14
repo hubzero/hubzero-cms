@@ -76,7 +76,7 @@ class Managers extends SiteController
             if (is_numeric($mbr)) {
                 // Make sure the user exists
                 $user = User::getInstance($mbr);
-                if (is_object($user) && $user->get('username')) {
+                if ($user->get('username')) {
                     $uid = $mbr;
                 }
             } else {
@@ -138,7 +138,7 @@ class Managers extends SiteController
             $targetuser = User::getInstance($mbr['user_id']);
 
             // Ensure we found an account
-            if (is_object($targetuser)) {
+            if ($targetuser->get('id')) {
                 $uid = $targetuser->get('id');
 
                 if (isset($managers[$uid])) {

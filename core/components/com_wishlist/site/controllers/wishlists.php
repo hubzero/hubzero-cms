@@ -1171,7 +1171,7 @@ class Wishlists extends SiteController
         $by = Request::getString('by', '', 'post');
         if ($by && $canManage) {
             $ruser = User::getInstance($by);
-            if (is_object($ruser)) {
+            if ($ruser->get('id')) {
                 $row->set('proposed_by', $ruser->get('id'));
             } else {
                 $this->setError(Lang::txt('COM_WISHLIST_ERROR_INVALID_USER_NAME'));

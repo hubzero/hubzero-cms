@@ -61,9 +61,7 @@ if (!$no_html) {
                         if ($this->report->anon == 0) {
                             $user = User::getInstance($this->report->author);
                             $name = Lang::txt('COM_SUPPORT_UNKNOWN');
-                            if (is_object($user)) {
-                                $name = $this->escape($user->get('name'));
-                            }
+                            $name = $this->escape($user->get('name'));
                         }
 
                             echo ($this->report->href) ? '<a href="' . $this->report->href . '">' : '';

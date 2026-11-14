@@ -257,7 +257,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
             $hzal->update();
 
             // If we have a real user, drop the authenticator cookie
-            if (isset($user) && is_object($user)) {
+            if (isset($user)) {
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $owner->getImageUrl(),

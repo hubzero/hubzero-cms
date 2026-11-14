@@ -132,7 +132,7 @@ if (!empty($lectureAuthors)) {
         }
         //load author object
         $author = User::getInstance($la->authorid);
-        if (is_object($author) && $author->id) {
+        if ($author->id) {
             $a[] = '<a href="' . $author->link() . '">' . $this->escape($author->name) . '</a>';
         } else {
             $a[] = $this->escape($la->name);

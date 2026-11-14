@@ -977,7 +977,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                                     $id = trim($matches[1]);
                                     if (is_numeric($id)) {
                                         $user = User::getInstance($id);
-                                        if (is_object($user)) {
+                                        if ($user->get('id')) {
                                             $a[] = '<a rel="external" href="'
                                                 . Route::url('index.php?option=com_members&id=' . $matches[1])
                                                 . '">'

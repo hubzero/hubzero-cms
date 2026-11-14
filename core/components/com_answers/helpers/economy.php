@@ -185,7 +185,7 @@ class Economy extends Obj
 
         // Reward asker
         $q_user = User::getInstance($Q_owner);
-        if (is_object($q_user) && $q_user->get('id')) {
+        if ($q_user->get('id')) {
             $BTL_Q = new Teller($q_user->get('id'));
             //$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
             // Separate commission and reward payment
@@ -209,7 +209,7 @@ class Economy extends Obj
         // Reward others
         $ba_user = User::getInstance($BA_owner);
 
-        if (is_object($ba_user) && $ba_user->get('id')) {
+        if ($ba_user->get('id')) {
             // Reward other responders
             if (count($eligible) > 0) {
                 foreach ($eligible as $e) {

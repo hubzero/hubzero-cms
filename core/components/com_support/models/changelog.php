@@ -328,7 +328,7 @@ class Changelog extends Obj
                 $user = User::getInstance($acc);
 
                 // Did we find an account?
-                if (is_object($user)) {
+                if ($user->get('id')) {
                     $this->log['cc'][] = $user->get('username');
                 } else {
                     // Move on - nothing else we can do here

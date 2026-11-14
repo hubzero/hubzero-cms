@@ -61,7 +61,7 @@ class Users extends Plugin
             foreach ($users as $u) {
                 $user = User::getInstance($u->id);
 
-                if (is_object($user) && strtotime($user->get('lastvisitDate')) < $yesterday) {
+                if (strtotime($user->get('lastvisitDate')) < $yesterday) {
                     if (is_numeric($user->get('username')) && $user->get('username') < 0) {
                         // Further check to make sure this was an abandoned auth_link account
                         if (substr($user->get('email'), -8) == '@invalid') {

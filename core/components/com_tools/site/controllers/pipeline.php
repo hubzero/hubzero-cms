@@ -1650,9 +1650,7 @@ class Pipeline extends SiteController
             if ($members) {
                 foreach ($members as $member) {
                     $muser = User::getInstance($member);
-                    if (is_object($muser)) {
-                        $admins[] = $member;
-                    }
+                    $admins[] = $member;
                 }
             }
         }

@@ -157,7 +157,7 @@ $this
             } else {
                 $user = User::getInstance($this->row->created_by);
 
-                if (is_object($user)) {
+                if ($user->get('id')) {
                     $name = $user->get('name');
                 } else {
                     $name = Lang::txt('EVENTS_CAL_LANG_UNKNOWN');

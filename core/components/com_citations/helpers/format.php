@@ -294,7 +294,7 @@ class Format
                             $id = trim($matches[1]);
                             if (is_numeric($id)) {
                                 $user = User::getInstance($id);
-                                if (is_object($user)) {
+                                if ($user->get('id')) {
                                     $a[] = '<a rel="external" href="'
                                         . Route::url('index.php?option=com_members&id=' . $matches[1])
                                         . '">'
@@ -932,9 +932,7 @@ class Format
                         $aid = $matches[0];
                     } else {
                         $zuser = User::getInstance(trim($matches[0]));
-                        if (is_object($zuser)) {
-                            $aid = $zuser->get('id');
-                        }
+                        $aid = $zuser->get('id');
                     }
                     $auth = preg_replace('/{{(.*?)}}/s', '', $auth);
                     if ($aid) {

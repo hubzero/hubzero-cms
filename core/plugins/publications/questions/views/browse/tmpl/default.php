@@ -50,7 +50,7 @@ $this->css();
             $name = Lang::txt('JANONYMOUS');
             if (!$row->get('anonymous')) {
                 $user = User::getInstance($row->get('created_by'));
-                if (is_object($user)) {
+                if ($user->get('id')) {
                     $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">'
                         . $this->escape(stripslashes($user->get('name'))) . '</a>';
                 } else {

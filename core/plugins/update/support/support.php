@@ -261,7 +261,7 @@ class Support extends Plugin
                     if ($submitter->login) {
                         // Get the user's account
                         $user = User::getInstance($submitter->login);
-                        if (is_object($user) && $user->get('id')) {
+                        if ($user->get('id')) {
                             $name = $user->get('name');
                             $email = $user->get('email');
                         }
