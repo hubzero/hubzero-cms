@@ -28,7 +28,7 @@ class LegacyTest extends TestCase
         $loader = new Legacy($path);
         $this->expectException(\Hubzero\Config\Exception\FileNotFoundException::class);
 
-        $loader->read($path . '/configuration.php');
+        $loader->readConfiguration($path . '/configuration.php');
     }
 
     /**
@@ -43,7 +43,7 @@ class LegacyTest extends TestCase
         $loader = new Legacy($path);
 
         $this->expectException(\Hubzero\Config\Exception\UnsupportedFormatException::class);
-        $loader->read($path . '/Legacy/Invalid/configuration.php');
+        $loader->readConfiguration($path . '/Legacy/Invalid/configuration.php');
     }
 
     /**
@@ -77,7 +77,7 @@ class LegacyTest extends TestCase
 
         $loader = new Legacy($path);
 
-        $file = $loader->read($path . '/Legacy/configuration.php');
+        $file = $loader->readConfiguration($path . '/Legacy/configuration.php');
 
         // JConfig is declared by the configuration file itself
         $this->assertSame('JConfig', get_class($file));
@@ -103,7 +103,7 @@ class LegacyTest extends TestCase
 
         $loader = new Legacy($path, $rootPath, $appPath);
 
-        $config = $loader->read($path . '/Legacy/configuration.php');
+        $config = $loader->readConfiguration($path . '/Legacy/configuration.php');
 
         $this->assertEquals('/custom/app/path/logs', $config->log_path);
         $this->assertEquals('/custom/app/path/tmp', $config->tmp_path);

@@ -21,7 +21,7 @@ class Loader extends Base
      *
      * @param   string  $option  The component option.
      * @param   array   $params  The component parameters
-     * @return  bool
+     * @return  string
      */
     public function render($option, $params = [])
     {
@@ -125,7 +125,8 @@ class Loader extends Base
         $this->app->forget('scope');
         $this->app->set('scope', $scope);
 
-        return true;
+        // The controller writes to the response itself
+        return '';
     }
 
     /**

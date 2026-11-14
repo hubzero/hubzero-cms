@@ -148,7 +148,7 @@ class ObjectExpander extends Middleware
      *
      * @param   array  $expandKeys
      * @param   mixed  $object
-     * @return  object
+     * @return  mixed
      */
     private function convertExpandKeysInObjects($expandKeys, $object)
     {

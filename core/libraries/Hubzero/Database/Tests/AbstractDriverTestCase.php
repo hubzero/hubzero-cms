@@ -323,7 +323,13 @@ abstract class AbstractDriverTestCase extends TestCase
     protected static function createDriver(string $dbName, array $config): BaseSqlDriver
     {
         $manager = static::getDatabaseManager();
-        return $manager->makeDriver($dbName, $config);
+        $driver = $manager->makeDriver($dbName, $config);
+
+        if (!($driver instanceof BaseSqlDriver)) {
+            throw new \RuntimeException("Driver for '$dbName' is not an SQL driver");
+        }
+
+        return $driver;
     }
 
     /**

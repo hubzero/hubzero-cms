@@ -160,7 +160,7 @@ class Legacy extends Registry
         $this->file = $path . DIRECTORY_SEPARATOR . 'configuration.php';
 
         if ($this->exists()) {
-            $data = $this->read($this->file);
+            $data = $this->readConfiguration($this->file);
 
             // Not json_decode(json_encode()): json_encode() returns false on a
             // single byte that is not UTF-8, which a Joomla-era file written
@@ -204,7 +204,7 @@ class Legacy extends Registry
      * @param   string  $file     Path to file to load
      * @return  object  The configuration, with its tmp and log paths moved under the app path
      */
-    public function read($file)
+    public function readConfiguration($file)
     {
         if (!file_exists($file) || (filesize($file) < 10)) {
             throw new FileNotFoundException('No configuration file found and no installation code available.', 500);

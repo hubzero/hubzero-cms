@@ -134,7 +134,7 @@ class Translator extends Obj
     /**
      * Name of the transliterator function for this language.
      *
-     * @var callable|null
+     * @var callable|array|null
      */
     protected $transliterator = null;
 

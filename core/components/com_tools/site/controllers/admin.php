@@ -822,7 +822,7 @@ class Admin extends SiteController
                 return false;
             } else {
                 Log::debug("findalizeTool(): deleting tmp files");
-                exec('sudo -u apps rm -f ' . escapeshellarg('/tmp/' . $tar), $out, $result);
+                exec('sudo -u apps rm -f ' . escapeshellarg('/tmp/' . $tar), $rmOutput, $result);
             }
             return true;
         } else {
