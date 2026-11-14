@@ -3291,7 +3291,8 @@ class OciDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $column = $this->quoteName($column);
         $this->setQuery("ALTER TABLE $table ADD $column GENERATED ALWAYS AS ($expression) VIRTUAL");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**

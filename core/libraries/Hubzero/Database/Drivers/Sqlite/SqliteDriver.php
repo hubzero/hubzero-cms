@@ -3151,7 +3151,8 @@ class SqliteDriver extends BaseSqlDriver
 
         $table = $this->replacePrefix($table);
         $this->setQuery("ALTER TABLE $table ADD COLUMN $column GENERATED ALWAYS AS ($expression) STORED");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**
@@ -3175,7 +3176,8 @@ class SqliteDriver extends BaseSqlDriver
 
         $table = $this->replacePrefix($table);
         $this->setQuery("ALTER TABLE $table ADD COLUMN $column GENERATED ALWAYS AS ($expression) VIRTUAL");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**

@@ -3052,9 +3052,9 @@ abstract class BaseSqlDriver extends PdoDriver
     }
 
     /**
-     * Get slow query count
+     * Get slow query count, or the queries themselves where a driver can list them
      *
-     * @return  int
+     * @return  int|array
      */
     public function getSlowQueries()
     {
@@ -3089,7 +3089,8 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $table = $this->replacePrefix($table);
         $this->setQuery("ALTER TABLE $table ADD CONSTRAINT $name CHECK ($expression)");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**
@@ -3103,7 +3104,8 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $table = $this->replacePrefix($table);
         $this->setQuery("ALTER TABLE $table DROP CONSTRAINT $name");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**

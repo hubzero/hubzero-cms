@@ -120,7 +120,8 @@ class Table
      */
     public function truncate(int $nextId = 1): bool
     {
-        return $this->driver->truncateTable($this->table, $nextId);
+        $this->driver->truncateTable($this->table, $nextId);
+        return true;
     }
 
     /**

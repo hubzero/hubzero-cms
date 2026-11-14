@@ -900,7 +900,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   mixed  $name  The identifier name
      * @param   mixed  $as    The alias (optional)
-     * @return  string
+     * @return  string|array
      */
     public function quoteName($name, $as = null)
     {
@@ -1058,13 +1058,15 @@ class InformixDriver extends BaseSqlDriver
 
         $sql = 'LOCK TABLE ' . $this->quoteName($table) . ' IN EXCLUSIVE MODE';
 
-        return $this->exec($sql);
+        $this->exec($sql);
+
+        return $this;
     }
 
     public function unlockTables()
     {
         // Informix releases locks automatically at transaction end
-        return true;
+        return $this;
     }
 
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)
@@ -1075,7 +1077,7 @@ class InformixDriver extends BaseSqlDriver
         $this
             ->setQuery('RENAME TABLE ' . $this->quoteName($oldTable) . ' TO ' . $this->quoteName($newTable))
             ->execute();
-        return true;
+        return $this;
     }
 
     public function dropTable($table, $ifExists = true)

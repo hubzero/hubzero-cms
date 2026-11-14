@@ -2607,7 +2607,8 @@ class SqlsrvDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $column = $this->quoteName($column);
         $this->setQuery("ALTER TABLE $table ADD $column AS ($expression) PERSISTED");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**
@@ -2626,7 +2627,8 @@ class SqlsrvDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $column = $this->quoteName($column);
         $this->setQuery("ALTER TABLE $table ADD $column AS ($expression)");
-        return $this->execute();
+        $this->execute();
+        return true;
     }
 
     /**

@@ -2351,9 +2351,9 @@ class FirebirdDriver extends BaseSqlDriver
     /**
      * Quote an identifier name
      *
-     * @param   string       $name  The identifier name
+     * @param   string|array $name  The identifier name
      * @param   string|null  $as    An optional alias
-     * @return  string
+     * @return  string|array
      */
     public function quoteName($name, $as = null)
     {
