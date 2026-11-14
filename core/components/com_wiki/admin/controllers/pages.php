@@ -182,7 +182,7 @@ class Pages extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -233,12 +233,10 @@ class Pages extends AdminController
 
         // Get parameters
         $params = Request::getArray('params', [], 'post');
-        if (is_array($params)) {
-            $pparams = new \Hubzero\Config\Registry($page->get('params'));
-            $pparams->merge($params);
+        $pparams = new \Hubzero\Config\Registry($page->get('params'));
+        $pparams->merge($params);
 
-            $page->set('params', $pparams->toString());
-        }
+        $page->set('params', $pparams->toString());
 
         // Trigger before save event
         $isNew  = $page->isNew();

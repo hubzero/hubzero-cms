@@ -934,33 +934,31 @@ class Posts extends SiteController
         // Incoming
         $posts = Request::getArray('post', []);
 
-        if (is_array($posts)) {
-            $folder = null;
-            $i = 0;
+        $folder = null;
+        $i = 0;
 
-            foreach ($posts as $post) {
-                $post = intval($post);
-                if (!$post) {
-                    continue;
-                }
-
-                $row = new Post($post);
-                if (!$row->exists()) {
-                    continue;
-                }
-
-                // The ids come from the request and Post resolves any row, so
-                // only reorder posts on a board the caller may moderate --
-                // otherwise this rewrites the ordering of anyone's board.
-                if (!new Collection($row->get('collection_id'))->canBeModeratedBy()) {
-                    continue;
-                }
-
-                $row->set('ordering', $i + 1);
-                $row->store(false);
-
-                $i++;
+        foreach ($posts as $post) {
+            $post = intval($post);
+            if (!$post) {
+                continue;
             }
+
+            $row = new Post($post);
+            if (!$row->exists()) {
+                continue;
+            }
+
+            // The ids come from the request and Post resolves any row, so
+            // only reorder posts on a board the caller may moderate --
+            // otherwise this rewrites the ordering of anyone's board.
+            if (!new Collection($row->get('collection_id'))->canBeModeratedBy()) {
+                continue;
+            }
+
+            $row->set('ordering', $i + 1);
+            $row->store(false);
+
+            $i++;
         }
 
         if (!Request::getInt('no_html', 0)) {

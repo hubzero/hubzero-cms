@@ -292,7 +292,7 @@ class Utilities
     {
         $attachments = Request::getArray('attachments', null, 'files');
 
-        if (is_array($attachments) && count($attachments) > 0 && is_array($attachments['name'])) {
+        if (count($attachments) > 0 && is_array($attachments['name'])) {
             for ($i = 0; $i < count($attachments['name']); $i++) {
                 $attachment = \Components\Support\Models\Attachment::blank();
                 $attachment->set('ticket', $ticketid);

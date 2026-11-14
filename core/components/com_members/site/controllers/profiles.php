@@ -1613,7 +1613,7 @@ class Profiles extends SiteController
 
         $access  = Request::getArray('access', [], 'post');
 
-        if (is_array($access) && !empty($access)) {
+        if (!empty($access)) {
             foreach ($access as $k => $v) {
                 $member->setParam('access_' . $k, intval($v));
             }

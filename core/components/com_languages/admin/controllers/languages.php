@@ -145,9 +145,7 @@ class Languages extends AdminController
         // Incoming
         if (!is_object($row)) {
             $id = Request::getArray('lang_id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? intval($id[0]) : 0);
-            }
+            $id = (!empty($id) ? intval($id[0]) : 0);
 
             $row = Language::oneOrNew($id);
         }

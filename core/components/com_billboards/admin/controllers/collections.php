@@ -73,9 +73,6 @@ class Collections extends AdminController
         if (!isset($collection) || !is_object($collection)) {
             // Incoming (expecting an array)
             $id = Request::getArray('id', [0]);
-            if (!is_array($id)) {
-                $id = [$id];
-            }
             $cid = $id[0];
 
             $collection = Collection::oneOrNew($cid);
@@ -143,9 +140,6 @@ class Collections extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         // Loop through the selected collections to delete
         // @TODO: maybe we should warn people if trying to delete a collection with associated billboards?

@@ -3412,7 +3412,7 @@ class Files extends Plugin
         $folders = Request::getArray('folder', []);
 
         $combined = [];
-        if (!empty($checked) && is_array($checked)) {
+        if (!empty($checked)) {
             foreach ($checked as $ch) {
                 if (trim($ch) != '' && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $ch)) !== false) {
                     $combined[] = ['file' => urldecode($ch)];
@@ -3424,7 +3424,7 @@ class Files extends Plugin
 
         // [!] Legacy support
         $files = Request::getArray('file', []);
-        if (!empty($files) && is_array($files)) {
+        if (!empty($files)) {
             foreach ($files as $ch) {
                 if (trim($ch) != '' && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $ch)) !== false) {
                     $combined[] = ['file' => urldecode($ch)];
@@ -3437,7 +3437,7 @@ class Files extends Plugin
             $combined[] = ['file' => urldecode($file)];
         }
 
-        if (!empty($folders) && is_array($folders)) {
+        if (!empty($folders)) {
             foreach ($folders as $f) {
                 if (trim($f) != '') {
                     $combined[] = ['folder' => urldecode($f)];

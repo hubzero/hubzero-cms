@@ -147,9 +147,7 @@ class Sections extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $model = \Components\Courses\Models\Section::getInstance($id);
         }
@@ -638,9 +636,7 @@ class Sections extends AdminController
         $id = Request::getArray('id', 0);
 
         // Get the single ID we're working with
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
+        $id = (!empty($id)) ? $id[0] : 0;
 
         $row = \Components\Courses\Models\Section::getInstance($id);
         $row->makeDefault();

@@ -424,7 +424,7 @@ class Items extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('cid', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -805,9 +805,7 @@ class Items extends AdminController
 
         // Incoming
         $id = Request::getArray('cid', []);
-        if (is_array($id)) {
-            $id = (!empty($id) ? $id[0] : 0);
-        }
+        $id = (!empty($id) ? $id[0] : 0);
 
         // Ensure we have an ID to work with
         if (!$id) {

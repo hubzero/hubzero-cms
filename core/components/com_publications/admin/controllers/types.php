@@ -555,7 +555,7 @@ class Types extends AdminController
         $curation = Request::getArray('curation', [], 'post');
 
         // Collect modifications
-        if (is_array($curation) && isset($curation['blocks'][$blockId])) {
+        if (isset($curation['blocks'][$blockId])) {
             foreach ($curation['blocks'][$blockId]['elements'] as $elementId => $element) {
                 foreach ($element as $dataLabel => $dataValue) {
                     if ($dataLabel == 'params') {
@@ -834,31 +834,29 @@ class Types extends AdminController
             $curation = Request::getArray('curation', []);
 
             // Collect modifications
-            if (is_array($curation)) {
-                // Save params
-                if (isset($curation['params'])) {
-                    foreach ($curation['params'] as $cpName => $cpValue) {
-                        $manifest->params->$cpName = trim($cpValue);
-                    }
+            // Save params
+            if (isset($curation['params'])) {
+                foreach ($curation['params'] as $cpName => $cpValue) {
+                    $manifest->params->$cpName = trim($cpValue);
                 }
-                // Save blocks
-                if (isset($curation['blocks'])) {
-                    foreach ($curation['blocks'] as $blockId => $blockData) {
-                        foreach ($blockData as $dataLabel => $dataValue) {
-                            if ($dataLabel == 'params') {
-                                // Save block params
-                                foreach ($dataValue as $bpName => $bpValue) {
-                                    // Determine value type
-                                    if (is_array($manifest->blocks->$blockId->$dataLabel->$bpName)) {
-                                        $pval = trim($bpValue) ? explode(',', trim($bpValue)) : [];
-                                    } else {
-                                        $pval = trim($bpValue);
-                                    }
-                                    $manifest->blocks->$blockId->$dataLabel->$bpName = $pval;
+            }
+            // Save blocks
+            if (isset($curation['blocks'])) {
+                foreach ($curation['blocks'] as $blockId => $blockData) {
+                    foreach ($blockData as $dataLabel => $dataValue) {
+                        if ($dataLabel == 'params') {
+                            // Save block params
+                            foreach ($dataValue as $bpName => $bpValue) {
+                                // Determine value type
+                                if (is_array($manifest->blocks->$blockId->$dataLabel->$bpName)) {
+                                    $pval = trim($bpValue) ? explode(',', trim($bpValue)) : [];
+                                } else {
+                                    $pval = trim($bpValue);
                                 }
-                            } else {
-                                $manifest->blocks->$blockId->$dataLabel = trim($dataValue);
+                                $manifest->blocks->$blockId->$dataLabel->$bpName = $pval;
                             }
+                        } else {
+                            $manifest->blocks->$blockId->$dataLabel = trim($dataValue);
                         }
                     }
                 }
@@ -869,13 +867,11 @@ class Types extends AdminController
         } else {
             // Get parameters
             $params = Request::getArray('params', '', 'post');
-            if (is_array($params)) {
-                $txt = [];
-                foreach ($params as $k => $v) {
-                    $txt[] = "$k=$v";
-                }
-                $row->params = implode("\n", $txt);
+            $txt = [];
+            foreach ($params as $k => $v) {
+                $txt[] = "$k=$v";
             }
+            $row->params = implode("\n", $txt);
         }
 
         // Check content

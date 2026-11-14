@@ -254,11 +254,7 @@ class Assets extends AdminController
             $ids = Request::getArray('id', []);
 
             // Get the single ID we're working with
-            if (is_array($ids)) {
-                $id = (!empty($ids)) ? $ids[0] : 0;
-            } else {
-                $id = ($ids ? $ids : 0);
-            }
+            $id = (!empty($ids)) ? $ids[0] : 0;
 
             $model = new Tables\Asset($this->database);
             $model->load($id);

@@ -108,9 +108,7 @@ class Types extends AdminController
         if (!is_object($row)) {
             // Incoming (expecting an array)
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = $id[0];
-            }
+            $id = $id[0];
 
             // Load the object
             $row = Type::oneOrNew($id);
@@ -164,46 +162,44 @@ class Types extends AdminController
 
         // Get the custom fields
         $fields = Request::getArray('fields', [], 'post');
-        if (is_array($fields)) {
-            $elements = new stdClass();
-            $elements->fields = [];
+        $elements = new stdClass();
+        $elements->fields = [];
 
-            foreach ($fields as $val) {
-                if (!isset($val['title'])) {
-                    continue;
-                }
-                if ($val['title']) {
-                    $element = new stdClass();
-                    $element->default  = (isset($val['default'])) ? $val['default'] : '';
-                    $hasName = isset($val['name']) && trim($val['name']) != '';
-                    $element->name     = $hasName ? $val['name'] : $this->normalize(trim($val['title']));
-                    $element->label    = $val['title'];
-                    $element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
-                    $element->required = (isset($val['required'])) ? $val['required'] : '0';
-                    foreach ($val as $key => $v) {
-                        if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
-                            $element->$key = $v;
-                        }
-                    }
-                    if (isset($val['options'])) {
-                        $element->options = [];
-                        foreach ($val['options'] as $option) {
-                            if (trim($option['label'])) {
-                                $opt = new stdClass();
-                                $opt->label = $option['label'];
-                                $opt->value = $option['label'];
-                                $element->options[] = $opt;
-                            }
-                        }
-                    }
-                    $elements->fields[] = $element;
-                }
+        foreach ($fields as $val) {
+            if (!isset($val['title'])) {
+                continue;
             }
-
-            $re = new \Components\Resources\Models\Elements($elements);
-
-            $row->set('customFields', $re->toString());
+            if ($val['title']) {
+                $element = new stdClass();
+                $element->default  = (isset($val['default'])) ? $val['default'] : '';
+                $hasName = isset($val['name']) && trim($val['name']) != '';
+                $element->name     = $hasName ? $val['name'] : $this->normalize(trim($val['title']));
+                $element->label    = $val['title'];
+                $element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
+                $element->required = (isset($val['required'])) ? $val['required'] : '0';
+                foreach ($val as $key => $v) {
+                    if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
+                        $element->$key = $v;
+                    }
+                }
+                if (isset($val['options'])) {
+                    $element->options = [];
+                    foreach ($val['options'] as $option) {
+                        if (trim($option['label'])) {
+                            $opt = new stdClass();
+                            $opt->label = $option['label'];
+                            $opt->value = $option['label'];
+                            $element->options[] = $opt;
+                        }
+                    }
+                }
+                $elements->fields[] = $element;
+            }
         }
+
+        $re = new \Components\Resources\Models\Elements($elements);
+
+        $row->set('customFields', $re->toString());
 
         // Get parameters
         $p = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));

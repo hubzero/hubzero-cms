@@ -122,9 +122,6 @@ class Registration
         // TODO: more cleanup
 
         $name = Request::getArray('name', [], 'post');
-        if (!is_array($name)) {
-            $name = [];
-        }
         if ($name) {
             $name['first']  = preg_replace('/\s+/', ' ', trim($name['first']));
             $name['middle'] = preg_replace('/\s+/', ' ', trim($name['middle']));

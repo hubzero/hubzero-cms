@@ -186,7 +186,7 @@ class Styles extends AdminController
             // Incoming
             $id = Request::getArray('id', [0]);
 
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -289,7 +289,7 @@ class Styles extends AdminController
             $n  = 0;
             $db = App::get('db');
 
-            if (!empty($assigned) && is_array($assigned)) {
+            if (!empty($assigned)) {
                 \Hubzero\Utility\Arr::toInteger($assigned);
 
                 // Update the mapping for menu items that this style IS assigned to.

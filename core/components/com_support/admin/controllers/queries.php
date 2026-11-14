@@ -111,9 +111,7 @@ class Queries extends AdminController
 
         if (!is_object($row)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? $id[0] : 0);
-            }
+            $id = (!empty($id) ? $id[0] : 0);
 
             $row = Query::oneOrNew($id);
         }
@@ -292,9 +290,7 @@ class Queries extends AdminController
 
         if (!is_object($row)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? intval($id[0]) : 0);
-            }
+            $id = (!empty($id) ? intval($id[0]) : 0);
 
             $row = QueryFolder::oneOrNew($id);
         }
@@ -436,36 +432,32 @@ class Queries extends AdminController
         $folders = Request::getArray('folder', []);
         $queries = Request::getArray('queries', []);
 
-        if (is_array($folders)) {
-            foreach ($folders as $key => $folder) {
-                $row = QueryFolder::oneOrFail(intval($folder));
-                $row->set('ordering', $key + 1);
-                $row->save();
-            }
+        foreach ($folders as $key => $folder) {
+            $row = QueryFolder::oneOrFail(intval($folder));
+            $row->set('ordering', $key + 1);
+            $row->save();
         }
 
-        if (is_array($queries)) {
-            $folder = null;
-            $i = 0;
+        $folder = null;
+        $i = 0;
 
-            foreach ($queries as $query) {
-                $bits = explode('_', $query);
+        foreach ($queries as $query) {
+            $bits = explode('_', $query);
 
-                $fd = intval($bits[0]);
-                $id = intval($bits[1]);
+            $fd = intval($bits[0]);
+            $id = intval($bits[1]);
 
-                if ($fd != $folder) {
-                    $folder = $fd;
-                    $i = 0;
-                }
-
-                $row = Query::oneOrFail($id);
-                $row->set('folder_id', $fd);
-                $row->set('ordering', $i + 1);
-                $row->save();
-
-                $i++;
+            if ($fd != $folder) {
+                $folder = $fd;
+                $i = 0;
             }
+
+            $row = Query::oneOrFail($id);
+            $row->set('folder_id', $fd);
+            $row->set('ordering', $i + 1);
+            $row->save();
+
+            $i++;
         }
 
         $no_html = Request::getInt('no_html', 0);

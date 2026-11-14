@@ -79,9 +79,6 @@ class BillBoards extends AdminController
         if (!isset($billboard) || !is_object($billboard)) {
             // Incoming - expecting an array
             $cid = Request::getArray('cid', [0]);
-            if (!is_array($cid)) {
-                $cid = [$cid];
-            }
             $uid = $cid[0];
 
             $billboard = Billboard::oneOrNew($uid);
@@ -299,9 +296,6 @@ class BillBoards extends AdminController
 
         // Incoming (expecting an array)
         $ids = Request::getArray('cid', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         $i = 0;
 
@@ -370,9 +364,6 @@ class BillBoards extends AdminController
 
         // Incoming (we're expecting an array)
         $ids = Request::getArray('cid', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         $publish = $this->getTask() == 'publish' ? 1 : 0;
 

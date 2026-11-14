@@ -231,7 +231,7 @@ class Customexts extends AdminController
             // The name link passes id; the toolbar's Edit sends the ticked
             // rows' checkboxes, which the list names cid[]
             $id = Request::getArray('id', Request::getArray('cid', [0]));
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -304,12 +304,10 @@ class Customexts extends AdminController
 
         $p = $model->params;
 
-        if (is_array($params)) {
-            foreach ($params as $k => $v) {
-                $p->set($k, $v);
-            }
-            $model->set('params', $p->toString());
+        foreach ($params as $k => $v) {
+            $p->set($k, $v);
         }
+        $model->set('params', $p->toString());
 
         // pluralize types (a non-standard extension has no type directory)
         $path_type = '';
@@ -486,9 +484,6 @@ class Customexts extends AdminController
         $ids = Request::getArray('cid', []);
 
         // Get the single ID we're working with
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         // empty list?
         if (empty($ids)) {
@@ -731,9 +726,6 @@ class Customexts extends AdminController
         $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         // empty list?
         if (empty($ids)) {

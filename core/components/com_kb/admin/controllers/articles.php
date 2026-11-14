@@ -145,7 +145,7 @@ class Articles extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -215,13 +215,11 @@ class Articles extends AdminController
 
         $p = $row->param();
 
-        if (is_array($params)) {
-            $txt = [];
-            foreach ($params as $k => $v) {
-                $p->set($k, $v);
-            }
-            $row->set('params', $p->toString());
+        $txt = [];
+        foreach ($params as $k => $v) {
+            $p->set($k, $v);
         }
+        $row->set('params', $p->toString());
 
         // Store new content
         if (!$row->save()) {

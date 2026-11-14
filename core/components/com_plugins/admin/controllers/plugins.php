@@ -201,7 +201,7 @@ class Plugins extends AdminController
         if (!is_object($model)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 
@@ -264,12 +264,10 @@ class Plugins extends AdminController
 
         $p = $model->params;
 
-        if (is_array($params)) {
-            foreach ($params as $k => $v) {
-                $p->set($k, $v);
-            }
-            $model->set('params', $p->toString());
+        foreach ($params as $k => $v) {
+            $p->set($k, $v);
         }
+        $model->set('params', $p->toString());
 
         // Trigger before save event
         $result = Event::trigger('onExtensionBeforeSave', [$this->option . '.plugin', &$model, $model->isNew()]);

@@ -104,9 +104,7 @@ class Roles extends AdminController
         if (!is_object($row)) {
             // Incoming (expecting an array)
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             // Load the object
             $row = new Tables\Role($this->database);

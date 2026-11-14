@@ -98,9 +98,7 @@ class Authors extends AdminController
         if (!is_array($rows)) {
             // Incoming
             $authorid = Request::getArray('id', [0]);
-            if (is_array($authorid)) {
-                $authorid = (!empty($authorid) ? $authorid[0] : 0);
-            }
+            $authorid = (!empty($authorid) ? $authorid[0] : 0);
 
             $rows = Author::all()
                 ->whereEquals('authorid', $authorid)
@@ -155,20 +153,18 @@ class Authors extends AdminController
 
         $rows = [];
 
-        if (is_array($fields)) {
-            foreach ($fields as $fieldset) {
-                $fieldset['authorid'] = $authorid;
+        foreach ($fields as $fieldset) {
+            $fieldset['authorid'] = $authorid;
 
-                // These are #__author_assoc rows (the form the edit view posts),
-                // not author roles
-                $row = Author::oneOrNew(isset($fieldset['id']) ? $fieldset['id'] : 0)->set($fieldset);
+            // These are #__author_assoc rows (the form the edit view posts),
+            // not author roles
+            $row = Author::oneOrNew(isset($fieldset['id']) ? $fieldset['id'] : 0)->set($fieldset);
 
-                if (!$row->save()) {
-                    $this->setError($row->getError());
-                }
-
-                $rows[] = $row;
+            if (!$row->save()) {
+                $this->setError($row->getError());
             }
+
+            $rows[] = $row;
         }
 
         if ($this->getTask() == 'apply') {

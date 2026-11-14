@@ -135,9 +135,7 @@ class Items extends AdminController
 
         // Incoming publication ID
         $id = Request::getArray('id', [0]);
-        if (is_array($id)) {
-            $id = $id[0];
-        }
+        $id = $id[0];
 
         // Is this a new publication? TBD
         if (!$id) {
@@ -1362,10 +1360,8 @@ class Items extends AdminController
 
         // Save parameters
         $params = Request::getArray('params', '', 'post');
-        if (is_array($params)) {
-            foreach ($params as $k => $v) {
-                $this->model->version->saveParam($this->model->version->id, $k, $v);
-            }
+        foreach ($params as $k => $v) {
+            $this->model->version->saveParam($this->model->version->id, $k, $v);
         }
 
         // Do we have a message to send?

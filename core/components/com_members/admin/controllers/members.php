@@ -295,9 +295,7 @@ class Members extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             // Initiate database class and load info
             $user = Member::oneOrNew($id);

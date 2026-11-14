@@ -108,7 +108,7 @@ class Meta extends AdminController
             // Incoming
             $id = Request::getArray('id', 0);
 
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 

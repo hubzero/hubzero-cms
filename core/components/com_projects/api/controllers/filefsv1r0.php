@@ -968,31 +968,27 @@ class Filefsv1r0 extends ApiController
 
         $response->metadata = [];
 
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                $entity = Entity::fromPath(
-                    Request::getString('subdir', '', 'post') . DS . $file,
-                    $this->connectionAdapter(),
-                );
+        foreach ($files as $file) {
+            $entity = Entity::fromPath(
+                Request::getString('subdir', '', 'post') . DS . $file,
+                $this->connectionAdapter(),
+            );
 
-                if ($entity->exists()) {
-                    try {
-                        $metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
-                        if (empty($fields)) {
-                            $response->metadata[$file] = $metadata[0];
-                        } else {
-                            $response->metadata[$file] = $this->filter($metadata[0], $fields);
-                        }
-                        $response->success = 1;
-                    } catch (Exception $e) {
-                        $response->error .= " Error fetching entity metadata for " . $file;
+            if ($entity->exists()) {
+                try {
+                    $metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
+                    if (empty($fields)) {
+                        $response->metadata[$file] = $metadata[0];
+                    } else {
+                        $response->metadata[$file] = $this->filter($metadata[0], $fields);
                     }
-                } else {
-                    $response->error .= " Entity " . $file . " does not exist";
+                    $response->success = 1;
+                } catch (Exception $e) {
+                    $response->error .= " Error fetching entity metadata for " . $file;
                 }
+            } else {
+                $response->error .= " Entity " . $file . " does not exist";
             }
-        } else {
-            $response->error = "asset parameter needs to be an array of file names";
         }
 
         $this->send($response);
@@ -1050,42 +1046,34 @@ class Filefsv1r0 extends ApiController
         $files = Request::getArray('asset', []);
         $metadata = Request::getArray('metadata', []);
 
-        if (is_array($files)) {
-            if (is_array($metadata)) {
-                foreach ($files as $file) {
-                    $entity = Entity::fromPath(
-                        Request::getString('subdir', '', 'post') . DS . $file,
-                        $this->connectionAdapter(),
+        foreach ($files as $file) {
+            $entity = Entity::fromPath(
+                Request::getString('subdir', '', 'post') . DS . $file,
+                $this->connectionAdapter(),
+            );
+
+            if ($entity->exists()) {
+                try {
+                    $tmpoldmetadata = Event::trigger('metadata.onMetadataGet', [$entity]);
+                    $oldmetadata = $this->packMetadata($tmpoldmetadata[0]);
+
+                    $error = Event::trigger(
+                        'metadata.onMetadataSave',
+                        [$entity, array_merge($oldmetadata, $metadata)],
                     );
 
-                    if ($entity->exists()) {
-                        try {
-                            $tmpoldmetadata = Event::trigger('metadata.onMetadataGet', [$entity]);
-                            $oldmetadata = $this->packMetadata($tmpoldmetadata[0]);
-
-                            $error = Event::trigger(
-                                'metadata.onMetadataSave',
-                                [$entity, array_merge($oldmetadata, $metadata)],
-                            );
-
-                            if (empty($error)) {
-                                $response->success = 1;
-                            } else {
-                                $response->success = 0;
-                                $response->error .= " Error setting metadata for " . $file;
-                            }
-                        } catch (Exception $e) {
-                            $response->error .= " Error setting metadata for " . $file;
-                        }
+                    if (empty($error)) {
+                        $response->success = 1;
                     } else {
-                        $response->error .= " Entity " . $file . " does not exist";
+                        $response->success = 0;
+                        $response->error .= " Error setting metadata for " . $file;
                     }
+                } catch (Exception $e) {
+                    $response->error .= " Error setting metadata for " . $file;
                 }
             } else {
-                $response->error = "metadata parameter needs to be an associative array of fields and values";
+                $response->error .= " Entity " . $file . " does not exist";
             }
-        } else {
-            $response->error = "asset parameter needs to be an array of file names";
         }
 
         $this->send($response);
@@ -1272,7 +1260,7 @@ class Filefsv1r0 extends ApiController
         $folders = Request::getArray('folder', []);
 
         $combined = [];
-        if (!empty($checked) && is_array($checked)) {
+        if (!empty($checked)) {
             foreach ($checked as $ch) {
                 if (trim($ch) != '') {
                     $combined[] = ['file' => urldecode($ch)];
@@ -1282,7 +1270,7 @@ class Filefsv1r0 extends ApiController
             $combined[] = ['file' => urldecode($file)];
         }
 
-        if (!empty($folders) && is_array($folders)) {
+        if (!empty($folders)) {
             foreach ($folders as $f) {
                 if (trim($f) != '') {
                     $combined[] = ['folder' => urldecode($f)];

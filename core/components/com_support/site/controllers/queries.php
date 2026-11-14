@@ -276,9 +276,7 @@ class Queries extends SiteController
 
         if (!is_object($row)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? intval($id[0]) : 0);
-            }
+            $id = (!empty($id) ? intval($id[0]) : 0);
 
             $row = QueryFolder::oneOrNew($id);
 
@@ -438,57 +436,53 @@ class Queries extends SiteController
         $folders = Request::getArray('folder', []);
         $queries = Request::getArray('queries', []);
 
-        if (is_array($folders)) {
-            foreach ($folders as $key => $folder) {
-                $row = QueryFolder::oneOrFail(intval($folder));
-                if ($row->get('user_id') != User::get('id')) {
-                    continue;
-                }
-                $row->set('ordering', $key + 1);
-                $row->save();
+        foreach ($folders as $key => $folder) {
+            $row = QueryFolder::oneOrFail(intval($folder));
+            if ($row->get('user_id') != User::get('id')) {
+                continue;
             }
+            $row->set('ordering', $key + 1);
+            $row->save();
         }
 
-        if (is_array($queries)) {
-            $folder = null;
-            $i = 0;
+        $folder = null;
+        $i = 0;
 
-            foreach ($queries as $query) {
-                $bits = explode('_', $query);
+        foreach ($queries as $query) {
+            $bits = explode('_', $query);
 
-                $fd = intval($bits[0]);
-                $id = isset($bits[1]) ? intval($bits[1]) : 0;
+            $fd = intval($bits[0]);
+            $id = isset($bits[1]) ? intval($bits[1]) : 0;
 
-                if (!$id) {
-                    continue;
-                }
-
-                // The destination folder has to be the caller's too. Checking
-                // only the query let an owner drop their own query into someone
-                // else's sidebar. Folder 0 is "unfiled".
-                if ($fd) {
-                    $dest = QueryFolder::oneOrNew($fd);
-
-                    if (!$dest->get('id') || $dest->get('user_id') != User::get('id')) {
-                        continue;
-                    }
-                }
-
-                if ($fd != $folder) {
-                    $folder = $fd;
-                    $i = 0;
-                }
-
-                $row = Query::oneOrFail($id);
-                if ($row->get('user_id') != User::get('id')) {
-                    continue;
-                }
-                $row->set('folder_id', $fd);
-                $row->set('ordering', $i + 1);
-                $row->save();
-
-                $i++;
+            if (!$id) {
+                continue;
             }
+
+            // The destination folder has to be the caller's too. Checking
+            // only the query let an owner drop their own query into someone
+            // else's sidebar. Folder 0 is "unfiled".
+            if ($fd) {
+                $dest = QueryFolder::oneOrNew($fd);
+
+                if (!$dest->get('id') || $dest->get('user_id') != User::get('id')) {
+                    continue;
+                }
+            }
+
+            if ($fd != $folder) {
+                $folder = $fd;
+                $i = 0;
+            }
+
+            $row = Query::oneOrFail($id);
+            if ($row->get('user_id') != User::get('id')) {
+                continue;
+            }
+            $row->set('folder_id', $fd);
+            $row->set('ordering', $i + 1);
+            $row->save();
+
+            $i++;
         }
 
         if (!Request::getInt('no_html')) {

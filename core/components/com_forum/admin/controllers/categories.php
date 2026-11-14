@@ -191,9 +191,7 @@ class Categories extends AdminController
 
         if (!is_object($category)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? intval($id[0]) : 0);
-            }
+            $id = (!empty($id) ? intval($id[0]) : 0);
 
             $category = Category::oneOrNew($id);
         }

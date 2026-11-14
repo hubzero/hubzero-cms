@@ -191,9 +191,7 @@ class Assetgroups extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : '';
-            }
+            $id = (!empty($id)) ? $id[0] : '';
 
             $model = new \Components\Courses\Models\Assetgroup($id);
         }
@@ -294,9 +292,7 @@ class Assetgroups extends AdminController
         $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
+        $id = (!empty($id)) ? $id[0] : 0;
 
         $baseUrl = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 
@@ -494,9 +490,7 @@ class Assetgroups extends AdminController
         $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
+        $id = (!empty($id)) ? $id[0] : 0;
 
         if (!$id) {
             $url = 'index.php?option=' . $this->option

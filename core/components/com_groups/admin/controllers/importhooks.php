@@ -129,9 +129,7 @@ class ImportHooks extends AdminController
         if (!($row instanceof Hook)) {
             // get request vars
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (isset($id[0]) ? $id[0] : 0);
-            }
+            $id = (isset($id[0]) ? $id[0] : 0);
 
             $row = Hook::oneOrNew($id);
         }
@@ -192,7 +190,7 @@ class ImportHooks extends AdminController
         }
 
         // If we have a file
-        if (is_array($file) && !empty($file) && $file['size'] > 0 && $file['error'] == 0) {
+        if (!empty($file) && $file['size'] > 0 && $file['error'] == 0) {
             $file['name'] = \Hubzero\Filesystem\Util::normalizeFile(basename(str_replace('\\', '/', $file['name'])));
             move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
@@ -221,9 +219,7 @@ class ImportHooks extends AdminController
     {
         // get request vars
         $id = Request::getArray('id', []);
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : null;
-        }
+        $id = (!empty($id)) ? $id[0] : null;
 
         // create hook model object
         $hook = Hook::oneOrFail($id);

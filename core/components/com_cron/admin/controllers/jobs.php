@@ -96,9 +96,7 @@ class Jobs extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = intval($id[0]);
-            }
+            $id = intval($id[0]);
 
             $row = Job::oneOrNew($id);
         }

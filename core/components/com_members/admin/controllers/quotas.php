@@ -136,9 +136,7 @@ class Quotas extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $row = Quota::oneOrNew($id);
         }
@@ -369,9 +367,7 @@ class Quotas extends AdminController
             $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             // Initiate database class and load info
             $row = Category::oneOrNew($id);

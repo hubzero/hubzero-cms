@@ -605,9 +605,7 @@ class Items extends AdminController
 
         // Incoming resource ID
         $id = Request::getArray('id', [0]);
-        if (is_array($id)) {
-            $id = (!empty($id) ? $id[0] : 0);
-        }
+        $id = (!empty($id) ? $id[0] : 0);
 
         // Incoming parent ID - this determines if the resource is standalone or not
         $pid = Request::getInt('pid', 0);
@@ -882,32 +880,28 @@ class Items extends AdminController
 
         // Get parameters
         $params = Request::getArray('params', [], 'post');
-        if (is_array($params)) {
-            $txt = new \Hubzero\Config\Registry('');
-            foreach ($params as $k => $v) {
-                $txt->set($k, $v);
-            }
-            $row->set('params', $txt->toString());
+        $txt = new \Hubzero\Config\Registry('');
+        foreach ($params as $k => $v) {
+            $txt->set($k, $v);
         }
+        $row->set('params', $txt->toString());
 
         // Get attributes
         $attribs = Request::getArray('attrib', [], 'post');
-        if (is_array($attribs)) {
-            $txta = new \Hubzero\Config\Registry('');
-            foreach ($attribs as $k => $v) {
-                if ($k == 'timeof') {
-                    if (strtotime(trim($v)) === false) {
-                        $v = null;
-                    }
-
-                    $v = trim($v == null ? '' : $v)
-                        ? Date::of($v, Config::get('offset'))->toSql()
-                        : null;
+        $txta = new \Hubzero\Config\Registry('');
+        foreach ($attribs as $k => $v) {
+            if ($k == 'timeof') {
+                if (strtotime(trim($v)) === false) {
+                    $v = null;
                 }
-                $txta->set($k, $v);
+
+                $v = trim($v == null ? '' : $v)
+                    ? Date::of($v, Config::get('offset'))->toSql()
+                    : null;
             }
-            $row->set('attribs', $txta->toString());
+            $txta->set($k, $v);
         }
+        $row->set('attribs', $txta->toString());
 
         // Get custom areas, add wrappers, and compile into fulltxt
         $nbtag = Request::getArray('nbtag', [], 'post');

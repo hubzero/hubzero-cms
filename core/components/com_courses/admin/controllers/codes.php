@@ -130,9 +130,7 @@ class Codes extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $model = new \Components\Courses\Models\Section\Code($id);
         }
@@ -216,9 +214,6 @@ class Codes extends AdminController
         $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         $num = 0;
 

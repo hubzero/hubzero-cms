@@ -93,9 +93,7 @@ class ImportHooks extends AdminController
         if (!($hook instanceof Hook)) {
             // get request vars
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             // get the import object
             $hook = Hook::oneOrNew($id);
@@ -211,9 +209,7 @@ class ImportHooks extends AdminController
 
         // get request vars
         $id = Request::getArray('id', []);
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
+        $id = (!empty($id)) ? $id[0] : 0;
 
         // create hook model object
         $hook = Hook::oneOrFail($id);

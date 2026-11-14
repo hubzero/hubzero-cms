@@ -110,9 +110,7 @@ class PasswordRules extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $row = Rule::oneOrNew($id);
         }
@@ -273,9 +271,6 @@ class PasswordRules extends AdminController
 
         // Incoming (we're expecting an array)
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         // Loop through the IDs
         foreach ($ids as $id) {
@@ -342,9 +337,6 @@ class PasswordRules extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         $i = 0;
 

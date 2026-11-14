@@ -151,9 +151,7 @@ class Imports extends AdminController
         if (!($import instanceof Import)) {
             // get request vars
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (isset($id[0]) ? $id[0] : 0);
-            }
+            $id = (isset($id[0]) ? $id[0] : 0);
 
             $import = Import::oneOrNew($id);
         }

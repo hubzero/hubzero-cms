@@ -81,9 +81,6 @@ class Handlers extends AdminController
         if (!isset($handler) || !is_object($handler)) {
             // Incoming - expecting an array
             $cid = Request::getArray('id', [0]);
-            if (!is_array($cid)) {
-                $cid = [$cid];
-            }
             $uid = $cid[0];
 
             $handler = Handler::oneOrNew($uid);
@@ -185,9 +182,6 @@ class Handlers extends AdminController
 
         // Incoming (expecting an array)
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
 
         // Make sure we have IDs to work with
         if (count($ids) > 0) {

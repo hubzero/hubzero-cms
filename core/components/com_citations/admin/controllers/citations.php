@@ -119,7 +119,7 @@ class Citations extends AdminController
         if (!($row instanceof Citation)) {
             // Get request vars - expecting an array id[]=4232
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 

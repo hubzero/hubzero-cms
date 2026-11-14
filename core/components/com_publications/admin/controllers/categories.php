@@ -166,63 +166,59 @@ class Categories extends AdminController
 
         // Get the custom fields
         $fields = Request::getArray('fields', [], 'post');
-        if (is_array($fields)) {
-            $elements = new stdClass();
-            $elements->fields = [];
+        $elements = new stdClass();
+        $elements->fields = [];
 
-            foreach ($fields as $val) {
-                if ($val['title']) {
-                    $element = new stdClass();
-                    $element->default  = (isset($val['default'])) ? $val['default'] : '';
-                    if (isset($val['name']) && trim($val['name']) != '') {
-                        $element->name = $val['name'];
-                    } else {
-                        $element->name = strtolower(
-                            preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])),
-                        );
-                    }
-                    $element->label    = $val['title'];
-                    if (isset($val['type']) && trim($val['type']) != '') {
-                        $element->type = $val['type'];
-                    } else {
-                        $element->type = 'text';
-                    }
-                    $element->required = (isset($val['required'])) ? $val['required'] : '0';
-                    foreach ($val as $key => $v) {
-                        if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
-                            $element->$key = $v;
-                        }
-                    }
-                    if (isset($val['options'])) {
-                        $element->options = [];
-                        foreach ($val['options'] as $option) {
-                            if (trim($option['label'])) {
-                                $opt = new stdClass();
-                                $opt->label = $option['label'];
-                                $opt->value = $option['label'];
-                                $element->options[] = $opt;
-                            }
-                        }
-                    }
-                    $elements->fields[] = $element;
+        foreach ($fields as $val) {
+            if ($val['title']) {
+                $element = new stdClass();
+                $element->default  = (isset($val['default'])) ? $val['default'] : '';
+                if (isset($val['name']) && trim($val['name']) != '') {
+                    $element->name = $val['name'];
+                } else {
+                    $element->name = strtolower(
+                        preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])),
+                    );
                 }
+                $element->label    = $val['title'];
+                if (isset($val['type']) && trim($val['type']) != '') {
+                    $element->type = $val['type'];
+                } else {
+                    $element->type = 'text';
+                }
+                $element->required = (isset($val['required'])) ? $val['required'] : '0';
+                foreach ($val as $key => $v) {
+                    if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
+                        $element->$key = $v;
+                    }
+                }
+                if (isset($val['options'])) {
+                    $element->options = [];
+                    foreach ($val['options'] as $option) {
+                        if (trim($option['label'])) {
+                            $opt = new stdClass();
+                            $opt->label = $option['label'];
+                            $opt->value = $option['label'];
+                            $element->options[] = $opt;
+                        }
+                    }
+                }
+                $elements->fields[] = $element;
             }
-
-            $re = new Elements($elements);
-            $row->set('customFields', $re->toString());
         }
+
+        $re = new Elements($elements);
+        $row->set('customFields', $re->toString());
 
         // Get parameters
         $params = Request::getArray('params', [], 'post');
 
         $p = $row->params;
 
-        if (is_array($params)) {
-            foreach ($params as $k => $v) {
-                $p->set($k, $v);
-            }
-            $row->set('params', $p->toString());
+        foreach ($params as $k => $v) {
+            $p->set($k, $v);
         }
+        $row->set('params', $p->toString());
 
         // Store new content
         if (!$row->save()) {

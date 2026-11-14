@@ -122,9 +122,7 @@ class Subscriptions extends AdminController
 
         if (!is_object($subscription)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? intval($id[0]) : 0);
-            }
+            $id = (!empty($id) ? intval($id[0]) : 0);
 
             $subscription = Subscription::oneOrNew($id);
         }

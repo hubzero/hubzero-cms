@@ -245,9 +245,7 @@ class Projects extends AdminController
 
         // Incoming project ID
         $id = Request::getArray('id', [0]);
-        if (is_array($id)) {
-            $id = (!empty($id) ? intval($id[0]) : 0);
-        }
+        $id = (!empty($id) ? intval($id[0]) : 0);
 
         $model = new Models\Project($id);
 

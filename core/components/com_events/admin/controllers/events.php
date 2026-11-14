@@ -227,9 +227,7 @@ class Events extends AdminController
 
         // Incoming
         $id = Request::getArray('id', [], 'request');
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
+        $id = (!empty($id)) ? $id[0] : 0;
 
         // Load the event object
         $row = new Event($this->database);
@@ -525,12 +523,10 @@ class Events extends AdminController
 
         // Get parameters
         $params = Request::getArray('params', '', 'post');
-        if (is_array($params)) {
-            //email is reaquired
-            $params['show_email'] = 1;
-            $p = new \Hubzero\Config\Registry($params);
-            $row->params = $p->toString();
-        }
+        //email is reaquired
+        $params['show_email'] = 1;
+        $p = new \Hubzero\Config\Registry($params);
+        $row->params = $p->toString();
 
         if (!$row->check()) {
             App::redirect(
@@ -586,9 +582,6 @@ class Events extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -624,9 +617,6 @@ class Events extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -662,9 +652,6 @@ class Events extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -713,9 +700,6 @@ class Events extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         // Make sure we have an ID
         if (empty($ids)) {

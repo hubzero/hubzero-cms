@@ -131,7 +131,7 @@ class Polls extends AdminController
         Request::setVar('tmpl', 'component');
 
         $id = Request::getArray('id', [0]);
-        if (is_array($id) && !empty($id)) {
+        if (!empty($id)) {
             $id = $id[0];
         }
 
@@ -168,7 +168,7 @@ class Polls extends AdminController
 
         if (!is_object($poll)) {
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 

@@ -92,21 +92,19 @@ class Configure extends AdminController
         $box['value'] = '';
         $field        = '';
 
-        if (is_array($fields)) {
-            $txta = [];
-            foreach ($fields as $val) {
-                if ($val['title']) {
-                    $k = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($val['title']));
+        $txta = [];
+        foreach ($fields as $val) {
+            if ($val['title']) {
+                $k = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($val['title']));
 
-                    $t = str_replace('=', '-', $val['title']);
-                    $j = (isset($val['type'])) ? $val['type'] : 'text';
-                    $x = (isset($val['required'])) ? $val['required'] : '0';
-                    $z = (isset($val['show'])) ? $val['show'] : '0';
-                    $txta[] = $k . '=' . $t . '=' . $j . '=' . $x . '=' . $z;
-                }
+                $t = str_replace('=', '-', $val['title']);
+                $j = (isset($val['type'])) ? $val['type'] : 'text';
+                $x = (isset($val['required'])) ? $val['required'] : '0';
+                $z = (isset($val['show'])) ? $val['show'] : '0';
+                $txta[] = $k . '=' . $t . '=' . $j . '=' . $x . '=' . $z;
             }
-            $field = implode("\n", $txta);
         }
+        $field = implode("\n", $txta);
         $box['value'] = $field;
 
         $row = new EventsConfig($this->database);

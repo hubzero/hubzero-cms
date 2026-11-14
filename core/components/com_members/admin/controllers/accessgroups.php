@@ -108,9 +108,7 @@ class Accessgroups extends AdminController
             }
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $row = Accessgroup::oneOrNew($id);
         }

@@ -91,9 +91,7 @@ class Messages extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            if (is_array($id)) {
-                $id = (!empty($id) ? $id[0] : 0);
-            }
+            $id = (!empty($id) ? $id[0] : 0);
 
             // Initiate database class and load info
             $row = Message::oneOrNew($id);

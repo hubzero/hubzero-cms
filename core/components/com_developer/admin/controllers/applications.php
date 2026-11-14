@@ -101,7 +101,7 @@ class Applications extends AdminController
             // an array of integers. If it's the latter, we'll only take
             // the first ID in the list.
             $id = Request::getArray('id', [0]);
-            if (is_array($id) && !empty($id)) {
+            if (!empty($id)) {
                 $id = $id[0];
             }
 

@@ -185,9 +185,7 @@ class Students extends AdminController
             $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
-            if (is_array($id)) {
-                $id = (!empty($id)) ? $id[0] : 0;
-            }
+            $id = (!empty($id)) ? $id[0] : 0;
 
             $course_id  = $this->view->get('offering')->get('course_id');
             $section_id = $this->view->get('offering')->section()->get('id');

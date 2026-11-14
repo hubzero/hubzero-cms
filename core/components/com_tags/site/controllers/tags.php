@@ -844,9 +844,6 @@ class Tags extends SiteController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
 
         // Make sure we have an ID
         if (empty($ids)) {
