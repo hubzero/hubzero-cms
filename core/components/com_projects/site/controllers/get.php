@@ -23,7 +23,7 @@ class Get extends SiteController
     /**
      * Pub view for project files, notes etc.
      *
-     * @return  void
+     * @return  mixed
      */
     public function displayTask()
     {

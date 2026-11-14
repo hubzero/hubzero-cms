@@ -349,7 +349,7 @@ class Sponsors extends Plugin
      * Sets the state of one or more entries
      *
      * @param   integer $state  The state to set entries to
-     * @return  void
+     * @return  mixed
      */
     public function stateTask($state = 0)
     {

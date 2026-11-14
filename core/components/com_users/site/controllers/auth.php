@@ -37,7 +37,7 @@ class Auth extends SiteController
     /**
      * Default task
      *
-     * @return  void
+     * @return  mixed
      */
     public function displayTask()
     {

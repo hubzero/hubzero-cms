@@ -214,7 +214,7 @@ class Groups extends Base
     /**
      * View Group
      *
-     * @return  void
+     * @return  mixed
      */
     public function viewTask()
     {
@@ -1099,7 +1099,7 @@ class Groups extends Base
     /**
      * Permanently delete group
      *
-     * @return  void
+     * @return  mixed
      */
     public function doDeleteTask()
     {

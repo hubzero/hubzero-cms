@@ -749,7 +749,7 @@ class Profile extends Obj
     public function __construct($user = null)
     {
         if (!empty($user)) {
-            return $this->load($user);
+            $this->load($user);
         }
 
         return;

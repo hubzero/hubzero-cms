@@ -984,7 +984,7 @@ class Newsletters extends AdminController
             Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_FAIL'));
             $this->sendNewsletterTask();
 
-            return;
+            return null;
         }
 
         // create recipients

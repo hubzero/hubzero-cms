@@ -29,7 +29,7 @@ class Login extends AdminController
     /**
      * Default task
      *
-     * @return  void
+     * @return  mixed
      */
     public function displayTask()
     {

@@ -310,7 +310,7 @@ class Register extends SiteController
     /**
      * Display a form for updating profile info
      *
-     * @return  void
+     * @return  mixed
      */
     public function updateTask()
     {

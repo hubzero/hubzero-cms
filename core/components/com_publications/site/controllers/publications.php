@@ -741,7 +741,7 @@ class Publications extends SiteController
      * Determine how to render depending on master type, attachment type and user choice
      * Defaults to download
      *
-     * @return  void
+     * @return  mixed
      */
     public function serveTask()
     {
