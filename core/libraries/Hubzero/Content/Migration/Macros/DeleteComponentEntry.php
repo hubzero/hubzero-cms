@@ -162,9 +162,7 @@ class DeleteComponentEntry extends Macro
         $this->db->setQuery($query);
 
         // If there is an update failure, return false to break out of the recursion.
-        if (!$this->db->execute()) {
-            return false;
-        }
+        $this->db->execute();
 
         // Return the right value of this node + 1.
         return $rightId + 1;

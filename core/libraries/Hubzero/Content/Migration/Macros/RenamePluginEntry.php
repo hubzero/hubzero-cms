@@ -58,10 +58,10 @@ class RenamePluginEntry extends Macro
 
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                $this->log(sprintf('Renamed plugin plg_%s_%s to "%s"', $folder, $element, $name));
-                return true;
-            }
+            $this->db->query();
+
+            $this->log(sprintf('Renamed plugin plg_%s_%s to "%s"', $folder, $element, $name));
+            return true;
         }
 
         return false;

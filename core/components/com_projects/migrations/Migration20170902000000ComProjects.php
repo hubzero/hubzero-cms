@@ -55,9 +55,9 @@ class Migration20170902000000ComProjects extends Base
                         . $this->db->quote($type[1]) . "," . $this->db->quote($type[2]) . ")";
 
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log(sprintf('Created project type "%s"', $this->db->quote($type[0])));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf('Created project type "%s"', $this->db->quote($type[0])));
                 }
             }
         }
@@ -75,9 +75,9 @@ class Migration20170902000000ComProjects extends Base
                 . "WHERE `type` IN ('General', 'Content publication', 'Application development')";
 
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log('Deleted project types "General, Content publication, Application development"');
-            }
+            $this->db->query();
+
+            $this->log('Deleted project types "General, Content publication, Application development"');
         }
     }
 }

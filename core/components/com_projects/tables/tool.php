@@ -320,9 +320,7 @@ class Tool extends Table
             $query .= $by ? ", status_changed_by=" . $this->db->quote($by) : "";
             $query .= " WHERE id=" . $this->db->quote($id);
             $this->db->setQuery($query);
-            if (!$this->db->query()) {
-                return false;
-            }
+            $this->db->query();
         }
         return true;
     }

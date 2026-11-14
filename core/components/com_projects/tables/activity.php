@@ -261,9 +261,7 @@ class Activity extends Table
             . $this->db->quote($class);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -287,9 +285,7 @@ class Activity extends Table
         $query .= " WHERE id=" . (int) $aid;
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -309,9 +305,7 @@ class Activity extends Table
         $query .= " WHERE id=" . (int) $aid;
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -335,9 +329,7 @@ class Activity extends Table
         $query .= " WHERE projectid=" . (int) $projectid;
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

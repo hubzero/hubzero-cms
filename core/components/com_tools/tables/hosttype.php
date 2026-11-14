@@ -155,11 +155,9 @@ class Hosttype extends Table
                 . ' WHERE ' . $this->tableKey . ' = ' . $this->db->quote($this->$k);
         $this->db->setQuery($query);
 
-        if ($this->db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->db->query();
+
+        return true;
     }
 
     /**

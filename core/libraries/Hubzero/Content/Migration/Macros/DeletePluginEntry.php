@@ -45,10 +45,10 @@ class DeletePluginEntry extends Macro
 
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                $this->log(sprintf('Removed plugin entry "plg_%s_%s"', $folder, $element));
-                return true;
-            }
+            $this->db->query();
+
+            $this->log(sprintf('Removed plugin entry "plg_%s_%s"', $folder, $element));
+            return true;
         }
 
         return true;

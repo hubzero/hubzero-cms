@@ -87,10 +87,7 @@ class AddPluginEntry extends Macro
             ])
             ->toString();
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            $this->log(sprintf('Failed to add extension entry for plugin "%s"', $name));
-            return false;
-        }
+        $this->db->query();
 
         $this->log(sprintf('Added extension entry for plugin "%s"', $name));
 

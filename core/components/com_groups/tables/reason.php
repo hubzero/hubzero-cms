@@ -64,8 +64,7 @@ class Reason extends Table
         $query = "DELETE FROM $this->tableName WHERE uidNumber=" . $this->db->quote($uid)
             . " AND gidNumber=" . $this->db->quote($gid);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-        }
+        $this->db->query();
         return true;
     }
 

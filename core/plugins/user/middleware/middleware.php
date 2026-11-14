@@ -207,9 +207,7 @@ class Middleware extends Plugin
 
                 $db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 
-                if (!$db->query()) {
-                    throw new \Exception($db->getErrorMsg());
-                }
+                $db->query();
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 return false;

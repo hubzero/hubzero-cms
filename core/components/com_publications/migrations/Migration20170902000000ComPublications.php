@@ -45,9 +45,9 @@ class Migration20170902000000ComPublications extends Base
                         . $this->db->quote($audience[2]) . ")";
 
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log(sprintf('Created publication audience "%s"', $this->db->quote($audience[0])));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf('Created publication audience "%s"', $this->db->quote($audience[0])));
                 }
             }
         }
@@ -81,9 +81,9 @@ class Migration20170902000000ComPublications extends Base
                         . $this->db->quote($type[6]) . ")";
 
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log(sprintf('Created publication type "%s"', $this->db->quote($type[0])));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf('Created publication type "%s"', $this->db->quote($type[0])));
                 }
             }
         }
@@ -104,9 +104,9 @@ class Migration20170902000000ComPublications extends Base
                     . "'Custom license','3','1','0','0','0','1',"
                     . "'/components/com_publications/assets/img/logos/license.gif');";
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $this->log('Created publication license "custom"');
-                }
+                $this->db->query();
+
+                $this->log('Created publication license "custom"');
 
                 $ccInfo = 'CC0 enables scientists, educators, artists and other '
                     . 'creators and owners of copyright- or database-protected '
@@ -124,9 +124,9 @@ class Migration20170902000000ComPublications extends Base
                     . "'2','1','0','1','1','0',"
                     . "'/components/com_publications/assets/img/logos/cc.gif');";
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $this->log('Created publication license "cc"');
-                }
+                $this->db->query();
+
+                $this->log('Created publication license "cc"');
 
                 $query = "INSERT INTO `#__publication_licenses` "
                     . "(`name`,`text`,`title`,`url`,`info`,`ordering`,"
@@ -137,9 +137,9 @@ class Migration20170902000000ComPublications extends Base
                     . "'/components/com_publications/images/logos/license.gif');";
 
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $this->log('Created publication license "standard"');
-                }
+                $this->db->query();
+
+                $this->log('Created publication license "standard"');
             }
         }
 
@@ -343,9 +343,9 @@ class Migration20170902000000ComPublications extends Base
                         . $this->db->quote($cat[9]) . ")";
 
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log(sprintf('Created publication category "%s"', $this->db->quote($cat[0])));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf('Created publication category "%s"', $this->db->quote($cat[0])));
                 }
             }
         }
@@ -364,12 +364,12 @@ class Migration20170902000000ComPublications extends Base
                 . "'level0', 'level1', 'level2', 'level3', 'level4', 'level5')";
 
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log(
-                    'Deleted publication audiences '
-                    . '"level0, level1, level2, level3, level4, level5"',
-                );
-            }
+            $this->db->query();
+
+            $this->log(
+                'Deleted publication audiences '
+                . '"level0, level1, level2, level3, level4, level5"',
+            );
         }
 
         if ($this->db->tableExists('#__publication_master_types')) {
@@ -378,12 +378,12 @@ class Migration20170902000000ComPublications extends Base
                 . "'files', 'links', 'notes', 'apps', 'series', 'gallery', 'databases')";
 
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log(
-                    'Deleted publication types '
-                    . '"files, links, notes, apps, series, gallery, databases"',
-                );
-            }
+            $this->db->query();
+
+            $this->log(
+                'Deleted publication types '
+                . '"files, links, notes, apps, series, gallery, databases"',
+            );
         }
 
         if ($this->db->tableExists('#__publication_licenses')) {
@@ -391,9 +391,9 @@ class Migration20170902000000ComPublications extends Base
                 . "WHERE `name` IN ('custom', 'cc', 'standard')";
 
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log('Deleted publication licenses "custom, cc, standard"');
-            }
+            $this->db->query();
+
+            $this->log('Deleted publication licenses "custom, cc, standard"');
         }
 
         if ($this->db->tableExists('#__publication_categories')) {
@@ -404,13 +404,13 @@ class Migration20170902000000ComPublications extends Base
                 . "'Series', 'Teaching Materials')";
 
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log(
-                    'Deleted publication categories "Datasets, Workshops, '
-                    . 'Publications, Learning Modules, Animations, Courses, '
-                    . 'Tools, Downloads, Notes, Series, Teaching Materials"',
-                );
-            }
+            $this->db->query();
+
+            $this->log(
+                'Deleted publication categories "Datasets, Workshops, '
+                . 'Publications, Learning Modules, Animations, Courses, '
+                . 'Tools, Downloads, Notes, Series, Teaching Materials"',
+            );
         }
     }
 }

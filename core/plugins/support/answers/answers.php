@@ -385,10 +385,7 @@ class Answers extends Plugin
                                 . $asker_id
                                 . "'";
                             $database->setQuery($sql);
-                            if (!$database->query()) {
-                                $this->setError($database->getErrorMsg());
-                                return false;
-                            }
+                            $database->query();
 
                             // Make credit adjustment
                             $BTL_Q = new \Hubzero\Bank\Teller($asker_id);

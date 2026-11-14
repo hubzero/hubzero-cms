@@ -555,9 +555,7 @@ class Manage extends AdminController
         // create super group DB if doesnt already exist
         if ($canCreateSuperGroupDB) {
             $this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
-            if (!$this->database->query()) {
-                Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
-            }
+            $this->database->query();
         } else {
             Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB_PERMISSIONS'));
         }

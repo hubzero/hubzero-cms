@@ -158,9 +158,9 @@ class Access extends Table
                 $query = "INSERT INTO $this->tableName (publication_version_id,group_id)
 				          VALUES($this->db->quote($vid), $this->db->quote($gid))";
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $saved++;
-                }
+                $this->db->query();
+
+                $saved++;
             }
         }
 
@@ -186,9 +186,7 @@ class Access extends Table
         $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $query .= $sysgroup ? " AND group_id !=" . $this->db->quote($sysgroup) : "";
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 }

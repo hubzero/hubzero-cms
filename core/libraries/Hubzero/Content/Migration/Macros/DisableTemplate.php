@@ -67,10 +67,10 @@ class DisableTemplate extends Macro
         }
 
         $this->db->setQuery($query->toString());
-        if ($this->db->query()) {
-            $this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
-            return true;
-        }
+        $this->db->query();
+
+        $this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
+        return true;
 
         return false;
     }

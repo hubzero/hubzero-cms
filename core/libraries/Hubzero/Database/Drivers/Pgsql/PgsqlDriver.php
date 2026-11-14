@@ -1869,9 +1869,7 @@ class PgsqlDriver extends BaseSqlDriver
                 . $this->quoteName($oldColumn)
                 . " TO " . $this->quoteName($newColumn),
             );
-            if (!$this->execute()) {
-                return false;
-            }
+            $this->execute();
         }
 
         // Skip type modification when no definition provided (rename-only)

@@ -120,9 +120,7 @@ class Page extends Table
             return false;
         }
         $this->db->setQuery("DELETE FROM $this->tableName WHERE event_id=" . intval($event_id));
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

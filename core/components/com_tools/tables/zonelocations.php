@@ -69,11 +69,9 @@ class ZoneLocations extends Table
                 . ' WHERE zone_id = ' . $this->db->quote($zone_id);
         $this->db->setQuery($query);
 
-        if ($this->db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->db->query();
+
+        return true;
     }
 
     /**

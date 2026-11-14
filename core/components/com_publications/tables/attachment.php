@@ -161,9 +161,9 @@ class Attachment extends Table
                 . " AND B.project_id=" . $this->db->quote($projectid);
 
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        }
+        $this->db->query();
+
+        return true;
         return false;
     }
 
@@ -393,9 +393,7 @@ class Attachment extends Table
         }
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -569,9 +567,7 @@ class Attachment extends Table
 
         $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -803,9 +799,7 @@ class Attachment extends Table
                     . " WHERE id="
                     . $this->db->quote($row->id);
                 $this->db->setQuery($sql);
-                if (!$this->db->query()) {
-                    return false;
-                }
+                $this->db->query();
             }
         }
 

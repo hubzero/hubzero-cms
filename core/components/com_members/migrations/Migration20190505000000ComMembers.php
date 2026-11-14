@@ -25,9 +25,9 @@ class Migration20190505000000ComMembers extends Base
         if ($this->db->tableExists('#__categories')) {
             $query = "UPDATE `#__categories` SET `extension`='com_members' WHERE `extension`='com_users'";
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log('Updated categories extension from `com_users` to `com_members`');
-            }
+            $this->db->query();
+
+            $this->log('Updated categories extension from `com_users` to `com_members`');
         }
     }
 
@@ -41,9 +41,9 @@ class Migration20190505000000ComMembers extends Base
         if ($this->db->tableExists('#__categories')) {
             $query = "UPDATE `#__categories` SET `extension`='com_users' WHERE `extension`='com_members'";
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                $this->log('Updated categories extension from `com_members` to `com_users`');
-            }
+            $this->db->query();
+
+            $this->log('Updated categories extension from `com_members` to `com_users`');
         }
     }
 }

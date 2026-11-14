@@ -54,11 +54,9 @@ class Migration20190620000000ComPublications extends Base
                     foreach ($pubtags[$publication] as $tag) {
                         $query = "DELETE FROM `$table` WHERE id=" . $tag->id;
                         $this->db->setQuery($query);
-                        if (!$this->db->query()) {
-                            $this->log('Query failed: ' . $query, 'error');
-                        } else {
-                            $this->log(sprintf('Deleting tags from publication ID %s', $publication));
-                        }
+                        $this->db->query();
+
+                        $this->log(sprintf('Deleting tags from publication ID %s', $publication));
                     }
 
                     continue;
@@ -79,16 +77,14 @@ class Migration20190620000000ComPublications extends Base
                             . " WHERE `id` IN (" . implode(',', $ids) . ")";
 
                         $this->db->setQuery($query);
-                        if (!$this->db->query()) {
-                            $this->log('Query failed: ' . $query, 'error');
-                        } else {
-                            $this->log(sprintf(
-                                'Updated tag association from publication ID %s '
-                                . 'to publication version ID %s',
-                                $publication,
-                                $version->id,
-                            ));
-                        }
+                        $this->db->query();
+
+                        $this->log(sprintf(
+                            'Updated tag association from publication ID %s '
+                            . 'to publication version ID %s',
+                            $publication,
+                            $version->id,
+                        ));
                     } else {
                         foreach ($pubtags[$publication] as $tag) {
                             $query = "INSERT INTO `$table` "
@@ -101,16 +97,14 @@ class Migration20190620000000ComPublications extends Base
                                 . ", 'publications', '')";
 
                             $this->db->setQuery($query);
-                            if (!$this->db->query()) {
-                                $this->log('Query failed: ' . $query, 'error');
-                            } else {
-                                $this->log(sprintf(
-                                    'Creating tag association for tag ID %s '
-                                    . 'and publication version ID %s',
-                                    $tag->tagid,
-                                    $version->id,
-                                ));
-                            }
+                            $this->db->query();
+
+                            $this->log(sprintf(
+                                'Creating tag association for tag ID %s '
+                                . 'and publication version ID %s',
+                                $tag->tagid,
+                                $version->id,
+                            ));
                         }
                     }
                 }
@@ -146,17 +140,15 @@ class Migration20190620000000ComPublications extends Base
                         . " WHERE `id`=" . $this->db->quote($tag->id);
                     $this->db->setQuery($query);
 
-                    if (!$this->db->query()) {
-                        $this->log('Query failed: ' . $query, 'error');
-                    } else {
-                        $this->log(sprintf(
-                            'Updated tag association #%s from publication '
-                            . 'version ID %s to publication ID %s',
-                            $tag->id,
-                            $tag->objectid,
-                            $version->publication_id,
-                        ));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf(
+                        'Updated tag association #%s from publication '
+                        . 'version ID %s to publication ID %s',
+                        $tag->id,
+                        $tag->objectid,
+                        $version->publication_id,
+                    ));
                 }
             }
         }

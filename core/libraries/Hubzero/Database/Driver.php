@@ -1504,9 +1504,7 @@ abstract class Driver implements LoggerAwareInterface
         $return = null;
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get the first row from the result set as an associative array
         if ($row = $this->fetchAssoc()) {
@@ -1537,9 +1535,7 @@ abstract class Driver implements LoggerAwareInterface
         $array = [];
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get all of the rows from the result set
         while ($row = $this->fetchAssoc()) {
@@ -1569,9 +1565,7 @@ abstract class Driver implements LoggerAwareInterface
         $column = [];
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get all of the rows from the result set as arrays
         while ($row = $this->fetchArray()) {
@@ -1639,9 +1633,7 @@ abstract class Driver implements LoggerAwareInterface
         $return = null;
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get the first row from the result set as an object of type $class
         if ($row = $this->fetchObject($class)) {
@@ -1665,9 +1657,7 @@ abstract class Driver implements LoggerAwareInterface
         $return = null;
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get the first row from the result set as an array
         if ($row = $this->fetchArray()) {
@@ -1691,9 +1681,7 @@ abstract class Driver implements LoggerAwareInterface
         $return = null;
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get the first row from the result set as an array
         if ($row = $this->fetchArray()) {
@@ -1722,9 +1710,7 @@ abstract class Driver implements LoggerAwareInterface
         $rows = [];
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get all of the rows from the result set as arrays
         while ($row = $this->fetchArray()) {
@@ -1757,9 +1743,7 @@ abstract class Driver implements LoggerAwareInterface
         $rows = [];
 
         // Execute the query
-        if (!$this->execute()) {
-            return null;
-        }
+        $this->execute();
 
         // Get all of the rows from the result set as objects of type $class
         while ($row = $this->fetchObject($class)) {
@@ -2914,9 +2898,7 @@ abstract class Driver implements LoggerAwareInterface
             ->prepare(sprintf($statement, implode(',', $fields), implode(',', $values)))
             ->bind($binds);
 
-        if (!$this->execute()) {
-            return false;
-        }
+        $this->execute();
 
         // Update the primary key if it exists
         $id = $this->insertid();

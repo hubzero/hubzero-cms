@@ -186,9 +186,9 @@ class ToolInstance extends Table
         $query = "UPDATE $this->tableName SET parent_name =" . $this->db->quote($newname)
                 . " WHERE parent_id =" . $this->db->quote($parent_id);
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        }
+        $this->db->query();
+
+        return true;
 
         return false;
     }

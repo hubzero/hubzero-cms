@@ -46,10 +46,10 @@ class EnablePlugin extends Macro
 
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                $this->log(sprintf('Set plugin "plg_%s_%s" status to "%s"', $folder, $element, $enabled));
-                return true;
-            }
+            $this->db->query();
+
+            $this->log(sprintf('Set plugin "plg_%s_%s" status to "%s"', $folder, $element, $enabled));
+            return true;
         }
 
         return false;

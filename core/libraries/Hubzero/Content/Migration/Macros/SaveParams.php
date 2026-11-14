@@ -68,10 +68,10 @@ class SaveParams extends Macro
                 ->toString();
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                $this->log(sprintf('Extension params saved for "%s"', $element));
-                return true;
-            }
+            $this->db->query();
+
+            $this->log(sprintf('Extension params saved for "%s"', $element));
+            return true;
         }
 
         $this->log(sprintf('Required table not found for saving "%s" params', $element), 'warning');

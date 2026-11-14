@@ -711,9 +711,7 @@ class Author extends Table
 
         $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -754,9 +752,7 @@ class Author extends Table
         }
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -797,9 +793,7 @@ class Author extends Table
         }
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -827,9 +821,7 @@ class Author extends Table
                 . $this->db->quote($this->project_owner_id) . ")";
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -857,9 +849,7 @@ class Author extends Table
                     . " AND (role IS NULL OR role != 'submitter')";
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

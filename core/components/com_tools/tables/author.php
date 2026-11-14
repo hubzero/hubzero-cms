@@ -299,9 +299,7 @@ class Author extends Table
                     . addslashes($name == null ? '' : $name) . "', '"
                     . addslashes($organization == null ? '' : $organization) . "')";
                 $this->db->setQuery($query);
-                if (!$this->db->query()) {
-                    return false;
-                }
+                $this->db->query();
                 $i++;
             }
         }

@@ -95,16 +95,12 @@ class Terms extends Base implements CommandInterface
             // Clear all old TOU states
             if ($dbo->tableExists('#__users') && $dbo->tableHasField('#__users', 'usageAgreement')) {
                 $dbo->setQuery("UPDATE `#__users` SET `usageAgreement`=0;");
-                if (!$dbo->query()) {
-                    $this->output->error('Unable to clear users terms of use.');
-                }
+                $dbo->query();
             }
 
             if ($dbo->tableExists('#__xprofiles') && $dbo->tableHasField('#__xprofiles', 'usageAgreement')) {
                 $dbo->setQuery("UPDATE `#__xprofiles` SET `usageAgreement`=0;");
-                if (!$dbo->query()) {
-                    $this->output->error('Unable to clear xprofiles terms of use.');
-                }
+                $dbo->query();
             }
 
             // Output message to let admin know everything went well

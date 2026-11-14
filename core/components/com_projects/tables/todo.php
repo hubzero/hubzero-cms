@@ -221,9 +221,7 @@ class Todo extends Table
         }
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

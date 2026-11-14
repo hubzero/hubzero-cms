@@ -96,9 +96,7 @@ class Category extends Table
         $query  = "UPDATE `$this->tableName` SET ordernum=" . $this->db->quote($ordernum);
         $query .= " WHERE id=" . $this->db->quote($id);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 }

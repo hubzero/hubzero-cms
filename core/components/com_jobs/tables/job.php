@@ -317,9 +317,7 @@ class Job extends Table
 
         $query  = "UPDATE `$this->tableName` SET status='2' WHERE id=" . $this->db->quote($jid);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

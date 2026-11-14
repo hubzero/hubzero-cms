@@ -221,9 +221,9 @@ class Version extends Table
             }
             $query .= "AND state='1'";
             $this->db->setQuery($query);
-            if ($this->db->query()) {
-                return true;
-            }
+            $this->db->query();
+
+            return true;
             return false;
         } else {
             return false;
@@ -253,11 +253,9 @@ class Version extends Table
 
         Log::debug(__FUNCTION__ . "()  $query");
 
-        if ($this->db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->db->query();
+
+        return true;
     }
 
     /**

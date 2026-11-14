@@ -814,11 +814,9 @@ class Owner extends Table
                         : " AND id = " . $this->db->quote($user);
                 }
                 $this->db->setQuery($query);
-                if (!$this->db->query()) {
-                    return false;
-                } else {
-                    $deleted++;
-                }
+                $this->db->query();
+
+                $deleted++;
             }
         }
 
@@ -827,9 +825,7 @@ class Owner extends Table
             $query  = ($remove) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET status = 2 ";
             $query .= " WHERE projectid=" . $this->db->quote($projectid);
             $this->db->setQuery($query);
-            if (!$this->db->query()) {
-                return false;
-            }
+            $this->db->query();
             return true;
         }
 
@@ -863,11 +859,9 @@ class Owner extends Table
                     ? " AND userid =" . $this->db->quote($user)
                     : " AND id = " . $this->db->quote($user);
                 $this->db->setQuery($query);
-                if (!$this->db->query()) {
-                    return false;
-                } else {
-                    $reassigned++;
-                }
+                $this->db->query();
+
+                $reassigned++;
             }
         }
         return $reassigned;
@@ -968,9 +962,9 @@ class Owner extends Table
 			VALUES (" . (int) $projectid . ", 0 , " . $this->db->quote($now) . " , 0 , 0, " . (int) $role . ", "
             . $this->db->quote($name) . ", " . $this->db->quote($email) . ", " . $this->db->quote($code) . " )";
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        }
+        $this->db->query();
+
+        return true;
 
         return false;
     }
@@ -992,9 +986,9 @@ class Owner extends Table
 				  WHERE projectid = " . $this->db->quote($projectid)
             . " AND groupid = " . $this->db->quote($groupid);
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        }
+        $this->db->query();
+
+        return true;
 
         return false;
     }
@@ -1064,9 +1058,9 @@ class Owner extends Table
                     . (int) $userid
                     . " LIMIT 1)";
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $added[] = $userid;
-                }
+                $this->db->query();
+
+                $added[] = $userid;
             } elseif ($found != 1) {
                 // Inactive/deleted - activate
                 $query = "UPDATE $this->tableName SET added = '$now', status = 1, role = "
@@ -1078,9 +1072,9 @@ class Owner extends Table
                     . " AND userid= "
                     . $this->db->quote($userid);
                 $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    $added[] = $userid;
-                }
+                $this->db->query();
+
+                $added[] = $userid;
             }
         }
 
@@ -1136,9 +1130,9 @@ class Owner extends Table
                             . (int) $owner
                             . " LIMIT 1)";
                         $this->db->setQuery($query);
-                        if ($this->db->query()) {
-                            $added[] = $owner;
-                        }
+                        $this->db->query();
+
+                        $added[] = $owner;
                     } elseif ($found != 1) {
                         // Inactive/deleted - activate
                         $query = "UPDATE $this->tableName SET added = "
@@ -1152,9 +1146,9 @@ class Owner extends Table
                             . " AND userid = "
                             . $this->db->quote($owner);
                         $this->db->setQuery($query);
-                        if ($this->db->query()) {
-                            $added[] = $owner;
-                        }
+                        $this->db->query();
+
+                        $added[] = $owner;
                     } elseif ($found == 1 && !in_array($owner, $managers)) {
                         // Only downgrade role during sync, never upgrade
                         // This prevents demoting project creators or manually promoted managers
@@ -1174,9 +1168,9 @@ class Owner extends Table
                                 . " AND projectid=" . (int) $projectid
                                 . " AND userid=" . (int) $owner . ";";
                             $this->db->setQuery($query);
-                            if ($this->db->query()) {
-                                $added[] = $owner;
-                            }
+                            $this->db->query();
+
+                            $added[] = $owner;
                         }
                     }
                 }

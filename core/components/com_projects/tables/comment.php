@@ -241,9 +241,7 @@ class Comment extends Table
 
         $this->db->setQuery($query);
 
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -267,9 +265,7 @@ class Comment extends Table
         $query .= " WHERE id=" . $this->db->quote($cid);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -296,9 +292,7 @@ class Comment extends Table
         $query .= " WHERE a.projectid=" . $this->db->quote($projectid);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 }

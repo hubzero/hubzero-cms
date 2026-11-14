@@ -37,23 +37,23 @@ class EnableModule extends Macro
 
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                if ($this->db->tableExists('#__modules')) {
-                    $query = $this->db
-                        ->getQuery()
-                        ->update('#__modules')
-                        ->set([
-                            'published' => $enabled,
-                        ])
-                        ->whereEquals('module', $element)
-                        ->toString();
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+            $this->db->query();
 
-                $this->log(sprintf('Set module "%s" status to "%s"', $element, $enabled));
-                return true;
+            if ($this->db->tableExists('#__modules')) {
+                $query = $this->db
+                    ->getQuery()
+                    ->update('#__modules')
+                    ->set([
+                        'published' => $enabled,
+                    ])
+                    ->whereEquals('module', $element)
+                    ->toString();
+                $this->db->setQuery($query);
+                $this->db->query();
             }
+
+            $this->log(sprintf('Set module "%s" status to "%s"', $element, $enabled));
+            return true;
         }
 
         return false;

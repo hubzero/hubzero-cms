@@ -1237,9 +1237,7 @@ class TableBuilder
         $statements = $this->toSqlStatements();
         foreach ($statements as $sql) {
             $this->driver->setQuery($sql);
-            if (!$this->driver->execute()) {
-                return false;
-            }
+            $this->driver->execute();
         }
         return true;
     }

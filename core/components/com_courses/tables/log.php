@@ -150,9 +150,7 @@ class Log extends Table
             "DELETE FROM $this->tableName WHERE `scope_id`=" . $this->db->quote($scope_id)
             . " AND `scope`=" . $this->db->quote($scope),
         );
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

@@ -373,9 +373,7 @@ class Member extends Table
         $query  = "DELETE FROM $this->tableName WHERE `section_id`=" . $this->db->quote($section_id);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 }

@@ -65,11 +65,9 @@ class Migration20190620000000PlgPublicationsCitations extends Base
                         );
                     }
                     $this->db->setQuery($query);
-                    if (!$this->db->query()) {
-                        $this->log('Query failed: ' . $query, 'error');
-                    } else {
-                        $this->log($msg);
-                    }
+                    $this->db->query();
+
+                    $this->log($msg);
                 }
             }
         }
@@ -100,16 +98,14 @@ class Migration20190620000000PlgPublicationsCitations extends Base
                         . " WHERE `id`=" . $this->db->quote($citation->id);
                     $this->db->setQuery($query);
 
-                    if (!$this->db->query()) {
-                        $this->log('Query failed: ' . $query, 'error');
-                    } else {
-                        $this->log(sprintf(
-                            'Updated citation association #%s from publication version ID %s to publication ID %s',
-                            $citation->id,
-                            $citation->oid,
-                            $version->publication_id,
-                        ));
-                    }
+                    $this->db->query();
+
+                    $this->log(sprintf(
+                        'Updated citation association #%s from publication version ID %s to publication ID %s',
+                        $citation->id,
+                        $citation->oid,
+                        $version->publication_id,
+                    ));
                 }
             }
         }

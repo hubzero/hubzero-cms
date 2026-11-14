@@ -539,13 +539,7 @@ class Mailinglists extends SiteController
 
         //set query and execute
         $this->database->setQuery($sql);
-        if (!$this->database->query()) {
-            App::redirect(
-                Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token),
-                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
-                'error',
-            );
-        }
+        $this->database->query();
 
         //insert unsubscribe reason
         $mid = $this->database->quote($mailing->lid);

@@ -40,11 +40,9 @@ class Migration20190327000000ComMembers extends Base
                         . ", `component_id`=" . $this->db->quote($extension_id)
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log('Updated reset menu link to use `com_members`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated reset menu link to use `com_members`');
                 }
 
                 // Remind link
@@ -60,11 +58,9 @@ class Migration20190327000000ComMembers extends Base
                         . ", `component_id`=" . $this->db->quote($extension_id)
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log('Updated remind menu link to use `com_members`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated remind menu link to use `com_members`');
                 }
             }
         }

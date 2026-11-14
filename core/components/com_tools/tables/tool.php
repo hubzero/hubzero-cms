@@ -316,11 +316,9 @@ class Tool extends Table
         $query = "UPDATE `#__tool` SET ticketid=" . $this->db->quote($ticketid)
             . " WHERE id=" . $this->db->quote($toolid);
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->db->query();
+
+        return true;
     }
 
     /**
@@ -349,9 +347,7 @@ class Tool extends Table
             }
             $query .= " WHERE id=" . $this->db->quote($toolid);
             $this->db->setQuery($query);
-            if (!$this->db->query()) {
-                return false;
-            }
+            $this->db->query();
         }
         return true;
     }

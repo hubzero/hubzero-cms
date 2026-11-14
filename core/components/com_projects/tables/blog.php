@@ -180,9 +180,7 @@ class Blog extends Table
         $query .= " WHERE id=" . $this->db->quote($id);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -206,9 +204,7 @@ class Blog extends Table
         $query .= " WHERE projectid=" . intval($projectid);
 
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 }

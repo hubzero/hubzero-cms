@@ -368,9 +368,9 @@ class License extends Table
         $query  = "UPDATE $this->tableName SET main=0 ";
         $query .= $except ? " WHERE id != " . $this->db->quote($except) : '';
         $this->db->setQuery($query);
-        if ($this->db->query()) {
-            return true;
-        }
+        $this->db->query();
+
+        return true;
         return false;
     }
 }

@@ -242,9 +242,7 @@ class Screenshot extends Table
         $query = "DELETE FROM $this->tableName ";
         $query .= " WHERE publication_version_id=" . $this->db->quote($versionid);
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

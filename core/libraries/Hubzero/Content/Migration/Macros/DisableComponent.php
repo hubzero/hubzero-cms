@@ -42,10 +42,10 @@ class DisableComponent extends Macro
 
             $this->db->setQuery($query);
 
-            if ($this->db->query()) {
-                $this->log(sprintf('Set component "%s" status to "%s"', $element, $enabled));
-                return true;
-            }
+            $this->db->query();
+
+            $this->log(sprintf('Set component "%s" status to "%s"', $element, $enabled));
+            return true;
         }
 
         return false;

@@ -913,9 +913,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
                 . ' SET ' . $this->quoteName($column) . ' = ' . (int) $i
                 . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($id),
             );
-            if (!$this->execute()) {
-                return false;
-            }
+            $this->execute();
             $i++;
         }
 

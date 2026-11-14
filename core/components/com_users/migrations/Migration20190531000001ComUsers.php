@@ -42,11 +42,9 @@ class Migration20190531000001ComUsers extends Base
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
 
-                    if ($this->db->query()) {
-                        $this->log('Updated login menu link to use `com_users`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated login menu link to use `com_users`');
                 }
 
                 // Logout link
@@ -63,11 +61,9 @@ class Migration20190531000001ComUsers extends Base
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
 
-                    if ($this->db->query()) {
-                        $this->log('Updated logout menu link to use `com_users`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated logout menu link to use `com_users`');
                 }
             }
         }
@@ -98,11 +94,9 @@ class Migration20190531000001ComUsers extends Base
                         . ", `component_id`=" . $this->db->quote($extension_id)
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log('Updated login menu link to use `com_login`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated login menu link to use `com_login`');
                 }
 
                 // Logout link
@@ -117,11 +111,9 @@ class Migration20190531000001ComUsers extends Base
                         . ", `component_id`=" . $this->db->quote($extension_id)
                         . " WHERE `id`=" . $this->db->quote($menu->id);
                     $this->db->setQuery($query);
-                    if ($this->db->query()) {
-                        $this->log('Updated logout menu link to use `com_login`');
-                    } else {
-                        $this->log($query, 'warning');
-                    }
+                    $this->db->query();
+
+                    $this->log('Updated logout menu link to use `com_login`');
                 }
             }
         }

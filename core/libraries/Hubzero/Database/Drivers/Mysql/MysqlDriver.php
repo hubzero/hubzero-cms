@@ -2737,9 +2737,7 @@ class MysqlDriver extends BaseSqlDriver
 
         // Initialize user variable
         $this->setQuery("SET @row_num = 0");
-        if (!$this->execute()) {
-            return false;
-        }
+        $this->execute();
 
         // Build UPDATE query with user variable increment
         $query = "UPDATE `$table` SET `$column` = (@row_num := @row_num + 1)";
