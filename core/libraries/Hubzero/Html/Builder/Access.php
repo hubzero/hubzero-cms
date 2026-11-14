@@ -56,7 +56,6 @@ class Access
         // Check for a database error.
         if ($db->getErrorNum()) {
             throw new \Exception($db->getErrorMsg(), 500);
-            return null;
         }
 
         // If params is an array, push these options to the array
@@ -108,7 +107,6 @@ class Access
         // Check for a database error.
         if ($db->getErrorNum()) {
             throw new \Exception($db->getErrorMsg(), 500);
-            return null;
         }
 
         for ($i = 0, $n = count($options); $i < $n; $i++) {
@@ -158,7 +156,6 @@ class Access
         // Check for a database error.
         if ($db->getErrorNum()) {
             throw new \Exception($db->getErrorMsg(), 500);
-            return null;
         }
 
         $html = [];
@@ -290,7 +287,6 @@ class Access
             // Check for a database error.
             if ($db->getErrorNum()) {
                 throw new \Exception($db->getErrorMsg(), 500);
-                return false;
             }
         }
 

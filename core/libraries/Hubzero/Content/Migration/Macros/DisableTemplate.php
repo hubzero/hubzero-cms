@@ -71,7 +71,5 @@ class DisableTemplate extends Macro
 
         $this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
         return true;
-
-        return false;
     }
 }

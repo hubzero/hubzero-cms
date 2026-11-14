@@ -885,7 +885,5 @@ class Registration
                 return $login;
             }
         }
-
-        return false;
     }
 }

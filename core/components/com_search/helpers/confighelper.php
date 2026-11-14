@@ -49,7 +49,6 @@ class ConfigHelper
             }
             return $config;
         }
-        return false;
     }
 
     /**

@@ -36,11 +36,9 @@ switch ($this->action) {
                 $img_location .= $file[0];
             } else {
                 App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-                return;
             }
         } else {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-            return;
         }
 
         // Initiate a new content server and serve up the file
@@ -55,8 +53,7 @@ switch ($this->action) {
         } else {
             exit;
         }
-        return;
-    break;
+        break;
 
     case 'criteria':
         $title = Lang::txt('COM_COURSES_BADGE_CRITERIA');

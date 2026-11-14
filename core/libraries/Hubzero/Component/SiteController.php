@@ -527,8 +527,6 @@ class SiteController extends Obj implements ControllerInterface
                 $message,
                 'warning',
             );
-
-            return false;
         }
 
         App::abort(403, $message);

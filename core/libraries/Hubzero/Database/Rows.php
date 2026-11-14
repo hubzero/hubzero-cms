@@ -213,7 +213,6 @@ class Rows implements Iterator, Countable
         if (isset($this->rows)) {
             return key($this->rows);
         }
-        return null;
     }
 
     /**

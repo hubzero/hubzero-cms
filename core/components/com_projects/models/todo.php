@@ -160,7 +160,6 @@ class Todo extends Model
                 }
                 return new \Hubzero\Base\ItemList($results);
         }
-        return null;
     }
 
     /**

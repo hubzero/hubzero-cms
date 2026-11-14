@@ -849,7 +849,6 @@ class Citations extends SiteController
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
                 "error",
             );
-            return false;
         }
 
         // Incoming (we're expecting an array)

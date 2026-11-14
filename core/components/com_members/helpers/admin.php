@@ -135,7 +135,6 @@ class Admin
         // Check for a database error.
         if ($db->getErrorNum()) {
             throw new \Exception($db->getErrorMsg(), 500);
-            return null;
         }
 
         foreach ($options as &$option) {

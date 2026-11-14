@@ -261,7 +261,6 @@ class CurrentCart extends Cart
         }
 
         throw new \Exception('Failed attempt to get cart changes. No changes detected. This shouldn\'t happen.');
-        return false;
     }
 
     /**

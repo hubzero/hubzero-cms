@@ -113,7 +113,6 @@ class ModeDb
                 }
             } else {
                 App::abort(404, 'Invalid or Missing Dataview');
-                exit();
             }
 
 

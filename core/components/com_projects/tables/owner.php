@@ -965,8 +965,6 @@ class Owner extends Table
         $this->db->query();
 
         return true;
-
-        return false;
     }
 
     /**
@@ -989,8 +987,6 @@ class Owner extends Table
         $this->db->query();
 
         return true;
-
-        return false;
     }
 
     /**

@@ -1473,8 +1473,6 @@ class Migration
                     'info' => 'Previous migration',
                 ];
         }
-
-        return false;
     }
 
     /**

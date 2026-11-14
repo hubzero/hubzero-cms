@@ -300,7 +300,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         // Prompt before loading schema
@@ -383,7 +382,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         $this->say("\n");
@@ -438,7 +436,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         $site = $this->arguments->getOpt('template')
@@ -475,7 +472,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         $flavor = $this->chosenFlavor(Install\Answers::isUnattended());
@@ -596,7 +592,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         // Check if schema is loaded
@@ -619,7 +614,6 @@ class Install extends Base implements CommandInterface
             if ($tableCount === 0) {
                 $this->output->addLine('Run "muse install schema" first to load the database schema.');
                 $this->output->error('Database schema not loaded.');
-                return;
             }
         } catch (\PDOException $e) {
             $this->output->error('Could not connect to database: ' . $e->getMessage());
@@ -665,7 +659,6 @@ class Install extends Base implements CommandInterface
         if (!file_exists($configPath)) {
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
             $this->output->error('Database configuration not found at ' . $configPath);
-            return;
         }
 
         // Load existing site settings for email default
@@ -1100,7 +1093,6 @@ class Install extends Base implements CommandInterface
 
         if (!Install\Answers::load($answerFile, $error)) {
             $this->output->error($error);
-            return false;
         }
 
         $this->output->addLine('Reading the answers in ' . ($answerFile === '-' ? 'standard input' : $answerFile));

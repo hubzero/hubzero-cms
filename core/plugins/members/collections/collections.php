@@ -337,7 +337,6 @@ class Collections extends Plugin
             Lang::txt('MEMBERS_LOGIN_NOTICE'),
             'warning',
         );
-        return;
     }
 
     /**
@@ -527,7 +526,6 @@ class Collections extends Plugin
         $view->set('collection', $this->model->collection($view->get('filters')['collection_id']));
         if (!$view->get('collection')->exists()) {
             App::abort(404, Lang::txt('Collection not found.'));
-            return;
         }
 
         // Is the board restricted to logged-in users only?
@@ -538,7 +536,6 @@ class Collections extends Plugin
         // Is it a private board?
         if ($view->get('collection')->get('access') == 4 && User::get('id') != $this->member->get('id')) {
             App::abort(403, Lang::txt('Your are not authorized to access this content.'));
-            return;
         }
 
         $viewFilters = $view->get('filters');
@@ -615,7 +612,6 @@ class Collections extends Plugin
 
         if (User::get('id') == $this->member->get('id')) {
             App::abort(500, Lang::txt('Your cannot follow your own content.'));
-            return;
         }
 
         $sfx = '';
@@ -633,7 +629,6 @@ class Collections extends Plugin
                 $collection = $this->model->collection(Request::getString('board', ''));
                 if (!$collection->exists()) {
                     App::abort(404, Lang::txt('Collection does not exist'));
-                    return;
                 }
                 $id = $collection->get('id');
                 $sfx = '&task=' . $collection->get('alias') . '/unfollow';
@@ -642,7 +637,6 @@ class Collections extends Plugin
             default:
                 // follow() and unfollow() are only called with the cases above
                 App::abort(404);
-                return;
         }
 
         if (!$this->model->follow($id, $what, User::get('id'), 'member')) {
@@ -687,7 +681,6 @@ class Collections extends Plugin
         // Is it a private board?
         if (User::get('id') == $this->member->get('id')) {
             App::abort(500, Lang::txt('Your cannot unfollow your own content.'));
-            return;
         }
 
         $sfx = '';
@@ -705,7 +698,6 @@ class Collections extends Plugin
                 $collection = $this->model->collection(Request::getString('board', ''));
                 if (!$collection->exists()) {
                     App::abort(404, Lang::txt('Collection does not exist'));
-                    return;
                 }
                 $id = $collection->get('id');
                 $sfx = '&task=' . $collection->get('alias') . '/follow';
@@ -714,7 +706,6 @@ class Collections extends Plugin
             default:
                 // follow() and unfollow() are only called with the cases above
                 App::abort(404);
-                return;
         }
 
         if (!$this->model->unfollow($id, $what, User::get('id'), 'member')) {
@@ -910,7 +901,6 @@ class Collections extends Plugin
         // Check authorization
         if (!$this->params->get('access-view-item')) {
             App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTH'));
-            return;
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -967,7 +957,6 @@ class Collections extends Plugin
                     Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
                     'warning',
                 );
-                return;
             }
         }
 
@@ -977,7 +966,6 @@ class Collections extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'error',
             );
-            return;
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -2061,7 +2049,6 @@ class Collections extends Plugin
                 Lang::txt('MEMBERS_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
         $restrictUsers = Component::params('com_answers')->get('restrict_users');
         if ($restrictUsers == 'active') {
@@ -2074,7 +2061,6 @@ class Collections extends Plugin
                     Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
                     'warning',
                 );
-                return;
             }
         }
 
@@ -2085,7 +2071,6 @@ class Collections extends Plugin
                 Lang::txt('You are not authorized to edit this collection.'),
                 'error',
             );
-            return;
         }
 
         $view = $this->view('edit', 'collection');

@@ -421,8 +421,6 @@ class Captcha extends Plugin
 
         $this->$imageFunction();
         exit();
-
-        return true;
     }
 
     /**

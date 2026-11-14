@@ -1144,7 +1144,6 @@ class Publications extends Plugin
             // Save changes
             if (!$this->model->store()) {
                 throw new \Exception($this->model->getError());
-                return false;
             }
         }
 
@@ -1154,7 +1153,6 @@ class Publications extends Plugin
         // Make sure we got type info
         if (!$mType) {
             throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_TYPE'));
-            return false;
         }
 
         // Get curation model for the type
@@ -1182,7 +1180,6 @@ class Publications extends Plugin
         $objP->access      = 0;
         if (!$objP->store()) {
             throw new \Exception($objP->getError());
-            return false;
         }
         if (!$objP->id) {
             $objP->checkin();
@@ -1197,7 +1194,6 @@ class Publications extends Plugin
                 $objP->delete();
 
                 throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO'));
-                return false;
             } else {
                 // Add creator as project owner
                 $objO = $this->model->table('Owner');
@@ -1213,7 +1209,6 @@ class Publications extends Plugin
                     )
                 ) {
                     throw new \Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
-                    return false;
                 }
             }
         }
@@ -1238,7 +1233,6 @@ class Publications extends Plugin
             $objP->delete();
 
             throw new \Exception($row->getError(), 500);
-            return false;
         }
         if (!$row->id) {
             $row->checkin();

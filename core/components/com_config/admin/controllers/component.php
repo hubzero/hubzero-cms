@@ -139,7 +139,6 @@ class Component extends AdminController
             $url = 'index.php?option=' . $this->option . '&view=component&component='
                 . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
-            return false;
         }
 
         // A usergroup option (com_members' new_usertype, the group every
@@ -170,7 +169,6 @@ class Component extends AdminController
                                 false,
                             ),
                         );
-                        return false;
                     }
                 }
             }
@@ -195,7 +193,6 @@ class Component extends AdminController
             $url = 'index.php?option=' . $this->option . '&view=component&component='
                 . $option . '&tmpl=component&path=' . $model->get('component.path');
             App::redirect(Route::url($url, false));
-            return false;
         }
 
         User::setState($this->option . '.config.global.data', null);

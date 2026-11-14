@@ -844,7 +844,6 @@ class Hubzero extends Plugin
         if (!is_null($newSecret)) {
             return $newSecret;
         }
-        return false;
     }
 
     /**

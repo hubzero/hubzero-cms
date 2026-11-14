@@ -164,7 +164,6 @@ class Attachment extends Table
         $this->db->query();
 
         return true;
-        return false;
     }
 
     /**

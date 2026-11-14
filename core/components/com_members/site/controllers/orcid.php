@@ -339,8 +339,6 @@ class Orcid extends SiteController
 
             return $profile->save();
         }
-
-        return false;
     }
 
     /**

@@ -936,7 +936,6 @@ class Form
                     $return = false;
                 } else {
                     throw new Exception($valid->getMessage());
-                    return false;
                 }
             }
         }
@@ -1661,14 +1660,10 @@ class Form
             if (substr(trim($data), 0, 1) == '<') {
                 if ($forms[$name]->load($data, $replace, $xpath) == false) {
                     throw new Exception(Lang::txt('JLIB_FORM_ERROR_XML_FILE_DID_NOT_LOAD'));
-
-                    return false;
                 }
             } else {
                 if ($forms[$name]->loadFile($data, $replace, $xpath) == false) {
                     throw new Exception(Lang::txt('JLIB_FORM_ERROR_XML_FILE_DID_NOT_LOAD'));
-
-                    return false;
                 }
             }
         }

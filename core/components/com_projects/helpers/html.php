@@ -183,7 +183,6 @@ class Html extends Obj
 
             return strtolower(substr($file, $dot));
         }
-        return null;
     }
 
     /**

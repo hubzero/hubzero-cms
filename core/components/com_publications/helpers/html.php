@@ -458,8 +458,6 @@ class Html
         if ($text) {
             return '<p class="' . $class . '">' . $text . '</p>';
         }
-
-        return false;
     }
 
     /**

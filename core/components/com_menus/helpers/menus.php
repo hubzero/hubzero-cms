@@ -184,7 +184,6 @@ class Menus
         // Check for a database error.
         if ($error = $db->getErrorMsg()) {
             throw new \Exception($error, 500);
-            return false;
         }
 
         // Pad the option text with spaces using depth level as a multiplier.

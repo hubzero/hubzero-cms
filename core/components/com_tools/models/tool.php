@@ -206,8 +206,6 @@ class Tool
 
             return $result;
         }
-
-        return false;
     }
 
     /**

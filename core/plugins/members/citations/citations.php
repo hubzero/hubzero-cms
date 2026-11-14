@@ -636,7 +636,6 @@ class Citations extends Plugin
             ($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
             ($this->getError() ? 'error' : 'success'),
         );
-        return;
     }
 
     /**
@@ -679,14 +678,12 @@ class Citations extends Plugin
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
                     'success',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
-                return;
             }
         } elseif ((bool) $bulk) {
             // for bulk citations operation
@@ -728,16 +725,13 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
                 'success',
             );
-            return;
         } else {
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
                 'error',
             );
-            return;
         }
-        return;
     }
 
     /**
@@ -808,7 +802,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SAVED'),
                 'success',
             );
-            return;
         } else {
             // instansiate the view
             $view = $this->view('settings');
@@ -920,14 +913,12 @@ class Citations extends Plugin
                     Lang::txt($string),
                     'success',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
-                return;
             }
         } elseif ((bool) $bulk) {
             /***
@@ -977,14 +968,12 @@ class Citations extends Plugin
                 Lang::txt($string),
                 'success',
             );
-            return;
         } else {
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
-            return;
         }
     }
 
@@ -1008,7 +997,6 @@ class Citations extends Plugin
             Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
-        return;
     }
 
     /**
@@ -1076,7 +1064,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
-            return;
         }
 
         // make sure file is under 4MB
@@ -1086,7 +1073,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
-            return;
         }
 
         // make sure we dont have any file errors
@@ -1105,7 +1091,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
-            return;
         }
 
         if (!isset($citations[0]['attention'])) {
@@ -1154,7 +1139,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         if (!empty($citations_require_attention)) {
@@ -1215,7 +1199,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         // vars
@@ -1303,7 +1286,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         $view = $this->view('saved', 'import');

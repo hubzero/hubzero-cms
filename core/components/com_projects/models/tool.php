@@ -402,7 +402,6 @@ class Tool extends Model
 
                 return new ItemList($results);
         }
-        return null;
     }
 
     /**

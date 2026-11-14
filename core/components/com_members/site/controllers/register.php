@@ -500,7 +500,6 @@ class Register extends SiteController
             } else {
                 App::redirect($_SERVER['REQUEST_URI']);
             }
-            return true;
         }
 
         if (!$force && $check && $method == 'POST') {

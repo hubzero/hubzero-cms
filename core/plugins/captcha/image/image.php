@@ -85,8 +85,6 @@ class Image extends Plugin
 
         $this->$imageFunction();
         exit();
-
-        return true;
     }
 
     /**

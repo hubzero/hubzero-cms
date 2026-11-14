@@ -99,7 +99,6 @@ class Application extends AdminController
                 Route::url('index.php', false),
                 Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
-            return;
         }
 
         // Initialise variables.
@@ -131,7 +130,6 @@ class Application extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&view=application', false),
             );
-            return false;
         }
 
         // 'other' is passed as a separate array because form validation
@@ -160,7 +158,6 @@ class Application extends AdminController
                 Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
                 'error',
             );
-            return false;
         }
 
         // Clean the session data.
@@ -195,7 +192,6 @@ class Application extends AdminController
                 Route::url('index.php', false),
                 Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
-            return;
         }
 
         // Clean the session data.
@@ -272,7 +268,6 @@ class Application extends AdminController
                 Route::url('index.php', false),
                 Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
-            return;
         }
 
         // Initialise model.

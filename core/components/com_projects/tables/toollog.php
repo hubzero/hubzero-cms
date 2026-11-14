@@ -140,8 +140,6 @@ class ToolLog extends Table
         $this->db->query();
 
         return true;
-
-        return false;
     }
 
     /**

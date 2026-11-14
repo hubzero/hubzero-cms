@@ -414,8 +414,6 @@ class Version
 
             return $result;
         }
-
-        return false;
     }
 
     /**

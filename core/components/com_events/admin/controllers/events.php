@@ -486,7 +486,6 @@ class Events extends AdminController
                             Lang::txt('COM_EVENTS_REQUIRED_FIELD_CHECK', $f[1]),
                             'error',
                         );
-                        exit();
                     }
                 }
             }

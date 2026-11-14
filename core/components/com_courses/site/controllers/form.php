@@ -188,7 +188,6 @@ class Form extends SiteController
                     Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
                     'passed',
                 );
-                return;
             }
         }
     }
@@ -312,7 +311,6 @@ class Form extends SiteController
                     Lang::txt('COM_COURSES_DEPLOYMENT_CREATED'),
                     'passed',
                 );
-                return;
             }
         }
     }
@@ -355,7 +353,6 @@ class Form extends SiteController
                 Lang::txt('COM_COURSES_DEPLOYMENT_UPDATED'),
                 'passed',
             );
-            return;
         }
     }
 
@@ -509,7 +506,6 @@ class Form extends SiteController
         App::redirect(
             Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false),
         );
-        return;
     }
 
     /**
@@ -590,7 +586,6 @@ class Form extends SiteController
             }
 
             App::redirect(Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att, false));
-            return;
         } else {
             $this->setView('form', 'complete');
             $this->task = 'complete';
@@ -619,7 +614,6 @@ class Form extends SiteController
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
                 'warning',
             );
-            return;
         }
 
         // Check for super admins

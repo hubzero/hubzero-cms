@@ -158,7 +158,6 @@ class ResourceMapGenerator
         if (!$resource) {
             // Return if ID does not exist
             throw new \Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
-            return false;
         }
 
         $this->setPaths();
@@ -392,7 +391,6 @@ class ResourceMapGenerator
 
         if ($rdfa == null) {
             throw new \Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
-            return false;
         }
 
         // Creates download headers

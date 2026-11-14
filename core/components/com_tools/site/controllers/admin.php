@@ -829,7 +829,6 @@ class Admin extends SiteController
             $out = Lang::txt('COM_TOOLS_ERR_CANNOT_RETRIEVE');
             return false;
         }
-        return true;
     }
 
     /**
