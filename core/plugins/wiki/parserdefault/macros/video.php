@@ -36,7 +36,7 @@ class Video extends WikiMacro
     /**
      * Hubzero\Config\Registry
      *
-     * @var object
+     * @var object|null
      */
     protected $config = null;
 

@@ -16,14 +16,14 @@ class EventsDate
     /**
      * Year
      *
-     * @var number
+     * @var number|null
      */
     public $year   = null;
 
     /**
      * Month
      *
-     * @var number
+     * @var number|null
      */
     public $month  = null;
 
@@ -37,21 +37,21 @@ class EventsDate
     /**
      * Hour
      *
-     * @var integer
+     * @var integer|null
      */
     public $hour   = null;
 
     /**
      * Minute
      *
-     * @var integer
+     * @var integer|null
      */
     public $minute = null;
 
     /**
      * Second
      *
-     * @var integer
+     * @var integer|null
      */
     public $second = null;
 

@@ -18,7 +18,7 @@ class Group extends Base
     /**
      * \Hubzero\User\Group
      *
-     * @var  object
+     * @var  object|null
      */
     private $obj = null;
 
@@ -32,7 +32,7 @@ class Group extends Base
     /**
      * URL
      *
-     * @var string
+     * @var string|null
      */
     private $baselink = null;
 

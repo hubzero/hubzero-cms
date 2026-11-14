@@ -34,21 +34,21 @@ class Post extends Base
     /**
      * Adapter
      *
-     * @var object
+     * @var object|null
      */
     private $adapterInstance = null;
 
     /**
      * Post
      *
-     * @var object
+     * @var object|null
      */
     private $data = null;
 
     /**
      * CollectionsModelCollection
      *
-     * @var object
+     * @var object|null
      */
     private $collectionItem = null;
 

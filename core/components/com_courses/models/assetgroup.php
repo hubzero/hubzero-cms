@@ -55,7 +55,7 @@ class Assetgroup extends Base
     /**
      * \Components\Courses\Models\AssetGroup
      *
-     * @var object
+     * @var object|null
      */
     private $parent = null;
 
@@ -69,7 +69,7 @@ class Assetgroup extends Base
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     private $params = null;
 

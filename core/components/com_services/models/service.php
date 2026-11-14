@@ -72,7 +72,7 @@ class Service extends Relational
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $params = null;
 

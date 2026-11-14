@@ -61,7 +61,7 @@ class Publication extends Relational
     /**
      * Active version
      *
-     * @var  string
+     * @var  string|null
      */
     public $activeVersion = null;
 

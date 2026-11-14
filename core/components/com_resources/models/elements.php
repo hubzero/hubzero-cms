@@ -21,14 +21,14 @@ class Elements
     /**
      * The raw params string
      *
-     * @var  string
+     * @var  string|null
      */
     protected $raw = null;
 
     /**
      * The XML params element
      *
-     * @var  object
+     * @var  object|null
      */
     protected $schema = null;
 

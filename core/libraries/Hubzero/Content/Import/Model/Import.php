@@ -54,7 +54,7 @@ class Import extends Relational
     /**
      * Current run object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $currentRun = null;
 

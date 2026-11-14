@@ -38,35 +38,35 @@ class Provider
     /**
      * Consumer data
      *
-     * @var  string
+     * @var  string|null
      */
     private $consumer_data = null;
 
     /**
      * Token data
      *
-     * @var  string
+     * @var  string|null
      */
     private $token_data = null;
 
     /**
      * Request token path
      *
-     * @var  string
+     * @var  string|null
      */
     private $request_token_path = null;
 
     /**
      * Access token path
      *
-     * @var  string
+     * @var  string|null
      */
     private $access_token_path = null;
 
     /**
      * Authorize path
      *
-     * @var  string
+     * @var  string|null
      */
     private $authorize_path = null;
 

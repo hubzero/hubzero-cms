@@ -20,7 +20,7 @@ class Renderer extends Obj
     /**
      * Reference to the Document object that instantiated the renderer
      *
-     * @var  object
+     * @var  object|null
      */
     protected $doc = null;
 

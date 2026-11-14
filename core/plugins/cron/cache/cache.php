@@ -21,7 +21,7 @@ class Cache extends Plugin
     /**
      * Path to cache directory
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

@@ -51,7 +51,7 @@ abstract class Model extends Obj
     /**
      * Table class name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $tableClass = null;
 
@@ -73,7 +73,7 @@ abstract class Model extends Obj
      * Model context.
      * option.model(.content)
      *
-     * @var  string
+     * @var  string|null
      */
     protected $context = null;
 

@@ -17,7 +17,7 @@ class Dumper
     /**
      * Renderable
      *
-     * @var  object
+     * @var  object|null
      */
     protected $renderer = null;
 

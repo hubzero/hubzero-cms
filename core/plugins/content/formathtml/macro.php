@@ -34,7 +34,7 @@ class Macro
     /**
      * Name of the macro
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
@@ -48,14 +48,14 @@ class Macro
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     protected $db = null;
 
     /**
      * Container for errors
      *
-     * @var  string
+     * @var  string|null
      */
     protected $error = null;
 

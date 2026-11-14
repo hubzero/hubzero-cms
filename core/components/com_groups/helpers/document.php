@@ -19,21 +19,21 @@ class Document extends Obj
     /**
      * Document
      *
-     * @var  object
+     * @var  object|null
      */
     public $document     = null;
 
     /**
      * Group
      *
-     * @var  object
+     * @var  object|null
      */
     public $group        = null;
 
     /**
      * Content
      *
-     * @var  object
+     * @var  object|null
      */
     public $content      = null;
 
@@ -47,7 +47,7 @@ class Document extends Obj
     /**
      * Tab
      *
-     * @var  string
+     * @var  string|null
      */
     public $tab          = null;
 

@@ -63,7 +63,7 @@ class Base extends Obj
     /**
      * Database connection
      *
-     * @var object
+     * @var object|null
      */
     protected $db = null;
 

@@ -18,7 +18,7 @@ abstract class Macro
     /**
      * Migration instance
      *
-     * @var  object
+     * @var  object|null
      */
     protected $migration = null;
 

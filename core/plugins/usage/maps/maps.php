@@ -31,7 +31,7 @@ class Maps extends Plugin
     /**
      * Connection to the usage database
      *
-     * @var  object
+     * @var  object|null
      */
     protected $udb = null;
 

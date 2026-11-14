@@ -16,7 +16,7 @@ class OneShiftsToMany extends OneToMany
     /**
      * The field identifying model type
      *
-     * @var string
+     * @var string|null
      **/
     protected $shifter = null;
 

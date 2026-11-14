@@ -38,14 +38,14 @@ class Html extends Base
     /**
      * Name of the template
      *
-     * @var  string
+     * @var  string|null
      */
     public $template = null;
 
     /**
      * Base url
      *
-     * @var  string
+     * @var  string|null
      */
     public $baseurl = null;
 
@@ -80,7 +80,7 @@ class Html extends Base
     /**
      * Integer with caching setting
      *
-     * @var  integer|bool
+     * @var  integer|bool|null
      */
     protected $caching = null;
 

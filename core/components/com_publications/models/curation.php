@@ -36,7 +36,7 @@ class Curation extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     public $db = null;
 
@@ -50,7 +50,7 @@ class Curation extends Obj
     /**
      * Publication model
      *
-     * @var  object
+     * @var  object|null
      */
     public $model = null;
 
@@ -85,7 +85,7 @@ class Curation extends Obj
     /**
      * Current block name
      *
-     * @var  string
+     * @var  string|null
      */
     public $blockname = null;
 
@@ -106,7 +106,7 @@ class Curation extends Obj
     /**
      * Message
      *
-     * @var  string
+     * @var  string|null
      */
     public $message = null;
 

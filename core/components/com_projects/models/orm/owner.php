@@ -51,7 +51,7 @@ class Owner extends Relational
     /**
      * Params
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 

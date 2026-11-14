@@ -18,14 +18,14 @@ class Identicon
     /**
      * Primary color
      *
-     * @var  string
+     * @var  string|null
      */
     protected $color = null;
 
     /**
      * File path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

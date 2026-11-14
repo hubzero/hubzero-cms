@@ -38,7 +38,7 @@ class Page extends Relational
     /**
      * Adapter type
      *
-     * @var  object
+     * @var  object|null
      */
     protected $adapter = null;
 
@@ -52,7 +52,7 @@ class Page extends Relational
     /**
      * Page config
      *
-     * @var  object
+     * @var  object|null
      */
     protected $params = null;
 

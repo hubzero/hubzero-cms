@@ -21,7 +21,7 @@ class Contentlanguage
     /**
      * Cached array of the content language items.
      *
-     * @var  array
+     * @var  array|null
      */
     protected static $items = null;
 

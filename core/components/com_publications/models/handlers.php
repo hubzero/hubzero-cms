@@ -21,7 +21,7 @@ class Handlers extends Obj
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     public $db = null;
 

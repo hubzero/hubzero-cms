@@ -19,14 +19,14 @@ class HtmlMenu
     /**
      * Cached array of the menus.
      *
-     * @var  array
+     * @var  array|null
      */
     protected static $menus = null;
 
     /**
      * Cached array of the menus items.
      *
-     * @var  array
+     * @var  array|null
      */
     protected static $items = null;
 

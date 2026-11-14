@@ -77,7 +77,7 @@ class Item extends Obj
     /**
      * Enclosure element
      *
-     * @var  object
+     * @var  object|null
      */
     public $enclosure =  null;
 
@@ -181,7 +181,7 @@ class Item extends Obj
     /**
      * iTunes subcategories
      *
-     * @var  string
+     * @var  string|null
      */
     public $itunes_subcategories = null;
 

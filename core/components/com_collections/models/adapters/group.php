@@ -27,7 +27,7 @@ class Group extends Base
     /**
      * Group
      *
-     * @var object
+     * @var object|null
      */
     protected $group = null;
 

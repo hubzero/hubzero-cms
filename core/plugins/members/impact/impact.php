@@ -36,7 +36,7 @@ class Impact extends Plugin
     /**
      * Publication areas
      *
-     * @var array
+     * @var array|null
      */
     private $areas = null;
 
@@ -50,14 +50,14 @@ class Impact extends Plugin
     /**
      * Publication categories
      *
-     * @var array
+     * @var array|null
      */
     private $cats = null;
 
     /**
      * Record count
      *
-     * @var integer
+     * @var integer|null
      */
     private $total = null;
 

@@ -96,14 +96,14 @@ class Query
     /**
      * The actual database connection object
      *
-     * @var  object
+     * @var  object|null
      **/
     private $connection = null;
 
     /**
      * The query syntax
      *
-     * @var  object
+     * @var  object|null
      **/
     protected $syntax = null;
 
@@ -237,7 +237,7 @@ class Query
      * This is a silly way of tracking what type of query we think
      * we're going to execute. This is used by the execute method.
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $type = null;
 

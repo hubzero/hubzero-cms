@@ -117,7 +117,7 @@ class Version
     /**
      * Description for 'state'
      *
-     * @var integer
+     * @var integer|null
      */
     private $state = null;            // state              #__tool_version
 
@@ -180,7 +180,7 @@ class Version
     /**
      * The longest a session of this version may run, in seconds; null for no limit
      *
-     * @var integer
+     * @var integer|null
      */
     private $hardTimeout = null;        // hardTimeout          #__tool_version
 

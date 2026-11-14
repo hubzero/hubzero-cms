@@ -36,21 +36,21 @@ class Connect extends Obj
     /**
      * Project
      *
-     * @var object
+     * @var object|null
      */
     public $model = null;
 
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 
     /**
      * User ID
      *
-     * @var integer
+     * @var integer|null
      */
     private $uid = null;
 

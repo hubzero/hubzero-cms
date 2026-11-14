@@ -65,7 +65,7 @@ class ItunesItem extends Item
     /**
      * iTunes subcategories
      *
-     * @var  string
+     * @var  string|null
      */
     public $itunes_subcategories = null;
 }

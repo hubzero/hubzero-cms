@@ -48,7 +48,7 @@ class Certificate extends Base
     /**
      * Base file path
      *
-     * @var string
+     * @var string|null
      */
     protected $base = null;
 

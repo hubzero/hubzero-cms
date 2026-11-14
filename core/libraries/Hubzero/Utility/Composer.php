@@ -80,7 +80,7 @@ class Composer
     /**
      * Composer\Json\JsonFile object to hold a few pieces of information about the composer.json file
      *
-     * @var object
+     * @var object|null
      */
     private static $json = null;
 

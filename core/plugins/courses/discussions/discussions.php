@@ -45,27 +45,27 @@ class Discussions extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * @var object
+     * @var object|null
      */
     protected $course = null;
 
     /**
-     * @var object
+     * @var object|null
      */
     protected $offering = null;
 
     /**
-     * @var object
+     * @var object|null
      */
     protected $forum = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $base = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $active = null;
 
@@ -85,7 +85,7 @@ class Discussions extends Plugin
     protected $instructors = null;
 
     /**
-     * @var object
+     * @var object|null
      */
     protected $database = null;
 

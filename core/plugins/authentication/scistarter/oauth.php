@@ -26,7 +26,7 @@ class Oauth
     /**
      * The http tranport object
      *
-     * @var  object
+     * @var  object|null
      **/
     private $http = null;
 
@@ -40,14 +40,14 @@ class Oauth
     /**
      * The oauth client ID
      *
-     * @var  string
+     * @var  string|null
      **/
     private $clientId = null;
 
     /**
      * The oauth client secret
      *
-     * @var  string
+     * @var  string|null
      **/
     private $clientSecret = null;
 
@@ -61,21 +61,21 @@ class Oauth
     /**
      * The oauth request state
      *
-     * @var  string
+     * @var  string|null
      **/
     private $state = null;
 
     /**
      * The oauth redirect URI
      *
-     * @var  string
+     * @var  string|null
      **/
     private $redirectUri = null;
 
     /**
      * The oauth access token
      *
-     * @var  string
+     * @var  string|null
      **/
     private $accessToken = null;
 

@@ -113,7 +113,7 @@ class Post extends Relational
     /**
      * Scope adapter
      *
-     * @var  object
+     * @var  object|null
      */
     protected $adapter = null;
 

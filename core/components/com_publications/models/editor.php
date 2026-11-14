@@ -21,14 +21,14 @@ class Editor extends Obj
     /**
      * Handler object
      *
-     * @var  object
+     * @var  object|null
      */
     public $handler = null;
 
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     private $db = null;
 

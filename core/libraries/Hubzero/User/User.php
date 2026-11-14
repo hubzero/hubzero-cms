@@ -86,7 +86,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * A cached switch for if this user has root access rights.
      *
-     * @var    boolean
+     * @var    boolean|null
      * @since  2.1.0
      */
     protected $isRoot = null;
@@ -102,7 +102,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access groups
      *
-     * @var    array
+     * @var    array|null
      * @since  2.1.0
      */
     protected $authGroups = null;
@@ -110,7 +110,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access levels
      *
-     * @var    array
+     * @var    array|null
      * @since  2.1.0
      */
     protected $authLevels = null;
@@ -118,7 +118,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Authorised access actions
      *
-     * @var    array
+     * @var    array|null
      * @since  2.1.0
      */
     protected $authActions = null;
@@ -126,7 +126,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Link pattern
      *
-     * @var    string
+     * @var    string|null
      * @since  2.1.0
      */
     public static $linkBase = null;

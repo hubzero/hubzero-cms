@@ -21,14 +21,14 @@ class Configs
     /**
      * Table name
      *
-     * @var  string
+     * @var  string|null
      */
     private $tbl = null;
 
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     private $db = null;
 

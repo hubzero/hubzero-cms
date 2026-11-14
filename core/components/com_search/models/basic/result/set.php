@@ -63,7 +63,7 @@ class Set extends Obj implements Iterator
     /**
      * Custom title
      *
-     * @var string
+     * @var string|null
      */
     private $custom_title = null;
 

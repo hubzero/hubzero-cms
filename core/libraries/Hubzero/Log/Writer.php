@@ -33,7 +33,7 @@ class Writer
     /**
      * The Monolog logger instance.
      *
-     * @var  object
+     * @var  object|null
      */
     protected $monolog = null;
 
@@ -56,7 +56,7 @@ class Writer
     /**
      * The event dispatcher instance.
      *
-     * @var  object
+     * @var  object|null
      */
     protected $dispatcher = null;
 

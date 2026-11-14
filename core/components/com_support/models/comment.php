@@ -77,7 +77,7 @@ class Comment extends Relational
     /**
      * Changelog
      *
-     * @var  object
+     * @var  object|null
      */
     private $changeLog = null;
 

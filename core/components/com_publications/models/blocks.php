@@ -20,14 +20,14 @@ class Blocks extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     public $db = null;
 
     /**
      * Table class
      *
-     * @var  object
+     * @var  object|null
      */
     public $objBlock = null;
 

@@ -69,14 +69,14 @@ class CustomExtensions extends Relational
     /**
      * Configuration registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 
     /**
      * XML manifest
      *
-     * @var  object
+     * @var  object|null
      */
     protected $manifest = null;
 

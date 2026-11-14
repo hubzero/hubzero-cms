@@ -39,7 +39,7 @@ class Category extends Relational
     /**
      * Configuration registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 

@@ -35,7 +35,7 @@ class Manager extends Obj
     /**
      * Indicates if the internal state has been set
      *
-     * @var  boolean
+     * @var  boolean|null
      */
     protected $stateSet = null;
 
@@ -49,7 +49,7 @@ class Manager extends Obj
     /**
      * Group total
      *
-     * @var  integer
+     * @var  integer|null
      */
     protected $total = null;
 

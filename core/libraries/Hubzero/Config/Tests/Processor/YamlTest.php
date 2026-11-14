@@ -20,21 +20,21 @@ class YamlTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object
+     * @var  object|null
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  object
+     * @var  object|null
      */
     private $obj = null;
 
     /**
      * Expected datain array form
      *
-     * @var  array
+     * @var  array|null
      */
     private $arr = null;
 

@@ -41,7 +41,7 @@ class Member extends Relational
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     public $params = null;
 

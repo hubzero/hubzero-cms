@@ -48,7 +48,7 @@ class Comments extends Plugin
     /**
      * List of allowed extensions
      *
-     * @var  array
+     * @var  array|null
      */
     private $allowedExtensions = null;
 

@@ -20,7 +20,7 @@ class Options
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     private static $current = null;
 

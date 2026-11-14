@@ -143,21 +143,21 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Path to filespace
      *
-     * @var  string
+     * @var  string|null
      */
     protected $filespace = null;
 
     /**
      * Params Registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 
     /**
      * Attribs Registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $attribsRegistry = null;
 

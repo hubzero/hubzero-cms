@@ -24,14 +24,14 @@ class Parser extends Obj
     /**
      * Parser Plugin object
      *
-     * @var  object
+     * @var  object|null
      */
     public $parser = null;
 
     /**
      * Parser Plugin name
      *
-     * @var  string
+     * @var  string|null
      */
     public $name = null;
 

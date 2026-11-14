@@ -38,7 +38,7 @@ class Checker
     /**
      * StringProcessorInterface
      *
-     * @var  object
+     * @var  object|null
      */
     protected $stringProcessor = null;
 

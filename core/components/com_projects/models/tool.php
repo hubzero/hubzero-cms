@@ -45,21 +45,21 @@ class Tool extends Model
     /**
      * Entry
      *
-     * @var object
+     * @var object|null
      */
     private $entry = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $entries = null;
 
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     public $config = null;
 

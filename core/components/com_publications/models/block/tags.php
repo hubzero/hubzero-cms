@@ -28,7 +28,7 @@ class Tags extends Base
     /**
      * Parent block name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $parentname = null;
 

@@ -111,7 +111,7 @@ class Publication extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     private $db = null;
 
@@ -125,7 +125,7 @@ class Publication extends Obj
     /**
      * Is this publication of type tool?
      *
-     * @var  boolean
+     * @var  boolean|null
      */
     private $isTool = null;
 

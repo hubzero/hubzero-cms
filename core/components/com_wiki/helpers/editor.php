@@ -23,14 +23,14 @@ class Editor extends Obj
     /**
      * Editor Plugin object
      *
-     * @var  object
+     * @var  object|null
      */
     private $editor = null;
 
     /**
      * Editor Plugin name
      *
-     * @var  string
+     * @var  string|null
      */
     private $name = null;
 
@@ -270,7 +270,7 @@ class Editor extends Obj
         $plugin = Plugin::byType('wiki', $this->name);
 
         $params = new Registry($plugin->params);
-        $params->toArray($config);
+        $params->merge($config);
 
         $plugin->params = $params;
 

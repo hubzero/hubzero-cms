@@ -43,7 +43,7 @@ class Collections extends Plugin
     /**
      * Custom params
      *
-     * @var  object
+     * @var  object|null
      */
     protected $customParams = null;
 

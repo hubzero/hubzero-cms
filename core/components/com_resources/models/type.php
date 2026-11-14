@@ -67,7 +67,7 @@ class Type extends Relational
     /**
      * Params Registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 
@@ -129,7 +129,7 @@ class Type extends Relational
     /**
      * Get major types
      *
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function getMajorTypes()
     {

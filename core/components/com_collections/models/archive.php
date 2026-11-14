@@ -24,28 +24,28 @@ class Archive extends Obj
     /**
      * Object type [member, group, etc.]
      *
-     * @var string
+     * @var string|null
      */
     private $objectType = null;
 
     /**
      * Object ID [member ID, group ID, etc.]
      *
-     * @var integer
+     * @var integer|null
      */
     private $objectId = null;
 
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $collections = null;
 
@@ -59,14 +59,14 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $followers = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $following = null;
 

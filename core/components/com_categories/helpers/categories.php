@@ -42,42 +42,42 @@ class Categories
     /**
      * Name of the extension the categories belong to
      *
-     * @var  string
+     * @var  string|null
      */
     protected $extension = null;
 
     /**
      * Name of the linked content table to get category content count
      *
-     * @var  string
+     * @var  string|null
      */
     protected $table = null;
 
     /**
      * Name of the category field
      *
-     * @var  string
+     * @var  string|null
      */
     protected $field = null;
 
     /**
      * Name of the key field
      *
-     * @var  string
+     * @var  string|null
      */
     protected $key = null;
 
     /**
      * Name of the items state field
      *
-     * @var  string
+     * @var  string|null
      */
     protected $statefield = null;
 
     /**
      * Array of options
      *
-     * @var  array
+     * @var  array|null
      */
     protected $options = null;
 

@@ -18,7 +18,7 @@ class Usage
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     public $db = null;
 
@@ -53,28 +53,28 @@ class Usage
     /**
      * Description for 'datetime'
      *
-     * @var string
+     * @var string|null
      */
     public $datetime = null;
 
     /**
      * Number of citations
      *
-     * @var integer
+     * @var integer|null
      */
     public $cites = null;
 
     /**
      * Last citation date
      *
-     * @var string
+     * @var string|null
      */
     public $lastcite = null;
 
     /**
      * Date format
      *
-     * @var string
+     * @var string|null
      */
     public $dateFormat = null;
 

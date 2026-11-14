@@ -18,7 +18,7 @@ class Node extends Obj
 {
     /**
      * Parent node
-     * @var    object
+     * @var    object|null
      *
      * @since  2.1.13
      */
@@ -35,7 +35,7 @@ class Node extends Obj
     /**
      * Node Title
      *
-     * @var  string
+     * @var  string|null
      */
     public $title = null;
 
@@ -49,21 +49,21 @@ class Node extends Obj
     /**
      * Node Link
      *
-     * @var  string
+     * @var  string|null
      */
     public $link = null;
 
     /**
      * Link Target
      *
-     * @var  string
+     * @var  string|null
      */
     public $target = null;
 
     /**
      * CSS Class for node
      *
-     * @var  string
+     * @var  string|null
      */
     public $class = null;
 

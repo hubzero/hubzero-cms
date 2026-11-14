@@ -39,21 +39,21 @@ class SafePathTest extends Basic
     /**
      * Base directory standing in for the webdav mount
      *
-     * @var  string
+     * @var  string|null
      */
     private $base = null;
 
     /**
      * The member's own directory below the base
      *
-     * @var  string
+     * @var  string|null
      */
     private $home = null;
 
     /**
      * A second account below the base
      *
-     * @var  string
+     * @var  string|null
      */
     private $victim = null;
 

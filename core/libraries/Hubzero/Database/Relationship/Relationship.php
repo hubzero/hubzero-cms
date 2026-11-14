@@ -49,7 +49,7 @@ class Relationship
     /**
      * The primary model
      *
-     * @var  \Hubzero\Database\Relational|static
+     * @var  \Hubzero\Database\Relational|static|null
      **/
     protected $model = null;
 
@@ -63,14 +63,14 @@ class Relationship
     /**
      * The local key (probably 'id')
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $localKey = null;
 
     /**
      * The related key (probably 'modelName_id')
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $relatedKey = null;
 

@@ -24,14 +24,14 @@ class Miner extends Obj implements Provider
     /**
      * Base URL
      *
-     * @var  string
+     * @var  string|null
      */
     protected static $base = null;
 
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     protected $database = null;
 

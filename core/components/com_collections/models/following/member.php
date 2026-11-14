@@ -16,7 +16,7 @@ class Member extends Base
     /**
      * \Hubzero\User\User
      *
-     * @var  object
+     * @var  object|null
      */
     private $obj = null;
 
@@ -30,7 +30,7 @@ class Member extends Base
     /**
      * URL
      *
-     * @var  string
+     * @var  string|null
      */
     private $baselink = null;
 

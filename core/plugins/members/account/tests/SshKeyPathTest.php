@@ -42,14 +42,14 @@ class SshKeyPathTest extends Basic
     /**
      * Stand-in for /webdav/home
      *
-     * @var  string
+     * @var  string|null
      */
     private $base = null;
 
     /**
      * The plugin under test
      *
-     * @var  object
+     * @var  object|null
      */
     private $plugin = null;
 

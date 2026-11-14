@@ -25,7 +25,7 @@ class Parsermarkdown extends Plugin
     /**
      * Holds the parser for re-use
      *
-     * @var  object
+     * @var  object|null
      */
     public $parser = null;
 

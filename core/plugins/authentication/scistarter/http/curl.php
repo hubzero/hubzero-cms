@@ -16,7 +16,7 @@ class Curl
     /**
      * The connection resource
      *
-     * @var  object
+     * @var  object|null
      **/
     private $resource = null;
 

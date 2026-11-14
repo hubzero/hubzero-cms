@@ -27,14 +27,14 @@ class Following extends Model
     /**
      * Following
      *
-     * @var object
+     * @var object|null
      */
     private $followingObj = null;
 
     /**
      * Follower
      *
-     * @var object
+     * @var object|null
      */
     private $followerObj = null;
 

@@ -20,77 +20,77 @@ class Node extends Obj
     /**
      * Primary key
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $id = null;
 
     /**
      * The id of the category in the asset table
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $asset_id = null;
 
     /**
      * The id of the parent of category in the asset table, 0 for category root
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $parent_id = null;
 
     /**
      * The lft value for this category in the category tree
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $lft = null;
 
     /**
      * The rgt value for this category in the category tree
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $rgt = null;
 
     /**
      * The depth of this category's position in the category tree
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $level = null;
 
     /**
      * The extension this category is associated with
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $extension = null;
 
     /**
      * The menu title for the category (a short name)
      *
-     * @var  string
+     * @var  string|null
      */
     public $title = null;
 
     /**
      * The the alias for the category
      *
-     * @var  string
+     * @var  string|null
      */
     public $alias = null;
 
     /**
      * Description of the category.
      *
-     * @var  string
+     * @var  string|null
      */
     public $description = null;
 
     /**
      * The publication status of the category
      *
-     * @var  boolean
+     * @var  boolean|null
      */
     public $published = null;
 
@@ -111,112 +111,112 @@ class Node extends Obj
     /**
      * Access level for the category
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $access = null;
 
     /**
      * JSON string of parameters
      *
-     * @var  string
+     * @var  string|null
      */
     public $params = null;
 
     /**
      * Metadata description
      *
-     * @var  string
+     * @var  string|null
      */
     public $metadesc = null;
 
     /**
      * Key words for meta data
      *
-     * @var  string
+     * @var  string|null
      */
     public $metakey = null;
 
     /**
      * JSON string of other meta data
      *
-     * @var  string
+     * @var  string|null
      */
     public $metadata = null;
 
     /**
      * Created user ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $created_user_id = null;
 
     /**
      * The time at which the category was created
      *
-     * @var  string
+     * @var  string|null
      */
     public $created_time = null;
 
     /**
      * Modified user ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $modified_user_id = null;
 
     /**
      * The time at which the category was modified
      *
-     * @var  string
+     * @var  string|null
      */
     public $modified_time = null;
 
     /**
      * Nmber of times the category has been viewed
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $hits = null;
 
     /**
      * The language for the category in xx-XX format
      *
-     * @var  string
+     * @var  string|null
      */
     public $language = null;
 
     /**
      * Number of items in this category or descendants of this category
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $numitems = null;
 
     /**
      * Number of children items
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $childrennumitems = null;
 
     /**
      * Slug fo the category (used in URL)
      *
-     * @var  string
+     * @var  string|null
      */
     public $slug = null;
 
     /**
      * Array of  assets
      *
-     * @var  array
+     * @var  array|null
      */
     public $assets = null;
 
     /**
      * Parent Category object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $parent = null;
 

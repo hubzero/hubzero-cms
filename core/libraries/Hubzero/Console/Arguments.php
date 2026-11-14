@@ -28,21 +28,21 @@ class Arguments
     /**
      * Class name - command to execute
      *
-     * @var  string
+     * @var  string|null
      **/
     private $class = null;
 
     /**
      * Task name - class method to execute
      *
-     * @var  string
+     * @var  string|null
      **/
     private $task = null;
 
     /**
      * Array of additional options being passed to the command
      *
-     * @var  array
+     * @var  array|null
      **/
     private $opts = null;
 

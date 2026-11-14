@@ -19,28 +19,28 @@ class Teller extends Obj
     /**
      * User ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $uid = null;
 
     /**
      * Current point balance
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $balance = null;
 
     /**
      * Lifetime point earnings
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $earnings = null;
 
     /**
      * Credit point balance
      *
-     * @var  integer
+     * @var  integer|null
      */
     public $credit = null;
 

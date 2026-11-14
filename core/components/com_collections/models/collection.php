@@ -63,7 +63,7 @@ class Collection extends Base
     /**
      * Item
      *
-     * @var object
+     * @var object|null
      */
     private $item = null;
 
@@ -77,7 +77,7 @@ class Collection extends Base
     /**
      * Adapter
      *
-     * @var object
+     * @var object|null
      */
     private $adapter = null;
 

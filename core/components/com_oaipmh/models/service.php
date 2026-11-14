@@ -38,21 +38,21 @@ class Service extends Obj
     /**
      * Schema to use
      *
-     * @var  object
+     * @var  object|null
      */
     protected $schema = null;
 
     /**
      * List of schemas
      *
-     * @var  array
+     * @var  array|null
      */
     protected $schemas = null;
 
     /**
      * XML Response
      *
-     * @var  object
+     * @var  object|null
      */
     protected $response = null;
 
@@ -66,7 +66,7 @@ class Service extends Obj
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     protected $database = null;
 

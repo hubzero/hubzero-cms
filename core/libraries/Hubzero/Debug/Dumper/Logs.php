@@ -16,7 +16,7 @@ class Logs extends AbstractRenderer
     /**
      * Logger
      *
-     * @var  object
+     * @var  object|null
      */
     protected $logger = null;
 

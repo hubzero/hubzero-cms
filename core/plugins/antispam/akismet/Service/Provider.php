@@ -106,7 +106,7 @@ class Provider extends AbstractService
     /**
      * API key
      *
-     * @var string
+     * @var string|null
      */
     public $apiKey = null;
 

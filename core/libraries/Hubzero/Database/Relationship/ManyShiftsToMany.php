@@ -16,7 +16,7 @@ class ManyShiftsToMany extends ManyToMany
     /**
      * The field identifying model type
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $shifter = null;
 

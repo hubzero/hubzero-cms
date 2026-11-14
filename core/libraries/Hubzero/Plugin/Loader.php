@@ -28,7 +28,7 @@ class Loader implements LoaderInterface
     /**
      * A persistent cache of the loaded plugins.
      *
-     * @var  array
+     * @var  array|null
      */
     protected static $plugins = null;
 

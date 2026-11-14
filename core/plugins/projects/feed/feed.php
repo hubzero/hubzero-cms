@@ -55,7 +55,7 @@ class Feed extends Plugin
     /**
      * Repository path
      *
-     * @var  array
+     * @var  array|null
      */
     protected $path = null;
 

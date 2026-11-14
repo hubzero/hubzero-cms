@@ -47,7 +47,7 @@ class Section extends Base
     /**
      * List of roles
      *
-     * @var object
+     * @var object|null
      */
     private $roles = null;
 
@@ -82,7 +82,7 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $dates = null;
 
@@ -103,7 +103,7 @@ class Section extends Base
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     private $params = null;
 

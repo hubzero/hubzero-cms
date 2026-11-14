@@ -19,21 +19,21 @@ class Uri
     /**
      * Original URI
      *
-     * @var  string
+     * @var  string|null
      */
     protected $uri = null;
 
     /**
      * Protocol
      *
-     * @var  string
+     * @var  string|null
      */
     protected $scheme = null;
 
     /**
      * Host
      *
-     * @var  string
+     * @var  string|null
      */
     protected $host = null;
 
@@ -47,21 +47,21 @@ class Uri
     /**
      * Username
      *
-     * @var  string
+     * @var  string|null
      */
     protected $user = null;
 
     /**
      * Password
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pass = null;
 
     /**
      * Path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 
@@ -75,7 +75,7 @@ class Uri
     /**
      * Anchor
      *
-     * @var  string
+     * @var  string|null
      */
     protected $fragment = null;
 

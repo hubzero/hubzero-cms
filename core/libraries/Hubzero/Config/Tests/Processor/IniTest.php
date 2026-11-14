@@ -20,21 +20,21 @@ class IniTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object
+     * @var  object|null
      */
     private $processor = null;
 
     /**
      * Expected data as an object
      *
-     * @var  object
+     * @var  object|null
      */
     private $obj = null;
 
     /**
      * Expected data as an array
      *
-     * @var  array
+     * @var  array|null
      */
     private $arr = null;
 

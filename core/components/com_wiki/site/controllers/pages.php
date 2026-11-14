@@ -42,7 +42,7 @@ class Pages extends SiteController
     /**
      * Book model
      *
-     * @var  object
+     * @var  object|null
      */
     public $book = null;
 

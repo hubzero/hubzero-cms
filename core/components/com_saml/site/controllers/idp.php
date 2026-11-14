@@ -36,7 +36,7 @@ class Idp extends SiteController
     /**
      * The protocol engine
      *
-     * @var  object
+     * @var  object|null
      */
     protected $idp = null;
 

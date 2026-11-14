@@ -19,14 +19,14 @@ class ArgumentsTest extends Basic
     /**
      * The home directory Config reads its .muse from
      *
-     * @var  string
+     * @var  string|null
      **/
     private static $home = null;
 
     /**
      * The real one, to put back
      *
-     * @var  string
+     * @var  string|null
      **/
     private static $realHome = null;
 

@@ -25,7 +25,7 @@ class Guard
     /**
      * The oauth token data
      *
-     * @var  array
+     * @var  array|null
      */
     private $token = null;
 

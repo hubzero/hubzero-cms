@@ -50,7 +50,7 @@ class Type extends Relational
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 

@@ -56,7 +56,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The name of the component derived from the controller class name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
@@ -86,7 +86,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The name of the task to be executed
      *
-     * @var  string
+     * @var  string|null
      */
     protected $doTask = null;
 
@@ -100,14 +100,14 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The name of this component
      *
-     * @var  string
+     * @var  string|null
      */
     protected $option = null;
 
     /**
      * The base path to this component
      *
-     * @var  string
+     * @var  string|null
      */
     protected $basePath = null;
 

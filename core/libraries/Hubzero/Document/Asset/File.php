@@ -20,35 +20,35 @@ class File extends Obj
     /**
      * Asset type
      *
-     * @var  string
+     * @var  string|null
      */
     protected $type = null;
 
     /**
      * Asset name (without file extension)
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
     /**
      * Asset directory
      *
-     * @var  string
+     * @var  string|null
      */
     protected $directory = null;
 
     /**
      * CMS Extension name (e.g., com_blog)
      *
-     * @var  string
+     * @var  string|null
      */
     protected $extension = null;
 
     /**
      * CMS Extension type
      *
-     * @var  string
+     * @var  string|null
      */
     protected $kind = null;
 

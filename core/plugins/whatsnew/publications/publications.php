@@ -31,14 +31,14 @@ class Publications extends Plugin
     /**
      * Resource types and "all" category
      *
-     * @var  array
+     * @var  array|null
      */
     private $areas = null;
 
     /**
      * Resource types
      *
-     * @var  array
+     * @var  array|null
      */
     private $cats = null;
 

@@ -82,7 +82,7 @@ class Files extends Plugin
     /**
      * Repository path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

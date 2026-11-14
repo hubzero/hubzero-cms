@@ -42,7 +42,7 @@ class Detector implements DetectorInterface
     /**
      * Model for retrieving list of words
      *
-     * @var  object
+     * @var  object|null
      */
     protected $model = null;
 

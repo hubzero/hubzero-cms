@@ -48,14 +48,14 @@ class Module extends Relational
     /**
      * Configuration registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 
     /**
      * XML manifest
      *
-     * @var  object
+     * @var  object|null
      */
     protected $manifest = null;
 
@@ -82,7 +82,7 @@ class Module extends Relational
     /**
      * The path to the installed files
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

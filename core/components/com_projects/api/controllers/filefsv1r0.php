@@ -33,14 +33,14 @@ class Filefsv1r0 extends ApiController
     /**
      * Project being acted on
      *
-     * @var  Project
+     * @var  Project|null
      */
     protected $model = null;
 
     /**
      * Repository of the project
      *
-     * @var  \Components\Projects\Models\Repo
+     * @var  \Components\Projects\Models\Repo|null
      */
     protected $repo = null;
 
@@ -54,7 +54,7 @@ class Filefsv1r0 extends ApiController
     /**
      * Database and acting user, set alongside the repository
      *
-     * @var  object
+     * @var  object|null
      */
     protected $database = null;
 

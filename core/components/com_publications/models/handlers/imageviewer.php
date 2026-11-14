@@ -32,14 +32,14 @@ class ImageViewer extends Base
     /**
      * Configs
      *
-     * @var  object
+     * @var  object|null
      */
     protected $config = null;
 
     /**
      * Image Helper
      *
-     * @var  object
+     * @var  object|null
      */
     protected $imgHelper = null;
 

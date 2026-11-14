@@ -59,21 +59,21 @@ class Permissions extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $courseId = null;
 
     /**
      * \Components\Courses\Models\Section
      *
-     * @var object
+     * @var object|null
      */
     private $offeringId = null;
 
     /**
      * \Components\Courses\Models\Section
      *
-     * @var object
+     * @var object|null
      */
     private $sectionId = null;
 

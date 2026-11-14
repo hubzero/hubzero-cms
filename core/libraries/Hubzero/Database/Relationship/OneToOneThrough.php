@@ -41,21 +41,21 @@ class OneToOneThrough extends Relationship
     /**
      * The intermediate table used to capture the through relationship
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $throughTable = null;
 
     /**
      * Key on the intermediate table that links to the local model
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $throughLocalKey = null;
 
     /**
      * Key on the intermediate table that links to the related model
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $throughRelatedKey = null;
 

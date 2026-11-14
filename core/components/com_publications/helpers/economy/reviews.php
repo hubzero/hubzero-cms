@@ -23,7 +23,7 @@ class Reviews extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     private $db = null;
 

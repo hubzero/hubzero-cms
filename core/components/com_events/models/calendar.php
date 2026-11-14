@@ -44,14 +44,14 @@ class Calendar extends Model
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $events = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $events_repeating = null;
 

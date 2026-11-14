@@ -27,7 +27,7 @@ class Period
     /**
      * The original search text - should NEVER BE CHANGED
      *
-     * @var  string
+     * @var  string|null
      */
     private $period = null;
 

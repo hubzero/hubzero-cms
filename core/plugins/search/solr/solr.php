@@ -25,7 +25,7 @@ class Solr extends Plugin
     /**
      * Table exists or not
      *
-     * @var  bool
+     * @var  bool|null
      */
     public static $tableExists = null;
 

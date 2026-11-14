@@ -19,14 +19,14 @@ class Config
     /**
      * Parsed config vars
      *
-     * @var  object
+     * @var  object|null
      **/
     private $config = null;
 
     /**
      * Config file path
      *
-     * @var  string
+     * @var  string|null
      **/
     private $path = null;
 

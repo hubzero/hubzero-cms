@@ -26,7 +26,7 @@ class Oauth extends SiteController
     /**
      * OAuth Server Object
      *
-     * @var  object
+     * @var  object|null
      */
     private $server = null;
 

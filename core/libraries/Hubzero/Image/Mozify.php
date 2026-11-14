@@ -18,28 +18,28 @@ class Mozify extends Obj
     /**
      * Image alt text
      *
-     * @var  string
+     * @var  string|null
      */
     private $imageAlt        = null;
 
     /**
      * Image URL
      *
-     * @var  string
+     * @var  string|null
      */
     private $imageUrl        = null;
 
     /**
      * Image width
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $imageWidth      = null;
 
     /**
      * Image height
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $imageHeight     = null;
 

@@ -24,28 +24,28 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\Model
      *
-     * @var object
+     * @var object|null
      */
     private $pages = null;
 
     /**
      * Page count
      *
-     * @var integer
+     * @var integer|null
      */
     private $pagesCount = null;
 
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 
     /**
      * \Hubzero\User\Group
      *
-     * @var object
+     * @var object|null
      */
     private $group = null;
 

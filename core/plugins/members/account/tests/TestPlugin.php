@@ -17,7 +17,7 @@ class TestPlugin extends \Plugins\Members\Account\Account
     /**
      * Stand-in for /webdav/home
      *
-     * @var  string
+     * @var  string|null
      */
     public $base = null;
 
@@ -27,7 +27,7 @@ class TestPlugin extends \Plugins\Members\Account\Account
      * Declared protected on the plugin; widened here so the test can set it
      * without a dispatcher, which is all newInstanceWithoutConstructor leaves.
      *
-     * @var  object
+     * @var  object|null
      */
     public $member = null;
 

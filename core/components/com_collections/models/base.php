@@ -23,7 +23,7 @@ class Base extends Model
     /**
      * \Hubzero\User\User
      *
-     * @var  object
+     * @var  object|null
      */
     protected $creator = null;
 

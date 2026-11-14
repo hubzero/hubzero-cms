@@ -33,7 +33,7 @@ class Prerequisite extends Base
     /**
      * Track the member id for whom the prereqs apply
      *
-     * @var int
+     * @var int|null
      **/
     protected $member_id = null;
 
@@ -47,21 +47,21 @@ class Prerequisite extends Base
     /**
      * Unit progress
      *
-     * @var array
+     * @var array|null
      **/
     protected $progress = null;
 
     /**
      * Asset views
      *
-     * @var array
+     * @var array|null
      **/
     protected $views = null;
 
     /**
      * Grades
      *
-     * @var array
+     * @var array|null
      **/
     protected $grades = null;
 

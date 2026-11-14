@@ -16,7 +16,7 @@ class TestMember
     /**
      * Member username
      *
-     * @var  string
+     * @var  string|null
      */
     private $username = null;
 

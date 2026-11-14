@@ -36,7 +36,7 @@ class Attachment extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array
+     * @var  array|null
      */
     protected $dimensions = null;
 

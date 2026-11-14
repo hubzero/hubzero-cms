@@ -45,14 +45,14 @@ class View extends Obj
     /**
      * The name of the view
      *
-     * @var  string
+     * @var  string|null
      */
     protected $viewName = null;
 
     /**
      * The base path of the view
      *
-     * @var  string
+     * @var  string|null
      */
     protected $basePath = null;
 
@@ -66,7 +66,7 @@ class View extends Obj
     /**
      * The override path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $overridePath = null;
 
@@ -104,7 +104,7 @@ class View extends Obj
     /**
      * The name of the default template source file.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $templateFile = null;
 

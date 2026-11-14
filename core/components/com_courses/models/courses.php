@@ -20,14 +20,14 @@ class Courses extends Obj
     /**
      * Tables\Course
      *
-     * @var object
+     * @var object|null
      */
     private $tbl = null;
 
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 

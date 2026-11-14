@@ -29,21 +29,21 @@ class Outline extends Plugin
     /**
      * View object
      *
-     * @var object
+     * @var object|null
      */
     public $view = null;
 
     /**
      * Course object
      *
-     * @var object
+     * @var object|null
      */
     protected $course = null;
 
     /**
      * Offering object
      *
-     * @var object
+     * @var object|null
      */
     protected $offering = null;
 

@@ -33,7 +33,7 @@ class WikiMacro
     /**
      * Name of the macro
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
@@ -47,14 +47,14 @@ class WikiMacro
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     protected $db = null;
 
     /**
      * Container for errors
      *
-     * @var  array
+     * @var  array|null
      */
     protected $error = null;
 

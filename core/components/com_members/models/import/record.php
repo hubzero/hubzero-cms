@@ -42,7 +42,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Cached map of profile field name => default access level
      *
-     * @var  array
+     * @var  array|null
      */
     protected static $fieldAccess = null;
 

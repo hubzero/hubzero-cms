@@ -25,14 +25,14 @@ class View extends AbstractView
     /**
      * Folder
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pluginFolder = null;
 
     /**
      * Folder
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pluginElement = null;
 

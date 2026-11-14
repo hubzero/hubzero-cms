@@ -70,7 +70,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $siblings = null;
 

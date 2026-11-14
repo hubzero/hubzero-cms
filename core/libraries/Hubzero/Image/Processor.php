@@ -21,7 +21,7 @@ class Processor extends Obj
     /**
      * Path to image
      *
-     * @var  string
+     * @var  string|null
      */
     private $source = null;
 

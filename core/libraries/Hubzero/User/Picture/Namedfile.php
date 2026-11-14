@@ -23,7 +23,7 @@ class Namedfile implements Resolver
     /**
      * File path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

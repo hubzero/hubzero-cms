@@ -31,14 +31,14 @@ class Repo extends Obj
     /**
      * Tables\Repo
      *
-     * @var  object
+     * @var  object|null
      */
     private $tbl = null;
 
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     private $db = null;
 

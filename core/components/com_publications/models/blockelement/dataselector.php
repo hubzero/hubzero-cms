@@ -26,14 +26,14 @@ class Dataselector extends Base
     /**
      * Git helper
      *
-     * @var  string
+     * @var  string|null
      */
     protected $git = null;
 
     /**
      * Project repo path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 

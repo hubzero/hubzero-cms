@@ -32,7 +32,7 @@ class Log extends Model
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     public $config = null;
 

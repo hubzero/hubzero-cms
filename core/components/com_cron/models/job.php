@@ -26,14 +26,14 @@ class Job extends Relational
     /**
      * Cron expression
      *
-     * @var  object
+     * @var  object|null
      */
     protected $expression = null;
 
     /**
      * Profiler
      *
-     * @var  object
+     * @var  object|null
      */
     protected $profiler = null;
 

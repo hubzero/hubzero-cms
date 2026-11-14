@@ -40,7 +40,7 @@ class Group extends Obj
     /**
      * Group ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $gidNumber = null;
 
@@ -54,63 +54,63 @@ class Group extends Obj
     /**
      * Group title
      *
-     * @var  string
+     * @var  string|null
      */
     private $description = null;
 
     /**
      * Published state
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $published = null;
 
     /**
      * Approved/not approves
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $approved = null;
 
     /**
      * Group type
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $type = null;
 
     /**
      * Public description
      *
-     * @var  string
+     * @var  string|null
      */
     private $public_desc = null;
 
     /**
      * Pivate description
      *
-     * @var  string
+     * @var  string|null
      */
     private $private_desc = null;
 
     /**
      * Message for restricted access
      *
-     * @var  string
+     * @var  string|null
      */
     private $restrict_msg = null;
 
     /**
      * Join policy
      *
-     * @var  string
+     * @var  string|null
      */
     private $join_policy = null;
 
     /**
      * Discoverability
      *
-     * @var integer
+     * @var integer|null
      */
     private $discoverability = null;
 
@@ -124,35 +124,35 @@ class Group extends Obj
     /**
      * Description for 'logo'
      *
-     * @var  string
+     * @var  string|null
      */
     private $logo = null;
 
     /**
      * Description for 'plugins'
      *
-     * @var  string
+     * @var  string|null
      */
     private $plugins = null;
 
     /**
      * Created timestamp
      *
-     * @var  string
+     * @var  string|null
      */
     private $created = null;
 
     /**
      * Created by user ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $created_by = null;
 
     /**
      * Paramters
      *
-     * @var  string
+     * @var  string|null
      */
     private $params = null;
 

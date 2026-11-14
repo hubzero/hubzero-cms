@@ -31,21 +31,21 @@ class Publications extends Plugin
     /**
      * Resource areas
      *
-     * @var array
+     * @var array|null
      */
     private $areas = null;
 
     /**
      * Types
      *
-     * @var array
+     * @var array|null
      */
     private $cats  = null;
 
     /**
      * Record count
      *
-     * @var integer
+     * @var integer|null
      */
     private $total = null;
 

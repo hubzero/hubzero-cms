@@ -35,7 +35,7 @@ class Log extends Model
     /**
      * Table class object
      *
-     * @var  object
+     * @var  object|null
      */
     public $pubLog = null;
 

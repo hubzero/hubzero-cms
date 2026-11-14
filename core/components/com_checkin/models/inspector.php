@@ -36,7 +36,7 @@ class Inspector extends Obj
     /**
      * Indicates if the internal state has been set
      *
-     * @var  boolean
+     * @var  boolean|null
      */
     protected $stateSet = null;
 

@@ -18,7 +18,7 @@ abstract class Base extends Obj
     /**
      * The object the referenceid references
      *
-     * @var  object
+     * @var  object|null
      */
     protected $item = null;
 

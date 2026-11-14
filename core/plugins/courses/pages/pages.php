@@ -34,7 +34,7 @@ class Pages extends Plugin
     /**
      * View object
      *
-     * @var object
+     * @var object|null
      */
     public $view = null;
 

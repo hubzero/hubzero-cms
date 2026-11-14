@@ -30,14 +30,14 @@ class Resources extends Plugin
     /**
      * Resource areas
      *
-     * @var array
+     * @var array|null
      */
     private $areas = null;
 
     /**
      * Resource categories
      *
-     * @var array
+     * @var iterable|null
      */
     private $cats  = null;
 

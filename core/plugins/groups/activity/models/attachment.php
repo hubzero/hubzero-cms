@@ -30,14 +30,14 @@ class Attachment extends Obj
     /**
      * Dimensions for file (must be an image)
      *
-     * @var  array
+     * @var  array|null
      */
     protected $dimensions = null;
 
     /**
      * Upload directory (relative to PATH_APP)
      *
-     * @var  string
+     * @var  string|null
      */
     protected $uploadDir = null;
 

@@ -22,35 +22,35 @@ class PhpTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object
+     * @var  object|null
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  object
+     * @var  object|null
      */
     private $obj = null;
 
     /**
      * Expected data as an array
      *
-     * @var  array
+     * @var  array|null
      */
     private $arr = null;
 
     /**
      * Expected data as a string (array format)
      *
-     * @var  string
+     * @var  string|null
      */
     private $str = null;
 
     /**
      * Expected data as a string (object format)
      *
-     * @var  string
+     * @var  string|null
      */
     private $strObject = null;
 

@@ -18,7 +18,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Failed email address
      *
-     * @var  array
+     * @var  array|null
      */
     private $failures = null;
 

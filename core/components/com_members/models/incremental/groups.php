@@ -25,7 +25,7 @@ class Groups
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     private static $dbh = null;
 

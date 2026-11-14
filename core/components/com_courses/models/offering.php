@@ -139,7 +139,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      **/
     private $assets = null;
 
@@ -160,7 +160,7 @@ class Offering extends Base
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     private $params = null;
 

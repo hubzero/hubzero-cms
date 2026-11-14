@@ -31,21 +31,21 @@ class Announcements extends Plugin
     /**
      * Course object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $course = null;
 
     /**
      * Offering object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $offering = null;
 
     /**
      * Option declaration
      *
-     * @var  string
+     * @var  string|null
      */
     public $option = null;
 

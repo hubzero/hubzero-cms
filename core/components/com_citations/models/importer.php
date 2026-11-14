@@ -20,28 +20,28 @@ class Importer extends Obj
     /**
      * Database connection
      *
-     * @var  object
+     * @var  object|null
      */
     protected $database = null;
 
     /**
      * Filesystem
      *
-     * @var  object
+     * @var  object|null
      */
     protected $filesystem = null;
 
     /**
      * The tmp file path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path = null;
 
     /**
      * Unique string
      *
-     * @var  string
+     * @var  string|null
      */
     protected $hash = null;
 

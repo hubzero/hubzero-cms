@@ -32,21 +32,21 @@ class Editor extends Obj
     /**
      * Editor Plugin object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $editor = null;
 
     /**
      * Editor Plugin name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
     /**
      * Object asset
      *
-     * @var  string
+     * @var  string|null
      */
     protected $asset = null;
 

@@ -16,7 +16,7 @@ class Basic
     /**
      * The content of the value item
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $content = null;
 

@@ -55,14 +55,14 @@ class Block extends Relational
     /**
      * Configuration registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 
     /**
      * Decoded manifest
      *
-     * @var  object
+     * @var  object|null
      */
     protected $decodedManifest = null;
 

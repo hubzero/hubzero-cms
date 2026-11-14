@@ -22,7 +22,7 @@ class Log extends Model
     /**
      * Table object
      *
-     * @var object
+     * @var object|null
      */
     protected $table = null;
 

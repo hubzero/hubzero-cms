@@ -120,7 +120,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Params registry
      *
-     * @var  object
+     * @var  object|null
      */
     protected $paramsRegistry = null;
 

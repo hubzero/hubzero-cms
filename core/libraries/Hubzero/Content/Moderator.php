@@ -18,28 +18,28 @@ class Moderator
     /**
      * The path to the content being served
      *
-     * @var  string
+     * @var  string|null
      **/
     private $path = null;
 
     /**
      * The token identifier
      *
-     * @var  string
+     * @var  string|null
      **/
     private $token = null;
 
     /**
      * The session identifier
      *
-     * @var  string
+     * @var  string|null
      **/
     private $session_id = null;
 
     /**
      * The site secret key
      *
-     * @var  string
+     * @var  string|null
      **/
     private $secret = null;
 

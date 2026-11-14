@@ -22,7 +22,7 @@ class Economy extends Obj
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 

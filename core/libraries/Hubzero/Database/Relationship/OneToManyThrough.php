@@ -21,21 +21,21 @@ class OneToManyThrough extends OneToMany
     /**
      * The associative table used to capture the through relationship
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $associativeTable = null;
 
     /**
      * Key on the left side of the associative table
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $associativeLocal = null;
 
     /**
      * Key on the right side of the associative table
      *
-     * @var  string
+     * @var  string|null
      **/
     protected $associativeRelated = null;
 

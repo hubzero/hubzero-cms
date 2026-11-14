@@ -28,7 +28,7 @@ class Economy extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     protected $db = null;
 

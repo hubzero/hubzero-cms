@@ -36,7 +36,7 @@ class Feed extends Base
    *
    * optional
    *
-   * @var  object
+   * @var  object|null
    */
     public $image = null;
 
@@ -170,14 +170,14 @@ class Feed extends Base
     /**
      * iTunes subcategories
      *
-     * @var  string
+     * @var  string|null
      */
     public $itunes_subcategories = null;
 
     /**
      * iTunes feed owner
      *
-     * @var  string
+     * @var  string|null
      */
     public $itunes_owner = null;
 
@@ -205,7 +205,7 @@ class Feed extends Base
     /**
      * iTunes image
      *
-     * @var  string
+     * @var  string|null
      */
     public $itunes_image = null;
 

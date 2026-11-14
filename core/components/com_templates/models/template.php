@@ -75,14 +75,14 @@ class Template extends Relational
     /**
      * Config registry for params
      *
-     * @var  object
+     * @var  object|null
      */
     protected $registry = null;
 
     /**
      * Xml data
      *
-     * @var  object
+     * @var  object|null
      */
     protected $xmldata = null;
 

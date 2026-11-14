@@ -24,7 +24,7 @@ class Element extends Obj
      * This has to be set in the final
      * renderer classes.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 

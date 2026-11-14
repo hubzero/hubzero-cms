@@ -31,7 +31,7 @@ class Version extends Relational
     /**
      * Adapter type
      *
-     * @var  object
+     * @var  object|null
      */
     protected $adapter = null;
 

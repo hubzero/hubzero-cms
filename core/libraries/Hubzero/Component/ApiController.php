@@ -30,14 +30,14 @@ class ApiController implements ControllerInterface
     /**
      * The name of the component derived from the controller class name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
     /**
      * The task the component is to perform
      *
-     * @var  string
+     * @var  string|null
      */
     protected $task = null;
 
@@ -53,21 +53,21 @@ class ApiController implements ControllerInterface
     /**
      * The name of the task to be executed
      *
-     * @var  string
+     * @var  string|null
      */
     protected $doTask = null;
 
     /**
      * The name of this controller
      *
-     * @var  string
+     * @var  string|null
      */
     protected $controller = null;
 
     /**
      * The name of this component
      *
-     * @var  string
+     * @var  string|null
      */
     protected $option = null;
 
@@ -76,7 +76,7 @@ class ApiController implements ControllerInterface
      *
      * Default is a singular inflection of a plural controller name
      *
-     * @var  string
+     * @var  string|null
      */
     protected $modelClass = null;
 
@@ -111,7 +111,7 @@ class ApiController implements ControllerInterface
     /**
      * Response object
      *
-     * @var  object
+     * @var  object|null
      */
     public $response = null;
 

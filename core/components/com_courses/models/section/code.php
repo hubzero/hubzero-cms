@@ -35,7 +35,7 @@ class Code extends Base
     /**
      * User
      *
-     * @var object
+     * @var object|null
      */
     private $redeemer = null;
 

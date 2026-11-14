@@ -34,7 +34,7 @@ class Data extends Base
     /**
      * Image Helper
      *
-     * @var  object
+     * @var  object|null
      */
     protected $imgHelper = null;
 

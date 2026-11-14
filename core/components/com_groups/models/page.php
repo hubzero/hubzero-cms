@@ -23,7 +23,7 @@ class Page extends Model
     /**
      * Table
      *
-     * @var object
+     * @var object|null
      */
     protected $table = null;
 
@@ -44,7 +44,7 @@ class Page extends Model
     /**
      * Versions Count
      *
-     * @var integer
+     * @var integer|null
      */
     protected $versionsCount = null;
 

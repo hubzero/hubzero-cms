@@ -22,7 +22,7 @@ class Source extends Obj
     /**
      * Cache for the template information.
      *
-     * @var  object|false
+     * @var  object|false|null
      */
     private $template = null;
 

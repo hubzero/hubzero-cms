@@ -23,7 +23,7 @@ class Plugin
     /**
      * Event object to observe.
      *
-     * @var  object
+     * @var  object|null
      * @deprecated
      */
     protected $subject = null;
@@ -31,21 +31,21 @@ class Plugin
     /**
      * A Registry object holding the parameters for the plugin
      *
-     * @var  Registry
+     * @var  Registry|null
      */
     public $params = null;
 
     /**
      * The name of the plugin
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pluginName = null;
 
     /**
      * The plugin type
      *
-     * @var  string
+     * @var  string|null
      */
     protected $pluginType = null;
 
@@ -53,7 +53,7 @@ class Plugin
      * Component this plugin might be associated with
      * @TODO: Remove this
      *
-     * @var   string
+     * @var   string|null
      */
     public $option = null;
 

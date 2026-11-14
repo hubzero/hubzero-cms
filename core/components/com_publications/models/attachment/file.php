@@ -40,7 +40,7 @@ class File extends Base
     /**
      * Git handler
      *
-     * @var  object
+     * @var  object|null
      */
     protected $git = null;
 

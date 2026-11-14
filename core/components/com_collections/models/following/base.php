@@ -20,14 +20,14 @@ abstract class Base extends Obj
     /**
      * Varies
      *
-     * @var object
+     * @var object|null
      */
     private $obj = null;
 
     /**
      * File path
      *
-     * @var string
+     * @var string|null
      */
     private $image = null;
 

@@ -26,7 +26,7 @@ class DataStore extends Base
     /**
      * Configs
      *
-     * @var  object
+     * @var  object|null
      */
     protected $config = null;
 

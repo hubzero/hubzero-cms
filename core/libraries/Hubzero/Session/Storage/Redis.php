@@ -31,7 +31,7 @@ class Redis extends Store
     /**
      * Redis database connection
      *
-     * @var  object
+     * @var  object|null
      */
     private $database = null;
 

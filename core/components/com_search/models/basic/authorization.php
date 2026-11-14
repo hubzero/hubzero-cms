@@ -19,7 +19,7 @@ class Authorization
     /**
      * Description for 'uid'
      *
-     * @var string
+     * @var string|null
      */
     private $uid = null;
     /**

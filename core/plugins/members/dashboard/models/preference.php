@@ -60,7 +60,7 @@ class Preference extends Relational
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     protected $preferences = null;
 

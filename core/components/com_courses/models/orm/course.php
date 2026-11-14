@@ -90,7 +90,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     public $params = null;
 

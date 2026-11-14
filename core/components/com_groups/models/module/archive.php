@@ -23,21 +23,21 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\Model
      *
-     * @var object
+     * @var object|null
      */
     private $modules = null;
 
     /**
      * Modules count
      *
-     * @var integer
+     * @var integer|null
      */
     private $modulesCount = null;
 
     /**
      * Database
      *
-     * @var object
+     * @var object|null
      */
     private $db = null;
 

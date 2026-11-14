@@ -21,14 +21,14 @@ class Handler extends Obj
      * This has to be set in the final
      * renderer classes.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $name = null;
 
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object
+     * @var  object|null
      */
     protected $parent = null;
 

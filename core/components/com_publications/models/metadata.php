@@ -18,126 +18,126 @@ class Metadata extends Obj
     /**
      *  Object title
      *
-     * @var  string
+     * @var  string|null
      */
     public $title = null;
 
     /**
      * Object abstract
      *
-     * @var  string
+     * @var  string|null
      */
     public $abstract = null;
 
     /**
      * Object description
      *
-     * @var  string
+     * @var  string|null
      */
     public $description = null;
 
     /**
      * Object dc type
      *
-     * @var  string
+     * @var  string|null
      */
     public $type = null;
 
     /**
      * URL
      *
-     * @var  string
+     * @var  string|null
      */
     public $url = null;
 
     /**
      * DOI
      *
-     * @var  string
+     * @var  string|null
      */
     public $doi = null;
 
     /**
      * Publisher
      *
-     * @var  string
+     * @var  string|null
      */
     public $publisher = null;
 
     /**
      * Journal
      *
-     * @var  string
+     * @var  string|null
      */
     public $journal = null;
 
     /**
      * Subject
      *
-     * @var  string
+     * @var  string|null
      */
     public $subject = null;
 
     /**
      * Language
      *
-     * @var  string
+     * @var  string|null
      */
     public $language = null;
 
     /**
      * Format
      *
-     * @var  string
+     * @var  string|null
      */
     public $format = null;
 
     /**
      * Date
      *
-     * @var  string
+     * @var  string|null
      */
     public $date = null;
 
     /**
      * Date
      *
-     * @var  string
+     * @var  string|null
      */
     public $issued = null;
 
     /**
      * Volume
      *
-     * @var  string
+     * @var  string|null
      */
     public $volume = null;
 
     /**
      * Issue
      *
-     * @var  string
+     * @var  string|null
      */
     public $issue = null;
 
     /**
      * Page
      *
-     * @var  string
+     * @var  string|null
      */
     public $page = null;
 
     /**
      * ISBN
      *
-     * @var  string
+     * @var  string|null
      */
     public $isbn = null;
 
     /**
      * Author
      *
-     * @var  string
+     * @var  string|null
      */
     public $author = null;
 }

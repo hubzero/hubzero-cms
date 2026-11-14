@@ -40,7 +40,7 @@ class Manager extends Obj
     /**
      * The session store object.
      *
-     * @var  object
+     * @var  object|null
      */
     protected $store = null;
 

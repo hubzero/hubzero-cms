@@ -25,14 +25,14 @@ abstract class Cart
     /**
      * Database instance
      *
-     * @var  object
+     * @var  object|null
      */
     public $db = null;
 
     /**
      * Cart ID
      *
-     * @var  int
+     * @var  int|null
      */
     public $crtId = null;
 
@@ -46,7 +46,7 @@ abstract class Cart
     /**
      * Warehouse Model
      *
-     * @var warehouse
+     * @var warehouse|null
      */
     public $warehouse = null;
 

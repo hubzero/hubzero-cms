@@ -29,7 +29,7 @@ class Attachment extends Relational
     /**
      * Upload path
      *
-     * @var  string
+     * @var  string|null
      */
     protected $uploadDir = null;
 
@@ -43,7 +43,7 @@ class Attachment extends Relational
     /**
      * Diemnsions for file (must be an image)
      *
-     * @var  array
+     * @var  array|null
      */
     protected $dimensions = null;
 

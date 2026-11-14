@@ -23,7 +23,7 @@ class Database extends Store
     /**
      * Profiler for debugging
      *
-     * @var  object
+     * @var  object|null
      */
     private $profiler = null;
 
@@ -37,7 +37,7 @@ class Database extends Store
     /**
      * Database connection
      *
-     * @var object
+     * @var object|null
      */
     private $connection = null;
 

@@ -34,7 +34,7 @@ class Download
     /**
      * Citation object
      *
-     * @var object
+     * @var object|null
      */
     protected $reference = null;
 

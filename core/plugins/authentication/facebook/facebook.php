@@ -33,7 +33,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Stores the initialized OAuth2 provider object.
      *
-     * @var  object  Oauth2\Client\Provider
+     * @var  object|null  Oauth2\Client\Provider
      */
     private $provider = null;
 

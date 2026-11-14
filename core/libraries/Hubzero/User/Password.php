@@ -51,7 +51,7 @@ class Password
     /**
      * Description for 'passhash'
      *
-     * @var  string
+     * @var  string|null
      */
     private $passhash = null;
 

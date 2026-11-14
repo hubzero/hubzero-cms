@@ -261,7 +261,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     ];
 
     /**
-     * @var string
+     * @var string|null
      */
     private $type = null;
 

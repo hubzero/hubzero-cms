@@ -20,7 +20,7 @@ class Memberships
     /**
      * Database instance
      *
-     * @var  object
+     * @var  object|null
      */
     protected $db = null;
 

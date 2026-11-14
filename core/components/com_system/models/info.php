@@ -20,32 +20,32 @@ use Hubzero\Facades\Component;
 class Info extends Obj
 {
     /**
-     * @var  array  some php settings
+     * @var  array|null  some php settings
      */
     protected $php_settings = null;
 
     /**
-     * @var  array config values
+     * @var  array|null config values
      */
     protected $config = null;
 
     /**
-     * @var  array  somme system values
+     * @var  array|null  somme system values
      */
     protected $info = null;
 
     /**
-     * @var  string  php info
+     * @var  string|null  php info
      */
     protected $php_info = null;
 
     /**
-     * @var  array  informations about writable state of directories
+     * @var  array|null  informations about writable state of directories
      */
     protected $directories = null;
 
     /**
-     * @var  string  The current editor.
+     * @var  string|null  The current editor.
      */
     protected $editor = null;
 

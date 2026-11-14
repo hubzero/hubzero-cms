@@ -50,7 +50,7 @@ class Item extends Base
     /**
      * Modifier
      *
-     * @var object
+     * @var object|null
      */
     private $modifier = null;
 
