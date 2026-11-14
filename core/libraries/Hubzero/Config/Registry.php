@@ -35,7 +35,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * Constructor
      *
      * @param   mixed   $data    The data to bind to the new object.
-     * @param   string  $format  Optional format to parse string data as
+     * @param   string|null  $format  Optional format to parse string data as
      * @return  void
      */
     public function __construct($data = null, $format = null)
@@ -200,7 +200,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      *
      * @param   string  $path       Registry Path (e.g. config.cache.file)
      * @param   mixed   $value      Value of entry
-     * @param   string  $separator  The key separator
+     * @param   string|null  $separator  The key separator
      * @return  object  This method is chainable
      */
     public function set($path, $value, $separator = null)
@@ -490,7 +490,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Dump to one dimension array.
      *
-     * @param   string  $separator  The key separator.
+     * @param   string|null  $separator  The key separator.
      * @return  array   Dumped array.
      */
     public function flatten($separator = null)
@@ -505,8 +505,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Method to recursively convert data to one dimension array.
      *
-     * @param   string        $separator  The key separator.
-     * @param   array|object  $data       Data source of this scope.
+     * @param   string|null        $separator  The key separator.
+     * @param   array|object|null  $data       Data source of this scope.
      * @param   array         &$array     The result array, it is pass by reference.
      * @param   string        $prefix     Last level key prefix.
      * @return  void

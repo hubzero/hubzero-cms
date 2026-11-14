@@ -41,7 +41,7 @@ abstract class Base extends Obj
     /**
      * Returns a reference to this object
      *
-     * @param   integer  $oid  User ID
+     * @param   integer|null  $oid  User ID
      * @return  object
      */
     public static function &getInstance($oid = null)

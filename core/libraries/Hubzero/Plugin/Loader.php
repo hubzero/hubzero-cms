@@ -91,7 +91,7 @@ class Loader implements LoaderInterface
      * otherwise only the specific plugin data is returned.
      *
      * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
-     * @param   string  $plugin  The plugin name.
+     * @param   string|null  $plugin  The plugin name.
      * @return  mixed   An array of plugin data objects, or a plugin data object.
      */
     public function byType($type, $plugin = null)
@@ -119,7 +119,7 @@ class Loader implements LoaderInterface
      * Checks if a plugin is enabled.
      *
      * @param   string   $type    The plugin type, relates to the sub-directory in the plugins directory.
-     * @param   string   $plugin  The plugin name.
+     * @param   string|null   $plugin  The plugin name.
      * @return  boolean
      */
     public function isEnabled($type, $plugin = null)
@@ -133,7 +133,7 @@ class Loader implements LoaderInterface
      * Checks if a plugin is enabled.
      *
      * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
-     * @param   string  $plugin  The plugin name.
+     * @param   string|null  $plugin  The plugin name.
      * @return  string
      */
     public function path($type, $plugin = null)
@@ -161,9 +161,9 @@ class Loader implements LoaderInterface
      * otherwise only the specific plugin is loaded.
      *
      * @param   string   $type        The plugin type, relates to the sub-directory in the plugins directory.
-     * @param   string   $plugin      The plugin name.
+     * @param   string|null   $plugin      The plugin name.
      * @param   boolean  $autocreate  Autocreate the plugin.
-     * @param   object   $dispatcher  Optionally allows the plugin to use a different dispatcher.
+     * @param   object|null   $dispatcher  Optionally allows the plugin to use a different dispatcher.
      * @return  boolean  True on success.
      */
     public function import($type, $plugin = null, $autocreate = true, $dispatcher = null)

@@ -222,7 +222,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Tag the entry
      *
-     * @param   string   $tags     Tags to apply
+     * @param   string|null   $tags     Tags to apply
      * @param   integer  $user_id  ID of tagger
      * @param   integer  $admin    Tag as admin? 0=no, 1=yes
      * @return  boolean

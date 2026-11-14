@@ -45,8 +45,8 @@ class Page extends Table
     /**
      * Load the first page by alias and bind to $this
      *
-     * @param   string   $alias     Page alias
-     * @param   integer  $event_id  Event ID
+     * @param   string|null   $alias     Page alias
+     * @param   integer|null  $event_id  Event ID
      * @return  boolean  True on success, false if errors
      */
     public function loadFromAlias($alias = null, $event_id = null)
@@ -71,7 +71,7 @@ class Page extends Table
     /**
      * Load the first page associated with an event and bind to $this
      *
-     * @param   integer  $event_id  Event ID
+     * @param   integer|null  $event_id  Event ID
      * @return  boolean  True on success, false if errors
      */
     public function loadFromEvent($event_id = null)
@@ -93,7 +93,7 @@ class Page extends Table
     /**
      * Get all pages for an event
      *
-     * @param   integer  $event_id  Event ID
+     * @param   integer|null  $event_id  Event ID
      * @return  array|false
      */
     public function loadPages($event_id = null)
@@ -111,7 +111,7 @@ class Page extends Table
     /**
      * Delete all pages for an event
      *
-     * @param   integer  $event_id  Event ID
+     * @param   integer|null  $event_id  Event ID
      * @return  boolean  True on success, false if errors
      */
     public function deletePages($event_id = null)

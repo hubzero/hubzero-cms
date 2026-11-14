@@ -371,7 +371,7 @@ class Profile extends Obj
      * Add an error message.
      *
      * @param   string  $error  Error message.
-     * @param   string  $key    Specific key to set the value to
+     * @param   string|null  $key    Specific key to set the value to
      * @return  object
      */
     public function setError($error, $key = null)
@@ -892,7 +892,7 @@ class Profile extends Obj
     /**
      * Alias for the load() method
      *
-     * @param   boolean  $instance  The user to load - Can be an integer or string
+     * @param   boolean|null  $instance  The user to load - Can be an integer or string
      * @return  boolean  True on success, False on error
      */
     public function read($instance = null)
@@ -1372,7 +1372,7 @@ class Profile extends Obj
      * Get parameters object
      *
      * @param   boolean  $loadsetupfile  Load the XML set up file?
-     * @param   string   $path           Path to parameters XML file
+     * @param   string|null   $path           Path to parameters XML file
      * @return  object   Registry
      */
     public function &getParameters($loadsetupfile = false, $path = null)

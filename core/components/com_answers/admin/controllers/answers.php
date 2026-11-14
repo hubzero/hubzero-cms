@@ -120,7 +120,7 @@ class Answers extends AdminController
     /**
      * Displays a question response for editing
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

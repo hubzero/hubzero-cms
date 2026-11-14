@@ -436,7 +436,7 @@ class ArticlesCategory extends Module
      * @param   array   $list
      * @param   string  $fieldName
      * @param   string  $article_grouping_direction
-     * @param   string  $fieldNameToKeep
+     * @param   string|null  $fieldNameToKeep
      * @return  array
      */
     public static function groupBy($list, $fieldName, $article_grouping_direction, $fieldNameToKeep = null)

@@ -1858,7 +1858,7 @@ class InformixDriver extends BaseSqlDriver
      * Gets the database character set of the given table
      *
      * @param   string       $table  The table for which to retrieve the character set
-     * @param   string       $field  The field to check (optional)
+     * @param   string|null       $field  The field to check (optional)
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)

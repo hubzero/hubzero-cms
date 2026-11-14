@@ -175,7 +175,7 @@ class Review extends Relational
      * Check if a user has voted for this entry
      *
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       IP Address
+     * @param   string|null   $ip       IP Address
      * @return  object  The vote
      */
     public function ballot($user_id = 0, $ip = null)
@@ -223,7 +223,7 @@ class Review extends Relational
      *
      * @param   integer  $vote     The vote [0, 1]
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       IP address
+     * @param   string|null   $ip       IP address
      * @return  boolean            False if error, True on success
      */
     public function vote($vote = 0, $user_id = 0, $ip = null)

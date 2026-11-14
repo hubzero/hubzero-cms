@@ -385,7 +385,7 @@ class Ticket extends Relational
      * Optinal first agument to determine format of tags
      *
      * @param   string   $as     Format to return state in [comma-deliminated string, HTML tag cloud, array]
-     * @param   integer  $admin  Include amdin tags? (defaults to no)
+     * @param   integer|null  $admin  Include amdin tags? (defaults to no)
      * @return  mixed
      */
     public function tags($as = 'cloud', $admin = null)
@@ -400,7 +400,7 @@ class Ticket extends Relational
     /**
      * Tag the entry
      *
-     * @param   string   $tags
+     * @param   string|null   $tags
      * @param   integer  $user_id
      * @param   integer  $admin
      * @return  boolean
@@ -450,7 +450,7 @@ class Ticket extends Relational
     /**
      * Check if a user is watching this ticket
      *
-     * @param   integer  $user_id  User ID
+     * @param   integer|null  $user_id  User ID
      * @return  boolean  True if watching, False if not
      */
     public function isWatching($user_id = null)

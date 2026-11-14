@@ -50,7 +50,7 @@ class Source extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object  $file
+     * @param   object|null  $file
      *
      * @return  void
      */

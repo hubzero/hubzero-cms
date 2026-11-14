@@ -297,7 +297,7 @@ class Relationship
      * model at at time.
      *
      * @param   object   $model     The model to associate
-     * @param   \Closure  $callback  A callback to potentially append additional data
+     * @param   \Closure|null  $callback  A callback to potentially append additional data
      * @return  object
      **/
     public function associate($model, $callback = null)
@@ -346,8 +346,8 @@ class Relationship
      *
      * @param   \Hubzero\Database\Rows  $rows  The rows that we'll be seeding
      * @param   string   $name        The relationship name that we'll use to attach to the rows
-     * @param   \Closure  $constraint  The constraint function to limit related items
-     * @param   string   $subs        The nested relationships that should be passed on to the child
+     * @param   \Closure|null  $constraint  The constraint function to limit related items
+     * @param   string|null   $subs        The nested relationships that should be passed on to the child
      * @return  \Hubzero\Database\Rows
      **/
     public function seedWithRelation($rows, $name, $constraint = null, $subs = null)
@@ -374,7 +374,7 @@ class Relationship
      * to any constraint closure provided during eager loading.
      *
      * @param   array    $keys        The keys for which to fetch related items
-     * @param   \Closure  $constraint  The constraint function to limit related items
+     * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/
     protected function getRelations($keys, $constraint = null)

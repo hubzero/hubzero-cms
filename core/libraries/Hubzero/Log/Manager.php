@@ -48,7 +48,7 @@ class Manager
     /**
      * Create a new manager instance.
      *
-     * @param   string  $path
+     * @param   string|null  $path
      * @return  void
      */
     public function __construct($path = null)
@@ -71,7 +71,7 @@ class Manager
     /**
      * Get a logger instance.
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  mixed
      */
     public function logger($name = null)
@@ -91,7 +91,7 @@ class Manager
     /**
      * Check if a logger exists
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  boolean
      */
     public function has($name = null)

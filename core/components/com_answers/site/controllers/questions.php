@@ -56,7 +56,7 @@ class Questions extends SiteController
     /**
      * Redirect to login form
      *
-     * @param   string  $rtrn  URL to return to after logging in. Defaults to the current URL.
+     * @param   string|null  $rtrn  URL to return to after logging in. Defaults to the current URL.
      * @return  void
      */
     public function loginTask($rtrn = null)
@@ -651,7 +651,7 @@ class Questions extends SiteController
     /**
      * Create a new question
      *
-     * @param   object  $question
+     * @param   object|null  $question
      *
      * @return  void
      */

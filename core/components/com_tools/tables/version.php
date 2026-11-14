@@ -62,7 +62,7 @@ class Version extends Table
     /**
      * Load a record by instance
      *
-     * @param   string   $tool  Tool instance
+     * @param   string|null   $tool  Tool instance
      * @return  boolean
      */
     public function loadFromInstance($tool = null)
@@ -126,7 +126,7 @@ class Version extends Table
     /**
      * Get tool version ID from the associated Resource ID
      *
-     * @param   integer  $rid      Resource ID
+     * @param   integer|null  $rid      Resource ID
      * @param   string   $version  Version (dev, current, or specific number)
      * @return  mixed    False on error, integer on success
      */
@@ -177,7 +177,7 @@ class Version extends Table
     /**
      * Load a specific tool version
      *
-     * @param   integer  $toolid   Tool ID
+     * @param   integer|null  $toolid   Tool ID
      * @param   string   $version  Version (dev, current, or specific number)
      * @return  mixed    False on error, object on success
      */
@@ -202,7 +202,7 @@ class Version extends Table
     /**
      * Set the unpublished date for a tool version
      *
-     * @param   integer  $toolid
+     * @param   integer|null  $toolid
      * @param   string   $toolname
      * @param   mixed    $vid
      * @return  boolean
@@ -232,7 +232,7 @@ class Version extends Table
     /**
      * Unpublish a tool version
      *
-     * @param   string   $toolid
+     * @param   string|null   $toolid
      * @param   mixed    $vid
      * @return  boolean
      */
@@ -260,7 +260,7 @@ class Version extends Table
     /**
      * Save an entry
      *
-     * @param   integer  $toolid
+     * @param   integer|null  $toolid
      * @param   string   $version
      * @param   integer  $create_new
      * @return  boolean

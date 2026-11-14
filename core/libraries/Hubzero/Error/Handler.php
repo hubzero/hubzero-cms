@@ -37,7 +37,7 @@ class Handler
      * Create a new error handler instance.
      *
      * @param   \Hubzero\Error\RendererInterface $renderer
-     * @param   object  $logger
+     * @param   object|null  $logger
      * @return  void
      */
     public function __construct(RendererInterface $renderer, $logger = null)

@@ -126,9 +126,9 @@ class Page extends Base
     /**
      * Copy an entry and associated data
      *
-     * @param   integer $course_id   New course to copy to
-     * @param   integer $offering_id New offering to copy to
-     * @param   integer $section_id  New section to copy to
+     * @param   integer|null $course_id   New course to copy to
+     * @param   integer|null $offering_id New offering to copy to
+     * @param   integer|null $section_id  New section to copy to
      * @return  boolean True on success, false on error
      */
     public function copy($course_id = null, $offering_id = null, $section_id = null)

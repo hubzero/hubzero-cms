@@ -151,7 +151,7 @@ class Polls extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $poll  Poll object
+     * @param   object|null  $poll  Poll object
      *
      * @return  void
      */

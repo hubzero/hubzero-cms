@@ -44,7 +44,7 @@ class Page implements RendererInterface
      * Create a new exception renderer.
      *
      * @param   object  $document  Document instance
-     * @param   object  $template  Template loader
+     * @param   object|null  $template  Template loader
      * @param   bool    $debug     Debugging turned on?
      * @return  void
      */

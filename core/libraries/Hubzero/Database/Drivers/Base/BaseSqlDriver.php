@@ -1107,7 +1107,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Gets the database character set of the given table
      *
      * @param   string  $table  The table for which to retrieve the character set
-     * @param   string  $field  The field to check (optional)
+     * @param   string|null  $field  The field to check (optional)
      * @return  string|bool
      */
     abstract public function getCharacterSet($table, $field = null);
@@ -1159,8 +1159,8 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix
-     * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
+     * @param   string|null  $backup    Table prefix
+     * @param   string|null  $prefix    For the table - used to rename constraints in non-mysql databases
      * @return  $this
      */
     abstract public function renameTable($oldTable, $newTable, $backup = null, $prefix = null);

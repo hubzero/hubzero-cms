@@ -72,7 +72,7 @@ class Loader
      * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
      *
      * @param   string  $name   The name of the module
-     * @param   string  $title  The title of the module, optional
+     * @param   string|null  $title  The title of the module, optional
      * @return  object|null  The Module object, or null if none matches a name without the mod_ prefix
      */
     public function byName($name, $title = null)

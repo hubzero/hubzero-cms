@@ -41,7 +41,7 @@ class Nogit extends Models\Adapter
     /**
      * Constructor
      *
-     * @param   string  $path
+     * @param   string|null  $path
      * @param   bool    $remote
      * @return  void
      */
@@ -361,7 +361,7 @@ class Nogit extends Models\Adapter
      *
      * @param   object  $file     Models\File
      * @param   string  $dirPath
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  array
      */
     protected function file($file, $dirPath, $property = null)

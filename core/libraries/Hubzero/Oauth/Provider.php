@@ -125,8 +125,8 @@ class Provider
     /**
      * Validate a request
      *
-     * @param   string   $uri
-     * @param   string   $method
+     * @param   string|null   $uri
+     * @param   string|null   $method
      * @return  bool|array
      */
     public function validateRequest($uri = null, $method = null)

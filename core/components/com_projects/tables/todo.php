@@ -29,7 +29,7 @@ class Todo extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $projectid
+     * @param   string|null   $projectid
      * @param   integer  $id
      * @return  boolean  False or object
      */
@@ -55,7 +55,7 @@ class Todo extends Table
     /**
      * Get records
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @param   integer  $id
      * @return  mixed    integer or null
@@ -154,7 +154,7 @@ class Todo extends Table
     /**
      * Get lists
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @return  mixed    object or null
      */
@@ -178,7 +178,7 @@ class Todo extends Table
     /**
      * Get list name by color
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $color
      * @return  mixed    string or null
      */
@@ -197,7 +197,7 @@ class Todo extends Table
     /**
      * Delete list
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $color
      * @param   boolean|int $all
      * @param   boolean|int $permanent
@@ -228,7 +228,7 @@ class Todo extends Table
     /**
      * Get last item order
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  string|false|null
      */
     public function getLastOrder($projectid = null)

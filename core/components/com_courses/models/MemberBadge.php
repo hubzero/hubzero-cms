@@ -32,7 +32,7 @@ class MemberBadge extends Base
     /**
      * Constructor
      *
-     * @param   integer $oid Record ID
+     * @param   integer|null $oid Record ID
      * @return  void
      */
     public function __construct($oid = null)

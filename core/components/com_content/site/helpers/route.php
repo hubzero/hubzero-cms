@@ -155,7 +155,7 @@ abstract class Route
     /**
      * Find an item in a haystack
      *
-     * @param   array  $needles
+     * @param   array|null  $needles
      * @return  mixed
      */
     protected static function findItem($needles = null)

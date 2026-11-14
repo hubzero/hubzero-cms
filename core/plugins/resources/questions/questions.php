@@ -244,7 +244,7 @@ class Questions extends Plugin
     /**
      * Display a form for adding a question
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  string
      */
     private function new($row = null)

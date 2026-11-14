@@ -37,7 +37,7 @@ class Mailinglists extends SiteController
     /**
      * Override parent build title method
      *
-     * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+     * @param   object|null  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
     public function buildTitle($newsletter = null)
@@ -67,7 +67,7 @@ class Mailinglists extends SiteController
     /**
      * Override parent build pathway method
      *
-     * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+     * @param   object|null  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
     public function buildPathway($newsletter = null)

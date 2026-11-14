@@ -133,7 +133,7 @@ class Mailing extends Relational
     /**
      * Count recipients in a given status
      *
-     * @param   integer  $status
+     * @param   integer|null  $status
      * @return  integer
      */
     public function countRecipients($status = null)

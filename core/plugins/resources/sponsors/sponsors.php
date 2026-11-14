@@ -210,7 +210,7 @@ class Sponsors extends Plugin
     /**
      * Edit a type
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  string
      */
     public function editTask($row = null)

@@ -18,7 +18,7 @@ class Autolink extends AbstractHelper
     /**
      * Link some text
      *
-     * @param   string  $text  Text to autolink
+     * @param   string|null  $text  Text to autolink
      * @return  string
      * @throws  \InvalidArgumentException If no text passed
      */

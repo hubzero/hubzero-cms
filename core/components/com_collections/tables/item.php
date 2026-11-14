@@ -77,7 +77,7 @@ class Item extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $oid  Description
+     * @param   string|null   $oid  Description
      * @return  boolean  True on success
      */
     public function loadByDescription($oid = null)
@@ -92,7 +92,7 @@ class Item extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $oid  Title
+     * @param   string|null   $oid  Title
      * @return  boolean  True on success
      */
     public function loadByTitle($oid = null)
@@ -329,7 +329,7 @@ class Item extends Table
     /**
      * Get a record count
      *
-     * @param   array    $id  Filters to construct query from
+     * @param   array|null    $id  Filters to construct query from
      * @return  string|false|null
      */
     public function getVote($id = null)

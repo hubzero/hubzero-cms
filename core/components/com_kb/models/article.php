@@ -307,7 +307,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Tag the entry
      *
-     * @param   string   $tags     Comma-separated list of tags to apply
+     * @param   string|null   $tags     Comma-separated list of tags to apply
      * @param   integer  $user_id  Tagger ID
      * @param   integer  $admin    Include amdin tags? (defaults to no)
      * @return  boolean
@@ -472,7 +472,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * Check if a user has voted for this entry
      *
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       IP Address
+     * @param   string|null   $ip       IP Address
      * @return  integer
      */
     public function voted($user_id = 0, $ip = null)

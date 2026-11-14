@@ -31,8 +31,8 @@ class Stats extends Table
     /**
      * Load item
      *
-     * @param   integer  $year
-     * @param   integer  $month
+     * @param   integer|null  $year
+     * @param   integer|null  $month
      * @param   string   $week
      * @return  mixed    False if error, Object on success
      */
@@ -59,8 +59,8 @@ class Stats extends Table
     /**
      * Get item
      *
-     * @param   integer  $year
-     * @param   integer  $month
+     * @param   integer|null  $year
+     * @param   integer|null  $month
      * @param   string   $week
      * @return  array|false
      */

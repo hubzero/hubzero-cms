@@ -30,7 +30,7 @@ class Role extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      string $oid Record alias
+     * @param      string|null $oid Record alias
      * @return     boolean True on success
      */
     public function load($oid = null, $offering_id = null)

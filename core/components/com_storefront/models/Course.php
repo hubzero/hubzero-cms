@@ -72,7 +72,7 @@ class Course extends SingleSkuProduct
     /**
      * Verify course
      *
-     * @param  string $action       action (optional)
+     * @param  string|null $action       action (optional)
      * @return bool
      */
     public function verify($action = null)

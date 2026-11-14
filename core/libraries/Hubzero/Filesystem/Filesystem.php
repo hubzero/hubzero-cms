@@ -417,7 +417,7 @@ class Filesystem
      *
      * @param   string  $path
      * @param   string  $target
-     * @param   int     $options
+     * @param   int|null     $options
      * @return  bool
      */
     public function copyDirectory($path, $target, $options = null)

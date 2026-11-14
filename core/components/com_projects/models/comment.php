@@ -100,7 +100,7 @@ class Comment extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property  What data to return
+     * @param   string|null  $property  What data to return
      * @param   mixed   $default   Default value
      * @return  mixed
      */

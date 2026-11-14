@@ -28,7 +28,7 @@ class Forum extends GenericItem
     /**
      * Get the item type
      *
-     * @param   string  $as  Return type as?
+     * @param   string|null  $as  Return type as?
      * @return  string
      */
     public function type($as = null)
@@ -60,7 +60,7 @@ class Forum extends GenericItem
     /**
      * Create an item entry for a forum thread
      *
-     * @param   integer  $id  Optional ID to use
+     * @param   integer|null  $id  Optional ID to use
      * @return  boolean
      */
     public function make($id = null)

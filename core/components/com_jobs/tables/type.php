@@ -56,7 +56,7 @@ class Type extends Table
     /**
      * Load a record from the database
      *
-     * @param   integer  $id       Type ID
+     * @param   integer|null  $id       Type ID
      * @param   string   $default  Default value to return
      * @return  string|false
      */

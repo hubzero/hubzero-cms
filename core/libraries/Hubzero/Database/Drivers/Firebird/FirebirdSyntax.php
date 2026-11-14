@@ -482,7 +482,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * Firebird doesn't use AS for table aliases.
      *
      * @param   string  $table  The table of interest
-     * @param   string  $as     What to call the table
+     * @param   string|null  $as     What to call the table
      * @return  void
      */
     public function setFrom($table, $as = null)

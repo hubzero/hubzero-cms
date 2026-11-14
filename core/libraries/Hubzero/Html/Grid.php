@@ -20,8 +20,8 @@ class Grid
      *
      * @param   integer  $i        The row index.
      * @param   integer  $value    The value of the boolean field.
-     * @param   string   $taskOn   Task to turn the boolean setting on.
-     * @param   string   $taskOff  Task to turn the boolean setting off.
+     * @param   string|null   $taskOn   Task to turn the boolean setting on.
+     * @param   string|null   $taskOff  Task to turn the boolean setting off.
      * @return  string   The boolean setting widget.
      */
     public static function boolean($i, $value, $taskOn = null, $taskOff = null)
@@ -36,7 +36,7 @@ class Grid
      * @param   string  $order          The order field for the column
      * @param   string  $direction      The current direction
      * @param   string|int $selected       The selected ordering
-     * @param   string  $task           An optional task override
+     * @param   string|null  $task           An optional task override
      * @param   string  $new_direction  An optional direction for the new column
      * @return  string
      */
@@ -108,8 +108,8 @@ class Grid
      * @param   string  $filter_state  The initial filter state
      * @param   string  $published     The Text string for published
      * @param   string  $unpublished   The Text string for Unpublished
-     * @param   string  $archived      The Text string for Archived
-     * @param   string  $trashed       The Text string for Trashed
+     * @param   string|null  $archived      The Text string for Archived
+     * @param   string|null  $trashed       The Text string for Trashed
      * @return  string
      */
     public static function state(

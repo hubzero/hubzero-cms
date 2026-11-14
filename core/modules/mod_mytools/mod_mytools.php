@@ -39,7 +39,7 @@ class Mytools extends Module
     /**
      * Get a list of applications that the user might invoke.
      *
-     * @param   array  $lst  List of tools
+     * @param   array|null  $lst  List of tools
      * @return  array  List of tools
      */
     private function getToollist($lst = null)

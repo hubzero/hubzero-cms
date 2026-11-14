@@ -63,7 +63,7 @@ class PdfForm
     /**
      * Constructor
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  void
      **/
     public function __construct($id = null)
@@ -201,7 +201,7 @@ class PdfForm
      * Process the PDF pages to images
      *
      * @param   object   $fun      Closure
-     * @param   integer  $version
+     * @param   integer|null  $version
      * @return  void
      **/
     public function eachPage($fun, $version = null)
@@ -567,7 +567,7 @@ class PdfForm
     /**
      * Get page layout (i.e. qustion locations)
      *
-     * @param   integer  $version
+     * @param   integer|null  $version
      * @return  array
      **/
     public function getPageLayout($version = null)

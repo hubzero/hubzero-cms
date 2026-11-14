@@ -42,10 +42,10 @@ class Dataselector extends Base
      *
      * @param   integer  $elementid
      * @param   object   $manifest
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @param   string   $viewname
      * @param   object|null   $status
-     * @param   object   $master
+     * @param   object|null   $master
      * @param   integer  $order
      * @return  string
      */
@@ -114,9 +114,9 @@ class Dataselector extends Base
      *
      * @param   integer  $elementId
      * @param   object   $manifest
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @param   object|null   $status
-     * @param   object   $master
+     * @param   object|null   $master
      * @param   string   $viewname
      * @return  string
      */
@@ -170,12 +170,12 @@ class Dataselector extends Base
      *
      * @param   integer  $elementId
      * @param   object   $manifest
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @param   object|null   $status
      * @param   integer  $active
      * @param   integer  $collapse
      * @param   integer  $total
-     * @param   object   $master
+     * @param   object|null   $master
      * @param   integer  $order
      * @return  string
      */

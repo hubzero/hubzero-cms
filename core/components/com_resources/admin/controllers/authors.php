@@ -85,7 +85,7 @@ class Authors extends AdminController
     /**
      * Edit an entry
      *
-     * @param   array  $rows
+     * @param   array|null  $rows
      *
      * @return  void
      */

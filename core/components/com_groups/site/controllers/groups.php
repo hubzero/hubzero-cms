@@ -1456,7 +1456,7 @@ class Groups extends Base
     /**
      * Get a group's availability
      *
-     * @param   object  $group  Group
+     * @param   object|null  $group  Group
      * @return  string|null|bool
      */
     public function groupavailabilityTask($group = null)

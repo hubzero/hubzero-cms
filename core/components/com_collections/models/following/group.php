@@ -39,7 +39,7 @@ class Group extends Base
     /**
      * Constructor
      *
-     * @param   integer  $oid  Group ID
+     * @param   integer|null  $oid  Group ID
      * @return  void
      */
     public function __construct($oid = null)

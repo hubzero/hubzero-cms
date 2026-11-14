@@ -52,7 +52,7 @@ class Job extends Table
     /**
      * Get a user's openings
      *
-     * @param   integer  $uid      User ID
+     * @param   integer|null  $uid      User ID
      * @param   integer  $current  Get current?
      * @param   integer  $admin    Admin access?
      * @param   integer  $active   Active openings?
@@ -86,7 +86,7 @@ class Job extends Table
     /**
      * Count active openings for a user
      *
-     * @param   integer  $uid
+     * @param   integer|null  $uid
      * @param   integer  $onlypublished
      * @param   mixed    $admin
      * @return  string|null
@@ -284,7 +284,7 @@ class Job extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $code  Job code
+     * @param   string|null   $code  Job code
      * @return  boolean  True upon success
      */
     public function loadJob($code = null)

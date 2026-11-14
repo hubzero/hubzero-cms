@@ -78,7 +78,7 @@ class Unit extends Base
      * Constructor
      *
      * @param   mixed   $oid         Integer, string, array, or object
-     * @param   integer $offering_id Offering the unit is linked to
+     * @param   integer|null $offering_id Offering the unit is linked to
      * @return  void
      */
     public function __construct($oid = null, $offering_id = null)
@@ -103,7 +103,7 @@ class Unit extends Base
      * Returns a reference to a unit model
      *
      * @param   mixed   $oid         Integer, string, array, or object
-     * @param   integer $offering_id Offering the unit is linked to
+     * @param   integer|null $offering_id Offering the unit is linked to
      * @return  object  \Components\Courses\Models\Unit
      */
     public static function &getInstance($oid = null, $offering_id = null)
@@ -153,7 +153,7 @@ class Unit extends Base
     /**
      * Get a specific asset group
      *
-     * @param   integer $id Asset group ID
+     * @param   integer|null $id Asset group ID
      * @return  object
      */
     public function assetgroup($id = null)
@@ -348,7 +348,7 @@ class Unit extends Base
     /**
      * Get a specific asset
      *
-     * @param   integer $id Asset ID
+     * @param   integer|null $id Asset ID
      * @return  object  \Components\Courses\Models\Asset
      */
     public function asset($id = null)
@@ -485,7 +485,7 @@ class Unit extends Base
     /**
      * Copy an entry and associated data
      *
-     * @param   integer $offering_id New offering to copy to
+     * @param   integer|null $offering_id New offering to copy to
      * @param   boolean $deep        Copy associated data?
      * @return  boolean True on success, false on error
      */

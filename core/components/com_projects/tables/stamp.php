@@ -113,7 +113,7 @@ class Stamp extends Table
      * @param   string   $reference  Reference string to object (JSON)
      * @param   string   $type
      * @param   integer|null  $listed
-     * @param   boolean  $expires
+     * @param   boolean|null  $expires
      * @return  mixed    False if error, Object on success
      */
     public function registerStamp($projectid = 0, $reference = '', $type = 'files', $listed = 0, $expires = null)

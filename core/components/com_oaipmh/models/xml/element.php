@@ -80,8 +80,8 @@ class Element
      * Create a new element
      *
      * @param   string  $name
-     * @param   string  $value
-     * @param   string  $namespace
+     * @param   string|null  $value
+     * @param   string|null  $namespace
      * @return  object  $this
      */
     public function element($name, $value = null, $namespace = null)
@@ -116,7 +116,7 @@ class Element
      *
      * @param   string  $name
      * @param   string  $value
-     * @param   string  $namespace
+     * @param   string|null  $namespace
      * @return  object  $this
      */
     public function attr($name, $value, $namespace = null)

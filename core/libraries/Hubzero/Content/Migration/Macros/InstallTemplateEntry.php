@@ -20,11 +20,11 @@ class InstallTemplateEntry extends AddTemplateEntry
      * the $enabled and $home parameters from the parent signature.
      *
      * @param   string  $element    Template element
-     * @param   string  $name       Template name
+     * @param   string|null  $name       Template name
      * @param   int     $client     Admin or site client
      * @param   int     $enabled    Ignored (always 1)
      * @param   int     $home       Ignored (always 1)
-     * @param   array   $styles     Template styles
+     * @param   array|null   $styles     Template styles
      * @param   int     $protected  Whether or not the template is a core one or not
      * @return  bool
      **/

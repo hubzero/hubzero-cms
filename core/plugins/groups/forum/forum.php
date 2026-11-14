@@ -122,7 +122,7 @@ class Forum extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
      * @param   array    $access      What can be accessed
-     * @param   array    $areas       Active area(s)
+     * @param   array|null    $areas       Active area(s)
      * @return  array
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
@@ -415,7 +415,7 @@ class Forum extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer  $assetId    Specific object to check permissions for
+     * @param   integer|null  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)
@@ -991,7 +991,7 @@ class Forum extends Plugin
     /**
      * Show a form for editing a category
      *
-     * @param   object  $category
+     * @param   object|null  $category
      * @return  string
      */
     public function editcategory($category = null)
@@ -1406,7 +1406,7 @@ class Forum extends Plugin
     /**
      * Show a form for editing a post
      *
-     * @param   object  $post
+     * @param   object|null  $post
      * @return  string
      */
     public function editthread($post = null)

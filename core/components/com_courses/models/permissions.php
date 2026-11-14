@@ -80,9 +80,9 @@ class Permissions extends Obj
     /**
      * Constructor
      *
-     * @param   integer $course_id   Course ID or alias
-     * @param   integer $offering_id Course offering ID or alias
-     * @param   integer $section_id  Course section ID or alias
+     * @param   integer|null $course_id   Course ID or alias
+     * @param   integer|null $offering_id Course offering ID or alias
+     * @param   integer|null $section_id  Course section ID or alias
      * @return  void
      */
     public function __construct(
@@ -98,9 +98,9 @@ class Permissions extends Obj
     /**
      * Returns a reference to a permissions model
      *
-     * @param   integer $course_id   Course ID or alias
-     * @param   integer $offering_id Course offering ID or alias
-     * @param   integer $section_id  Course section ID or alias
+     * @param   integer|null $course_id   Course ID or alias
+     * @param   integer|null $offering_id Course offering ID or alias
+     * @param   integer|null $section_id  Course section ID or alias
      * @return  object \Components\Courses\Models\Permissions
      */
     public static function &getInstance(
@@ -176,7 +176,7 @@ class Permissions extends Obj
     /**
      * Check if the current user is enrolled
      *
-     * @param   integer $user_id
+     * @param   integer|null $user_id
      * @return  object|null  The course manager record for the user, if there is one
      */
     public function manager($user_id = null)
@@ -295,7 +295,7 @@ class Permissions extends Obj
     /**
      * Check if the current user is enrolled
      *
-     * @param   integer $user_id
+     * @param   integer|null $user_id
      * @return  object|null  The student record for the user, if there is one
      */
     public function student($user_id = null)

@@ -70,7 +70,7 @@ class Notify extends Relational
      * Get records for a user
      *
      * @param   integer  $uid   User ID
-     * @param   string   $type  Record type
+     * @param   string|null   $type  Record type
      * @return  mixed    False if errors, array on success
      */
     public function getRecords($uid, $type = null)

@@ -88,7 +88,7 @@ class PasswordRules extends AdminController
     /**
      * Edit a password rule
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

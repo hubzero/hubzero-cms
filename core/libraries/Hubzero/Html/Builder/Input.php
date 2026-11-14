@@ -20,7 +20,7 @@ class Input
      *
      * @param   string  $type
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string
      */
@@ -59,7 +59,7 @@ class Input
      * Create a text input field.
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string
      */
@@ -84,7 +84,7 @@ class Input
      * Create a hidden input field.
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string
      */
@@ -97,7 +97,7 @@ class Input
      * Create an e-mail input field.
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string
      */
@@ -110,7 +110,7 @@ class Input
      * Create a url input field.
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string
      */
@@ -135,7 +135,7 @@ class Input
      * Displays a calendar control field
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string  HTML markup for a calendar field
      */
@@ -211,7 +211,7 @@ class Input
      * Displays a color picker control field
      *
      * @param   string  $name
-     * @param   string  $value
+     * @param   string|null  $value
      * @param   array   $options
      * @return  string  HTML markup for a calendar field
      */
@@ -254,7 +254,7 @@ class Input
      *
      * Use in conjunction with Request::checkHoneypot()
      *
-     * @param   string   $name
+     * @param   string|null   $name
      * @return  string
      */
     public static function honeypot($name = null)

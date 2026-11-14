@@ -21,7 +21,7 @@ class Vendor
      *
      * @param   bool    $ansi       Whether to use ANSI color output
      * @param   bool    $quiet      Suppress non-error output
-     * @param   string  $corePath   Path to the core directory
+     * @param   string|null  $corePath   Path to the core directory
      * @return  bool    True on success, false on failure
      */
     public static function install($ansi = true, $quiet = false, $corePath = null)

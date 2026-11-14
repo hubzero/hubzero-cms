@@ -91,10 +91,10 @@ class ACL extends Obj
     /**
      * Check permissions
      *
-     * @param   string   $action           Action to check permissions for
-     * @param   string   $aco              ACO model (comment, ticket, etc)
-     * @param   integer  $aco_foreign_key  Parameter description (if any) ...
-     * @param   integer  $aro_foreign_key  User ID
+     * @param   string|null   $action           Action to check permissions for
+     * @param   string|null   $aco              ACO model (comment, ticket, etc)
+     * @param   integer|null  $aco_foreign_key  Parameter description (if any) ...
+     * @param   integer|null  $aro_foreign_key  User ID
      * @return  integer  1 = allowed, 0 = not allowed
      */
     public function check($action = null, $aco = null, $aco_foreign_key = null, $aro_foreign_key = null)
@@ -206,7 +206,7 @@ class ACL extends Obj
     /**
      * Set a specific user to check permissions for
      *
-     * @param   integer  $aro_foreign_key  User ID
+     * @param   integer|null  $aro_foreign_key  User ID
      * @return  void
      */
     public function setUser($aro_foreign_key = null)
@@ -222,11 +222,11 @@ class ACL extends Obj
     /**
      * Set the permissions for an action
      *
-     * @param   string   $action           Action to check permissions for
-     * @param   string   $aco              ACO model (comment, ticket, etc)
-     * @param   integer  $permission       Permission to set
-     * @param   integer  $aco_foreign_key  Parameter description (if any) ...
-     * @param   integer  $aro_foreign_key  User ID
+     * @param   string|null   $action           Action to check permissions for
+     * @param   string|null   $aco              ACO model (comment, ticket, etc)
+     * @param   integer|null  $permission       Permission to set
+     * @param   integer|null  $aco_foreign_key  Parameter description (if any) ...
+     * @param   integer|null  $aro_foreign_key  User ID
      * @return  void
      */
     public function setAccess(
@@ -280,7 +280,7 @@ class ACL extends Obj
     /**
      * Check if a user is in a group
      *
-     * @param   string   $group  Group to check
+     * @param   string|null   $group  Group to check
      * @return  boolean  True if in group
      */
     public function authorize($group = null)

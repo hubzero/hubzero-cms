@@ -40,8 +40,8 @@ class Key
      * Constructor.
      *
      * @param   string  $type     The key type.
-     * @param   string  $private  The private key.
-     * @param   string  $public   The public key.
+     * @param   string|null  $private  The private key.
+     * @param   string|null  $public   The public key.
      * @return  void
      */
     public function __construct($type, $private = null, $public = null)

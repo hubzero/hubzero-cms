@@ -318,7 +318,7 @@ class Manager extends Obj
      *
      * @param   string   $action     Action to check
      * @param   string   $assetType  Type of asset to check
-     * @param   integer  $assetId    ID of item to check access on
+     * @param   integer|null  $assetId    ID of item to check access on
      * @return  boolean  True if authorized, false if not
      */
     public function access($action = 'view', $assetType = 'section', $assetId = null)
@@ -449,7 +449,7 @@ class Manager extends Obj
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Default value to return
      * @return  mixed
      */

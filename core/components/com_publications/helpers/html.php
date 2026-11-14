@@ -27,8 +27,8 @@ class Html
     /**
      * Get publication path
      *
-     * @param   string   $pid
-     * @param   string   $vid
+     * @param   string|null   $pid
+     * @param   string|null   $vid
      * @param   string   $base
      * @param   string   $filedir
      * @param   boolean|int $root
@@ -127,7 +127,7 @@ class Html
     /**
      * Draw supporting docs quick links
      *
-     * @param   object  $publication
+     * @param   object|null  $publication
      * @return  string|false  HTML
      */
     public static function drawSupportingItems($publication = null)
@@ -879,7 +879,7 @@ class Html
      * Include status bar - publication steps/sections/version navigation
      *
      * @param   object   $item
-     * @param   string   $step
+     * @param   string|null   $step
      * @param   boolean  $showSubSteps
      * @param   integer  $review
      * @return  void
@@ -1054,7 +1054,7 @@ class Html
     /**
      * Create thumb name
      *
-     * @param   string  $image
+     * @param   string|null  $image
      * @param   string  $tn
      * @param   string  $ext
      * @return  string
@@ -1132,8 +1132,8 @@ class Html
      *
      * @param   object   $publication  Models\Publication
      * @param   array    $addressees
-     * @param   string   $subject
-     * @param   string   $message
+     * @param   string|null   $subject
+     * @param   string|null   $message
      * @param   boolean  $hubMessage
      * @return  boolean
      */

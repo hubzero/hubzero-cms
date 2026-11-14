@@ -91,7 +91,7 @@ class Todo extends Model
     /**
      * Get list name
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   mixed    $filters
      * @return  array
      */
@@ -104,7 +104,7 @@ class Todo extends Model
     /**
      * Get lists
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  array
      */
     public function getLists($projectid = null)
@@ -115,7 +115,7 @@ class Todo extends Model
     /**
      * Set and get a specific offering
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  object
      */
     public function entry($id = null)

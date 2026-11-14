@@ -50,9 +50,9 @@ class Application extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $uid      User ID
-     * @param   integer  $jid      Job ID
-     * @param   string   $jobcode  Job code
+     * @param   integer|null  $uid      User ID
+     * @param   integer|null  $jid      Job ID
+     * @param   string|null   $jobcode  Job code
      * @return  boolean  True upon success
      */
     public function loadApplication($uid = null, $jid = null, $jobcode = null)

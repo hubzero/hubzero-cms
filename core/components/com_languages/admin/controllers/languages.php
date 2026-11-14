@@ -127,7 +127,7 @@ class Languages extends AdminController
     /**
      * Displays a form for editing
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

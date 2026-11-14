@@ -36,7 +36,7 @@ class Base extends SiteController
      * Set a notification
      *
      * @param   string  $message  Message to set
-     * @param   string  $type     Type [error, passed, warning]
+     * @param   string|null  $type     Type [error, passed, warning]
      * @return  void
      */
     public function setNotification($message, $type = null)
@@ -69,7 +69,7 @@ class Base extends SiteController
      *  Redirect to Login form with return URL
      *
      * @param   string  $message       User notification message
-     * @param   string  $customReturn  Do we want to redirect someplace specific after login
+     * @param   string|null  $customReturn  Do we want to redirect someplace specific after login
      */
     public function loginTask($message = '', $customReturn = null)
     {

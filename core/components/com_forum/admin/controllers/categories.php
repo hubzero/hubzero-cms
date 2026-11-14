@@ -171,7 +171,7 @@ class Categories extends AdminController
     /**
      * Displays a question response for editing
      *
-     * @param   object  $category
+     * @param   object|null  $category
      *
      * @return  void
      */

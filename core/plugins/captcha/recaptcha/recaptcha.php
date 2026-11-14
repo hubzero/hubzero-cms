@@ -70,7 +70,7 @@ class Recaptcha extends Plugin
     /**
      * Gets the challenge HTML
      *
-     * @param   string  $name   The name of the field. Not Used.
+     * @param   string|null  $name   The name of the field. Not Used.
      * @param   string  $id     The id of the field.
      * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
      * @return  string
@@ -108,7 +108,7 @@ class Recaptcha extends Plugin
     /**
      * Calls an HTTP POST function to verify if the user's guess was correct
      *
-     * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
+     * @param   string|null   $code  Answer provided by user. Not needed for the Recaptcha implementation
      * @return  boolean  True if valid CAPTCHA response
      */
     public function onCheckAnswer($code = null)

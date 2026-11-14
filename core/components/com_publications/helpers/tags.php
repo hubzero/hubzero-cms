@@ -72,7 +72,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $object_id Object ID
      * @param      integer $offset    Record offset
      * @param      integer $limit     Record limit
-     * @param      integer $tagger_id Tagger ID (set this if you want to restrict tags only added by a specific user)
+     * @param  integer|null  $tagger_id  Tagger ID (set this if you want to restrict tags only added by a specific user)
      * @param      integer $strength  Tag strength (set this if you want to restrict tags by strength)
      * @param      integer $admin     Has admin access?
      * @return     array
@@ -346,7 +346,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      integer $showsizes Show tag size based on use?
      * @param      integer $admin     Show admin tags?
-     * @param      integer $objectid  Object ID
+     * @param      integer|null $objectid  Object ID
      * @return     mixed Return description (if any) ...
      */
     public function getTagCloud($showsizes = 0, $admin = 0, $objectid = null)
@@ -362,7 +362,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $oid       Object ID
      * @param      integer $offset    Record offset
      * @param      integer $limit     Number to return
-     * @param      integer $tagger_id Tagger ID
+     * @param      integer|null $tagger_id Tagger ID
      * @param      integer $strength  Tag strength
      * @param      integer $admin     Admin tags?
      * @return     string

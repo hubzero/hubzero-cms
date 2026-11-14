@@ -921,7 +921,7 @@ class Offering extends Base
     /**
      * Get a list of plugins
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  mixed
      */
     public function plugins($name = null)
@@ -1174,7 +1174,7 @@ class Offering extends Base
     /**
      * Copy an entry and associated data
      *
-     * @param   integer $course_id New course to copy to
+     * @param   integer|null $course_id New course to copy to
      * @param   boolean $deep      Copy associated data?
      * @return  boolean True on success, false on error
      */

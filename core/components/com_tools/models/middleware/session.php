@@ -40,7 +40,7 @@ class Session extends Base
      * Constructor
      *
      * @param   mixed   $oid         Integer (ID), string (alias), object or array
-     * @param   string  $authorized  Authorization level
+     * @param   string|null  $authorized  Authorization level
      * @return  void
      */
     public function __construct($oid = null, $authorized = null)
@@ -81,7 +81,7 @@ class Session extends Base
      * Returns a reference to an session model
      *
      * @param   mixed   $oid         Session ID or object
-     * @param   string  $authorized  Authorization level
+     * @param   string|null  $authorized  Authorization level
      * @return  object
      */
     public static function &getInstance($oid = null, $authorized = null)
@@ -163,8 +163,8 @@ class Session extends Base
     /**
      * Share a session
      *
-     * @param   string  $with      List of users
-     * @param   string  $group     Group to share with
+     * @param   string|null  $with      List of users
+     * @param   string|null  $group     Group to share with
      * @param   string  $readonly  More to share with
      * @return  boolean
      */
@@ -266,7 +266,7 @@ class Session extends Base
     /**
      * Stop sharing a session with a specified user
      *
-     * @param   string   $with  Username
+     * @param   string|null   $with  Username
      * @return  boolean
      */
     public function unshare($with = null)
@@ -282,7 +282,7 @@ class Session extends Base
     /**
      * Get associated tool information
      *
-     * @param   string   $what  What data to return
+     * @param   string|null   $what  What data to return
      * @return  string
      */
     public function app($what = null)

@@ -46,8 +46,8 @@ class Schema
      * Load the database schema
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   string  $corePath  Path to the core directory
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   string|null  $corePath  Path to the core directory
      * @return  bool    True on success, false on failure
      */
     public static function load($ansi = true, $appPath = null, $corePath = null)
@@ -113,8 +113,8 @@ class Schema
      * Load base data into the database
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   string  $corePath  Path to the core directory
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   string|null  $corePath  Path to the core directory
      * @return  bool    True on success, false on failure
      */
     public static function loadData($ansi = true, $appPath = null, $corePath = null)
@@ -180,8 +180,8 @@ class Schema
      * Kept for callers that predate named sets, the web installer among them.
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   string  $corePath  Path to the core directory
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   string|null  $corePath  Path to the core directory
      * @return  bool    True on success, false on failure
      */
     public static function loadSampleData($ansi = true, $appPath = null, $corePath = null)
@@ -197,8 +197,8 @@ class Schema
      *
      * @param   string  $set       The name of the set to load
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   string  $corePath  Path to the core directory
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   string|null  $corePath  Path to the core directory
      * @return  bool    True on success, false on failure
      */
     public static function loadDataSet($set, $ansi = true, $appPath = null, $corePath = null)

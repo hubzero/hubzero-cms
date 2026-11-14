@@ -49,7 +49,7 @@ class Auditor
      * Constructor
      *
      * @param   string  $scope
-     * @param   object  $logger
+     * @param   object|null  $logger
      * @return  void
      */
     public function __construct($scope, $logger = null)

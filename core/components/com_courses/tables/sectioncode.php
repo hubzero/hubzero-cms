@@ -87,7 +87,7 @@ class SectionCode extends Table
      * Accepts either an alias or an ID
      *
      * @param   mixed    $oid         Unique ID or code to retrieve
-     * @param   integer  $section_id  Unique section ID
+     * @param   integer|null  $section_id  Unique section ID
      * @return  boolean  True on success
      */
     public function loadForSection($oid = null, $section_id = null)

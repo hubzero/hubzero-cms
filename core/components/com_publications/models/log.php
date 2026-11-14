@@ -42,8 +42,8 @@ class Log extends Model
     /**
      * Parse log file
      *
-     * @param   object  $pubLog
-     * @param   string  $logFile
+     * @param   object|null  $pubLog
+     * @param   string|null  $logFile
      * @param   string  $type     primary or view
      * @param   string  $category
      * @return  int|null
@@ -95,7 +95,7 @@ class Log extends Model
     /**
      * Get user data from log file
      *
-     * @param   integer  $pid
+     * @param   integer|null  $pid
      * @param   string   $type
      * @param   integer  $numMonths
      * @param   boolean  $includeCurrent

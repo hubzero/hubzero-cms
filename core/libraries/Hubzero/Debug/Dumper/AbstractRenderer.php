@@ -25,7 +25,7 @@ class AbstractRenderer implements Renderable
     /**
      * Constructor
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  void
      */
     public function __construct($messages = null)
@@ -78,7 +78,7 @@ class AbstractRenderer implements Renderable
     /**
      * Render a list of messages
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  string
      */
     public function render($messages = null)

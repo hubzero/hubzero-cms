@@ -338,7 +338,7 @@ class SiteController extends Obj implements ControllerInterface
      * Reset the view object
      *
      * @param   string  $name    The name of the view
-     * @param   string  $layout  The name of the layout (optional)
+     * @param   string|null  $layout  The name of the layout (optional)
      * @return  void
      */
     public function setView($name, $layout = null)
@@ -422,9 +422,9 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * Method to redirect the application to a new URL and optionally include a message
      *
-     * @param   string  $url   URL to redirect to. Optional.
-     * @param   string  $msg   Message to display on redirect. Optional.
-     * @param   string  $type  Message type. Optional, defaults to 'message'.
+     * @param   string|null  $url   URL to redirect to. Optional.
+     * @param   string|null  $msg   Message to display on redirect. Optional.
+     * @param   string|null  $type  Message type. Optional, defaults to 'message'.
      * @return  void
      * @deprecated
      */
@@ -443,9 +443,9 @@ class SiteController extends Obj implements ControllerInterface
      * Set a URL for browser redirection.
      *
      * @param   string  $url   URL to redirect to.
-     * @param   string  $msg   Message to display on redirect. Optional, defaults to
+     * @param   string|null  $msg   Message to display on redirect. Optional, defaults to
      *                         value set internally by controller, if any.
-     * @param   string  $type  Message type. Optional, defaults to 'message'.
+     * @param   string|null  $type  Message type. Optional, defaults to 'message'.
      * @return  object
      * @deprecated
      */

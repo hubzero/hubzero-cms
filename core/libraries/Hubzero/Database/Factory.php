@@ -302,7 +302,7 @@ abstract class Factory
      * Define a has-many relationship to create
      *
      * @param   Factory  $factory       The related factory
-     * @param   string   $relationship  The relationship method name (optional)
+     * @param   string|null   $relationship  The relationship method name (optional)
      * @return  $this
      */
     public function has(Factory $factory, ?string $relationship = null)
@@ -318,7 +318,7 @@ abstract class Factory
      * Define a belongs-to relationship
      *
      * @param   Relational  $model         The parent model instance
-     * @param   string      $relationship  The relationship method name (optional)
+     * @param   string|null      $relationship  The relationship method name (optional)
      * @return  $this
      */
     public function for(Relational $model, ?string $relationship = null)

@@ -55,7 +55,7 @@ class Miner extends Obj implements Provider
     /**
      * Constructor
      *
-     * @param   object  $db
+     * @param   object|null  $db
      * @return  void
      * @throws  \Exception
      */

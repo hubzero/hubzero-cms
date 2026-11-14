@@ -242,8 +242,8 @@ class Publication extends Base
      * Append an item to the breadcrumb trail.
      * If no item is provided, it will build the trail up to the list
      *
-     * @param   string  $title  Breadcrumb title
-     * @param   string  $url    Breadcrumb URL
+     * @param   string|null  $title  Breadcrumb title
+     * @param   string|null  $url    Breadcrumb URL
      * @return  string
      */
     public function pathway($title = null, $url = null)

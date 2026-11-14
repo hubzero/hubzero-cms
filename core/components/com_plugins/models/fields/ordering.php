@@ -116,10 +116,10 @@ class Ordering extends Field
      *
      * @param   int      $name      The scalar value
      * @param   string   $query     The query
-     * @param   string   $attribs   HTML tag attributes
-     * @param   string   $selected  The selected item
-     * @param   int      $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
-     * @param   string   $chop      The length of the truncated headline
+     * @param   string|null   $attribs   HTML tag attributes
+     * @param   string|null   $selected  The selected item
+     * @param   int|null      $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
+     * @param   string|null   $chop      The length of the truncated headline
      * @return  string   Html for the select list
      */
     public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null)

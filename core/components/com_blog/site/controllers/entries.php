@@ -176,7 +176,7 @@ class Entries extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $entry
+     * @param   object|null  $entry
      *
      * @return  void
      */
@@ -884,7 +884,7 @@ class Entries extends SiteController
      * Method to check admin access permission
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

@@ -538,7 +538,7 @@ class Google extends Obj
      * @param   array   &$remotes       Collector array for active items
      * @param   array   &$deletes       Collector array for deleted items
      * @param   string  $path           Path
-     * @param   string  $startChangeId  Last Change ID
+     * @param   string|null  $startChangeId  Last Change ID
      * @param   array   $connections    Array of local-remote connections
      * @return  mixed   int (new change ID) or false
      */

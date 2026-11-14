@@ -63,7 +63,7 @@ class CronExpression
      * @weekly - Run once a week, midnight on Sun - 0 0 * * 0
      * @daily - Run once a day, midnight - 0 0 * * *
      * @hourly - Run once an hour, first minute - 0 * * * *
-     * @param FieldFactory $fieldFactory (optional) Field factory to use
+     * @param FieldFactory|null $fieldFactory (optional) Field factory to use
      *
      * @return CronExpression
      */
@@ -205,7 +205,7 @@ class CronExpression
     /**
      * Get all or part of the CRON expression
      *
-     * @param string $part (optional) Specify the part to retrieve or NULL to
+     * @param string|null $part (optional) Specify the part to retrieve or NULL to
      *    get the full cron schedule string.
      *
      * @return string|null Returns the CRON expression, a part of the
@@ -227,7 +227,7 @@ class CronExpression
      * specific date.  This method assumes that the current number of
      * seconds are irrelevant, and should be called once per minute.
      *
-     * @param string|DateTime $currentTime (optional) Relative calculation date
+     * @param string|DateTime|null $currentTime (optional) Relative calculation date
      *
      * @return bool Returns TRUE if the cron is due to run or FALSE if not
      */
@@ -252,7 +252,7 @@ class CronExpression
     /**
      * Get the next or previous run date of the expression relative to a date
      *
-     * @param string|DateTime $currentTime (optional) Relative calculation date
+     * @param string|DateTime|null $currentTime (optional) Relative calculation date
      * @param int $nth (optional) Number of matches to skip before returning
      * @param bool $invert (optional) Set to TRUE to go backwards in time
      * @param bool $allowCurrentDate (optional) Set to TRUE to return the

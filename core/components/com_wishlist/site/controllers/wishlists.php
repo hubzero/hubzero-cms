@@ -166,7 +166,7 @@ class Wishlists extends SiteController
     /**
      * Display a login form
      *
-     * @param   string  $return  URL to return to after logging in. Defaults to the current URL.
+     * @param   string|null  $return  URL to return to after logging in. Defaults to the current URL.
      * @return  void
      */
     public function loginTask($return = null)
@@ -2710,7 +2710,7 @@ class Wishlists extends SiteController
      * @param   array    $ownerids
      * @param   string   $active
      * @param   integer  $nouser
-     * @param   string   $javascript
+     * @param   string|null   $javascript
      * @param   string   $order
      * @return  array
      */

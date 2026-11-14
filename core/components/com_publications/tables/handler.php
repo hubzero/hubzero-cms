@@ -29,7 +29,7 @@ class Handler extends Table
     /**
      * Load handler
      *
-     * @param   string  $name  Alias name of handler
+     * @param   string|null  $name  Alias name of handler
      * @return  mixed   False if error, Object on success
      */
     public function loadRecord($name = null)
@@ -52,7 +52,7 @@ class Handler extends Table
     /**
      * Get connections
      *
-     * @param   integer  $vid  pub version id
+     * @param   integer|null  $vid  pub version id
      * @param   array|int $elementid
      * @return  array|null
      */
@@ -77,8 +77,8 @@ class Handler extends Table
     /**
      * Load handler config
      *
-     * @param   string  $name  Alias name of handler
-     * @param   object  $entry
+     * @param   string|null  $name  Alias name of handler
+     * @param   object|null  $entry
      * @return  mixed   False if error, Object on success
      */
     public function getConfig($name = null, $entry = null)

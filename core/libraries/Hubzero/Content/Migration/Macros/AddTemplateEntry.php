@@ -19,11 +19,11 @@ class AddTemplateEntry extends Macro
      * Add, as needed, templates to the CMS
      *
      * @param   string  $element    Template element
-     * @param   string  $name       Template name
+     * @param   string|null  $name       Template name
      * @param   int     $client     Admin or site client
      * @param   int     $enabled    Whether or not the template should be enabled
      * @param   int     $home       Whether or not this should become the enabled template
-     * @param   array   $styles     Template styles
+     * @param   array|null   $styles     Template styles
      * @param   int     $protected  Whether or not the template is a core one or not
      * @return  bool
      **/

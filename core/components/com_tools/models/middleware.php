@@ -61,7 +61,7 @@ class Middleware extends Obj
     /**
      * Get a session model
      *
-     * @param   integer $sessnum
+     * @param   integer|null $sessnum
      * @return  object
      */
     public function session($sessnum = null, $permissions = null)
@@ -119,7 +119,7 @@ class Middleware extends Obj
      * Second param is a list of zone IDs to check against. That list
      * is pulled from the #__tool_version_zone table.
      *
-     * @param      string $ip
+     * @param      string|null $ip
      * @param      array  $allowed List of zone IDs to check against
      * @return     object
      */

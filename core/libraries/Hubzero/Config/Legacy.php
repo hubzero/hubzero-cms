@@ -137,9 +137,9 @@ class Legacy extends Registry
     /**
      * Create a new configuration repository.
      *
-     * @param   string  $path      Path to configuration directory
-     * @param   string  $rootPath  Root path for path rewriting (optional)
-     * @param   string  $appPath   App path for path rewriting (optional)
+     * @param   string|null  $path      Path to configuration directory
+     * @param   string|null  $rootPath  Root path for path rewriting (optional)
+     * @param   string|null  $appPath   App path for path rewriting (optional)
      * @return  void
      */
     public function __construct($path = null, $rootPath = null, $appPath = null)
@@ -238,8 +238,8 @@ class Legacy extends Registry
     /**
      * Split the config file into new format
      *
-     * @param   string  $format
-     * @param   string  $path
+     * @param   string|null  $format
+     * @param   string|null  $path
      * @return  void
      */
     public function split($format = null, $path = null)
@@ -270,7 +270,7 @@ class Legacy extends Registry
     /**
      * Write the contents of the legacy config
      *
-     * @param   string  $file
+     * @param   string|null  $file
      * @return  bool
      */
     public function update($file = null)

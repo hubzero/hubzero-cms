@@ -178,9 +178,9 @@ class Editor extends Obj
      * @param   integer  $col      The number of columns for the textarea.
      * @param   integer  $row      The number of rows for the textarea.
      * @param   boolean  $buttons  True and the editor buttons will be displayed.
-     * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-     * @param   string   $asset    The object asset
-     * @param   object   $author   The author.
+     * @param  string|null  $id  An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+     * @param   string|null   $asset    The object asset
+     * @param   object|null   $author   The author.
      * @param   array    $params   Associative array of editor parameters.
      * @return  string|null
      */

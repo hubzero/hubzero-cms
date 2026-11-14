@@ -114,7 +114,7 @@ class Optiongroups extends AdminController
     /**
      * Edit a category
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  void
      */
     public function editTask($row = null)

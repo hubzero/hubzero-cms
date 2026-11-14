@@ -19,12 +19,12 @@ class Autocompleter extends AbstractHelper
     /**
      * Output the autocompleter
      *
-     * @param   string  $what   The component to call
-     * @param   string  $name   Name of the input field
-     * @param   string  $value  The value of the input field
-     * @param   string  $id     ID of the input field
-     * @param   string  $class  CSS class(es) for the input field
-     * @param   string  $size   The size of the input field
+     * @param   string|null  $what   The component to call
+     * @param   string|null  $name   Name of the input field
+     * @param   string|null  $value  The value of the input field
+     * @param   string|null  $id     ID of the input field
+     * @param   string|null  $class  CSS class(es) for the input field
+     * @param   string|null  $size   The size of the input field
      * @param   string|false $wsel   AC autopopulates a select list based on choice?
      * @param   string  $type   Allow single or multiple entries
      * @param   string|false $dsabl  Readonly input

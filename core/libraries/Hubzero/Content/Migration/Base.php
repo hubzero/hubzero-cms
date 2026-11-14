@@ -137,7 +137,7 @@ class Base
      *
      * @param   object  $db         Database object (primary)
      * @param   array   $callbacks  Callbacks
-     * @param   object  $altDb      Alternate db
+     * @param   object|null  $altDb      Alternate db
      * @return  void
      **/
     public function __construct($db, $callbacks = [], $altDb = null)
@@ -482,11 +482,11 @@ class Base
      * a macro registered under the same name still takes its place.
      *
      * @param   string   $name            Component name
-     * @param   string   $option          com_xyz
+     * @param   string|null   $option          com_xyz
      * @param   integer  $enabled         Whether or not the component should be enabled
      * @param   string   $params          Component params (if already known)
      * @param   boolean  $createMenuItem  Create an admin menu item for this component
-     * @param   boolean  $createRoute     Create the site route for this component
+     * @param   boolean|null  $createRoute     Create the site route for this component
      * @return  boolean
      */
     public function addComponentEntry(
@@ -508,11 +508,11 @@ class Base
      * a macro registered under the same name still takes its place.
      *
      * @param   string   $element    Template element
-     * @param   string   $name       Template name
+     * @param   string|null   $name       Template name
      * @param   integer  $client     Admin or site client
      * @param   integer  $enabled    Whether or not the template should be enabled
      * @param   integer  $home       Whether or not this should become the enabled template
-     * @param   array    $styles     Template styles
+     * @param   array|null    $styles     Template styles
      * @param   integer  $protected  Whether or not the template is a core one or not
      * @return  boolean
      */
@@ -536,11 +536,11 @@ class Base
      * a macro registered under the same name still takes its place.
      *
      * @param   string   $element    Template element
-     * @param   string   $name       Template name
+     * @param   string|null   $name       Template name
      * @param   integer  $client     Admin or site client
      * @param   integer  $enabled    Ignored (always 1)
      * @param   integer  $home       Ignored (always 1)
-     * @param   array    $styles     Template styles
+     * @param   array|null    $styles     Template styles
      * @param   integer  $protected  Whether or not the template is a core one or not
      * @return  boolean
      */

@@ -18,7 +18,7 @@ class Obfuscate extends AbstractHelper
     /**
      * Obfuscate some text
      *
-     * @param   string  $text  Text to obfuscate
+     * @param   string|null  $text  Text to obfuscate
      * @return  string
      * @throws  \InvalidArgumentException If no text passed
      */

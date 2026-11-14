@@ -316,7 +316,7 @@ class Pages extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $revision
+     * @param   object|null  $revision
      *
      * @return  void
      */

@@ -29,7 +29,7 @@ class Audience extends Table
     /**
      * Load the audience for a publication by version id
      *
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function loadByVersion($versionid = null)
@@ -46,7 +46,7 @@ class Audience extends Table
     /**
      * Get the audience for a publication
      *
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $pid        Pub ID
      * @param   integer  $versionid  Pub version ID
      * @param   integer  $getlabels  Get labels or not (1 = yes, 0 = no)
      * @param   integer  $numlevels  Number of levels to return
@@ -90,7 +90,7 @@ class Audience extends Table
     /**
      * Delete audience for a publication
      *
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @return  boolean
      */
     public function deleteAudience($versionid = null)

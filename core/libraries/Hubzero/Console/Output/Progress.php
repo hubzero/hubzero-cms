@@ -140,9 +140,9 @@ class Progress extends Output
     /**
      * Initialize progress counter
      *
-     * @param   string  $initMessage  Initial message
+     * @param   string|null  $initMessage  Initial message
      * @param   string  $type         Progress type ('percentage', 'ratio', 'bar', 'bar_eta', 'spinner')
-     * @param   int     $total        Total number of progress points
+     * @param   int|null     $total        Total number of progress points
      * @return  $this
      **/
     public function init($initMessage = null, $type = 'percentage', $total = null)
@@ -272,7 +272,7 @@ class Progress extends Output
      * Set the current progress val
      *
      * @param   int  $val  Progress value
-     * @param   int  $tot  Total value
+     * @param   int|null  $tot  Total value
      * @return  void
      **/
     public function setProgress($val, $tot = null)

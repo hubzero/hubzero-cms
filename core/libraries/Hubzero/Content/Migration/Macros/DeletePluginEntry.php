@@ -19,7 +19,7 @@ class DeletePluginEntry extends Macro
      * Remove plugin entries from the appropriate table, depending on the CMS version
      *
      * @param   string  $folder   Plugin folder
-     * @param   string  $element  Plugin element
+     * @param   string|null  $element  Plugin element
      * @return  bool
      **/
     public function __invoke($folder, $element = null)

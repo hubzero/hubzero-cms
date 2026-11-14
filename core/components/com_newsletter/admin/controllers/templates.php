@@ -58,7 +58,7 @@ class Templates extends AdminController
     /**
      * Edit Newsletter Template Task
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

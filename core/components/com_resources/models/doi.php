@@ -111,7 +111,7 @@ class Doi extends Relational
      * Get a record by resource
      *
      * @param   integer  $rid
-     * @param   string   $revision
+     * @param   string|null   $revision
      * @param   integer  $versionid
      * @return  object
      */

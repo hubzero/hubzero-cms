@@ -270,7 +270,7 @@ class MasterType extends Table
     /**
      * Check type usage
      *
-     * @param   integer  $id  type id
+     * @param   integer|null  $id  type id
      * @return  integer|false
      */
     public function checkUsage($id = null)

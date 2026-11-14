@@ -64,7 +64,7 @@ class SafePath
      * @param   string   $relative  Path below the base, may be empty
      * @param   boolean  $create    Create missing directories?
      * @param   integer  $mode      Mode for directories that get created
-     * @param   string   &$reason   One of the REASON_* constants on failure
+     * @param   string|null   &$reason   One of the REASON_* constants on failure
      * @return  string|boolean      Canonical path, or false
      */
     public static function directory($base, $relative = '', $create = false, $mode = 0700, &$reason = null)
@@ -131,7 +131,7 @@ class SafePath
      *
      * @param   string  $directory  Directory returned by directory()
      * @param   string  $name       File name, a single path component
-     * @param   string  &$reason    One of the REASON_* constants on failure
+     * @param   string|null  &$reason    One of the REASON_* constants on failure
      * @return  string|boolean      Path of the file, or false
      */
     public static function file($directory, $name, &$reason = null)

@@ -66,7 +66,7 @@ class Tickets extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object  $ticket
+     * @param   object|null  $ticket
      * @return  void
      */
     protected function buildPathway($ticket = null)
@@ -107,7 +107,7 @@ class Tickets extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object  $ticket
+     * @param   object|null  $ticket
      * @return  void
      */
     protected function buildTitle($ticket = null)
@@ -2440,7 +2440,7 @@ class Tickets extends SiteController
      * @param   string   $name        Select element 'name' attribute
      * @param   integer  $active      Selected option
      * @param   integer  $nouser      Flag to set first option to 'No user'
-     * @param   string   $javascript  Any inline JS to attach to the element
+     * @param   string|null   $javascript  Any inline JS to attach to the element
      * @param   string   $order       The sort order for items in the list
      * @return  string   HTML select list
      */

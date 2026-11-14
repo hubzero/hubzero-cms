@@ -218,7 +218,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Add an attachment
      *
      * @param   mixed   $attachment  File path (string) or object (Symfony\Component\Mime\Part\DataPart)
-     * @param   string  $filename   Optional filename to set
+     * @param   string|null  $filename   Optional filename to set
      * @return  object
      */
     public function addAttachment($attachment, $filename = null)
@@ -305,7 +305,7 @@ class Message extends \Symfony\Component\Mime\Email
      * associated with the address.
      *
      * @param string|array $addresses
-     * @param string       $name      optional
+     * @param string|null       $name      optional
      *
      * @return $this
      */
@@ -502,7 +502,7 @@ class Message extends \Symfony\Component\Mime\Email
      * associated with the address.
      *
      * @param mixed  $addresses
-     * @param string $name    optional
+     * @param string|null $name    optional
      *
      * @return $this
      */
@@ -571,7 +571,7 @@ class Message extends \Symfony\Component\Mime\Email
     * which wraps it in a second DataPart and throws.
     *
     * @param mixed  $body
-    * @param string $contentType
+    * @param string|null $contentType
     * @param string $charset
     *
     * @return $this

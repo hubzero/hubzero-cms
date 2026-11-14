@@ -215,7 +215,7 @@ class SessionClass extends Table
     /**
      * Get the an object list of quotas classes
      *
-     * @param   array  $id  Start and limit, needed for pagination
+     * @param   array|null  $id  Start and limit, needed for pagination
      * @return  array  Return password rule records
      */
     public function getGroupIds($id = null)

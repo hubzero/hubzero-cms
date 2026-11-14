@@ -224,7 +224,7 @@ class Import extends Base
      * Accepts a column name (from import file) and tries
      * to find an associated record field
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  string
      */
     public function fields($name = null)

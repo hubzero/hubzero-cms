@@ -120,7 +120,7 @@ class Roles extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object  $model
+     * @param   object|null  $model
      *
      * @return  void
      */

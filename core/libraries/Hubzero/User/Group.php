@@ -677,7 +677,7 @@ class Group extends Obj
     /**
      * Get a property's value
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function __get($property = null)
@@ -749,7 +749,7 @@ class Group extends Obj
     /**
      * Set a property's value
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @param   mixed   $value
      */
     public function __set($property = null, $value = null)
@@ -785,7 +785,7 @@ class Group extends Obj
     /**
      * Check if a property is set
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  bool
      */
     public function __isset($property = null)
@@ -805,7 +805,7 @@ class Group extends Obj
     /**
      * Unset a property
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  void
      */
     public function __unset($property = null)
@@ -927,7 +927,7 @@ class Group extends Obj
     /**
      * Add users to a table
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   array   $value
      * @return  void
      */
@@ -941,7 +941,7 @@ class Group extends Obj
     /**
      * Remove users form a table
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   array   $value
      * @return  void
      */

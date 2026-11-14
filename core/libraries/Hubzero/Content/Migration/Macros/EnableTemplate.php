@@ -22,7 +22,7 @@ class EnableTemplate extends Macro
      * Enable template
      *
      * @param   string  $element  Element
-     * @param   int     $client   Client id (0 site, 1 admin); null for both
+     * @param   int|null     $client   Client id (0 site, 1 admin); null for both
      * @return  bool
      **/
     public function __invoke($element, $client = null)

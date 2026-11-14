@@ -18,8 +18,8 @@ class Truncate extends AbstractHelper
     /**
      * Truncate some text
      *
-     * @param   string   $text     Text to truncate
-     * @param   integer  $length   Length to truncate to
+     * @param   string|null   $text     Text to truncate
+     * @param   integer|null  $length   Length to truncate to
      * @param   array    $options  Options
      * @return  string
      * @throws  \InvalidArgumentException If no text is passed or length isn't a positive integer

@@ -42,7 +42,7 @@ class Collection extends Base
     /**
      * Constructor
      *
-     * @param   integer  $oid  Collection ID
+     * @param   integer|null  $oid  Collection ID
      * @return  void
      */
     public function __construct($oid = null)
@@ -77,7 +77,7 @@ class Collection extends Base
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function creator($property = null)

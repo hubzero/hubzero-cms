@@ -44,7 +44,7 @@ class Asset extends Base
      * Constructor
      *
      * @param   mixed    $oid      ID, string, array, or object
-     * @param   integer  $item_id  ID of the item asset is attached
+     * @param   integer|null  $item_id  ID of the item asset is attached
      * @return  void
      */
     public function __construct($oid = null, $item_id = null)
@@ -65,7 +65,7 @@ class Asset extends Base
      * Returns a reference to an asset object
      *
      * @param   mixed    $oid      ID, string, array, or object
-     * @param   integer  $item_id  ID of the item asset is attached
+     * @param   integer|null  $item_id  ID of the item asset is attached
      * @return  object
      */
     public static function &getInstance($oid = null, $item_id = null)

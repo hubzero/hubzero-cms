@@ -41,8 +41,8 @@ class Repo extends Table
     /**
      * Load project repo
      *
-     * @param   integer  $projectid
-     * @param   string   $name
+     * @param   integer|null  $projectid
+     * @param   string|null   $name
      * @return  mixed    object or false
      */
     public function loadRepo($projectid = null, $name = null)

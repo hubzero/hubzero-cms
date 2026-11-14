@@ -42,8 +42,8 @@ class Session extends Table
     /**
      * Load a record and bind it to $this object
      *
-     * @param   integer  $sess      Session number
-     * @param   string   $username  User to delete for
+     * @param   integer|null  $sess      Session number
+     * @param   string|null   $username  User to delete for
      * @return  boolean  False if errors, True if success
      */
     public function loadForUser($sess = null, $username = null)
@@ -88,8 +88,8 @@ class Session extends Table
     /**
      * Retrieve a session
      *
-     * @param   string  $sess        Session number
-     * @param   string  $authorized  Admin authorization?
+     * @param   string|null  $sess        Session number
+     * @param   string|null  $authorized  Admin authorization?
      * @return  object|false
      */
     public function loadSession($sess = null, $authorized = null)
@@ -122,8 +122,8 @@ class Session extends Table
     /**
      * Check if a user owns a session
      *
-     * @param   string  $sess        Session number
-     * @param   string  $authorized  Admin authorization?
+     * @param   string|null  $sess        Session number
+     * @param   string|null  $authorized  Admin authorization?
      * @return  object|false
      */
     public function checkSession($sess = null, $authorized = null)
@@ -159,8 +159,8 @@ class Session extends Table
     /**
      * Get a session count for a user, optionally restricted to a specific app
      *
-     * @param   string   $username  Username to look for
-     * @param   string   $appname   App to look for
+     * @param   string|null   $username  Username to look for
+     * @param   string|null   $appname   App to look for
      * @return  integer|false
      */
     public function getCount($username = null, $appname = null)
@@ -192,9 +192,9 @@ class Session extends Table
     /**
      * Get sessions for a user, optionally restricted to a specific app
      *
-     * @param   string  $username    Username to look for
-     * @param   string  $appname     App to look for
-     * @param   string  $authorized  Admin authorization?
+     * @param   string|null  $username    Username to look for
+     * @param   string|null  $appname     App to look for
+     * @param   string|null  $authorized  Admin authorization?
      * @return  array|false
      */
     public function getRecords($username = null, $appname = null, $authorized = null)

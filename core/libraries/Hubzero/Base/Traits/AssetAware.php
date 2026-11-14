@@ -27,7 +27,7 @@ trait AssetAware
      * Push CSS to the document
      *
      * @param   string  $stylesheet  Stylesheet or styles to add
-     * @param   string  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
+     * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
      * @param   array   $attributes  Attributes
      * @return  object
      */
@@ -60,7 +60,7 @@ trait AssetAware
      * Push JS to the document
      *
      * @param   string  $asset       Script to add
-     * @param   string  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
+     * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
      * @param   array   $attributes  Attributes
      * @return  object
      */
@@ -93,7 +93,7 @@ trait AssetAware
      * Get the path to an image
      *
      * @param   string  $asset      Image name
-     * @param   string  $extension  Extension name, e.g.: com_example, mod_example, plg_example_test
+     * @param   string|null  $extension  Extension name, e.g.: com_example, mod_example, plg_example_test
      * @return  string
      */
     public function img($asset, $extension = null)

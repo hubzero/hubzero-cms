@@ -52,7 +52,7 @@ class Sessions extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   integer|object  $session  Session ID
+     * @param   integer|object|null  $session  Session ID
      * @return  void
      */
     protected function buildPathway($session = null)
@@ -107,7 +107,7 @@ class Sessions extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   integer|object  $session  Session ID
+     * @param   integer|object|null  $session  Session ID
      * @return  void
      */
     protected function buildTitle($session = null)
@@ -1784,7 +1784,7 @@ class Sessions extends SiteController
      * Authorization checks
      *
      * @param   string  $assetType  Asset type
-     * @param   string  $assetId    Asset id to check against
+     * @param   string|null  $assetId    Asset id to check against
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

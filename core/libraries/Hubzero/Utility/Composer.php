@@ -533,7 +533,7 @@ class Composer
      * Find an installed package matching given the constraints
      *
      * @param       string  $packageName        Name of the package to be found
-     * @param       string  $versionConstraint  Version constraint for package
+     * @param       string|null  $versionConstraint  Version constraint for package
      *                                          See: https://getcomposer.org/doc/articles/versions.md
      * @return  mixed       Composer\Package\PackageInterface or null
      */

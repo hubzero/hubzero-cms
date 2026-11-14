@@ -50,7 +50,7 @@ class Resume extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $name  Parameter description (if any) ...
+     * @param   integer|null  $name  Parameter description (if any) ...
      * @return  boolean  True upon success
      */
     public function loadResume($name = null)
@@ -79,7 +79,7 @@ class Resume extends Table
     /**
      * Delete a record
      *
-     * @param   integer  $id  Resume ID
+     * @param   integer|null  $id  Resume ID
      * @return  boolean  False if errors, True upon success
      */
     public function deleteResume($id = null)

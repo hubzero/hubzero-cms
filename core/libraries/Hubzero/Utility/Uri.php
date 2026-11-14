@@ -98,7 +98,7 @@ class Uri
      *
      * You can pass a URI string to the constructor to initialise a specific URI.
      *
-     * @param   string  $uri  The optional URI string
+     * @param   string|null  $uri  The optional URI string
      * @return  void
      */
     public function __construct($uri = null)
@@ -198,7 +198,7 @@ class Uri
      * Returns the root URI
      *
      * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
-     * @param   string   $path      The path
+     * @param   string|null   $path      The path
      * @return  string   The root URI string.
      */
     public function root($pathonly = false, $path = null)
@@ -314,7 +314,7 @@ class Uri
      * Returns a query variable by name.
      *
      * @param   string  $name     Name of the query variable to get.
-     * @param   string  $default  Default value to return if the variable is not set.
+     * @param   string|null  $default  Default value to return if the variable is not set.
      * @return  mixed   Query variables.
      */
     public function getUriVar($name, $default = null)

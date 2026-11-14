@@ -43,7 +43,7 @@ class Git extends Obj
     /**
      * Constructor
      *
-     * @param   string  $path
+     * @param   string|null  $path
      * @return  void
      */
     public function __construct($path = null)
@@ -64,7 +64,7 @@ class Git extends Obj
     /**
      * Init Git repository
      *
-     * @param   string  $path  Repo path
+     * @param   string|null  $path  Repo path
      * @return  string|bool
      */
     public function iniGit($path = null)
@@ -158,7 +158,7 @@ class Git extends Obj
     /**
      * Run Git status
      *
-     * @param   string  $status
+     * @param   string|null  $status
      * @return  string
      */
     public function gitStatus($status = null)

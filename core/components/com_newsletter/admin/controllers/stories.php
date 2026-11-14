@@ -43,7 +43,7 @@ class Stories extends AdminController
     /**
      * Edit Newsletter Story Task
      *
-     * @param   object  $story
+     * @param   object|null  $story
      *
      * @return  void
      */

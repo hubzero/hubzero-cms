@@ -184,7 +184,7 @@ class Collections extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
      * @param   array    $access      What can be accessed
-     * @param   array    $areas       Active area(s)
+     * @param   array|null    $areas       Active area(s)
      * @return  array
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
@@ -1084,7 +1084,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object  $entry
+     * @param   object|null  $entry
      * @return  string|null
      */
     private function edit($entry = null)
@@ -2367,7 +2367,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing a collection
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  string|null
      */
     private function editcollection($row = null)
@@ -2769,7 +2769,7 @@ class Collections extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer  $assetId    Specific object to check permissions for
+     * @param   integer|null  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'plugin', $assetId = null)

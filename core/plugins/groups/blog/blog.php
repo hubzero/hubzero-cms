@@ -104,7 +104,7 @@ class Blog extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
      * @param   array    $access      What can be accessed
-     * @param   array    $areas       Active area(s)
+     * @param   array|null    $areas       Active area(s)
      * @return  array
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
@@ -662,7 +662,7 @@ class Blog extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object  $entry
+     * @param   object|null  $entry
      * @return  string
      */
     private function edit($entry = null)

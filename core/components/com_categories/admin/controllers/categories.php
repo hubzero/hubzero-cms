@@ -231,7 +231,7 @@ class Categories extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $category
+     * @param   object|null  $category
      *
      * @return  void
      */

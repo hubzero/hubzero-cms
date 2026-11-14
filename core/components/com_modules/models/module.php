@@ -505,8 +505,8 @@ class Module extends Relational
     /**
      * Saves the manually set order of records.
      *
-     * @param   array  $pks    An array of primary key ids.
-     * @param   array  $order  An array of order values.
+     * @param   array|null  $pks    An array of primary key ids.
+     * @param   array|null  $order  An array of order values.
      * @return  bool
      */
     public static function saveorder($pks = null, $order = null)

@@ -179,7 +179,7 @@ class Registration
     /**
      * Load data from user profile
      *
-     * @param   object  $xprofile
+     * @param   object|null  $xprofile
      * @return  void
      */
     public function loadProfile($xprofile = null)
@@ -230,7 +230,7 @@ class Registration
     /**
      * Load data from user account
      *
-     * @param   object  $user
+     * @param   object|null  $user
      * @return  void
      */
     public function loadAccount($user = null)

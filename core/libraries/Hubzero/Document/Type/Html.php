@@ -277,8 +277,8 @@ class Html extends Base
     /**
      * Get the contents of a document include
      *
-     * @param   string  $type     The type of renderer
-     * @param   string  $name     The name of the element to render
+     * @param   string|null  $type     The type of renderer
+     * @param   string|null  $name     The name of the element to render
      * @param   array   $attribs  Associative array of remaining attributes.
      * @return  mixed  output of the renderer, or null
      */

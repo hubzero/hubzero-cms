@@ -394,7 +394,7 @@ class Tags extends Cloud
      *
      * @param   integer  $limit
      * @param   string   $tagstring
-     * @param   integer  $maxTagCount -- max count of tags that can be searched
+     * @param   integer|null  $maxTagCount -- max count of tags that can be searched
      * @return  string
      */
     public function getTopTagCloud($limit, $tagstring = '', $maxTagCount = null)

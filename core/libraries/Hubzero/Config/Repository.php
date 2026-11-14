@@ -26,7 +26,7 @@ class Repository extends Registry
      * Create a new configuration repository.
      *
      * @param   string|array  $paths   Base path(s) containing a config/ directory
-     * @param   string        $client  Client whose config/<client>/ overrides apply
+     * @param   string|null        $client  Client whose config/<client>/ overrides apply
      * @return  void
      */
     public function __construct($paths, $client = null)
@@ -111,7 +111,7 @@ class Repository extends Registry
      *
      * @param   string  $path       Registry path (e.g. app.debug)
      * @param   mixed   $value      Value to set
-     * @param   string  $separator  Optional path separator
+     * @param   string|null  $separator  Optional path separator
      * @return  mixed   Previous value
      * @throws  \InvalidArgumentException  If bare key not found in any group
      */

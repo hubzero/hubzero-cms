@@ -26,7 +26,7 @@ class Console extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  string  Nothing: the messages are written out directly
      */
     public function render($messages = null)

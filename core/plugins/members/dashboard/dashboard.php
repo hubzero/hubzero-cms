@@ -656,7 +656,7 @@ class Dashboard extends Plugin
      *
      * Will load defaults if not intentionally set to empty & no preferences we found
      *
-     * @param   integer  $uidNumber  Profile ID number
+     * @param   integer|null  $uidNumber  Profile ID number
      * @return  array    Array of preferences
      */
     private function loadPreferences($uidNumber = null)

@@ -271,7 +271,7 @@ class Members extends AdminController
     /**
      * Edit a member's information
      *
-     * @param   object  $user
+     * @param   object|null  $user
      *
      * @return  void
      */

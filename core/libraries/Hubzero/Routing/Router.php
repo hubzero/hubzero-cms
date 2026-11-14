@@ -59,7 +59,7 @@ class Router
      *
      * @param   string   $url    Absolute or Relative URI to resource.
      * @param   boolean  $xhtml  Replace & by &amp; for XML compliance.
-     * @param   integer|boolean  $ssl  Secure state for the resolved URI.
+     * @param   integer|boolean|null  $ssl  Secure state for the resolved URI.
      *                             1: Make URI secure using global secure site URI.
      *                             0: Leave URI in the same secure state as it was passed to the function.
      *                            -1: Make URI unsecure using the global unsecure site URI.

@@ -31,7 +31,7 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      string $oid Record alias
+     * @param      string|null $oid Record alias
      * @return     boolean True on success
      */
     public function load($uid = null, $cid = null, $oid = null, $sid = null, $student = null)
@@ -75,7 +75,7 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      string $oid Record alias
+     * @param      string|null $oid Record alias
      * @return     boolean True on success
      */
     public function loadBySection($uid = null, $oid = null)
@@ -112,7 +112,7 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      string $oid Record alias
+     * @param      string|null $oid Record alias
      * @return     boolean True on success
      */
     public function loadByOffering($uid = null, $oid = null)

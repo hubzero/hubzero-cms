@@ -106,7 +106,7 @@ class Skus extends AdminController
     /**
      * Edit a SKU
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  void
      */
     public function editTask($row = null)

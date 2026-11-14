@@ -75,7 +75,7 @@ class Log extends Model
     /**
      * Log a Group action
      *
-     * @param   array  $options
+     * @param   array|null  $options
      * @return  mixed
      */
     public static function log(?array $options = null)

@@ -32,8 +32,8 @@ class Vote extends Table
     /**
      * Load a record by its bulletin and user IDs
      *
-     * @param   integer  $item_id  Bulletin ID
-     * @param   integer  $user_id  User ID
+     * @param   integer|null  $item_id  Bulletin ID
+     * @param   integer|null  $user_id  User ID
      * @return  boolean  True upon success, False if errors
      */
     public function loadByBulletin($item_id = null, $user_id = null)

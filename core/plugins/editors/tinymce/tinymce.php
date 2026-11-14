@@ -651,7 +651,7 @@ class Tinymce extends Plugin
      * @param   int      $col      The number of columns for the editor area.
      * @param   int      $row      The number of rows for the editor area.
      * @param   boolean  $buttons  True and the editor buttons will be displayed.
-     * @param   string   $id       An optional ID for the textarea. If not supplied the name is used.
+     * @param   string|null   $id       An optional ID for the textarea. If not supplied the name is used.
      * @return  string
      */
     public function onDisplay(

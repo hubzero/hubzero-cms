@@ -161,7 +161,7 @@ class Category extends Table
     /**
      * Check usage by category
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  mixed    integer or null
      */
     public function checkUsage($id = null)

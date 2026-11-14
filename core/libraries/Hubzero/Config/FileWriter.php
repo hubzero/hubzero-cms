@@ -54,7 +54,7 @@ class FileWriter
      *
      * @param   object  $contents
      * @param   string  $group
-     * @param   string  $client
+     * @param   string|null  $client
      * @return  boolean
      */
     public function write($contents, $group, $client = null)

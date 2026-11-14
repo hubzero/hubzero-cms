@@ -41,7 +41,7 @@ class Override extends Obj
     /**
      * Method to get a single record.
      *
-     * @param   string  $pk  The key name.
+     * @param   string|null  $pk  The key name.
      * @return  object
      */
     public function one($pk = null)

@@ -52,7 +52,7 @@ class Links extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   string  $alias
+     * @param   string|null  $alias
      * @return  array   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
@@ -84,7 +84,7 @@ class Links extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array  $areas   Plugins to return data
+     * @param   string|array|null  $areas   Plugins to return data
      * @return  array|null|false   Return array of html
      */
     public function onProject($model, $action = '', $areas = null)
@@ -414,7 +414,7 @@ class Links extends Plugin
      * Attach citation
      *
      * @param   integer  $vid
-     * @param   string   $doi
+     * @param   string|null   $doi
      * @param   string   $format
      * @param   integer  $actor
      * @param   boolean  $returnStatus

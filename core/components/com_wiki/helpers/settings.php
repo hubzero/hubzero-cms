@@ -26,7 +26,7 @@ class Settings
      *
      * @param   string   $name      Setting name
      * @param   mixed    $default   Value when neither the group nor the component has one
-     * @param   string   $scope     The wiki's scope (site, group, ...)
+     * @param   string|null   $scope     The wiki's scope (site, group, ...)
      * @param   integer  $scope_id  The group ID for a group wiki
      * @return  mixed
      */

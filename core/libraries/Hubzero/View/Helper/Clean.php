@@ -18,7 +18,7 @@ class Clean extends AbstractHelper
     /**
      * Clean some text
      *
-     * @param   string  $text  Text to clean
+     * @param   string|null  $text  Text to clean
      * @return  string
      * @throws  \InvalidArgumentException If no text passed
      */

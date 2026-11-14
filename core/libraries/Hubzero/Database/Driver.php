@@ -1525,8 +1525,8 @@ abstract class Driver implements LoggerAwareInterface
      * NOTE: Chosing to key the result array by a non-unique field name can result in unwanted
      * behavior and should be avoided.
      *
-     * @param   string  $key     The name of a field on which to key the result array
-     * @param   string  $column  Instead of the whole row, only this column value will be in the result array
+     * @param   string|null  $key     The name of a field on which to key the result array
+     * @param   string|null  $column  Instead of the whole row, only this column value will be in the result array
      * @return  array|null
      */
     public function loadAssocList($key = null, $column = null)
@@ -1701,7 +1701,7 @@ abstract class Driver implements LoggerAwareInterface
      * NOTE: Choosing to key the result array by a non-unique field can result in unwanted
      * behavior and should be avoided.
      *
-     * @param   string  $key  The name of a field on which to key the result array
+     * @param   string|null  $key  The name of a field on which to key the result array
      * @return  array|null
      */
     public function loadRowList($key = null)
@@ -2855,7 +2855,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $table    The name of the database table to insert into
      * @param   object  &$object  A reference to an object whose public properties match the table fields
-     * @param   string  $key      The name of the primary key. If provided the object property is updated
+     * @param   string|null  $key      The name of the primary key. If provided the object property is updated
      * @return  bool
      */
     public function insertObject($table, &$object, $key = null)
@@ -3284,8 +3284,8 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix
-     * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
+     * @param   string|null  $backup    Table prefix
+     * @param   string|null  $prefix    For the table - used to rename constraints in non-mysql databases
      * @return  $this
      */
     abstract public function renameTable($oldTable, $newTable, $backup = null, $prefix = null);
@@ -3570,7 +3570,7 @@ abstract class Driver implements LoggerAwareInterface
      * Gets the database character set of the given table
      *
      * @param   string  $table  The table for which to retrieve the character set
-     * @param   string  $field  The field to check (optional)
+     * @param   string|null  $field  The field to check (optional)
      * @return  string|bool
      **/
     abstract public function getCharacterSet($table, $field = null);

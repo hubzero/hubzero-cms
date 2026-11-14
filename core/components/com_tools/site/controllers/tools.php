@@ -57,7 +57,7 @@ class Tools extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   string  $title
+     * @param   string|null  $title
      * @return  void
      */
     protected function buildTitle($title = null)
@@ -264,7 +264,7 @@ class Tools extends SiteController
      * Authorization checks
      *
      * @param   string  $assetType  Asset type
-     * @param   string  $assetId    Asset id to check against
+     * @param   string|null  $assetId    Asset id to check against
      * @return  void
      */
     public function authorize($assetType = 'component', $assetId = null)

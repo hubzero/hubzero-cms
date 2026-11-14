@@ -29,8 +29,8 @@ class HandlerAssoc extends Table
     /**
      * Get associated handler(s)
      *
-     * @param   integer  $vid        Publication Version ID
-     * @param   integer  $elementid  Element ID
+     * @param   integer|null  $vid        Publication Version ID
+     * @param   integer|null  $elementid  Element ID
      * @return  mixed    False if error, Object on success
      */
     public function getAssoc($vid = null, $elementid = null)
@@ -52,9 +52,9 @@ class HandlerAssoc extends Table
     /**
      * Load associated handler
      *
-     * @param   integer  $vid        Publication Version ID
-     * @param   integer  $elementid  Element ID
-     * @param   string   $handler    Handler name
+     * @param   integer|null  $vid        Publication Version ID
+     * @param   integer|null  $elementid  Element ID
+     * @param   string|null   $handler    Handler name
      * @return  mixed    False if error, Object on success
      */
     public function getAssociation($vid = null, $elementid = null, $handler = null)

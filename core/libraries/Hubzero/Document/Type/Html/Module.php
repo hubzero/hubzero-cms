@@ -25,7 +25,7 @@ class Module extends Renderer
      *
      * @param   string|object  $module   The name of the module to render
      * @param   array   $attribs  Associative array of values
-     * @param   string  $content  If present, module information from the buffer will be used
+     * @param   string|null  $content  If present, module information from the buffer will be used
      * @return  string  The output of the script
      */
     public function render($module, $attribs = [], $content = null)

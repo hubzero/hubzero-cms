@@ -192,7 +192,7 @@ class Tool extends Table
     /**
      * Get a ticket ID for a tool
      *
-     * @param   string   $toolid
+     * @param   string|null   $toolid
      * @return  string|false|null
      */
     public function getTicketId($toolid = null)
@@ -207,7 +207,7 @@ class Tool extends Table
     /**
      * Get a resource ID for a tool
      *
-     * @param   integer  $toolid
+     * @param   integer|null  $toolid
      * @return  string|false|null
      */
     public function getResourceId($toolid = null)
@@ -225,7 +225,7 @@ class Tool extends Table
     /**
      * Get a tool instance from a resource ID
      *
-     * @param   string  $rid
+     * @param   string|null  $rid
      * @param   string  $version
      * @return  mixed
      */
@@ -253,7 +253,7 @@ class Tool extends Table
     /**
      * Get a tool ID from a resource
      *
-     * @param   integer  $rid
+     * @param   integer|null  $rid
      * @return  string|false|null
      */
     public function getToolIdFromResource($rid = null)
@@ -271,7 +271,7 @@ class Tool extends Table
     /**
      * Get toolname form resource
      *
-     * @param   integer  $rid
+     * @param   integer|null  $rid
      * @return  mixed
      */
     public function getToolnameFromResource($rid = null)
@@ -289,7 +289,7 @@ class Tool extends Table
     /**
      * Get tool ID from name
      *
-     * @param   string  $toolname
+     * @param   string|null  $toolname
      * @return  mixed
      */
     public function getToolId($toolname = null)
@@ -304,8 +304,8 @@ class Tool extends Table
     /**
      * Save ticket ID
      *
-     * @param   integer  $toolid
-     * @param   integer  $ticketid
+     * @param   integer|null  $toolid
+     * @param   integer|null  $ticketid
      * @return  boolean
      */
     public function saveTicketId($toolid = null, $ticketid = null)
@@ -324,9 +324,9 @@ class Tool extends Table
     /**
      * Update a tool entry
      *
-     * @param   string  $toolid
-     * @param   string  $newstate
-     * @param   string  $priority
+     * @param   string|null  $toolid
+     * @param   string|null  $newstate
+     * @param   string|null  $priority
      * @return  boolean
      */
     public function updateTool($toolid = null, $newstate = null, $priority = null)

@@ -320,7 +320,7 @@ class ImgHandler extends Obj
     /**
      * Create a thumbnail name
      *
-     * @param      string $image Image name
+     * @param      string|null $image Image name
      * @param      string $tn    Thumbnail prefix
      * @return     string|false
      */

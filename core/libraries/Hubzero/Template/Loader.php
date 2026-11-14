@@ -118,7 +118,7 @@ class Loader
      * session it takes every later page down with it.
      *
      * @param   string  $name      Shell name, without the extension
-     * @param   object  $template  The template to ask, or the active one
+     * @param   object|null  $template  The template to ask, or the active one
      * @return  bool
      */
     public function hasShell($name, $template = null)
@@ -193,7 +193,7 @@ class Loader
     /**
      * Load a template by client
      *
-     * @param   integer  $client_id  The client to load the tmeplate for
+     * @param   integer|null  $client_id  The client to load the tmeplate for
      * @return  object
      */
     public function load($client_id = null)

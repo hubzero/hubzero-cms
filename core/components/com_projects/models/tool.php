@@ -67,8 +67,8 @@ class Tool extends Model
      * Constructor
      *
      * @param   mixed    $oid
-     * @param   integer  $projectid
-     * @param   object   $instance
+     * @param   integer|null  $projectid
+     * @param   object|null   $instance
      * @return  void
      */
     public function __construct($oid = null, $projectid = null, $instance = null)
@@ -93,8 +93,8 @@ class Tool extends Model
      * Returns a reference to a tool model
      *
      * @param   mixed    $oid
-     * @param   integer  $projectid
-     * @param   object   $instance
+     * @param   integer|null  $projectid
+     * @param   object|null   $instance
      * @return  object
      */
     public static function &getInstance($oid = null, $projectid = null, $instance = null)
@@ -144,8 +144,8 @@ class Tool extends Model
     /**
      * Load a specific instance
      *
-     * @param   integer  $id
-     * @param   integer  $parent
+     * @param   integer|null  $id
+     * @param   integer|null  $parent
      * @return  object
      */
     public function version($id = null, $parent = null)
@@ -177,8 +177,8 @@ class Tool extends Model
     /**
      * Get a log model
      *
-     * @param   integer  $parent_id
-     * @param   string   $parent_name
+     * @param   integer|null  $parent_id
+     * @param   string|null   $parent_name
      * @return  object
      */
     public function log($parent_id = null, $parent_name = null)
@@ -198,8 +198,8 @@ class Tool extends Model
     /**
      * Get last status change
      *
-     * @param   string   $property
-     * @param   string   $as
+     * @param   string|null   $property
+     * @param   string|null   $as
      * @return  boolean
      */
     public function lastStatusChange($property = null, $as = null)
@@ -224,8 +224,8 @@ class Tool extends Model
     /**
      * Get last update
      *
-     * @param   string   $property
-     * @param   string   $as
+     * @param   string|null   $property
+     * @param   string|null   $as
      * @param   boolean  $statusChange
      * @return  mixed
      */
@@ -258,8 +258,8 @@ class Tool extends Model
     /**
      * Get a status model
      *
-     * @param   string   $property
-     * @param   string   $statusModel
+     * @param   string|null   $property
+     * @param   string|null   $statusModel
      * @return  mixed  the status, or the one property asked for
      */
     public function status($property = null, $statusModel = null)
@@ -408,7 +408,7 @@ class Tool extends Model
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key  Config property to retrieve
+     * @param   string|null  $key  Config property to retrieve
      * @return  mixed
      */
     public function config($key = null)
@@ -511,7 +511,7 @@ class Tool extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function creator($property = null)
@@ -532,7 +532,7 @@ class Tool extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function statusChanger($property = null)
@@ -611,7 +611,7 @@ class Tool extends Model
     /**
      * Is tool in particular status
      *
-     * @param   string  $status
+     * @param   string|null  $status
      * @return  boolean
      */
     public function inStatus($status = null)

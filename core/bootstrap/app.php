@@ -55,7 +55,7 @@ Hubzero\Base\ClassLoader::register();
  *
  * Inspired by Laravel (http://laravel.com)
  *
- * @param   string  $key
+ * @param   string|null  $key
  * @return  mixed
  */
 function app($key = null)

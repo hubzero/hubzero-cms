@@ -45,8 +45,8 @@ class SectionDate extends Table
      * Load a record and bind to $this
      *
      * @param   mixed    $oid
-     * @param   string   $scope
-     * @param   integer  $section_id
+     * @param   string|null   $scope
+     * @param   integer|null  $section_id
      * @return  boolean  True on success
      */
     public function loadForScope($oid = null, $scope = null, $section_id = null)

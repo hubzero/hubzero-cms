@@ -654,7 +654,7 @@ class Wish extends Relational
     /**
      * Tag the entry
      *
-     * @param   string   $tags     Tags to apply
+     * @param   string|null   $tags     Tags to apply
      * @param   integer  $user_id  ID of tagger
      * @param   integer  $admin    Tag as admin? 0=no, 1=yes
      * @return  boolean
@@ -838,7 +838,7 @@ class Wish extends Relational
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Value to return if key isn't found
      * @return  mixed
      */
@@ -858,7 +858,7 @@ class Wish extends Relational
      *
      * @param   string   $action     Action to check
      * @param   string   $assetType  Type of asset to check
-     * @param   integer  $assetId    ID of item to check access on
+     * @param   integer|null  $assetId    ID of item to check access on
      * @return  boolean  True if authorized, false if not
      */
     public function access($action = 'view', $assetType = 'wish', $assetId = null)

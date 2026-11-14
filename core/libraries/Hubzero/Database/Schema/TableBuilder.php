@@ -642,7 +642,7 @@ class TableBuilder
      * for polymorphic relationships.
      *
      * @param  string $name      The morph name (e.g., 'taggable' creates taggable_type and taggable_id)
-     * @param  string $indexName Optional index name (auto-generated if null)
+     * @param  string|null $indexName Optional index name (auto-generated if null)
      * @return $this
      */
     public function morphs(string $name, ?string $indexName = null): self
@@ -659,7 +659,7 @@ class TableBuilder
      * Same as morphs() but with nullable columns.
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function nullableMorphs(string $name, ?string $indexName = null): self
@@ -677,7 +677,7 @@ class TableBuilder
      * for polymorphic relationships using UUIDs.
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function uuidMorphs(string $name, ?string $indexName = null): self
@@ -692,7 +692,7 @@ class TableBuilder
      * Add nullable polymorphic relationship columns with UUID
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function nullableUuidMorphs(string $name, ?string $indexName = null): self

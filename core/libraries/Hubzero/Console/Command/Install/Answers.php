@@ -47,7 +47,7 @@ class Answers
      * belongs to someone else, or that is outside its container.
      *
      * @param   string  $path   Path to a JSON answer file, or "-"
-     * @param   string  $error  Set to the reason when this returns false
+     * @param   string|null  $error  Set to the reason when this returns false
      * @return  bool
      **/
     public static function load($path, &$error = null)

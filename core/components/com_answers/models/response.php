@@ -156,7 +156,7 @@ class Response extends Relational
      * Check if a user has voted for this entry
      *
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       IP Address
+     * @param   string|null   $ip       IP Address
      * @return  object  The vote
      */
     public function ballot($user_id = 0, $ip = null)

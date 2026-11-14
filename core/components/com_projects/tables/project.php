@@ -680,7 +680,7 @@ class Project extends Table
     /**
      * Get project
      *
-     * @param   string   $identifier
+     * @param   string|null   $identifier
      * @param   integer  $uid
      * @param   integer  $pubid
      * @return  mixed    (array or false)
@@ -757,7 +757,7 @@ class Project extends Table
     /**
      * Save project parameter
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $param
      * @param   string|int $value
      * @return  bool|null
@@ -806,7 +806,7 @@ class Project extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string  $identifier   project id or alias name
+     * @param   string|null  $identifier   project id or alias name
      * @return  mixed   object or false
      */
     public function loadProject($identifier = null)
@@ -827,7 +827,7 @@ class Project extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string  $pid   project id or alias name
+     * @param   string|null  $pid   project id or alias name
      * @return  mixed   object or false
      */
     public function loadProvisionedProject($pid = null)
@@ -873,7 +873,7 @@ class Project extends Table
     /**
      * Save setup stage
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $stage
      * @return  boolean
      */

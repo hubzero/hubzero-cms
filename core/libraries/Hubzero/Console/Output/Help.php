@@ -126,8 +126,8 @@ class Help extends Output
      * This is helpful in unifying styles used for help doc
      *
      * @param   string  $argument  Actual argument
-     * @param   string  $details   Description of what it does
-     * @param   string  $example   Usage example
+     * @param   string|null  $details   Description of what it does
+     * @param   string|null  $example   Usage example
      * @param   string|false $required  If it's required, we'll style a bit differently
      * @return  $this
      **/

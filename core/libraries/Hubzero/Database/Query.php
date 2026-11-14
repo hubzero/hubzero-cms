@@ -433,7 +433,7 @@ class Query
      *   // Results cached for 60 minutes
      *
      * @param   int     $minutes  Number of minutes to cache (default 60)
-     * @param   string  $prefix   Optional custom cache key prefix
+     * @param   string|null  $prefix   Optional custom cache key prefix
      * @return  $this
      **/
     public function remember(int $minutes = 60, ?string $prefix = null)
@@ -457,7 +457,7 @@ class Query
      * Example:
      *   $config = $query->from('config')->rememberForever()->fetch();
      *
-     * @param   string  $prefix  Optional custom cache key prefix
+     * @param   string|null  $prefix  Optional custom cache key prefix
      * @return  $this
      **/
     public function rememberForever(?string $prefix = null)
@@ -528,7 +528,7 @@ class Query
      * Applies a select field to the pending query
      *
      * @param   mixed   $column  The column to select
-     * @param   string  $as      What to call the return val
+     * @param   string|null  $as      What to call the return val
      * @param   bool    $count   Whether or not to count column
      * @return  $this
      **/
@@ -826,7 +826,7 @@ class Query
      * Applies an update statement to the pending query
      *
      * @param   string  $table  The table to update
-     * @param   string  $as     An alias for the table
+     * @param   string|null  $as     An alias for the table
      * @return  $this
      **/
     public function update($table, $as = null)
@@ -853,7 +853,7 @@ class Query
      * Defines the table from which data should be retrieved
      *
      * @param   string  $table  The table of interest
-     * @param   string  $as     What to call the table
+     * @param   string|null  $as     What to call the table
      * @return  $this
      **/
     public function from($table, $as = null)
@@ -892,8 +892,8 @@ class Query
      * Defines a table join to be performed for the query
      *
      * @param   string  $table     The table join
-     * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $leftKey   The left side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @param   string  $type      The join type to perform
      * @return  $this
      **/
@@ -971,7 +971,7 @@ class Query
      *
      * @param   string  $table     The table join
      * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @return  $this
      **/
     public function innerJoin($table, $leftKey, $rightKey = null)
@@ -1007,7 +1007,7 @@ class Query
      *
      * @param   string  $table     The table join
      * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @return  $this
      **/
     public function fullJoin($table, $leftKey, $rightKey = null)
@@ -1039,7 +1039,7 @@ class Query
      *
      * @param   string  $table     The table join
      * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @return  $this
      **/
     public function leftJoin($table, $leftKey, $rightKey = null)
@@ -1069,7 +1069,7 @@ class Query
      *
      * @param   string  $table     The table join
      * @param   string  $leftKey   The left side of the join condition
-     * @param   string  $rightKey  The right side of the join condition
+     * @param   string|null  $rightKey  The right side of the join condition
      * @return  $this
      **/
     public function rightJoin($table, $leftKey, $rightKey = null)
@@ -1269,7 +1269,7 @@ class Query
      *
      * @param   string  $first     The first column name
      * @param   string  $operator  The comparison operator (=, !=, <, >, <=, >=) or second column if using = default
-     * @param   string  $second    The second column name (optional if $operator is the second column)
+     * @param   string|null  $second    The second column name (optional if $operator is the second column)
      * @param   int     $depth     The depth level of the clause, for sub clauses
      * @return  $this
      **/
@@ -1296,7 +1296,7 @@ class Query
      *
      * @param   string  $first     The first column name
      * @param   string  $operator  The comparison operator or second column
-     * @param   string  $second    The second column name (optional)
+     * @param   string|null  $second    The second column name (optional)
      * @param   int     $depth     The depth level of the clause
      * @return  $this
      **/
@@ -2534,7 +2534,7 @@ class Query
      *
      * @param   string  $name   Parameter name (with or without leading colon)
      * @param   mixed   $value  The value to bind
-     * @param   string  $type   Optional type hint (not used, for interface compatibility)
+     * @param   string|null  $type   Optional type hint (not used, for interface compatibility)
      * @return  $this
      **/
     public function setParameter(string $name, $value, ?string $type = null)
@@ -3923,7 +3923,7 @@ class Query
      *
      * @param   mixed  $condition  The condition to evaluate (truthy/falsy)
      * @param   array  $columns    The columns to select when condition is truthy
-     * @param   array  $fallback   Optional columns to select when condition is falsy
+     * @param   array|null  $fallback   Optional columns to select when condition is falsy
      * @return  $this
      **/
     public function selectWhen($condition, array $columns, ?array $fallback = null)
@@ -4352,7 +4352,7 @@ class Query
      *
      * @param   string  $table   The table name into which the data should be inserted
      * @param   object  &$object A reference to an object whose public properties match table fields
-     * @param   string  $key     Optional primary key field name (to set generated ID on object)
+     * @param   string|null  $key     Optional primary key field name (to set generated ID on object)
      * @param   bool    $ignore  Whether or not to perform an insert ignore
      * @return  bool
      */
@@ -4803,8 +4803,8 @@ class Query
      * Gets an array of the result set rows from the database query where each row is an associative array
      * of ['field_name' => 'row_value'].
      *
-     * @param   string  $key     The name of a field on which to key the result array
-     * @param   string  $column  Instead of the whole row, only this column value will be in the result array
+     * @param   string|null  $key     The name of a field on which to key the result array
+     * @param   string|null  $column  Instead of the whole row, only this column value will be in the result array
      * @return  array|null
      */
     public function loadAssocList($key = null, $column = null)
@@ -4927,7 +4927,7 @@ class Query
     /**
      * Retrieve a single column value from the first row
      *
-     * @param   string  $column  Column name or expression
+     * @param   string|null  $column  Column name or expression
      * @return  mixed
      **/
     public function value(?string $column = null)
@@ -5056,7 +5056,7 @@ class Query
     /**
      * Gets an array of the result set rows from the database query where each row is an array.
      *
-     * @param   string  $key  The name of a field on which to key the result array
+     * @param   string|null  $key  The name of a field on which to key the result array
      * @return  array|null
      */
     public function loadRowList($key = null)
@@ -5071,7 +5071,7 @@ class Query
      * Performs the actual query and returns the results
      *
      * @param   string  $query      The query to perform
-     * @param   string  $structure  The structure of the item(s) returned (if applicable)
+     * @param   string|null  $structure  The structure of the item(s) returned (if applicable)
      * @return  mixed
      **/
     public function query($query, $structure = null)
@@ -5558,7 +5558,7 @@ class Query
      * // "SELECT * FROM `#__articles` WHERE `status` = ?"
      * ```
      *
-     * @param   string  $type  The query type (select, insert, update, delete)
+     * @param   string|null  $type  The query type (select, insert, update, delete)
      * @return  string
      */
     public function toSql($type = null)

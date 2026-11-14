@@ -152,7 +152,7 @@ abstract class Base extends Model
      * it will return that property value. Otherwise,
      * it returns the entire user object
      *
-     * @param   string $property Param to return
+     * @param   string|null $property Param to return
      * @param   mixed  $default  Value to return if property not found
      * @return  mixed
      */
@@ -198,7 +198,7 @@ abstract class Base extends Model
      * @param     integer $scope_id Scope ID
      * @param     string  $scope    Scope
      * @param     string  $action   Action performed
-     * @param     string  $log      Data
+     * @param     string|null  $log      Data
      * @return    void
      */
     public function log($scope_id, $scope, $action, $log = null)
@@ -222,7 +222,7 @@ abstract class Base extends Model
     /**
      * Get a parameter from the component config
      *
-     * @param   string $property Param to return
+     * @param   string|null $property Param to return
      * @param   mixed  $default  Value to return if property not found
      * @return  mixed
      */

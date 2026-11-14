@@ -753,8 +753,8 @@ class Screenshots extends SiteController
     /**
      * Display a list of screenshots for this entry
      *
-     * @param      integer $rid     Resource ID
-     * @param      string  $version Tool version
+     * @param      integer|null $rid     Resource ID
+     * @param      string|null  $version Tool version
      *
      * @return  void
      */
@@ -904,7 +904,7 @@ class Screenshots extends SiteController
      * Authorization checks
      *
      * @param      string $assetType Asset type
-     * @param      string $assetId   Asset id to check against
+     * @param      string|null $assetId   Asset id to check against
      * @return     void
      */
     protected function authorize($assetType = 'component', $assetId = null)

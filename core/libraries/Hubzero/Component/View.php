@@ -118,7 +118,7 @@ class View extends AbstractView
      * Create a component view and return it
      *
      * @param   string  $layout  View layout
-     * @param   string  $name    View name
+     * @param   string|null  $name    View name
      * @return  View
      */
     public function view($layout, $name = null)

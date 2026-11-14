@@ -95,7 +95,7 @@ class Messages extends AdminController
     /**
      * Edit a record
      *
-     * @param   object  $row  Database row
+     * @param   object|null  $row  Database row
      *
      * @return  void
      */

@@ -171,8 +171,8 @@ class License extends Table
     /**
      * Get licenses
      *
-     * @param   object  $manifest
-     * @param   object  $selected
+     * @param   object|null  $manifest
+     * @param   object|null  $selected
      * @return  array|false|null
      */
     public function getBlockLicenses($manifest = null, $selected = null)
@@ -338,7 +338,7 @@ class License extends Table
     /**
      * Get license by pub version id
      *
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $vid  Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function getPubLicense($vid = null)

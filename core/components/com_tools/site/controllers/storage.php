@@ -598,7 +598,7 @@ class Storage extends SiteController
      * Authorization checks
      *
      * @param   string  $assetType  Asset type
-     * @param   string  $assetId    Asset id to check against
+     * @param   string|null  $assetId    Asset id to check against
      * @return  string
      */
     public function authorize($assetType = 'component', $assetId = null)

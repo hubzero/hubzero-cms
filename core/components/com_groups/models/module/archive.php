@@ -61,7 +61,7 @@ class Archive extends Obj
     /**
      * Get Instance of Module Archive
      *
-     * @param   string $key Instance Key
+     * @param   string|null $key Instance Key
      * @return  object \Components\Groups\Models\Module\Archive
      */
     public static function &getInstance($key = null)

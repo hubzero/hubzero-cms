@@ -29,7 +29,7 @@ class Overview extends Plugin
      * Return data on a course view (this will be some form of HTML)
      *
      * @param      object  $course Current course
-     * @param      string  $active Current active area
+     * @param      string|null  $active Current active area
      * @return     object
      */
     public function onCourseView($course, $active = null)

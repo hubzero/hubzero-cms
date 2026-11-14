@@ -37,7 +37,7 @@ class Sync extends \Hubzero\Base\Obj
     /**
      * Constructor
      *
-     * @param   object  $connect
+     * @param   object|null  $connect
      * @return  bool
      */
     public function __construct($connect = null)

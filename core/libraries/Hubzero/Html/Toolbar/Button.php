@@ -35,7 +35,7 @@ abstract class Button extends Obj
     /**
      * Constructor
      *
-     * @param   object  $parent  The parent
+     * @param   object|null  $parent  The parent
      * @return  void
      */
     public function __construct($parent = null)

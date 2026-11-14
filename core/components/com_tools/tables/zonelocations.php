@@ -55,7 +55,7 @@ class ZoneLocations extends Table
     /**
      * Delete one or more records by zone ID
      *
-     * @param   integer  $zone_id  Zone ID
+     * @param   integer|null  $zone_id  Zone ID
      * @return  boolean  True if successful otherwise returns and error message
      */
     public function deleteByZone($zone_id = null)

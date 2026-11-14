@@ -156,7 +156,7 @@ class Applications extends SiteController
     /**
      * Edit an existing developer application
      *
-     * @param   object  $application  Optional application model returned from save
+     * @param   object|null  $application  Optional application model returned from save
      *
      * @return  void
      */
@@ -765,7 +765,7 @@ class Applications extends SiteController
      * Set the access permissions the views read from the configuration
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'application', $assetId = null)

@@ -65,7 +65,7 @@ class Importer extends Obj
      * @param   object   $database
      * @param   object   $filesystem
      * @param   string   $path
-     * @param   string   $hash
+     * @param   string|null   $hash
      * @param   boolean  $tags
      * @param   boolean  $badges
      * @return  void

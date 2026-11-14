@@ -40,7 +40,7 @@ class Changelog extends Obj
     /**
      * Is the question open?
      *
-     * @param   string  $data
+     * @param   string|null  $data
      * @return  boolean
      */
     public function __construct($data = null)

@@ -985,9 +985,9 @@ class File extends Base
      *
      * @param   string   $path
      * @param   integer  $id
-     * @param   object   $configs
-     * @param   object   $params
-     * @param   string   $suffix
+     * @param   object|null   $configs
+     * @param   object|null   $params
+     * @param   string|null   $suffix
      * @return  string
      */
     public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)
@@ -1042,7 +1042,7 @@ class File extends Base
      * Bundle files together
      *
      * @param   array    $attachments
-     * @param   object   $configs
+     * @param   object|null   $configs
      * @param   boolean  $overwrite
      * @return  mixed    False on error, string on success
      */
@@ -1913,7 +1913,7 @@ class File extends Base
      *
      * @param   object  $data
      * @param   object  $params
-     * @param   object  $handler
+     * @param   object|null  $handler
      * @return  string  HTML
      */
     public function drawAttachment($data, $params, $handler = null)

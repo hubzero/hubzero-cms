@@ -78,7 +78,7 @@ class Connections
      *
      * @param   object  $plugin      the plugin that spawned this object
      * @param   string  $option      the option being used
-     * @param   int     $connection  the connection id
+     * @param   int|null     $connection  the connection id
      * @return  void
      **/
     public function __construct($plugin, $option, $connection = null)
@@ -500,7 +500,7 @@ class Connections
      * read-only member (who may not have a provider account) is told to ask a
      * manager rather than being redirected to the provider.
      *
-     * @param   \Throwable  $error  Optional underlying error
+     * @param   \Throwable|null  $error  Optional underlying error
      * @return  string
      */
     private function connectionUnavailable($error = null)

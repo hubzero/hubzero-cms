@@ -57,7 +57,7 @@ class Event extends Table
     /**
      * Set an event to published
      *
-     * @param   integer  $oid    Event ID
+     * @param   integer|null  $oid    Event ID
      * @param   integer  $state
      * @param   integer  $userId
      * @return  bool
@@ -76,7 +76,7 @@ class Event extends Table
     /**
      * Set an event to unpublished
      *
-     * @param   integer  $oid  Event ID
+     * @param   integer|null  $oid  Event ID
      * @return  void
      */
     public function unpublish($oid = null)

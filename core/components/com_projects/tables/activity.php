@@ -31,8 +31,8 @@ class Activity extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $id         activity id
-     * @param   integer  $projectid
+     * @param   integer|null  $id         activity id
+     * @param   integer|null  $projectid
      * @return  mixed    object or false
      */
     public function loadActivity($id = null, $projectid = null)
@@ -57,7 +57,7 @@ class Activity extends Table
     /**
      * Load activity by reference
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $refid
      * @param   string   $class
      * @param   string   $activity
@@ -84,7 +84,7 @@ class Activity extends Table
     /**
      * Get items
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @param   boolean|int $count
      * @param   integer  $uid
@@ -173,9 +173,9 @@ class Activity extends Table
     /**
      * Record activity
      *
-     * @param   integer  $projectid
-     * @param   integer  $by
-     * @param   string   $activity
+     * @param   integer|null  $projectid
+     * @param   integer|null  $by
+     * @param   string|null   $activity
      * @param   string|int $referenceid
      * @param   string   $highlighted
      * @param   string   $url
@@ -293,7 +293,7 @@ class Activity extends Table
      * Save activity preview
      *
      * @param   integer  $aid
-     * @param   string   $preview
+     * @param   string|null   $preview
      * @return  boolean  true on success
      */
     public function saveActivityPreview($aid = 0, $preview = null)
@@ -336,7 +336,7 @@ class Activity extends Table
     /**
      * Get count of new activity since member last visit (single project)
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $uid
      * @return  mixed    integer or null
      */
@@ -360,7 +360,7 @@ class Activity extends Table
     /**
      * Get activity count
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $uid
      * @return  mixed    integer or null
      */
@@ -466,8 +466,8 @@ class Activity extends Table
     /**
      * Match activity
      *
-     * @param   integer  $projectid
-     * @param   string   $check
+     * @param   integer|null  $projectid
+     * @param   string|null   $check
      * @return  mixed    integer or false
      */
     public function checkActivity($projectid = null, $check = null)

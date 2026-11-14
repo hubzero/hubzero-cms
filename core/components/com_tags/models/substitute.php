@@ -159,8 +159,8 @@ class Substitute extends Relational
     /**
      * Move all references to one tag to another tag
      *
-     * @param   integer  $oldtagid  ID of tag to be moved
-     * @param   integer  $newtagid  ID of tag to move to
+     * @param   integer|null  $oldtagid  ID of tag to be moved
+     * @param   integer|null  $newtagid  ID of tag to move to
      * @return  boolean  True if records changed
      */
     public static function moveTo($oldtagid = null, $newtagid = null)
@@ -235,8 +235,8 @@ class Substitute extends Relational
     /**
      * Copy all substitutions for one tag to another
      *
-     * @param   integer  $oldtagid  ID of tag to be copied
-     * @param   integer  $newtagid  ID of tag to copy to
+     * @param   integer|null  $oldtagid  ID of tag to be copied
+     * @param   integer|null  $newtagid  ID of tag to copy to
      * @return  boolean  True if records copied
      */
     public static function copyTo($oldtagid = null, $newtagid = null)

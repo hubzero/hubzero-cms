@@ -29,7 +29,7 @@ class Version extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $pid      Pub ID
+     * @param   integer|null  $pid      Pub ID
      * @param   string   $version  Version number or name
      * @return  mixed False if error, Object on success
      */
@@ -67,7 +67,7 @@ class Version extends Table
     /**
      * Update record
      *
-     * @param   integer  $pid      Pub ID
+     * @param   integer|null  $pid      Pub ID
      * @param   string   $update   Column name
      * @param   string   $new      Update to
      * @param   string   $where    Where
@@ -109,7 +109,7 @@ class Version extends Table
     /**
      * Get used labels
      *
-     * @param   integer  $pid      Pub ID
+     * @param   integer|null  $pid      Pub ID
      * @param   string   $exclude  Version number or name
      * @return  array|false
      */
@@ -148,7 +148,7 @@ class Version extends Table
     /**
      * Get attribute
      *
-     * @param   integer  $pid      Pub ID
+     * @param   integer|null  $pid      Pub ID
      * @param   string   $version  Version number or name
      * @param   string   $select   Select query
      * @return  string|false
@@ -219,8 +219,8 @@ class Version extends Table
     /**
      * Check version
      *
-     * @param   integer  $pid      Pub ID
-     * @param   string   $version  Version number or name
+     * @param   integer|null  $pid      Pub ID
+     * @param   string|null   $version  Version number or name
      * @return  boolean
      */
     public function checkVersion($pid = null, $version = null)
@@ -252,7 +252,7 @@ class Version extends Table
     /**
      * Get pub id
      *
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $vid  Pub version ID
      * @return  string|false|null
      */
     public function getPubId($vid = null)
@@ -268,7 +268,7 @@ class Version extends Table
     /**
      * Get ID of main version
      *
-     * @param   integer  $pid  Pub ID
+     * @param   integer|null  $pid  Pub ID
      * @return  string|false|null
      */
     public function getMainVersionId($pid = null)
@@ -285,7 +285,7 @@ class Version extends Table
     /**
      * Get published version number
      *
-     * @param   integer  $pid  Pub ID
+     * @param   integer|null  $pid  Pub ID
      * @return  string|false|null
      */
     public function getPublishedVersionNumber($pid = null)
@@ -302,7 +302,7 @@ class Version extends Table
     /**
      * Get published version count
      *
-     * @param   integer  $pid  Pub ID
+     * @param   integer|null  $pid  Pub ID
      * @return  string|false|null
      */
     public function getPublishedCount($pid = null)
@@ -319,7 +319,7 @@ class Version extends Table
     /**
      * Get version count
      *
-     * @param   integer  $pid  Pub ID
+     * @param   integer|null  $pid  Pub ID
      * @return  string|false|null
      */
     public function getCount($pid = null)
@@ -335,7 +335,7 @@ class Version extends Table
     /**
      * Get last public release
      *
-     * @param   integer  $pid  Pub ID
+     * @param   integer|null  $pid  Pub ID
      * @return  object|false
      */
     public function getLastPubRelease($pid = null)
@@ -391,7 +391,7 @@ class Version extends Table
     /**
      * Remove main flag
      *
-     * @param   integer  $vid       Pub version ID
+     * @param   integer|null  $vid       Pub version ID
      * @param   boolean|int $unpublish
      * @return  bool
      */
@@ -521,7 +521,7 @@ class Version extends Table
     /**
      * Save version parameter
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @param   string   $param
      * @param   string|int $value
      * @return  bool
@@ -639,7 +639,7 @@ class Version extends Table
     /**
      * Get publication version by ID
      *
-     * @param   integer $vid    Publication Version ID
+     * @param   integer|null $vid    Publication Version ID
      * @return  object|false
      */
     public function getPubVersion($vid = null)

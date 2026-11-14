@@ -41,7 +41,7 @@ class Period
     /**
      * Constructor
      *
-     * @param   string  $period  Time period (month, week, etc)
+     * @param   string|null  $period  Time period (month, week, etc)
      * @return  void
      */
     public function __construct($period = null)

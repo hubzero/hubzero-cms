@@ -27,7 +27,7 @@ class Archive extends Obj
     /**
      * Constructor
      *
-     * @param   object  $type
+     * @param   object|null  $type
      * @return  void
      */
     public function __construct($type = null)
@@ -38,7 +38,7 @@ class Archive extends Obj
     /**
      * Get Instance of Page Archive
      *
-     * @param   string  $key  Instance Key
+     * @param   string|null  $key  Instance Key
      * @return  object
      */
     public static function &getInstance($key = null)

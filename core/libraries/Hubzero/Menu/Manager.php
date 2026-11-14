@@ -43,7 +43,7 @@ class Manager
     /**
      * Get a menu instance.
      *
-     * @param   string  $menu
+     * @param   string|null  $menu
      * @return  mixed
      */
     public function menu($menu = null, $options = [])

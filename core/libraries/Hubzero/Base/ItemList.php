@@ -45,7 +45,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     /**
      * Constructor
      *
-     * @param      array $data Array of data
+     * @param      array|null $data Array of data
      * @return     void
      */
     public function __construct($data = null)

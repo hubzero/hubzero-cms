@@ -33,7 +33,7 @@ class OneToMany extends Relationship
      * to loop over the items.
      *
      * @param   object|array   $models    A single model or array of models to associate
-     * @param   \Closure        $callback  A callback to potentially append additional data
+     * @param   \Closure|null        $callback  A callback to potentially append additional data
      * @return  object|array
      **/
     public function associate($models, $callback = null)

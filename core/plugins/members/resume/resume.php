@@ -73,8 +73,8 @@ class Resume extends Plugin
     /**
      * Check if a user has employer authorization
      *
-     * @param   object   $user    User
-     * @param   object   $member  Profile
+     * @param   object|null   $user    User
+     * @param   object|null   $member  Profile
      * @return  integer  1 = authorized, 0 = not
      */
     public function isEmployer($user = null, $member = null)

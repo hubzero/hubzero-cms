@@ -36,7 +36,7 @@ class Handler
      * Flash an information message.
      *
      * @param   string  $message
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  object
      */
     public function info($message, $domain = null)
@@ -50,7 +50,7 @@ class Handler
      * Flash a success message.
      *
      * @param   string  $message
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  object
      */
     public function success($message, $domain = null)
@@ -64,7 +64,7 @@ class Handler
      * Flash an error message.
      *
      * @param   string  $message
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  object
      */
     public function error($message, $domain = null)
@@ -78,7 +78,7 @@ class Handler
      * Flash a warning message.
      *
      * @param   string  $message
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  object
      */
     public function warning($message, $domain = null)
@@ -93,7 +93,7 @@ class Handler
      *
      * @param   string  $message
      * @param   string  $type
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  $this
      */
     public function message($message, $type = 'info', $domain = null)
@@ -128,7 +128,7 @@ class Handler
     /**
      * Check if there are any messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  boolean
      */
     public function isEmpty($domain = null)
@@ -139,7 +139,7 @@ class Handler
     /**
      * Check if there are any messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  boolean
      */
     public function any($domain = null)
@@ -150,7 +150,7 @@ class Handler
     /**
      * Get all messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  array
      */
     public function messages($domain = null)
@@ -161,7 +161,7 @@ class Handler
     /**
      * Clear all messages
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  object
      */
     public function clear($domain = null)
@@ -174,7 +174,7 @@ class Handler
     /**
      * Get the instance as an array.
      *
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  array
      */
     public function toArray($domain = null)
@@ -186,7 +186,7 @@ class Handler
      * Convert the object to its JSON representation.
      *
      * @param   integer  $options
-     * @param   string   $domain
+     * @param   string|null   $domain
      * @return  string
      */
     public function toJson($options = 0, $domain = null)

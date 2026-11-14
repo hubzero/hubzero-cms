@@ -53,8 +53,8 @@ class Group extends Table
     /**
      * Get the parent asset id for the record
      *
-     * @param   object   $table  A Table object for the asset parent.
-     * @param   integer  $id     The id for the asset
+     * @param   object|null   $table  A Table object for the asset parent.
+     * @param   integer|null  $id     The id for the asset
      * @return  integer  The id of the asset's parent
      */
     protected function getAssetParentId($table = null, $id = null)

@@ -37,7 +37,7 @@ class Attachment extends Obj
     /**
      * Constructor
      *
-     * @param   object  $parent
+     * @param   object|null  $parent
      * @return  void
      */
     public function __construct($parent = null)

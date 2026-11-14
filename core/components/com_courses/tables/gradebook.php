@@ -175,7 +175,7 @@ class GradeBook extends Table
      * Query to sync form scores with gradebook
      *
      * @param      object   $course
-     * @param      array $member_id
+     * @param      array|null $member_id
      * @return     void
      */
     public function syncGrades($course, $member_id = null)

@@ -87,7 +87,7 @@ class Accesslevels extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

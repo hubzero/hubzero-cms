@@ -24,7 +24,7 @@ class Hipaacompliant extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string  $areas   Plugins to return data
+     * @param   string|null  $areas   Plugins to return data
      * @return  void
      */
     public function onProject($model, $action = '', $areas = null)

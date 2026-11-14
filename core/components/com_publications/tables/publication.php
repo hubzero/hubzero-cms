@@ -33,7 +33,7 @@ class Publication extends Table
     /**
      * Load by alias
      *
-     * @param   string  $oid
+     * @param   string|null  $oid
      * @return  mixed   object or false
      */
     public function loadPublication($oid = null)
@@ -53,7 +53,7 @@ class Publication extends Table
     /**
      * Load by alias
      *
-     * @param   string  $oid
+     * @param   string|null  $oid
      * @return  mixed  object or false
      */
     public function loadAlias($oid = null)
@@ -461,10 +461,10 @@ class Publication extends Table
     /**
      * Get publication
      *
-     * @param   integer  $pid
+     * @param   integer|null  $pid
      * @param   string   $version
-     * @param   integer  $project_id
-     * @param   string   $alias
+     * @param   integer|null  $project_id
+     * @param   string|null   $alias
      * @return  object|false
      */
     public function getPublication($pid = null, $version = 'default', $project_id = null, $alias = null)
@@ -572,7 +572,7 @@ class Publication extends Table
     /**
      * Delete publication existence
      *
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  void
      */
     public function deleteExistence($id = null)
@@ -591,7 +591,7 @@ class Publication extends Table
      *
      * @param   array   $validProjects
      * @param   string  $get
-     * @param   string  $when
+     * @param   string|null  $when
      * @return  mixed
      */
     public function getPubStats($validProjects = [], $get = 'total', $when = null)

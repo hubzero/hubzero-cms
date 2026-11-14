@@ -228,7 +228,7 @@ class Tickets extends AdminController
     /**
      * Displays a ticket and comments
      *
-     * @param   object  $comment
+     * @param   object|null  $comment
      *
      * @return  void
      */
@@ -966,7 +966,7 @@ class Tickets extends AdminController
      * @param   string   $name        Select element 'name' attribute
      * @param   string   $active      Selected option
      * @param   integer  $nouser      Flag to set first option to 'No user'
-     * @param   string   $javascript  Any inline JS to attach to the element
+     * @param   string|null   $javascript  Any inline JS to attach to the element
      * @param   string   $order       The sort order for items in the list
      * @return  string   HTML select list
      */
@@ -1021,7 +1021,7 @@ class Tickets extends AdminController
      * @param   string   $name        Select element 'name' attribute
      * @param   string   $active      Selected option
      * @param   integer  $nouser      Flag to set first option to 'No user'
-     * @param   string   $javascript  Any inline JS to attach to the element
+     * @param   string|null   $javascript  Any inline JS to attach to the element
      * @param   string   $group       The group to pull member names from
      * @return  string   HTML select list
      */

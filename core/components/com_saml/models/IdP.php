@@ -32,7 +32,7 @@ class IdP
     /**
      * Constructor
      *
-     * @param   object  $params  Component params; defaults to com_saml's
+     * @param   object|null  $params  Component params; defaults to com_saml's
      * @return  void
      */
     public function __construct($params = null)

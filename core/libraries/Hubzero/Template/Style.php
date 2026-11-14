@@ -33,7 +33,7 @@ class Style
      * @param   object    $db        The database
      * @param   string    $template  The template element, e.g. meridian
      * @param   integer   $client    0 for the site, 1 for the administrator
-     * @param   callable  $log       Optional; takes a message and a type
+     * @param   callable|null  $log       Optional; takes a message and a type
      * @return  boolean   Whether a style is now the default
      */
     public static function makeDefault($db, $template, $client = 0, $log = null)

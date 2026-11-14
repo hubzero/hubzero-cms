@@ -523,7 +523,7 @@ class Archive extends Obj
     /**
      * Check if someone or a group is following this collection
      *
-     * @param   integer $follower_id   ID of the follower
+     * @param   integer|null $follower_id   ID of the follower
      * @param   string  $follower_type Type of the follower [member, group]
      * @return  boolean
      */
@@ -547,7 +547,7 @@ class Archive extends Obj
     /**
      * Check if someone or a group is following this collection
      *
-     * @param   integer  $follower_id    ID of the follower
+     * @param   integer|null  $follower_id    ID of the follower
      * @param   string   $follower_type  Type of the follower [member, group]
      * @return  boolean
      */

@@ -165,7 +165,7 @@ class Styles extends AdminController
     /**
      * Edit an entry
      *
-     * @param   object  $style
+     * @param   object|null  $style
      *
      * @return  void
      */
@@ -458,7 +458,7 @@ class Styles extends AdminController
     /**
      * Custom clean cache method
      *
-     * @param   string   $group
+     * @param   string|null   $group
      * @param   integer  $client_id
      * @return  void
      */

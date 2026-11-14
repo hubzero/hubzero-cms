@@ -387,7 +387,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     /**
      * Generate return url
      *
-     * @param   string  $return  url
+     * @param   string|null  $return  url
      * @param   bool    $encode  whether or not to encode return before using
      * @return  string  url
      */

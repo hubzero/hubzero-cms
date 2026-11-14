@@ -135,7 +135,7 @@ class Recipient extends Relational
     /**
      * Get records for a user based on filters passed
      *
-     * @param   integer  $uid      User ID
+     * @param   integer|null  $uid      User ID
      * @param   array    $filters  Filters to build query from
      * @return  mixed    False if errors, array on success
      */
@@ -183,7 +183,7 @@ class Recipient extends Relational
      * Get a list of unread messages for a user
      *
      * @param   integer  $uid    User ID
-     * @param   integer  $limit  Number of records to return
+     * @param   integer|null  $limit  Number of records to return
      * @return  mixed    False if errors, array on success
      */
     public function getUnreadMessages($uid, $limit = null)

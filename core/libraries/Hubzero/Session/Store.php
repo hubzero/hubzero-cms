@@ -145,7 +145,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
     /**
      * Garbage collect stale sessions from the SessionHandler backend.
      *
-     * @param   int  $maxlifetime  The maximum age of a session.
+     * @param   int|null  $maxlifetime  The maximum age of a session.
      * @return  boolean  True on success, false otherwise.
      */
 

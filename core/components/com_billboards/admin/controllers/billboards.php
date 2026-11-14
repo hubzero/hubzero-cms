@@ -60,7 +60,7 @@ class BillBoards extends AdminController
     /**
      * Edit a billboard
      *
-     * @param   object  $billboard
+     * @param   object|null  $billboard
      *
      * @return  void
      */

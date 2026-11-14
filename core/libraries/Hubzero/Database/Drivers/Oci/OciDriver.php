@@ -830,8 +830,8 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix (unused)
-     * @param   string  $prefix    For the table (unused)
+     * @param   string|null  $backup    Table prefix (unused)
+     * @param   string|null  $prefix    For the table (unused)
      * @return  $this
      * @throws  \RuntimeException  If the source table does not exist
      */
@@ -890,7 +890,7 @@ class OciDriver extends BaseSqlDriver
      * Oracle uses NLS_CHARACTERSET parameter
      *
      * @param   string       $table  The table for which to retrieve the character set (ignored)
-     * @param   string       $field  The field to check (ignored)
+     * @param   string|null       $field  The field to check (ignored)
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)

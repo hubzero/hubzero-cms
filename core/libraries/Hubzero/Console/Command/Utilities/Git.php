@@ -45,7 +45,7 @@ class Git
      * Constructor
      *
      * @param   string  $root    The git root directory (not including .git suffix)
-     * @param   string  $source  The upstream repository
+     * @param   string|null  $source  The upstream repository
      * @return  void
      **/
     public function __construct($root, $source = null)
@@ -182,11 +182,11 @@ class Git
     /**
      * Get the log
      *
-     * @param   int          $length     Number of entires to return
-     * @param   int          $start      Commit number to start at
+     * @param   int|null          $length     Number of entires to return
+     * @param   int|null          $start      Commit number to start at
      * @param   bool         $upcoming   Whether or not to include upcoming commits in response
      * @param   bool         $installed  Whether or not to include installed commits in response
-     * @param   string       $search     Filter by search string
+     * @param   string|null       $search     Filter by search string
      * @param   string|null  $format     Format of response, or null for git's default
      * @param   bool         $count      Return count of entires
      * @return  array|string
@@ -269,7 +269,7 @@ class Git
      *
      * @param   bool    $installed  Whether or not to include installed entries
      * @param   bool    $upcoming   Whether or not to include upcoming entries
-     * @param   string  $search     A search filter to apply
+     * @param   string|null  $search     A search filter to apply
      * @return  string
      **/
     private function countLogs($installed = true, $upcoming = false, $search = null)
@@ -305,7 +305,7 @@ class Git
      *
      * @param   bool    $dryRun      Whether or not to do the run, or just check what's incoming
      * @param   bool    $allowNonFf  Whether or not to allow non fast forward pulls (i.e. merges)
-     * @param   string  $source      Where this repository should pull from (this should be a valid git remote/branch)
+     * @param  string|null  $source  Where this repository should pull from (this should be a valid git remote/branch)
      * @return  array
      **/
     public function update($dryRun = true, $allowNonFf = false, $source = null)
@@ -420,7 +420,7 @@ class Git
      *
      * @param   string  $ref        The ref to push from/to (the same name unless $remoteRef is provided)
      * @param   string  $remote     The remote name to push to
-     * @param   string  $remoteRef  The remote ref if it differs in name from the local one
+     * @param   string|null  $remoteRef  The remote ref if it differs in name from the local one
      * @return  array
      **/
     public function push($ref = 'master', $remote = 'origin', $remoteRef = null)

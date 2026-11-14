@@ -89,7 +89,7 @@ class Attachment extends Relational
      * Return a formatted timestamp for created date
      *
      * @param   string  $as
-     * @param   string  $format
+     * @param   string|null  $format
      * @return  string
      */
     public function created($as = '', $format = null)
@@ -115,7 +115,7 @@ class Attachment extends Relational
      * Load a record by filename and optional page ID
      *
      * @param   string   $filename
-     * @param   integer  $page_id
+     * @param   integer|null  $page_id
      * @return  object
      */
     public static function oneByFilename($filename, $page_id = null)

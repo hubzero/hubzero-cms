@@ -23,7 +23,7 @@ class Logs extends AbstractRenderer
     /**
      * Constructor
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  void
      */
     public function __construct($messages = null)
@@ -46,7 +46,7 @@ class Logs extends AbstractRenderer
     /**
      * Render a list of messages
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  string  Nothing: the messages go to the log
      */
     public function render($messages = null)

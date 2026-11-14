@@ -1061,7 +1061,7 @@ class AseDriver extends BaseSqlDriver
      * Gets the character set
      *
      * @param   string  $table  The table name
-     * @param   string  $field  Optional field name
+     * @param   string|null  $field  Optional field name
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)
@@ -1178,8 +1178,8 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  Old table name
      * @param   string  $newTable  New table name
-     * @param   string  $backup    Table prefix
-     * @param   string  $prefix    For the table
+     * @param   string|null  $backup    Table prefix
+     * @param   string|null  $prefix    For the table
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)

@@ -84,8 +84,8 @@ class ImageViewer extends Base
      * Clean-up related files
      *
      * @param   string  $path
-     * @param   object   $configs
-     * @param   string  $md5
+     * @param   object|null   $configs
+     * @param   string|null  $md5
      * @return  bool
      */
     public function cleanUp($path, $configs = null, $md5 = null)
@@ -474,9 +474,9 @@ class ImageViewer extends Base
      *
      * @param   string   $path
      * @param   integer  $id
-     * @param   object   $configs
-     * @param   object   $params
-     * @param   string   $suffix
+     * @param   object|null   $configs
+     * @param   object|null   $params
+     * @param   string|null   $suffix
      * @return  string
      */
     public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)

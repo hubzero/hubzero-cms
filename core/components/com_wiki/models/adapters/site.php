@@ -25,8 +25,8 @@ class Site extends Base
     /**
      * Constructor
      *
-     * @param   string   $pagename
-     * @param   string   $path
+     * @param   string|null   $pagename
+     * @param   string|null   $path
      * @return  void
      */
     public function __construct($pagename = null, $path = null)

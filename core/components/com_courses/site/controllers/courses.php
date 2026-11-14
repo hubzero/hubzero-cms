@@ -269,7 +269,7 @@ class Courses extends SiteController
      * Set access permissions for a user
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

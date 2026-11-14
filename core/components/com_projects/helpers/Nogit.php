@@ -38,7 +38,7 @@ class Nogit extends Obj
     /**
      * Constructor
      *
-     * @param   string  $path
+     * @param   string|null  $path
      * @return  void
      */
     public function __construct($path = null)
@@ -59,7 +59,7 @@ class Nogit extends Obj
     /**
      * Init Git repository
      *
-     * @param   string  $path  Repo path
+     * @param   string|null  $path  Repo path
      * @return  string|bool
      */
     public function iniGit($path = null)

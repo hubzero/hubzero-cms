@@ -106,7 +106,7 @@ class Preferences extends AdminController
     /**
      * Edit a member quota
      *
-     * @param   integer|object  $row  ID of user to edit
+     * @param   integer|object|null  $row  ID of user to edit
      *
      * @return  void
      */

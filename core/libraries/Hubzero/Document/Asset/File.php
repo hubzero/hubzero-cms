@@ -77,7 +77,7 @@ class File extends Obj
      * Constructor
      *
      * @param   string  $extension  CMS Extension to load asset from
-     * @param   string  $name       Asset name (optional)
+     * @param   string|null  $name       Asset name (optional)
      * @return  void
      */
     public function __construct($extension, $name = null)

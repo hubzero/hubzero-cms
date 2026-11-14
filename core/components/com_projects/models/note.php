@@ -75,7 +75,7 @@ class Note extends \Components\Wiki\Models\Book
      *
      * @param   integer  $id
      * @param   boolean  $register
-     * @param   boolean  $listed
+     * @param   boolean|null  $listed
      * @return  mixed
      */
     public function getPublicStamp($id = 0, $register = false, $listed = null)

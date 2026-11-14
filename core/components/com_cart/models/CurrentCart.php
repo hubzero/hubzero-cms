@@ -715,7 +715,7 @@ class CurrentCart extends Cart
      * Set customer status
      *
      * @param   string  $status new status
-     * @param   int     $tId transaction ID
+     * @param   int|null     $tId transaction ID
      * @return  bool
      */
     public function updateTransactionCustomerStatus($status, $tId = null)

@@ -144,9 +144,9 @@ class Publication extends Obj
     /**
      * Constructor
      *
-     * @param   integer|object  $oid      Publication ID or alias
+     * @param   integer|object|null  $oid      Publication ID or alias
      * @param   string   $version  Publication version number or alias (dev/default)
-     * @param   integer  $vid      Publication version ID
+     * @param   integer|null  $vid      Publication version ID
      * @return  void
      */
     public function __construct($oid = null, $version = 'default', $vid = null)
@@ -291,7 +291,7 @@ class Publication extends Obj
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default
      * @return  mixed
      */
@@ -354,7 +354,7 @@ class Publication extends Obj
     /**
      * Check if the publication belongs to project
      *
-     * @param   int   $projectId
+     * @param   int|null   $projectId
      * @return  bool
      */
     public function belongsToProject($projectId = null)
@@ -663,10 +663,10 @@ class Publication extends Obj
     /**
      * Get curation model or its properties
      *
-     * @param   string  $property
-     * @param   int     $blockId
-     * @param   string  $blockProperty
-     * @param   int     $elementId
+     * @param   string|null  $property
+     * @param   int|null     $blockId
+     * @param   string|null  $blockProperty
+     * @param   int|null     $elementId
      * @return  mixed
      */
     public function curation($property = null, $blockId = null, $blockProperty = null, $elementId = null)
@@ -802,7 +802,7 @@ class Publication extends Obj
     /**
      * Get publication table
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  object
      */
     public function table($name = null)
@@ -1277,7 +1277,7 @@ class Publication extends Obj
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function creator($property = null)
@@ -1299,7 +1299,7 @@ class Publication extends Obj
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function modifier($property = null)
@@ -1321,7 +1321,7 @@ class Publication extends Obj
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function curator($property = null)
@@ -1804,8 +1804,8 @@ class Publication extends Obj
     /**
      * Get wiki page
      *
-     * @param   string  $masterscope
-     * @param   string  $versionid
+     * @param   string|null  $masterscope
+     * @param   string|null  $versionid
      * @return  mixed
      */
     public function getWikiPage($pageid = null, $masterscope = null, $versionid = null)
@@ -2120,7 +2120,7 @@ class Publication extends Obj
      * it will return that property value. Otherwise,
      * it returns the entire Group object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function groupOwner($property = null)
@@ -2205,7 +2205,7 @@ class Publication extends Obj
     /**
      * Get status name
      *
-     * @param   int     $status
+     * @param   int|null     $status
      * @return  string  HTML
      */
     public function getStatusName($status = null)
@@ -2251,7 +2251,7 @@ class Publication extends Obj
     /**
      * Get status name
      *
-     * @param   int     $status
+     * @param   int|null     $status
      * @return  string  HTML
      */
     public function getStatusCss($status = null)
@@ -2297,7 +2297,7 @@ class Publication extends Obj
     /**
      * Get status date
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  string  HTML
      */
     public function getStatusDate($row = null)
@@ -2396,7 +2396,7 @@ class Publication extends Obj
     /**
      * Get the data according to ORCID work schema
      *
-     * @param   string  $putCode
+     * @param   string|null  $putCode
      *
      * @return  boolean or array
      */

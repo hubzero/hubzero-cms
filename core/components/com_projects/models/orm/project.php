@@ -482,7 +482,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Default value if property is not found
      * @return  mixed
      */

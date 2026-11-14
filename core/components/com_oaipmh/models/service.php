@@ -73,8 +73,8 @@ class Service extends Obj
     /**
      * Constructor
      *
-     * @param   string  $stylesheet  Optional stylesheet to link to
-     * @param   object  $db          Optional database connection
+     * @param   string|null  $stylesheet  Optional stylesheet to link to
+     * @param   object|null  $db          Optional database connection
      * @param   string  $version     XML Version
      * @param   string  $encoding    XML Encoding
      * @return  void
@@ -270,7 +270,7 @@ class Service extends Obj
      * Set error
      *
      * @param   string  $error
-     * @param   string  $message
+     * @param   string|null  $message
      * @return  object
      */
     public function error($error = '', $message = null, $verb = null)
@@ -466,7 +466,7 @@ class Service extends Obj
      *
      * @param   string  $from   Timestamp
      * @param   string  $until  Timestamp
-     * @param   string  $set    Set to filter by
+     * @param   string|null  $set    Set to filter by
      * @return  object  $this
      */
     public function identifiers($from, $until, $set = null)
@@ -479,7 +479,7 @@ class Service extends Obj
      *
      * @param   string  $from   Timestamp
      * @param   string  $until  Timestamp
-     * @param   string  $set    Set to filter by
+     * @param   string|null  $set    Set to filter by
      * @param   string  $verb
      * @return  object  $this
      */

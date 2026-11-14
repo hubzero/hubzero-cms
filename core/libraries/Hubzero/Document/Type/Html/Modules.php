@@ -23,7 +23,7 @@ class Modules extends Renderer
      *
      * @param   string  $position  The position of the modules to render
      * @param   array   $params    Associative array of values
-     * @param   string  $content   Module content
+     * @param   string|null  $content   Module content
      * @return  string  The output of the script
      */
     public function render($position, $params = [], $content = null)

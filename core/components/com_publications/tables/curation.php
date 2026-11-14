@@ -50,7 +50,7 @@ class Curation extends Table
     /**
      * Get curation record
      *
-     * @param   integer  $vid  Publication Version ID
+     * @param   integer|null  $vid  Publication Version ID
      * @return  mixed    False if error, Object on success
      */
     public function getRecords($vid = null)
@@ -69,8 +69,8 @@ class Curation extends Table
     /**
      * Load record
      *
-     * @param   integer  $pid  Publication ID
-     * @param   integer  $vid  Publication Version ID
+     * @param   integer|null  $pid  Publication ID
+     * @param   integer|null  $vid  Publication Version ID
      * @return  mixed    False if error, Object on success
      */
     public function getRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)
@@ -93,8 +93,8 @@ class Curation extends Table
     /**
      * Load record
      *
-     * @param   integer  $pid  Publication ID
-     * @param   integer  $vid  Publication Version ID
+     * @param   integer|null  $pid  Publication ID
+     * @param   integer|null  $vid  Publication Version ID
      * @return  mixed    False if error, Object on success
      */
     public function loadRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)

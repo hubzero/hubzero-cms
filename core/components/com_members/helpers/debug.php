@@ -61,7 +61,7 @@ class Debug
     /**
      * Get a list of the actions for the component or code actions.
      *
-     * @param   string  $component  The name of the component.
+     * @param   string|null  $component  The name of the component.
      * @return  array
      */
     public static function getActions($component = null)

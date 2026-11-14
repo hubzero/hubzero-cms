@@ -82,7 +82,7 @@ class Oauth
     /**
      * Constructs a new instance
      *
-     * @param   object  $http  a request tranport object to inject
+     * @param   object|null  $http  a request tranport object to inject
      * @return  void
      * @uses    SciStarter\Http\Curl
      **/

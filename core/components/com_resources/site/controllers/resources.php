@@ -2798,7 +2798,7 @@ class Resources extends SiteController
      * Check if a user is authorized
      *
      * @param   array    $contributorIDs   Authors of a resource
-     * @param   object   $resource
+     * @param   object|null   $resource
      * @return  boolean  True if user has access
      */
     protected function authorize($contributorIDs = [], $resource = null)
@@ -2835,7 +2835,7 @@ class Resources extends SiteController
      * Uses current user session if no user object is supplied
      *
      * @param   object   $resource  Resource
-     * @param   object   $user      User (optional)
+     * @param   object|null   $user      User (optional)
      * @return  boolean  True if user has access to a group-owned resource
      */
     private function checkGroupAccess($resource, $user = null)

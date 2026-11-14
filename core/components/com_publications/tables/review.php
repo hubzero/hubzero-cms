@@ -116,8 +116,8 @@ class Review extends Table
     /**
      * Get records
      *
-     * @param   integer  $pid        Pub ID
-     * @param   integer  $uid        User ID
+     * @param   integer|null  $pid        Pub ID
+     * @param   integer|null  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
      * @return  array|false  The matching reviews, or false without a publication ID
      */
@@ -152,8 +152,8 @@ class Review extends Table
     /**
      * Get records
      *
-     * @param   integer  $pid        Pub ID
-     * @param   integer  $uid        User ID
+     * @param   integer|null  $pid        Pub ID
+     * @param   integer|null  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
      * @return  string|false|null
      */
@@ -183,8 +183,8 @@ class Review extends Table
     /**
      * Get record
      *
-     * @param   integer  $pid        Pub ID
-     * @param   integer  $uid        User ID
+     * @param   integer|null  $pid        Pub ID
+     * @param   integer|null  $uid        User ID
      * @param   integer|string $versionid  Pub version ID
      * @return  array|false  The matching reviews, or false without a publication ID
      */
@@ -221,7 +221,7 @@ class Review extends Table
      *
      * @param   integer  $id        Reference ID
      * @param   string   $category  Category
-     * @param   integer  $uid       User ID
+     * @param   integer|null  $uid       User ID
      * @return  mixed    False if error, Object on success
      */
     public function getVote($id, $category = 'pubreview', $uid = null, $select = 'v.helpful')

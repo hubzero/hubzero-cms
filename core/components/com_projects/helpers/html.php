@@ -226,8 +226,8 @@ class Html extends Obj
     /**
      * Fix up some mimetypes
      *
-     * @param   string  $file
-     * @param   string  $mimeType
+     * @param   string|null  $file
+     * @param   string|null  $mimeType
      * @return  string
      */
     public static function fixUpMimeType($file = null, $mimeType = null)
@@ -369,7 +369,7 @@ class Html extends Obj
     /**
      * Replace with emotion icons
      *
-     * @param   string  $text
+     * @param   string|null  $text
      * @return  string
      */
     public static function replaceEmoIcons($text = null)
@@ -388,7 +388,7 @@ class Html extends Obj
     /**
      * Create a thumbnail name
      *
-     * @param   string  $image  Image name
+     * @param   string|null  $image  Image name
      * @param   string  $tn     Thumbnail prefix
      * @param   string  $ext
      * @return  string
@@ -555,7 +555,7 @@ class Html extends Obj
     /**
      * Get the random number appended to file name
      *
-     * @param   string  $path
+     * @param   string|null  $path
      * @return  string
      */
     public static function getAppendedNumber($path = null)
@@ -585,7 +585,7 @@ class Html extends Obj
     /**
      * Replace file ending
      *
-     * @param      string $path
+     * @param      string|null $path
      * @param      string $end
      * @param      string $delim
      * @return     string
@@ -623,7 +623,7 @@ class Html extends Obj
     /**
      * Append string to file name
      *
-     * @param      string $path
+     * @param      string|null $path
      * @param      string $append
      * @param      string $ext
      * @return     string|false
@@ -1245,7 +1245,7 @@ class Html extends Obj
     /**
      * Build list html
      *
-     * @param   string  $dir
+     * @param   string|null  $dir
      * @param   string  $currentDir
      * @return  string
      */

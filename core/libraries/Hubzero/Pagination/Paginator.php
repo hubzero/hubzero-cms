@@ -372,7 +372,7 @@ class Paginator extends Obj
     /**
      * Return the pagination footer.
      *
-     * @param   object|array  $view  Optional View object to use
+     * @param   object|array|null  $view  Optional View object to use
      * @return  string  Pagination footer.
      */
     public function render($view = null)

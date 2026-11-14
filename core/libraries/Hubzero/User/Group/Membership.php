@@ -253,7 +253,7 @@ class Membership
      * @param   integer  $gidNumber
      * @param   integer  $uidNumber
      * @param   mixed    $date       datetime, timestamp, Date object or null
-     * @param   integer  $actor      user id setting it, defaults to current
+     * @param   integer|null  $actor      user id setting it, defaults to current
      * @return  boolean
      * @throws  \InvalidArgumentException
      */
@@ -395,7 +395,7 @@ class Membership
      * @param   integer  $gidNumber
      * @param   integer  $uidNumber
      * @param   string   $interval   anything strtotime understands, e.g. '+6 months'
-     * @param   integer  $actor
+     * @param   integer|null  $actor
      * @return  boolean
      */
     public static function extend($gidNumber, $uidNumber, $interval, $actor = null)
@@ -540,7 +540,7 @@ class Membership
      * @param   integer  $gidNumber
      * @param   integer  $uidNumber
      * @param   string   $reason
-     * @param   integer  $actor      null for the reaper
+     * @param   integer|null  $actor      null for the reaper
      * @return  boolean
      */
     public static function revoke($gidNumber, $uidNumber, $reason = self::REASON_EXPIRED, $actor = null)
@@ -633,7 +633,7 @@ class Membership
      * @param   string|null   $expires
      * @param   string   $reason
      * @param   integer  $wasManager
-     * @param   integer  $actor
+     * @param   integer|null  $actor
      * @return  boolean
      */
     public static function archive($gidNumber, $uidNumber, $expires, $reason, $wasManager = 0, $actor = null)
@@ -707,7 +707,7 @@ class Membership
      * @param   integer  $gidNumber
      * @param   array    $uidNumbers
      * @param   string   $reason
-     * @param   integer  $actor
+     * @param   integer|null  $actor
      * @return  integer  rows archived
      */
     public static function archiveMembers($gidNumber, $uidNumbers, $reason = self::REASON_MANUAL, $actor = null)
@@ -800,7 +800,7 @@ class Membership
      * @param   integer  $uidNumber
      * @param   string   $action
      * @param   mixed    $comments
-     * @param   integer  $actor
+     * @param   integer|null  $actor
      * @return  boolean
      */
     protected static function log($gidNumber, $uidNumber, $action, $comments = [], $actor = null)
@@ -1017,7 +1017,7 @@ class Membership
     /**
      * Reap every lapsed membership, in batches
      *
-     * @param   integer  $limit  rows to consider in this pass
+     * @param   integer|null  $limit  rows to consider in this pass
      * @return  array    counts: revoked, skipped, groups
      */
     public static function reap($limit = null)

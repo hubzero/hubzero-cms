@@ -369,7 +369,7 @@ class Google extends \Hubzero\Plugin\OauthClient
     /**
      * Display login button
      *
-     * @param   string  $return
+     * @param   string|null  $return
      * @return  string
      */
     public static function onRenderOption($return = null)

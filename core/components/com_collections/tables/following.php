@@ -44,10 +44,10 @@ class Following extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $oid             Record alias
-     * @param   string   $following_type  Following type
-     * @param   string   $follower_id     Follower ID
-     * @param   string   $follower_type   Follower type
+     * @param   string|null   $oid             Record alias
+     * @param   string|null   $following_type  Following type
+     * @param   string|null   $follower_id     Follower ID
+     * @param   string|null   $follower_type   Follower type
      * @return  boolean  True on success
      */
     public function loadFollowing($oid = null, $following_type = null, $follower_id = null, $follower_type = null)

@@ -378,7 +378,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param   string   $toolname
+     * @param   string|null   $toolname
      * @return  boolean
      */
     public function read($toolname = null)
@@ -651,7 +651,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string $property Parameter description (if any) ...
+     * @param     string|null $property Parameter description (if any) ...
      * @return   string|null Return description (if any) ...
      */
     public function __get($property = null)
@@ -709,7 +709,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string $property Parameter description (if any) ...
+     * @param     string|null $property Parameter description (if any) ...
      * @param     mixed $value Parameter description (if any) ...
      */
     public function __set($property = null, $value = null)
@@ -739,7 +739,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string $property Parameter description (if any) ...
+     * @param     string|null $property Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
     public function __isset($property = null)
@@ -761,7 +761,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     string $property Parameter description (if any) ...
+     * @param     string|null $property Parameter description (if any) ...
      * @return   void
      */
     public function __unset($property = null)
@@ -1242,7 +1242,7 @@ class Tool
     /**
      * Get tools for a user
      *
-     * @param   integer  $userid
+     * @param   integer|null  $userid
      * @return  mixed    False on error, array on success
      */
     public static function getToolContributions($userid = null)
@@ -1266,8 +1266,8 @@ class Tool
     /**
      * Get resource ID for a tool
      *
-     * @param   string   $toolname
-     * @param   integer  $id
+     * @param   string|null   $toolname
+     * @param   integer|null  $id
      * @return  mixed
      */
     public static function getResourceId($toolname = null, $id = null)
@@ -1633,7 +1633,7 @@ class Tool
     /**
      * Get tool ID based on tool name
      *
-     * @param   string  $toolname
+     * @param   string|null  $toolname
      * @return  mixed
      */
     public static function getToolId($toolname = null)
@@ -1721,8 +1721,8 @@ class Tool
     /**
      * Save ticket ID
      *
-     * @param   string   $toolid
-     * @param   string   $ticketid
+     * @param   string|null   $toolid
+     * @param   string|null   $ticketid
      * @return  boolean
      */
     public static function saveTicketId($toolid = null, $ticketid = null)
@@ -1742,7 +1742,7 @@ class Tool
     /**
      * Get ticket ID for given tool
      *
-     * @param   integer  $toolid
+     * @param   integer|null  $toolid
      * @return  mixed
      */
     public static function getTicketId($toolid = null)

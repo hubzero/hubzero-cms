@@ -1132,7 +1132,7 @@ class Discussions extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer  $assetId    Specific object to check permissions for
+     * @param   integer|null  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)
@@ -1874,7 +1874,7 @@ class Discussions extends Plugin
     /**
      * Show a form for editing a category
      *
-     * @param   object  $category
+     * @param   object|null  $category
      * @return  string
      */
     public function editcategory($category = null)
@@ -2301,7 +2301,7 @@ class Discussions extends Plugin
     /**
      * Show a form for editing a post
      *
-     * @param   object  $post
+     * @param   object|null  $post
      * @return  string
      */
     public function editthread($post = null)

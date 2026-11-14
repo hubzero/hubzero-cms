@@ -79,7 +79,7 @@ class Publications extends Plugin
      * @param   object   $period      Time period to pull results for
      * @param   mixed    $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
-     * @param   array    $areas       Active area(s)
+     * @param   array|null    $areas       Active area(s)
      * @param   array    $tagids      Array of tag IDs
      * @return  array|object|int
      */

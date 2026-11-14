@@ -732,7 +732,7 @@ class Project extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function owner($property = null)
@@ -753,7 +753,7 @@ class Project extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function creator($property = null)
@@ -774,7 +774,7 @@ class Project extends Model
      * it will return that property value. Otherwise,
      * it returns the entire Group object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function groupOwner($property = null)
@@ -860,7 +860,7 @@ class Project extends Model
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Value to return when the property is not set
      * @return  mixed
      */
@@ -1062,7 +1062,7 @@ class Project extends Model
     /**
      * Get project table
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  object
      */
     public function table($name = null)
@@ -1435,7 +1435,7 @@ class Project extends Model
     /**
      * Checks if an activity has been recorded
      *
-     * @param   string  $activity
+     * @param   string|null  $activity
      * @return  integer
      */
     public function checkActivity($activity = null)

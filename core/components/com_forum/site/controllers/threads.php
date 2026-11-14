@@ -60,9 +60,9 @@ class Threads extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object  $section
-     * @param   object  $category
-     * @param   object  $thread
+     * @param   object|null  $section
+     * @param   object|null  $category
+     * @param   object|null  $thread
      * @return  void
      */
     protected function buildPathway($section = null, $category = null, $thread = null)
@@ -111,9 +111,9 @@ class Threads extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object  $section
-     * @param   object  $category
-     * @param   object  $thread
+     * @param   object|null  $section
+     * @param   object|null  $category
+     * @param   object|null  $thread
      * @return  void
      */
     protected function buildTitle($section = null, $category = null, $thread = null)
@@ -1127,7 +1127,7 @@ class Threads extends SiteController
      *
      * @param   string   $action     'core.edit' or 'core.delete'
      * @param   string   $assetType  component, section, category or thread
-     * @param   integer  $assetId    Asset id, if any
+     * @param   integer|null  $assetId    Asset id, if any
      * @return  boolean
      */
     protected function moderates($action, $assetType = 'component', $assetId = null)
@@ -1149,7 +1149,7 @@ class Threads extends SiteController
      * Set the access permissions the views read from the configuration
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

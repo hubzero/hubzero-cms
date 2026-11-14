@@ -51,8 +51,8 @@ class Host extends Table
     /**
      * Inserts a new row if id is zero or updates an existing row in the database table
      *
-     * @param   boolean  $insert       If true, forces an insert
-     * @param   boolean  $kv           If false, null object variables are not updated
+     * @param   boolean|null  $insert       If true, forces an insert
+     * @param   boolean|null  $kv           If false, null object variables are not updated
      * @param   boolean  $updateNulls  If false, null object variables are not updated
      * @return  mixed    null|string null if successful otherwise returns and error message
      */
@@ -92,7 +92,7 @@ class Host extends Table
     /**
      * Default delete method
      *
-     * @param   integer  $oid  Record ID
+     * @param   integer|null  $oid  Record ID
      * @return  boolean  True if successful otherwise returns and error message
      */
     public function delete($oid = null)

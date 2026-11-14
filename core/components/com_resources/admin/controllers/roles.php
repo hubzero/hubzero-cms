@@ -86,7 +86,7 @@ class Roles extends AdminController
     /**
      * Edit a role
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

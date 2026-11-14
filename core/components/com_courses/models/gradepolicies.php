@@ -34,7 +34,7 @@ class GradePolicies extends Base
      * Constructor
      *
      * @param      integer $oid  Resource ID
-     * @param      integer $sid Section ID
+     * @param      integer|null $sid Section ID
      * @return     void
      */
     public function __construct($oid, $sid = null)

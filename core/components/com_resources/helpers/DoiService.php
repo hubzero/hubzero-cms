@@ -40,7 +40,7 @@ class DoiService extends Obj
     /**
      * Constructor
      *
-     * @param   array  $pub
+     * @param   array|null  $pub
      * @return  void
      */
     public function __construct($pub = null)
@@ -114,7 +114,7 @@ class DoiService extends Obj
     /**
      * Build service call path
      *
-     * @param   string  $doi
+     * @param   string|null  $doi
      * @return  string|false
      */
     public function getServicePath($doi = null)
@@ -147,7 +147,7 @@ class DoiService extends Obj
     /**
      * Map data to DOI fields
      *
-     * @param   array  $pub
+     * @param   array|null  $pub
      * @return  bool|null
      */
     public function mapData($pub = null)
@@ -217,7 +217,7 @@ class DoiService extends Obj
     /**
      * Map user
      *
-     * @param   integer  $uid      User ID
+     * @param   integer|null  $uid      User ID
      * @param   array    $authors  Publication authors list
      * @param   string   $type     Mapping field
      * @return  void
@@ -316,7 +316,7 @@ class DoiService extends Obj
     /**
      * Build XML - DOI is not required when register metadata using DataCite MDS API
      *
-     * @param  string $doi
+     * @param  string|null $doi
      * @return bool|string string
      */
     public function buildXml($doi = null)
@@ -606,7 +606,7 @@ class DoiService extends Obj
     /**
      * Delete a DOI
      *
-     * @param   string   $doi
+     * @param   string|null   $doi
      * @return  boolean
      */
     public function delete($doi = null)
@@ -662,7 +662,7 @@ class DoiService extends Obj
      * Run cURL to register DOI on EZID
      *
      * @param   string   $url
-     * @param   array    $postvals
+     * @param   array|null    $postvals
      * @return  bool|string
      */
     public function runCurl($url, $postvals = null)
@@ -751,7 +751,7 @@ class DoiService extends Obj
     /**
      * Update a DOI on EZID
      *
-     * @param   string   $doi
+     * @param   string|null   $doi
      * @param   boolean  $sendXml
      * @param   string   $status  DOI status [public, reserved]
      * @return  boolean
@@ -835,7 +835,7 @@ class DoiService extends Obj
      *
      * @param   boolean  $regMetadata - Register Metadata for DataCite DOI when it is set to true.
      * @param   boolean  $regUrl      - Register URL and DOI name for for DataCite DOI when it is set to true.
-     * @param   string   $doi
+     * @param   string|null   $doi
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
      * @return  string|null|bool

@@ -107,7 +107,7 @@ class Connect extends Obj
     /**
      * Constructor
      *
-     * @param   object   $model   Project
+     * @param   object|null   $model   Project
      * @param   integer  $userid  User ID
      * @param   string   $zone    Default time zone
      * @return  void
@@ -735,10 +735,10 @@ class Connect extends Obj
     /**
      * Add remote file
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
-     * @param   object   $file       Models\File
+     * @param   object|null   $file       Models\File
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  bool|string|null
      */
@@ -857,7 +857,7 @@ class Connect extends Obj
     /**
      * Update remote file
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
@@ -970,7 +970,7 @@ class Connect extends Obj
     /**
      * Rename remote file
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
@@ -1054,7 +1054,7 @@ class Connect extends Obj
     /**
      * Move remote file to another parent
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   string|int $remoteid   Remote resource ID
@@ -1127,7 +1127,7 @@ class Connect extends Obj
     /**
      * Delete remote item
      *
-     * @param      integer  $projectid  Project ID
+     * @param      integer|null  $projectid  Project ID
      * @param      string   $service    Service name (google or dropbox)
      * @param      integer  $uid        User ID
      * @param      string|int $remoteid   Remote resource ID
@@ -1175,7 +1175,7 @@ class Connect extends Obj
     /**
      * Create remote folder
      *
-     * @param   integer  $projectid       Project ID
+     * @param   integer|null  $projectid       Project ID
      * @param   string   $service         Service name (google or dropbox)
      * @param   integer  $uid             User ID
      * @param   string   $title           Folder name
@@ -1266,7 +1266,7 @@ class Connect extends Obj
     /**
      * Prep remote directory structure for syncing file
      *
-     * @param   integer  $projectid       Project ID
+     * @param   integer|null  $projectid       Project ID
      * @param   string   $service         Service name (google or dropbox)
      * @param   integer  $uid             User ID
      * @param   array    $local           Array of local file info
@@ -1505,9 +1505,9 @@ class Connect extends Obj
     /**
      * Save connection of local file after being exported
      *
-     * @param   integer  $projectid        Project ID
+     * @param   integer|null  $projectid        Project ID
      * @param   string   $service          Service name (google)
-     * @param   string   $id               Remote ID
+     * @param   string|null   $id               Remote ID
      * @param   string   $path             File path
      * @param   integer  $paired           Paired record ID
      * @param   string   $original_path    Original path
@@ -1954,7 +1954,7 @@ class Connect extends Obj
      * @param   integer  $uid      User ID
      * @param   array    $remote   Remote resource array
      * @param   object|array{}|null  $config  Component configuration
-     * @param   string   $alias    Project alias name
+     * @param   string|null   $alias    Project alias name
      * @return  bool
      */
     public function generateThumbnail($service = 'google', $uid = 0, $remote = [], $config = [], $alias = null)
@@ -2036,7 +2036,7 @@ class Connect extends Obj
      *
      * @param   string  $url
      * @param   string  $method
-     * @param   array   $postvals
+     * @param   array|null   $postvals
      * @return  bool|string string
      */
     public function runCurl($url, $method = 'GET', $postvals = null)

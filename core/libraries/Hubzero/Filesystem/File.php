@@ -26,7 +26,7 @@ class File extends Entity
      * Don't forget, paths are relative to the adapter root
      *
      * @param   string  $path     The path to use to build a new entity from
-     * @param   object  $adapter  The filesystem adapter to use for interaction with the entity
+     * @param   object|null  $adapter  The filesystem adapter to use for interaction with the entity
      * @return  object
      **/
     public static function fromPath($path, $adapter = null)
@@ -331,7 +331,7 @@ class File extends Entity
     /**
      * Serves up the file to the web
      *
-     * @param   string  $as  What to serve the file as
+     * @param   string|null  $as  What to serve the file as
      * @return  bool
      **/
     public function serve($as = null)

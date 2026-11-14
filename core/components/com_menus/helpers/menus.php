@@ -108,7 +108,7 @@ class Menus
     /**
      * Get a list of menu links for one or all menus.
      *
-     * @param   string  $menuType   An option menu to filter the list on, otherwise
+     * @param   string|null  $menuType   An option menu to filter the list on, otherwise
      *                              all menu links are returned as a grouped array.
      * @param   int     $parentId   An optional parent ID to pivot results around.
      * @param   int     $mode       An optional mode. If parent ID is set and mode=2,

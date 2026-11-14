@@ -142,7 +142,7 @@ class Extension extends Relational
     /**
      * Get all records
      *
-     * @param   array  $columns
+     * @param   array|null  $columns
      * @return  object
      */
     public static function all($columns = null)

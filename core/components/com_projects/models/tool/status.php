@@ -36,7 +36,7 @@ class Status extends Model
     /**
      * Constructor
      *
-     * @param   integer  $oid
+     * @param   integer|null  $oid
      * @return  void
      */
     public function __construct($oid = null)

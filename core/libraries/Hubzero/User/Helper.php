@@ -261,7 +261,7 @@ class Helper
      *
      * @param   string  $uid
      * @param   string  $type
-     * @param   string  $cat
+     * @param   string|null  $cat
      * @return  array    Group records, or membership lists keyed by type; empty if there are none
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
@@ -360,7 +360,7 @@ class Helper
      *
      * @param   string  $uid
      * @param   string  $type
-     * @param   string  $cat
+     * @param   string|null  $cat
      * @return  bool|array
      */
     public static function getCourses($uid, $type = 'all', $cat = null)

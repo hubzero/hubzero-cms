@@ -455,7 +455,7 @@ class Course extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array $data List of IDs or usernames
+     * @param     array|null $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = null)

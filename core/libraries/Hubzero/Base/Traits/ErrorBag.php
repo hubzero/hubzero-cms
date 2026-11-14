@@ -28,7 +28,7 @@ trait ErrorBag
     /**
      * Get the most recent error message.
      *
-     * @param   integer  $i         Option error index.
+     * @param   integer|null  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
      * @return  string|false   Error message
      */
@@ -67,7 +67,7 @@ trait ErrorBag
      * Add an error message.
      *
      * @param   string  $error  Error message.
-     * @param   string  $key    Specific key to set the value to
+     * @param   string|null  $key    Specific key to set the value to
      * @return  object
      */
     public function setError($error, $key = null)

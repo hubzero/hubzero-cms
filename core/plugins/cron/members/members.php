@@ -222,7 +222,7 @@ class Members extends Plugin
      *
      * @param   string   $quotedCutoff       SQL datetime (UTC), already quoted
      * @param   integer  $cutoffDay          The cutoff in days since the epoch
-     * @param   string   $quotedExemptGroup  Title of an access group whose members are skipped, already quoted; null
+     * @param  string|null  $quotedExemptGroup  Title of an access group whose members are skipped, already quoted; null
      *                                       for none
      * @return  string   Query selecting user ids
      */

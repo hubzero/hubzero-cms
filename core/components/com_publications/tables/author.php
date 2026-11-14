@@ -52,8 +52,8 @@ class Author extends Table
     /**
      * Load record
      *
-     * @param   integer  $uid  User ID
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $uid  User ID
+     * @param   integer|null  $vid  Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function loadAssociation($uid = null, $vid = null)
@@ -85,8 +85,8 @@ class Author extends Table
     /**
      * Get array of author Ids ordered by ordering
      *
-     * @param   array    $uids  Ids of authors for publication
-     * @param   integer  $vid   Pub version ID
+     * @param   array|null    $uids  Ids of authors for publication
+     * @param   integer|null  $vid   Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function getAuthorOrder($uids = null, $vid = null)
@@ -119,8 +119,8 @@ class Author extends Table
     /**
      * Load record by owner ID
      *
-     * @param   integer  $owner_id  Project owner ID
-     * @param   integer  $vid       Pub version ID
+     * @param   integer|null  $owner_id  Project owner ID
+     * @param   integer|null  $vid       Pub version ID
      * @return  mixed    False if error, Object on success
      */
     public function loadAssociationByOwner($owner_id = null, $vid = null)
@@ -152,7 +152,7 @@ class Author extends Table
     /**
      * Get records
      *
-     * @param   integer  $vid               Pub version ID
+     * @param   integer|null  $vid               Pub version ID
      * @param   integer  $get_uids          Get user IDs
      * @param   integer  $active            Get only active records
      * @param   boolean  $return_uid_array  Return array
@@ -220,7 +220,7 @@ class Author extends Table
     /**
      * Get authors
      *
-     * @param   integer  $vid
+     * @param   integer|null  $vid
      * @param   integer  $get_uids
      * @param   integer  $active
      * @param   boolean  $return_uid_array
@@ -454,7 +454,7 @@ class Author extends Table
     /**
      * Get publication submitter
      *
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $vid  Pub version ID
      * @param   integer  $by   Publication creator
      * @return  mixed    False if error, Object on success
      */
@@ -495,7 +495,7 @@ class Author extends Table
     /**
      * Save publication submitter
      *
-     * @param   integer  $vid        Pub version ID
+     * @param   integer|null  $vid        Pub version ID
      * @param   integer  $by         Publication creator
      * @param   integer  $projectid
      * @return  mixed    False if error, Object on success
@@ -550,7 +550,7 @@ class Author extends Table
     /**
      * Get record by user ID
      *
-     * @param   integer  $vid     Pub version ID
+     * @param   integer|null  $vid     Pub version ID
      * @param   integer  $uid     User ID
      * @param   integer  $active  Get only active records
      * @return  mixed    False if error, Object on success
@@ -590,7 +590,7 @@ class Author extends Table
     /**
      * Get record by owner ID
      *
-     * @param   integer  $vid       Pub version ID
+     * @param   integer|null  $vid       Pub version ID
      * @param   integer  $owner_id  Owner ID
      * @return  mixed    False if error, Object on success
      */
@@ -700,7 +700,7 @@ class Author extends Table
     /**
      * Delete records
      *
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $vid  Pub version ID
      * @return  boolean
      */
     public function deleteAssociations($vid = null)
@@ -718,8 +718,8 @@ class Author extends Table
     /**
      * Delete record
      *
-     * @param   integer  $uid     User ID
-     * @param   integer  $vid     Pub version ID
+     * @param   integer|null  $uid     User ID
+     * @param   integer|null  $vid     Pub version ID
      * @param   integer  $delete  Permanent delete?
      * @return  boolean
      */
@@ -759,8 +759,8 @@ class Author extends Table
     /**
      * Delete record by owner ID
      *
-     * @param   integer  $owner_id  Owner ID
-     * @param   integer  $vid       Pub version ID
+     * @param   integer|null  $owner_id  Owner ID
+     * @param   integer|null  $vid       Pub version ID
      * @param   integer  $delete    Permanent delete?
      * @return  boolean
      */
@@ -879,7 +879,7 @@ class Author extends Table
     /**
      * Get record count
      *
-     * @param   integer  $vid    Pub version ID
+     * @param   integer|null  $vid    Pub version ID
      * @return  mixed    integer or null
      */
     public function getCount($vid = null)
@@ -901,7 +901,7 @@ class Author extends Table
     /**
      * Get last order
      *
-     * @param   integer  $vid  Pub version ID
+     * @param   integer|null  $vid  Pub version ID
      * @return  mixed    integer or null
      */
     public function getLastOrder($vid = null)

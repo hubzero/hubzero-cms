@@ -2002,7 +2002,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *   // Conditional query cached for 30 minutes
      *
      * @param   int     $minutes  Number of minutes to cache (default 60)
-     * @param   string  $prefix   Optional custom cache key prefix
+     * @param   string|null  $prefix   Optional custom cache key prefix
      * @return  static
      **/
     public function remember(int $minutes = 60, ?string $prefix = null)
@@ -2025,7 +2025,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *   $config = Config::all()->rememberForever()->rows();
      *   // Configuration data cached indefinitely
      *
-     * @param   string  $prefix  Optional custom cache key prefix
+     * @param   string|null  $prefix  Optional custom cache key prefix
      * @return  static
      **/
     public function rememberForever(?string $prefix = null)
@@ -3908,8 +3908,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   int       $count     Number of records per chunk
      * @param   callable  $callback  Function to process each chunk. Return false to stop.
-     * @param   string    $column    Column to paginate by (default: primary key)
-     * @param   string    $alias     Column alias if using joins (optional)
+     * @param   string|null    $column    Column to paginate by (default: primary key)
+     * @param   string|null    $alias     Column alias if using joins (optional)
      * @return  bool      True if all chunks processed, false if stopped early
      */
     public function chunkById(int $count, callable $callback, ?string $column = null, ?string $alias = null): bool
@@ -3988,8 +3988,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * ```
      *
      * @param   int     $chunkSize  Internal batch size for database fetches (default: 1000)
-     * @param   string  $column     Column to paginate by (default: primary key)
-     * @param   string  $alias      Column alias if using joins (optional)
+     * @param   string|null  $column     Column to paginate by (default: primary key)
+     * @param   string|null  $alias      Column alias if using joins (optional)
      * @return  \Generator  Yields individual model instances
      */
     public function lazyById(int $chunkSize = 1000, ?string $column = null, ?string $alias = null): \Generator
@@ -4176,7 +4176,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Returns all rows (unless otherwise limited)
      *
-     * @param   string|array  $columns  The columns to select
+     * @param   string|array|null  $columns  The columns to select
      * @return  static
      **/
     public static function all($columns = null)
@@ -4943,7 +4943,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Checks out the current model to the provided user
      *
-     * @param   int  $userId  Optional userId for whom the row should be checked out
+     * @param   int|null  $userId  Optional userId for whom the row should be checked out
      * @return  bool
      **/
     public function checkout($userId = null)
@@ -5401,7 +5401,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves a many to many model relationship
      *
      * @param   string       $model             The name of the model to relate to the current one
-     * @param   string       $associativeTable  The name of the intermediate table used to associate model->related
+     * @param   string|null       $associativeTable  The name of the intermediate table used to associate model->related
      * @param   string|null  $thisKey           The local key used on the associative table
      * @param   string|null  $relatedKey        The related key used on the associative table
      * @return  \Hubzero\Database\Relationship\ManyToMany
@@ -5427,10 +5427,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves a many shifts to many model relationship
      *
      * @param   string       $model             The name of the model to relate to the current one
-     * @param   string       $associativeTable  The name of the intermediate table used to associate model->related
+     * @param   string|null       $associativeTable  The name of the intermediate table used to associate model->related
      * @param   string|null  $thisKey           The local key used on the associative table
      * @param   string       $shifter           The many side field used to differentiate/shift models
-     * @param   string       $relatedKey        The related key used on the associative table
+     * @param   string|null       $relatedKey        The related key used on the associative table
      * @return  \Hubzero\Database\Relationship\ManyShiftsToMany
      **/
     public function manyShiftsToMany(
@@ -5675,7 +5675,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * $parent = $comment->commentable;  // Returns Post, Video, or Photo
      * ```
      *
-     * @param  string       $name       The relationship name (derives column names)
+     * @param  string|null       $name       The relationship name (derives column names)
      * @param  string|null  $morphType  Custom type column name (default: {name}_type)
      * @param  string|null  $morphId    Custom id column name (default: {name}_id)
      * @return \Hubzero\Database\Relationship\MorphTo

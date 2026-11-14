@@ -152,7 +152,7 @@ class Manager
     /**
      * Logout a user
      *
-     * @param   integer  $userid
+     * @param   integer|null  $userid
      * @param   array    $options
      * @return  boolean
      */

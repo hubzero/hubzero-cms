@@ -335,7 +335,7 @@ class Citations extends Plugin
     /**
      * Display the form allowing to edit a citation
      *
-     * @param  object  $row
+     * @param  object|null  $row
      * @return string  HTML
      */
     private function editAction($row = null)

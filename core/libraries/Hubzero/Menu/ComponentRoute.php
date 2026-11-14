@@ -72,7 +72,7 @@ class ComponentRoute
      * Constructor
      *
      * @param   object    $db   Database connection
-     * @param   callable  $log  Called with one string per thing done
+     * @param   callable|null  $log  Called with one string per thing done
      * @return  void
      */
     public function __construct($db, $log = null)
@@ -383,7 +383,7 @@ class ComponentRoute
     /**
      * Walk the menu putting lft, rgt, level and path back in order
      *
-     * @param   integer  $parentId  Where to start, or null for the root
+     * @param   integer|null  $parentId  Where to start, or null for the root
      * @param   integer  $leftId    The left value of that node
      * @param   integer  $level     Its depth
      * @param   string   $path      The path so far

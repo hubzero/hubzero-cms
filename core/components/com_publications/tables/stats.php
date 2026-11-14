@@ -44,9 +44,9 @@ class Stats extends Table
     /**
      * Load record
      *
-     * @param   integer  $publication_id  Pub ID
-     * @param   integer  $period          Period
-     * @param   integer  $dthis
+     * @param   integer|null  $publication_id  Pub ID
+     * @param   integer|null  $period          Period
+     * @param   integer|null  $dthis
      * @return  mixed    False if error, Object on success
      */
     public function loadStats($publication_id = null, $period = null, $dthis = null)

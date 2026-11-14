@@ -526,7 +526,7 @@ class SqliteDriver extends BaseSqlDriver
      * not per-table or per-column.
      *
      * @param   string       $table  The table for which to retrieve the character set
-     * @param   string       $field  The field to check (optional)
+     * @param   string|null       $field  The field to check (optional)
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)
@@ -887,8 +887,8 @@ class SqliteDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix (unused in SQLite)
-     * @param   string  $prefix    For the table (unused in SQLite)
+     * @param   string|null  $backup    Table prefix (unused in SQLite)
+     * @param   string|null  $prefix    For the table (unused in SQLite)
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)

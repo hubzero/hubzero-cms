@@ -94,7 +94,7 @@ class Arr
     /**
      * Utility function to map an array to a string.
      *
-     * @param   array    $array         The array to map.
+     * @param   array|null    $array         The array to map.
      * @param   string   $inner_glue    The glue (optional, defaults to '=') between the key and the value.
      * @param   string   $outer_glue    The glue (optional, defaults to ' ') between array elements.
      * @param   boolean  $keepOuterKey  True if final key should be kept.
@@ -126,7 +126,7 @@ class Arr
      *
      * @param   mixed    $item     The source object or array
      * @param   boolean  $recurse  True to recurse through multi-level objects
-     * @param   string   $regex    An optional regular expression to match on field names
+     * @param   string|null   $regex    An optional regular expression to match on field names
      * @return  array  The array mapped from the given object
      */
     public static function fromObject($item, $recurse = true, $regex = null)
@@ -272,7 +272,7 @@ class Arr
      * Pivots an array to create a reverse lookup of an array of scalars, arrays or objects.
      *
      * @param   array   $source  The source array.
-     * @param   string  $key     Where the elements of the source array are objects or arrays, the key to pivot on.
+     * @param   string|null  $key     Where the elements of the source array are objects or arrays, the key to pivot on.
      * @return  array   An array of arrays pivoted either on the value of the keys, or an individual key of an object or
      *                  array.
      */

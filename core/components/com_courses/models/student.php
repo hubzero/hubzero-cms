@@ -27,9 +27,9 @@ class Student extends Member
      * Constructor
      *
      * @param   string $uid User ID
-     * @param   string $cid Course ID
-     * @param   string $oid Offering ID
-     * @param   string $sid Section ID
+     * @param   string|null $cid Course ID
+     * @param   string|null $oid Offering ID
+     * @param   string|null $sid Section ID
      * @return  void
      */
     public function __construct($uid, $cid = null, $oid = null, $sid = null)
@@ -57,7 +57,7 @@ class Student extends Member
     /**
      * Returns a reference to a student object
      *
-     * @param   string $uid User ID
+     * @param   string|null $uid User ID
      * @param   string|int $cid Course ID
      * @param   string|int $oid Offering ID
      * @param   string|int $sid Section ID

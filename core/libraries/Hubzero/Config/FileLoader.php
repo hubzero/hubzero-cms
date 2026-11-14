@@ -76,7 +76,7 @@ class FileLoader
     /**
      * Load the given configuration group.
      *
-     * @param   string  $client
+     * @param   string|null  $client
      * @return  array
      */
     public function load($client = null)

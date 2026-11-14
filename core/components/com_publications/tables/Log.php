@@ -205,8 +205,8 @@ class Log extends Table
     /**
      * Log access in file
      *
-     * @param   integer  $pid      Publication ID
-     * @param   integer  $vid      Publication version ID
+     * @param   integer|null  $pid      Publication ID
+     * @param   integer|null  $vid      Publication version ID
      * @param   string   $type     view, primary or support
      * @param   string   $ip
      * @param   string   $logPath
@@ -231,10 +231,10 @@ class Log extends Table
     /**
      * Log numbers from parsed text logs
      *
-     * @param   integer  $pid       Publication ID
-     * @param   integer  $vid       Publication version ID
-     * @param   integer  $year
-     * @param   integer  $month
+     * @param   integer|null  $pid       Publication ID
+     * @param   integer|null  $vid       Publication version ID
+     * @param   integer|null  $year
+     * @param   integer|null  $month
      * @param   integer  $count
      * @param   string   $type
      * @param   string   $category
@@ -344,10 +344,10 @@ class Log extends Table
     /**
      * Load log and bind to $this
      *
-     * @param   integer  $pid       Publication ID
-     * @param   integer  $vid       Publication version ID
-     * @param   integer  $yearNum
-     * @param   integer  $monthNum
+     * @param   integer|null  $pid       Publication ID
+     * @param   integer|null  $vid       Publication version ID
+     * @param   integer|null  $yearNum
+     * @param   integer|null  $monthNum
      * @return  mixed
      */
     public function loadMonthLog($pid = null, $vid = null, $yearNum = null, $monthNum = null)
@@ -376,10 +376,10 @@ class Log extends Table
     /**
      * Load log as an array
      *
-     * @param   integer  $pid       Publication ID
-     * @param   integer  $vid       Publication version ID
-     * @param   integer  $yearNum
-     * @param   integer  $monthNum
+     * @param   integer|null  $pid       Publication ID
+     * @param   integer|null  $vid       Publication version ID
+     * @param   integer|null  $yearNum
+     * @param   integer|null  $monthNum
      * @return  mixed
      */
     public function getMonthLog($pid = null, $vid = null, $yearNum = null, $monthNum = null)
@@ -404,7 +404,7 @@ class Log extends Table
     /**
      * Get stats for author
      *
-     * @param   integer  $uid        User ID
+     * @param   integer|null  $uid        User ID
      * @param   integer  $limit      Num of entries
      * @param   boolean  $lastmonth
      * @return  array|false
@@ -583,10 +583,10 @@ class Log extends Table
     /**
      * Get stats for publication(s) for a custom report
      *
-     * @param   string  $from     Date from
-     * @param   string  $to       Date to
+     * @param   string|null  $from     Date from
+     * @param   string|null  $to       Date to
      * @param   array   $exclude  Data to exclude
-     * @param   string  $filter   Tag name to match
+     * @param   string|null  $filter   Tag name to match
      * @return  array
      */
     public function getCustomStats($from = null, $to = null, $exclude = [], $filter = null)
@@ -672,7 +672,7 @@ class Log extends Table
     /**
      * Get stats for publication(s) in a project
      *
-     * @param      integer  $projectid  Project ID
+     * @param      integer|null  $projectid  Project ID
      * @param      integer  $pubid      Publication ID
      * @return     array|false
      */

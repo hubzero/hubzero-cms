@@ -202,7 +202,7 @@ class AlterTableBuilder
      * Add a new column to the table
      *
      * @param  string $name      Column name
-     * @param  string $type      Column type
+     * @param  string|null $type      Column type
      * @param  array  $modifiers Column modifiers
      * @return $this
      */
@@ -237,7 +237,7 @@ class AlterTableBuilder
      * Add an integer column
      *
      * @param  string $name
-     * @param  int    $length
+     * @param  int|null    $length
      * @param  bool   $unsigned
      * @return $this
      */
@@ -250,7 +250,7 @@ class AlterTableBuilder
      * Add a tiny integer column
      *
      * @param  string $name
-     * @param  int    $length
+     * @param  int|null    $length
      * @param  bool   $unsigned
      * @return $this
      */
@@ -263,7 +263,7 @@ class AlterTableBuilder
      * Add a small integer column
      *
      * @param  string $name
-     * @param  int    $length
+     * @param  int|null    $length
      * @param  bool   $unsigned
      * @return $this
      */
@@ -276,7 +276,7 @@ class AlterTableBuilder
      * Add a medium integer column
      *
      * @param  string $name
-     * @param  int    $length
+     * @param  int|null    $length
      * @param  bool   $unsigned
      * @return $this
      */
@@ -289,7 +289,7 @@ class AlterTableBuilder
      * Add a big integer column
      *
      * @param  string $name
-     * @param  int    $length
+     * @param  int|null    $length
      * @param  bool   $unsigned
      * @return $this
      */
@@ -564,7 +564,7 @@ class AlterTableBuilder
      * Add polymorphic relationship columns
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function addMorphs(string $name, ?string $indexName = null): self
@@ -579,7 +579,7 @@ class AlterTableBuilder
      * Add nullable polymorphic relationship columns
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function addNullableMorphs(string $name, ?string $indexName = null): self
@@ -595,7 +595,7 @@ class AlterTableBuilder
      * Add polymorphic relationship columns with UUID
      *
      * @param  string $name      The morph name
-     * @param  string $indexName Optional index name
+     * @param  string|null $indexName Optional index name
      * @return $this
      */
     public function addUuidMorphs(string $name, ?string $indexName = null): self
@@ -687,7 +687,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to integer
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function integer(?int $length = null): self
@@ -704,7 +704,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to tiny integer
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function tinyInteger(?int $length = null): self
@@ -721,7 +721,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to small integer
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function smallInteger(?int $length = null): self
@@ -738,7 +738,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to medium integer
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function mediumInteger(?int $length = null): self
@@ -755,7 +755,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to big integer
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function bigInteger(?int $length = null): self
@@ -772,7 +772,7 @@ class AlterTableBuilder
     /**
      * Set the current column type to string
      *
-     * @param  int $length
+     * @param  int|null $length
      * @return $this
      */
     public function string(?int $length = null): self
@@ -1247,7 +1247,7 @@ class AlterTableBuilder
      *
      * @param  string $oldName Current column name
      * @param  string $newName New column name
-     * @param  string $type    Column type (required for MySQL CHANGE)
+     * @param  string|null $type    Column type (required for MySQL CHANGE)
      * @return $this
      */
     public function renameColumn(string $oldName, string $newName, ?string $type = null): self

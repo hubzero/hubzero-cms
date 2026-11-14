@@ -47,7 +47,7 @@ class Preflight
      * Run all preflight checks
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $rootPath  Path to the root directory (parent of core)
+     * @param   string|null  $rootPath  Path to the root directory (parent of core)
      * @return  bool    True if all checks pass, false otherwise
      */
     public static function check($ansi = true, $rootPath = null)

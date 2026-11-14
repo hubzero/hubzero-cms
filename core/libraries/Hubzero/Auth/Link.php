@@ -293,7 +293,7 @@ class Link extends Relational
      * Return array of linked accounts associated with a given user id
      * Also include auth domain name for easy display of domain name
      *
-     * @param   integer  $user_id  ID of user to return accounts for
+     * @param   integer|null  $user_id  ID of user to return accounts for
      * @return  array|false    Array of auth link entries for the given user_id
      */
     public static function findByUserId($user_id = null)
@@ -343,7 +343,7 @@ class Link extends Relational
     /**
      * Delete a record by User ID
      *
-     * @param   integer  $user_id  User ID
+     * @param   integer|null  $user_id  User ID
      * @return  boolean
      */
     public static function deleteByUserId($user_id = null)

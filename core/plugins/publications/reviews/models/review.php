@@ -133,7 +133,7 @@ class Review extends \Hubzero\Base\Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   boolean  $property  Holds property value
+     * @param   boolean|null  $property  Holds property value
      * @return  mixed
      */
     public function creator($property = null)

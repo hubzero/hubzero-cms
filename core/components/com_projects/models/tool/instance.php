@@ -92,8 +92,8 @@ class Instance extends Model
     /**
      * Update Parent Name
      *
-     * @param      integer $id
-     * @param      string $name
+     * @param      integer|null $id
+     * @param      string|null $name
      * @return     boolean
      */
     public function updateParentName($id = null, $name = null)

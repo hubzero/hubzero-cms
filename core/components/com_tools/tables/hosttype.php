@@ -57,7 +57,7 @@ class Hosttype extends Table
      *
      * Can be overloaded/supplemented by the child class
      *
-     * @param   boolean  $insert
+     * @param   boolean|null  $insert
      * @param   boolean  $updateNulls  If false, null object variables are not updated
      * @return  mixed    null|string null if successful otherwise returns and error message
      */
@@ -81,7 +81,7 @@ class Hosttype extends Table
     /**
      * Updates a row in a table based on an object's properties.
      *
-     * @param   string   $key      The name of the primary key.
+     * @param   string|null   $key      The name of the primary key.
      * @param   boolean  $nulls    True to update null fields or false to ignore them.
      * @return  boolean  True on success.
      */
@@ -141,7 +141,7 @@ class Hosttype extends Table
      *
      * can be overloaded/supplemented by the child class
      *
-     * @param   integer  $oid
+     * @param   integer|null  $oid
      * @return  bool     if successful otherwise returns and error message
      */
     public function delete($oid = null)

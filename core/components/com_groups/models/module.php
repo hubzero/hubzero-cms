@@ -131,7 +131,7 @@ class Module extends Model
     /**
      * Should we display module on this page?
      *
-     * @param   integer $pageid
+     * @param   integer|null $pageid
      * @return  boolean
      */
     public function displayOnPage($pageid = null)

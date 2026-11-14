@@ -31,7 +31,7 @@ class RemoteFile extends Table
     /**
      * Get remote connections
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service
      * @param   string   $local_dirpath
      * @param   string   $converted
@@ -85,7 +85,7 @@ class RemoteFile extends Table
     /**
      * Get remote connections count
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service
      * @param   string   $converted
      * @return  string|false|null
@@ -111,7 +111,7 @@ class RemoteFile extends Table
     /**
      * Get remote connections
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service
      * @param   string   $subdir
      * @param   boolean  $remoteEdit
@@ -147,8 +147,8 @@ class RemoteFile extends Table
     /**
      * Load item
      *
-     * @param   integer  $projectid   Project ID
-     * @param   string   $id          Remote ID
+     * @param   integer|null  $projectid   Project ID
+     * @param   string|null   $id          Remote ID
      * @param   string   $service     Service name (google)
      * @param   string   $local_path  Local path to file
      * @return  mixed    False if error, Object on success
@@ -216,7 +216,7 @@ class RemoteFile extends Table
     /**
      * Provision record for remote item
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google)
      * @param   integer  $uid
      * @param   array    $item       Remote item information array
@@ -269,10 +269,10 @@ class RemoteFile extends Table
     /**
      * Delete record if exists
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|null  $projectid  Project ID
      * @param   string   $service    Service name (google)
      * @param   integer  $id
-     * @param   string   $filename
+     * @param   string|null   $filename
      * @return  mixed    False if error, Object on success
      */
     public function deleteRecord($projectid = null, $service = 'google', $id = 0, $filename = null)
@@ -291,12 +291,12 @@ class RemoteFile extends Table
     /**
      * Update record at sync
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $service
      * @param   integer  $uid
      * @param   string   $type
-     * @param   integer  $id
-     * @param   string   $filename
+     * @param   integer|null  $id
+     * @param   string|null   $filename
      * @param   array    $local
      * @param   array    $remote
      * @return  mixed    False if error, Object on success
@@ -352,9 +352,9 @@ class RemoteFile extends Table
     /**
      * Update record
      *
-     * @param   integer  $projectid   Project ID
+     * @param   integer|null  $projectid   Project ID
      * @param   string   $service     Service name (google)
-     * @param   integer  $id          Remote ID
+     * @param   integer|null  $id          Remote ID
      * @param   string   $local_path
      * @param   string   $type
      * @param   integer  $uid

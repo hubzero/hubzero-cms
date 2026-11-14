@@ -46,9 +46,9 @@ class Moderator
     /**
      * Constructs the moderator
      *
-     * @param   string  $identifier  The entity identifier, either a path or a token hash
-     * @param   string  $session_id  The PHP session id to use when creating the token
-     * @param   string  $secret      The site secret used when creating the token
+     * @param   string|null  $identifier  The entity identifier, either a path or a token hash
+     * @param   string|null  $session_id  The PHP session id to use when creating the token
+     * @param   string|null  $secret      The site secret used when creating the token
      * @return  void
      **/
     public function __construct($identifier = null, $session_id = null, $secret = null)

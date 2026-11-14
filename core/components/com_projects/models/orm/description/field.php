@@ -255,7 +255,7 @@ class Field extends Relational
      * Helper method to convert list of fields and field options to XML
      *
      * @param   mixed   $fields  Iterable object or attay
-     * @param   string  $action
+     * @param   string|null  $action
      * @return  string
      */
     public static function toXml($fields, $action = null)

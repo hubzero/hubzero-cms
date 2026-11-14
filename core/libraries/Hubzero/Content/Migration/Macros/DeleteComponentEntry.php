@@ -86,7 +86,7 @@ class DeleteComponentEntry extends Macro
     /**
      * Method to recursively rebuild the whole nested set tree.
      *
-     * @param   integer  $parentId  The root of the tree to rebuild.
+     * @param   integer|null  $parentId  The root of the tree to rebuild.
      * @param   integer  $leftId    The left id to start with in building the tree.
      * @param   integer  $level     The level to assign to the current nodes.
      * @param   string   $path      The path to the current nodes.

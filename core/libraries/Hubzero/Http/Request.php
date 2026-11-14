@@ -233,7 +233,7 @@ class Request extends BaseRequest
     /**
      * Get boolean
      *
-     * @param   string   $key      Request key
+     * @param   string|null   $key      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  boolean  Request variable
@@ -262,7 +262,7 @@ class Request extends BaseRequest
     /**
      * Get cmd
      *
-     * @param   string  $key      Request key
+     * @param   string|null  $key      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  string  Request variable
@@ -278,7 +278,7 @@ class Request extends BaseRequest
     /**
      * Fetches and returns a given variable as an array.
      *
-     * @param   string  $key      Request key
+     * @param   string|null  $key      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  array   Request variable
@@ -291,7 +291,7 @@ class Request extends BaseRequest
     /**
      * Fetches and returns a given variable as a simple array.
      *
-     * @param   string  $key      Request key
+     * @param   string|null  $key      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  array   Request variable
@@ -530,7 +530,7 @@ class Request extends BaseRequest
     /**
      * Retrieve an input item from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -554,7 +554,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a post item from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -566,7 +566,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a query string item from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -578,7 +578,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a cookie from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -590,7 +590,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a file from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  mixed
      */
@@ -612,7 +612,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a header from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -624,7 +624,7 @@ class Request extends BaseRequest
     /**
      * Retrieve a server variable from the request.
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @param   mixed   $default
      * @return  string
      */
@@ -823,7 +823,7 @@ class Request extends BaseRequest
     /**
      * Checks for a honeypot in the request
      *
-     * @param   string   $name
+     * @param   string|null   $name
      * @param   integer  $delay
      * @return  boolean  True if found and valid, false otherwise.
      */

@@ -170,9 +170,9 @@ class SolrIndexAdapter implements IndexInterface
 
     /**
      * Initialize Solarium bufferedAdd plugin
-     * @param boolean $overwrite if true, overwrites existing entries with the same docId
-     * @param int $commitWithin time in milliseconds that a commit should happen
-     * @param int $buffer max number of documents to add before flushing
+     * @param boolean|null $overwrite if true, overwrites existing entries with the same docId
+     * @param int|null $commitWithin time in milliseconds that a commit should happen
+     * @param int|null $buffer max number of documents to add before flushing
      * @return Solarium\Plugin\BufferedAdd\BufferedAdd
      */
     public function initBufferAdd($overwrite = null, $commitWithin = null, $buffer = null)

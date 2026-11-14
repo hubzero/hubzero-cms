@@ -62,7 +62,7 @@ class Category extends Table
     /**
      * Get a category
      *
-     * @param   integer  $id       Category ID
+     * @param   integer|null  $id       Category ID
      * @param   string   $default  Default value if no record found
      * @return  mixed    False if errors, String upon success
      */
@@ -83,7 +83,7 @@ class Category extends Table
     /**
      * Update the ordering of records
      *
-     * @param   integer  $id        Category ID
+     * @param   integer|null  $id        Category ID
      * @param   integer  $ordernum  ORder number to make it
      * @return  boolean  True upon success
      */

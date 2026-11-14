@@ -704,7 +704,7 @@ class Pipeline extends SiteController
     /**
      * Show an edit form
      *
-     * @param   object|array  $tool
+     * @param   object|array|null  $tool
      * @return  void
      */
     public function editTask($tool = null)
@@ -2366,7 +2366,7 @@ class Pipeline extends SiteController
      * Authorization checks
      *
      * @param   string  $assetType  Asset type
-     * @param   string  $assetId    Asset id to check against
+     * @param   string|null  $assetId    Asset id to check against
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

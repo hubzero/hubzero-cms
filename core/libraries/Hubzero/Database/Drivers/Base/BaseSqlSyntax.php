@@ -738,7 +738,7 @@ abstract class BaseSqlSyntax
      * @param   array   $joinMap
      * @param   array   $availableCandidates
      * @param   array   $joinCandidates
-     * @param   string  $preferredGroup  Preferred group when ambiguous: 'available' or 'join'
+     * @param   string|null  $preferredGroup  Preferred group when ambiguous: 'available' or 'join'
      * @return  array
      */
     protected function resolveJoinColumn(
@@ -1094,7 +1094,7 @@ abstract class BaseSqlSyntax
      * Sets a new bind value
      *
      * @param   string  $value  The value to bind
-     * @param   string  $type   The value type
+     * @param   string|null  $type   The value type
      * @return  $this
      */
     public function bind($value, $type = null)
@@ -1121,7 +1121,7 @@ abstract class BaseSqlSyntax
      * Sets a select element on the query
      *
      * @param   string  $column  The column to select
-     * @param   string  $as      What to call the return val
+     * @param   string|null  $as      What to call the return val
      * @param   bool    $count   Whether or not to count column
      * @return  void
      */
@@ -1158,7 +1158,7 @@ abstract class BaseSqlSyntax
      *
      * @param   string  $raw       The raw SQL expression
      * @param   array   $bindings  Parameter bindings for the expression
-     * @param   string  $as        What to call the return val
+     * @param   string|null  $as        What to call the return val
      * @return  void
      */
     public function setRawSelect($raw, $bindings = [], $as = null)
@@ -1372,7 +1372,7 @@ abstract class BaseSqlSyntax
      * Sets a from element on the query
      *
      * @param   string  $table  The table of interest
-     * @param   string  $as     What to call the table
+     * @param   string|null  $as     What to call the table
      * @return  void
      */
     public function setFrom($table, $as = null)
@@ -1388,7 +1388,7 @@ abstract class BaseSqlSyntax
      *
      * @param   string  $raw       The raw SQL expression (subquery)
      * @param   array   $bindings  Parameter bindings for the expression
-     * @param   string  $as        Alias for the derived table (required for subqueries)
+     * @param   string|null  $as        Alias for the derived table (required for subqueries)
      * @return  void
      */
     public function setRawFrom($raw, $bindings = [], $as = null)

@@ -20,9 +20,9 @@ class Component extends Renderer
     /**
      * Renders a component script and returns the results as a string
      *
-     * @param   string  $component  The name of the component to render
+     * @param   string|null  $component  The name of the component to render
      * @param   array   $params     Associative array of values
-     * @param   string  $content    Content script
+     * @param   string|null  $content    Content script
      * @return  string  The output of the script
      */
     public function render($component = null, $params = [], $content = null)

@@ -62,7 +62,7 @@ class Download
     /**
      * Constructor
      *
-     * @param   object  $reference
+     * @param   object|null  $reference
      * @param   string  $format
      * @return  void
      */
@@ -186,7 +186,7 @@ class Download
     /**
      * Format a record
      *
-     * @param   object  $reference  Record to format
+     * @param   object|null  $reference  Record to format
      * @return  string
      */
     public function formatReference($reference = null)

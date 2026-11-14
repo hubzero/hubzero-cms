@@ -41,8 +41,8 @@ class LegacyException extends \Exception
      *
      * @param   string   $msg        The error message
      * @param   string|int $code       The error code from the application
-     * @param   integer  $level      The error level (use the PHP constants E_ALL, E_NOTICE etc.).
-     * @param   string   $info       Optional: The additional error information.
+     * @param   integer|null  $level      The error level (use the PHP constants E_ALL, E_NOTICE etc.).
+     * @param   string|null   $info       Optional: The additional error information.
      * @param   boolean|array  $backtrace  True if backtrace information is to be collected
      * @return  void
      */

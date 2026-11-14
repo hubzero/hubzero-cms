@@ -41,7 +41,7 @@ class Archive extends Model
     /**
      * Get Instance of Log Archive
      *
-     * @param   string  $key  Instance Key
+     * @param   string|null  $key  Instance Key
      * @return  object
      */
     public static function &getInstance($key = null)

@@ -348,7 +348,7 @@ class Versions extends AdminController
     /**
      * Edit a zone
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  void
      */
     public function editZoneTask($row = null)

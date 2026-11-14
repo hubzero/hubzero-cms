@@ -63,10 +63,10 @@ class Blocks extends Obj
      * Get status for a block within publication
      *
      * @param   string   $name
-     * @param   object   $pub
-     * @param   string   $manifest
+     * @param   object|null   $pub
+     * @param   string|null   $manifest
      * @param   integer  $blockId
-     * @param   integer  $elementId
+     * @param   integer|null  $elementId
      * @return  object
      */
     public function getStatus($name, $pub = null, $manifest = null, $blockId = 0, $elementId = null)
@@ -172,8 +172,8 @@ class Blocks extends Obj
     /**
      * Get block property
      *
-     * @param   string  $name
-     * @param   string  $property  Name of property
+     * @param   string|null  $name
+     * @param   string|null  $property  Name of property
      * @return  mixed
      */
     public function getBlockProperty($name = null, $property = null)
@@ -220,7 +220,7 @@ class Blocks extends Obj
      * @param   string   $name      Name of block to render
      * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
      * @param   object|null  $manifest
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @param   integer  $blockId
      * @return  string|false   HTML
      */

@@ -133,8 +133,8 @@ class HtmlMenu
      * Displays an HTML select list of menu items.
      *
      * @param   string  $name      The name of the control.
-     * @param   string  $selected  The value of the selected option.
-     * @param   string  $attribs   Attributes for the control.
+     * @param   string|null  $selected  The value of the selected option.
+     * @param   string|null  $attribs   Attributes for the control.
      * @param   array   $config    An array of options for the control.
      * @return  string
      */

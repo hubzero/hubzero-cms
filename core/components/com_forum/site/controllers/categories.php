@@ -46,8 +46,8 @@ class Categories extends SiteController
     /**
      * Method to set the document path
      *
-     * @param   object  $section
-     * @param   object  $category
+     * @param   object|null  $section
+     * @param   object|null  $category
      * @return  void
      */
     protected function buildPathway($section = null, $category = null)
@@ -80,8 +80,8 @@ class Categories extends SiteController
     /**
      * Method to build and set the document title
      *
-     * @param   object  $section
-     * @param   object  $category
+     * @param   object|null  $section
+     * @param   object|null  $category
      * @return  void
      */
     protected function buildTitle($section = null, $category = null)
@@ -299,7 +299,7 @@ class Categories extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $category
+     * @param   object|null  $category
      *
      * @return  void
      */
@@ -540,7 +540,7 @@ class Categories extends SiteController
      * Set the authorization level for the user
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

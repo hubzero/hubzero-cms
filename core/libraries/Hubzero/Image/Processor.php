@@ -56,7 +56,7 @@ class Processor extends Obj
     /**
      * Constructor
      *
-     * @param   string  $image_source  Path to image
+     * @param   string|null  $image_source  Path to image
      * @param   array   $config        Optional configurations
      * @return  void
      */
@@ -578,7 +578,7 @@ class Processor extends Obj
     /**
      * Save an image
      *
-     * @param   string   $save_path   Path to save image
+     * @param   string|null   $save_path   Path to save image
      * @param   boolean  $make_paths  Allow for path generation?
      * @return  void
      */

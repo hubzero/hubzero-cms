@@ -48,7 +48,7 @@ class Manager
     /**
      * Get a type instance.
      *
-     * @param   string  $type
+     * @param   string|null  $type
      * @param   array   $options  Associative array of options
      * @return  mixed
      */

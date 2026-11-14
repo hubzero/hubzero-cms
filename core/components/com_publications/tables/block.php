@@ -87,7 +87,7 @@ class Block extends Table
     /**
      * Load default block manifest
      *
-     * @param   string  $name  Block name
+     * @param   string|null  $name  Block name
      * @return  mixed   False if error, Object on success
      */
     public function getManifest($name = null)

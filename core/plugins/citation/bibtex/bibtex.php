@@ -38,8 +38,8 @@ class Bibtex extends Plugin
      * Import data from a file
      *
      * @param   object   $file     the uploaded file
-     * @param   string   $scope
-     * @param   integer  $scope_id
+     * @param   string|null   $scope
+     * @param   integer|null  $scope_id
      * @return  array|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
@@ -108,8 +108,8 @@ class Bibtex extends Plugin
      * Check if a citation is a duplicate
      *
      * @param   array    $citation
-     * @param   string   $scope
-     * @param   integer  $scope_id
+     * @param   string|null   $scope
+     * @param   integer|null  $scope_id
      * @return  integer
      */
     protected function checkDuplicateCitation($citation, $scope = null, $scope_id = null)

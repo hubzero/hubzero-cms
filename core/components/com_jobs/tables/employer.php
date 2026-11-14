@@ -59,7 +59,7 @@ class Employer extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $uid  User ID
+     * @param   integer|null  $uid  User ID
      * @return  boolean  True upon success
      */
     public function loadEmployer($uid = null)
@@ -78,8 +78,8 @@ class Employer extends Table
     /**
      * Get an employer
      *
-     * @param   integer  $uid               User ID
-     * @param   string   $subscriptionCode  Subscription code
+     * @param   integer|null  $uid               User ID
+     * @param   string|null   $subscriptionCode  Subscription code
      * @return  mixed    False if errors, Array upon success
      */
     public function getEmployer($uid = null, $subscriptionCode = null)

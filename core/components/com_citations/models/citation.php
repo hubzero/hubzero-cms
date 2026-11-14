@@ -589,7 +589,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Check if a user can edit
      *
-     * @param   integer  $userId
+     * @param   integer|null  $userId
      * @return  bool
      */
     public function canEdit($userId = null)
@@ -766,7 +766,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * Format a citation
      *
      * @param   array   $config
-     * @param   string  $highlight
+     * @param   string|null  $highlight
      * @return  string
      */
     public function formatted($config = ['format' => 'apa'], $highlight = null)

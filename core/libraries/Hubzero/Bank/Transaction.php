@@ -73,7 +73,7 @@ class Transaction extends Relational
      * Get a history of transactions for a user
      *
      * @param   integer  $limit  Number of records to return
-     * @param   integer  $uid    User ID
+     * @param   integer|null  $uid    User ID
      * @return  mixed    False if errors, array on success
      */
     public static function history($limit = 50, $uid = null)
@@ -94,10 +94,10 @@ class Transaction extends Relational
     /**
      * Delete records for a given category, type, and reference combination
      *
-     * @param   string   $category     Transaction category (royalties, etc)
-     * @param   string   $type         Transaction type (deposit, withdraw, etc)
-     * @param   integer  $referenceid  Reference ID (resource ID, etc)
-     * @param   integer  $uid          User ID
+     * @param   string|null   $category     Transaction category (royalties, etc)
+     * @param   string|null   $type         Transaction type (deposit, withdraw, etc)
+     * @param   integer|null  $referenceid  Reference ID (resource ID, etc)
+     * @param   integer|null  $uid          User ID
      * @return  boolean  False if errors, True on success
      */
     public static function deleteRecords($category = null, $type = null, $referenceid = null, $uid = null)
@@ -132,10 +132,10 @@ class Transaction extends Relational
     /**
      * Get get the transaction amount for a category, type, reference item and, optionally, user
      *
-     * @param   string   $category     Transaction category (royalties, etc)
-     * @param   string   $type         Transaction type (deposit, withdraw, etc)
-     * @param   integer  $referenceid  Reference ID (resource ID, etc)
-     * @param   integer  $uid          User ID
+     * @param   string|null   $category     Transaction category (royalties, etc)
+     * @param   string|null   $type         Transaction type (deposit, withdraw, etc)
+     * @param   integer|null  $referenceid  Reference ID (resource ID, etc)
+     * @param   integer|null  $uid          User ID
      * @return  integer
      */
     public static function getAmount($category = null, $type = null, $referenceid = null, $uid = null)
@@ -167,14 +167,14 @@ class Transaction extends Relational
     /**
      * Get a point total/average for a combination of category, type, user, etc.
      *
-     * @param   string   $category     Transaction category (royalties, etc)
-     * @param   string   $type         Transaction type (deposit, withdraw, etc)
-     * @param   integer  $referenceid  Reference ID (resource ID, etc)
+     * @param   string|null   $category     Transaction category (royalties, etc)
+     * @param   string|null   $type         Transaction type (deposit, withdraw, etc)
+     * @param   integer|null  $referenceid  Reference ID (resource ID, etc)
      * @param   integer  $royalty      If getting royalties
-     * @param   string   $action       Action to filter by (asked, answered, misc)
-     * @param   integer  $uid          User ID
+     * @param   string|null   $action       Action to filter by (asked, answered, misc)
+     * @param   integer|null  $uid          User ID
      * @param   integer  $allusers     Get total for all users?
-     * @param   string   $when         Datetime filter
+     * @param   string|null   $when         Datetime filter
      * @param   integer  $calc         How total is calculated (record sum, avg, record count)
      * @return  integer
      */

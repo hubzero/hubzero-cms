@@ -325,7 +325,7 @@ class View
      * Display group content based on sections and active tab
      *
      * @param   object  $group
-     * @param   string  $overviewSection
+     * @param   string|null  $overviewSection
      * @return  string
      */
     public static function displaySectionsContent($group, $overviewSection = null)

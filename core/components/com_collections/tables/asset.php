@@ -92,8 +92,8 @@ class Asset extends Table
     /**
      * Load a record
      *
-     * @param   integer  $oid      ID
-     * @param   integer  $item_id  Item ID
+     * @param   integer|null  $oid      ID
+     * @param   integer|null  $item_id  Item ID
      * @return  boolean  True upon success, False if errors
      */
     public function loadForItem($oid = null, $item_id = null)
@@ -253,7 +253,7 @@ class Asset extends Table
     /**
      * Rename a file and mark the record as "deleted"
      *
-     * @param   integer  $id    Entry ID
+     * @param   integer|null  $id    Entry ID
      * @return  boolean  True on success, false on error
      */
     public function remove($id = null)
@@ -307,7 +307,7 @@ class Asset extends Table
     /**
      * Delete a record
      *
-     * @param   integer  $oid  Entry ID
+     * @param   integer|null  $oid  Entry ID
      * @return  boolean  True on success, false on error
      */
     public function delete($oid = null)
@@ -347,7 +347,7 @@ class Asset extends Table
     /**
      * Get file path
      *
-     * @param   integer  $id  Entry ID
+     * @param   integer|null  $id  Entry ID
      * @return  string
      */
     public function path($id = null)

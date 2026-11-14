@@ -165,7 +165,7 @@ class Newsletters extends AdminController
     /**
      * Edit newsletter task
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

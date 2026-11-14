@@ -194,7 +194,7 @@ class Announcements extends Plugin
     /**
      * Display a form for editing or creating an entry
      *
-     * @param   object  $model
+     * @param   object|null  $model
      * @return  string  HTML
      */
     private function editEntry($model = null)

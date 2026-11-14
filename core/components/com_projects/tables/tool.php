@@ -46,7 +46,7 @@ class Tool extends Table
     /**
      * Load item
      *
-     * @param   string  $identifier
+     * @param   string|null  $identifier
      * @param   int     $projectid
      * @return  boolean False or object
      */
@@ -183,8 +183,8 @@ class Tool extends Table
     /**
      * Check for unique name
      *
-     * @param   string  $name  Name
-     * @param   string  $id    App id
+     * @param   string|null  $name  Name
+     * @param   string|null  $id    App id
      * @return  mixed   integer or False
      */
     public function checkUniqueName($name = null, $id = null)
@@ -238,7 +238,7 @@ class Tool extends Table
     /**
      * Get full record
      *
-     * @param   string   $identifier
+     * @param   string|null   $identifier
      * @param   integer  $projectid
      * @param   integer  $instanceId
      * @return  object|false
@@ -289,7 +289,7 @@ class Tool extends Table
     /**
      * Get ID
      *
-     * @param   string  $name
+     * @param   string|null  $name
      * @return  string|false|null
      */
     public function getId($name = null)
@@ -304,9 +304,9 @@ class Tool extends Table
     /**
      * Update status
      *
-     * @param   string   $id
-     * @param   string   $status
-     * @param   string   $by
+     * @param   string|null   $id
+     * @param   string|null   $status
+     * @param   string|null   $by
      * @return  boolean  true on success
      */
     public function updateStatus($id = null, $status = null, $by = null)

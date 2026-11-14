@@ -52,7 +52,7 @@ class Blog extends Table
     /**
      * Get items
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @param   integer  $id
      * @return  mixed
@@ -77,8 +77,8 @@ class Blog extends Table
      *
      * @param   integer  $uid
      * @param   integer  $projectid
-     * @param   string   $entry
-     * @param   string   $today
+     * @param   string|null   $entry
+     * @param   string|null   $today
      * @return  mixed    integer or null
      */
     public function checkDuplicate($uid = 0, $projectid = 0, $entry = null, $today = null)

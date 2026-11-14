@@ -244,7 +244,7 @@ class Identicon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $hexaColor
+     * @param   string|null   $hexaColor
      * @return  void
      */
     public function displayImage($string, $size = 64, $hexaColor = null)
@@ -258,7 +258,7 @@ class Identicon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $hexaColor
+     * @param   string|null   $hexaColor
      * @return  string
      */
     public function getImageData($string, $size = 64, $hexaColor = null)
@@ -276,7 +276,7 @@ class Identicon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $hexaColor
+     * @param   string|null   $hexaColor
      * @return  string
      */
     public function getImageDataUri($string, $size = 64, $hexaColor = null)

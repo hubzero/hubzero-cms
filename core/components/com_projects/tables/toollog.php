@@ -30,8 +30,8 @@ class ToolLog extends Table
      * Get item history
      *
      *
-     * @param   string   $parent_name
-     * @param   integer  $parent_id
+     * @param   string|null   $parent_name
+     * @param   integer|null  $parent_id
      * @param   integer|null  $instance_id
      * @param   array    $filters
      * @return  array|false|null   list
@@ -84,8 +84,8 @@ class ToolLog extends Table
      * Get last update
      *
      * @param   integer|null  $instance_id
-     * @param   string   $parent_name
-     * @param   integer  $parent_id
+     * @param   string|null   $parent_name
+     * @param   integer|null  $parent_id
      * @param   integer  $status_changed
      * @return  mixed    object or null
      */
@@ -124,8 +124,8 @@ class ToolLog extends Table
     /**
      * Update parent name
      *
-     * @param   string   $parent_id
-     * @param   string   $newname
+     * @param   string|null   $parent_id
+     * @param   string|null   $newname
      * @return  boolean  True on success
      */
     public function updateParentName($parent_id = null, $newname = null)

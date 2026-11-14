@@ -58,7 +58,7 @@ class Log extends Table
     /**
      * Get logs for a course
      *
-     * @param      integer $scope_id   Object ID
+     * @param      integer|null $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @param      integer $limit       Number of records to return
      * @return     array|null
@@ -90,7 +90,7 @@ class Log extends Table
     /**
      * Get a log for a course and bind to $this
      *
-     * @param      integer $scope_id   Object ID
+     * @param      integer|null $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @param      string  $which       Log to get [first or last (default)]
      * @return     boolean|null True on success
@@ -128,7 +128,7 @@ class Log extends Table
     /**
      * Delete logs for a course
      *
-     * @param      integer $scope_id   Object ID
+     * @param      integer|null $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @return     boolean|null True on success
      */
@@ -157,7 +157,7 @@ class Log extends Table
     /**
      * Get a record count of logs for a course
      *
-     * @param      integer $scope_id   Object ID
+     * @param      integer|null $scope_id   Object ID
      * @param      string  $scope Object type (course, offering, etc)
      * @param      string  $action      Action to filters results by
      * @return     string|null

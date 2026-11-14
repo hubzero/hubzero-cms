@@ -46,8 +46,8 @@ class Screenshot extends Table
      * Load record
      *
      * @param   string|null   $filename   File name
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version number or name
      * @return  mixed    False if error, Object on success
      */
@@ -93,8 +93,8 @@ class Screenshot extends Table
      * Get record
      *
      * @param   string|null   $filename   File name
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version number or name
      * @return  mixed    False if error, Object on success
      */
@@ -136,8 +136,8 @@ class Screenshot extends Table
     /**
      * Get last ordering
      *
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version number or name
      * @return  string|false|null
      */
@@ -174,8 +174,8 @@ class Screenshot extends Table
      * Save record
      *
      * @param   string|null   $filename   File name
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   integer  $ordering   Ordering
      * @param   boolean  $new        New record?
      * @return  boolean
@@ -208,7 +208,7 @@ class Screenshot extends Table
      * Delete record
      *
      * @param   string|null   $filename   File name
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @return  mixed
      */
     public function deleteScreenshot($filename, $versionid = null)
@@ -230,7 +230,7 @@ class Screenshot extends Table
     /**
      * Delete records
      *
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @return  boolean
      */
     public function deleteScreenshots($versionid = null)
@@ -249,7 +249,7 @@ class Screenshot extends Table
     /**
      * Get array of screenshots
      *
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @return  bool|array
      */
     public function getScreenshotArray($versionid = null)
@@ -273,8 +273,8 @@ class Screenshot extends Table
     /**
      * Get records
      *
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version name or number
      * @return  array|false|null
      */
@@ -311,8 +311,8 @@ class Screenshot extends Table
     /**
      * Get files
      *
-     * @param   integer  $versionid  Pub version ID
-     * @param   integer  $pid        Pub ID
+     * @param   integer|null  $versionid  Pub version ID
+     * @param   integer|null  $pid        Pub ID
      * @param   string   $version    Version name or number
      * @return  array|false
      */

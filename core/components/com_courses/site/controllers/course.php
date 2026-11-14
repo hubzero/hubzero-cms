@@ -103,7 +103,7 @@ class Course extends SiteController
      * Redirect to login page
      *
      * @param   string  $message
-     * @param   string  $task     Task to return to after login (defaults to the current one)
+     * @param   string|null  $task     Task to return to after login (defaults to the current one)
      * @return  void
      */
     public function loginTask($message = '', $task = null)
@@ -191,7 +191,7 @@ class Course extends SiteController
     /**
      * Show a form for editing a course
      *
-     * @param   object  $model
+     * @param   object|null  $model
      *
      * @return  void
      */
@@ -850,7 +850,7 @@ class Course extends SiteController
     /**
      * Get a course's availability
      *
-     * @param   object  $course  CoursesCourse
+     * @param   object|null  $course  CoursesCourse
      * @return  string|null|bool
      */
     public function courseavailabilityTask($course = null)

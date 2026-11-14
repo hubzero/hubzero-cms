@@ -27,11 +27,11 @@ class AddComponentEntry extends Macro
      * Add, as needed, the component to the appropriate table, depending on the CMS version
      *
      * @param   string  $name            Component name
-     * @param   string  $option          String) com_xyz
+     * @param   string|null  $option          String) com_xyz
      * @param   int     $enabled         Whether or not the component should be enabled
      * @param   string  $params          Component params (if already known)
      * @param   bool    $createMenuItem  Create an admin menu item for this component
-     * @param   bool    $createRoute     Create the site route for this component. A
+     * @param   bool|null    $createRoute     Create the site route for this component. A
      *                                   component with no site/ directory has nothing
      *                                   to route to and is left out by default.
      * @return  bool

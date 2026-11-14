@@ -349,7 +349,7 @@ class BundleBuilder
      *
      * @param   integer   $versionId
      * @param   string    $servedPath  abs path to the served outer <DOI>.zip
-     * @param   callable  $log
+     * @param   callable|null  $log
      * @return  boolean   true if the link now points at $servedPath
      */
     protected function refreshDownloadLink($versionId, $servedPath, $log = null)
@@ -410,7 +410,7 @@ class BundleBuilder
      *
      * @param   string    $target  abs path of the file to point at (must exist)
      * @param   string    $link    abs path of the hard link to create/refresh
-     * @param   callable  $log
+     * @param   callable|null  $log
      * @return  boolean
      */
     protected function linkInto($target, $link, $log = null)
@@ -2803,8 +2803,8 @@ class BundleBuilder
      * in a given working directory and with a string fed to its stdin.
      *
      * @param   array    $cmd
-     * @param   string   $cwd    working directory, or null
-     * @param   string   $stdin  data to write to the command's stdin, or null
+     * @param   string|null   $cwd    working directory, or null
+     * @param   string|null   $stdin  data to write to the command's stdin, or null
      * @return  integer
      */
     protected function runQuiet($cmd, $cwd = null, $stdin = null)

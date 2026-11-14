@@ -135,7 +135,7 @@ class Feedback extends SiteController
     /**
      * Show a form for sending a success story
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

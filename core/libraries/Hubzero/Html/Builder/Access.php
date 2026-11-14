@@ -298,7 +298,7 @@ class Access
      *
      * @param   string  $name      The name of the select element
      * @param   mixed   $selected  The selected asset group id
-     * @param   string  $attribs   Optional attributes for the select field
+     * @param   string|null  $attribs   Optional attributes for the select field
      * @param   array   $config    An array of options for the control
      * @return  mixed   An HTML string or null if an error occurs
      */

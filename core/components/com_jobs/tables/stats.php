@@ -51,8 +51,8 @@ class Stats extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $itemid    Job ID
-     * @param   string   $category  Job type
+     * @param   integer|null  $itemid    Job ID
+     * @param   string|null   $category  Job type
      * @param   string   $type      Record type
      * @return  boolean  True upon success
      */
@@ -78,7 +78,7 @@ class Stats extends Table
     /**
      * Get stats
      *
-     * @param   integer  $itemid    Job ID
+     * @param   integer|null  $itemid    Job ID
      * @param   string   $category  Job type
      * @param   integer  $admin     Admin access?
      * @return  mixed    False if errors, Array upon success
@@ -138,8 +138,8 @@ class Stats extends Table
     /**
      * Get a view
      *
-     * @param   integer  $itemid    Job ID
-     * @param   string   $category  Job type
+     * @param   integer|null  $itemid    Job ID
+     * @param   string|null   $category  Job type
      * @param   string   $type      Record type
      * @param   string   $when      Timestamp
      * @return  integer
@@ -187,8 +187,8 @@ class Stats extends Table
     /**
      * Save view
      *
-     * @param   integer  $itemid    Job ID
-     * @param   string   $category  Job type
+     * @param   integer|null  $itemid    Job ID
+     * @param   string|null   $category  Job type
      * @param   string   $type      Record type
      * @return  boolean  True upon success, False if errors
      */

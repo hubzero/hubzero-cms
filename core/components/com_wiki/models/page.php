@@ -152,7 +152,7 @@ class Page extends Relational
      * Strip the namespace, if one exists
      * Namespaces are determined by a colon (e.g., Special:Cite)
      *
-     * @param   string   $pagename  Name to get namespace from
+     * @param   string|null   $pagename  Name to get namespace from
      * @return  string
      */
     public function stripNamespace($pagename = null)
@@ -363,8 +363,8 @@ class Page extends Relational
      * Load a record by path and optional scope/scope_id
      *
      * @param   string   $path
-     * @param   string   $scope
-     * @param   integer  $scope_id
+     * @param   string|null   $scope
+     * @param   integer|null  $scope_id
      * @return  object
      */
     public static function oneByPath($path, $scope = null, $scope_id = null)
@@ -392,8 +392,8 @@ class Page extends Relational
      * Load a record by title and optional scope/scope_id
      *
      * @param   string   $title
-     * @param   string   $scope
-     * @param   integer  $scope_id
+     * @param   string|null   $scope
+     * @param   integer|null  $scope_id
      * @return  object
      */
     public static function oneByTitle($title, $scope = null, $scope_id = null)
@@ -473,7 +473,7 @@ class Page extends Relational
      * Link will vary depending upon action desired, such as edit, delete, etc.
      *
      * @param   string   $type    The type of link to return
-     * @param   string   $params
+     * @param   string|null   $params
      * @return  boolean
      */
     public function link($type = '', $params = null)
@@ -599,7 +599,7 @@ class Page extends Relational
     /**
      * Tag the entry
      *
-     * @param   string   $tags
+     * @param   string|null   $tags
      * @param   integer  $user_id
      * @param   integer  $admin
      * @return  boolean

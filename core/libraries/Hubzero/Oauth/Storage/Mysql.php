@@ -72,7 +72,7 @@ class Mysql implements
      * @param   string  $client_id     Client Id
      * @param   string  $user_id       User identifier
      * @param   int     $expires       Access token expiration date/time
-     * @param   string  $scope         Access token granted scope
+     * @param   string|null  $scope         Access token granted scope
      * @return  bool
      */
     public function setAccessToken($access_token, $client_id, $user_id, $expires, $scope = null)
@@ -171,7 +171,7 @@ class Mysql implements
      * Verify client credentials
      *
      * @param   string  $client_id      Client id
-     * @param   string  $client_secret  Client secret
+     * @param   string|null  $client_secret  Client secret
      * @return  bool    Result of test
      */
     public function checkClientCredentials($client_id, $client_secret = null)
@@ -240,7 +240,7 @@ class Mysql implements
      * @param   int     $user_id       User identifier
      * @param   string  $redirect_uri  Redirect URI after authorization
      * @param   int     $expires       Code expiration
-     * @param   string  $scope         Code scope
+     * @param   string|null  $scope         Code scope
      * @return  bool
      */
     public function setAuthorizationCode($code, $client_id, $user_id, $redirect_uri, $expires, $scope = null)
@@ -383,7 +383,7 @@ class Mysql implements
      * @param   string  $client_id      Client id
      * @param   int     $user_id        User identifier
      * @param   int     $expires        Expires timestamp
-     * @param   string  $scope          Token scope
+     * @param   string|null  $scope          Token scope
      * @return  bool
      */
     public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)

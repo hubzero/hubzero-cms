@@ -64,9 +64,9 @@ class AssetAssociation extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      integer $asset_id Asset ID
-     * @param      integer $scope_id Scope ID
-     * @param      string  $scope    Scope
+     * @param      integer|null $asset_id Asset ID
+     * @param      integer|null $scope_id Scope ID
+     * @param      string|null  $scope    Scope
      * @return     boolean True on success
      */
     public function loadByAssetScope($asset_id = null, $scope_id = null, $scope = null)

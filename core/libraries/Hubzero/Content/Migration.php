@@ -97,8 +97,8 @@ class Migration
     /**
      * Constructor
      *
-     * @param   object  $docroot  Defaults to null, which should then resolve to the hub docroot
-     * @param   object  $runDb    The db that migrations will actually run against
+     * @param   object|null  $docroot  Defaults to null, which should then resolve to the hub docroot
+     * @param   object|null  $runDb    The db that migrations will actually run against
      * @return  bool
      **/
     public function __construct($docroot = null, $runDb = null)
@@ -298,8 +298,8 @@ class Migration
     /**
      * Find all migration scripts
      *
-     * @param   string  $extension  Only look for migrations for this extension
-     * @param   string  $file       The specific file to run
+     * @param   string|null  $extension  Only look for migrations for this extension
+     * @param   string|null  $file       The specific file to run
      * @return  array|bool
      **/
     public function find($extension = null, $file = null)
@@ -931,7 +931,7 @@ class Migration
      * @param   string  $hash           The hash of file
      * @param   string  $direction      Up or down
      * @param   string  $status         The status of the run
-     * @param   int     $executionTime  Execution time in milliseconds
+     * @param   int|null     $executionTime  Execution time in milliseconds
      * @return  bool
      **/
     public function recordMigration($file, $scope, $hash, $direction, $status = 'success', $executionTime = null)
@@ -1010,7 +1010,7 @@ class Migration
      *
      * @param   string  $file       The migration filename
      * @param   string  $direction  Direction ('up' or 'down')
-     * @param   string  $extension  Optional extension filter to help locate the file
+     * @param   string|null  $extension  Optional extension filter to help locate the file
      * @return  bool    True on success, false on failure
      **/
     public function markMigration($file, $direction = 'up', $extension = null)
@@ -1058,7 +1058,7 @@ class Migration
      * effectively "unmarking" it so it appears as pending again.
      *
      * @param   string  $file       The migration filename
-     * @param   string  $extension  Optional extension filter to help locate the file
+     * @param   string|null  $extension  Optional extension filter to help locate the file
      * @return  bool    True on success, false on failure
      **/
     public function unmarkMigration($file, $extension = null)
@@ -1127,7 +1127,7 @@ class Migration
      * Check if a migration has been executed
      *
      * @param   string  $file       The migration filename
-     * @param   string  $extension  Optional extension filter
+     * @param   string|null  $extension  Optional extension filter
      * @return  object|false  Migration entry if executed, false if not found or not executed
      **/
     public function getMigrationStatus($file, $extension = null)
@@ -1179,7 +1179,7 @@ class Migration
      *
      * Returns counts and details about pending, executed, and failed migrations.
      *
-     * @param   string  $extension  Optional extension filter
+     * @param   string|null  $extension  Optional extension filter
      * @return  array|false  Status array or false on error
      **/
     public function getStatus($extension = null)
@@ -1515,7 +1515,7 @@ class Migration
      * Logging mechanism
      *
      * @param   string  $message  Message to log
-     * @param   string  $type     Message type, can be one predefined values from output class (not
+     * @param   string|null  $type     Message type, can be one predefined values from output class (not
      *                            specified will default to 'normal' text)
      * @return  void
      **/

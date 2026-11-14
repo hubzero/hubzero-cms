@@ -41,8 +41,8 @@ class Select
      * Generates a yes/no radio list.
      *
      * @param   string  $name      The value of the HTML name attribute
-     * @param   array   $attribs   Additional HTML attributes for the <select> tag
-     * @param   string  $selected  The key that is selected
+     * @param   array|null   $attribs   Additional HTML attributes for the <select> tag
+     * @param   string|null  $selected  The key that is selected
      * @param   string  $yes       Language key for Yes
      * @param   string  $no        Language key for no
      * @param   string|false $id        The id for the field
@@ -601,10 +601,10 @@ class Select
      *
      * @param   array    $data       An array of objects
      * @param   string   $name       The value of the HTML name attribute
-     * @param   string   $attribs    Additional HTML attributes for the <select> tag
+     * @param   string|null   $attribs    Additional HTML attributes for the <select> tag
      * @param   mixed    $optKey     The key that is selected
      * @param   string   $optText    The name of the object variable for the option value
-     * @param   string   $selected   The name of the object variable for the option text
+     * @param   string|null   $selected   The name of the object variable for the option text
      * @param   boolean  $idtag      Value of the field id or null by default
      * @param   boolean  $translate  True if options will be translated
      * @return  string   HTML for the select list
@@ -697,10 +697,10 @@ class Select
      *
      * @param   integer  $name      The scalar value
      * @param   string   $query     The query
-     * @param   string   $attribs   HTML tag attributes
-     * @param   string   $selected  The selected item
-     * @param   integer  $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
-     * @param   string   $chop      The length of the truncated headline
+     * @param   string|null   $attribs   HTML tag attributes
+     * @param   string|null   $selected  The selected item
+     * @param   integer|null  $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
+     * @param   string|null   $chop      The length of the truncated headline
      * @return  string   Html for the select list
      */
     public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null)

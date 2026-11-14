@@ -59,7 +59,7 @@ class Category extends Relational
     /**
      * Returns all rows (unless otherwise limited)
      *
-     * @param   string|array  $columns  The columns to select
+     * @param   string|array|null  $columns  The columns to select
      * @return  \Hubzero\Database\Relational|static
      */
     public static function all($columns = null)

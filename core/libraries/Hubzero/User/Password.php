@@ -199,7 +199,7 @@ class Password
     /**
      * Read a record
      *
-     * @param   integer  $instance
+     * @param   integer|null  $instance
      * @return  boolean
      */
     public function read($instance = null)
@@ -378,7 +378,7 @@ class Password
     /**
      * Get a property's value
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function __get($property = null)
@@ -408,7 +408,7 @@ class Password
     /**
      * Set a property's value
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @param   mixed   $value
      */
     public function __set($property = null, $value = null)
@@ -432,7 +432,7 @@ class Password
     /**
      * Check if a property is set
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  bool
      */
     public function __isset($property = null)
@@ -452,7 +452,7 @@ class Password
     /**
      * Unset a property
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  void
      */
     public function __unset($property = null)

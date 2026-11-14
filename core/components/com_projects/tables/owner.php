@@ -32,8 +32,8 @@ class Owner extends Table
     /**
      * Verify if user is project owner
      *
-     * @param   integer  $uid
-     * @param   integer  $projectid
+     * @param   integer|null  $uid
+     * @param   integer|null  $projectid
      * @param   integer  $status
      * @return  mixed    integer (member role) if user is owner, false if not
      */
@@ -69,7 +69,7 @@ class Owner extends Table
     /**
      * Get project owner count
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @return  mixed    False or integer
      */
@@ -103,7 +103,7 @@ class Owner extends Table
     /**
      * Get owner information
      *
-     * @param   integer $projectid
+     * @param   integer|null $projectid
      * @param   array   $ids
      * @param   array   $groups
      * @return  mixed   False or array
@@ -151,7 +151,7 @@ class Owner extends Table
     /**
      * Get ids of project owners
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string|int $role       get owners in specific role or all
      * @param   integer  $get_uids   get user ids (1) or owner ids (0)
      * @param   integer  $active     get only active users (1) or any
@@ -199,7 +199,7 @@ class Owner extends Table
     /**
      * Get owner id from user id
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $uid
      * @return  mixed    integer or null
      */
@@ -230,7 +230,7 @@ class Owner extends Table
      * Get email from user profile
      *
      * @param   string   $name
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  mixed    integer or null
      */
     public function getProfileEmail($name = '', $projectid = null)
@@ -252,7 +252,7 @@ class Owner extends Table
      * Get user ID profile
      *
      * @param   string   $email
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  mixed    integer or null
      */
     public function getProfileId($email = '', $projectid = null)
@@ -273,7 +273,7 @@ class Owner extends Table
     /**
      * Get names of project owners
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $limit
      * @param   integer  $show_uid
      * @return  string
@@ -354,7 +354,7 @@ class Owner extends Table
     /**
      * Get project creator
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  object|false
      */
     public function getCreator($projectid = null)
@@ -377,7 +377,7 @@ class Owner extends Table
     /**
      * Get params of owners connected to external service
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $service
      * @param   array    $exclude
      * @return  bool|array
@@ -423,7 +423,7 @@ class Owner extends Table
     /**
      * Get project owners
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @return  array|false
      */
@@ -542,7 +542,7 @@ class Owner extends Table
     /**
      * Get groups ids of groups belonging to a project
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $what
      * @param   boolean|int $native
      * @param   integer  $join     verify if group exists
@@ -572,7 +572,7 @@ class Owner extends Table
     /**
      * Reconcile members of project and members of groups belonging to a project
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $owned_by_group
      * @param   integer  $synced
      * @return  boolean  True if any updates were required, false if nothing to change
@@ -745,7 +745,7 @@ class Owner extends Table
     /**
      * Sync with system project group
      *
-     * @param   string  $alias   project alias
+     * @param   string|null  $alias   project alias
      * @param   string  $prefix  all project group names start with this
      * @return  void
      */
@@ -781,7 +781,7 @@ class Owner extends Table
     /**
      * Remove project owners
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $users      user or owner ids to remove
      * @param   boolean|int $byownerid  owner ids in users array?
      * @param   boolean|int $remove     permanently remove if true
@@ -835,7 +835,7 @@ class Owner extends Table
     /**
      * Reassign role
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $users      user or owner ids to remove
      * @param   boolean|int $byownerid  owner ids in users array?
      * @param   integer  $role       new role
@@ -890,7 +890,7 @@ class Owner extends Table
     /**
      * Check if person is invited, locate record by email
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $email
      * @return  string|false|null  the matched value if a record is found
      */
@@ -915,7 +915,7 @@ class Owner extends Table
     /**
      * Check if person is invited, locate record by name
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $name
      * @return  string|false|null  the matched value if a record is found
      */
@@ -940,7 +940,7 @@ class Owner extends Table
     /**
      * Save invitation
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string   $email
      * @param   string   $code
      * @param   string   $name
@@ -970,7 +970,7 @@ class Owner extends Table
     /**
      * Remove group id from owner record (make owner independent)
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $groupid
      * @return  boolean  true if success
      */
@@ -992,7 +992,7 @@ class Owner extends Table
     /**
      * Save invitation
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   string|int $actor             user id of person adding new member
      * @param   integer  $userid
      * @param   integer  $groupid
@@ -1181,7 +1181,7 @@ class Owner extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string   $projectid
+     * @param   string|null   $projectid
      * @param   integer  $owner       owner user id
      * @return  boolean  False or object
      */
@@ -1211,7 +1211,7 @@ class Owner extends Table
     /**
      * Save parameter
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   integer  $owner  owner user id
      * @param   string   $param
      * @param   string|int $value
@@ -1411,7 +1411,7 @@ class Owner extends Table
     /**
      * Match invite
      *
-     * @param   string  $identifier
+     * @param   string|null  $identifier
      * @param   string  $code
      * @param   string  $email
      * @return  string|false|null

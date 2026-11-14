@@ -214,7 +214,7 @@ class Archive extends Obj
     /**
      * Get a parameter from the component config
      *
-     * @param   string  $property  Param to return
+     * @param   string|null  $property  Param to return
      * @param   mixed   $default   Value to return if property not found
      * @return  object  Registry
      * @since   1.3.1

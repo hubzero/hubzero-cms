@@ -154,7 +154,7 @@ class Translator extends Obj
     /**
      * Constructor activating the default information of the language.
      *
-     * @param   string   $lang   The language
+     * @param   string|null   $lang   The language
      * @param   boolean  $debug  Indicates if language debugging is enabled.
      * @return  void
      */
@@ -600,7 +600,7 @@ class Translator extends Obj
      *
      * @param   string   $extension  The extension for which a language file should be loaded.
      * @param   string   $basePath   The basepath to use.
-     * @param   string   $lang       The language to load, default null for the current language.
+     * @param   string|null   $lang       The language to load, default null for the current language.
      * @param   boolean  $reload     Flag that will force a language to be reloaded if set to true.
      * @param   boolean  $default    Flag that force the default language to be loaded if the current does not exist.
      * @return  boolean  True if the file has successfully loaded.
@@ -920,7 +920,7 @@ class Translator extends Obj
     /**
      * Get a list of language files that have been loaded.
      *
-     * @param   string  $extension  An optional extension name.
+     * @param   string|null  $extension  An optional extension name.
      * @return  array|null
      */
     public function getPaths($extension = null)
@@ -1106,7 +1106,7 @@ class Translator extends Obj
     /**
      * Get published content languages from the database.
      *
-     * @param   string  $key  Column to index the result array by (e.g. 'lang_code')
+     * @param   string|null  $key  Column to index the result array by (e.g. 'lang_code')
      * @return  array   Array of language objects, optionally indexed by $key
      */
     public static function getLanguages($key = null)
@@ -1126,7 +1126,7 @@ class Translator extends Obj
      * Get the path to a language
      *
      * @param   string  $basePath  The basepath to use.
-     * @param   string  $language  The language tag.
+     * @param   string|null  $language  The language tag.
      * @return  string  language related path or null.
      */
     public static function getLanguagePath($basePath = PATH_APP, $language = null, $client = null)
@@ -1250,7 +1250,7 @@ class Translator extends Obj
     /**
      * Searches for language directories within a certain base dir.
      *
-     * @param   string  $dir  directory of files.
+     * @param   string|null  $dir  directory of files.
      * @return  array   Array holding the found languages as filename => real name pairs.
      */
     public static function parseLanguageFiles($dir = null)
@@ -1419,7 +1419,7 @@ class Translator extends Obj
      * @param   string   $basePath        Base path to use
      * @param   boolean  $caching         True if caching is used
      * @param   array|false $installed       An array of arrays (text, value, selected)
-     * @param   integer  $client          Client ID
+     * @param   integer|null  $client          Client ID
      * @return  array    List of system languages
      */
     public static function getList(
@@ -1618,7 +1618,7 @@ class Translator extends Obj
     /**
      * Translate a string into the current language and stores it in the JavaScript language store.
      *
-     * @param   string   $string                The language key.
+     * @param   string|null   $string                The language key.
      * @param   boolean|array  $jsSafe                Ensure the output is JavaScript safe.
      * @param   boolean  $interpretBackSlashes  Interpret \t and \n.
      * @return  mixed

@@ -22,8 +22,8 @@ class Js extends AbstractHelper
      * Push JS to the document
      *
      * @param   string  $asset      Script to add
-     * @param   string  $extension  Extension name, e.g.: com_example, mod_example, plg_example_test
-     * @param   string  $element    Plugin element. Only used for plugins and if first argument is folder name.
+     * @param   string|null  $extension  Extension name, e.g.: com_example, mod_example, plg_example_test
+     * @param   string|null  $element    Plugin element. Only used for plugins and if first argument is folder name.
      * @return  object
      */
     public function __invoke($asset = '', $extension = null, $element = null)

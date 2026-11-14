@@ -50,7 +50,7 @@ class ToolInstance extends Table
     /**
      * Load from instance
      *
-     * @param   string  $instance
+     * @param   string|null  $instance
      * @return  mixed   object or false
      */
     public function loadFromInstanceName($instance = null)
@@ -72,7 +72,7 @@ class ToolInstance extends Table
     /**
      * Load from parent
      *
-     * @param   string  $parent  Parent tool ID or name
+     * @param   string|null  $parent  Parent tool ID or name
      * @return  mixed   object or false
      */
     public function loadFromParent($parent = null, $version = 'dev')
@@ -126,8 +126,8 @@ class ToolInstance extends Table
     /**
      * Get instances
      *
-     * @param   string  $parent_name
-     * @param   int     $parent_id
+     * @param   string|null  $parent_name
+     * @param   int|null     $parent_id
      * @param   int     $exclude_dev
      * @return  mixed
      */
@@ -173,8 +173,8 @@ class ToolInstance extends Table
     /**
      * Update Parent Name
      *
-     * @param   string  $parent_id
-     * @param   string  $newname
+     * @param   string|null  $parent_id
+     * @param   string|null  $newname
      * @return  mixed
      */
     public function updateParentName($parent_id = null, $newname = null)

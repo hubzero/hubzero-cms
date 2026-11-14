@@ -45,8 +45,8 @@ class GradeBook extends Base
     /**
      * Constructor
      *
-     * @param      integer $oid  Resource ID or alias
-     * @param      object  $course
+     * @param      integer|null $oid  Resource ID or alias
+     * @param      object|null  $course
      * @return     void
      */
     public function __construct($oid = null, $course = null)
@@ -163,7 +163,7 @@ class GradeBook extends Base
      * criteria on assets where it can be tracked (ex: videos, where we can track an
      * entire view, or an exam, where we know when they've actually finished it).
      *
-     * @param      int $member_id
+     * @param      int|null $member_id
      * @return     array $progress
      */
     public function progress($member_id = null)
@@ -328,7 +328,7 @@ class GradeBook extends Base
     /**
      * Calculate scores for each unit and the course as a whole
      *
-     * @param      int|array $member_id
+     * @param      int|array|null $member_id
      * @param      int|null $asset_id
      * @return     boolean true on success, false otherwise
      */
@@ -570,7 +570,7 @@ class GradeBook extends Base
     /**
      * Method to check for expired exams that students did not take and add 0's to the gradebook as appropriate
      *
-     * @param      int $member_id (optional)
+     * @param      int|null $member_id (optional)
      * @return     void
      **/
     public function refresh($member_id = null)
@@ -584,7 +584,7 @@ class GradeBook extends Base
     /**
      * Determine whether or not a student or group of students is passing
      *
-     * @param      int $member_id (optional)
+     * @param      int|null $member_id (optional)
      * @param      bool $section only (optional)
      * @return     array|false
      **/
@@ -678,7 +678,7 @@ class GradeBook extends Base
     /**
      * Check whether or not the student is passing the course and has completed all items
      *
-     * @param      int|array $member_id
+     * @param      int|array|null $member_id
      * @return     array
      **/
     public function isEligibleForRecognition($member_id = null)
@@ -805,7 +805,7 @@ class GradeBook extends Base
     /**
      * Check whether or not the student(s) have earned a badge
      *
-     * @param      int $member_id
+     * @param      int|null $member_id
      * @return     bool|null
      **/
     public function hasEarnedBadge($member_id = null)

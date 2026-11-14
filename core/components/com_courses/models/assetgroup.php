@@ -197,7 +197,7 @@ class Assetgroup extends Base
     /**
      * Get a specific asset
      *
-     * @param   integer $id Asset ID
+     * @param   integer|null $id Asset ID
      * @return  object  \Components\Courses\Models\Asset
      */
     public function asset($id = null)
@@ -301,7 +301,7 @@ class Assetgroup extends Base
     /**
      * Return the key for the current cursor position
      *
-     * @param   integer $idx
+     * @param   integer|null $idx
      * @return  mixed
      */
     public function key($idx = null)
@@ -402,7 +402,7 @@ class Assetgroup extends Base
     /**
      * Copy an entry and associated data
      *
-     * @param   integer $unit_id New unit to copy to
+     * @param   integer|null $unit_id New unit to copy to
      * @param   boolean $deep    Copy associated data?
      * @return  boolean True on success, false on error
      */

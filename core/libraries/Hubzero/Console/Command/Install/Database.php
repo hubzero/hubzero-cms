@@ -187,8 +187,8 @@ class Database
      * Configure the database connection
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   array   $existing  Existing configuration to use as defaults
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   array|null   $existing  Existing configuration to use as defaults
      * @return  bool|null  True on success, false on failure, null if user exited
      */
     public static function configure($ansi = true, $appPath = null, $existing = null)

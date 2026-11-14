@@ -152,7 +152,7 @@ abstract class Processor
      * Converts an object into a formatted string.
      *
      * @param   object  $object   Data Source Object.
-     * @param   array   $options  An array of options for the formatter.
+     * @param   array|null   $options  An array of options for the formatter.
      * @return  string  Formatted string.
      */
     abstract public function objectToString($object, $options = null);
@@ -161,7 +161,7 @@ abstract class Processor
      * Converts a formatted string into an object.
      *
      * @param   string  $data     Formatted string
-     * @param   array   $options  An array of options for the formatter.
+     * @param   array|null   $options  An array of options for the formatter.
      * @return  object  Data Object
      */
     abstract public function stringToObject($data, $options = null);

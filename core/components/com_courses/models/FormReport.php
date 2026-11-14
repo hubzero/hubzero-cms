@@ -28,7 +28,7 @@ class FormReport extends Model
      * @param  object $db - database object
      * @param  int $asset_id    - asset id
      * @param  bool $include_headers   - whether or not to include header values
-     * @param  int $section_id    - limit to only a certain section
+     * @param  int|null $section_id    - limit to only a certain section
      * @return array|false
      **/
     public static function getLetterResponsesForAssetId($db, $asset_id, $include_headers = true, $section_id = null)
@@ -168,7 +168,7 @@ class FormReport extends Model
      *
      * @param  object $db   - database connection object
      * @param  int $asset_id   - asset id for which to retrieve letter counts
-     * @param  int $section_id   - section id
+     * @param  int|null $section_id   - section id
      * @return array|false - counts of letter responses
      **/
     public static function getLetterResponseCountsForAssetId($db, $asset_id, $section_id = null)

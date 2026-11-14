@@ -23,7 +23,7 @@ class Editor extends AbstractHelper
      * @param   string   $content  The contents of the text area.
      * @param   integer  $col      The number of columns for the textarea.
      * @param   integer  $row      The number of rows for the textarea.
-     * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+     * @param  string|null  $id  An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
      * @param   array    $params   Associative array of editor parameters.
      * @return  string|object
      */

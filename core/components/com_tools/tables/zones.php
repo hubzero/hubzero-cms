@@ -64,7 +64,7 @@ class Zones extends Table
     /**
      * Delete a record and any associated records in the #__zone_locations table
      *
-     * @param   integer  $oid  Record ID
+     * @param   integer|null  $oid  Record ID
      * @return  boolean  True if successful otherwise returns and error message
      */
     public function delete($oid = null)

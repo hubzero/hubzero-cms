@@ -150,7 +150,7 @@ class Watch extends Relational
      * @param   integer  $item_id
      * @param   string   $item_type
      * @param   integer  $created_by
-     * @param   string   $email
+     * @param   string|null   $email
      * @return  object
      */
     public static function oneByScope($item_id, $item_type, $created_by = 0, $email = null)

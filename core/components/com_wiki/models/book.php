@@ -190,7 +190,7 @@ class Book extends Obj
     /**
      * Get a configuration value
      *
-     * @param   string  $key      Property to return
+     * @param   string|null  $key      Property to return
      * @param   mixed   $default  Value to return if property not found
      * @return  mixed
      */

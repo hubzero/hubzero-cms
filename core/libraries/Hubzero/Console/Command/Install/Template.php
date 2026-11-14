@@ -31,7 +31,7 @@ class Template
      * Make the named template the hub's site template
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $template  The site template, or null to leave it alone
+     * @param   string|null  $template  The site template, or null to leave it alone
      * @return  bool
      */
     public static function configure($ansi = true, $template = null)

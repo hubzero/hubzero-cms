@@ -295,7 +295,7 @@ class Application extends Container
      * Redirect current request to new request (sub requests)
      *
      * @param   string  $url      Url to redirect to
-     * @param   string  $message  Message to display on redirect.
+     * @param   string|null  $message  Message to display on redirect.
      * @param   array|string $type     Message type.
      * @return  never
      */

@@ -200,7 +200,7 @@ class Memcache extends None
     /**
      * Remove all items from the cache.
      *
-     * @param   string  $group
+     * @param   string|null  $group
      * @return  void
      */
     public function clean($group = null)

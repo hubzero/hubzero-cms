@@ -129,7 +129,7 @@ class Hosts extends AdminController
     /**
      * Display host entries for a member
      *
-     * @param   object  $profile
+     * @param   object|null  $profile
      *
      * @return  void
      */

@@ -1037,7 +1037,7 @@ class SqlsrvDriver extends BaseSqlDriver
      * Gets the database character set of the given table
      *
      * @param   string  $table  The table name
-     * @param   string  $field  Optional field name
+     * @param   string|null  $field  Optional field name
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)
@@ -1118,8 +1118,8 @@ class SqlsrvDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix
-     * @param   string  $prefix    For the table
+     * @param   string|null  $backup    Table prefix
+     * @param   string|null  $prefix    For the table
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)

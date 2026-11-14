@@ -145,7 +145,7 @@ class Post extends Base
     /**
      * Get the item for this post
      *
-     * @param   integer|Item  $oid  An item's ID, or the item itself to use in place of the stored one
+     * @param   integer|Item|null  $oid  An item's ID, or the item itself to use in place of the stored one
      * @return  object
      */
     public function item($oid = null)
@@ -170,7 +170,7 @@ class Post extends Base
     /**
      * Get the item for this post
      *
-     * @param   integer $oid
+     * @param   integer|null $oid
      * @return  object
      */
     public function collection($oid = null)

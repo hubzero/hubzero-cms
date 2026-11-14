@@ -57,7 +57,7 @@ class Manager extends Member
     /**
      * Returns a reference to a manager object
      *
-     * @param   string $uid User ID
+     * @param   string|null $uid User ID
      * @param   string|int $cid Course ID
      * @param   string|int $oid Offering ID
      * @param   string|int $sid Section ID

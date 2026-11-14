@@ -867,7 +867,7 @@ class User extends \Hubzero\Database\Relational
      * Alias for authorise() method
      *
      * @param   string   $action     The name of the action to check for permission.
-     * @param   string   $assetname  The name of the asset on which to perform the action.
+     * @param   string|null   $assetname  The name of the asset on which to perform the action.
      * @return  boolean  True if authorised
      * @since   2.1.0
      */
@@ -881,7 +881,7 @@ class User extends \Hubzero\Database\Relational
      * object and optionally an access extension object
      *
      * @param   string   $action     The name of the action to check for permission.
-     * @param   string   $assetname  The name of the asset on which to perform the action.
+     * @param   string|null   $assetname  The name of the asset on which to perform the action.
      * @return  boolean  True if authorised
      * @since   2.1.0
      */

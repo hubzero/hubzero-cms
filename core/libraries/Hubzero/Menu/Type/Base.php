@@ -201,7 +201,7 @@ class Base extends Obj
      * An address that matched no menu item has no active item, which is not
      * the front page either.
      *
-     * @param   object  $item  The item to ask about, or the active one
+     * @param   object|null  $item  The item to ask about, or the active one
      * @return  bool
      */
     public function isHome($item = null)

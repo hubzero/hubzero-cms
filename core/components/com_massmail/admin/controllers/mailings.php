@@ -85,7 +85,7 @@ class Mailings extends AdminController
     /**
      * Compose / edit a draft mailing
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  void
      */
     public function editTask($row = null, $invalid = [])
@@ -378,7 +378,7 @@ class Mailings extends AdminController
      * summary of exactly what accepting will do (schedule, audience size, whether
      * approval or release is required), then lets the user accept, edit, or bail.
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  void
      */
     public function verifyTask($row = null)

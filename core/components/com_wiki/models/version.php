@@ -140,7 +140,7 @@ class Version extends Relational
      * Return a formatted timestamp for created date
      *
      * @param   string  $as
-     * @param   string  $format
+     * @param   string|null  $format
      * @return  string
      */
     public function created($as = '', $format = null)
@@ -170,8 +170,8 @@ class Version extends Relational
      * clean  - parses content and then strips tags
      * raw    - as is, no parsing
      *
-     * @param   object  $page
-     * @param   string  $option
+     * @param   object|null  $page
+     * @param   string|null  $option
      * @return  string
      */
     public function content($page = null, $option = null)

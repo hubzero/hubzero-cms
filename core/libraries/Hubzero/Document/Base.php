@@ -368,7 +368,7 @@ class Base extends Obj
      *
      * @param   string  $url      URL to the linked style sheet
      * @param   string  $type     Mime encoding type
-     * @param   string  $media    Media type that this stylesheet applies to
+     * @param   string|null  $media    Media type that this stylesheet applies to
      * @param   array   $attribs  Array of attributes
      * @return  object  Document instance of $this to allow chaining
      */

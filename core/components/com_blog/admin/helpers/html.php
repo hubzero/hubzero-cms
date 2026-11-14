@@ -21,8 +21,8 @@ class Html
      *
      * @param   mixed   $val   Chosen value
      * @param   string  $name  Field name
-     * @param   string  $id    ID
-     * @param   string  $atts  Attributes
+     * @param   string|null  $id    ID
+     * @param   string|null  $atts  Attributes
      * @return  string  HTML <select>
      */
     public static function scopes($val, $name, $id = null, $atts = null)

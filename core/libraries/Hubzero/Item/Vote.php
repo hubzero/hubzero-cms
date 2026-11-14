@@ -156,7 +156,7 @@ class Vote extends Relational
      * @param   integer  $item_id     Item type
      * @param   string   $item_type   Item ID
      * @param   integer  $created_by  User ID
-     * @param   string   $ip          IP address
+     * @param   string|null   $ip          IP address
      * @return  object
      */
     public static function oneByScope($item_id, $item_type, $created_by = 0, $ip = null)
@@ -181,8 +181,8 @@ class Vote extends Relational
      *
      * @param   integer  $item_type  Item type
      * @param   integer  $item_id    Item ID
-     * @param   integer  $user_id    User ID
-     * @param   string   $ip         IP address
+     * @param   integer|null  $user_id    User ID
+     * @param   string|null   $ip         IP address
      * @return  integer
      */
     public function hasVoted($item_type, $item_id, $user_id = null, $ip = null)

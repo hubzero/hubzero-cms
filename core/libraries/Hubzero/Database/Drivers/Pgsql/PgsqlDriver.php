@@ -620,7 +620,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Gets the database character set
      *
      * @param   string       $table  The table for which to retrieve the character set
-     * @param   string       $field  The field to check (optional)
+     * @param   string|null       $field  The field to check (optional)
      * @return  string|bool
      */
     public function getCharacterSet($table, $field = null)
@@ -846,8 +846,8 @@ class PgsqlDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix (unused in PostgreSQL)
-     * @param   string  $prefix    For the table (unused in PostgreSQL)
+     * @param   string|null  $backup    Table prefix (unused in PostgreSQL)
+     * @param   string|null  $prefix    For the table (unused in PostgreSQL)
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)
@@ -2182,7 +2182,7 @@ class PgsqlDriver extends BaseSqlDriver
      * Wraps an SQL statement identifier name
      *
      * @param   string  $name  The identifier name
-     * @param   string  $as    The AS query part
+     * @param   string|null  $as    The AS query part
      * @return  string
      */
     public function quoteName($name, $as = null)

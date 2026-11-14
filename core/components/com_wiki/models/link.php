@@ -85,7 +85,7 @@ class Link extends Relational
      * Return a formatted timestamp for created date
      *
      * @param   string  $as
-     * @param   string  $format
+     * @param   string|null  $format
      * @return  string
      */
     public function created($as = '', $format = null)

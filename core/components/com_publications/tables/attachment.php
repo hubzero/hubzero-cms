@@ -44,7 +44,7 @@ class Attachment extends Table
     /**
      * Get array of file attachments
      *
-     * @param   integer  $versionid  Pub version ID
+     * @param   integer|null  $versionid  Pub version ID
      * @param   string   $role
      * @return  mixed    object or false
      */
@@ -98,7 +98,7 @@ class Attachment extends Table
     /**
      * Save project parameter
      *
-     * @param   object  $record
+     * @param   object|null  $record
      * @param   string  $param
      * @param   string|int $value
      * @return  bool|null
@@ -227,7 +227,7 @@ class Attachment extends Table
     /**
      * Get connections
      *
-     * @param   integer  $vid   pub version id
+     * @param   integer|null  $vid   pub version id
      * @param   array    $find
      * @return  array|false|null
      */
@@ -360,7 +360,7 @@ class Attachment extends Table
     /**
      * Delete element attachment
      *
-     * @param   integer  $vid
+     * @param   integer|null  $vid
      * @param   array    $find
      * @param   integer  $elementId
      * @param   string   $type
@@ -399,7 +399,7 @@ class Attachment extends Table
     /**
      * Load element attachment
      *
-     * @param   integer  $vid
+     * @param   integer|null  $vid
      * @param   array    $find
      * @param   integer  $elementId
      * @param   string   $type
@@ -443,8 +443,8 @@ class Attachment extends Table
     /**
      * Load entry by version and path/object
      *
-     * @param   integer  $vid         pub version id
-     * @param   string   $identifier  Attached object identifier (e.g. content path for files)
+     * @param   integer|null  $vid         pub version id
+     * @param   string|null   $identifier  Attached object identifier (e.g. content path for files)
      * @param   string   $type        Attachment type
      * @return  mixed    object or FALSE
      */
@@ -482,9 +482,9 @@ class Attachment extends Table
     /**
      * Copy entry
      *
-     * @param   object   $att
-     * @param   integer  $vid
-     * @param   integer  $elementId
+     * @param   object|null   $att
+     * @param   integer|null  $vid
+     * @param   integer|null  $elementId
      * @param   integer  $uid
      * @return  object|bool   object or FALSE
      */
@@ -518,8 +518,8 @@ class Attachment extends Table
     /**
      * Load entry by version and path
      *
-     * @param   integer  $vid         pub version id
-     * @param   string   $identifier  content path or object id/name
+     * @param   integer|null  $vid         pub version id
+     * @param   string|null   $identifier  content path or object id/name
      * @return  boolean
      */
     public function deleteAttachment($vid = null, $identifier = null, $type = 'file')
@@ -552,7 +552,7 @@ class Attachment extends Table
     /**
      * Load entries by pub version
      *
-     * @param   integer  $vid  pub version id
+     * @param   integer|null  $vid  pub version id
      * @return  boolean
      */
     public function deleteAttachments($vid = null)
@@ -573,8 +573,8 @@ class Attachment extends Table
     /**
      * Check version duplicate
      *
-     * @param   integer  $pid
-     * @param   integer  $vid
+     * @param   integer|null  $pid
+     * @param   integer|null  $vid
      * @return  mixed
      */
     public function getVersionAttachments($pid = null, $vid = null)

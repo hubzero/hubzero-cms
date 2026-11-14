@@ -1405,7 +1405,7 @@ class Profiles extends SiteController
     /**
      * Show a form for editing a profile
      *
-     * @param   object  $profile  Profile
+     * @param   object|null  $profile  Profile
      *
      * @return  void
      */

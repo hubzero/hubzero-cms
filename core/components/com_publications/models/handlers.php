@@ -73,7 +73,7 @@ class Handlers extends Obj
      * @param   array    $handlers
      * @param   object   $handler
      * @param   array    $attachments
-     * @param   object   $props
+     * @param   object|null   $props
      * @return  string
      */
     public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = null)
@@ -337,7 +337,7 @@ class Handlers extends Obj
      * Side controls for handler
      *
      * @param   object   $handler
-     * @param   boolean  $assigned
+     * @param   boolean|null  $assigned
      * @return  string   HTML
      */
     public function drawSelectedHandler($handler, $assigned = null)

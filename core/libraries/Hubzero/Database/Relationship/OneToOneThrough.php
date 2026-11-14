@@ -177,7 +177,7 @@ class OneToOneThrough extends Relationship
      * Gets the relations that will be seeded on to the provided rows
      *
      * @param   array    $keys        The keys for which to fetch related items
-     * @param   \Closure  $constraint  The constraint function to limit related items
+     * @param   \Closure|null  $constraint  The constraint function to limit related items
      * @return  \Hubzero\Database\Relational
      **/
     protected function getRelations($keys, $constraint = null)

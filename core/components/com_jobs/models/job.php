@@ -47,7 +47,7 @@ class Job extends Model
      * it will return that property value. Otherwise,
      * it returns the entire user object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function creator($property = null)

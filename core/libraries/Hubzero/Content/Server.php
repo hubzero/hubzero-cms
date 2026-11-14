@@ -71,7 +71,7 @@ class Server extends Obj
     /**
      * Set the name to save file as
      *
-     * @param   string  $saveas  Name to save file as
+     * @param   string|null  $saveas  Name to save file as
      * @return  mixed   String if field is set, NULL if not
      */
     public function saveas($saveas = null)
@@ -86,7 +86,7 @@ class Server extends Obj
     /**
      * Set the filename value
      *
-     * @param   string  $filename  File to serve up
+     * @param   string|null  $filename  File to serve up
      * @return  mixed   String if field is set, NULL if not
      */
     public function filename($filename = null)
@@ -119,7 +119,7 @@ class Server extends Obj
     /**
      * Set the filename value
      *
-     * @param   string   $filename  File to serve up
+     * @param   string|null   $filename  File to serve up
      * @return  boolean  True if path is allowable, False if not
      */
     public static function valid($filename = null)
@@ -153,7 +153,7 @@ class Server extends Obj
     /**
      * Set the acceptranges value
      *
-     * @param   boolean  $acceptranges  Value to set
+     * @param   boolean|null  $acceptranges  Value to set
      * @return  mixed    Boolean if field is set, NULL if not
      */
     public function acceptranges($acceptranges = null)
@@ -168,7 +168,7 @@ class Server extends Obj
     /**
      * Set the disposition value
      *
-     * @param   string  $disposition  Value to set
+     * @param   string|null  $disposition  Value to set
      * @return  mixed   String if field is set, NULL if not
      */
     public function disposition($disposition = null)
@@ -191,7 +191,7 @@ class Server extends Obj
     /**
      * Set Content Type
      *
-     * @param  string  $contentType
+     * @param  string|null  $contentType
      *
      * @return  void
      */
@@ -217,7 +217,7 @@ class Server extends Obj
      * (browser should default to saving file rather than displaying)
      *
      * @param   string   $filename      File to serve up
-     * @param   string   $saveas        Name to save file as
+     * @param   string|null   $saveas        Name to save file as
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
@@ -243,7 +243,7 @@ class Server extends Obj
      * Read the contents of a file and display it
      *
      * @param   string   $filename      File to serve up
-     * @param   string   $saveas        Name to save file as (used for attachment disposition)
+     * @param   string|null   $saveas        Name to save file as (used for attachment disposition)
      * @param   string   $disposition   inline or attachment
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error

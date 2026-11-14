@@ -743,7 +743,7 @@ class Account extends Plugin
      * Hubzero\Filesystem\SafePath for how the path is resolved.
      *
      * @param   boolean  $create  Create the directory when it is missing?
-     * @param   string   &$error  Language key describing why the path was rejected
+     * @param   string|null   &$error  Language key describing why the path was rejected
      * @return  string|boolean    Canonical path of the .ssh directory, false on failure
      */
     protected function sshDirectory($create = true, &$error = null)
@@ -799,7 +799,7 @@ class Account extends Plugin
      * Resolve the authorized_keys path inside an already validated .ssh directory
      *
      * @param   string  $ssh     Validated .ssh directory
-     * @param   string  &$error  Language key describing why the path was rejected
+     * @param   string|null  &$error  Language key describing why the path was rejected
      * @return  string|boolean   Path of the authorized_keys file, false on failure
      */
     protected function authorizedKeysPath($ssh, &$error = null)
@@ -913,7 +913,7 @@ class Account extends Plugin
     /**
      * Read SSH key
      *
-     * @param   string  &$error  Language key describing why the key couldn't be read
+     * @param   string|null  &$error  Language key describing why the key couldn't be read
      * @return  string|false  .ssh/authorized_keys file content
      */
     private function readKey(&$error = null)

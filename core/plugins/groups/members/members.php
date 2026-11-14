@@ -110,7 +110,7 @@ class Members extends Plugin
      * @param   integer  $limitstart  Start of records to pull
      * @param   string   $action      Action to perform
      * @param   array    $access      What can be accessed
-     * @param   array    $areas       Active area(s)
+     * @param   array|null    $areas       Active area(s)
      * @return  array
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
@@ -1312,7 +1312,7 @@ class Members extends Plugin
     /**
      * Display a form for managing the group's canned deny responses
      *
-     * @param   array  $responses  Responses to show instead of the saved ones,
+     * @param   array|null  $responses  Responses to show instead of the saved ones,
      *                             so a failed save can hand back what was typed
      * @return  false|null
      */
@@ -1795,7 +1795,7 @@ class Members extends Plugin
     /**
      * Edit a member role
      *
-     * @param   object  $role
+     * @param   object|null  $role
      */
     public function editRole($role = null)
     {

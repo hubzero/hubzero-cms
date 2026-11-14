@@ -32,8 +32,8 @@ class Post extends Table
     /**
      * Load a record by its collection and item IDs
      *
-     * @param   integer  $collection_id
-     * @param   integer  $item_id
+     * @param   integer|null  $collection_id
+     * @param   integer|null  $item_id
      * @return  boolean  True upon success, False if errors
      */
     public function loadByBoard($collection_id = null, $item_id = null)

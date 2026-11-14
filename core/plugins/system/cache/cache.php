@@ -142,7 +142,7 @@ class Cache extends Plugin
     /**
      * Clean out cached CSS files
      *
-     * @param   string   $group
+     * @param   string|null   $group
      * @param   integer  $client_id
      * @return  void
      */

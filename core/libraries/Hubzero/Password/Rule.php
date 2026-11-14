@@ -346,7 +346,7 @@ class Rule extends Relational
      * @param   string  $password
      * @param   iterable  $rules
      * @param   mixed   $user
-     * @param   string  $name
+     * @param   string|null  $name
      * @param   bool    $isNew
      * @return  array
      */

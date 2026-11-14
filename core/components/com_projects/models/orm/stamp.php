@@ -112,7 +112,7 @@ class Stamp extends Relational
      * @param   string   $reference  Reference string to object (JSON)
      * @param   string   $type
      * @param   integer  $listed
-     * @param   string   $expires
+     * @param   string|null   $expires
      * @return  mixed    False if error, String on success
      */
     public static function register($projectid = 0, $reference = '', $type = 'files', $listed = 0, $expires = null)

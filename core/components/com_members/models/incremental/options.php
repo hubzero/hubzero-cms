@@ -38,7 +38,7 @@ class Options
     /**
      * Check if enabled
      *
-     * @param   integer  $uid
+     * @param   integer|null  $uid
      * @return  boolean
      */
     public function isEnabled($uid = null)
@@ -73,7 +73,7 @@ class Options
     /**
      * Check if the curl enabled
      *
-     * @param   integer  $uid
+     * @param   integer|null  $uid
      * @return  boolean
      */
     public function isCurlEnabled($uid = null)

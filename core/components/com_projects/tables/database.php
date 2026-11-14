@@ -29,7 +29,7 @@ class Database extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string  $identifier  database name or id
+     * @param   string|null  $identifier  database name or id
      * @return  mixed   object or false
      */
     public function loadRecord($identifier = null)
@@ -50,7 +50,7 @@ class Database extends Table
     /**
      * Get items
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @param   array    $filters
      * @param   boolean  $skipPublished
      * @return  mixed    object, integer or null
@@ -76,8 +76,8 @@ class Database extends Table
     /**
      * Get items
      *
-     * @param   integer  $projectid
-     * @param   array    $id
+     * @param   integer|null  $projectid
+     * @param   array|null    $id
      * @return  mixed    object, integer or null
      */
     public function getResource($projectid = null, $id = null)
@@ -96,7 +96,7 @@ class Database extends Table
     /**
      * Get database list
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  mixed    object, integer or null
      */
     public function getList($projectid = null)
@@ -118,7 +118,7 @@ class Database extends Table
     /**
      * Get used items
      *
-     * @param   integer  $projectid
+     * @param   integer|null  $projectid
      * @return  mixed    object, integer or null
      */
     public function getUsedItems($projectid = null)

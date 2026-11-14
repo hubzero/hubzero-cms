@@ -648,7 +648,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get table I/O statistics from Performance Schema
      *
-     * @param   string  $table  Table name (optional, returns all if not specified)
+     * @param   string|null  $table  Table name (optional, returns all if not specified)
      * @return  array
      */
     public function getTableIoStats($table = null)
@@ -1111,7 +1111,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get MySQL global status variables
      *
-     * @param   string  $like  Optional LIKE pattern to filter variables
+     * @param   string|null  $like  Optional LIKE pattern to filter variables
      * @return  array
      */
     public function getGlobalStatus($like = null): array
@@ -1128,7 +1128,7 @@ class MysqlDriver extends BaseSqlDriver
     /**
      * Get MySQL global variables
      *
-     * @param   string  $like  Optional LIKE pattern to filter variables
+     * @param   string|null  $like  Optional LIKE pattern to filter variables
      * @return  array
      */
     public function getGlobalVariables($like = null): array
@@ -1357,8 +1357,8 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The name of the table to be renamed
      * @param   string  $newTable  The new name for the table
-     * @param   string  $backup    Table prefix
-     * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
+     * @param   string|null  $backup    Table prefix
+     * @param   string|null  $prefix    For the table - used to rename constraints in non-mysql databases
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)
@@ -1485,7 +1485,7 @@ class MysqlDriver extends BaseSqlDriver
      * Gets the database character set of the given table
      *
      * @param   string       $table  The table for which to retrieve the character set
-     * @param   string       $field  The field to check (optional)
+     * @param   string|null       $field  The field to check (optional)
      * @return  string|bool
      **/
     public function getCharacterSet($table, $field = null)

@@ -140,7 +140,7 @@ class Component extends Obj
      *
      * @param   object  $form   The form to validate against.
      * @param   array   $data   The data to validate.
-     * @param   string  $group  The name of the field group to validate.
+     * @param   string|null  $group  The name of the field group to validate.
      * @return  mixed   Array of filtered data if valid, false otherwise.
      */
     public function validate($form, $data, $group = null)

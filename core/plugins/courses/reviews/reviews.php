@@ -42,7 +42,7 @@ class Reviews extends Plugin
      * Return data on a resource view (this will be some form of HTML)
      *
      * @param   object  $course
-     * @param   string  $active
+     * @param   string|null  $active
      * @return  array
      */
     public function onCourseView($course, $active = null)
@@ -131,7 +131,7 @@ class Reviews extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer  $assetId    Specific object to check permissions for
+     * @param   integer|null  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'comment', $assetId = null)

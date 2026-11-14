@@ -95,7 +95,7 @@ class Pages extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

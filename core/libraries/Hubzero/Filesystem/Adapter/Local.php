@@ -34,7 +34,7 @@ class Local implements AdapterInterface
     /**
      * Constructor.
      *
-     * @param   string  $command
+     * @param   string|null  $command
      * @return  void
      */
     public function __construct($command = null)

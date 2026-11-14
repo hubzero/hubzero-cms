@@ -50,7 +50,7 @@ class Posts extends SiteController
     /**
      * Redirect to login page
      *
-     * @param   string  $return  URL to come back to after logging in
+     * @param   string|null  $return  URL to come back to after logging in
      * @return  void
      */
     public function loginTask($return = null)
@@ -122,7 +122,7 @@ class Posts extends SiteController
      * in that gap, or an edit that never touched the select would relocate the
      * post to whatever option came first.
      *
-     * @param   object  $current  The post's current board, or null
+     * @param   object|null  $current  The post's current board, or null
      * @return  \Hubzero\Base\ItemList
      */
     protected function postableBoards($current = null)

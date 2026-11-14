@@ -59,7 +59,7 @@ class Calendar extends Relational
      *
      * @param   string   $name
      * @param   string   $scope
-     * @param   integer  $scope_id
+     * @param   integer|null  $scope_id
      * @return  void
      */
     public static function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)

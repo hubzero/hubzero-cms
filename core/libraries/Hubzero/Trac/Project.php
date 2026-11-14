@@ -382,7 +382,7 @@ class Project
     /**
      * Property accessor
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  string|null
      */
     public function __get($property = null)
@@ -422,7 +422,7 @@ class Project
     /**
      * Property setter
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @param   mixed   $value
      */
     public function __set($property = null, $value = null)
@@ -453,7 +453,7 @@ class Project
     /**
      * Check if a property is set
      *
-     * @param   string  $property  Property name
+     * @param   string|null  $property  Property name
      * @return  boolean
      */
     public function __isset($property = null)
@@ -473,7 +473,7 @@ class Project
     /**
      * Unset a property
      *
-     * @param   string  $property  Property name
+     * @param   string|null  $property  Property name
      * @return  void
      */
     public function __unset($property = null)

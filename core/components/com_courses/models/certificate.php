@@ -281,8 +281,8 @@ class Certificate extends Base
     /**
      * Render a certificate
      *
-     * @param   object  $user  User
-     * @param   string  $path  Path to store rendered file to
+     * @param   object|null  $user  User
+     * @param   string|null  $path  Path to store rendered file to
      * @return  boolean True on success, false on error
      */
     public function render($user = null, $path = null)

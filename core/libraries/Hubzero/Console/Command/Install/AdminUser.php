@@ -42,7 +42,7 @@ class AdminUser
      * Configure admin user interactively
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
+     * @param   string|null  $appPath   Path to the app directory
      * @param   array   $defaults  Default values (e.g., email from site settings)
      * @return  array|null  User data array or null if cancelled
      */

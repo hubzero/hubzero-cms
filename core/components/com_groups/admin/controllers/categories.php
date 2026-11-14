@@ -99,7 +99,7 @@ class Categories extends AdminController
     /**
      * Edit Page Category
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

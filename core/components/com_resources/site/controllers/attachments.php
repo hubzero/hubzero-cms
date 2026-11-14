@@ -999,7 +999,7 @@ class Attachments extends SiteController
     /**
      * Display a list of attachments
      *
-     * @param   integer  $id  Resource ID
+     * @param   integer|null  $id  Resource ID
      *
      * @return  void
      */

@@ -161,7 +161,7 @@ class SessionClassGroup extends Table
     /**
      * Delete records by class ID
      *
-     * @param   integer  $class_id  Quota Class ID
+     * @param   integer|null  $class_id  Quota Class ID
      * @return  boolean  True on success
      */
     public function deleteByClassId($class_id = null)
@@ -182,7 +182,7 @@ class SessionClassGroup extends Table
     /**
      * Delete records by group ID
      *
-     * @param   integer  $group_id  User group ID
+     * @param   integer|null  $group_id  User group ID
      * @return  boolean  True on success
      */
     public function deleteByGroupId($group_id = null)

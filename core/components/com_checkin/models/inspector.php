@@ -87,7 +87,7 @@ class Inspector extends Obj
     /**
      * Method to get model state variables
      *
-     * @param   string  $property  Optional parameter name
+     * @param   string|null  $property  Optional parameter name
      * @param   mixed   $default   Optional default value
      * @return  object  The property where specified, the state object where omitted
      */

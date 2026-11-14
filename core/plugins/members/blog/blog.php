@@ -529,7 +529,7 @@ class Blog extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object  $entry
+     * @param   object|null  $entry
      * @return  string
      */
     private function edit($entry = null)

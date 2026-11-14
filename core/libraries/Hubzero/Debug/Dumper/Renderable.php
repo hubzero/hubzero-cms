@@ -38,7 +38,7 @@ interface Renderable
     /**
      * Render a list of messages
      *
-     * @param   array  $messages
+     * @param   array|null  $messages
      * @return  string
      */
     public function render($messages = null);

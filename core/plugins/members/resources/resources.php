@@ -115,7 +115,7 @@ class Resources extends Plugin
      * @param   integer  $limit       Number of record to return
      * @param   integer  $limitstart  Record return start
      * @param   string   $sort        Field to sort records on
-     * @param   array    $areas       Areas to return data for
+     * @param   array|null    $areas       Areas to return data for
      * @return  array
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)

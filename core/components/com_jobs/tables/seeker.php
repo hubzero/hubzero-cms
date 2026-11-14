@@ -46,7 +46,7 @@ class Seeker extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   integer  $name  User id
+     * @param   integer|null  $name  User id
      * @return  boolean  True upon success
      */
     public function loadSeeker($name = null)

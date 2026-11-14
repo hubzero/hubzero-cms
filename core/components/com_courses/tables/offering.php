@@ -80,7 +80,7 @@ class Offering extends Table
      * Load a record and bind to $this
      *
      * @param   mixed    $oid        Record ID or alias
-     * @param   integer  $course_id  Course ID
+     * @param   integer|null  $course_id  Course ID
      * @return  boolean  True on success
      */
     public function loadForCourse($oid = null, $course_id = null)

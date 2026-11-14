@@ -25,9 +25,9 @@ class Migrations
      * Run all pending database migrations
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   string  $corePath  Path to the core directory
-     * @param   string  $rootPath  Path to the root directory
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   string|null  $corePath  Path to the core directory
+     * @param   string|null  $rootPath  Path to the root directory
      * @return  bool    True on success, false on failure
      */
     public static function run($ansi = true, $appPath = null, $corePath = null, $rootPath = null)

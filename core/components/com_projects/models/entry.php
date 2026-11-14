@@ -131,7 +131,7 @@ class Entry extends Model
     /**
      * Get the home project of this entry
      *
-     * @param   string  $get
+     * @param   string|null  $get
      * @return  object  Models\Project
      */
     public function project($get = null)
@@ -237,7 +237,7 @@ class Entry extends Model
      * it will return that property value. Otherwise,
      * it returns the entire user object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @param   mixed   $default
      * @return  mixed
      */
@@ -263,7 +263,7 @@ class Entry extends Model
      * it will return that property value. Otherwise,
      * it returns the entire object
      *
-     * @param   string  $property  What data to return
+     * @param   string|null  $property  What data to return
      * @param   mixed   $default   Default value
      * @return  mixed
      */
@@ -288,7 +288,7 @@ class Entry extends Model
      * it will return that property value. Otherwise,
      * it returns the entire object
      *
-     * @param   string  $property  What data to return
+     * @param   string|null  $property  What data to return
      * @param   mixed   $default   Default value
      * @return  mixed
      */

@@ -102,10 +102,10 @@ class Vote extends Relational
     /**
      * Get the vote for a specific object/type combination and user
      *
-     * @param   integer  $object_id  Object ID
-     * @param   integer  $user_id    User ID
-     * @param   string   $ip         IP Address
-     * @param   string   $type       Object type (article, comment)
+     * @param   integer|null  $object_id  Object ID
+     * @param   integer|null  $user_id    User ID
+     * @param   string|null   $ip         IP Address
+     * @param   string|null   $type       Object type (article, comment)
      * @return  static
      */
     public static function find($object_id = null, $user_id = null, $ip = null, $type = null)

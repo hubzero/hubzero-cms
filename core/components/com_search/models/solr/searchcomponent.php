@@ -262,9 +262,9 @@ class SearchComponent extends Relational
      * Build HTML list of current item and its nested children
      *
      * @param   array   $counts      prefetched solr array of counts of all facets
-     * @param   int     $activeType  id of currently selected facet
-     * @param   string  $terms       search terms currently applied ot the search
-     * @param   string  $childTerms  any currently applied filters
+     * @param   int|null     $activeType  id of currently selected facet
+     * @param   string|null  $terms       search terms currently applied ot the search
+     * @param   string|null  $childTerms  any currently applied filters
      * @return  string  HTML list with links to apply a facet with currently selected searchTerms
      */
     public function formatWithCounts(

@@ -239,7 +239,7 @@ class Question extends Relational
     /**
      * Tag the entry
      *
-     * @param   string   $tags     Comma-separated list of tags to apply
+     * @param   string|null   $tags     Comma-separated list of tags to apply
      * @param   integer  $user_id  Tagger ID
      * @param   integer  $admin    Include amdin tags? (defaults to no)
      * @return  boolean
@@ -254,7 +254,7 @@ class Question extends Relational
     /**
      * Add a single tag to the entry
      *
-     * @param   string   $tag     Comma-separated list of tags to apply
+     * @param   string|null   $tag     Comma-separated list of tags to apply
      * @param   integer  $user_id  Tagger ID
      * @param   integer  $admin    Include amdin tags? (defaults to no)
      * @return  boolean
@@ -343,7 +343,7 @@ class Question extends Relational
      * Check if a user has voted for this entry
      *
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       IP Address
+     * @param   string|null   $ip       IP Address
      * @return  object  The vote
      */
     public function ballot($user_id = 0, $ip = null)
@@ -391,7 +391,7 @@ class Question extends Relational
      *
      * @param   integer  $vote     The vote [0, 1]
      * @param   integer  $user_id  Optinal user ID to set as voter
-     * @param   string   $ip       Optional IP address
+     * @param   string|null   $ip       Optional IP address
      * @return  boolean  False if error, True on success
      */
     public function vote($vote = 0, $user_id = 0, $ip = null)
@@ -540,7 +540,7 @@ class Question extends Relational
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Default value if key not found
      * @return  mixed
      */

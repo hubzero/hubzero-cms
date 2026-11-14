@@ -165,7 +165,7 @@ class File extends Obj
      * @param   string  $hash
      * @param   string  $get
      * @param   string  $render
-     * @param   string  $hashed
+     * @param   string|null  $hashed
      * @return  mixed
      */
     public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = null)
@@ -291,7 +291,7 @@ class File extends Obj
     /**
      * Set file size
      *
-     * @param   integer  $size
+     * @param   integer|null  $size
      * @return  integer
      */
     public function setSize($size = null)
@@ -477,7 +477,7 @@ class File extends Obj
     /**
      * Fix up some mimetypes
      *
-     * @param   string  $mimeType
+     * @param   string|null  $mimeType
      * @return  string
      */
     protected function fixUpMimeType($mimeType = null)
@@ -522,7 +522,7 @@ class File extends Obj
     /**
      * Set file icon image
      *
-     * @param   string   $ext
+     * @param   string|null   $ext
      * @param   boolean  $basename
      * @param   string   $icon
      * @return  string

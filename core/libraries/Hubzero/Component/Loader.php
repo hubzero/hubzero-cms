@@ -451,7 +451,7 @@ class Loader
      * Get component router
      *
      * @param   string  $option  Name of the component
-     * @param   string  $client  Client to load the router for
+     * @param   string|null  $client  Client to load the router for
      * @return  object  Component router
      */
     public function router($option, $client = null, $version = null)

@@ -113,8 +113,8 @@ class Help extends Button
      *
      * @param   string   $ref           The name of the help screen (its key reference)
      * @param   boolean  $useComponent  Use the help file in the component directory
-     * @param   string   $override      Use this URL instead of any other
-     * @param   string   $component     Name of component (or null for current component)
+     * @param   string|null   $override      Use this URL instead of any other
+     * @param   string|null   $component     Name of component (or null for current component)
      * @return  string
      */
     public static function createURL($ref, $useComponent = false, $override = null, $component = null)

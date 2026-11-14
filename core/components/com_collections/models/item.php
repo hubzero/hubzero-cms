@@ -196,7 +196,7 @@ class Item extends Base
      * it will return that property value. Otherwise,
      * it returns the entire user object
      *
-     * @param   string  $property  Property to retrieve
+     * @param   string|null  $property  Property to retrieve
      * @param   mixed   $default   Default value if property not set
      * @return  mixed
      */
@@ -295,7 +295,7 @@ class Item extends Base
     /**
      * Add an asset to the list
      *
-     * @param      object $asset
+     * @param      object|null $asset
      * @return     void
      */
     public function addAsset($asset = null)
@@ -398,7 +398,7 @@ class Item extends Base
     /**
      * Add a tag to the list
      *
-     * @param   object $tag
+     * @param   object|null $tag
      * @return  mixed
      */
     public function addTag($tag = null, $user_id = 0, $admin = 0)
@@ -644,7 +644,7 @@ class Item extends Base
     /**
      * Get the item type
      *
-     * @param   string  $as  Return type as?
+     * @param   string|null  $as  Return type as?
      * @return  string
      */
     public function type($as = null)
@@ -756,7 +756,7 @@ class Item extends Base
     /**
      * Create an item entry
      *
-     * @param   integer  $id  Optional ID to use
+     * @param   integer|null  $id  Optional ID to use
      * @return  boolean
      */
     public function make($id = null)
@@ -816,7 +816,7 @@ class Item extends Base
      * read, which is the same thing as it being visible to them in the first
      * place.
      *
-     * @param   integer  $uid  User to test, or null for the current one
+     * @param   integer|null  $uid  User to test, or null for the current one
      * @return  boolean
      */
     public function isCollectableBy($uid = null)

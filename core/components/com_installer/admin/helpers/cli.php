@@ -60,13 +60,13 @@ class Cli
     /**
      * Get repository log
      *
-     * @param   int     $length     the number of messages to include in log
-     * @param   int     $start      the commit number to start at
-     * @param   string  $search     the search query
+     * @param   int|null     $length     the number of messages to include in log
+     * @param   int|null     $start      the commit number to start at
+     * @param   string|null  $search     the search query
      * @param   bool    $upcoming   whether or not to include upcoming commits
      * @param   bool    $installed  whether or not to include installed commits
      * @param   bool    $count      whether to return count of entries
-     * @param   string  $source     the repo source to get logs from
+     * @param   string|null  $source     the repo source to get logs from
      * @return  string
      **/
     public static function log(
@@ -112,8 +112,8 @@ class Cli
      *
      * @param   bool    $dryRun       whether or not to do a dry run
      * @param   bool    $allowNonFf   whether or not to allow non fast forward pulls
-     * @param   string  $source       the repo source to update from
-     * @param   string  $autoPushRef  the ref to auto push to after an update
+     * @param   string|null  $source       the repo source to update from
+     * @param   string|null  $autoPushRef  the ref to auto push to after an update
      * @return  string
      **/
     public static function update($dryRun = true, $allowNonFf = false, $source = null, $autoPushRef = null)
@@ -153,9 +153,9 @@ class Cli
      *
      * @param   bool    $dryRun       dry run - basically like returning a status
      * @param   bool    $ignoreDates  ignore dates
-     * @param   string  $file         specific file to run
+     * @param   string|null  $file         specific file to run
      * @param   string  $dir          direction to run (up or down)
-     * @param   string  $folder       restrict migrations to a specific directory
+     * @param   string|null  $folder       restrict migrations to a specific directory
      * @return  string
      **/
     public static function migration($dryRun = true, $ignoreDates = false, $file = null, $dir = 'up', $folder = null)

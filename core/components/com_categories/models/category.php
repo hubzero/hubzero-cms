@@ -648,7 +648,7 @@ class Category extends Nested
      * Update position of an entry
      *
      * @param   integer  $iterator
-     * @param   object   $storage
+     * @param   object|null   $storage
      * @return  object
      */
     public function updatePositionWithChildren($iterator, $storage = null)

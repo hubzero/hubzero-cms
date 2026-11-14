@@ -67,7 +67,7 @@ class Rating extends Relational
      *
      * @param   integer  $publication_id
      * @param   integer  $created_by
-     * @param   integer  $publication_version_id
+     * @param   integer|null  $publication_version_id
      * @return  object
      */
     public function oneByPublicationAndUser($publication_id, $created_by, $publication_version_id = null)

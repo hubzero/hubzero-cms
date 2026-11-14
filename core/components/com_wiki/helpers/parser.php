@@ -180,8 +180,8 @@ class Parser extends Obj
      * component configuration provides the defaults; a group may override them
      * via its own params (layered in by the group wiki plugin).
      *
-     * @param   string   $domain     Scope type (e.g. 'group')
-     * @param   integer  $domain_id  Scope id (e.g. group gidNumber)
+     * @param   string|null   $domain     Scope type (e.g. 'group')
+     * @param   integer|null  $domain_id  Scope id (e.g. group gidNumber)
      * @return  array    array('mode' => inline|sidebar|off, 'threshold' => int)
      */
     public static function tocSettings($domain = null, $domain_id = null)

@@ -34,7 +34,7 @@ class AppDirectory
      * Create the app directory structure
      *
      * @param   bool    $ansi     Whether to use ANSI color output
-     * @param   string  $appPath  Path to the app directory
+     * @param   string|null  $appPath  Path to the app directory
      * @return  bool    True on success, false on failure
      */
     public static function create($ansi = true, $appPath = null)

@@ -195,7 +195,7 @@ class Domain extends Relational
      *
      * @param   string  $type
      * @param   string  $authenticator
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  mixed
      */
     public static function createInstance($type, $authenticator, $domain = null)
@@ -242,7 +242,7 @@ class Domain extends Relational
      *
      * @param   string  $type
      * @param   string  $authenticator
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @return  mixed
      */
     public static function findOrCreate($type, $authenticator, $domain = null)

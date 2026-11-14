@@ -273,7 +273,7 @@ class Initialcon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $color
+     * @param   string|null   $color
      * @return  void
      */
     public function displayImage($string, $size = 64, $color = null)
@@ -287,7 +287,7 @@ class Initialcon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $color
+     * @param   string|null   $color
      * @return  string
      */
     public function getImageData($string, $size = 64, $color = null)
@@ -305,7 +305,7 @@ class Initialcon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $color
+     * @param   string|null   $color
      * @return  string
      */
     public function getImageDataUri($string, $size = 64, $color = null)

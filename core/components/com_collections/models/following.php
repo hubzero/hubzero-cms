@@ -42,7 +42,7 @@ class Following extends Model
      * Constructor
      *
      * @param   mixed    $oid             Following ID, array, or object
-     * @param   string   $following_type  Type being followed [collection, member, group]
+     * @param   string|null   $following_type  Type being followed [collection, member, group]
      * @param   integer  $follower_id     Follower ID [member, group]
      * @param   string   $follower_type   [member, group]
      * @return  void
@@ -67,7 +67,7 @@ class Following extends Model
      * Returns a reference to this object
      *
      * @param   mixed    $oid             Following ID, array, or object
-     * @param   string   $following_type  Type being followed [collection, member, group]
+     * @param   string|null   $following_type  Type being followed [collection, member, group]
      * @param   integer  $follower_id     Follower ID [member, group]
      * @param   string   $follower_type   [member, group]
      * @return  object
@@ -205,7 +205,7 @@ class Following extends Model
     /**
      * Stop following an object
      *
-     * @param   integer  $id  ID of record to unfollow
+     * @param   integer|null  $id  ID of record to unfollow
      * @return  boolean
      */
     public function unfollow($id = null)

@@ -29,8 +29,8 @@ class Access extends Table
     /**
      * Load entry
      *
-     * @param   integer  $vid       pub version id
-     * @param   integer  $group_id  group id
+     * @param   integer|null  $vid       pub version id
+     * @param   integer|null  $group_id  group id
      * @return  object|bool or FALSE
      */
     public function loadEntry($vid = null, $group_id = null)
@@ -51,8 +51,8 @@ class Access extends Table
     /**
      * Check record existence
      *
-     * @param   integer  $vid       pub version id
-     * @param   integer  $group_id  group id
+     * @param   integer|null  $vid       pub version id
+     * @param   integer|null  $group_id  group id
      * @return  mixed    integer or null
      */
     public function existsEntry($vid = null, $group_id = null)
@@ -73,8 +73,8 @@ class Access extends Table
     /**
      * Get groups
      *
-     * @param   integer  $vid       pub version id
-     * @param   integer  $pid       pub id
+     * @param   integer|null  $vid       pub version id
+     * @param   integer|null  $pid       pub id
      * @param   string   $version   version name or number
      * @param   string   $sysgroup  name of system group
      * @return  array|false|null
@@ -117,7 +117,7 @@ class Access extends Table
     /**
      * Save groups
      *
-     * @param   integer  $vid       pub version id
+     * @param   integer|null  $vid       pub version id
      * @param   array|string $groups
      * @param   string|int $sysgroup  name of system group
      * @return  integer|false
@@ -170,7 +170,7 @@ class Access extends Table
     /**
      * Delete groups
      *
-     * @param   integer  $vid       pub version id
+     * @param   integer|null  $vid       pub version id
      * @param   string|int $sysgroup  name of system group
      * @return  boolean
      */

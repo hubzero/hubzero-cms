@@ -102,7 +102,7 @@ class Manager
      *
      * @param   string  $name    The adapter name to instantiate
      * @param   array   $params  Any initialization parameters
-     * @param   string  $key     A custom key under which to store the adapter
+     * @param   string|null  $key     A custom key under which to store the adapter
      * @return  object
      **/
     public static function adapter($name, $params = [], $key = null)

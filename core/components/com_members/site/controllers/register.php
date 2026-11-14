@@ -1017,7 +1017,7 @@ class Register extends SiteController
     /**
      * Display the form for registering an account
      *
-     * @param   object  &$xregistration
+     * @param   object|null  &$xregistration
      * @param   string  $task
      *
      * @return  void

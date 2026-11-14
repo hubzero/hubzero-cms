@@ -68,8 +68,8 @@ class History
     /**
      * Add a passhash to a user's history
      *
-     * @param   string  $passhash
-     * @param   string  $invalidated
+     * @param   string|null  $passhash
+     * @param   string|null  $invalidated
      * @return  boolean
      */
     public function add($passhash = null, $invalidated = null)
@@ -114,8 +114,8 @@ class History
     /**
      * Check if a password exists for a user
      *
-     * @param   string  $password
-     * @param   string  $since
+     * @param   string|null  $password
+     * @param   string|null  $since
      * @return  boolean
      */
     public function exists($password = null, $since = null)
@@ -186,7 +186,7 @@ class History
      * a password to a user's history
      *
      * @param   string  $passhash
-     * @param   string  $user
+     * @param   string|null  $user
      * @return  boolean
      */
     public static function addPassword($passhash, $user = null)

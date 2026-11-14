@@ -62,9 +62,9 @@ class Params extends Relational
     /**
      * Load a record and binf to $this
      *
-     * @param   integer  $oid      Object ID (eg, group ID)
-     * @param   string   $folder   Plugin folder
-     * @param   string   $element  Plugin name
+     * @param   integer|null  $oid      Object ID (eg, group ID)
+     * @param   string|null   $folder   Plugin folder
+     * @param   string|null   $element  Plugin name
      * @return  static  True on success
      */
     public static function oneByPluginOrNew($oid = null, $folder = null, $element = null)
@@ -88,9 +88,9 @@ class Params extends Relational
     /**
      * Get the custom parameters for a plugin
      *
-     * @param   integer  $oid      Object ID (eg, group ID)
-     * @param   string   $folder   Plugin folder
-     * @param   string   $element  Plugin name
+     * @param   integer|null  $oid      Object ID (eg, group ID)
+     * @param   string|null   $folder   Plugin folder
+     * @param   string|null   $element  Plugin name
      * @return  object
      */
     public static function getCustomParams($oid = null, $folder = null, $element = null)
@@ -103,8 +103,8 @@ class Params extends Relational
     /**
      * Get the default parameters for a plugin
      *
-     * @param   string  $folder   Plugin folder
-     * @param   string  $element  Plugin name
+     * @param   string|null  $folder   Plugin folder
+     * @param   string|null  $element  Plugin name
      * @return  object
      */
     public static function getDefaultParams($folder = null, $element = null)
@@ -118,9 +118,9 @@ class Params extends Relational
      * Get the parameters for a plugin
      * Merges default params and custom params (take precedence)
      *
-     * @param   integer  $oid      Object ID (eg, group ID)
-     * @param   string   $folder   Plugin folder
-     * @param   string   $element  Plugin name
+     * @param   integer|null  $oid      Object ID (eg, group ID)
+     * @param   string|null   $folder   Plugin folder
+     * @param   string|null   $element  Plugin name
      * @return  object
      */
     public static function getParams($oid = null, $folder = null, $element = null)

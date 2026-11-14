@@ -97,8 +97,8 @@ class SiteSettings
      * Configure site settings interactively
      *
      * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   string  $appPath   Path to the app directory
-     * @param   array   $existing  Existing configuration to use as defaults
+     * @param   string|null  $appPath   Path to the app directory
+     * @param   array|null   $existing  Existing configuration to use as defaults
      * @return  array|null  Configuration array or null if cancelled
      */
     public static function configure($ansi = true, $appPath = null, $existing = null)

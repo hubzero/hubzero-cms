@@ -118,8 +118,8 @@ class Curation extends Obj
     /**
      * Constructor
      *
-     * @param   string  $manifest        Publication manifest
-     * @param   string  $masterManifest  Master type manifest
+     * @param   string|null  $manifest        Publication manifest
+     * @param   string|null  $masterManifest  Master type manifest
      * @return  void
      */
     public function __construct($manifest = null, $masterManifest = null)
@@ -133,8 +133,8 @@ class Curation extends Obj
     /**
      * Get blocks in order
      *
-     * @param   string   $manifest        Publication manifest (version used at time of publication)
-     * @param   string   $masterManifest  Master type manifest (current version)
+     * @param   string|null   $manifest        Publication manifest (version used at time of publication)
+     * @param   string|null   $masterManifest  Master type manifest (current version)
      * @return  boolean
      */
     private function setBlocks($manifest = null, $masterManifest = null)
@@ -229,7 +229,7 @@ class Curation extends Obj
     /**
      * Get active block
      *
-     * @param   string   $name     Block name
+     * @param   string|null   $name     Block name
      * @param   integer  $blockId  Numeric block ID
      * @return  boolean
      */
@@ -256,7 +256,7 @@ class Curation extends Obj
     /**
      * Get block blockId
      *
-     * @param   string  $name  Block name
+     * @param   string|null  $name  Block name
      * @return  integer
      */
     public function getBlockId($name = null)
@@ -481,7 +481,7 @@ class Curation extends Obj
     /**
      * Parse block
      *
-     * @param   string   $name     Who is viewing block content?
+     * @param   string|null   $name     Who is viewing block content?
      * @param   string   $name     Block name
      * @param   integer  $blockId  Numeric block ID
      * @return  mixed    string or false
@@ -515,7 +515,7 @@ class Curation extends Obj
     /**
      * Set association with publication and load curation
      *
-     * @param   object   $pub          Models\Publication
+     * @param   object|null   $pub          Models\Publication
      * @param   boolean  $setProgress
      * @return  void
      */
@@ -894,7 +894,7 @@ class Curation extends Obj
     /**
      * Check if block is in manifest
      *
-     * @param   string  $name  Block name
+     * @param   string|null  $name  Block name
      * @return  boolean
      */
     public function blockExists($name = null)
@@ -1331,8 +1331,8 @@ class Curation extends Obj
     /**
      * Get status of curation item
      *
-     * @param   string  $props  Pointer to block/element in question
-     * @param   array   $items  Status array
+     * @param   string|null  $props  Pointer to block/element in question
+     * @param   array|null   $items  Status array
      * @return  object
      */
     public function getReviewItemStatus($props = null, $items = null)
@@ -2280,7 +2280,7 @@ class Curation extends Obj
     /**
      * Conversion for publications created in a non-curated flow
      *
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @return  boolean
      */
     public function convertToCuration($pub = null)

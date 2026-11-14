@@ -133,7 +133,7 @@ class Apc extends None
     /**
      * Remove all items from the cache.
      *
-     * @param   string  $group
+     * @param   string|null  $group
      * @return  bool
      */
     public function clean($group = null)

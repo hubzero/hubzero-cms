@@ -415,7 +415,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Generate return url
      *
-     * @param   string  $return  url
+     * @param   string|null  $return  url
      * @param   bool    $encode  whether or not to encode return before using
      * @return  string  url
      */
@@ -443,7 +443,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Display login button
      *
-     * @param   string  $return
+     * @param   string|null  $return
      * @return  string
      */
     public static function onRenderOption($return = null)

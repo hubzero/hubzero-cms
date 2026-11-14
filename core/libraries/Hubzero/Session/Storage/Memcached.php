@@ -182,7 +182,7 @@ class Memcached extends Store
      *
      * -- Not Applicable in memcached --
      *
-     * @param   int  $maxlifetime  The maximum age of a session.
+     * @param   int|null  $maxlifetime  The maximum age of a session.
      * @return  boolean  True on success, false otherwise.
      */
     #[\ReturnTypeWillChange]

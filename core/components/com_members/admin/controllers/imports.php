@@ -139,7 +139,7 @@ class Imports extends AdminController
     /**
      * Edit an Import
      *
-     * @param   object  $import
+     * @param   object|null  $import
      *
      * @return  void
      */

@@ -754,8 +754,8 @@ class Detector
     /**
      * Create a browser instance (constructor).
      *
-     * @param   string  $userAgent  The browser string to parse.
-     * @param   string  $accept     The HTTP_ACCEPT settings to use.
+     * @param   string|null  $userAgent  The browser string to parse.
+     * @param   string|null  $accept     The HTTP_ACCEPT settings to use.
      * @return  void
      */
     public function __construct($userAgent = null, $accept = null)
@@ -767,8 +767,8 @@ class Detector
      * Returns the global Browser object, only creating it
      * if it doesn't already exist.
      *
-     * @param   string  $userAgent  The browser string to parse.
-     * @param   string  $accept     The HTTP_ACCEPT settings to use.
+     * @param   string|null  $userAgent  The browser string to parse.
+     * @param   string|null  $accept     The HTTP_ACCEPT settings to use.
      * @return  object  The Browser object.
      */
     public static function getInstance($userAgent = null, $accept = null)
@@ -786,8 +786,8 @@ class Detector
      * Parses the user agent string and inititializes the object with
      * all the known features and quirks for the given browser.
      *
-     * @param   string  $userAgent  The browser string to parse.
-     * @param   string  $accept     The HTTP_ACCEPT settings to use.
+     * @param   string|null  $userAgent  The browser string to parse.
+     * @param   string|null  $accept     The HTTP_ACCEPT settings to use.
      * @return  void
      */
     public function match($userAgent = null, $accept = null)

@@ -54,7 +54,7 @@ class Base extends Model
      * it will return that property value. Otherwise,
      * it returns the entire object
      *
-     * @param   string  $property  Property to retrieve
+     * @param   string|null  $property  Property to retrieve
      * @param   mixed   $default   Default value if property not set
      * @return  mixed
      */

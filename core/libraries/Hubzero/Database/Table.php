@@ -224,7 +224,7 @@ abstract class Table extends \stdClass
     /**
      * Get the most recent error message.
      *
-     * @param   integer  $i         Option error index.
+     * @param   integer|null  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
      * @return  string|false   Error message
      */
@@ -259,7 +259,7 @@ abstract class Table extends \stdClass
      * Add an error message.
      *
      * @param   string  $error  Error message.
-     * @param   string  $key    Specific key to set the value to
+     * @param   string|null  $key    Specific key to set the value to
      * @return  object
      */
     public function setError($error, $key = null)
@@ -461,8 +461,8 @@ abstract class Table extends \stdClass
      * The extended class can define a table and id to lookup.  If the
      * asset does not exist it will be created.
      *
-     * @param   object   $table  A Table object for the asset parent.
-     * @param   integer  $id     Id to look up
+     * @param   object|null   $table  A Table object for the asset parent.
+     * @param   integer|null  $id     Id to look up
      * @return  integer
      */
     protected function getAssetParentId($table = null, $id = null)
@@ -1048,7 +1048,7 @@ abstract class Table extends \stdClass
      *
      * @param   integer  $with     The userid to preform the match with, if an item is checked out
      *                             by this user the function will return false.
-     * @param   integer  $against  The userid to perform the match against when the function is
+     * @param   integer|null  $against  The userid to perform the match against when the function is
      *                             used as a static function.
      * @return  boolean  True if checked out.
      * @todo    This either needs to be static or not.
@@ -1353,7 +1353,7 @@ abstract class Table extends \stdClass
      *
      * @param   mixed  $pk     An optional primary key value check the row for.  If not
      *                         set the instance property value is used.
-     * @param   array  $joins  An optional array to compiles standard joins formatted like:
+     * @param   array|null  $joins  An optional array to compiles standard joins formatted like:
      *                         [label => 'Label', name => 'table name' , idfield => 'field', joinfield => 'field']
      * @return  boolean  True on success.
      * @deprecated    2.1.12

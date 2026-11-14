@@ -51,7 +51,7 @@ class Admin extends SiteController
     /**
      * Get the most recent message
      *
-     * @param      integer $i Option message index
+     * @param      integer|null $i Option message index
      * @return     string|false  Error message
      */
     public function getMessage($i = null)
@@ -932,7 +932,7 @@ class Admin extends SiteController
      * Authorization checks
      *
      * @param      string $assetType Asset type
-     * @param      string $assetId   Asset id to check against
+     * @param      string|null $assetId   Asset id to check against
      * @return     void
      */
     protected function authorize($assetType = 'component', $assetId = null)

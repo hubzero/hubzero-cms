@@ -36,7 +36,7 @@ class Response extends Element
     }
 
     /**
-     * @param   boolean  $formatOutput
+     * @param   boolean|null  $formatOutput
      * @return  string
      */
     public function getXml($formatOutput = null)
@@ -60,7 +60,7 @@ class Response extends Element
 
     /**
      * @param   string   $filename
-     * @param   boolean  $formatOutput
+     * @param   boolean|null  $formatOutput
      * @return  boolean
      */
     public function save($filename, $formatOutput = null)

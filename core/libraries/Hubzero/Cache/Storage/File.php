@@ -203,7 +203,7 @@ class File extends None
     /**
      * Remove all items from the cache.
      *
-     * @param   string  $group
+     * @param   string|null  $group
      * @return  void
      */
     public function clean($group = null)
@@ -236,7 +236,7 @@ class File extends None
     /**
      * Garbage collect expired cache data
      *
-     * @param   string  $group
+     * @param   string|null  $group
      * @return  bool
      */
     public function gc($group = null)

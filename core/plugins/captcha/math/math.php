@@ -27,7 +27,7 @@ class Math extends Plugin
     /**
      * Displays either a CAPTCHA question
      *
-     * @param   string  $name   The name of the field. Not Used.
+     * @param   string|null  $name   The name of the field. Not Used.
      * @param   string  $id     The id of the field.
      * @param   string  $class  The class of the field. This should be passed as 'class="required"'.
      * @return  string
@@ -76,7 +76,7 @@ class Math extends Plugin
     /**
      * Checks for a CAPTCHA response and Calls the CAPTCHA validity check
      *
-     * @param   string   $code  Answer provided by user. Not needed for the Recaptcha implementation
+     * @param   string|null   $code  Answer provided by user. Not needed for the Recaptcha implementation
      * @return  boolean  True if valid CAPTCHA response
      */
     public function onCheckAnswer($code = null)

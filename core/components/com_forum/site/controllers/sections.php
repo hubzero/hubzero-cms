@@ -283,7 +283,7 @@ class Sections extends SiteController
      * Set the authorization level for the user
      *
      * @param   string   $assetType
-     * @param   integer  $assetId
+     * @param   integer|null  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

@@ -72,9 +72,9 @@ class Attachments extends Obj
      * Get status for an attachment within publication
      *
      * @param   string   $name
-     * @param   object   $element
+     * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   array    $attachments
+     * @param   array|null    $attachments
      * @return  object
      */
     public function getStatus($name, $element = null, $elementId = 0, $attachments = null)
@@ -140,10 +140,10 @@ class Attachments extends Obj
      * Attach items to publication
      *
      * @param   string   $name
-     * @param   object   $element
+     * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   object   $pub
-     * @param   object   $params
+     * @param   object|null   $pub
+     * @param   object|null   $params
      * @return  boolean
      */
     public function attach($name, $element = null, $elementId = 0, $pub = null, $params = null)
@@ -170,12 +170,12 @@ class Attachments extends Obj
     /**
      * Serve attachments within element
      *
-     * @param   string   $name
-     * @param   object   $element
+     * @param   string|null   $name
+     * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   object   $pub
-     * @param   object   $params
-     * @param   integer  $itemId
+     * @param   object|null   $pub
+     * @param   object|null   $params
+     * @param   integer|null  $itemId
      * @return  mixed    string or boolean
      */
     public function serve($name = null, $element = null, $elementId = 0, $pub = null, $params = null, $itemId = null)
@@ -206,10 +206,10 @@ class Attachments extends Obj
     /**
      * Draw list of element items
      *
-     * @param   array    $elements
-     * @param   object   $pub
+     * @param   array|null    $elements
+     * @param   object|null   $pub
      * @param   boolean  $authorized
-     * @param   string   $append
+     * @param   string|null   $append
      * @return  mixed    string or bool
      */
     public function listItems($elements = null, $pub = null, $authorized = true, $append = null)
@@ -257,10 +257,10 @@ class Attachments extends Obj
     /**
      * Draw launching button/link for element
      *
-     * @param   string   $name
-     * @param   object   $pub
-     * @param   object   $element
-     * @param   array    $elements
+     * @param   string|null   $name
+     * @param   object|null   $pub
+     * @param   object|null   $element
+     * @param   array|null    $elements
      * @param   boolean  $authorized
      * @return  mixed    object or boolean
      */
@@ -285,9 +285,9 @@ class Attachments extends Obj
      * Draws attachment
      *
      * @param   string  $name
-     * @param   array   $data
-     * @param   object  $typeParams
-     * @param   object  $handler
+     * @param   array|null   $data
+     * @param   object|null  $typeParams
+     * @param   object|null  $handler
      * @return  mixed   object or bool
      */
     public function drawAttachment($name, $data = null, $typeParams = null, $handler = null)
@@ -536,8 +536,8 @@ class Attachments extends Obj
     /**
      * Show bundle elements
      *
-     * @param   array   $elements
-     * @param   object  $pub
+     * @param   array|null   $elements
+     * @param   object|null  $pub
      * @return  mixed   object or bool
      */
     public function showPackagedItems($elements = null, $pub = null)

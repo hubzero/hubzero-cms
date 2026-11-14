@@ -34,7 +34,7 @@ class Handler extends Plugin
      * @param   string   $type       Item type
      * @param   array    $uids       User IDs
      * @param   string   $component  Item component
-     * @param   integer  $element
+     * @param   integer|null  $element
      * @return  boolean  True if no errors
      */
     public function onTakeAction($type, $uids = [], $component = '', $element = null)
@@ -83,7 +83,7 @@ class Handler extends Plugin
      * @param   array    $from               Message 'from' data (e.g., name, address)
      * @param   array    $to         List of user IDs
      * @param   string   $component          Component name
-     * @param   integer  $element            ID of object that needs an action item
+     * @param   integer|null  $element            ID of object that needs an action item
      * @param   string   $description        Action item description
      * @param   integer  $group_id           Parameter description (if any) ...
      * @param   boolean  $bypassGroupsCheck  Can bypass checks or not?

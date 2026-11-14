@@ -404,7 +404,7 @@ class Pucas extends Plugin
     /**
      * Display login button
      *
-     * @param   string  $return
+     * @param   string|null  $return
      * @return  string
      */
     public static function onRenderOption($return = null)

@@ -25,7 +25,7 @@ class Head extends Renderer
      *
      * @param   string  $head     (unused)
      * @param   array   $params   Associative array of values
-     * @param   string  $content  The script
+     * @param   string|null  $content  The script
      * @return  string  The output of the script
      */
     public function render($head, $params = [], $content = null)

@@ -47,8 +47,8 @@ class Collection extends Table
      * Load a record and bind to $this
      *
      * @param   mixed    $oid          Record alias
-     * @param   integer  $object_id    Object ID
-     * @param   string   $object_type  Object type
+     * @param   integer|null  $object_id    Object ID
+     * @param   string|null   $object_type  Object type
      * @return  boolean  True on success
      */
     public function loadForObject($oid = null, $object_id = null, $object_type = null)
@@ -107,8 +107,8 @@ class Collection extends Table
     /**
      * Load a record by its alias and bind data to $this
      *
-     * @param   integer  $object_id    Object ID
-     * @param   string   $object_type  Object type
+     * @param   integer|null  $object_id    Object ID
+     * @param   string|null   $object_type  Object type
      * @return  boolean  True upon success, False if errors
      */
     public function loadDefault($object_id = null, $object_type = null)

@@ -1360,7 +1360,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Compile tool information
      *
-     * @param   string  $revision
+     * @param   string|null  $revision
      * @return  void
      */
     private function compileToolInfo($revision = null)
@@ -1479,7 +1479,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Get a record by alias or ID
      *
      * @param   mixed   $id
-     * @param   string  $revision
+     * @param   string|null  $revision
      * @return  object
      */
     public static function getInstance($id, $revision = null)

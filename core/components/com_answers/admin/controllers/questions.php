@@ -114,7 +114,7 @@ class Questions extends AdminController
     /**
      * Displays a question for editing
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */

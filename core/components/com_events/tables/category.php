@@ -45,7 +45,7 @@ class Category extends Table
     /**
      * Update the count of an entry
      *
-     * @param   integer  $oid  Category ID
+     * @param   integer|null  $oid  Category ID
      * @return  void
      */
     public function updateCount($oid = null)
@@ -60,7 +60,7 @@ class Category extends Table
     /**
      * Set en entry to unpublished
      *
-     * @param   integer  $oid     Category ID
+     * @param   integer|null  $oid     Category ID
      * @param   integer  $state
      * @param   integer  $userId
      * @return  bool
@@ -79,7 +79,7 @@ class Category extends Table
     /**
      * Set an entry to published
      *
-     * @param   integer  $oid  Category ID
+     * @param   integer|null  $oid  Category ID
      * @return  void
      */
     public function unpublish($oid = null)
@@ -94,7 +94,7 @@ class Category extends Table
     /**
      * Get a count of categories in a section
      *
-     * @param   integer  $section  Section ID
+     * @param   integer|null  $section  Section ID
      * @return  string|null
      */
     public function getCategoryCount($section = null)

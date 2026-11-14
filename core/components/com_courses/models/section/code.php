@@ -101,7 +101,7 @@ class Code extends Base
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function redeemer($property = null)
@@ -163,7 +163,7 @@ class Code extends Base
      * Generate a coupon code
      *
      * @param   integer  $redeemed_by
-     * @param   string   $code
+     * @param   string|null   $code
      * @return  bool
      */
     public function redeem($redeemed_by = 0, $code = null)

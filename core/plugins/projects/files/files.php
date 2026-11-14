@@ -181,7 +181,7 @@ class Files extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array  $areas   Plugins to return data
+     * @param   string|array|null  $areas   Plugins to return data
      * @return  array|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null, $params = [])
@@ -3184,7 +3184,7 @@ class Files extends Plugin
     /**
      * Event call after file update
      *
-     * @param   object  $model
+     * @param   object|null  $model
      * @param   array   $changes
      * @return  bool|null
      */

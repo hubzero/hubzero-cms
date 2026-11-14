@@ -938,7 +938,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing an entry
      *
-     * @param   object  $entry
+     * @param   object|null  $entry
      * @return  string
      */
     private function edit($entry = null)
@@ -2035,7 +2035,7 @@ class Collections extends Plugin
     /**
      * Display a form for editing a collection
      *
-     * @param   object  $row
+     * @param   object|null  $row
      * @return  string
      */
     private function editcollection($row = null)
@@ -2320,7 +2320,7 @@ class Collections extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer  $assetId    Specific object to check permissions for
+     * @param   integer|null  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'plugin', $assetId = null)

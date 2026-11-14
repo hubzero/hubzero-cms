@@ -37,7 +37,7 @@ class Iterator implements \Countable, \Iterator
     /**
      * Constructor
      *
-     * @param      array $data Array of data
+     * @param      array|null $data Array of data
      * @return     void
      */
     public function __construct($data = null)
@@ -209,7 +209,7 @@ class Iterator implements \Countable, \Iterator
 
     /**
      * Return the key for the current cursor position
-     * @param      integer $idx current cursor position
+     * @param      integer|null $idx current cursor position
      * @return     mixed
      */
 

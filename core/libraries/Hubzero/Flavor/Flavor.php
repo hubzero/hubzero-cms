@@ -135,7 +135,7 @@ class Flavor
      *
      * @param   string  $lever
      * @param   mixed   $default
-     * @param   string  $key
+     * @param   string|null  $key
      * @return  mixed
      */
     public function get($lever, $default = null, $key = null)

@@ -1634,7 +1634,7 @@ class FirebirdDriver extends BaseSqlDriver
      * Gets the character set
      *
      * @param   string  $table  The table
-     * @param   string  $field  The field (optional)
+     * @param   string|null  $field  The field (optional)
      * @return  string
      */
     public function getCharacterSet($table, $field = null)
@@ -1665,8 +1665,8 @@ class FirebirdDriver extends BaseSqlDriver
      *
      * @param   string  $oldTable  The old table name
      * @param   string  $newTable  The new table name
-     * @param   string  $backup    Backup prefix (unused)
-     * @param   string  $prefix    Table prefix (unused)
+     * @param   string|null  $backup    Backup prefix (unused)
+     * @param   string|null  $prefix    Table prefix (unused)
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)

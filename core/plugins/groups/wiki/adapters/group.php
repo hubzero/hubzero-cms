@@ -30,8 +30,8 @@ class Group extends Base
     /**
      * Constructor
      *
-     * @param   string   $pagename
-     * @param   string   $path
+     * @param   string|null   $pagename
+     * @param   string|null   $path
      * @param   integer  $scope_id
      * @return  void
      */

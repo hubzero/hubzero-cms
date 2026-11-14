@@ -96,8 +96,8 @@ class Help extends Base implements CommandInterface
     /**
      * Helper to get files in commands directy. This is used to generate a list of commands.
      *
-     * @param   string  $root  The root directory for commands
-     * @param   string  $dir   The current directory to search for commands (relative to root)
+     * @param   string|null  $root  The root directory for commands
+     * @param   string|null  $dir   The current directory to search for commands (relative to root)
      * @return  void
      **/
     private function getCommands($root = null, $dir = null)

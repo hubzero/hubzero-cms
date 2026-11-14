@@ -217,7 +217,7 @@ class Categoriesv2r1 extends ApiController
     /**
      * Ensure timestamp follows accepted pattern
      *
-     * @param   string  $val  Timestamp or two timestamps separated by a comma
+     * @param   string|null  $val  Timestamp or two timestamps separated by a comma
      *                        YYYY-MM or YYYY-MM-DD or YYYY-MM-DD HH:mm:ss or YYYY-MM,YYYY-MM
      * @return  mixed   string or null if not a valid timestamp
      */

@@ -23,7 +23,7 @@ class Message extends Renderer
      *
      * @param   string  $name     Not used.
      * @param   array   $params   Associative array of values
-     * @param   string  $content  Not used.
+     * @param   string|null  $content  Not used.
      * @return  string  The output of the script
      */
     public function render($name, $params = [], $content = null)

@@ -296,7 +296,7 @@ class Create extends SiteController
     /**
      * Display a form for composing the title, abstract, etc.
      *
-     * @param   object  $row  Resource
+     * @param   object|null  $row  Resource
      *
      * @return  void
      */
@@ -436,9 +436,9 @@ class Create extends SiteController
      * Recursive method for loading hierarchical focus areas (tags)
      *
      * @param   string   $type
-     * @param   array    $labels
-     * @param   integer  $parent_id     Tag ID
-     * @param   string   $parent_label  Tag
+     * @param   array|null    $labels
+     * @param   integer|null  $parent_id     Tag ID
+     * @param   string|null   $parent_label  Tag
      * @return  array
      */
     private function loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)

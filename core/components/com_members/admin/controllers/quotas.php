@@ -123,7 +123,7 @@ class Quotas extends AdminController
     /**
      * Edit a member quota
      *
-     * @param   integer  $row  ID of entry to edit
+     * @param   integer|null  $row  ID of entry to edit
      *
      * @return  void
      */
@@ -354,7 +354,7 @@ class Quotas extends AdminController
     /**
      * Edit a quota class
      *
-     * @param   object  $row
+     * @param   object|null  $row
      *
      * @return  void
      */
@@ -545,7 +545,7 @@ class Quotas extends AdminController
      * Get quota usage info for a given quota id
      *
      * @param   string   $returnType
-     * @param   integer  $id
+     * @param   integer|null  $id
      * @return  mixed
      */
     public function getQuotaUsageTask($returnType = 'json', $id = null)

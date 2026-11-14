@@ -78,7 +78,7 @@ class Databases extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   string  $alias
+     * @param   string|null  $alias
      * @return  array   Plugin name and title
      */
     public function &onProjectAreas($alias = null)
@@ -185,7 +185,7 @@ class Databases extends Plugin
      *
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
-     * @param   string|array  $areas   Plugins to return data
+     * @param   string|array|null  $areas   Plugins to return data
      * @return  mixed   Return array of html
      */
     public function onProject($model, $action = 'view', $areas = null, $params = [])
@@ -1347,8 +1347,8 @@ class Databases extends Plugin
      * Function to be called outside of the databases plugin
      *
      * @param   integer  $identifier  Database ID or name
-     * @param   object   $project     Project object
-     * @param   string   $base_path   File-repository base path
+     * @param   object|null   $project     Project object
+     * @param   string|null   $base_path   File-repository base path
      * @return  integer|false
      */
     public function cloneDatabase($identifier = 0, $project = null, $base_path = null)
@@ -1419,8 +1419,8 @@ class Databases extends Plugin
      * Remove databases used in a draft publications
      *
      * @param   integer  $identifier  Database ID or name
-     * @param   object   $project     Project object
-     * @param   integer  $version     Database version
+     * @param   object|null   $project     Project object
+     * @param   integer|null  $version     Database version
      * @return  bool
      */
     public function removeDatabase($identifier = 0, $project = null, $version = null)

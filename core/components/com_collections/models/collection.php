@@ -264,7 +264,7 @@ class Collection extends Base
     /**
      * Set and get a specific post
      *
-     * @param   integer $id Post ID
+     * @param   integer|null $id Post ID
      * @return  object  CollectionsModelPost
      */
     public function post($id = null)
@@ -455,7 +455,7 @@ class Collection extends Base
     /**
      * Check if someone or a group is following this collection
      *
-     * @param   integer $follower_id   ID of the follower
+     * @param   integer|null $follower_id   ID of the follower
      * @param   string  $follower_type Type of the follower [member, group]
      * @return  boolean
      */
@@ -479,7 +479,7 @@ class Collection extends Base
     /**
      * Unfollow this collection
      *
-     * @param   integer $follower_id   ID of the follower
+     * @param   integer|null $follower_id   ID of the follower
      * @param   string  $follower_type Type of the follower [member, group]
      * @return  boolean
      */
@@ -503,7 +503,7 @@ class Collection extends Base
     /**
      * Follow this collection
      *
-     * @param   integer  $follower_id    ID of the follower
+     * @param   integer|null  $follower_id    ID of the follower
      * @param   string   $follower_type  Type of the follower [member, group]
      * @return  boolean
      */
@@ -623,7 +623,7 @@ class Collection extends Base
     /**
      * Check if a specified user can access this item
      *
-     * @param   integer  $user_id  User ID
+     * @param   integer|null  $user_id  User ID
      * @return  boolean
      */
     public function canAccess($user_id = null)
@@ -675,7 +675,7 @@ class Collection extends Base
      * the request, and Collection resolves any row, so every writer has to ask
      * this before trusting it.
      *
-     * @param   integer  $uid  User to test, or null for the current one
+     * @param   integer|null  $uid  User to test, or null for the current one
      * @return  boolean
      */
     public function canBePostedToBy($uid = null)
@@ -703,7 +703,7 @@ class Collection extends Base
      * Wider than ownership of the post and narrower than membership: the board's
      * own member, or a manager of the group that owns it.
      *
-     * @param   integer  $uid  User to test, or null for the current one
+     * @param   integer|null  $uid  User to test, or null for the current one
      * @return  boolean
      */
     public function canBeModeratedBy($uid = null)
@@ -729,7 +729,7 @@ class Collection extends Base
      * access 0 is public, 1 is any logged-in user and 4 is private to the board
      * -- the same three values the group and member plugins test for.
      *
-     * @param   integer  $uid  User to test, or null for the current one
+     * @param   integer|null  $uid  User to test, or null for the current one
      * @return  boolean
      */
     public function isReadableBy($uid = null)

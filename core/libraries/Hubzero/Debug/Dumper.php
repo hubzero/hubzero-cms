@@ -200,7 +200,7 @@ class Dumper
     /**
      * Render
      *
-     * @param   object  $renderer
+     * @param   object|null  $renderer
      * @return  string
      */
     public function render($renderer = null)
@@ -231,7 +231,7 @@ class Dumper
      * Dumps a var
      *
      * @param   mixed   $var
-     * @param   string  $to
+     * @param   string|null  $to
      * @return  void
      */
     public static function dump($var, $to = null)
@@ -247,7 +247,7 @@ class Dumper
      * Dumps a var and dies();
      *
      * @param   mixed   $var
-     * @param   string  $to
+     * @param   string|null  $to
      * @return  void
      */
     public static function stop($var, $to = null)

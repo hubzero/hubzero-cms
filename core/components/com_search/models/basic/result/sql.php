@@ -22,7 +22,7 @@ class Sql extends SearchResult
     /**
      * Constructor
      *
-     * @param   string  $sql
+     * @param   string|null  $sql
      * @return  void
      */
     public function __construct($sql = null)

@@ -149,7 +149,7 @@ class Wishlist extends Relational
     /**
      * Get the underlying item the list is tied to (group, etc.)
      *
-     * @param   string  $key
+     * @param   string|null  $key
      * @return  string
      */
     public function item($key = null)
@@ -184,8 +184,8 @@ class Wishlist extends Relational
      * Append an item to the breadcrumb trail.
      * If no item is provided, it will build the trail up to the list
      *
-     * @param   string  $title  Breadcrumb title
-     * @param   string  $pathway    Breadcrumb URL
+     * @param   string|null  $title  Breadcrumb title
+     * @param   string|null  $pathway    Breadcrumb URL
      * @return  string
      */
     public function pathway($title = null, $pathway = null)
@@ -463,7 +463,7 @@ class Wishlist extends Relational
     /**
      * Get a list of owners
      *
-     * @param   object   $admingroup  Admin Group
+     * @param   object|null   $admingroup  Admin Group
      * @param   integer  $native      Get groups assigned to this wishlist?
      * @param   integer  $wishid      Wish ID
      * @return  array
@@ -658,7 +658,7 @@ class Wishlist extends Relational
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key      Config property to retrieve
+     * @param   string|null  $key      Config property to retrieve
      * @param   mixed   $default  Value to return if key isn't found
      * @return  mixed
      */
@@ -678,7 +678,7 @@ class Wishlist extends Relational
      *
      * @param   string   $action     Action to check
      * @param   string   $assetType  Type of asset to check
-     * @param   integer  $assetId    ID of item to check access on
+     * @param   integer|null  $assetId    ID of item to check access on
      * @return  boolean  True if authorized, false if not
      */
     public function access($action = 'view', $assetType = 'list', $assetId = null)

@@ -169,7 +169,7 @@ class Form
      * Method to filter the form data.
      *
      * @param   array   $data   An array of field values to filter.
-     * @param   string  $group  The dot-separated form group path on which to filter the fields.
+     * @param   string|null  $group  The dot-separated form group path on which to filter the fields.
      * @return  mixed   Array or false.
      */
     public function filter($data, $group = null)
@@ -235,7 +235,7 @@ class Form
      * Method to get a form field represented as a Field object.
      *
      * @param   string  $name   The name of the form field.
-     * @param   string  $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group  The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value  The optional value to use as the default for the field.
      * @return  mixed   The Field object for the field or boolean false on error.
      */
@@ -264,7 +264,7 @@ class Form
      * @param   string  $name       The name of the form field for which to get the attribute value.
      * @param   string  $attribute  The name of the attribute for which to get a value.
      * @param   mixed   $default    The optional default value to use if no attribute value exists.
-     * @param   string  $group      The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group      The optional dot-separated form group path on which to find the field.
      * @return  mixed   The attribute value for the field.
      */
     public function getFieldAttribute($name, $attribute, $default = null, $group = null)
@@ -291,7 +291,7 @@ class Form
      * Method to get an array of Field objects in a given fieldset by name.  If no name is
      * given then all fields are returned.
      *
-     * @param   string  $set  The optional name of the fieldset.
+     * @param   string|null  $set  The optional name of the fieldset.
      * @return  array   The array of Field objects in the fieldset.
      */
     public function getFieldset($set = null)
@@ -331,7 +331,7 @@ class Form
     /**
      * Method to get an array of fieldset objects optionally filtered over a given field group.
      *
-     * @param   string  $group  The dot-separated form group path on which to filter the fieldsets.
+     * @param   string|null  $group  The dot-separated form group path on which to filter the fieldsets.
      * @return  array   The array of fieldset objects.
      */
     public function getFieldsets($group = null)
@@ -462,7 +462,7 @@ class Form
      * Method to get a form field markup for the field input.
      *
      * @param   string  $name   The name of the form field.
-     * @param   string  $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group  The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value  The optional value to use as the default for the field.
      * @return  string  The form field markup.
      */
@@ -480,7 +480,7 @@ class Form
      * Method to get the label for a field input.
      *
      * @param   string  $name   The name of the form field.
-     * @param   string  $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group  The optional dot-separated form group path on which to find the field.
      * @return  string  The form field label.
      */
     public function getLabel($name, $group = null)
@@ -507,7 +507,7 @@ class Form
      * Method to get the value of a field.
      *
      * @param   string  $name     The name of the field for which to get the value.
-     * @param   string  $group    The optional dot-separated form group path on which to get the value.
+     * @param   string|null  $group    The optional dot-separated form group path on which to get the value.
      * @param   mixed   $default  The optional default value of the field value is empty.
      * @return  mixed   The value of the field or the default value if empty.
      */
@@ -654,7 +654,7 @@ class Form
      * Method to remove a field from the form definition.
      *
      * @param   string   $name   The name of the form field for which remove.
-     * @param   string   $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null   $group  The optional dot-separated form group path on which to find the field.
      * @return  boolean  True on success.
      */
     public function removeField($name, $group = null)
@@ -724,7 +724,7 @@ class Form
      * will not be replaced if it already exists.
      *
      * @param   object   &$element  The XML element object representation of the form field.
-     * @param   string   $group     The optional dot-separated form group path on which to set the field.
+     * @param   string|null   $group     The optional dot-separated form group path on which to set the field.
      * @param   boolean  $replace   True to replace an existing field if one already exists.
      * @return  boolean  True on success.
      */
@@ -783,7 +783,7 @@ class Form
      * @param   string   $name       The name of the form field for which to set the attribute value.
      * @param   string   $attribute  The name of the attribute for which to set a value.
      * @param   mixed    $value      The value to set for the attribute.
-     * @param   string   $group      The optional dot-separated form group path on which to find the field.
+     * @param   string|null   $group      The optional dot-separated form group path on which to find the field.
      * @return  boolean  True on success.
      */
     public function setFieldAttribute($name, $attribute, $value, $group = null)
@@ -817,7 +817,7 @@ class Form
      * will not be replaced if they already exist.
      *
      * @param   object   &$elements  The array of XML element object representations of the form fields.
-     * @param   string   $group      The optional dot-separated form group path on which to set the fields.
+     * @param   string|null   $group      The optional dot-separated form group path on which to set the fields.
      * @param   boolean  $replace    True to replace existing fields if they already exist.
      * @return  boolean  True on success.
      */
@@ -856,7 +856,7 @@ class Form
      * will return false.
      *
      * @param   string   $name   The name of the field for which to set the value.
-     * @param   string   $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null   $group  The optional dot-separated form group path on which to find the field.
      * @param   mixed    $value  The value to set for the field.
      * @return  boolean  True on success.
      */
@@ -884,7 +884,7 @@ class Form
      * retrieved with Form::getErrors() when validate returns boolean false.
      *
      * @param   array   $data   An array of field values to validate.
-     * @param   string  $group  The optional dot-separated form group path on which to filter the
+     * @param   string|null  $group  The optional dot-separated form group path on which to filter the
      *                          fields to be validated.
      * @return  mixed   True on sucess.
      */
@@ -1153,7 +1153,7 @@ class Form
      * Method to get a form field represented as an XML element object.
      *
      * @param   string  $name   The name of the form field.
-     * @param   string  $group  The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group  The optional dot-separated form group path on which to find the field.
      * @return  mixed   The XML element object for the field or boolean false on error.
      */
     protected function findField($name, $group = null)
@@ -1385,7 +1385,7 @@ class Form
      * Method to load, setup and return a FormField object based on field data.
      *
      * @param   string  $element  The XML element object representation of the form field.
-     * @param   string  $group    The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
      * @return  mixed   The Field object for the field or boolean false on error.
      */
@@ -1522,9 +1522,9 @@ class Form
      * Method to validate a Field object based on field data.
      *
      * @param   string  $element  The XML element object representation of the form field.
-     * @param   string  $group    The optional dot-separated form group path on which to find the field.
+     * @param   string|null  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
-     * @param   object  $input    An optional Registry object with the entire data set to validate
+     * @param   object|null  $input    An optional Registry object with the entire data set to validate
      *                            against the entire form.
      * @return  mixed   Boolean true if field value is valid, Exception on failure.
      */
@@ -1632,7 +1632,7 @@ class Form
      * Method to get an instance of a form.
      *
      * @param   string  $name     The name of the form.
-     * @param   string  $data     The name of an XML file or string to load as the form definition.
+     * @param   string|null  $data     The name of an XML file or string to load as the form definition.
      * @param   array   $options  An array of form options.
      * @param   string|bool $replace  Flag to toggle whether form fields should be replaced if a field
      *                            already exists with the same group/name.

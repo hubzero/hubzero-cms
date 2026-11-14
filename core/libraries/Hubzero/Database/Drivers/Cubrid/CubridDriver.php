@@ -357,8 +357,8 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $oldTable
      * @param   string  $newTable
-     * @param   string  $backup
-     * @param   string  $prefix
+     * @param   string|null  $backup
+     * @param   string|null  $prefix
      * @return  $this
      */
     public function renameTable($oldTable, $newTable, $backup = null, $prefix = null)

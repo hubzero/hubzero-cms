@@ -80,8 +80,8 @@ class Log extends Model
     /**
      * Update Parent Name
      *
-     * @param   integer  $id
-     * @param   string   $name
+     * @param   integer|null  $id
+     * @param   string|null   $name
      * @return  boolean
      */
     public function updateParentName($id = null, $name = null)
@@ -183,7 +183,7 @@ class Log extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string  $property
+     * @param   string|null  $property
      * @return  mixed
      */
     public function actor($property = null)

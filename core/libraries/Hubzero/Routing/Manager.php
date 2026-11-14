@@ -60,7 +60,7 @@ class Manager
     /**
      * Get a client instance.
      *
-     * @param   string  $client
+     * @param   string|null  $client
      * @return  object
      */
     public function client($client = null)
@@ -135,7 +135,7 @@ class Manager
      * @param   string  $client  The name of the application.
      * @param   string   $url    Absolute or Relative URI to resource.
      * @param   boolean  $xhtml  Replace & by &amp; for XML compilance.
-     * @param   integer  $ssl    Secure state for the resolved URI.
+     * @param   integer|null  $ssl    Secure state for the resolved URI.
      *                             1: Make URI secure using global secure site URI.
      *                             0: Leave URI in the same secure state as it was passed to the function.
      *                            -1: Make URI unsecure using the global unsecure site URI.

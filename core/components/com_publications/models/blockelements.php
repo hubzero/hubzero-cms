@@ -54,8 +54,8 @@ class BlockElements extends Obj
      * Get status for a block element within publication
      *
      * @param   string  $name
-     * @param   object  $manifest
-     * @param   object  $pub
+     * @param   object|null  $manifest
+     * @param   object|null  $pub
      * @return  object
      */
     public function getStatus($name, $manifest = null, $pub = null)
@@ -78,10 +78,10 @@ class BlockElements extends Obj
      *
      * @param   string   $name
      * @param   integer  $elementId
-     * @param   string   $manifest
-     * @param   object   $master
-     * @param   object   $pub
-     * @param   object   $status
+     * @param   string|null   $manifest
+     * @param   object|null   $master
+     * @param   object|null   $pub
+     * @param   object|null   $status
      * @param   string   $viewname
      * @param   integer  $order
      * @return  object|false

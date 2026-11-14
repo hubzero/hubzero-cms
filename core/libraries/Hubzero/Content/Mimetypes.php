@@ -737,7 +737,7 @@ class Mimetypes
     /**
      * Retrieve the corresponding MIME type, if one exists
      *
-     * @param   string  $file  File Name (relative location such as "image_test.jpg" or
+     * @param   string|null  $file  File Name (relative location such as "image_test.jpg" or
      *                         full "http://site.com/path/to/image_test.jpg")
      * @return  string  The type of the file passed in the argument
      */
@@ -797,7 +797,7 @@ class Mimetypes
     /**
      * Gets the file extension from a string
      *
-     * @param   string  $file  The full file name
+     * @param   string|null  $file  The full file name
      * @return  string  The file extension
      */
     private function extractExtension($file = null)

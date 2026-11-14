@@ -131,8 +131,8 @@ class Validate
      * $check is a legal finite on this platform
      *
      * @param   string   $check  Value to check
-     * @param   integer  $lower  Lower limit
-     * @param   integer  $upper  Upper limit
+     * @param   integer|null  $lower  Lower limit
+     * @param   integer|null  $upper  Upper limit
      * @return  boolean  Success
      */
     public static function range($check, $lower = null, $upper = null)
@@ -560,7 +560,7 @@ class Validate
      *
      * @param   string|array   $check  Value to check
      * @param   boolean|null  $deep   Perform a deeper validation (if true), by also checking availability of host
-     * @param   string   $regex  Regex to use (if none it will use built in regex)
+     * @param   string|null   $regex  Regex to use (if none it will use built in regex)
      * @return  boolean  Success
      */
     public static function email($check, $deep = false, $regex = null)
@@ -654,7 +654,7 @@ class Validate
      * @see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
      *
      * @param  string|array $check   Value to check (string or array)
-     * @param  string       $regex   Regular expression to use
+     * @param  string|null       $regex   Regular expression to use
      * @param  string       $country Country code (defaults to 'all')
      * @return boolean Success
      */

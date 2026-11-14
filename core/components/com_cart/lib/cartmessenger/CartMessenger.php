@@ -424,7 +424,7 @@ class CartMessenger
      * Email error to store admin
      *
      * @param   string  $error
-     * @param   string  $errorType
+     * @param   string|null  $errorType
      * @return  void
      */
     private function emailError($error, $errorType = null)

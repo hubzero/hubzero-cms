@@ -464,7 +464,7 @@ class Date extends DateTime
      * Gets the date as an SQL datetime string.
      *
      * @param   boolean  $local  True to return the date string in the local time zone, false to return it in GMT.
-     * @param   object   $dbo    The database driver or null to use global driver
+     * @param   object|null   $dbo    The database driver or null to use global driver
      * @return  string   The date string in SQL datetime format.
      */
     public function toSql($local = false, $dbo = null)
@@ -518,7 +518,7 @@ class Date extends DateTime
      * Function to explicitly convert a date to the timezone and format provided.
      * @param   mixed  $timeZone The numeric key on the Date static offsets array (a short list of common timezones)
      *      or a timezone string accepted by the TimeZone PHP object (see {@link PHP_MANUAL#timezones})
-     * @param   string  $format  The date format specification string (see {@link PHP_MANUAL#date})
+     * @param   string|null  $format  The date format specification string (see {@link PHP_MANUAL#date})
      * @return  string
      */
     public function toTimeZone($timeZone, $format = null, $ignoreDst = false)
@@ -532,9 +532,9 @@ class Date extends DateTime
     /**
      * Function to convert a static time into a relative measurement
      *
-     * @param   string  $unit  The optional unit of measurement to return
+     * @param   string|null  $unit  The optional unit of measurement to return
      *                         if the value of the diff is greater than one
-     * @param   string  $time  An optional time to compare to, defaults to now
+     * @param   string|null  $time  An optional time to compare to, defaults to now
      * @return  string  The converted time string
      */
     public function relative($unit = null, $time = null)

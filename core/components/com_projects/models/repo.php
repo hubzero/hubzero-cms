@@ -58,7 +58,7 @@ class Repo extends Obj
 
     /**
      * Constructor
-     * @param   object  $project  Project model
+     * @param   object|null  $project  Project model
      * @param   string  $name
      * @return  void
      */
@@ -203,7 +203,7 @@ class Repo extends Obj
     /**
      * Make adapter call
      *
-     * @param   string  $call   Method name
+     * @param   string|null  $call   Method name
      * @param   array   $params Method params
      * @return  mixed
      */
@@ -279,7 +279,7 @@ class Repo extends Obj
     /**
      * Check that directory within repo exists
      *
-     * @param   string  $dirPath    Directory path
+     * @param   string|null  $dirPath    Directory path
      * @return  boolean
      */
     public function dirExists($dirPath = null)
@@ -299,7 +299,7 @@ class Repo extends Obj
     /**
      * Check that file within repo exists
      *
-     * @param   string  $filePath   File path
+     * @param   string|null  $filePath   File path
      * @return  boolean
      */
     public function fileExists($filePath = null)

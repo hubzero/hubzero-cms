@@ -30,8 +30,8 @@ class Comment extends Table
     /**
      * Load user comment and bind to $this
      *
-     * @param   integer  $itemid
-     * @param   integer  $user_id
+     * @param   integer|null  $itemid
+     * @param   integer|null  $user_id
      * @return  mixed    object or false
      */
     public function loadUserComment($itemid = null, $user_id = null)
@@ -53,7 +53,7 @@ class Comment extends Table
     /**
      * Load a record by id and bind to $this
      *
-     * @param   integer  $commentid
+     * @param   integer|null  $commentid
      * @return  mixed    object or false
      */
     public function loadComment($commentid = null)
@@ -73,7 +73,7 @@ class Comment extends Table
     /**
      * Get items
      *
-     * @param   integer  $itemid
+     * @param   integer|null  $itemid
      * @param   string   $tbl
      * @param   integer  $activityid
      * @param   string|int $lastvisit
@@ -118,10 +118,10 @@ class Comment extends Table
      * Check if identical comment is made (prevents duplicates on multiple 'save' click)
      *
      * @param   integer  $uid
-     * @param   string   $tbl
+     * @param   string|null   $tbl
      * @param   integer  $itemid
      * @param   integer  $parent_activity
-     * @param   string   $comment
+     * @param   string|null   $comment
      * @return  string|null
      */
     public function checkDuplicate($uid = 0, $tbl = null, $itemid = 0, $parent_activity = 0, $comment = null)
@@ -139,7 +139,7 @@ class Comment extends Table
     /**
      * Collect activity ids
      *
-     * @param   integer  $itemid
+     * @param   integer|null  $itemid
      * @param   string   $tbl
      * @return  array|false
      */
@@ -168,7 +168,7 @@ class Comment extends Table
     /**
      * Save comment
      *
-     * @param   integer  $itemid
+     * @param   integer|null  $itemid
      * @param   string   $tbl
      * @param   string   $comment
      * @param   integer  $by
@@ -222,7 +222,7 @@ class Comment extends Table
     /**
      * Delete items
      *
-     * @param   integer  $itemid
+     * @param   integer|null  $itemid
      * @param   string   $tbl
      * @param   boolean  $permanent
      * @return  boolean  True on success

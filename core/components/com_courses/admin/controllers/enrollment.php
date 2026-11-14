@@ -142,7 +142,7 @@ class Enrollment extends AdminController
     /**
      * Display a list of 'manager' for a specific course
      *
-     * @param   object  $course
+     * @param   object|null  $course
      * @return  void
      */
     public function displayTask($course = null)

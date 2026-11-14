@@ -221,7 +221,7 @@ class Respondent extends Table
     /**
      * Delete respondents for an event
      *
-     * @param   integer  $event_id
+     * @param   integer|null  $event_id
      * @return  boolean
      */
     public function deleteRespondents($event_id = null)

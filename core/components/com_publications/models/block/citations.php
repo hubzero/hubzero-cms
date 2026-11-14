@@ -51,8 +51,8 @@ class Citations extends Base
     /**
      * Display block content
      *
-     * @param   object   $pub
-     * @param   object   $manifest
+     * @param   object|null   $pub
+     * @param   object|null   $manifest
      * @param   string   $viewname
      * @param   integer  $blockId
      * @return  string   HTML
@@ -101,7 +101,7 @@ class Citations extends Base
     /**
      * Build panel content
      *
-     * @param   object  $pub
+     * @param   object|null  $pub
      * @param   string  $viewname
      * @return  string  HTML
      */
@@ -137,9 +137,9 @@ class Citations extends Base
     /**
      * Save block content
      *
-     * @param   object   $manifest
+     * @param   object|null   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|null   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  string|bool   HTML
@@ -346,9 +346,9 @@ class Citations extends Base
     /**
      * Check completion status
      *
-     * @param   object   $pub
-     * @param   object   $manifest
-     * @param   integer  $elementId
+     * @param   object|null   $pub
+     * @param   object|null   $manifest
+     * @param   integer|null  $elementId
      * @return  object
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
