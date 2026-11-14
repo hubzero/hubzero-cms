@@ -118,7 +118,7 @@ class Andmore extends Base
      * Push database results to $this for internal use
      *
      * @param      array &$result Database results
-     * @return     void
+     * @return     bool
      */
     public function process($result)
     {
@@ -141,5 +141,7 @@ class Andmore extends Base
                 }
             }
         }
+
+        return true;
     }
 }

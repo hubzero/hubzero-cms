@@ -39,11 +39,13 @@ class Admin extends SiteController
     /**
      * Add a message
      *
-     * @return  void
+     * @return  $this
      */
     public function setMessage($msg, $type = 'message')
     {
         array_push($this->messages, $msg);
+
+        return $this;
     }
 
     /**

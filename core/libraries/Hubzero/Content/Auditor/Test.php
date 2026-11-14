@@ -17,7 +17,7 @@ interface Test
      * Run content through test
      *
      * @param   array  $data
-     * @return  bool
+     * @return  object
      */
     public function examine(array $data, array $options = []);
 }
