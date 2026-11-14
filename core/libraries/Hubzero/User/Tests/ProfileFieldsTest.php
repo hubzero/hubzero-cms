@@ -25,7 +25,8 @@ class ProfileFieldsTest extends TestCase
     {
         $profile = new Profile();
 
-        $this->assertTrue($profile->set('givenName', 'Ada'));
+        $this->assertSame($profile, $profile->set('givenName', 'Ada'));
+        $this->assertCount(0, $profile->getErrors());
         $this->assertSame('Ada', $profile->get('givenName'));
     }
 
@@ -78,7 +79,10 @@ class ProfileFieldsTest extends TestCase
         $profile = new Profile();
 
         $this->assertFalse($profile->get('nosuchfield'));
-        $this->assertFalse($profile->set('nosuchfield', 1));
+        // A refused set() is recorded as an error; set() itself returns the profile
+        $before = count($profile->getErrors());
+        $profile->set('nosuchfield', 1);
+        $this->assertCount($before + 1, $profile->getErrors());
     }
 
     /**
@@ -91,7 +95,9 @@ class ProfileFieldsTest extends TestCase
 
         foreach (['plainPassword', 'paramsRegistry', 'auxsBio', 'auxvRace', '_password'] as $own) {
             $this->assertFalse($profile->get($own), $own);
-            $this->assertFalse($profile->set($own, 'x'), $own);
+            $before = count($profile->getErrors());
+            $profile->set($own, 'x');
+            $this->assertCount($before + 1, $profile->getErrors(), $own);
         }
 
         $this->assertSame('secret', $profile->get('password'));

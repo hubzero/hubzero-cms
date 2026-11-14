@@ -74,17 +74,16 @@ class Error extends Base
     /**
      * Set error object
      *
-     * @param   object   $error  Error object to set
-     * @return  boolean  True on success
+     * @param   object|string  $error  Error object to set; anything else is ignored
+     * @return  $this
      */
     public function setError($error, $key = null)
     {
         if ($error instanceof Exception) {
             $this->error = $error;
-            return true;
         }
 
-        return false;
+        return $this;
     }
 
     /**

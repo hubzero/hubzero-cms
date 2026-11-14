@@ -53,13 +53,12 @@ class Cookie implements MessageStore
      * Return a list of messages
      *
      * @param   string  $domain
-     * @return  object
+     * @return  array
      */
     public function retrieve($domain)
     {
-        if (!($messages = Monster::eat($this->key($domain)))) {
-            $messages = [];
-        }
+        // The cookie comes back as an object; an empty or missing one as false
+        $messages = (array) (Monster::eat($this->key($domain)) ?: []);
 
         if (count($messages)) {
             $this->clear($domain);

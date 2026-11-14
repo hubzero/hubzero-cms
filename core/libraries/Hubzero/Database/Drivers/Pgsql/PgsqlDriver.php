@@ -562,14 +562,16 @@ class PgsqlDriver extends BaseSqlDriver
      * Locks a table in the database
      *
      * @param   string  $tableName  The name of the table to lock
-     * @return  bool
+     * @return  $this
      */
-    public function lockTable($tableName): bool
+    public function lockTable($tableName)
     {
         $tableName = $this->replacePrefix($tableName);
 
         $this->setQuery("LOCK TABLE " . $this->quoteName($tableName) . " IN ACCESS EXCLUSIVE MODE");
-        return (bool) $this->execute();
+        $this->execute();
+
+        return $this;
     }
 
     /**

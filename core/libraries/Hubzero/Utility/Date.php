@@ -415,7 +415,7 @@ class Date extends DateTime
     /**
      * Add to the date
      *
-     * @param   string  $modifier
+     * @param   \DateInterval|string  $modifier  An interval, or text such as "1 day"
      * @return  object
      * @deprecated
      */
@@ -423,6 +423,10 @@ class Date extends DateTime
     #[\ReturnTypeWillChange]
     public function add($modifier)
     {
+        if ($modifier instanceof \DateInterval) {
+            return parent::add($modifier);
+        }
+
         return $this->modify('+' . $modifier);
     }
 

@@ -1752,7 +1752,7 @@ class CurrentCart extends Cart
 
             $userCart = new UserCart($userCartId);
             // Get items from the user's cart to see if it is empty or nor
-            $userCartItems = $userCart->getCartItems();
+            $userCartItems = $userCart->getCartSkus();
 
             // If both session and user carts are not empty notify the user that items are being combined
             if (!$this->isEmpty() && !empty($userCartItems)) {

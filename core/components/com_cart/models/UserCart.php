@@ -41,7 +41,7 @@ class UserCart extends Cart
      *
      * @return array of SKU IDs in the cart
      */
-    public function getCartItems()
+    public function getCartSkus()
     {
         $items = parent::getCartItems();
         // Return SKUs only

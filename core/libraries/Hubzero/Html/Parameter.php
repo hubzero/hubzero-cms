@@ -77,13 +77,15 @@ class Parameter extends Registry
      * @param   string  $key      The name of the parameter.
      * @param   string  $default  An optional value for the parameter.
      * @param   string  $group    An optional group for the parameter.
-     * @return  object  The value set, or the default if the value was not previously set (or null).
+     * @return  string  The value set, or the default if the value was not previously set (or null).
      */
     public function def($key, $default = '', $group = '_default')
     {
         $value = $this->get($key, (string) $default);
 
-        return $this->set($key, $value);
+        $this->set($key, $value);
+
+        return $value;
     }
 
     /**

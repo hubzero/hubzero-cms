@@ -46,7 +46,7 @@ class Helper extends Obj
                 // Check if the user has any action items
                 if (count($mids) > 0) {
                     $recipient = Recipient::blank();
-                    if (!$recipient->setState(1, $mids)) {
+                    if (!$recipient->setStateOf(1, $mids)) {
                         $this->setError(
                             Lang::txt(
                                 'Unable to update recipient records %s for user %s',

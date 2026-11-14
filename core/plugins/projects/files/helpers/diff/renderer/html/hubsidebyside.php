@@ -12,7 +12,7 @@ namespace Plugins\Projects\Files\Helpers\Diff\Renderer\Html;
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-class HubSideBySide extends \Diff_Renderer_Html_Array
+class HubSideBySide extends \Diff_Renderer_Abstract
 {
     /**
      * Render a and return diff with changes between the two sequences
@@ -22,7 +22,10 @@ class HubSideBySide extends \Diff_Renderer_Html_Array
      */
     public function render()
     {
-        $changes = parent::render();
+        // The array renderer works out the changes; this class only lays them out
+        $array = new \Diff_Renderer_Html_Array($this->options);
+        $array->diff = $this->diff;
+        $changes = $array->render();
 
         $html = '';
         if (empty($changes)) {

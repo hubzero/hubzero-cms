@@ -261,7 +261,7 @@ class Recipient extends Relational
      * @param   array    $ids    List of message IDs
      * @return  boolean  True on success
      */
-    public function setState($state = 0, $ids = [])
+    public function setStateOf($state = 0, $ids = [])
     {
         if (count($ids) <= 0) {
             return false;

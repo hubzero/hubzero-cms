@@ -1173,7 +1173,7 @@ class Profile extends Obj
      *
      * @param   string   $property  Property name
      * @param   mixed    $value     Property value
-     * @return  boolean  True on success, False on error
+     * @return  $this  An error is recorded, not returned, when the property cannot be set
      */
     public function set($property, $value = null)
     {
@@ -1186,12 +1186,12 @@ class Profile extends Obj
 
             $this->plainPassword = $value;
 
-            return true;
+            return $this;
         }
 
         if (self::isOwn($property)) {
             $this->setError("Can't access private properties");
-            return false;
+            return $this;
         }
 
         if (!property_exists(__CLASS__, $property)) {
@@ -1201,7 +1201,7 @@ class Profile extends Obj
                 $property = self::auxProperty($property, 'v');
             } else {
                 $this->setError("Unknown property: $property");
-                return false;
+                return $this;
             }
         }
 
@@ -1235,7 +1235,7 @@ class Profile extends Obj
             $value = \Hubzero\Utility\Sanitize::cleanProperName($value);
         }
 
-        return true;
+        return $this;
     }
 
     /**
