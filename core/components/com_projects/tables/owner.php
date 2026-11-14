@@ -33,8 +33,8 @@ class Owner extends Table
      * Verify if user is project owner
      *
      * @param   integer|null  $uid
-     * @param   integer|null  $projectid
-     * @param   integer  $status
+     * @param   integer|null|mixed  $projectid
+     * @param   integer|mixed  $status
      * @return  mixed    integer (member role) if user is owner, false if not
      */
     public function isOwner($uid = null, $projectid = null, $status = 1)
@@ -151,7 +151,7 @@ class Owner extends Table
     /**
      * Get ids of project owners
      *
-     * @param   integer|null  $projectid
+     * @param   integer|null|mixed  $projectid
      * @param   string|int $role       get owners in specific role or all
      * @param   integer  $get_uids   get user ids (1) or owner ids (0)
      * @param   integer  $active     get only active users (1) or any
@@ -423,7 +423,7 @@ class Owner extends Table
     /**
      * Get project owners
      *
-     * @param   integer|null  $projectid
+     * @param   integer|null|mixed  $projectid
      * @param   array    $filters
      * @return  array|false
      */

@@ -607,7 +607,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Save ordering
      *
-     * @param   array  $ordering
+     * @param   array|mixed  $ordering
      * @return  bool
      */
     public static function saveorder($ordering)
@@ -647,7 +647,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Move a single item up or down in ordering
      *
-     * @param   integer  $delta
+     * @param   integer|mixed  $delta
      * @param   string   $where
      * @return  bool
      */

@@ -72,7 +72,7 @@ class Reviews extends Plugin
      *
      * @param   object   $model     Current publication
      * @param   string   $option    Name of the component
-     * @param   array    $areas     Active area(s)
+     * @param   array|mixed    $areas     Active area(s)
      * @param   string   $rtrn      Data to be returned
      * @param   string   $version   Version name
      * @param   boolean  $extended  Whether or not to show panel

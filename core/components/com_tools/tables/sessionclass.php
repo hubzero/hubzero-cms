@@ -239,7 +239,7 @@ class SessionClass extends Table
     /**
      * Get the an object list of quotas classes
      *
-     * @param   array  $groups  Start and limit, needed for pagination
+     * @param   array|mixed  $groups  Start and limit, needed for pagination
      * @return  array|bool  Return password rule records
      */
     public function setGroupIds($groups = [])

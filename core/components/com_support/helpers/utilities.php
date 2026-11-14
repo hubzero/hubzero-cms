@@ -253,7 +253,7 @@ class Utilities
     /**
      * Calculate the average life of a ticket
      *
-     * @param   array|null  $data  A list of ticket's opened and closed dates
+     * @param   array|null|mixed  $data  A list of ticket's opened and closed dates
      * @return  array  [days, hours, minutes]
      */
     public static function calculateAverageLife($data = null)

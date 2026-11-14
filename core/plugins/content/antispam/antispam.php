@@ -29,7 +29,7 @@ class Antispam extends Plugin
      * Method is called right after the content is saved
      *
      * @param   string   $context  The context of the content passed to the plugin (added in 1.6)
-     * @param   object   $article  Model
+     * @param   object|mixed   $article  Model
      * @param   boolean  $isNew    If the content is just about to be created
      * @return  bool|null
      * @since   2.5

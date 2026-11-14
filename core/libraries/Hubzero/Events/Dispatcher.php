@@ -134,7 +134,7 @@ class Dispatcher implements DispatcherInterface
      * If no events are specified, it will be registered to all events matching it's methods name.
      * In the case of a closure, you must specify at least one event name.
      *
-     * @param   object|Closure  $listener  The listener
+     * @param   object|Closure|mixed  $listener  The listener
      * @param   array|string           $events    An associative array of event names as keys
      *                                     and the corresponding listener priority as values.
      * @return  Dispatcher  This method is chainable.

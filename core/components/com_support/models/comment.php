@@ -295,7 +295,7 @@ class Comment extends Relational
     /**
      * Add to the recipient list
      *
-     * @param   string  $to
+     * @param   string|mixed  $to
      * @param   string  $role
      * @return  object
      */

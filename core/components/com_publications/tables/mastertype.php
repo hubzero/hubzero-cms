@@ -129,7 +129,7 @@ class MasterType extends Table
      * Get types for which user is authorized (curation)
      *
      * @param   array  $usergroups
-     * @param   bool   $authorized
+     * @param   bool|mixed   $authorized
      * @return  mixed  array or False
      */
     public function getAuthTypes($usergroups = [], $authorized = false)

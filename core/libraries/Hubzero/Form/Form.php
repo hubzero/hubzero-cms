@@ -532,7 +532,7 @@ class Form
      * field being loaded.  If it is false, then the new field being loaded will be ignored and the
      * method will move on to the next field to load.
      *
-     * @param   string   $data     The name of an XML string or object.
+     * @param   string|mixed   $data     The name of an XML string or object.
      * @param   string|bool $replace  Flag to toggle whether form fields should be replaced if a field
      *                             already exists with the same group/name.
      * @param   string|false $xpath    An optional xpath to search for the fields.
@@ -946,7 +946,7 @@ class Form
     /**
      * Method to apply an input filter to a value based on field data.
      *
-     * @param   string  $element  The XML element object representation of the form field.
+     * @param   string|mixed  $element  The XML element object representation of the form field.
      * @param   mixed   $value    The value to filter for the field.
      * @return  mixed   The filtered value.
      */
@@ -1384,7 +1384,7 @@ class Form
     /**
      * Method to load, setup and return a FormField object based on field data.
      *
-     * @param   string  $element  The XML element object representation of the form field.
+     * @param   string|mixed  $element  The XML element object representation of the form field.
      * @param   string|null  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
      * @return  mixed   The Field object for the field or boolean false on error.
@@ -1521,7 +1521,7 @@ class Form
     /**
      * Method to validate a Field object based on field data.
      *
-     * @param   string  $element  The XML element object representation of the form field.
+     * @param   string|mixed  $element  The XML element object representation of the form field.
      * @param   string|null  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
      * @param   object|null  $input    An optional Registry object with the entire data set to validate

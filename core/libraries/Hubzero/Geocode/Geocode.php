@@ -28,7 +28,7 @@ class Geocode
     /**
      * Get a list of countries and their coutnry code
      *
-     * @param   string  $continent  Continent to filter by
+     * @param   string|mixed  $continent  Continent to filter by
      * @return  array
      */
     public static function countries($continent = 'all')
@@ -88,7 +88,7 @@ class Geocode
     /**
      * Get country based on short code
      *
-     * @param   string  $code  Short code (ex: us, de, fr, jp)
+     * @param   string|mixed  $code  Short code (ex: us, de, fr, jp)
      * @return  string
      */
     public static function country($code)
@@ -129,7 +129,7 @@ class Geocode
     /**
      * Get continent based on country name or short code
      *
-     * @param   string  $country  Country name or Short code (ex: us, de, fr, jp)
+     * @param   string|mixed  $country  Country name or Short code (ex: us, de, fr, jp)
      * @return  string
      */
     public static function continent($country)

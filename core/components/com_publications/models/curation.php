@@ -1046,7 +1046,7 @@ class Curation extends Obj
      * Check block status (auto check)
      *
      * @param   string   $name     Block name
-     * @param   object   $pub      Publication object
+     * @param   object|mixed   $pub      Publication object
      * @param   integer  $blockId  Numeric block ID
      * @return  object|false
      */
@@ -1113,7 +1113,7 @@ class Curation extends Obj
      * Get first element ID
      *
      * @param   string   $name     Block name
-     * @param   object   $pub      Publication object
+     * @param   object|mixed   $pub      Publication object
      * @param   integer  $blockId  Numeric block ID
      * @return  integer
      */
@@ -1227,7 +1227,7 @@ class Curation extends Obj
      *
      * @param   string   $name       Block name
      * @param   integer  $elementId  Element ID in question
-     * @param   object   $pub        Publication object
+     * @param   object|mixed   $pub        Publication object
      * @param   integer  $blockId    Numeric block ID
      * @return  object|false
      */
@@ -1760,7 +1760,7 @@ class Curation extends Obj
      * @param   object|null   $data       Data to save
      * @param   integer  $elementId  Element ID
      * @param   string   $name       Block name
-     * @param   object   $pub        Publication object
+     * @param   object|mixed   $pub        Publication object
      * @param   integer  $blockId    Numeric block ID
      * @return  boolean
      */

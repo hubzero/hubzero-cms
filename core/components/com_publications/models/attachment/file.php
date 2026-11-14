@@ -278,7 +278,7 @@ class File extends Base
     /**
      * Draw list
      *
-     * @param   array    $attachments
+     * @param   array|mixed    $attachments
      * @param   object   $element
      * @param   integer  $elementId
      * @param   object   $pub
@@ -375,7 +375,7 @@ class File extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   boolean  $authorized
+     * @param   boolean|mixed  $authorized
      * @return  string
      */
     public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)

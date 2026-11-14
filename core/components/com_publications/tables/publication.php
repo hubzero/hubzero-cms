@@ -590,7 +590,7 @@ class Publication extends Table
      * Get top-level publication stats
      *
      * @param   array   $validProjects
-     * @param   string  $get
+     * @param   string|mixed  $get
      * @param   string|null  $when
      * @return  mixed
      */

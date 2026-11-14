@@ -433,7 +433,7 @@ class ArticlesCategory extends Module
     /**
      * Group items
      *
-     * @param   array   $list
+     * @param   array|mixed   $list
      * @param   string  $fieldName
      * @param   string  $article_grouping_direction
      * @param   string|null  $fieldNameToKeep
@@ -473,7 +473,7 @@ class ArticlesCategory extends Module
     /**
      * Group items by date
      *
-     * @param   array   $list
+     * @param   array|mixed   $list
      * @param   string  $type
      * @param   string  $article_grouping_direction
      * @param   string  $month_year_format

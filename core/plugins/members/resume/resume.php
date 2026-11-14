@@ -140,7 +140,7 @@ class Resume extends Plugin
      * @param   object  $user    User
      * @param   object  $member  Profile
      * @param   string  $option  Component name
-     * @param   array   $areas   Plugins to return data
+     * @param   array|mixed   $areas   Plugins to return data
      * @return  array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)

@@ -237,7 +237,7 @@ class Parser extends Obj
      *
      * @param   array  $config   Associative array of parser plugin config parameters
      * @param   array  $pconfig  Associative array of parser config parameters
-     * @param   bool   $getnew   Tells initialise() to create new parser or not
+     * @param   bool|mixed   $getnew   Tells initialise() to create new parser or not
      * @return  void
      */
     private function load($config = [], $pconfig = [], $getnew = false)

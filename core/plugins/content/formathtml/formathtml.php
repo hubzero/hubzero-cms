@@ -22,7 +22,7 @@ class Formathtml extends Plugin
      * Method is called right after the content is saved
      *
      * @param   string  $context  The context of the content being passed to the plugin.
-     * @param   object  $article  The article object.  Note $article->text is also available
+     * @param   object|mixed  $article  The article object.  Note $article->text is also available
      * @param   bool    $isNew
      * @return  void
      */

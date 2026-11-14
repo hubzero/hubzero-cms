@@ -383,7 +383,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Turn a comma-separated string of tags into an array of normalized tags
      *
-     * @param      string  $tag_string Comma-separated string of tags
+     * @param      string|mixed  $tag_string Comma-separated string of tags
      * @param      integer $keep       Use normalized tag as array key
      * @return     array
      */
@@ -816,7 +816,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Build a tag cloud
      *
-     * @param      array   $tags      List of tags
+     * @param      array|mixed   $tags      List of tags
      * @param      string  $sort      How to sort tags?
      * @param      integer $showsizes Show tag size based on use?
      * @return     string HTML

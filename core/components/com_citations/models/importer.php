@@ -62,8 +62,8 @@ class Importer extends Obj
     /**
      * Defines a one to one relationship with citation
      *
-     * @param   object   $database
-     * @param   object   $filesystem
+     * @param   object|mixed   $database
+     * @param   object|mixed   $filesystem
      * @param   string   $path
      * @param   string|null   $hash
      * @param   boolean  $tags

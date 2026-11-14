@@ -336,7 +336,7 @@ class Html
      *
      * @param      object  $publication  Publication object
      * @param      string  $option       Component name
-     * @param      object  $children     Publication attachments
+     * @param      object|mixed  $children     Publication attachments
      * @return     string HTML
      */
     public static function sortSupportingDocs($publication, $option, $children)
@@ -650,11 +650,11 @@ class Html
      * Generate a citation for a resource
      *
      * @param   string   $option     Component name
-     * @param   object   $cite       Citation data
+     * @param   object|mixed   $cite       Citation data
      * @param   string   $id         Resource ID
      * @param   string   $citations  Citations to prepend
      * @param   integer  $type       Resource type
-     * @param   string   $rev        Tool revision
+     * @param   string|mixed   $rev        Tool revision
      * @return  string   HTML
      */
     public static function citation($option, $cite, $id, $citations, $type, $rev = '')

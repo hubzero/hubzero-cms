@@ -877,7 +877,7 @@ class Group extends Obj
     /**
      * Get a list of user IDs from a string, list, or list of usernames
      *
-     * @param   array  $users
+     * @param   array|mixed  $users
      * @return  mixed
      */
     private function userids($users)
@@ -983,7 +983,7 @@ class Group extends Obj
      * Check if a group exists.
      * Given the group id, returns true if group exists.
      *
-     * @param   integer  $group         The group id number (GID) of the group being verified.
+     * @param   integer|mixed  $group         The group id number (GID) of the group being verified.
      * @param   boolean  $check_system  Boolean for checking against POSIX user.
      * @return  boolean  Returns false if group does not exist; true if group exists.
      */
@@ -1203,7 +1203,7 @@ class Group extends Obj
      * Check if the user is a member of a given table
      *
      * @param   string   $table  Table to check
-     * @param   integer  $uid    User ID
+     * @param   integer|mixed  $uid    User ID
      * @return  boolean
      */
     public function isMemberOf($table, $uid)
@@ -1230,7 +1230,7 @@ class Group extends Obj
      * exist has no members.
      *
      * @param   string   $cn   Group cn
-     * @param   integer  $uid  User ID
+     * @param   integer|mixed  $uid  User ID
      * @return  boolean
      */
     public static function hasMember($cn, $uid)

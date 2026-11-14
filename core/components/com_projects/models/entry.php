@@ -311,7 +311,7 @@ class Entry extends Model
      *
      * @param   string   $rtrn     Data format to return
      * @param   array    $filters  Filters to apply to data fetch
-     * @param   boolean  $clear    Clear cached data?
+     * @param   boolean|mixed  $clear    Clear cached data?
      * @return  mixed
      */
     public function comments($rtrn = 'list', $filters = [], $clear = false)

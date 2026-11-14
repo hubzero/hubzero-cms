@@ -1206,7 +1206,7 @@ class Modules extends AdminController
     /**
      * Batch copy modules to a new position or current.
      *
-     * @param   integer  $value      The new value matching a module position.
+     * @param   integer|mixed  $value      The new value matching a module position.
      * @param   array    $pks        An array of row IDs.
      * @param   array    $contexts   An array of item contexts.
      * @return  bool|array  True if successful, false otherwise and internal error is set.
@@ -1354,7 +1354,7 @@ class Modules extends AdminController
     /**
      * Batch move modules to a new position or current.
      *
-     * @param   integer  $value     The new value matching a module position.
+     * @param   integer|mixed  $value     The new value matching a module position.
      * @param   array    $pks       An array of row IDs.
      * @param   array    $contexts  An array of item contexts.
      * @return  boolean  True if successful, false otherwise and internal error is set.

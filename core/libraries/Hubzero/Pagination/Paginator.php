@@ -215,7 +215,7 @@ class Paginator extends Obj
     /**
      * Set the list of limit options.
      *
-     * @param   array   $limits  A list of limit options
+     * @param   array|mixed   $limits  A list of limit options
      * @return  object  Paginator
      */
     public function setLimits($limits)

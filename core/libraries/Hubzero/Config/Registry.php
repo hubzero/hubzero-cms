@@ -148,7 +148,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Get a registry value.
      *
-     * @param   string|null  $path     Registry path (e.g. config.cache.file)
+     * @param   string|null|mixed  $path     Registry path (e.g. config.cache.file)
      * @param   mixed   $default  Optional default value, returned if the internal value is null.
      * @return  mixed   Value of entry or null
      */
@@ -286,7 +286,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Load a string into the registry
      *
-     * @param   string|array|object   $data     String to load into the registry
+     * @param   string|array|object|mixed   $data     String to load into the registry
      * @param   string   $format   Format of the string
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success
@@ -448,7 +448,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     /**
      * Method to recursively convert an object of data to an array.
      *
-     * @param   object  $data  An object of data to return as an array.
+     * @param   object|mixed  $data  An object of data to return as an array.
      * @return  array   Array representation of the input object.
      */
     protected function asArray($data)

@@ -193,7 +193,7 @@ class Loader
     /**
      * Load a template by client
      *
-     * @param   integer|null  $client_id  The client to load the tmeplate for
+     * @param   integer|null|mixed  $client_id  The client to load the tmeplate for
      * @return  object
      */
     public function load($client_id = null)

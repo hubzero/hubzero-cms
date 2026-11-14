@@ -457,7 +457,7 @@ class Offering extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param      array   $filters Filters to build query from
-     * @param      boolean $clear   Force a new dataset?
+     * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
     public function managers($filters = [], $clear = false)
@@ -668,7 +668,7 @@ class Offering extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param      array   $filters Filters to build query from
-     * @param      boolean $clear   Force a new dataset?
+     * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
     public function members($filters = [], $clear = false)
@@ -780,7 +780,7 @@ class Offering extends Base
      *   If string, it'll return either a list of IDs or names
      *
      * @param      array   $filters Filters to build query from
-     * @param      boolean $clear   Force a new dataset?
+     * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
     public function roles($filters = [], $clear = false)
@@ -1007,7 +1007,7 @@ class Offering extends Base
     /**
      * Remove one or more user IDs or usernames to the managers list
      *
-     * @param     array $data List of IDs or usernames
+     * @param     array|mixed $data List of IDs or usernames
      * @return    void
      */
     public function remove($data = [])

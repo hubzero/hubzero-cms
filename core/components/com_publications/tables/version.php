@@ -391,7 +391,7 @@ class Version extends Table
     /**
      * Remove main flag
      *
-     * @param   integer|null  $vid       Pub version ID
+     * @param   integer|null|mixed  $vid       Pub version ID
      * @param   boolean|int $unpublish
      * @return  bool
      */
@@ -429,7 +429,7 @@ class Version extends Table
     /**
      * Get title for new draft
      *
-     * @param   integer  $projectid  Project ID
+     * @param   integer|mixed  $projectid  Project ID
      * @param   string   $title
      * @return  bool|string
      */

@@ -269,7 +269,7 @@ class Recipients
      * Normalize a recipient spec to the additive form
      * {all, groups, users, emails}, migrating the legacy single-"type" spec.
      *
-     * @param   array  $spec
+     * @param   array|mixed  $spec
      * @return  array
      */
     public static function normalizeSpec($spec)

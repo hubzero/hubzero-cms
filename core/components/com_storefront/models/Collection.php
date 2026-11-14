@@ -27,7 +27,7 @@ class Collection
     /**
      * Constructor
      *
-     * @param  int|false $cId      Optional: Collection ID
+     * @param  int|false|mixed $cId      Optional: Collection ID
      * @return void
      */
     public function __construct($cId = false)

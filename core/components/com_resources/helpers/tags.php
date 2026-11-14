@@ -486,9 +486,9 @@ class Tags extends Cloud
     /**
      * Build a tag cloud
      *
-     * @param   array    $tags       List of tags
+     * @param   array|mixed    $tags       List of tags
      * @param   integer  $showsizes  Show tag size based on use?
-     * @param   string   $tagstring
+     * @param   string|mixed   $tagstring
      * @return  string   HTML
      */
     public function buildTopCloud($tags, $sort = 'alpha', $showsizes = 0, $tagstring = '')

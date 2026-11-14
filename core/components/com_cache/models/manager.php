@@ -267,7 +267,7 @@ class Manager extends Obj
      * Clean out a cache group as named by param.
      * If no param is passed clean all cache groups.
      *
-     * @param   string  $group
+     * @param   string|mixed  $group
      * @return  boolean
      */
     public function clean($group = '')

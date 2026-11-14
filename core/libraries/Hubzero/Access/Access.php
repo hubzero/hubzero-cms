@@ -399,7 +399,7 @@ class Access
     /**
      * Method to return a list of actions from a string or from an xml for which permissions can be set.
      *
-     * @param   string|SimpleXMLElement  $data   The XML string or an XML element.
+     * @param   string|SimpleXMLElement|mixed  $data   The XML string or an XML element.
      * @param   string                   $xpath  An optional xpath to search for the fields.
      * @return  boolean|array   False if case of error or the list of actions available.
      */

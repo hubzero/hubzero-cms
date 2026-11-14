@@ -314,7 +314,7 @@ class Item extends Base
     /**
      * Remove an asset
      *
-     * @param   integer $asset
+     * @param   integer|mixed $asset
      * @return  boolean
      */
     public function removeAsset($asset)

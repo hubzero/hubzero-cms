@@ -71,7 +71,7 @@ class Reviews extends Obj
     /**
      * Calculate the market value for a review
      *
-     * @param   object  $review  ResourcesReview
+     * @param   object|mixed  $review  ResourcesReview
      * @param   string  $type    Point calculation type
      * @return  mixed   False if errors, integer on success
      */
@@ -99,7 +99,7 @@ class Reviews extends Obj
     /**
      * Calculate royalties for a review and distribute
      *
-     * @param   object   $review  ResourcesReview
+     * @param   object|mixed   $review  ResourcesReview
      * @param   string   $type    Point calculation type
      * @return  boolean  False if errors, true on success
      */

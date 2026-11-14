@@ -332,7 +332,7 @@ class Attachments extends Obj
      * Update attachment record
      *
      * @param   string   $name
-     * @param   object   $row
+     * @param   object|mixed   $row
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
@@ -370,7 +370,7 @@ class Attachments extends Obj
      * Remove attachment
      *
      * @param   string   $name
-     * @param   object   $row
+     * @param   object|mixed   $row
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId

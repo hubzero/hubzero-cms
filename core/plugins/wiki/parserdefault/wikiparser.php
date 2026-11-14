@@ -173,7 +173,7 @@ class WikiParser
     /**
      * Constructor
      *
-     * @param      array $config Configuration options
+     * @param      array|mixed $config Configuration options
      * @return     void
      */
     public function __construct($config = [])

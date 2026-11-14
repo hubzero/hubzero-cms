@@ -125,7 +125,7 @@ class Html extends Base
     /**
      * Set the HTML document head data
      *
-     * @param   array   $data  The document head data in array form
+     * @param   array|mixed   $data  The document head data in array form
      * @return  object|null  instance of $this to allow chaining
      */
     public function setHeadData($data)
@@ -155,7 +155,7 @@ class Html extends Base
     /**
      * Merge the HTML document head data
      *
-     * @param   array   $data  The document head data in array form
+     * @param   array|mixed   $data  The document head data in array form
      * @return  object|null  instance of $this to allow chaining
      */
     public function mergeHeadData($data)

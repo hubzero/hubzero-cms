@@ -318,7 +318,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * Check if the user is a member of a given table
      *
      * @param   string   $table  Table to check
-     * @param   integer  $uid    User ID
+     * @param   integer|mixed  $uid    User ID
      * @return  boolean
      */
     public function isMemberOf($table, $uid)
@@ -467,7 +467,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of user IDs from a string, list, or list of usernames
      *
-     * @param   array  $users
+     * @param   array|mixed  $users
      * @return  mixed
      */
     private function normalizeUserIds($users)

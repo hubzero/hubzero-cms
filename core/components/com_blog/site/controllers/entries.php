@@ -884,7 +884,7 @@ class Entries extends SiteController
      * Method to check admin access permission
      *
      * @param   string   $assetType
-     * @param   integer|null  $assetId
+     * @param   integer|null|mixed  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

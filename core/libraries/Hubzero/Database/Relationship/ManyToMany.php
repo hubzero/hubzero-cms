@@ -109,7 +109,7 @@ class ManyToMany extends OneToManyThrough
      * To avoid this behavior, either use the sync function or set a constraint on your associative
      * table.
      *
-     * @param   array  $ids  The identifiers to place in the associative table
+     * @param   array|mixed  $ids  The identifiers to place in the associative table
      * @return  $this
      **/
     public function connect($ids)
@@ -147,8 +147,8 @@ class ManyToMany extends OneToManyThrough
      * Removes the relationship between the two sides of the many to many
      * (not deleting either of the actual sides of the models themselves)
      *
-     * @param   array    $ids         The identifiers to remove from the associative table
-     * @param   \Closure|null  $constraint  Additional constraints to place on the query
+     * @param   array|mixed    $ids         The identifiers to remove from the associative table
+     * @param   \Closure|null|mixed  $constraint  Additional constraints to place on the query
      * @return  $this
      **/
     public function disconnect($ids, $constraint = null)
@@ -174,7 +174,7 @@ class ManyToMany extends OneToManyThrough
      * Syncs the provided identifiers back to the parent model by way of associative entities,
      * deleting ones that should no longer be there, and adding ones that are missing.
      *
-     * @param   array  $ids  The identifiers to place in the associative table
+     * @param   array|mixed  $ids  The identifiers to place in the associative table
      * @return  $this
      **/
     public function sync($ids)

@@ -80,7 +80,7 @@ class Coupon
     /**
      * Set code use limit
      *
-     * @param   int $limit     use limit
+     * @param   int|mixed $limit     use limit
      * @return  bool    true on success
      */
     public function setUseLimit($limit)
@@ -104,7 +104,7 @@ class Coupon
     /**
      * Set the limit of objects coupon can be applied to
      *
-     * @param   int $limit     object limit
+     * @param   int|mixed $limit     object limit
      * @return  bool    true on success
      */
     public function setObjectLimit($limit)

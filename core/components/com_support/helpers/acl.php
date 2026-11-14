@@ -280,7 +280,7 @@ class ACL extends Obj
     /**
      * Check if a user is in a group
      *
-     * @param   string|null   $group  Group to check
+     * @param   string|null|mixed   $group  Group to check
      * @return  boolean  True if in group
      */
     public function authorize($group = null)

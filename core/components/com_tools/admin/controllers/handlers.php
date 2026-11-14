@@ -70,7 +70,7 @@ class Handlers extends AdminController
     /**
      * Edit a handler
      *
-     * @param  object|null $handler the handler to edit
+     * @param  object|null|mixed $handler the handler to edit
      * @return void
      */
     public function editTask($handler = null)

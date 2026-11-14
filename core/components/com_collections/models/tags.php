@@ -29,7 +29,7 @@ class Tags extends Cloud
     /**
      * Get tags for a list of IDs
      *
-     * @param      array   $ids       Bulletin ids
+     * @param      array|mixed   $ids       Bulletin ids
      * @param      integer $admin     Admin flag
      * @return     array|false
      */

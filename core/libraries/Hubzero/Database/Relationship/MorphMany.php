@@ -76,7 +76,7 @@ class MorphMany extends MorphOne
     /**
      * Associate multiple models with this parent
      *
-     * @param  array|\Hubzero\Database\Rows  $models    The models to associate
+     * @param  array|\Hubzero\Database\Rows|mixed  $models    The models to associate
      * @param  \Closure|null                 $callback  Optional callback
      * @return array|\Hubzero\Database\Rows
      */
@@ -96,7 +96,7 @@ class MorphMany extends MorphOne
     /**
      * Save new related models with the given data
      *
-     * @param  array  $data  An array of datasets for new models
+     * @param  array|mixed  $data  An array of datasets for new models
      * @return bool
      */
     public function save($data)

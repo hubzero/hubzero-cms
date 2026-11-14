@@ -3827,7 +3827,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Sets the results of the query on new models and returns a Rows collection
      *
-     * @param   array  $data  The data to set on the model
+     * @param   array|mixed  $data  The data to set on the model
      * @return  \Hubzero\Database\Rows
      **/
     public function rowsFromRaw($data)
@@ -6465,9 +6465,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Internal method to add a JOIN clause for a relationship
      *
-     * @param   object        $relationship  The relationship object
+     * @param   object|mixed        $relationship  The relationship object
      * @param   string        $alias         Alias for the joined table
-     * @param   callable|null $callback      Optional callback for additional constraints
+     * @param   callable|null|mixed $callback      Optional callback for additional constraints
      * @param   string        $type          Join type
      * @return  void
      **/
@@ -6627,7 +6627,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Checks if an array is associative (has string keys)
      *
-     * @param   array  $array  The array to check
+     * @param   array|mixed  $array  The array to check
      * @return  bool
      **/
     private function isAssociativeArray($array)

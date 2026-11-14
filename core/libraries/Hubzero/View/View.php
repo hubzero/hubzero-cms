@@ -310,7 +310,7 @@ class View extends Obj
      * Names with an underscore, and properties the view declares protected
      * or private, are the view's own.
      *
-     * @param   string  $name
+     * @param   string|mixed  $name
      * @return  bool
      */
     private function isData($name)
@@ -659,7 +659,7 @@ class View extends Obj
     /**
      * Find a file from a list of paths
      *
-     * @param   array   $paths
+     * @param   array|mixed   $paths
      * @param   string  $file
      * @return  mixed   FALSE if not found, string if found
      */

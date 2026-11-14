@@ -209,7 +209,7 @@ class Permissions extends Obj
      * Get a list of managers
      *
      * @param   array   $filters Filters to build query from
-     * @param   boolean $clear   Force a new dataset?
+     * @param   boolean|mixed $clear   Force a new dataset?
      * @return  mixed
      */
     public function managers($filters = [], $clear = false)
@@ -328,7 +328,7 @@ class Permissions extends Obj
      * Get a list of students
      *
      * @param   array   $filters Filters to build query from
-     * @param   boolean $clear   Force a new dataset?
+     * @param   boolean|mixed $clear   Force a new dataset?
      * @return  mixed
      */
     public function students($filters = [], $clear = false)

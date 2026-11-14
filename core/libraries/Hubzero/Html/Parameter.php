@@ -91,7 +91,7 @@ class Parameter extends Registry
     /**
      * Sets the XML object from custom XML files.
      *
-     * @param   object  &$xml  An XML object.
+     * @param   object|mixed  &$xml  An XML object.
      * @return  void
      */
     public function setXML(&$xml)

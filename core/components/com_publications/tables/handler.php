@@ -78,7 +78,7 @@ class Handler extends Table
      * Load handler config
      *
      * @param   string|null  $name  Alias name of handler
-     * @param   object|null  $entry
+     * @param   object|null|mixed  $entry
      * @return  mixed   False if error, Object on success
      */
     public function getConfig($name = null, $entry = null)

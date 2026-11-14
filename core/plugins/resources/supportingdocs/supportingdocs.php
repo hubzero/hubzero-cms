@@ -70,7 +70,7 @@ class Supportingdocs extends Plugin
      *
      * @param   object  $model  Current resource
      * @param   string  $option    Name of the component
-     * @param   array   $areas     Active area(s)
+     * @param   array|mixed   $areas     Active area(s)
      * @param   string  $rtrn      Data to be returned
      * @return  array
      */

@@ -33,7 +33,7 @@ class Parsermarkdown extends Plugin
      * Get the wiki parser, creating a new one if not already existing or $getnew is set
      *
      * @param   array    $config  Options for initializing a parser
-     * @param   boolean  $getnew  Init a new parser?
+     * @param   boolean|mixed  $getnew  Init a new parser?
      * @return  object
      */
     public function onGetWikiParser($config, $getnew = false)

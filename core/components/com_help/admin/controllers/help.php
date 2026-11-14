@@ -83,7 +83,7 @@ class Help extends AdminController
     /**
      * Get array of components
      *
-     * @param   boolean  $authCheck
+     * @param   boolean|mixed  $authCheck
      * @return  array
      * @since   1.3.2
      */

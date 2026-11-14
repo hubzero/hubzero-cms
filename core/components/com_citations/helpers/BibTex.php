@@ -644,7 +644,7 @@ class BibTex
      * Wordwrap an entry
      *
      * @access private
-     * @param  string  $entry The entry to wrap
+     * @param  string|mixed  $entry The entry to wrap
      * @return string  wrapped entry
      */
     public function wordwrap($entry)
@@ -804,7 +804,7 @@ class BibTex
      * - Caseless   (return value -1)
      *
      * @access private
-     * @param  string  $word
+     * @param  string|mixed  $word
      * @return int     The Case or Exception if there was a problem
      */
     public function determineCase($word)

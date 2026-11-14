@@ -273,7 +273,7 @@ class Git extends Obj
     /**
      * Delete item from local repo
      *
-     * @param   string  $item       file path
+     * @param   string|mixed  $item       file path
      * @param   string  $type       'file' or 'folder'
      * @param   string  &$commitMsg
      * @return  mixed
@@ -557,7 +557,7 @@ class Git extends Obj
     /**
      * Parse response
      *
-     * @param   array   $out     Array of data to parse
+     * @param   array|mixed   $out     Array of data to parse
      * @param   string  $return
      * @return  mixed
      */

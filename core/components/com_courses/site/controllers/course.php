@@ -813,7 +813,7 @@ class Course extends SiteController
     /**
      * Check if a course alias is valid
      *
-     * @param   integer  $gid  Course alias
+     * @param   integer|mixed  $gid  Course alias
      * @return  boolean  True if valid, false if not
      */
     private function validCn($gid)

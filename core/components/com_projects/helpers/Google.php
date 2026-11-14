@@ -498,7 +498,7 @@ class Google extends Obj
      *
      * @param   object  $apiService  Drive API service instance
      * @param   string  $title       Folder name
-     * @param   string  $parentId    Parent id
+     * @param   string|mixed  $parentId    Parent id
      * @param   array   &$metadata   Collector array
      * @return  mixed   string (new folder id) or false
      */

@@ -140,7 +140,7 @@ class Forum extends Plugin
     /**
      * Grabs the post for a given set of groups over a certain period of time
      *
-     * @param  array  $groups   the group ids to look up
+     * @param  array|mixed  $groups   the group ids to look up
      * @param  string $interval the length of time to go back to look for posts
      * @return array
      **/

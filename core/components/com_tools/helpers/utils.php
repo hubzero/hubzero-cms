@@ -230,7 +230,7 @@ class Utils
      *
      * Long description (if any) ...
      *
-     * @param      array $uids Parameter description (if any) ...
+     * @param      array|mixed $uids Parameter description (if any) ...
      * @param      array $logins Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
@@ -685,7 +685,7 @@ class Utils
      * session's redirect_url when this cookie is present, so every path that
      * hands the browser that URL must call this first.
      *
-     * @param   object  $output  Output of a middleware "view" command
+     * @param   object|mixed  $output  Output of a middleware "view" command
      * @return  void
      */
     public static function setWeberAuthCookie($output)

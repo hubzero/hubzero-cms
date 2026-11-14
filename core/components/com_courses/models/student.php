@@ -26,7 +26,7 @@ class Student extends Member
     /**
      * Constructor
      *
-     * @param   string $uid User ID
+     * @param   string|mixed $uid User ID
      * @param   string|null $cid Course ID
      * @param   string|null $oid Offering ID
      * @param   string|null $sid Section ID

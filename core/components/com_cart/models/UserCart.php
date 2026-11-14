@@ -18,7 +18,7 @@ class UserCart extends Cart
     /**
      * Cart constructor
      *
-     * @param int $crtId    Cart ID to locate the specific cart
+     * @param int|mixed $crtId    Cart ID to locate the specific cart
      * @return void
      */
     public function __construct($crtId)

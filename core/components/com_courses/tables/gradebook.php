@@ -175,7 +175,7 @@ class GradeBook extends Table
      * Query to sync form scores with gradebook
      *
      * @param      object   $course
-     * @param      array|null $member_id
+     * @param      array|null|mixed $member_id
      * @return     void
      */
     public function syncGrades($course, $member_id = null)
@@ -469,7 +469,7 @@ class GradeBook extends Table
     /**
      * Clear grades for a given course/user combination
      *
-     * @param      array $member_id
+     * @param      array|mixed $member_id
      * @param      object $course
      * @return     bool|null
      */
@@ -505,7 +505,7 @@ class GradeBook extends Table
     /**
      * Clear units if they once had a grade but should no longer
      *
-     * @param      array $data - info to process
+     * @param      array|mixed $data - info to process
      * @return     void
      */
     public function clearUnits($data)

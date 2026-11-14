@@ -1380,7 +1380,7 @@ class Manage extends AdminController
     /**
      * Check if a group alias is valid
      *
-     * @param   integer  $cn        Group alias
+     * @param   integer|mixed  $cn        Group alias
      * @param   boolean  $allowDashes  Allow dashes in cn
      * @return  boolean  True if valid, false if not
      */

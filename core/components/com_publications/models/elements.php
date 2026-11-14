@@ -118,7 +118,7 @@ class Elements
     /**
      * Check if a registry path exists.
      *
-     * @param   string  $path  Registry path (e.g. content.showauthor)
+     * @param   string|mixed  $path  Registry path (e.g. content.showauthor)
      * @return  boolean
      */
     public function exists($path)
@@ -343,7 +343,7 @@ class Elements
     /**
      * Set a registry value.
      *
-     * @param   string  $path   Registry Path (e.g. content.showauthor)
+     * @param   string|mixed  $path   Registry Path (e.g. content.showauthor)
      * @param   mixed   $value  Value of entry
      * @return  mixed  The value of the that has been set.
      */
@@ -435,7 +435,7 @@ class Elements
     /**
      * Method to determine if an array is an associative array.
      *
-     * @param   array  $array  An array to test.
+     * @param   array|mixed  $array  An array to test.
      * @return  boolean  True if the array is an associative array.
      */
     public function isAssociative($array)

@@ -72,7 +72,7 @@ class Coins extends Plugin
     /**
      *  Generate microformat
      *
-     * @param   object  $model  Current model
+     * @param   object|mixed  $model  Current model
      * @return  string|null
      */
     public function coins($model)

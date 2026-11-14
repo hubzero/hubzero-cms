@@ -332,7 +332,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Returns information about the listener
      *
-     * @param   object|string|array  $listener   The listener
+     * @param   object|string|array|mixed  $listener   The listener
      * @param   string  $event  The event name
      * @return  array   Information about the listener
      */

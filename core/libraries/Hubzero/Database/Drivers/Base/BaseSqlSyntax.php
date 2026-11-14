@@ -1883,7 +1883,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a limit element on the query
      *
-     * @param   int  $limit  Number of results to return on next query
+     * @param   int|mixed  $limit  Number of results to return on next query
      * @return  void
      */
     public function setLimit($limit)
@@ -1898,7 +1898,7 @@ abstract class BaseSqlSyntax
     /**
      * Sets a start element on the query
      *
-     * @param   int  $start  Position to start from
+     * @param   int|mixed  $start  Position to start from
      * @return  void
      */
     public function setStart($start)

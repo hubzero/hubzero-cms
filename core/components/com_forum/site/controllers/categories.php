@@ -540,7 +540,7 @@ class Categories extends SiteController
      * Set the authorization level for the user
      *
      * @param   string   $assetType
-     * @param   integer|null  $assetId
+     * @param   integer|null|mixed  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

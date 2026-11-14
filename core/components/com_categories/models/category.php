@@ -505,7 +505,7 @@ class Category extends Nested
     /**
      * Save the ordering for multiple entries
      *
-     * @param   array    $ordering
+     * @param   array|mixed    $ordering
      * @param   string   $extension
      * @return  boolean
      */
@@ -555,7 +555,7 @@ class Category extends Nested
     /**
      * Move an entry up or down in th ordering
      *
-     * @param   integer  $delta
+     * @param   integer|mixed  $delta
      * @param   string   $extension
      * @param   string   $where
      * @return  boolean

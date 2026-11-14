@@ -1149,7 +1149,7 @@ class Threads extends SiteController
      * Set the access permissions the views read from the configuration
      *
      * @param   string   $assetType
-     * @param   integer|null  $assetId
+     * @param   integer|null|mixed  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

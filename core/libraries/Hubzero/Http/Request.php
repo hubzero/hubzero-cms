@@ -103,7 +103,7 @@ class Request extends BaseRequest
     /**
      * Get var
      *
-     * @param   string   $key      Request key
+     * @param   string|mixed   $key      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @param   string   $type     Return type for the variable. [!] Deprecated. Joomla legacy support.

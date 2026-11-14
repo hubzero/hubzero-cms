@@ -94,7 +94,7 @@ class Parents extends WikiMacro
     /**
      * Build a tree of parents
      *
-     * @param   array  $rows  An array of objects
+     * @param   array|mixed  $rows  An array of objects
      * @return  string
      */
     private function buildTree($rows)

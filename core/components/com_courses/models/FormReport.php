@@ -26,7 +26,7 @@ class FormReport extends Model
      * or responses may at some point read horizontally, rather than vertically.
      *
      * @param  object $db - database object
-     * @param  int $asset_id    - asset id
+     * @param  int|mixed $asset_id    - asset id
      * @param  bool $include_headers   - whether or not to include header values
      * @param  int|null $section_id    - limit to only a certain section
      * @return array|false
@@ -167,7 +167,7 @@ class FormReport extends Model
      * Get assessment details data
      *
      * @param  object $db   - database connection object
-     * @param  int $asset_id   - asset id for which to retrieve letter counts
+     * @param  int|mixed $asset_id   - asset id for which to retrieve letter counts
      * @param  int|null $section_id   - section id
      * @return array|false - counts of letter responses
      **/

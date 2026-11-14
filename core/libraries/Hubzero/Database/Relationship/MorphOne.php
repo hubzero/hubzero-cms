@@ -144,7 +144,7 @@ class MorphOne extends Relationship
      * Associate a related model with this parent
      *
      * @param  \Hubzero\Database\Relational|array|\Hubzero\Database\Rows  $model     The related model
-     * @param  \Closure|null                 $callback  Optional callback
+     * @param  \Closure|null|mixed                 $callback  Optional callback
      * @return \Hubzero\Database\Relational|array|\Hubzero\Database\Rows
      */
     public function associate($model, $callback = null)

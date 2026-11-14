@@ -319,7 +319,7 @@ class Link extends Relational
     /**
      * Find trusted emails by User ID
      *
-     * @param   integer  $user_id  USer ID
+     * @param   integer|mixed  $user_id  USer ID
      * @return  mixed
      */
     public static function findTrustedEmails($user_id)

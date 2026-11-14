@@ -20,7 +20,7 @@ class SaveParams extends Macro
      * Saves extension params (only applies to J2.5 and up!)
      *
      * @param   string  $element  The element to which the params apply
-     * @param   array   $params   The params being saved
+     * @param   array|mixed   $params   The params being saved
      * @return  bool
      **/
     public function __invoke($element, $params)

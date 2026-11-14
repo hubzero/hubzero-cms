@@ -91,7 +91,7 @@ class Initialcon
     /**
      * Generate a hash fron the original string
      *
-     * @param   string  $string
+     * @param   string|mixed  $string
      * @return  object
      */
     public function setString($string)
@@ -139,7 +139,7 @@ class Initialcon
      *
      * @param   string   $string
      * @param   integer  $size
-     * @param   string   $color
+     * @param   string|mixed   $color
      * @return  void
      */
     private function generateImage($string, $size, $color)

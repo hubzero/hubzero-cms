@@ -133,7 +133,7 @@ class Review extends \Hubzero\Base\Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   boolean|null  $property  Holds property value
+     * @param   boolean|null|mixed  $property  Holds property value
      * @return  mixed
      */
     public function creator($property = null)
@@ -156,7 +156,7 @@ class Review extends \Hubzero\Base\Model
      *
      * @param   string|array   $rtrn     Data format to return
      * @param   array    $filters  Filters to apply to data fetch
-     * @param   boolean  $clear    Clear cached data?
+     * @param   boolean|mixed  $clear    Clear cached data?
      * @return  mixed
      */
     public function replies($rtrn = 'list', $filters = [], $clear = false)

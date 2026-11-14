@@ -477,7 +477,7 @@ class Connections
      * clearing one's stored credential breaks it for the whole project, and
      * only a manager can run authorize() to restore it.
      *
-     * @param   object  $connection  The connection being acted on
+     * @param   object|mixed  $connection  The connection being acted on
      * @return  bool
      */
     private function connectionOwnedOrManageableByUser($connection)

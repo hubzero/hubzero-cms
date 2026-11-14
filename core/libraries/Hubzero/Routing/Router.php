@@ -272,7 +272,7 @@ class Router
     /**
      * Create a uri based on a full or partial url string
      *
-     * @param   string  $url  The URI
+     * @param   string|mixed  $url  The URI
      * @return  object
      */
     protected function createUri($url)

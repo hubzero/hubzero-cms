@@ -255,7 +255,7 @@ class SolrIndexAdapter implements IndexInterface
     /**
      * parseQuery - Translates symbols from query string
      *
-     * @param  array $query - Passes in the query array
+     * @param  array|mixed $query - Passes in the query array
      * @access private
      * @return string
      */

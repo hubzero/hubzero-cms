@@ -63,7 +63,7 @@ class Blocks extends Obj
      * Get status for a block within publication
      *
      * @param   string   $name
-     * @param   object|null   $pub
+     * @param   object|null|mixed   $pub
      * @param   string|null   $manifest
      * @param   integer  $blockId
      * @param   integer|null  $elementId
@@ -220,7 +220,7 @@ class Blocks extends Obj
      * @param   string   $name      Name of block to render
      * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
      * @param   object|null  $manifest
-     * @param   object|null   $pub
+     * @param   object|null|mixed   $pub
      * @param   integer  $blockId
      * @return  string|false   HTML
      */
@@ -272,7 +272,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   string   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -308,7 +308,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   string   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -344,7 +344,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   string   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -380,7 +380,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   string   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -416,7 +416,7 @@ class Blocks extends Obj
      * @param   string   $name      Name of block to save
      * @param   string   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   object|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean

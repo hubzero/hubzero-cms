@@ -108,7 +108,7 @@ class Json extends Base
      * If the string is not in JSON format, this method will attempt to parse it as INI format.
      *
      * @param   string|object  $data     JSON formatted string to convert.
-     * @param   array   $options  Options used by the formatter.
+     * @param   array|mixed   $options  Options used by the formatter.
      * @return  object  Data object.
      */
     public function stringToObject($data, $options = ['processSections' => false])

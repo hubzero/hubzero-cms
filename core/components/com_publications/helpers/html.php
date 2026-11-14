@@ -148,7 +148,7 @@ class Html
      * Display a list of skill levels
      *
      * @param   array    $levels  List of levels
-     * @param   integer  $sel     Selected level
+     * @param   integer|mixed  $sel     Selected level
      * @return  string   HTML
      */
     public static function skillLevelCircle($levels = [], $sel = 0)
@@ -297,7 +297,7 @@ class Html
     /**
      * Generate a citation for a publication
      *
-     * @param   object  $cite       Citation data
+     * @param   object|mixed  $cite       Citation data
      * @param   object  $pub        Publication model
      * @param   string  $citations  Citations to prepend
      * @return  string  HTML
@@ -1297,7 +1297,7 @@ class Html
      * @param   int  $publication_id    publication id
      * @param   int  $publication_version_id    publication version id
      * @param   string  $secret publication secret
-     * @param   array  $attachments  publication attachments
+     * @param   array|mixed  $attachments  publication attachments
      *
      * @return  array
      */

@@ -54,7 +54,7 @@ class Collections extends AdminController
     /**
      * Edit a collection
      *
-     * @param  object|null $collection
+     * @param  object|null|mixed $collection
      *
      * @return  void
      */

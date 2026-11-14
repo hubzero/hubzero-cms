@@ -310,7 +310,7 @@ class Course extends Base
      *   the highest permission levels
      *
      * @param      array   $filters Filters to build query from
-     * @param      boolean $clear   Force a new dataset?
+     * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
     public function managers($filters = [], $clear = false)
@@ -363,7 +363,7 @@ class Course extends Base
      * Get a list of students for a course
      *
      * @param      array   $filters Filters to build query from
-     * @param      boolean $clear   Force a new dataset?
+     * @param      boolean|mixed $clear   Force a new dataset?
      * @return     mixed
      */
     public function students($filters = [], $clear = false)
@@ -477,7 +477,7 @@ class Course extends Base
     /**
      * Return a list of user IDs for a list of usernames
      *
-     * @param     array $users List of user IDs or usernames
+     * @param     array|mixed $users List of user IDs or usernames
      * @return    array|false List of user IDs
      */
     private function userIds($users)

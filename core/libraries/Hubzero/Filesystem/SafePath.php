@@ -60,7 +60,7 @@ class SafePath
     /**
      * Resolve a directory below a base directory, refusing anything unsafe
      *
-     * @param   string   $base      Trusted base directory
+     * @param   string|mixed   $base      Trusted base directory
      * @param   string   $relative  Path below the base, may be empty
      * @param   boolean  $create    Create missing directories?
      * @param   integer  $mode      Mode for directories that get created
@@ -242,7 +242,7 @@ class SafePath
      * for refusal rather than silent stripping, so a caller cannot be tricked
      * into writing outside the directory it chose.
      *
-     * @param   string  $name
+     * @param   string|mixed  $name
      * @return  string|boolean  The name, or false if it isn't a single safe component
      */
     public static function name($name)
@@ -253,7 +253,7 @@ class SafePath
     /**
      * Split a relative path into components, refusing traversal
      *
-     * @param   string  $relative
+     * @param   string|mixed  $relative
      * @return  array|boolean  Components, or false if the path isn't safe
      */
     protected static function components($relative)
@@ -288,7 +288,7 @@ class SafePath
     /**
      * Is this a single, non-traversing path component?
      *
-     * @param   string  $component
+     * @param   string|mixed  $component
      * @return  boolean
      */
     protected static function isComponent($component)

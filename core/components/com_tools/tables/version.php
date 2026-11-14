@@ -424,7 +424,7 @@ class Version extends Table
     /**
      * Compiles resource information for the appropriate tool revision
      *
-     * @param   object   $thistool
+     * @param   object|mixed   $thistool
      * @param   mixed    $curtool
      * @param   mixed    $resource
      * @param   string   $revision

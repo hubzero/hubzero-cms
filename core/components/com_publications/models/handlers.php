@@ -71,7 +71,7 @@ class Handlers extends Obj
      * @param   object   $pub
      * @param   integer  $elementid
      * @param   array    $handlers
-     * @param   object   $handler
+     * @param   object|mixed   $handler
      * @param   array    $attachments
      * @param   object|null   $props
      * @return  string

@@ -58,7 +58,7 @@ class AssocList extends Assoc implements Iterator, Countable
     /**
      * Constructor
      *
-     * @param   array   $rows
+     * @param   array|mixed   $rows
      * @param   string|null  $plugin
      * @return  void
      */

@@ -105,7 +105,7 @@ class Helper
     /**
      * Get usernames for a list of IDs
      *
-     * @param   array  $uids
+     * @param   array|mixed  $uids
      * @param   array  $logins
      * @return  array
      */

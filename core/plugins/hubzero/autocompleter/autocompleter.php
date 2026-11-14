@@ -36,7 +36,7 @@ class Autocompleter extends Plugin
     /**
      * Display the autocompleter. Defaults to multi-entry for tags
      *
-     * @param   array   $atts  Attributes for setting up the autocomplete
+     * @param   array|mixed   $atts  Attributes for setting up the autocomplete
      * @return  string  HTML
      */
     public function onGetAutocompleter($atts)
@@ -172,7 +172,7 @@ class Autocompleter extends Plugin
     /**
      * Display the autocompleter for a multi-entry field
      *
-     * @param      array $atts Attributes for setting up the autocomplete
+     * @param      array|mixed $atts Attributes for setting up the autocomplete
      * @return     string HTML
      */
     public function onGetMultiEntry($atts)
@@ -197,7 +197,7 @@ class Autocompleter extends Plugin
     /**
      * Display the autocompleter for a single entry field
      *
-     * @param      array $atts Attributes for setting up the autocomplete
+     * @param      array|mixed $atts Attributes for setting up the autocomplete
      * @return     string HTML
      */
     public function onGetSingleEntry($atts)
@@ -222,7 +222,7 @@ class Autocompleter extends Plugin
     /**
      * Display the autocompleter for a single entry field with accompanying select
      *
-     * @param      array $atts Attributes for setting up the autocomplete
+     * @param      array|mixed $atts Attributes for setting up the autocomplete
      * @return     string HTML
      */
     public function onGetSingleEntryWithSelect($atts)

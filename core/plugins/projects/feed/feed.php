@@ -734,7 +734,7 @@ class Feed extends Plugin
     /**
      * Event call to post an activity
      *
-     * @param   object   $model      Project to post to
+     * @param   object|mixed   $model      Project to post to
      * @param   string   $entry      Content to post
      * @param   integer  $managers   Manager sonly?
      * @param   integer  $posted_by  Who's posting? If not set, uses current user ID

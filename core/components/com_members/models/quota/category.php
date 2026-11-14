@@ -162,7 +162,7 @@ class Category extends Relational
     /**
      * Set group IDs
      *
-     * @param   array  $groups
+     * @param   array|mixed  $groups
      * @return  boolean
      */
     public function setGroupIds($groups = [])

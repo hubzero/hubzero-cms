@@ -74,7 +74,7 @@ class Blog extends Plugin
      * @param   object  $user    Current user
      * @param   object  $member  Current member page
      * @param   string  $option  Start of records to pull
-     * @param   array   $areas   Active area(s)
+     * @param   array|mixed   $areas   Active area(s)
      * @return  array
      */
     public function onMembers($user, $member, $option, $areas)

@@ -445,7 +445,7 @@ class Str
     /**
      * Format a number by prefixing a character to a specificed length.
      *
-     * @param   integer  $value   Number to format
+     * @param   integer|mixed  $value   Number to format
      * @param   integer  $length  Final string length
      * @param   integer  $prfx    Character to prepend
      * @return  string

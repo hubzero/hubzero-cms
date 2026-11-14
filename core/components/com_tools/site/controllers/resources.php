@@ -596,7 +596,7 @@ class Resources extends SiteController
      * Authorization checks
      *
      * @param   string  $assetType  Asset type
-     * @param   string|null  $assetId    Asset id to check against
+     * @param   string|null|mixed  $assetId    Asset id to check against
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

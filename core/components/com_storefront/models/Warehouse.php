@@ -1017,7 +1017,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all info for SKUs provided, including options
      *
-     * @param   array|object  $skus  SKU IDs
+     * @param   array|object|mixed  $skus  SKU IDs
      * @param   bool        $showInactive  Flag whether to show inactive SKU and product info
      * @return  array       info
      */
@@ -1372,7 +1372,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Handle product coupon (add, update)
      *
-     * @param   Coupon   $coupon  Instance of a coupon
+     * @param   Coupon|mixed   $coupon  Instance of a coupon
      * @return  \stdClass                         coupon ID
      */
     private function doCoupon($coupon, $action)

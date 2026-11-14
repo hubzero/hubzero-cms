@@ -55,7 +55,7 @@ class Comments extends Plugin
     /**
      * Display comments on an object
      *
-     * @param   object   $obj
+     * @param   object|mixed   $obj
      * @param   mixed  $option
      * @param   string|null   $url
      * @param   mixed  $params
@@ -137,7 +137,7 @@ class Comments extends Plugin
      * Set permissions
      *
      * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-     * @param   integer|null  $assetId    Specific object to check permissions for
+     * @param   integer|null|mixed  $assetId    Specific object to check permissions for
      * @return  void
      */
     protected function authorize($assetType = 'comment', $assetId = null)

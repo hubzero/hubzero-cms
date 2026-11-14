@@ -111,7 +111,7 @@ class OptionGroup
     /**
      * Set option group status
      *
-     * @param   bool $activeStatus        collection status
+     * @param   bool|mixed $activeStatus        collection status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)

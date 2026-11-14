@@ -52,7 +52,7 @@ class MemberBadge extends Base
      * Member id is unique to a course and section, and badges are unique to members.
      * Therefore, member id also serves as a primary key of this table.
      *
-     * @param   integer $id Member ID
+     * @param   integer|mixed $id Member ID
      * @return  mixed   Object on success, False on error
      */
     public static function loadByMemberId($id)

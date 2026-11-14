@@ -89,7 +89,7 @@ class Adminmenu extends Module
     /**
      * Get a list of the authorised, non-special components to display in the components menu.
      *
-     * @param   boolean  $authCheck  An optional switch to turn off the auth check
+     * @param   boolean|mixed  $authCheck  An optional switch to turn off the auth check
      *                               (to support custom layouts 'grey out' behaviour).
      * @return  array    A nest array of component objects and submenus
      */

@@ -52,7 +52,7 @@ class OneToMany extends Relationship
     /**
      * Saves new related models with the given data
      *
-     * @param   array  $data  An array of datasets being saved to new models
+     * @param   array|mixed  $data  An array of datasets being saved to new models
      * @return  bool
      **/
     public function save($data)

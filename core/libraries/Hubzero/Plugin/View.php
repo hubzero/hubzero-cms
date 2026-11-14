@@ -242,7 +242,7 @@ class View extends AbstractView
     /**
      * Create a plugin view and return it
      *
-     * @param   string  $layout  View layout
+     * @param   string|mixed  $layout  View layout
      * @param   string|null  $name    View name
      * @return  object
      */

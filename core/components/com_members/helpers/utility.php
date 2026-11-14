@@ -63,7 +63,7 @@ class Utility
     /**
      * Check if an integer is positive
      *
-     * @param   integer  $x
+     * @param   integer|mixed  $x
      * @return  boolean
      */
     public static function isPositiveint($x)

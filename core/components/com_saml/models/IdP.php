@@ -369,7 +369,7 @@ class IdP
     /**
      * Can this attribute-map source be resolved?
      *
-     * @param   string  $source
+     * @param   string|mixed  $source
      * @return  boolean
      */
     public static function isKnownAttributeSource($source)

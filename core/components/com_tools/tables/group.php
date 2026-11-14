@@ -168,7 +168,7 @@ class Group extends Table
     /**
      * Write the list of group members
      *
-     * @param   array    $new       New members
+     * @param   array|mixed    $new       New members
      * @param   integer  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message
@@ -208,7 +208,7 @@ class Group extends Table
     /**
      * Get a list of team members
      *
-     * @param   array    $new
+     * @param   array|mixed    $new
      * @param   integer  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message

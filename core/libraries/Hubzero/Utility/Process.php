@@ -34,7 +34,7 @@ class Process
      * after it is space-separated and begins at field 3 (state), which puts
      * field 22 (starttime) at index 19.
      *
-     * @param   string        $stat  raw contents of /proc/<pid>/stat
+     * @param   string|mixed        $stat  raw contents of /proc/<pid>/stat
      * @return  string|false  start time in jiffies, or false if unparseable
      */
     public static function parseStartTime($stat)

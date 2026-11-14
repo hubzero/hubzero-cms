@@ -193,7 +193,7 @@ class Product
     /**
      * Set product access groups
      *
-     * @param   array   $groups
+     * @param   array|mixed   $groups
      * @param   string  $type
      * @return  boolean
      */

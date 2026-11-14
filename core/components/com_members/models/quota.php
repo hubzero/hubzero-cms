@@ -161,7 +161,7 @@ class Quota extends Relational
     /**
      * Set default class for given set of users
      *
-     * @param   array  $users
+     * @param   array|mixed  $users
      * @return  bool
      */
     public static function setDefaultClass($users)

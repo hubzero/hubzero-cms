@@ -94,7 +94,7 @@ class Publication extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @param   boolean  $authorized
+     * @param   boolean|mixed  $authorized
      * @return  string   HTML
      */
     public function drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized)
@@ -554,7 +554,7 @@ class Publication extends Base
      * Check completion status
      *
      * @param   object  $element
-     * @param   array   $attachments
+     * @param   array|mixed   $attachments
      * @return  object
      */
     public function getStatus($element, $attachments)

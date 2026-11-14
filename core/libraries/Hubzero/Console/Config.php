@@ -149,7 +149,7 @@ class Config
     /**
      * Multi-dimensional array_unique function
      *
-     * @param   array  $var  The array to make unique
+     * @param   array|mixed  $var  The array to make unique
      * @return  array
      **/
     private function unique($var)

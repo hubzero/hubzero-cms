@@ -318,7 +318,7 @@ class Manager extends Obj
      *
      * @param   string   $action     Action to check
      * @param   string   $assetType  Type of asset to check
-     * @param   integer|null  $assetId    ID of item to check access on
+     * @param   integer|null|mixed  $assetId    ID of item to check access on
      * @return  boolean  True if authorized, false if not
      */
     public function access($action = 'view', $assetType = 'section', $assetId = null)

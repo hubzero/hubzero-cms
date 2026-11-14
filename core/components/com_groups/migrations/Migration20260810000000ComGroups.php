@@ -27,7 +27,7 @@ class Migration20260810000000ComGroups extends Base
      * indexed by Key_name.
      *
      * @param   string   $table
-     * @param   string   $key
+     * @param   string|mixed   $key
      * @return  boolean
      **/
     protected function hasKey($table, $key)

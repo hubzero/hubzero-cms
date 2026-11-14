@@ -1796,7 +1796,7 @@ class Connect extends Obj
     /**
      * Download remote content via cURL
      *
-     * @param   string  $service  Service name (google or dropbox)
+     * @param   string|mixed  $service  Service name (google or dropbox)
      * @param   string  $path     Project repo path
      * @return  string|bool or boolean
      */

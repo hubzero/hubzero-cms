@@ -115,7 +115,7 @@ class Tool extends Model
     /**
      * Returns a reference to a tool model
      *
-     * @param   object  $result
+     * @param   object|mixed  $result
      * @return  object|false
      */
     public static function mapInstance($result)
@@ -259,7 +259,7 @@ class Tool extends Model
      * Get a status model
      *
      * @param   string|null   $property
-     * @param   string|null   $statusModel
+     * @param   string|null|mixed   $statusModel
      * @return  mixed  the status, or the one property asked for
      */
     public function status($property = null, $statusModel = null)
@@ -532,7 +532,7 @@ class Tool extends Model
      * it will return that property value. Otherwise,
      * it returns the entire User object
      *
-     * @param   string|null  $property
+     * @param   string|null|mixed  $property
      * @return  mixed
      */
     public function statusChanger($property = null)

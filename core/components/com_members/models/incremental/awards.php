@@ -56,7 +56,7 @@ class Awards
     /**
      * Constructor
      *
-     * @param   object  $profile
+     * @param   object|mixed  $profile
      * @return  void
      */
     public function __construct($profile)

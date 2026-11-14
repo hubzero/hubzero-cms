@@ -110,7 +110,7 @@ class BlockElements extends Obj
      * Get active element
      *
      * @param   array   $elements
-     * @param   object  $review
+     * @param   object|mixed  $review
      * @return  array
      */
     public function getActiveElement($elements, $review)

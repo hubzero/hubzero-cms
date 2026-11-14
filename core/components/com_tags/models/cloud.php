@@ -56,7 +56,7 @@ class Cloud extends \Hubzero\Base\Obj
     /**
      * Constructor
      *
-     * @param   integer|null  $scope_id
+     * @param   integer|null|mixed  $scope_id
      * @param   string   $scope
      * @return  void
      */

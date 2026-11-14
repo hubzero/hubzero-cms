@@ -2797,7 +2797,7 @@ class Resources extends SiteController
     /**
      * Check if a user is authorized
      *
-     * @param   array    $contributorIDs   Authors of a resource
+     * @param   array|mixed    $contributorIDs   Authors of a resource
      * @param   object|null   $resource
      * @return  boolean  True if user has access
      */

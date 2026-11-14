@@ -537,7 +537,7 @@ class Attachments extends SiteController
      * Authorization checks
      *
      * @param   string   $assetType  Asset type
-     * @param   integer|null  $assetId    Asset id to check against
+     * @param   integer|null|mixed  $assetId    Asset id to check against
      * @return  void
      */
     protected function authorize($assetType = 'component', $assetId = null)

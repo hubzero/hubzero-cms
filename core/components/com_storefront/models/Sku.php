@@ -81,7 +81,7 @@ class Sku
     /**
      * Set price
      *
-     * @param   double $price      price
+     * @param   double|mixed $price      price
      * @return  bool        true on success, exception otherwise
      */
     public function setPrice($price)

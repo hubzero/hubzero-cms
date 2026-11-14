@@ -49,7 +49,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   string   $rtrn     What data to return
      * @param   array    $filters  Filters to apply to data retrieval
-     * @param   boolean  $clear    Clear cached data?
+     * @param   boolean|mixed  $clear    Clear cached data?
      * @return  mixed
      */
     public function products($rtrn = 'list', $filters = [], $clear = false)

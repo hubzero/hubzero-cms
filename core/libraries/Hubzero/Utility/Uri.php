@@ -390,7 +390,7 @@ class Uri
     /**
      * Build a query from a array (reverse of the PHP parse_str()).
      *
-     * @param   array   $params  The array of key => value pairs to return as a query string.
+     * @param   array|mixed   $params  The array of key => value pairs to return as a query string.
      * @return  string|false  The resulting query string.
      */
     public function buildQuery($params)

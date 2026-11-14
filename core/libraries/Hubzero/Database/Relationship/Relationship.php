@@ -297,7 +297,7 @@ class Relationship
      * model at at time.
      *
      * @param   object   $model     The model to associate
-     * @param   \Closure|null  $callback  A callback to potentially append additional data
+     * @param   \Closure|null|mixed  $callback  A callback to potentially append additional data
      * @return  object
      **/
     public function associate($model, $callback = null)

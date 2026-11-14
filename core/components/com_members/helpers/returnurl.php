@@ -46,7 +46,7 @@ class ReturnUrl
      * Determine whether a string is genuinely base64-encoded (round-trips),
      * as opposed to plain text that merely decodes without error.
      *
-     * @param   string   $value
+     * @param   string|mixed   $value
      * @return  boolean
      */
     public static function isBase64($value)

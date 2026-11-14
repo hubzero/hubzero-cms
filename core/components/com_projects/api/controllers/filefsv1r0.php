@@ -1286,7 +1286,7 @@ class Filefsv1r0 extends ApiController
     /**
      * Pack metadata from onMetadataGet into form usable by onMetadataSave
      *
-     * @param      array  $metadata  incoming metadata
+     * @param      array|mixed  $metadata  incoming metadata
      * @return     array
      */
     protected function packMetadata($metadata)

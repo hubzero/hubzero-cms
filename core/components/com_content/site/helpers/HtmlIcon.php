@@ -86,7 +86,7 @@ class HtmlIcon
      * Edit access checks must be performed in the calling code.
      *
      * @param   object  $article  The article in question.
-     * @param   object  $params   The article parameters
+     * @param   object|mixed  $params   The article parameters
      * @param   array   $attribs  Not used??
      * @return  string|null  The HTML for the article edit icon.
      */

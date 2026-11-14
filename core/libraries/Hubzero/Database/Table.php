@@ -801,7 +801,7 @@ abstract class Table extends \stdClass
      * the Table instance for the property specified.
      *
      * @param   mixed    $src             An associative array or object to bind to the Table instance.
-     * @param   string   $orderingFilter  Filter for the order updating
+     * @param   string|mixed   $orderingFilter  Filter for the order updating
      * @param   mixed    $ignore          An optional array or space separated list of properties
      *                                    to ignore while binding.
      * @return  boolean  True on success.
@@ -1189,7 +1189,7 @@ abstract class Table extends \stdClass
      * Method to move a row in the ordering sequence of a group of rows defined by an SQL WHERE clause.
      * Negative numbers move the row up in the sequence and positive numbers move it down.
      *
-     * @param   integer  $delta  The direction and magnitude to move the row in the ordering sequence.
+     * @param   integer|mixed  $delta  The direction and magnitude to move the row in the ordering sequence.
      * @param   string   $where  WHERE clause to use for limiting the selection of rows to compact the ordering values.
      * @return  mixed    Boolean true on success.
      */

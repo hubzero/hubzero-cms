@@ -221,7 +221,7 @@ class Entity extends Obj
     /**
      * Checks to see if the entity is virus free
      *
-     * @param   bool  $remote  Whether or not to scan remote files
+     * @param   bool|mixed  $remote  Whether or not to scan remote files
      * @return  bool
      **/
     public function isSafe($remote = false)

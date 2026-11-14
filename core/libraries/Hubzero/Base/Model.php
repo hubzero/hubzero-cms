@@ -474,8 +474,8 @@ abstract class Model extends Obj
     /**
      * Special print_r to strip out any vars passed in $ignore
      *
-     * @param   object   $subject   Object to print_r
-     * @param   array    $ignore    Property names to ignore
+     * @param   object|mixed   $subject   Object to print_r
+     * @param   array|mixed    $ignore    Property names to ignore
      * @param   integer  $depth     Recursion depth
      * @param   array    $refChain  Reference chain
      * @return  string

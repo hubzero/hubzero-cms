@@ -26,7 +26,7 @@ class Manager extends Member
     /**
      * Constructor
      *
-     * @param   string $uid User ID
+     * @param   string|mixed $uid User ID
      * @param   string|int $cid Course ID
      * @param   string|int $oid Offering ID
      * @param   string|int $sid Section ID

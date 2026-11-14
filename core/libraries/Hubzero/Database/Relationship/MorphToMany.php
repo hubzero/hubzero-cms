@@ -214,7 +214,7 @@ class MorphToMany extends OneToManyThrough
     /**
      * Connect related models through the pivot table
      *
-     * @param  array  $ids  The IDs to connect
+     * @param  array|mixed  $ids  The IDs to connect
      * @return $this
      */
     public function connect($ids)
@@ -257,8 +257,8 @@ class MorphToMany extends OneToManyThrough
     /**
      * Disconnect related models from the pivot table
      *
-     * @param  array          $ids         The IDs to disconnect
-     * @param  \Closure|null  $constraint  Additional constraint
+     * @param  array|mixed          $ids         The IDs to disconnect
+     * @param  \Closure|null|mixed  $constraint  Additional constraint
      * @return $this
      */
     public function disconnect($ids, $constraint = null)
@@ -284,7 +284,7 @@ class MorphToMany extends OneToManyThrough
     /**
      * Sync related models (add missing, remove extra)
      *
-     * @param  array  $ids  The IDs that should be connected
+     * @param  array|mixed  $ids  The IDs that should be connected
      * @return $this
      */
     public function sync($ids)

@@ -293,7 +293,7 @@ class ServiceProvider extends Relational
      * groups from the members table, which would silently deny everyone when
      * an SP is restricted to a system or project group, or to managers.
      *
-     * @param   object  $user  \Hubzero\User\User
+     * @param   object|mixed  $user  \Hubzero\User\User
      * @return  boolean
      */
     public function userCanAccess($user)
@@ -390,7 +390,7 @@ class ServiceProvider extends Relational
      *   the SP is told only which of its own gates the user came through.
      * - 'all' releases every confirmed HUB group membership.
      *
-     * @param   object  $user    \Hubzero\User\User
+     * @param   object|mixed  $user    \Hubzero\User\User
      * @param   string  $policy  'allowed' or 'all'
      * @return  array
      */

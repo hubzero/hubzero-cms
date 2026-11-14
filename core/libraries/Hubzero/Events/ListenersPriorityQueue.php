@@ -122,7 +122,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      * layer of wrapping in both directions so that a caller holding the plain
      * listener can still find, test and remove it.
      *
-     * @param   object  $listener  The listener.
+     * @param   object|mixed  $listener  The listener.
      * @return  object|null  The entry in the queue, or null if it isn't there.
      */
     protected function resolve($listener)

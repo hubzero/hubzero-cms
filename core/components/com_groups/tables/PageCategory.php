@@ -112,7 +112,7 @@ class PageCategory extends Table
     /**
      * Get categories for a group
      *
-     * @param   object  $group
+     * @param   object|mixed  $group
      * @return  array
      */
     public function getCategories($group)

@@ -143,7 +143,7 @@ class Page extends Relational
      * Method to move a row in the ordering sequence of a group of rows defined by an SQL WHERE clause.
      * Negative numbers move the row up in the sequence and positive numbers move it down.
      *
-     * @param   integer  $delta  The direction and magnitude to move the row in the ordering sequence.
+     * @param   integer|mixed  $delta  The direction and magnitude to move the row in the ordering sequence.
      * @param   string   $where  WHERE clause to use for limiting the selection of rows to compact the ordering values.
      * @return  bool     True on success.
      */

@@ -292,7 +292,7 @@ class Activity extends Table
     /**
      * Save activity preview
      *
-     * @param   integer  $aid
+     * @param   integer|mixed  $aid
      * @param   string|null   $preview
      * @return  boolean  true on success
      */

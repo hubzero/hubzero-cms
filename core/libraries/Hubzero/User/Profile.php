@@ -415,7 +415,7 @@ class Profile extends Obj
     /**
      * Whether a name is one the profile keeps for itself rather than a field
      *
-     * @param   string  $property
+     * @param   string|mixed  $property
      * @return  bool
      */
     private static function isOwn($property)
@@ -440,7 +440,7 @@ class Profile extends Obj
     /**
      * Whether a property holds a field kept in a table of its own
      *
-     * @param   string  $property
+     * @param   string|mixed  $property
      * @param   string  $kinds  Which kinds to accept: "s", "v" or "sv"
      * @return  bool
      */
@@ -579,7 +579,7 @@ class Profile extends Obj
     /**
      * Bind registration data
      *
-     * @param   object  $registration
+     * @param   object|mixed  $registration
      * @return  boolean
      */
     private function xregistrationLoad($registration)
@@ -635,7 +635,7 @@ class Profile extends Obj
     /**
      * Load registration data
      *
-     * @param   object  &$registration
+     * @param   object|mixed  &$registration
      * @return  boolean
      */
     public function loadRegistration(&$registration)
@@ -1242,7 +1242,7 @@ class Profile extends Obj
      * Add to a list of values for multi-value properties
      *
      * @param   string   $property  Property name
-     * @param   array    $value     Property values
+     * @param   array|mixed    $value     Property values
      * @return  boolean  True on success, False on error
      */
     public function add($property, $value)

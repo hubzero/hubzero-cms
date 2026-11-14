@@ -301,7 +301,7 @@ class ImageViewer extends Base
      * @param   array    $attachments
      * @param   object   $attConfigs
      * @param   object   $pub
-     * @param   boolean  $authorized
+     * @param   boolean|mixed  $authorized
      * @param   integer  $elementId
      * @return  bool|string
      */

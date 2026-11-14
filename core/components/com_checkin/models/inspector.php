@@ -147,7 +147,7 @@ class Inspector extends Obj
     /**
      * Checks in requested tables
      *
-     * @param   array    $ids  An array of table names. Optional.
+     * @param   array|mixed    $ids  An array of table names. Optional.
      * @return  integer  Checked in item count
      */
     public function checkin($ids = [])

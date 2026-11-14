@@ -734,7 +734,7 @@ class Rows implements Iterator, Countable
     /**
      * Checks if an array is associative (has string keys)
      *
-     * @param   array  $array  The array to check
+     * @param   array|mixed  $array  The array to check
      * @return  bool
      **/
     private function isAssociativeArray($array)

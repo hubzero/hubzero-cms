@@ -173,7 +173,7 @@ class Categories
     /**
      * Load method
      *
-     * @param   integer  $id  Id of category to load
+     * @param   integer|mixed  $id  Id of category to load
      * @return  void
      */
     protected function load($id)

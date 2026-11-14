@@ -464,7 +464,7 @@ class Doi extends Obj
      * Map user
      *
      * @param   integer|null  $uid      User ID
-     * @param   array    $authors  Publication authors list
+     * @param   array|mixed    $authors  Publication authors list
      * @param   string   $type     Mapping field
      * @return  void
      */

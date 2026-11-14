@@ -37,7 +37,7 @@ abstract class Route
      *
      * @param   integer  $id
      * @param   integer  $catid
-     * @param   integer  $language
+     * @param   integer|mixed  $language
      * @return  string
      */
     public static function getArticleRoute($id, $catid = 0, $language = 0)
@@ -76,7 +76,7 @@ abstract class Route
     /**
      * Get category route
      *
-     * @param   integer  $catid
+     * @param   integer|mixed  $catid
      * @return  string
      */
     public static function getCategoryRoute($catid)

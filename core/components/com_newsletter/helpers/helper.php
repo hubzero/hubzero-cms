@@ -37,7 +37,7 @@ class Helper
     /**
      * Generate Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
      *
-     * @param   object  $mailingRecipientObject  Mailing Recipient Object
+     * @param   object|mixed  $mailingRecipientObject  Mailing Recipient Object
      * @return  string|false  Email Token for verify and tracking
      */
     public static function generateMailingToken($mailingRecipientObject)
@@ -88,7 +88,7 @@ class Helper
     /**
      * Parse Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
      *
-     * @param   string  $mailingToken  String Mailing token
+     * @param   string|mixed  $mailingToken  String Mailing token
      * @return  object|false  Mailing Recipient Object
      */
     public static function parseMailingToken($mailingToken)
