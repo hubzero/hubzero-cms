@@ -40,9 +40,6 @@ class Profiles extends SiteController
      */
     public function execute()
     {
-        // Get the view
-        $this->view = strtolower(Request::getCmd('view', 'members'));
-
         // Get The task
         $task = strtolower(Request::getCmd('task', ''));
 

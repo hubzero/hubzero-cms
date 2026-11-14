@@ -416,7 +416,7 @@ class Attachments extends SiteController
         // Setup videos to auto-play in hub
         if ($this->config->get('file_video_html5', 1)) {
             if (in_array($ext, ['mp4', 'webm', 'ogv'])) {
-                $resource->type = 41; // Video type
+                $resource->set('type', 41); // Video type
             }
         }
 

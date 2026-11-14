@@ -236,7 +236,7 @@ class Router extends Base
 
         for ($i = 0; $i < $count; $i++) {
             if (is_numeric($segments[$i][0])) {
-                $segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+                $segments[$i] = (string) preg_replace('/-/', ':', $segments[$i], 1);
             }
         }
 

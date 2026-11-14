@@ -395,7 +395,7 @@ class CurrentCart extends Cart
     /**
      * Get existing or create a new transaction (if doesn't exist)
      *
-     * @return array|false of items in the transaction, FALSE on failed attempt
+     * @return \stdClass|bool of items in the transaction, FALSE on failed attempt
      */
     public function getTransaction()
     {

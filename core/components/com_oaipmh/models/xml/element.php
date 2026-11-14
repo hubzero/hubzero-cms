@@ -18,7 +18,9 @@ use Hubzero\Facades\Lang;
 class Element
 {
     /**
-     * @var  DOMElement
+     * The element being built, or the document itself at the top
+     *
+     * @var  \DOMNode
      */
     protected $current;
 
@@ -119,6 +121,10 @@ class Element
      */
     public function attr($name, $value, $namespace = null)
     {
+        if (!($this->current instanceof DOMElement)) {
+            throw new LogicException('An attribute can only be set on an element');
+        }
+
         if (null !== $namespace) {
             $this->current->setAttributeNS($namespace, $name, $value);
         } else {

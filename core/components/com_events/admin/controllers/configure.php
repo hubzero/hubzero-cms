@@ -23,14 +23,21 @@ use Hubzero\Facades\Route;
 class Configure extends AdminController
 {
     /**
+     * The events configuration being edited
+     *
+     * @var  Configs
+     */
+    protected $configs;
+
+    /**
      * Determines task and attempts to execute it
      *
      * @return     void
      */
     public function execute()
     {
-        $this->config = new Configs($this->database);
-        $this->config->load();
+        $this->configs = new Configs($this->database);
+        $this->configs->load();
 
         parent::execute();
     }
@@ -42,7 +49,7 @@ class Configure extends AdminController
      */
     public function displayTask()
     {
-        $this->view->set('config', $this->config);
+        $this->view->set('config', $this->configs);
 
         // Output the HTML
         $this->view->display();

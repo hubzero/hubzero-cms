@@ -125,7 +125,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var Iterator|null
      */
     private $sections = null;
 

@@ -82,7 +82,7 @@ class Category extends Relational
     /**
      * ACL asset rules
      *
-     * @var  array
+     * @var  \Hubzero\Access\Rules|null
      */
     public $assetRules = null;
 

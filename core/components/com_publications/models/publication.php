@@ -1008,7 +1008,7 @@ class Publication extends Obj
             $this->_tblContent = new Tables\Attachment($this->db);
         }
         if (!isset($this->_attachmentsCount)) {
-            $this->_attachmentsCount = $this->_tblContent->getAttachmentsCount($this->version->id);
+            $this->_attachmentsCount = (int) $this->_tblContent->getAttachmentsCount($this->version->id);
         }
 
         return $this->_attachmentsCount;
