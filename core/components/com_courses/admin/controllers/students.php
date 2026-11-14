@@ -252,7 +252,7 @@ class Students extends AdminController
         foreach ($user_ids as $user_id) {
             if (!is_int($user_id)) {
                 $user = User::getInstance($user_id);
-                if (!is_object($user)) {
+                if (!$user->get('id')) {
                     Notify::error(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
                     $this->editTask();
                     return;

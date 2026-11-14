@@ -969,7 +969,7 @@ class Sessions extends SiteController
 
             // Check that the user exist
             $zuser = User::getInstance($user);
-            if (!$zuser || !is_object($zuser) || !$zuser->get('id')) {
+            if (!$zuser->get('id')) {
                 $this->setError(Lang::txt('COM_TOOLS_ERROR_INVALID_USERNAME') . ': ' . $user);
                 continue;
             }

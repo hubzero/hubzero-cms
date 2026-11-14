@@ -455,7 +455,7 @@ class Rule extends Relational
                 if (is_numeric($user)) {
                     $xuser = User::oneOrNew($user);
 
-                    if (!is_object($xuser)) {
+                    if (!$xuser->get('id')) {
                         continue;
                     }
 

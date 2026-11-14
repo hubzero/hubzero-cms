@@ -1045,7 +1045,7 @@ class Tickets extends AdminController
                         $users[] = Html::select('optgroup', stripslashes($hzg->description));
                         foreach ($members as $member) {
                             $u = User::getInstance($member);
-                            if (!is_object($u)) {
+                            if (!$u->get('id')) {
                                 continue;
                             }
 
@@ -1069,7 +1069,7 @@ class Tickets extends AdminController
 
                 foreach ($members as $member) {
                     $u = User::getInstance($member);
-                    if (!is_object($u)) {
+                    if (!$u->get('id')) {
                         continue;
                     }
 

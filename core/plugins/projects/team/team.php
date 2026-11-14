@@ -682,7 +682,7 @@ class Team extends Plugin
                     $uu = $uids[$i];
                     if ($uu && is_numeric($uu)) {
                         $xuser = User::getInstance($uids[$i]);
-                        $note .= is_numeric($uids[$i]) && is_object($xuser) ? $xuser->get('name') : $uids[$i];
+                        $note .= is_numeric($uids[$i]) && $xuser->get('id') ? $xuser->get('name') : $uids[$i];
                     } else {
                         $note  .= $uids[$i];
                     }

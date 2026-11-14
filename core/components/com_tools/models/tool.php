@@ -1416,7 +1416,7 @@ class Tool
         } else {
             $devs = array_map('trim', explode(',', $tool['developers']));
             foreach ($devs as $dev) {
-                if (!is_object(User::getInstance($dev))) {
+                if (!User::getInstance($dev)->get('id')) {
                     $err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_INVALID_USER', (string) $dev);
                 }
             }

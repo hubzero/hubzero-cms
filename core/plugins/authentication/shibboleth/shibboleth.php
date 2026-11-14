@@ -689,7 +689,7 @@ class Shibboleth extends Plugin
             $hzal->update();
 
             // If we have a real user, drop the authenticator cookie
-            if (isset($user) && is_object($user)) {
+            if (isset($user) && $user->get('id')) {
                 // Set cookie with login preference info
                 $prefs = [
                     'user_id'       => $user->get('id'),

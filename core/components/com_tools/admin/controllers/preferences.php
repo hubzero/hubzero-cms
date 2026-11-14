@@ -201,7 +201,7 @@ class Preferences extends AdminController
 
         $user = User::getInstance($fields['user_id']);
 
-        if (!is_object($user) || !$user->get('id')) {
+        if (!$user->get('id')) {
             Notify::error(Lang::txt('COM_TOOLS_USER_PREFS_USER_NOT_FOUND'));
             $this->editTask($row);
 

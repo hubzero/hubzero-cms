@@ -221,7 +221,7 @@ class Session extends Base
 
             // Check that the user exist
             $zuser = User::getInstance($user);
-            if (!$zuser || !is_object($zuser) || !$zuser->get('id')) {
+            if (!$zuser->get('id')) {
                 $this->setError(Lang::txt('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
                 continue;
             }

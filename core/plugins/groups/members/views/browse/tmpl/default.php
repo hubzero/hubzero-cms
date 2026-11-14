@@ -296,7 +296,7 @@ $option = 'com_groups';
                                     $inviteemail = true;
                                     $pic = rtrim(Request::base(true), '/')
                                         . '/core/components/com_groups/site/assets/img/emailthumb.png';
-                                } elseif (!is_object($u)) {
+                                } elseif (!$u->get('id')) {
                                     continue;
                                 } else {
                                     $pic = $u->picture(0);
@@ -348,7 +348,7 @@ $option = 'com_groups';
                                         break;
                                 }
 
-                                if (is_object($u) && User::get('id') == $u->get('id')) {
+                                if ($u->get('id') && User::get('id') == $u->get('id')) {
                                     $cls .= ' me';
                                 }
 
@@ -722,7 +722,7 @@ $option = 'com_groups';
                                 }
                                 $html .= "\t\t\t\t" . '<td class="message-member">';
                                 if (
-                                    is_object($u)
+                                    $u->get('id')
                                     && User::get('id') == $u->get('uidNumber')
                                     || $this->filter == 'invitees'
                                     || $this->filter == 'pending'

@@ -162,7 +162,7 @@ class Transfer extends Plugin
 
         // If no author can be found, use current administrator
         $author = User::getInstance($author);
-        if (!is_object($author)) {
+        if (!$author->get('id')) {
             $author = User::getInstance(User::get('id'));
         }
 

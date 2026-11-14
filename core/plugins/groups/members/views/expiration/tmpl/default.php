@@ -52,7 +52,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->gr
         $names = [];
         foreach ($this->users as $user) {
             $u = User::getInstance($user);
-            $label = is_object($u) && $u->get('name') ? $u->get('name') : $user;
+            $label = $u->get('name') ? $u->get('name') : $user;
 
             if (!empty($this->current[$user])) {
                 $label .= ' (' . Lang::txt(

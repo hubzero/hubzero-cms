@@ -89,7 +89,7 @@ Html::behavior('modal', 'a.modals');
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
                         <td>
-                            <?= (is_object($reporter) && $reporter->get('username'))
+                            <?= ($reporter->get('username'))
                                 ? $this->escape($reporter->get('username'))
                                 : Lang::txt('COM_SUPPORT_UNKNOWN') ?>
                         </td>

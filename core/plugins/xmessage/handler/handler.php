@@ -234,7 +234,7 @@ class Handler extends Plugin
                 $methods = $notify->getRecords($uid, $type);
 
                 $user = User::getInstance($uid);
-                if (!is_object($user) || !$user->get('username')) {
+                if (!$user->get('username')) {
                     continue;
                 }
 

@@ -160,7 +160,7 @@ class Acl extends AdminController
             switch ($row->get('model')) {
                 case 'user':
                     $user = User::getInstance($fk);
-                    if (!is_object($user)) {
+                    if (!$user->get('id')) {
                         App::abort(500, Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'));
                     }
                     $row->set('foreign_key', intval($user->get('id')));

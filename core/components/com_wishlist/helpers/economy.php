@@ -147,7 +147,7 @@ class Economy extends Obj
             if ($owners && $commonshare) {
                 foreach ($owners as $owner) {
                     $o = User::getInstance($owner);
-                    if (!is_object($o) || !$o->get('id')) {
+                    if (!$o->get('id')) {
                         continue;
                     }
                     $BTLO = new Teller($owner);
@@ -178,7 +178,7 @@ class Economy extends Obj
             if ($payees) {
                 foreach ($payees as $p) {
                     $o = User::getInstance($p->uid);
-                    if (!is_object($o) || !$o->get('id')) {
+                    if (!$o->get('id')) {
                         continue;
                     }
 

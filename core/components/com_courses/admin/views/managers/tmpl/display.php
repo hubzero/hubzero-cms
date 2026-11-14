@@ -105,7 +105,7 @@ if (count($managers) > 0) {
     $i = 0;
     foreach ($managers as $manager) {
         $u = User::getInstance($manager->get('user_id'));
-        if (!is_object($u)) {
+        if (!$u->get('id')) {
             continue;
         }
         ?>

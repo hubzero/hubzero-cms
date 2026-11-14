@@ -146,7 +146,7 @@ $actionUrl = Route::url(
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->module->get('created_by'));
-                                    echo (is_object($profile))
+                                    echo ($profile->get('id'))
                                         ? $profile->get('name') . ' (' . $profile->get('id') . ')'
                                         : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
@@ -171,7 +171,7 @@ $actionUrl = Route::url(
                                     $modified_by = '--';
                                 if ($this->module->get('modified_by') != null) {
                                     $profile = User::getInstance($this->module->get('modified_by'));
-                                    $modified_by = (is_object($profile))
+                                    $modified_by = ($profile->get('id'))
                                         ? $profile->get('name') . ' (' . $profile->get('id') . ')'
                                         : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 }

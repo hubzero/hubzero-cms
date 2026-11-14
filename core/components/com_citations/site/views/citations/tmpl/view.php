@@ -539,7 +539,7 @@ $area = Request::getString('area', 'about');
                 <?php endif; ?>
 
                 <?php if (isset($citation->uid)) : ?>
-                    <?php if (is_object($profile) && $profile->get('id')) : ?>
+                    <?php if ($profile->get('id')) : ?>
                         <tr>
                             <th><?php echo Lang::txt('COM_CITATIONS_SUBMITTED_BY'); ?></th>
                             <td>

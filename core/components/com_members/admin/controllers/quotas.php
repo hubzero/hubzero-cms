@@ -216,7 +216,7 @@ class Quotas extends AdminController
 
         $user = User::getInstance($fields['user_id']);
 
-        if (!is_object($user) || !$user->get('id')) {
+        if (!$user->get('id')) {
             Notify::error(Lang::txt('COM_MEMBERS_QUOTA_USER_NOT_FOUND'));
             $this->editTask($row);
 
@@ -698,7 +698,7 @@ class Quotas extends AdminController
                     }
 
                     $user = User::getInstance($args[1]);
-                    if (!is_object($user) || !is_numeric($user->get('id'))) {
+                    if (!is_numeric($user->get('id'))) {
                         continue 2;
                     }
 

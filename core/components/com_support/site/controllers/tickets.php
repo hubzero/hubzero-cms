@@ -2515,7 +2515,7 @@ class Tickets extends SiteController
                         $users[] = Html::select('optgroup', stripslashes($hzg->description));
                         foreach ($members as $member) {
                             $u = User::getInstance($member);
-                            if (!(is_object($u) && $u->get('block') == '0')) {
+                            if (!($u->get('block') == '0')) {
                                 continue;
                             }
 
@@ -2538,7 +2538,7 @@ class Tickets extends SiteController
 
                 foreach ($members as $member) {
                     $u = User::getInstance($member);
-                    if (!(is_object($u) && $u->get('block') == '0')) {
+                    if (!($u->get('block') == '0')) {
                         continue;
                     }
 

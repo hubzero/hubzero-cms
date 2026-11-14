@@ -106,7 +106,7 @@ class Author extends Relational
                 $targetuser = User::getInstance($author);
 
                 // Ensure we found an account
-                if (!is_object($targetuser)) {
+                if (!$targetuser->get('id')) {
                     // No account found for this username/ID
                     // Move on to next record
                     continue;

@@ -874,7 +874,7 @@ class Support extends Plugin
             } else {
                 // Get the user's account
                 $user = User::getInstance($owner);
-                if (!is_object($user) || !$user->get('id')) {
+                if (!$user->get('id')) {
                     continue;
                 }
 

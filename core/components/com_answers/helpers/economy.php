@@ -215,8 +215,8 @@ class Economy extends Obj
                 foreach ($eligible as $e) {
                     $auser = User::getInstance($e);
                     if (
-                        is_object($auser) && $auser->get('id')
-                        && is_object($ba_user) && $ba_user->get('id')
+                        $auser->get('id')
+                        && $ba_user->get('id')
                         && $ba_user->get('id') != $auser->get('id')
                     ) {
                         $BTL_A = new Teller($auser->get('id'));
@@ -229,8 +229,8 @@ class Economy extends Obj
                     }
                     // is best answer eligible for extra points?
                     if (
-                        is_object($auser) && $auser->get('id')
-                        && is_object($ba_user) && $ba_user->get('id')
+                        $auser->get('id')
+                        && $ba_user->get('id')
                         && ($ba_user->get('id') == $auser->get('id'))
                     ) {
                         $ba_extra = 1;

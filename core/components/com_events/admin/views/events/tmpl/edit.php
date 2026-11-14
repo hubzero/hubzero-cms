@@ -33,8 +33,8 @@ Toolbar::help('event');
 
 $xprofilec = User::getInstance($this->row->created_by);
 $xprofilem = User::getInstance($this->row->modified_by);
-$userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
-$userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
+$userm = $xprofilem->get('id') ? $xprofilem->get('name') : '';
+$userc = $xprofilec->get('id') ? $xprofilec->get('name') : '';
 
 $params = new \Hubzero\Html\Parameter($this->row->params, Component::path($this->option) . DS . 'events.xml');
 

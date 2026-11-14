@@ -109,21 +109,21 @@ if (
                     : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
                 $createdProfile   = User::getInstance($firstVersion->get('created_by'));
                 $modifiedProfile  = User::getInstance($currentVersion->get('created_by'));
-                $createdBy        = (is_object($createdProfile) && $createdProfile->get('name'))
+                $createdBy        = ($createdProfile->get('name'))
                     ? $createdProfile->get('name')
                     : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-                $modifiedBy       = (is_object($modifiedProfile) && $modifiedProfile->get('name'))
+                $modifiedBy       = ($modifiedProfile->get('name'))
                     ? $modifiedProfile->get('name')
                     : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
-            if (is_object($createdProfile) && $createdProfile->get('uidNumber')) {
+            if ($createdProfile->get('uidNumber')) {
                 $createdLink = '<a href="'
                     . Route::url('index.php?option=com_members&id=' . $createdProfile->get('uidNumber')) . '">'
                     . $createdBy . '</a>';
             } else {
                 $createdLink = $createdBy;
             }
-            if (is_object($modifiedProfile) && $modifiedProfile->get('uidNumber')) {
+            if ($modifiedProfile->get('uidNumber')) {
                 $modifiedLink = '<a href="'
                     . Route::url('index.php?option=com_members&id=' . $modifiedProfile->get('uidNumber')) . '">'
                     . $modifiedBy . '</a>';
