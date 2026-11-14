@@ -18,7 +18,7 @@ class Reader implements Iterator
     /**
      * File contents
      *
-     * @var  object
+     * @var  mixed
      */
     private $file;
 

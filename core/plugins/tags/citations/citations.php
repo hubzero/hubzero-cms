@@ -105,7 +105,7 @@ class Citations extends Plugin
     /**
      * Return citation types
      *
-     * @return  array
+     * @return  \Hubzero\Database\Rows
      */
     public static function getTypes()
     {

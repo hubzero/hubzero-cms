@@ -490,7 +490,7 @@ class Html extends Obj
      *
      * @param   array  $needle
      * @param   array  $haystack
-     * @return  boolean
+     * @return  int|string|false
      */
     public static function myArraySearch($needle, $haystack)
     {

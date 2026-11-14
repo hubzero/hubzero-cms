@@ -338,7 +338,7 @@ class DatabaseInfo
      * Create a DatabaseInfo instance from an array
      *
      * @param  array  $data
-     * @return static
+     * @return self
      */
     public static function fromArray(array $data): self
     {

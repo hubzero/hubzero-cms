@@ -25,7 +25,7 @@ interface AdapterInterface
      * Read a file.
      *
      * @param   string  $path
-     * @return  string
+     * @return  string|false
      */
     public function read($path);
 

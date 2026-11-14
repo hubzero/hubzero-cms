@@ -25,7 +25,7 @@ class Project
     /**
      * Project ID
      *
-     * @var  integer|null
+     * @var  int|string|null
      */
     private $id = null;
 

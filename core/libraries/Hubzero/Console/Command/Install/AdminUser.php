@@ -609,7 +609,7 @@ class AdminUser
             );
             $stmt->execute($values);
 
-            $userId = $pdo->lastInsertId();
+            $userId = (int) $pdo->lastInsertId();
 
             // Insert into users_password table
             $stmt = $pdo->prepare(

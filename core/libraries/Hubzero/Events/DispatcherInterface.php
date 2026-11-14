@@ -17,7 +17,7 @@ interface DispatcherInterface
      * Trigger an event.
      *
      * @param   mixed   $event  The event object or name.
-     * @return  object  The event after being passed through all listeners.
+     * @return  array  The event after being passed through all listeners.
      */
     public function trigger($event, $args = []);
 

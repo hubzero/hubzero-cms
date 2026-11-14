@@ -91,7 +91,7 @@ class Processor extends Obj
     /**
      * Set the image type
      *
-     * @param   string  $type  Image type to set
+     * @param   int  $type  Image type to set
      * @return  void
      */
     public function setImageType($type)
