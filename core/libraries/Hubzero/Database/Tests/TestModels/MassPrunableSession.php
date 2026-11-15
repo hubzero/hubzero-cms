@@ -23,12 +23,23 @@ class MassPrunableSession extends Relational
     protected $dispatchesModelEvents = true;
 
     /**
+     * Whether to say there is nothing to prune
+     *
+     * @var  bool
+     */
+    public static $nothingToPrune = false;
+
+    /**
      * Get the prunable query - expired sessions
      *
-     * @return static
+     * @return static|null
      */
     protected function prunable()
     {
+        if (static::$nothingToPrune) {
+            return null;
+        }
+
         $now = date('Y-m-d H:i:s');
         return static::all()->where('expires_at', '<', $now);
     }

@@ -59,7 +59,7 @@ class ModuleLayouts extends Select
             $options[] = Builder\Select::option('', '');
         }
 
-        if ($path1 && $path2) {
+        if ($path1) {
             $path1 = Util::normalizePath($path1);
             $path2 = Util::normalizePath($path2);
 

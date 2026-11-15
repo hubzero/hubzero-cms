@@ -2716,7 +2716,7 @@ class Query
     /**
      * Internal method to add a union query
      *
-     * @param   Query|callable  $query  The query to union with, or a closure
+     * @param   Query|callable|mixed  $query  The query to union with, or a closure
      * @param   bool            $all    Whether to use UNION ALL (true) or UNION (false)
      * @return  $this
      **/
@@ -4953,7 +4953,7 @@ class Query
         }
 
         if (is_array($row)) {
-            return $row ? reset($row) : null;
+            return reset($row);
         }
 
         return $row;

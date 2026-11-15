@@ -103,7 +103,7 @@ class Loader extends Base
             }
 
             // Check to see if the class exists
-            if ($controllerClass && class_exists($controllerClass)) {
+            if (class_exists($controllerClass)) {
                 $found = true;
 
                 $lang->load($option, PATH_COMPONENT, null, false, true);

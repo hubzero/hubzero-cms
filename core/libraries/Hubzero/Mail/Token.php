@@ -49,9 +49,9 @@ class Token
     private $key;
 
     /**
-     * Description for '_blocksize'
+     * Cipher block size in bytes
      *
-     * @var  number
+     * @var  int
      */
     private $blocksize;
 

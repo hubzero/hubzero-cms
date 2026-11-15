@@ -176,7 +176,7 @@ final class Expression
     /**
      * Create a subquery expression (wraps SQL in parentheses)
      *
-     * @param string|\Hubzero\Database\Query $query SQL string or Query instance
+     * @param string|\Hubzero\Database\Query|mixed $query SQL string or Query instance
      * @return static
      */
     public static function subquery($query): static

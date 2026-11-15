@@ -62,7 +62,7 @@ class Migrations
         }
 
         // Try to use the Migration class directly if the app is bootstrapped
-        if (class_exists('\\App') && is_callable(['\\App', 'get'])) {
+        if (class_exists('\\App')) {
             if (!self::useConfiguredDatabase($ansi, $appPath)) {
                 return false;
             }

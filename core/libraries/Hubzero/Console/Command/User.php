@@ -578,7 +578,7 @@ class User extends Base implements CommandInterface
             ? \Hubzero\User\User::oneOrNew((int) $identifier)
             : \Hubzero\User\User::oneByUsername($identifier);
 
-        if (!$user || !$user->get('id')) {
+        if (!$user->get('id')) {
             $this->output->error('User does not appear to be valid');
         }
 

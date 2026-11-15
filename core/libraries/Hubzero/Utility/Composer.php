@@ -426,7 +426,7 @@ class Composer
         foreach ($remoteRepos as $repo) {
             if ($repo instanceof \Composer\Repository\ConfigurableRepositoryInterface) {
                 $config = $repo->getRepoConfig();
-                if (is_array($config) && isset($config['type']) && $config['type'] != 'composer') {
+                if (isset($config['type']) && $config['type'] != 'composer') {
                     $packages = $repo->getPackages();
                     foreach ($packages as $package) {
                         $remotePackages[$package->getName()] = $package;

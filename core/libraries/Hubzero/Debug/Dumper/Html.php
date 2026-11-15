@@ -75,29 +75,27 @@ class Html extends AbstractRenderer
 
         $output = 'Array( ' . "\n";
         $a = [];
-        if (is_array($arr)) {
-            foreach ($arr as $key => $val) {
-                if (is_array($val)) {
-                    $a[] = "\t"
-                        . '<code class="ky">'
-                        . $key
-                        . '</code> <code class="op">=></code> <code class="vl">'
-                        . $this->deflate($val)
-                        . '</code>';
-                } else {
-                    $val = htmlentities($val, ENT_COMPAT, 'UTF-8');
-                    $val = preg_replace(
-                        '/\[(.+?)\] =&gt;/i',
-                        '<code class="ky">[$1]</code> <code class="op">=></code>',
-                        $val,
-                    );
-                    $a[] = "\t"
-                        . '<code class="ky">'
-                        . $key
-                        . '</code> <code class="op">=></code> <code class="vl">'
-                        . $val
-                        . '</code>';
-                }
+        foreach ($arr as $key => $val) {
+            if (is_array($val)) {
+                $a[] = "\t"
+                    . '<code class="ky">'
+                    . $key
+                    . '</code> <code class="op">=></code> <code class="vl">'
+                    . $this->deflate($val)
+                    . '</code>';
+            } else {
+                $val = htmlentities($val, ENT_COMPAT, 'UTF-8');
+                $val = preg_replace(
+                    '/\[(.+?)\] =&gt;/i',
+                    '<code class="ky">[$1]</code> <code class="op">=></code>',
+                    $val,
+                );
+                $a[] = "\t"
+                    . '<code class="ky">'
+                    . $key
+                    . '</code> <code class="op">=></code> <code class="vl">'
+                    . $val
+                    . '</code>';
             }
         }
         $output .= implode(", \n", $a) . "\n" . ' )' . "\n";

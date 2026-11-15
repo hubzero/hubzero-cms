@@ -22,7 +22,7 @@ class InstallTemplateEntry extends AddTemplateEntry
      * @param   string  $element    Template element
      * @param   string|null  $name       Template name
      * @param   int     $client     Admin or site client
-     * @param   int     $enabled    Ignored (always 1)
+     * @param   int|array  $enabled  Ignored (always 1); styles, from a migration using the old order
      * @param   int     $home       Ignored (always 1)
      * @param   array|null   $styles     Template styles
      * @param   int     $protected  Whether or not the template is a core one or not

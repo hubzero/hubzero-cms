@@ -16,11 +16,11 @@ use Hubzero\Database\Relational;
  * @method string getFirstName() Through __call(), from helperGetFirstName()
  *
  * @property-read  mixed  $posts  What posts() gives
- *
- * @property-read  mixed  $posts  What posts() gives
  */
 class User extends Relational
 {
+    use \Hubzero\Database\Traits\HasFactory;
+
     /**
      * The table to which the class pertains
      *

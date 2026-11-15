@@ -8,6 +8,7 @@
 
 namespace Hubzero\Htmx\Tests {
 
+    use Hubzero\Component\Traits\UsesHtmxDebug;
     use Hubzero\Htmx\Htmx;
     use Hubzero\Htmx\HtmxService;
     use Hubzero\Htmx\HtmxServiceProvider;
@@ -128,6 +129,29 @@ namespace Hubzero\Htmx\Tests {
 
             Htmx::state('alpha', 1);
             $this->assertSame(1, Htmx::getState('alpha'));
+        }
+
+        #[Test]
+        public function debugTraitGivesControllersTheFacadeHelpers(): void
+        {
+            \App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
+            $container = new ContainerStub();
+            $container->set('htmx', new HtmxService());
+            \App::set('app', $container);
+
+            $controller = new class {
+                use UsesHtmxDebug {
+                    htmxDebugEnabled as public;
+                    htmxDebugQuery as public;
+                    htmxDebugField as public;
+                    htmxDebugBar as public;
+                }
+            };
+
+            $this->assertTrue($controller->htmxDebugEnabled());
+            $this->assertSame(['htmx_debug' => '1'], $controller->htmxDebugQuery([]));
+            $this->assertStringContainsString('name="htmx_debug"', $controller->htmxDebugField());
+            $this->assertStringContainsString('hz-htmx-debug-panel', $controller->htmxDebugBar());
         }
 
         #[Test]

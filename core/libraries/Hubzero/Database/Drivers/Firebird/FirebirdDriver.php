@@ -815,7 +815,7 @@ class FirebirdDriver extends BaseSqlDriver
             $result = parent::execute();
 
             // If query with RETURNING succeeded, fetch and cache the returned row
-            if ($result && $hasReturning) {
+            if ($hasReturning) {
                 $row = $this->statement->fetch(\PDO::FETCH_ASSOC);
                 if ($row) {
                     // Normalize keys to lowercase and cache the row
@@ -908,7 +908,7 @@ class FirebirdDriver extends BaseSqlDriver
      */
     protected function freeResult()
     {
-        if (isset($this->statement) && method_exists($this->statement, 'closeCursor')) {
+        if (isset($this->statement)) {
             $this->statement->closeCursor();
         }
 
@@ -1181,10 +1181,6 @@ class FirebirdDriver extends BaseSqlDriver
     public function tableHasKey($table, $key)
     {
         $keys = $this->getTableKeys($table);
-
-        if (!is_array($keys)) {
-            return false;
-        }
 
         // getTableKeys() stores 'PRIMARY' as-is and other indexes as lowercase
         return isset($keys[$key]) || isset($keys[strtolower($key)]);
@@ -1750,13 +1746,11 @@ class FirebirdDriver extends BaseSqlDriver
             try {
                 $this->setQuery('CREATE GENERATOR ' . $this->quoteName($newGenerator));
                 $this->execute();
-                if ($generatorValue !== null) {
-                    $this->setQuery(
-                        'SET GENERATOR ' . $this->quoteName($newGenerator)
-                        . ' TO ' . (int) $generatorValue,
-                    );
-                    $this->execute();
-                }
+                $this->setQuery(
+                    'SET GENERATOR ' . $this->quoteName($newGenerator)
+                    . ' TO ' . (int) $generatorValue,
+                );
+                $this->execute();
 
                 // Create trigger for auto-increment on new table
                 $triggerName = 'TRG_' . $newTable . '_BI';

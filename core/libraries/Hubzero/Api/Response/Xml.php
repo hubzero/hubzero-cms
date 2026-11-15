@@ -261,10 +261,9 @@ class Xml
                     $prev[1]->{$prev[0]} = $obj;
                 } elseif (is_array($prev[1])) {
                     $prev[1][$prev[0]] = $obj;
-                } elseif (is_null($prev[1])) {
-                    break;
                 } else {
-                    return false; // malformed input is a decode failure, not a process exit
+                    // Closing the outermost element: decoding is done
+                    break;
                 }
 
                 $obj = $prev[1];

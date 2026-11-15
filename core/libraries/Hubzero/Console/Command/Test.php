@@ -201,7 +201,7 @@ class Test extends Base implements CommandInterface
                         || is_dir($base . DS . $directory . DS . $subdirectory . DS . 'tests')
                     ) {
                         $tests[] = $key
-                            . ($key == 'lib' ? '_' : ':')
+                            . ':'
                             . 'plg_'
                             . strtolower($directory)
                             . '_'

@@ -671,11 +671,9 @@ class Str
         // Let's grab all the key/value pairs using a regular expression
         preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
 
-        if (is_array($attr)) {
-            $numPairs = count($attr[1]);
-            for ($i = 0; $i < $numPairs; $i++) {
-                $ret[$attr[1][$i]] = $attr[2][$i];
-            }
+        $numPairs = count($attr[1]);
+        for ($i = 0; $i < $numPairs; $i++) {
+            $ret[$attr[1][$i]] = $attr[2][$i];
         }
 
         return $ret;

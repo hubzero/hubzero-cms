@@ -129,7 +129,7 @@ class SafePath
     /**
      * Resolve a file inside an already resolved directory
      *
-     * @param   string  $directory  Directory returned by directory()
+     * @param   string|mixed  $directory  Directory returned by directory()
      * @param   string  $name       File name, a single path component
      * @param   string|null  &$reason    One of the REASON_* constants on failure
      * @return  string|boolean      Path of the file, or false

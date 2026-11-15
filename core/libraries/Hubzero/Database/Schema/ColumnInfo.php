@@ -136,8 +136,9 @@ class ColumnInfo
         $this->fullType = $data['full_type'] ?? $data['type'] ?? '';
         $this->type = $this->parseBaseType($this->fullType);
         $this->length = $data['length'] ?? $this->parseLength($this->fullType);
-        $this->precision = $data['precision'] ?? null;
-        $this->scale = $data['scale'] ?? null;
+        // Drivers may report these as strings
+        $this->precision = isset($data['precision']) ? (int) $data['precision'] : null;
+        $this->scale = isset($data['scale']) ? (int) $data['scale'] : null;
         $this->nullable = $data['nullable'] ?? true;
         $this->default = $data['default'] ?? null;
         $this->autoIncrement = $data['auto_increment'] ?? false;
@@ -387,8 +388,7 @@ class ColumnInfo
 
         // Oracle NUMBER without scale is integer-like
         if ($type === 'number') {
-            $scale = $this->scale ?? null;
-            return $scale === null || $scale === 0 || $scale === '0';
+            return $this->scale === null || $this->scale === 0;
         }
 
         return false;

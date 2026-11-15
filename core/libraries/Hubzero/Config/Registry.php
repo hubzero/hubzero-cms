@@ -161,7 +161,6 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 
         if (!strpos($path, $this->separator)) {
             return (isset($this->data->$path)
-                && $this->data->$path !== null
                 && $this->data->$path !== '') ? $this->data->$path : $default;
         }
 
@@ -170,13 +169,11 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 
         // Initialize the current node to be the registry root.
         $node = $this->data;
-        $found = false;
 
         // Traverse the registry to find the correct node for the result.
         foreach ($nodes as $n) {
             if (is_array($node) && isset($node[$n])) {
                 $node = $node[$n];
-                $found = true;
                 continue;
             }
 
@@ -185,10 +182,10 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
             }
 
             $node = $node->$n;
-            $found = true;
         }
 
-        if (!$found || $node === null || $node === '') {
+        // isset() let no null through; an empty string counts as unset
+        if ($node === '') {
             return $default;
         }
 

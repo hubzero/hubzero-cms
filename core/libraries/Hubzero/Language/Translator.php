@@ -667,7 +667,7 @@ class Translator extends Obj
 
         $contents = $this->parse($filename);
 
-        if (is_array($contents) && count($contents)) {
+        if (count($contents)) {
             $this->override = array_merge($this->override, $contents);
             $this->overridesMerged = false;
             return true;
@@ -826,7 +826,7 @@ class Translator extends Obj
         // postprocessthem
         $strings = str_replace('\"', '"', $strings);
 
-        return is_array($strings) ? $strings : [];
+        return $strings;
     }
 
     /**

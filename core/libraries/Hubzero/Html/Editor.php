@@ -390,11 +390,11 @@ class Editor extends Obj
         // Build editor plugin classname
         $name = 'Plugins\\Editors\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
-        if ($this->editor = new $name($this, (array) $plugin)) {
-            // Load plugin parameters
-            $this->initialise();
+        $this->editor = new $name($this, (array) $plugin);
 
-            Plugin::import('editors-xtd');
-        }
+        // Load plugin parameters
+        $this->initialise();
+
+        Plugin::import('editors-xtd');
     }
 }

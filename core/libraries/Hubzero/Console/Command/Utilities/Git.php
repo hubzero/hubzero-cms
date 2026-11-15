@@ -405,7 +405,7 @@ class Git
             $return = [];
             $logs   = explode("\n", $log);
 
-            if (!empty($log) && count($logs) > 0) {
+            if (!empty($log)) {
                 foreach ($logs as $log) {
                     $return[] = trim($log);
                 }
@@ -466,24 +466,20 @@ class Git
         $tags    = explode("\n", $tagList);
         $rbp     = 0;
 
-        if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-                if (strstr($tag, 'cmsrollbackpoint-') !== false) {
-                    $tmp_tag = substr($tag, 17);
-                    if ($tmp_tag > $rbp) {
-                        $rbp = $tmp_tag;
-                    }
+        foreach ($tags as $tag) {
+            if (strstr($tag, 'cmsrollbackpoint-') !== false) {
+                $tmp_tag = substr($tag, 17);
+                if ($tmp_tag > $rbp) {
+                    $rbp = $tmp_tag;
                 }
             }
+        }
 
-            if ($rbp === 0) {
-                return false;
-            }
-
-            return $rbp;
-        } else {
+        if ($rbp === 0) {
             return false;
         }
+
+        return $rbp;
     }
 
     /**

@@ -730,7 +730,7 @@ class Validate
      * Runs a regular expression match.
      *
      * @param   string|null   $check  Value to check against the $regex expression
-     * @param   string   $regex  Regular expression
+     * @param   string|mixed   $regex  Regular expression
      * @return  boolean  Success of match
      * @codeCoverageIgnore
      */

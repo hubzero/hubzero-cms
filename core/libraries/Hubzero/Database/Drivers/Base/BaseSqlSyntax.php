@@ -3874,7 +3874,7 @@ abstract class BaseSqlSyntax
      */
     protected function isBuildingFullJoinUnionQuery(): bool
     {
-        return property_exists($this, 'fullJoinUnionBuilt') && !empty($this->fullJoinUnionBuilt);
+        return !empty($this->fullJoinUnionBuilt);
     }
 
     /**

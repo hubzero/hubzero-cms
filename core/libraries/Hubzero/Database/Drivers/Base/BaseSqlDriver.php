@@ -246,10 +246,6 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $columns = $this->getTableColumns($table);
 
-        if (!is_array($columns)) {
-            return false;
-        }
-
         // Check both exact match and lowercase match for case-insensitive databases
         return isset($columns[$field]) || isset($columns[strtolower($field)]);
     }
@@ -911,10 +907,6 @@ abstract class BaseSqlDriver extends PdoDriver
     public function tableHasKey($table, $key)
     {
         $keys = $this->getTableKeys($table);
-
-        if (!is_array($keys)) {
-            return false;
-        }
 
         return isset($keys[$key]);
     }
@@ -2273,13 +2265,14 @@ abstract class BaseSqlDriver extends PdoDriver
         }
 
         $this->setQuery($this->buildModifyColumnSql($table, $column, $definition, $comment));
-        $result = (bool) $this->execute();
+        // A failed statement throws
+        $this->execute();
 
-        if ($result && $comment) {
+        if ($comment) {
             $this->applyColumnComment($table, $column, $comment);
         }
 
-        return $result;
+        return true;
     }
 
     /**
@@ -2414,13 +2407,14 @@ abstract class BaseSqlDriver extends PdoDriver
         }
 
         $this->setQuery($this->buildAddColumnSql($table, $column, $definition, $comment));
-        $result = (bool) $this->execute();
+        // A failed statement throws
+        $this->execute();
 
-        if ($result && $comment) {
+        if ($comment) {
             $this->applyColumnComment($table, $column, $comment);
         }
 
-        return $result;
+        return true;
     }
 
     /**

@@ -324,6 +324,40 @@ class PrunableTest extends AbstractDriverTestCase
     }
 
     /**
+     * Test a model may say there is nothing to prune
+     */
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testPruneAllPrunesNothingWithoutAQuery(string $dbName, BaseSqlDriver $driver): void
+    {
+        $this->setupTestData($driver);
+
+        $query = new Query($driver);
+        $query->insertMany('prunable_sessions', [
+            ['user_id' => 1, 'token' => md5('token1'), 'expires_at' => '2020-01-01 00:00:00'],
+        ]);
+        $query = new Query($driver);
+        $query->insertMany('prunable_logs', [
+            ['message' => 'Old log', 'created' => '2020-01-01 00:00:00'],
+        ]);
+
+        PrunableLog::$nothingToPrune = true;
+        MassPrunableSession::$nothingToPrune = true;
+
+        try {
+            $this->assertSame(0, PrunableLog::pruneAll());
+            $this->assertSame(0, MassPrunableSession::pruneAll());
+        } finally {
+            PrunableLog::$nothingToPrune = false;
+            MassPrunableSession::$nothingToPrune = false;
+        }
+
+        // Both expired rows are still there
+        $this->assertSame(1, (new Query($driver))->from('prunable_sessions')->count());
+        $this->assertSame(1, (new Query($driver))->from('prunable_logs')->count());
+    }
+
+    /**
      * Test MassPrunable handles large datasets efficiently
      */
     #[Test]

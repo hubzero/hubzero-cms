@@ -96,7 +96,7 @@ class Helper extends Obj
         }
 
         // Do we have a subject line? If not, create it from the message
-        if (!$subject && $message) {
+        if (!$subject) {
             $subject = substr($message, 0, 70);
             if (strlen($subject) >= 70) {
                 $subject .= '...';

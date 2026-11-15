@@ -22,7 +22,7 @@ class Handler
     /**
      * A logger to log errors.
      *
-     * @var  object
+     * @var  object|null
      */
     protected $logger;
 

@@ -23,13 +23,6 @@ class Reader implements Iterator
     private $file;
 
     /**
-     * Key
-     *
-     * @var  string
-     */
-    private $key;
-
-    /**
      * Cursor position
      *
      * @var  int
@@ -39,15 +32,15 @@ class Reader implements Iterator
     /**
      * Constructor
      *
-     * @param   string  $file  XML file we want to use
-     * @param   string  $key   XML node we are looking to iterate over
+     * The records are the file's top-level list.
+     *
+     * @param   string  $file  JSON file we want to use
      * @return  void
      */
-    public function __construct($file, $key = 'record')
+    public function __construct($file)
     {
         $this->position = 0;
         $this->file     = json_decode(file_get_contents($file), true);
-        $this->key      = $key;
     }
 
     /**

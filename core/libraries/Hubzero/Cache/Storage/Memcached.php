@@ -19,7 +19,7 @@ class Memcached extends None
     /**
      * Memcached engine
      *
-     * @var  object
+     * @var  object|null
      */
     protected $engine;
 

@@ -1029,9 +1029,7 @@ class ApiController implements ControllerInterface
         if (!$this->modelClass) {
             // If no model name is explicitely set then derive the
             // name (singular) from the controller name (plural)
-            if (!$this->modelClass) {
-                $this->modelClass = \Hubzero\Utility\Inflector::singularize($this->controller);
-            }
+            $this->modelClass = \Hubzero\Utility\Inflector::singularize($this->controller);
 
             // Does the model name include the namespace?
             // We need a fully qualified name

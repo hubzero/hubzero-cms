@@ -248,10 +248,6 @@ class Database
         // Select database type
         $dbType = self::selectDatabaseType($ansi);
 
-        if ($dbType === false) {
-            return false;
-        }
-
         self::output("\n", $ansi);
         self::output("\e[32mUsing " . self::SUPPORTED_TYPES[$dbType] . ".\e[39m\n", $ansi);
 
@@ -392,7 +388,7 @@ class Database
      * Select database type
      *
      * @param   bool  $ansi  Whether to use ANSI colors
-     * @return  string|false  Database type or false on failure
+     * @return  string  Database type
      **/
     private static function selectDatabaseType($ansi)
     {
@@ -555,12 +551,11 @@ class Database
                 return self::selectMySqlConnection($ansi, $existing);
             }
 
-            if ($options[$selected] === 'Exit') {
-                self::output("\n", $ansi);
-                self::output("Exiting...\n", $ansi);
-                self::output("\n", $ansi);
-                return null;
-            }
+            // The only choice left is Exit
+            self::output("\n", $ansi);
+            self::output("Exiting...\n", $ansi);
+            self::output("\n", $ansi);
+            return null;
         }
     }
 

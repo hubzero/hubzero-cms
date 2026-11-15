@@ -23,13 +23,6 @@ final class WrappedListener
     private $listener;
 
     /**
-     * Has the listener been called
-     *
-     * @var  boolean
-     */
-    private $called;
-
-    /**
      * Constructor.
      *
      * @param   object  $listener
@@ -38,7 +31,6 @@ final class WrappedListener
     public function __construct($listener)
     {
         $this->listener = $listener;
-        $this->called   = false;
     }
 
     /**
@@ -60,8 +52,6 @@ final class WrappedListener
      */
     public function __call($method, $arguments)
     {
-        $this->called = true;
-
         $event = isset($arguments[0]) ? $arguments[0] : new Event($method);
 
         $this->listener->event = $event;

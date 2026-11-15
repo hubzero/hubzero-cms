@@ -97,7 +97,7 @@ class FileLoader
             foreach ($paths as $path) {
                 // Get file information
                 $info = pathinfo($path);
-                $group = isset($info['filename']) ? strtolower($info['filename']) : '';
+                $group = strtolower($info['filename']);
                 $extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 
                 if (!$extension || $extension == 'html') {
@@ -122,7 +122,7 @@ class FileLoader
                 foreach ($paths as $path) {
                     // Get file information
                     $info = pathinfo($path);
-                    $group = isset($info['filename']) ? strtolower($info['filename']) : '';
+                    $group = strtolower($info['filename']);
                     $extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 
                     if (!$extension || $extension == 'html') {

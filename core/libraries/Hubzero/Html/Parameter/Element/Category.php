@@ -36,14 +36,9 @@ class Category extends Element
     {
         $extension = (string) $node['extension'];
         $class     = (string) $node['class'];
-        $filter    = explode(',', (string) $node['filter']);
 
         if (!$class) {
             $class = "inputbox";
-        }
-
-        if (count($filter) < 1) {
-            $filter = null;
         }
 
         return Builder\Select::genericlist(

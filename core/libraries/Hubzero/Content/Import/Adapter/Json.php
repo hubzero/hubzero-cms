@@ -19,13 +19,6 @@ use Hubzero\Html\Parameter;
 class Json implements Adapter
 {
     /**
-     * Key that holds each item
-     *
-     * @var  string
-     */
-    private $key = 'record';
-
-    /**
      * Array to hold processed data
      *
      * @var  array
@@ -64,7 +57,7 @@ class Json implements Adapter
     public function count(Import $import)
     {
         // create iterator
-        $iterator = new Reader($import->getDatapath(), $this->key);
+        $iterator = new Reader($import->getDatapath());
 
         // iterate over each row
         $this->data_count = iterator_count($iterator);
@@ -82,7 +75,7 @@ class Json implements Adapter
     public function headers(Import $import)
     {
         // create iterator
-        $iterator = new Reader($import->getDataPath(), $this->key);
+        $iterator = new Reader($import->getDataPath());
         $iterator->rewind();
 
         $headers = [];
@@ -107,7 +100,7 @@ class Json implements Adapter
     public function process(Import $import, array $callbacks, $dryRun)
     {
         // create new iterator
-        $iterator = new Reader($import->getDatapath(), $this->key);
+        $iterator = new Reader($import->getDatapath());
 
         // get the import params
         $options = new Parameter($import->get('params'));

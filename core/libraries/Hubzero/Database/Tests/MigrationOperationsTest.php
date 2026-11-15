@@ -392,11 +392,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $needsId = !$driver->tableHasField('temp_conditional', 'id');
         $needsEmail = !$driver->tableHasField('temp_conditional', 'email');
 
-        $this->assertFalse($needsId, 'Should already have id');
-        $this->assertTrue($needsEmail, 'Should need email');
-
         if ($needsId) {
-            // Won't execute
             $driver->addAutoIncrementPrimaryKey('temp_conditional', 'id', true);
         }
 
@@ -406,6 +402,10 @@ class MigrationOperationsTest extends AbstractDriverTestCase
                 ->addColumn('email')->string(255)->nullable()
                 ->execute();
         }
+
+        // The table was created with an id but no email
+        $this->assertFalse($needsId, 'Should already have id');
+        $this->assertTrue($needsEmail, 'Should need email');
 
         // Verify both columns exist
         $this->assertTrue($driver->tableHasField('temp_conditional', 'id'));

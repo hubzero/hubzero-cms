@@ -58,7 +58,7 @@ class ComponentLayouts extends Select
             $options[] = Builder\Select::option('', App::get('language')->txt('JOPTION_USE_MENU_REQUEST_SETTING'));
         }
 
-        if ($path1 && $path2) {
+        if ($path1) {
             $path1 = Util::normalizePath($path1);
             $path2 = Util::normalizePath($path2);
 

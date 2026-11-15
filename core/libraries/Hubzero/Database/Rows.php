@@ -85,7 +85,7 @@ class Rows implements Iterator, Countable
         // Also check to see if that key already exists.  If so, we'll just start
         // appending items to the array.  This will result in a mixed array and
         // subsequent items will not be seekable.
-        if ($model->getPkValue() && (!is_array($this->rows) || !array_key_exists($model->getPkValue(), $this->rows))) {
+        if ($model->getPkValue() && !array_key_exists($model->getPkValue(), $this->rows)) {
             $this->rows[$model->getPkValue()] = $model;
         } else {
             $this->rows[] = $model;
@@ -210,9 +210,7 @@ class Rows implements Iterator, Countable
     #[\ReturnTypeWillChange]
     public function key()
     {
-        if (isset($this->rows)) {
-            return key($this->rows);
-        }
+        return key($this->rows);
     }
 
     /**
@@ -275,9 +273,7 @@ class Rows implements Iterator, Countable
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        if (isset($this->rows)) {
-            reset($this->rows);
-        }
+        reset($this->rows);
     }
 
     /**
@@ -329,14 +325,8 @@ class Rows implements Iterator, Countable
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        $valid = false;
-
-        if ($this->rows && $this->count()) {
-            $key   = key($this->rows);
-            $valid = ($key !== null && $key !== false);
-        }
-
-        return $valid;
+        // Past the last row, or with none, there is no key
+        return key($this->rows) !== null;
     }
 
     /**

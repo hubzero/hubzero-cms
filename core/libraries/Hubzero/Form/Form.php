@@ -1373,9 +1373,7 @@ class Form
 
         // Only include valid XML objects.
         foreach ($tmp as $element) {
-            if ($element instanceof SimpleXMLElement) {
-                $groups[] = $element;
-            }
+            $groups[] = $element;
         }
 
         return $groups;

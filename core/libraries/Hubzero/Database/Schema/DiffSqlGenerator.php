@@ -910,8 +910,8 @@ class DiffSqlGenerator
 
         // AlterTableBuilder.addForeign() supports single column FKs
         // For multi-column FKs, use the first column (most FKs are single-column)
-        $column = is_array($columns) ? ($columns[0] ?? '') : $columns;
-        $foreignColumn = is_array($foreignColumns) ? ($foreignColumns[0] ?? 'id') : $foreignColumns;
+        $column = $columns[0] ?? '';
+        $foreignColumn = $foreignColumns[0] ?? 'id';
 
         $onDelete = $fk->getOnDelete() ?: 'CASCADE';
         $onUpdate = $fk->getOnUpdate() ?: 'CASCADE';
@@ -1295,11 +1295,9 @@ class DiffSqlGenerator
      */
     protected function getDriverName(): string
     {
-        if (method_exists($this->driver, 'getDriverType')) {
-            $name = strtolower((string) $this->driver->getDriverType());
-            if ($name !== '' && $name !== 'unknown') {
-                return $name;
-            }
+        $name = strtolower($this->driver->getDriverType());
+        if ($name !== '' && $name !== 'unknown') {
+            return $name;
         }
 
         $class = get_class($this->driver);

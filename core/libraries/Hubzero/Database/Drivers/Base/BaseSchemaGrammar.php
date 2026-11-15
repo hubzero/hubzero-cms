@@ -8,7 +8,6 @@
 
 namespace Hubzero\Database\Drivers\Base;
 
-use Hubzero\Database\Driver;
 use Hubzero\Database\Drivers\Base\BaseSqlDriver as SqlDriver;
 use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Schema\Column;
@@ -31,7 +30,7 @@ abstract class BaseSchemaGrammar
      *
      * @param  SqlDriver  $driver
      */
-    public function __construct(Driver $driver)
+    public function __construct(SqlDriver $driver)
     {
         $this->driver = $driver;
     }
@@ -491,11 +490,7 @@ abstract class BaseSchemaGrammar
         $type = $definition['type'];
         $modifiers = $definition['modifiers'] ?? [];
 
-        if (method_exists($this->driver, 'normalizeColumnType')) {
-            $type = $this->driver->normalizeColumnType($type, $modifiers);
-        } else {
-            $type = $this->driver->mapColumnType($type);
-        }
+        $type = $this->driver->normalizeColumnType($type, $modifiers);
 
         if ($this->driver->supportsUnsigned() && !empty($modifiers['unsigned'])) {
             if (stripos($type, 'UNSIGNED') === false) {
@@ -543,7 +538,7 @@ abstract class BaseSchemaGrammar
             if ($this->driver->supportsExplicitNull()) {
                 $parts[] = 'NULL';
             }
-        } elseif (isset($modifiers['nullable']) && !$modifiers['nullable']) {
+        } elseif (isset($modifiers['nullable'])) {
             $parts[] = 'NOT NULL';
         }
 

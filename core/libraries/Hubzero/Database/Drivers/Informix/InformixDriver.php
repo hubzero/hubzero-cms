@@ -365,7 +365,7 @@ class InformixDriver extends BaseSqlDriver
             && $this->transactionDepth > 0
             && $this->shouldBufferTransactionStatement($sql)
         ) {
-            $this->transactionBuffer[] = $this->interpolateBindingsIntoSql($sql, $this->bindings ?? []);
+            $this->transactionBuffer[] = $this->interpolateBindingsIntoSql($sql, $this->bindings);
             $this->lobStreams = [];
             return 1;
         }
@@ -1546,7 +1546,7 @@ class InformixDriver extends BaseSqlDriver
         $this->setQuery("SELECT MAX($pk) FROM $table");
         $max = $this->loadResult();
 
-        if ($max === null || $max === false) {
+        if ($max === null) {
             return 1;
         }
 
@@ -1658,9 +1658,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Handle default value
         if (isset($definition['default'])) {
-            if ($definition['default'] === null) {
-                $def .= ' DEFAULT NULL';
-            } elseif ($definition['default'] === 'CURRENT_TIMESTAMP') {
+            if ($definition['default'] === 'CURRENT_TIMESTAMP') {
                 $def .= ' DEFAULT CURRENT YEAR TO SECOND';
             } elseif (is_string($definition['default'])) {
                 $def .= " DEFAULT '" . str_replace("'", "''", $definition['default']) . "'";
@@ -1755,22 +1753,8 @@ class InformixDriver extends BaseSqlDriver
 
         // Check for direct match
         foreach ($typeMap as $generic => $informix) {
+            // None of these keeps a size; VARCHAR, CHAR and DECIMAL are handled below
             if (strpos($upperType, $generic) === 0) {
-                // For sized types like VARCHAR(255), preserve the size
-                if (preg_match('/^' . preg_quote($generic, '/') . '\s*\((\d+)\)/i', $type, $matches)) {
-                    $size = (int) $matches[1];
-
-                    // Informix VARCHAR max is 255 without LVARCHAR
-                    if ($generic === 'VARCHAR' && $size > 255) {
-                        return "LVARCHAR($size)";
-                    }
-
-                    // For other types, preserve size
-                    if (in_array($generic, ['VARCHAR', 'CHAR', 'DECIMAL', 'NUMERIC'])) {
-                        return $type; // Keep original with size
-                    }
-                }
-
                 return $informix;
             }
         }

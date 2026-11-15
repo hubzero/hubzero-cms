@@ -147,7 +147,7 @@ class Passport implements ProviderInterface
         $response = curl_exec($request);
         $badge = json_decode($response);
 
-        if (empty($badge->Id) || !$badge->Id) {
+        if (empty($badge->Id)) {
             throw new Exception($badge->message);
         }
 
@@ -215,7 +215,7 @@ class Passport implements ProviderInterface
         }
 
         foreach ($assertion as $ass) {
-            if (empty($ass->Id) || !$ass->Id) {
+            if (empty($ass->Id)) {
                 throw new Exception($ass->message);
             }
         }

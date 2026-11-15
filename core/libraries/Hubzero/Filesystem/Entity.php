@@ -233,7 +233,7 @@ class Entity extends Obj
         $command = App::get('config')->get('virus_scanner', 'clamscan -i -r --no-summary --block-encrypted');
 
         // Always scan local, and only scan remote if explicitly requested
-        if ($this->isLocal() || (!$this->isLocal() && $remote)) {
+        if ($this->isLocal() || $remote) {
             if (!$this->isLocal()) {
                 // Copy to tmp
                 $temp = Manager::getTempPath(uniqid(true) . '.tmp');

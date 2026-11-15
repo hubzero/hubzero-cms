@@ -298,9 +298,12 @@ class Migration
     /**
      * Find all migration scripts
      *
+     * Adds what it finds to the list of files to run.
+     *
      * @param   string|null  $extension  Only look for migrations for this extension
      * @param   string|null  $file       The specific file to run
-     * @return  array|bool
+     * @return  bool  False when the specific file is not found
+     * @phpstan-impure
      **/
     public function find($extension = null, $file = null)
     {

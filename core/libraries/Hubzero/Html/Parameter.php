@@ -26,9 +26,9 @@ class Parameter extends Registry
     protected $raw = null;
 
     /**
-     * The XML params element
+     * The XML params elements, by group
      *
-     * @var  object|null
+     * @var  array<string, \SimpleXMLElement>|null
      */
     protected $xml = null;
 
@@ -315,11 +315,7 @@ class Parameter extends Registry
         $elementClass = __NAMESPACE__ . '\\Parameter\\Element\\' . ucfirst($type);
 
         if (!class_exists($elementClass)) {
-            if (isset($this->elementPath)) {
-                $dirs = $this->elementPath;
-            } else {
-                $dirs = [];
-            }
+            $dirs = $this->elementPath;
             preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace(
                 '_',
                 DS,

@@ -44,7 +44,7 @@ class Arr
     /**
      * Function to convert array to integer values
      *
-     * @param   array  &$array   The source array to convert
+     * @param   array|mixed  &$array   The source array to convert
      * @param   mixed  $default  A default value (int|array) to assign if $array is not an array
      * @return  void
      */
@@ -69,7 +69,7 @@ class Arr
     /**
      * Utility function to map an array to a stdClass object.
      *
-     * @param   array|object   &$array  The array to map.
+     * @param   array|object|mixed   &$array  The array to map.
      * @param   string  $class   Name of the class to create
      * @return  object  The object mapped from the given array
      */
@@ -156,7 +156,7 @@ class Arr
     /**
      * Extracts a column from an array of arrays or objects
      *
-     * @param   array   &$array  The source array
+     * @param   array|mixed   &$array  The source array
      * @param   string  $index   The index of the column or name of object property
      * @return  array  Column of values from the source array
      */
@@ -252,7 +252,7 @@ class Arr
     /**
      * Method to determine if an array is an associative array.
      *
-     * @param   array    $array  An array to test.
+     * @param   array|mixed    $array  An array to test.
      * @return  boolean  True if the array is an associative array.
      */
     public static function isAssociative($array)
@@ -417,8 +417,8 @@ class Arr
     /**
      * Multidimensional array safe unique test
      *
-     * @param   array  $myArray  The array to make unique.
-     * @return  array
+     * @param   array|mixed  $myArray  The array to make unique.
+     * @return  array|mixed  Anything but an array comes back as it was
      */
     public static function arrayUnique($myArray)
     {

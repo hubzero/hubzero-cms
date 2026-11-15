@@ -318,10 +318,6 @@ final class BackendRegistry
     public static function firstExistingClassCandidate(array $candidates): ?string
     {
         foreach ($candidates as $candidate) {
-            if (!is_string($candidate)) {
-                continue;
-            }
-
             if (class_exists($candidate)) {
                 return $candidate;
             }

@@ -93,7 +93,10 @@ class Local implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Delete a file
+     *
+     * @param   string|array  $path  A path, or a list of them
+     * @return  bool  False if any could not be deleted
      */
     public function delete($path)
     {

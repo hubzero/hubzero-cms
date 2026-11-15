@@ -23,12 +23,23 @@ class PrunableLog extends Relational
     protected $dispatchesModelEvents = true;
 
     /**
+     * Whether to say there is nothing to prune
+     *
+     * @var  bool
+     */
+    public static $nothingToPrune = false;
+
+    /**
      * Get the prunable query - logs older than 30 days
      *
-     * @return static
+     * @return static|null
      */
     protected function prunable()
     {
+        if (static::$nothingToPrune) {
+            return null;
+        }
+
         $thirtyDaysAgo = date('Y-m-d H:i:s', strtotime('-30 days'));
         return static::all()->where('created', '<', $thirtyDaysAgo);
     }

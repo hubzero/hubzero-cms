@@ -440,14 +440,10 @@ class Db2Grammar extends BaseSchemaGrammar
                 $command .= " NOT NULL";
             }
 
+            // isset() lets no null default through
             if (isset($modifiers['default'])) {
-                $default = $modifiers['default'];
-                if ($default === null) {
-                    $command .= " DEFAULT NULL";
-                } else {
-                    // Use getDefaultValue to handle zero-date conversion to NULL
-                    $command .= " DEFAULT " . $this->getDefaultValue($default);
-                }
+                // Use getDefaultValue to handle zero-date conversion to NULL
+                $command .= " DEFAULT " . $this->getDefaultValue($modifiers['default']);
             }
 
             $statements[] = $command;
@@ -494,17 +490,13 @@ class Db2Grammar extends BaseSchemaGrammar
             }
 
             // Default
+            // isset() lets no null default through
             if (isset($modifiers['default'])) {
-                $default = $modifiers['default'];
-                if ($default === null) {
-                    $statements[] = "ALTER TABLE " . $quotedTable . " ALTER COLUMN " . $colName . " SET DEFAULT NULL";
-                } else {
-                    // Use getDefaultValue to handle zero-date conversion to NULL
-                    $statements[] = "ALTER TABLE " . $quotedTable
-                        . " ALTER COLUMN " . $colName
-                        . " SET DEFAULT "
-                        . $this->getDefaultValue($default);
-                }
+                // Use getDefaultValue to handle zero-date conversion to NULL
+                $statements[] = "ALTER TABLE " . $quotedTable
+                    . " ALTER COLUMN " . $colName
+                    . " SET DEFAULT "
+                    . $this->getDefaultValue($modifiers['default']);
             }
         }
 
@@ -518,7 +510,7 @@ class Db2Grammar extends BaseSchemaGrammar
 
         // 8. Add Primary Key
         $addPk = $builder->getAddPrimaryKey();
-        if ($addPk && is_array($addPk)) {
+        if ($addPk) {
             // Handle both formats: ['columns' => [...]] or just [...]
             $pkColumns = isset($addPk['columns']) ? $addPk['columns'] : $addPk;
             if (is_array($pkColumns) && !empty($pkColumns)) {

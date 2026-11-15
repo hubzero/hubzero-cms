@@ -769,10 +769,7 @@ class HtmxService
         }
 
         if (function_exists('apache_request_headers')) {
-            $headers = apache_request_headers();
-            if (is_array($headers)) {
-                return $headers;
-            }
+            return apache_request_headers();
         }
 
         return [];

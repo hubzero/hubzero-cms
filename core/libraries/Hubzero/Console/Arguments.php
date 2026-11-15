@@ -168,10 +168,8 @@ class Arguments
                     // Args with a dash but no equals sign will be considered TRUE if present
                     // Try to catch clumped arguments (ex: -if as shorthand for -i -f)
                     if (preg_match("/^-([[:alpha:]]{2,})/", $this->raw[$i], $matches)) {
-                        if (isset($matches[1])) {
-                            foreach (str_split($matches[1], 1) as $k) {
-                                $this->opts[$k] = true;
-                            }
+                        foreach (str_split($matches[1], 1) as $k) {
+                            $this->opts[$k] = true;
                         }
 
                         continue;

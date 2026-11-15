@@ -208,7 +208,8 @@ class JoinBuilder
             $operator = '=';
         }
 
-        if ($operator === null || $right === null) {
+        // Given only two operands, the second was moved to $right above
+        if ($operator === null) {
             throw new InvalidArgumentException('Join ON predicates require left and right operands.');
         }
 

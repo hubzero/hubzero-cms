@@ -720,6 +720,13 @@ class FactoryTest extends AbstractDriverTestCase
     }
 
     #[Test]
+    public function modelFindsItsFactoryByName(): void
+    {
+        // TestModels\User has TestModels\UserFactory beside it
+        $this->assertInstanceOf(UserFactory::class, User::factory());
+    }
+
+    #[Test]
     public function modelClassReturnsConfiguredModel(): void
     {
         $factory = new UserFactory();

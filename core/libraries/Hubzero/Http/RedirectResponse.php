@@ -21,9 +21,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 class RedirectResponse extends BaseRedirectResponse
 {
     /**
-     * The request instance.
+     * The request instance, once set
      *
-     * @var  object
+     * @var  Request|null
      */
     protected $request;
 

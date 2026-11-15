@@ -45,7 +45,7 @@ class File extends Field
 
         $attr = [];
         foreach ($attributes as $key => $value) {
-            if ($key != 'value' && !$value) {
+            if (!$value) {
                 continue;
             }
 

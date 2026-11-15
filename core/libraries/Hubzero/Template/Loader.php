@@ -132,8 +132,7 @@ class Loader
         $template = $template ?: $this->load();
 
         if (
-            is_object($template)
-            && !empty($template->path)
+            !empty($template->path)
             && file_exists($template->path . DIRECTORY_SEPARATOR . $name . '.php')
         ) {
             return true;

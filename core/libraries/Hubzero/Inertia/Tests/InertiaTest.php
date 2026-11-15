@@ -8,6 +8,7 @@
 
 namespace Hubzero\Inertia\Tests {
 
+    use Hubzero\Component\Traits\UsesInertiaDebug;
     use Hubzero\Inertia\Inertia;
     use Hubzero\Inertia\InertiaService;
     use Hubzero\Inertia\InertiaServiceProvider;
@@ -547,6 +548,29 @@ namespace Hubzero\Inertia\Tests {
             $headers = \App::get('response')->headers->headers;
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', ['"outgoing"']);
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', ['facade.render']);
+        }
+
+        #[Test]
+        public function debugTraitGivesControllersTheFacadeHelpers(): void
+        {
+            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            $container = new ContainerStub();
+            $container->set('inertia', new InertiaService());
+            \App::set('app', $container);
+
+            $controller = new class {
+                use UsesInertiaDebug {
+                    inertiaDebugEnabled as public;
+                    inertiaDebugQuery as public;
+                    inertiaDebugField as public;
+                    inertiaDebugBar as public;
+                }
+            };
+
+            $this->assertTrue($controller->inertiaDebugEnabled());
+            $this->assertSame(['inertia_debug' => '1'], $controller->inertiaDebugQuery([]));
+            $this->assertStringContainsString('name="inertia_debug"', $controller->inertiaDebugField());
+            $this->assertStringContainsString('hz-inertia-debug-panel', $controller->inertiaDebugBar());
         }
     }
 }

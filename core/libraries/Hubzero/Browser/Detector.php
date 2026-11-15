@@ -1062,10 +1062,8 @@ class Detector
 
         if (strtolower($this->platform) == 'ios') {
             if (preg_match('/OS (\d\w\d)/i', $this->lowerAgent, $matches)) {
-                if (isset($matches[1])) {
-                    $v = explode('_', $matches[1]);
-                    $this->platformVersion = $v[0] . '.' . $v[1];
-                }
+                $v = explode('_', $matches[1]);
+                $this->platformVersion = $v[0] . '.' . $v[1];
             }
         }
 

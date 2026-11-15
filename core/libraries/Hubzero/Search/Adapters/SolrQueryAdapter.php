@@ -250,9 +250,7 @@ class SolrQueryAdapter implements QueryInterface
      */
     public function getDebug()
     {
-        if (isset($this->debug)) {
-            return $this->debug;
-        }
+        return $this->debug;
     }
 
     /**

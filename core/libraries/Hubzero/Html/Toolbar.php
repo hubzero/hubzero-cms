@@ -177,7 +177,7 @@ class Toolbar extends Obj
 
         $buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
         if (!class_exists($buttonClass)) {
-            $dirs = isset($this->buttonPath) ? $this->buttonPath : [];
+            $dirs = $this->buttonPath;
             $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))
                 . '.php';
 

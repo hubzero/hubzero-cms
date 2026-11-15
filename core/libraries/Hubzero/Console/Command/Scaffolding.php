@@ -290,7 +290,7 @@ class Scaffolding extends Base implements CommandInterface
     private function doReplacements($contents)
     {
         // Replace variables
-        if (isset($this->replacements) && count($this->replacements) > 0) {
+        if (count($this->replacements) > 0) {
             foreach ($this->replacements as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $replacement) {

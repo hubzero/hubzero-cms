@@ -1036,7 +1036,7 @@ class AseDriver extends BaseSqlDriver
         for ($pos = 1; $pos <= 16; $pos++) {
             $this->setQuery("SELECT index_col($qt, $indid, $pos) AS col_name");
             $result = $this->loadResult();
-            if ($result !== null && $result !== false) {
+            if ($result !== null) {
                 $cols[] = $result;
             } else {
                 break;
@@ -1396,7 +1396,7 @@ class AseDriver extends BaseSqlDriver
             $this->log(microtime(true) - $start);
         }
 
-        return $affected < 0 ? 0 : $affected;
+        return $affected;
     }
 
     /**
@@ -1655,7 +1655,7 @@ class AseDriver extends BaseSqlDriver
             if ($this->statement) {
                 $errorInfo = $this->statement->errorInfo();
                 $severity = $errorInfo[4] ?? 0;
-                if (isset($errorInfo[1]) && $errorInfo[1] !== 0 && $errorInfo[1] !== null && $severity >= 16) {
+                if (isset($errorInfo[1]) && $errorInfo[1] !== 0 && $severity >= 16) {
                     $sql = $this->statement->queryString ?? '';
                     $msg = ($errorInfo[2] ?? 'Unknown error') . " [{$sql}]";
 

@@ -127,18 +127,13 @@ class InformixGrammar extends BaseSchemaGrammar
 
         // Fulltext indexes via Informix BTS (driver-specific DDL generation)
         foreach ($blueprint->getFulltextIndexes() as $name => $columns) {
-            if (method_exists($this->driver, 'buildDeferredFulltextIndexStatements')) {
-                $driverStatements = $this->driver->buildDeferredFulltextIndexStatements(
-                    $blueprint->getTable(),
-                    $name,
-                    is_array($columns) ? $columns : [$columns],
-                );
-                foreach ($driverStatements as $driverStatement) {
-                    $statements[] = $driverStatement;
-                }
-            } else {
-                $columnList = $this->columnize($columns);
-                $statements[] = "CREATE INDEX {$this->wrap($name)} ON {$table} ({$columnList})";
+            $driverStatements = $this->driver->buildDeferredFulltextIndexStatements(
+                $blueprint->getTable(),
+                $name,
+                is_array($columns) ? $columns : [$columns],
+            );
+            foreach ($driverStatements as $driverStatement) {
+                $statements[] = $driverStatement;
             }
         }
 

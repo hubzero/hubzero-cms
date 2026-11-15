@@ -601,10 +601,10 @@ class Select
      *
      * @param   array    $data       An array of objects
      * @param   string   $name       The value of the HTML name attribute
-     * @param   string|null   $attribs    Additional HTML attributes for the <select> tag
+     * @param   string|array|null   $attribs    Additional HTML attributes for the <select> tag
      * @param   mixed    $optKey     The key that is selected
      * @param   string   $optText    The name of the object variable for the option value
-     * @param   string|null   $selected   The name of the object variable for the option text
+     * @param   string|array|null   $selected   The selected value, or a list of them
      * @param   boolean  $idtag      Value of the field id or null by default
      * @param   boolean  $translate  True if options will be translated
      * @return  string   HTML for the select list
@@ -742,7 +742,7 @@ class Select
         } else {
             if ($neworder > 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');
-            } elseif ($neworder <= 0) {
+            } else {
                 $text = Lang::txt('JGLOBAL_NEWITEMSFIRST_DESC');
             }
             $html = '<input type="hidden" name="'

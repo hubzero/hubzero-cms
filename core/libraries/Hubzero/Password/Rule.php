@@ -421,10 +421,6 @@ class Rule extends Relational
                         $xuser = User::oneByUsername($user);
                     }
 
-                    if (!is_object($xuser)) {
-                        continue;
-                    }
-
                     $givenName  = $xuser->get('givenName');
                     $middleName = $xuser->get('middleName');
                     $surname    = $xuser->get('surname');

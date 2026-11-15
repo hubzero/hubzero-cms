@@ -832,9 +832,9 @@ abstract class Table extends \stdClass
         // If an ordering filter is set, attempt reorder the rows in the table based on the filter and value.
         if ($orderingFilter) {
             $filterValue = $this->$orderingFilter;
-            $this->reorder($orderingFilter ? $this->db->quoteName($orderingFilter)
+            $this->reorder($this->db->quoteName($orderingFilter)
                 . ' = '
-                . $this->db->Quote($filterValue) : '');
+                . $this->db->Quote($filterValue));
         }
 
         // Set the error to empty and return true.
@@ -1434,7 +1434,7 @@ abstract class Table extends \stdClass
         // Get the publicly accessible instance properties.
         foreach (self::publicVars($this) as $k => $v) {
             // If the value is null or non-scalar, or the field is internal ignore it.
-            if (!is_scalar($v) || ($v === null) || ($k[0] == '_')) {
+            if (!is_scalar($v) || ($k[0] == '_')) {
                 continue;
             }
 

@@ -700,7 +700,6 @@ abstract class Driver implements LoggerAwareInterface
 
             if (
                 $connectionId !== null
-                && method_exists($instance, 'getConnectionId')
                 && $instance->getConnectionId() !== $connectionId
             ) {
                 continue;
@@ -902,7 +901,7 @@ abstract class Driver implements LoggerAwareInterface
             // Ignore cleanup failures during reuse flush.
         }
 
-        if ($commitOpenTransaction && method_exists($this, 'inTransaction')) {
+        if ($commitOpenTransaction) {
             try {
                 while ($this->inTransaction()) {
                     $this->transactionCommit();
@@ -911,7 +910,7 @@ abstract class Driver implements LoggerAwareInterface
                 static::incrementTelemetry('reset_failures');
                 // Best-effort commit cleanup only.
             }
-        } elseif ($rollbackOpenTransaction && method_exists($this, 'inTransaction')) {
+        } elseif ($rollbackOpenTransaction) {
             try {
                 while ($this->inTransaction()) {
                     $this->transactionRollback();
@@ -1011,10 +1010,6 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         foreach ($attributes as $attribute => $value) {
-            if (!is_int($attribute)) {
-                continue;
-            }
-
             try {
                 if (method_exists($this->connection, 'setAttribute')) {
                     $this->connection->setAttribute($attribute, $value);
@@ -2224,7 +2219,7 @@ abstract class Driver implements LoggerAwareInterface
         $fingerprintData = [
             'driver' => static::class,
             'database' => (string) ($this->database ?? ''),
-            'prefix' => (string) ($this->tablePrefix ?? ''),
+            'prefix' => (string) $this->tablePrefix,
             'host' => (string) ($this->getConnectionOption('host', '')),
             'port' => (string) ($this->getConnectionOption('port', '')),
             'dsn' => (string) ($this->getConnectionOption('dsn', '')),
@@ -2733,8 +2728,6 @@ abstract class Driver implements LoggerAwareInterface
             if (!$this->connection->isConnected()) {
                 throw new ConnectionFailedException('No database connection.', 500);
             }
-        } elseif (!is_object($this->connection)) {
-            throw new ConnectionFailedException('No database connection.', 500);
         }
 
         return $this;
@@ -3056,10 +3049,8 @@ abstract class Driver implements LoggerAwareInterface
             }
         }
 
-        // This should never be reached, but just in case
-        if ($lastException) {
-            throw $lastException;
-        }
+        // Every attempt returns or throws, so this is not reached
+        throw $lastException;
     }
 
     /**

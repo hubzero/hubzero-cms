@@ -107,7 +107,8 @@ class DeleteComponentEntry extends Macro
             $this->db->setQuery($query);
             $parentId = $this->db->loadResult();
 
-            if ($parentId === false) {
+            // No root item to rebuild from
+            if ($parentId === null) {
                 return false;
             }
         }

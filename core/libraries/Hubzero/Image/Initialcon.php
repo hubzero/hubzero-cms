@@ -40,11 +40,6 @@ class Initialcon
     private $hash;
 
     /**
-     * @var  string
-     */
-    private $string;
-
-    /**
      * @var  array
      */
     private $color;
@@ -100,8 +95,7 @@ class Initialcon
             throw new Exception('The string cannot be null.');
         }
 
-        $this->string = $string;
-        $this->hash   = md5($string);
+        $this->hash = md5($string);
 
         $this->convertHash();
 

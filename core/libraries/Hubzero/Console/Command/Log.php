@@ -390,12 +390,8 @@ class Log extends Base implements CommandInterface
 
         $threshold = [];
         foreach ($thresholds as $t) {
-            preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]\.]+)/', $t, $params);
-
             if (
-                isset($params[1])
-                && isset($params[2])
-                && isset($params[3])
+                preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]\.]+)/', $t, $params)
                 && $log::isField(trim($params[1]))
             ) {
                 $threshold[trim($params[1])] = [

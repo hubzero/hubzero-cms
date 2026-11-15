@@ -130,9 +130,7 @@ class Sliders
 
             $options = [];
             foreach ($opt as $k => $v) {
-                if ($v) {
-                    $options[] = $k . ': ' . $v;
-                }
+                $options[] = $k . ': ' . $v;
             }
             $options = '{' . implode(',', $options) . '}';
 

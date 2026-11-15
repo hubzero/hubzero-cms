@@ -216,9 +216,7 @@ class Extension extends Base implements CommandInterface
                 break;
 
             case 'plg':
-                preg_match('/plg_([[:alnum:]]+)_([[:alnum:]]*)/', $name, $matches);
-
-                if (!isset($matches[1]) || !isset($matches[2])) {
+                if (!preg_match('/plg_([[:alnum:]]+)_([[:alnum:]]*)/', $name, $matches)) {
                     $this->output->error('This does not appear to be a valid extension name.');
                 }
 

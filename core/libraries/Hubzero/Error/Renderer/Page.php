@@ -20,9 +20,9 @@ use Hubzero\Facades\Lang;
 class Page implements RendererInterface
 {
     /**
-     * Document instance
+     * Document instance; none on the command line
      *
-     * @var  object
+     * @var  object|null
      */
     protected $document;
 
@@ -43,7 +43,7 @@ class Page implements RendererInterface
     /**
      * Create a new exception renderer.
      *
-     * @param   object  $document  Document instance
+     * @param   object|null  $document  Document instance; none on the command line
      * @param   object|null  $template  Template loader
      * @param   bool    $debug     Debugging turned on?
      * @return  void

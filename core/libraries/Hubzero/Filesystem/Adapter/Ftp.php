@@ -578,11 +578,9 @@ class Ftp implements AdapterInterface
 
         $result = $this->writeStream($target, $response['stream']);
 
-        if ($result !== false && is_resource($response['stream'])) {
-            fclose($response['stream']);
-        }
+        fclose($response['stream']);
 
-        return $result !== false;
+        return $result;
     }
 
     /**
@@ -703,7 +701,7 @@ class Ftp implements AdapterInterface
         // callers pass files; the folder mode always applied before, and a
         // string mode was read as decimal by ftp_chmod()
         $mode = $this->isDirectory($path) ? $foldermode : $filemode;
-        $mode = is_string($mode) ? octdec($mode) : (int) $mode;
+        $mode = octdec($mode);
 
         if (!ftp_chmod($this->getConnection(), $mode, $path)) {
             return false;

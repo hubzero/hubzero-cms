@@ -532,7 +532,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
-     * @return  string
+     * @return  mixed
      */
     public function input($key = null, $default = null)
     {

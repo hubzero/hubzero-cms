@@ -79,7 +79,6 @@ class Request
      * @var  string
      */
     private $body = '';
-    private $get = [];
     private $post = [];
     /**
      * Short description for 'getHeaderField'
@@ -457,6 +456,8 @@ class Request
                 parse_str($this->get('query'), $queryvars);
 
                 return $queryvars;
+            case 'body':
+                return $this->body;
             case 'postdata':
                 return $this->post;
             case 'sbs':

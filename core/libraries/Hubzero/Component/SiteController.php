@@ -169,7 +169,7 @@ class SiteController extends Obj implements ControllerInterface
                     $segments = explode('\\', $cls);
                 } elseif (preg_match('/(.*)Controller(.*)/i', $cls, $segments)) {
                     // If matching the pattern of ComponentControllerName
-                    $this->controller = isset($segments[2]) ? strtolower($segments[2]) : null;
+                    $this->controller = strtolower($segments[2]);
                 } else {
                     // Uh-oh!
                     throw new InvalidControllerException(

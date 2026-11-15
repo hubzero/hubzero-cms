@@ -39,7 +39,7 @@ class Output
      * While in interactive mode, output each line as it's given
      * rather than pooling and waiting until render is called.
      *
-     * @var  string|bool
+     * @var  bool
      **/
     private $isInteractive = true;
 
@@ -71,7 +71,7 @@ class Output
     public function render($newLine = true)
     {
         // Make sure there is something there
-        if (isset($this->response) && count($this->response) > 0) {
+        if (count($this->response) > 0) {
             foreach ($this->response as $line) {
                 // Echo out the message
                 echo $line['message'];
@@ -435,7 +435,7 @@ class Output
             $items = iterator_to_array($items);
         }
 
-        $total = is_countable($items) ? count($items) : 0;
+        $total = count($items);
 
         if ($total === 0) {
             return [];
@@ -482,7 +482,7 @@ class Output
             $items = iterator_to_array($items);
         }
 
-        $total = is_countable($items) ? count($items) : 0;
+        $total = count($items);
 
         if ($total === 0) {
             return [];

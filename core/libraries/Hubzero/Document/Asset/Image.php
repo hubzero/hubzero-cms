@@ -8,8 +8,6 @@
 
 namespace Hubzero\Document\Asset;
 
-use Hubzero\Facades\App;
-
 /**
  * Image asset class
  */
@@ -23,13 +21,6 @@ class Image extends File
     protected $type = 'img';
 
     /**
-     * File extension
-     *
-     * @var  string
-     */
-    private $ext = '';
-
-    /**
      * Constructor
      *
      * @param   string  $extension  CMS Extension to load asset from
@@ -39,9 +30,6 @@ class Image extends File
     public function __construct($extension, $name = null)
     {
         parent::__construct($extension, $name);
-
-        // Preserve the original file extension
-        $this->ext = strtolower(App::get('filesystem')->extension($name));
     }
 
     /**
