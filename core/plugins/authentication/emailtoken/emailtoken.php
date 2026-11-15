@@ -105,6 +105,20 @@ class Emailtoken extends Plugin
             );
         }
 
+        // Name the account in the response, so that a wrong code is logged as a
+        // failed attempt against it, and stop once there have been too many: the
+        // code is a number, and nothing else limits how often it can be guessed.
+        if ($user->get('id')) {
+            $response->username = $user->get('username');
+
+            if ($this->hasExceededBlockLimit($response) || $this->hasExceededLoginLimit($user)) {
+                $response->status        = \Hubzero\Auth\Status::FAILURE;
+                $response->error_message = Lang::txt('PLG_AUTHENTICATION_EMAILTOKEN_TOO_MANY_ATTEMPTS');
+
+                return;
+            }
+        }
+
         // Check if they gave the correct confirmation token. Only a genuinely
         // pending account has a negative activation token; require an exact match
         // so a loosely-equal/zero value cannot pass.
