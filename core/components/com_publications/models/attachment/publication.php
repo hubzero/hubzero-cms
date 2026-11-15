@@ -113,9 +113,7 @@ class Publication extends Base
 
                 $db = App::get('db');
                 $version = new \Components\Publications\Tables\Version($db);
-                $version->load($attach->object_id);
-
-                if (!$version) {
+                if (!$version->load($attach->object_id)) {
                     continue;
                 }
                 //$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');
@@ -422,13 +420,13 @@ class Publication extends Base
 
         $db = App::get('db');
         $version = new \Components\Publications\Tables\Version($db);
-        $version->load($id);
+        $found = $version->load($id);
 
         $baseUrl = rtrim(Request::base(), '/') . '/';
         $pubLink = Route::url('index.php?option=com_publications&id=' . $id);
         $path = $baseUrl . ltrim($pubLink, '/');
 
-        if ($version) {
+        if ($found) {
             $title = $version->title . ' (v' . $version->version_label . ')';
 
             $versionLink = 'index.php?option=com_publications&id=' . $version->publication_id;

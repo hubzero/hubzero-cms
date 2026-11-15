@@ -232,9 +232,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $this->record->entry = Group::oneOrNew($this->raw->id);
         } elseif (isset($this->raw->cn) && $this->raw->cn) {
             $entry = Group::oneByCn($this->raw->cn);
-            if (!$entry) {
-                $entry = Group::blank();
-            }
             $this->record->entry = $entry;
         }
 

@@ -243,7 +243,7 @@ class Screenshots extends SiteController
         // Instantiate a new screenshot object
         $shot = Screenshot::oneByFilename($file, $pid, $vid);
 
-        if (!$shot) {
+        if ($shot->isNew()) {
             // make new entry
             $shot->set('versionid', $vid);
             $shot->set('filename', $file);

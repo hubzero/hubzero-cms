@@ -184,9 +184,6 @@ class CustomFields extends AdminController
                     } else {
                         $option = Option::oneByOrdering($j + 1, $field->get('id'));
                     }
-                    if (!$option) {
-                        $option = Option::blank();
-                    }
 
                     $dependents = [];
                     if (isset($opt['dependents'])) {

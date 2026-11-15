@@ -1213,10 +1213,8 @@ class Manage extends AdminController
             foreach ($ids as $id) {
                 // Load the group page
                 $group = new Group();
-                $group->read($id);
-
                 // Ensure we found the group info
-                if (!$group) {
+                if (!$group->read($id)) {
                     continue;
                 }
 
@@ -1285,10 +1283,8 @@ class Manage extends AdminController
             foreach ($ids as $id) {
                 // Load the group page
                 $group = new Group();
-                $group->read($id);
-
                 // Ensure we found the group info
-                if (!$group) {
+                if (!$group->read($id)) {
                     continue;
                 }
 
@@ -1347,10 +1343,8 @@ class Manage extends AdminController
             foreach ($ids as $id) {
                 // Load the group page
                 $group = new Group();
-                $group->read($id);
-
                 // Ensure we found the group info
-                if (!$group) {
+                if (!$group->read($id)) {
                     continue;
                 }
 
