@@ -117,9 +117,9 @@ class View extends AbstractView
     /**
      * Create a component view and return it
      *
-     * @param   string  $layout  View layout
+     * @param   string|\Hubzero\View\View  $layout  View layout, or a view to render as it is
      * @param   string|null  $name    View name
-     * @return  View
+     * @return  ($layout is string ? View : \Hubzero\View\View)
      */
     public function view($layout, $name = null)
     {

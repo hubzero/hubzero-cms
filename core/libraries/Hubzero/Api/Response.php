@@ -65,7 +65,10 @@ class Response extends BaseResponse
 
             case 'text/html':
                 $reason  = htmlspecialchars($reason);
-                $content = htmlspecialchars($content);
+                // A list or object is shown as JSON; either way it is escaped
+                $content = htmlspecialchars(
+                    (is_object($content) || is_array($content)) ? (string) json_encode($content) : (string) $content,
+                );
 
                 $output .= "<!DOCTYPE html>\n";
                 $output .= "<html lang='en'>\n";
@@ -80,11 +83,7 @@ class Response extends BaseResponse
 
                 $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 
-                if (!is_object($content) && !is_array($content)) {
-                    $output .= '<p id ="message">' . $content . "</p>\n";
-                } else {
-                    $output .= '<p id ="message">' . json_encode($content) . "</p>\n";
-                }
+                $output .= '<p id ="message">' . $content . "</p>\n";
 
                 $output .= "</div>\n";
                 $output .= "</body>\n";
@@ -92,7 +91,10 @@ class Response extends BaseResponse
                 break;
             case 'application/xhtml+xml':
                 $reason  = htmlspecialchars($reason);
-                $content = htmlspecialchars($content);
+                // A list or object is shown as JSON; either way it is escaped
+                $content = htmlspecialchars(
+                    (is_object($content) || is_array($content)) ? (string) json_encode($content) : (string) $content,
+                );
 
                 $output .= '<?xml version="1.0" ?>' . "\n";
                 $output .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
@@ -109,11 +111,7 @@ class Response extends BaseResponse
                 $output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
                 $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
-                if (!is_object($content) && !is_array($content)) {
-                    $output .= '<p id ="message">' . $content . "</p>\n";
-                } else {
-                    $output .= '<p id ="message">' . json_encode($content) . "</p>\n";
-                }
+                $output .= '<p id ="message">' . $content . "</p>\n";
 
                 $output .= "</div>\n";
                 $output .= "</body>\n";

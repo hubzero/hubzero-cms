@@ -116,9 +116,9 @@ class Node extends Obj
     public $access = null;
 
     /**
-     * JSON string of parameters
+     * JSON string of parameters, a Registry once read
      *
-     * @var  string|null
+     * @var  string|\Hubzero\Config\Registry|null
      */
     public $params = null;
 
@@ -137,9 +137,9 @@ class Node extends Obj
     public $metakey = null;
 
     /**
-     * JSON string of other meta data
+     * JSON string of other meta data, a Registry once read
      *
-     * @var  string|null
+     * @var  string|\Hubzero\Config\Registry|null
      */
     public $metadata = null;
 

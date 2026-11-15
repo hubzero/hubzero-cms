@@ -24,7 +24,7 @@ use Hubzero\Facades\Route;
  * Its private properties are read and written from outside through __get() and
  * __set(); these are the ones other code uses:
  *
- * @property  string|null  $params
+ * @property  string|\Hubzero\Config\Registry|null  $params  JSON until first read, then a Registry
  * @property  integer|null  $published
  * @property  string|null  $cn
  */

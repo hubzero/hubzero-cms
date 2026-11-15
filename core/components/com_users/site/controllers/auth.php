@@ -910,7 +910,7 @@ class Auth extends SiteController
         }
 
         // Check if the log out succeeded.
-        if (!($error instanceof Exception)) {
+        if (!$error) {
             // If the authenticator is empty, but they have an active third party session,
             // redirect to a page indicating this and offering complete signout
             if (isset($user->auth_link_id) && $user->auth_link_id && empty($authenticator)) {

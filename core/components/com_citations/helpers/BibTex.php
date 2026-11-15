@@ -805,7 +805,7 @@ class BibTex
      *
      * @access private
      * @param  string|mixed  $word
-     * @return int     The Case or Exception if there was a problem
+     * @return int|\Exception  The Case or Exception if there was a problem
      */
     public function determineCase($word)
     {
