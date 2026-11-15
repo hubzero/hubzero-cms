@@ -11,8 +11,6 @@ namespace Components\Cart\Site\Controllers;
 // Imported: unqualified, Request resolves to this namespace's own Request
 // controller (request.php) and getParams() dies on "undefined method getString()"
 use Hubzero\Facades\Request;
-use Hubzero\Facades\App;
-use Hubzero\Facades\Lang;
 
 /**
  *  Base component controller class
@@ -29,20 +27,9 @@ class ComponentController extends \Hubzero\Component\SiteController
     protected function getParams($varNames)
     {
         $i = 0;
-        // Strict processing doesn't allow extra or missing parameters in the URL
-        $strictProcessing = false;
-        $params = false;
 
         if (!is_array($varNames)) {
             $varNames = [$varNames];
-        }
-
-        // check if there are more parameters than needed
-        $extraParameter = Request::getString('p' . count($varNames), '');
-        if ($strictProcessing && !empty($extraParameter)) {
-            // too many parameters in the URL
-            //throw new \Exception('Too many parameters');
-            App::abort(404, Lang::txt('Page Not Found'));
         }
 
         $params = new \stdClass();
@@ -53,11 +40,6 @@ class ComponentController extends \Hubzero\Component\SiteController
             if (!empty($value)) {
                 $params->$varName = $value;
             } else {
-                if ($strictProcessing) {
-                    // missing parameter in the URL
-                    //throw new \Exception('Too few parameters');
-                    App::abort(404, Lang::txt('Page Not Found'));
-                }
                 break;
             }
             $i++;

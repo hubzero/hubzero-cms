@@ -79,8 +79,6 @@ if ($this->row->get('login')) {
     }
 }
 
-$prev = null;
-$next = null;
 /*
 $sq = \Components\Support\Models\Query::oneOrNew($this->filters['show']);
 if ($sq->conditions)
@@ -125,20 +123,6 @@ $categorySelected = function ($value) use ($view) {
     <h2><?php echo $this->title; ?></h2>
     <div id="content-header-extra">
         <ul id="useroptions">
-        <?php if ($prev) { ?>
-            <li>
-                <?php
-                $ticketUrl = Route::url(
-                    'index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show='
-                        . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='
-                        . $this->filters['limit'] . '&limitstart=' . $this->filters['start'],
-                );
-                ?>
-                <a class="icon-prev prev btn" href="<?= $ticketUrl ?>">
-                    <?php echo Lang::txt('COM_SUPPORT_PREV'); ?>
-                </a>
-            </li>
-        <?php } ?>
             <li>
                 <?php
                 $ticketsUrl = Route::url(
@@ -151,20 +135,6 @@ $categorySelected = function ($value) use ($view) {
                     <?php echo Lang::txt('COM_SUPPORT_TICKETS'); ?>
                 </a>
             </li>
-        <?php if ($next) { ?>
-            <li>
-                <?php
-                $ticketUrl = Route::url(
-                    'index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show='
-                        . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='
-                        . $this->filters['limit'] . '&limitstart=' . $this->filters['start'],
-                );
-                ?>
-                <a class="icon-next next opposite btn" href="<?= $ticketUrl ?>">
-                    <?php echo Lang::txt('COM_SUPPORT_NEXT'); ?>
-                </a>
-            </li>
-        <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

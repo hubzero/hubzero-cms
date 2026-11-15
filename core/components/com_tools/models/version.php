@@ -534,7 +534,6 @@ class Version
     private function sqlRead()
     {
         $db = App::get('db');
-        $lazyloading = false;
 
         if (empty($db)) {
             return false;
@@ -568,14 +567,12 @@ class Version
         $this->__unset('member');
         $this->__unset('owner');
 
-        if (!$lazyloading) {
-            $this->__get('alias');
-            $this->__get('middleware');
-            $this->__get('hostreq');
-            $this->__get('author');
-            $this->__get('member');
-            $this->__get('owner');
-        }
+        $this->__get('alias');
+        $this->__get('middleware');
+        $this->__get('hostreq');
+        $this->__get('author');
+        $this->__get('member');
+        $this->__get('owner');
 
         $this->updatedkeys = [];
 

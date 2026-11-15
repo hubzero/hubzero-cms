@@ -183,16 +183,6 @@ class Items extends AdminController
         $query->select('ag.title', 'access_level');
         $query->join('`#__viewlevels` AS ag', 'ag.id', $a . '.access', 'left');
 
-        // Join over the associations.
-        $assoc = 0;
-        if ($assoc) {
-            $query->select('COUNT(asso2.id)>1', 'association');
-            $assoCondition = 'asso.id = ' . $a . '.id AND asso.context=\'com_menus.item\'';
-            $query->joinRaw('`#__associations` AS asso', $assoCondition, 'left');
-            $query->join('`#__associations` AS asso2', 'asso2.key', 'asso.key', 'left');
-            $query->group($a . '.id');
-        }
-
         // Join over the extensions
         $query->select('e.name', 'name');
         $query->join('`#__extensions` AS e', 'e.extension_id', $a . '.component_id', 'left');

@@ -187,15 +187,9 @@ class Order extends ComponentController
         // some payment providers (Dummy, PayPal will do the postback,
         // need to call the plugins and handle appropriately)
 
-        $test = false;
-        // TESTING ***********************
-        if ($test) {
-            $postBackTransactionId = 116;
-        }
-
         $params = Component::params(Request::getCmd('option'));
 
-        if (empty($_POST) && !$test) {
+        if (empty($_POST)) {
             App::abort(404, Lang::txt('Page not found'));
         }
 

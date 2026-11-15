@@ -66,7 +66,7 @@ class Redirect extends WikiMacro
         }
 
         // Nothing safe to redirect to (an empty target would reload this page forever)
-        if ($url === '' || $url === null) {
+        if ($url === '') {
             return '';
         }
         $delay = intval($delay);

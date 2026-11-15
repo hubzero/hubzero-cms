@@ -371,7 +371,6 @@ class Group extends Obj
         }
 
         $result = true;
-        $lazyloading = false;
 
         if (is_numeric($this->gidNumber)) {
             $query = "SELECT * FROM `#__xgroups` WHERE gidNumber = " . $db->quote($this->gidNumber) . ";";
@@ -399,12 +398,10 @@ class Group extends Obj
         $this->__unset('applicants');
         $this->__unset('managers');
 
-        if (!$lazyloading) {
-            $this->__get('members');
-            $this->__get('invitees');
-            $this->__get('applicants');
-            $this->__get('managers');
-        }
+        $this->__get('members');
+        $this->__get('invitees');
+        $this->__get('applicants');
+        $this->__get('managers');
 
         $this->updatedKeys = [];
 

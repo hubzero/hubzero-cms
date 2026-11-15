@@ -24,9 +24,9 @@ class Parserdefault extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Holds the parser for re-use
+     * Holds the parser for re-use, once made
      *
-     * @var  object
+     * @var  object|null
      */
     public $parser;
 
@@ -69,6 +69,6 @@ class Parserdefault extends Plugin
         $parser = $this->onGetWikiParser($config, $getnew);
         $config['camelcase'] = (isset($config['camelcase']) ? $config['camelcase'] : 1);
 
-        return is_object($parser) ? $parser->parse("\n" . $text, $fullparse, 0, $config['camelcase']) : $text;
+        return $parser->parse("\n" . $text, $fullparse, 0, $config['camelcase']);
     }
 }

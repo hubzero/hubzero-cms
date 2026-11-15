@@ -48,7 +48,6 @@ class Loadmodule extends Plugin
         // simple performance check to determine whether bot should process further
         if (
             isset($article->text)
-            && $article->text !== null
             && strpos($article->text, 'loadposition') === false
             && strpos($article->text, 'loadmodule') === false
         ) {

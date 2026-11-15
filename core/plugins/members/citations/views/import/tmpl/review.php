@@ -164,7 +164,6 @@ $base = $this->member->link() . '&active=citations';
                                     <span class="click-more">
                                         <?php echo $showDetails; ?>
                                     </span>
-                            <?php if (1) { ?>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
@@ -278,9 +277,6 @@ $base = $this->member->link() . '&active=citations';
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                <?php
-                            }
-                            ?>
                                 </td>
                             </tr>
                             <?php $counter++; ?>

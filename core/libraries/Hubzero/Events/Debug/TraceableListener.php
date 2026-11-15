@@ -27,13 +27,6 @@ class TraceableListener
     private $listener;
 
     /**
-     * Listener name
-     *
-     * @var  string
-     */
-    private $name;
-
-    /**
      * Called status
      *
      * @var  boolean
@@ -48,25 +41,14 @@ class TraceableListener
     private $stoppedPropagation;
 
     /**
-     * Timer
-     *
-     * @var  object
-     */
-    private $stopwatch;
-
-    /**
      * Constructor
      *
      * @param   object  $listener
-     * @param   string  $name
-     * @param   object  $stopwatch
      * @return  void
      */
-    public function __construct($listener, $name, $stopwatch)
+    public function __construct($listener)
     {
         $this->listener = $listener;
-        $this->name = $name;
-        $this->stopwatch = $stopwatch;
         $this->called = false;
         $this->stoppedPropagation = false;
     }

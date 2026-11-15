@@ -72,7 +72,7 @@ class Parents extends WikiMacro
         $rows = $this->fetchPointer($depth, $this->scope);
 
         // Check for any results
-        if ($rows && is_array($rows)) {
+        if ($rows) {
             // Return nested lists
             return $this->buildTree($rows);
         }

@@ -156,7 +156,6 @@ class Polls extends SiteController
         $graphwidth = 200;
         $barheight  = 4;
         $maxcolors  = 5;
-        $barcolor   = 0;
         $tabcnt     = 0;
         $colorx     = 0;
 
@@ -175,17 +174,13 @@ class Polls extends SiteController
                 $vote->percent = 0;
             }
 
-            $vote->class = '';
-            if ($barcolor == 0) {
-                if ($colorx < $maxcolors) {
-                    $colorx = ++$colorx;
-                } else {
-                    $colorx = 1;
-                }
-                $vote->class = 'polls_color_' . $colorx;
+            // Bars cycle through the colours
+            if ($colorx < $maxcolors) {
+                $colorx = ++$colorx;
             } else {
-                $vote->class = 'polls_color_' . $barcolor;
+                $colorx = 1;
             }
+            $vote->class = 'polls_color_' . $colorx;
 
             $vote->barheight = $barheight;
 

@@ -112,15 +112,6 @@ $restrictedSelected = function ($value) use ($template) {
         if (document.getElementById('field-title').value == ''){
             alert("<?php echo 'Title cannot be empty'; ?>");
         }
-        <?php
-        if (0 && $this->pInfo->ptModel == 'software') {
-            ?>
-        else if (document.getElementById('field-download-file').value == ''){
-            alert("<?php echo 'Download file cannot be empty'; ?>");
-        }
-            <?php
-        }
-        ?>
         else {
             submitform(pressbutton);
         }

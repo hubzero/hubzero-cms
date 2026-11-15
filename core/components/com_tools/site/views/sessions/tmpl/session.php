@@ -492,12 +492,6 @@ if (!$this->app->sess) {
                         </select>
                     </label>
 
-                    <?php if (0) : /* https://hubzero.org/support/ticket/9826 */ ?>
-                    <label for="field-readonly" id="readonly-label">
-                        <input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
-                        <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
-                    </label>
-                    <?php endif; ?>
 
                     <div>&nbsp;</div>
 

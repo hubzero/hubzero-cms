@@ -41,12 +41,6 @@ if (!$this->entry->exists()) {
 }
 
 $type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
-if (!$type) {
-    $type = 'file';
-}
-if ($type && !in_array($type, ['file', 'image', 'text', 'link'])) {
-    $type = 'link';
-}
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 

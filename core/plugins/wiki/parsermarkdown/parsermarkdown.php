@@ -73,6 +73,6 @@ class Parsermarkdown extends Plugin
         $parser = $this->onGetWikiParser($config, $getnew);
         $config['camelcase'] = (isset($config['camelcase']) ? $config['camelcase'] : 1);
 
-        return is_object($parser) ? $parser->parse("\n" . $text, $fullparse, 0, $config['camelcase']) : $text;
+        return $parser->parse("\n" . $text, $fullparse, 0, $config['camelcase']);
     }
 }

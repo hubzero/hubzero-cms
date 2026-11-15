@@ -96,7 +96,7 @@ class Contributor extends WikiMacro
 
                 // Did we get a result from the database?
                 if ($a) {
-                    $id = ($id) ? $id : $a[0];
+                    $id = $a[0];
                     // Build and return the link
                     if ($a[4] != '') {
                         $name = $a[4];

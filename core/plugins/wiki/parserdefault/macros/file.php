@@ -108,10 +108,8 @@ class File extends WikiMacro
         $args   = explode(',', $content);
         $file   = array_shift($args);
 
-        $this->attr   = [];
-        $this->attr['href']  = '';
-        $this->attr['style'] = [];
-        $this->attr['details'] = true;
+        // The parsing callbacks below fill in the rest
+        $this->resetAttributes();
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
@@ -222,7 +220,7 @@ class File extends WikiMacro
         // Set width if just a pixel size is given
         // e.g., [[File(myfile.jpg, width=120px)]]
         if (preg_match($size, $val, $matches) && $key != 'border') {
-            if ($matches[0] && in_array($key, ['width', 'height'])) {
+            if (in_array($key, ['width', 'height'])) {
                 $this->attr['style'][$key] = $val;
                 //$this->attr[$key] = $val;
                 return;
@@ -357,7 +355,7 @@ class File extends WikiMacro
 
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, left)]]
-        if (in_array($key, ['left', 'right', 'top', 'bottom'])) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom', 'center'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -685,5 +683,18 @@ class File extends WikiMacro
         }
 
         return $html;
+    }
+
+    /**
+     * Start a fresh set of attributes for this macro
+     *
+     * Done in a method of its own: the callbacks that parse the arguments
+     * fill the attributes in, which analysis of the caller cannot see.
+     *
+     * @return  void
+     */
+    private function resetAttributes()
+    {
+        $this->attr = ['href' => '', 'style' => [], 'details' => true];
     }
 }

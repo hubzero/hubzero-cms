@@ -108,7 +108,8 @@ class Video extends Macro
         $url  = $args[0];
 
         // We need to reset thinsg in case of multiple usage of macro
-        $this->attr = [];
+        // The parsing callbacks below fill in the rest
+        $this->resetAttributes();
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
@@ -541,5 +542,18 @@ class Video extends Macro
         $link .= $this->pagename . DS . $type . ':' . $file;
 
         return Route::url($link);
+    }
+
+    /**
+     * Start a fresh set of attributes for this macro
+     *
+     * Done in a method of its own: the callbacks that parse the arguments
+     * fill the attributes in, which analysis of the caller cannot see.
+     *
+     * @return  void
+     */
+    private function resetAttributes()
+    {
+        $this->attr = [];
     }
 }

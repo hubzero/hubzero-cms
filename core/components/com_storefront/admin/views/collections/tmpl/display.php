@@ -22,10 +22,6 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('collection');
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Collections', 'storefront');
-if (0  && $canDo->get('core.admin')) {
-    Toolbar::preferences($this->option, '550');
-    Toolbar::spacer();
-}
 if ($canDo->get('core.edit.state')) {
     Toolbar::publishList();
     Toolbar::unpublishList();

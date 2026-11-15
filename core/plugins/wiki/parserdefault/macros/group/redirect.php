@@ -75,7 +75,7 @@ class Redirect extends GroupMacro
         }
 
         // Nothing safe to redirect to (an empty target would reload forever)
-        if ($url === '' || $url === null) {
+        if ($url === '') {
             return '';
         }
 

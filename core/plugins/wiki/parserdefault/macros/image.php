@@ -161,9 +161,8 @@ Examples:
         $args   = explode(',', $content);
         $file   = array_shift($args);
 
-        $this->attr   = [];
-        $this->attr['href']  = '';
-        $this->attr['style'] = [];
+        // The parsing callbacks below fill in the rest
+        $this->resetAttributes();
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
@@ -550,5 +549,18 @@ Examples:
         $html .= '</span>';
 
         return $html;
+    }
+
+    /**
+     * Start a fresh set of attributes for this macro
+     *
+     * Done in a method of its own: the callbacks that parse the arguments
+     * fill the attributes in, which analysis of the caller cannot see.
+     *
+     * @return  void
+     */
+    private function resetAttributes()
+    {
+        $this->attr = ['href' => '', 'style' => []];
     }
 }

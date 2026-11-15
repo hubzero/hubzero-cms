@@ -105,7 +105,6 @@ $no_show = ["errors","duplicate"];
                                     $clickMoreText = Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS');
                                     ?>
                                     <span class="click-more"><?= $clickMoreText ?></span>
-                            <?php if (1) { ?>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
@@ -224,9 +223,6 @@ $no_show = ["errors","duplicate"];
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                <?php
-                            }
-                            ?>
                                 </td>
                             </tr>
                             <?php $counter++; ?>

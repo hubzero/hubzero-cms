@@ -135,20 +135,16 @@ class MathRenderer
         $parts = explode('/', $path);
 
         $n = count($parts);
-        if ($n < 1) {
-            return mkdir($path, $mode);
-        } else {
-            $path = '';
-            for ($i = 0; $i < $n; $i++) {
-                $path .= $parts[$i] . '/';
-                if (!file_exists($path)) {
-                    if (!mkdir($path, $mode)) {
-                        return false;
-                    }
+        $path = '';
+        for ($i = 0; $i < $n; $i++) {
+            $path .= $parts[$i] . '/';
+            if (!file_exists($path)) {
+                if (!mkdir($path, $mode)) {
+                    return false;
                 }
             }
-            return true;
         }
+        return true;
     }
 
     /**

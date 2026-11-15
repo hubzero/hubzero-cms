@@ -317,7 +317,6 @@ class Tool
     private function sqlRead()
     {
         $db = App::get('db');
-        $lazyloading = false;
 
         if (empty($db)) {
             return false;
@@ -349,9 +348,7 @@ class Tool
 
         $this->__unset('version');
 
-        if (!$lazyloading) {
-            $this->__get('version');
-        }
+        $this->__get('version');
 
         $this->updatedkeys = [];
 

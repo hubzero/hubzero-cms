@@ -60,40 +60,6 @@ class Api implements RendererInterface
         $content->message = $error->getMessage();
         $content->code    = $status;
 
-        if (false && $this->debug) {
-            $content->trace = [];
-
-            $backtrace = $error->getTrace();
-
-            if (is_array($backtrace)) {
-                $backtrace = array_reverse($backtrace);
-
-                for ($i = count($backtrace) - 1; $i >= 0; $i--) {
-                    if (isset($backtrace[$i]['class'])) {
-                        $line = "[$i] "
-                            . sprintf(
-                                "%s %s %s()",
-                                $backtrace[$i]['class'],
-                                $backtrace[$i]['type'],
-                                $backtrace[$i]['function'],
-                            );
-                    } else {
-                        $line = "[$i] " . sprintf("%s()", $backtrace[$i]['function']);
-                    }
-
-                    if (isset($backtrace[$i]['file'])) {
-                        $line .= sprintf(
-                            ' @ %s:%d',
-                            str_replace(PATH_ROOT, '', $backtrace[$i]['file']),
-                            $backtrace[$i]['line'],
-                        );
-                    }
-
-                    $content->trace[] = $line;
-                }
-            }
-        }
-
         $this->response->setStatusCode($content->code);
         $this->response->setContent($content);
         $this->response->send();

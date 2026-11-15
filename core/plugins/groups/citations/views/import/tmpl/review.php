@@ -132,7 +132,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                     <span class="click-more">
                                         <?php echo $showDetails; ?>
                                     </span>
-                            <?php if (1) { ?>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
@@ -255,9 +254,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                <?php
-                            }
-                            ?>
                                 </td>
                             </tr>
                             <?php $counter++; ?>

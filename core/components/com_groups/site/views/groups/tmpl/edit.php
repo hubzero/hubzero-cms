@@ -418,7 +418,6 @@ $discoverabilityChecked = function ($value) use ($view) {
                     </fieldset>
                 </fieldset>
 
-                <?php if (true) : ?>
                     <fieldset>
                         <legend><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
                         <p><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>
@@ -451,7 +450,6 @@ $discoverabilityChecked = function ($value) use ($view) {
                             </div>
                         </fieldset>
                     </fieldset>
-                <?php endif; ?>
 
                 <fieldset id="page-settings">
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_SETTINGS_TITLE'); ?></legend>

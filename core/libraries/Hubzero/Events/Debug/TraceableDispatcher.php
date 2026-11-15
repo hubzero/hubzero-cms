@@ -258,13 +258,10 @@ class TraceableDispatcher implements DispatcherInterface
 
             //$this->dispatcher->removeListener($listener, $event);
 
-            $info = $this->getListenerInfo($listener, $event->getName());
-            $name = isset($info['class']) ? $info['class'] : $info['type'];
-
             $this->dispatcher->getListeners()[$event->getName()]->remove($listener);
             $this->dispatcher
                 ->getListeners()[$event->getName()]
-                ->add(new TraceableListener($listener, $name, $this->stopwatch), $priority);
+                ->add(new TraceableListener($listener), $priority);
 
             //$this->dispatcher->addListener(new TraceableListener($listener, $name, $this->stopwatch),
             //    array($event->getName() => $priority));

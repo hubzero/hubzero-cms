@@ -182,7 +182,6 @@ foreach ($typestats as $type => $stat) {
 $polls_graphwidth = 200;
 $polls_barheight  = 2;
 $polls_maxcolors  = 5;
-$polls_barcolor   = 0;
 $tabcnt = 0;
 $colorx = 0;
 $maxval = 0;
@@ -209,16 +208,13 @@ for ($i = 0, $n = count($data_arr['text']); $i < $n; $i++) {
 
     $tdclass = '';
 
-    if ($polls_barcolor == 0) {
-        if ($colorx < $polls_maxcolors) {
-            $colorx = ++$colorx;
-        } else {
-            $colorx = 1;
-        }
-        $tdclass = 'color' . $colorx;
+    // Bars cycle through the colours
+    if ($colorx < $polls_maxcolors) {
+        $colorx = ++$colorx;
     } else {
-        $tdclass = 'color' . $polls_barcolor;
+        $colorx = 1;
     }
+    $tdclass = 'color' . $colorx;
 
     $cls = ($cls == 'even') ? 'odd' : 'even';
 

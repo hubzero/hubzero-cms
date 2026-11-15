@@ -60,7 +60,7 @@ class Twitter extends WikiMacro
         $args = array_map('trim', explode(',', $this->args));
 
         //get screen name & num tweets
-        $screenName = (isset($args[0])) ? preg_replace('/[^A-Za-z0-9_]/', '', ltrim($args[0], '@')) : '';
+        $screenName = preg_replace('/[^A-Za-z0-9_]/', '', ltrim($args[0], '@'));
         $widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches))
             ? preg_replace('/[^0-9]/', '', $matches[1])
             : '';

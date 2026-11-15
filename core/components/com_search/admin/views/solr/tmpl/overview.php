@@ -80,38 +80,4 @@ $this
         <input type="hidden" name="task" value="searchIndex" autocomplete="" />
         <?php echo Html::input('token'); ?>
     </form>
-
-    <!-- @TODO: Make view -->
-    <?php if (isset($this->queueStats) && false) : ?>
-        <div class="widget">
-            <div class="inner">
-                <div class="title">
-                    <div><?php echo Lang::txt('COM_SEARCH_QUEUE_STATUS'); ?></div>
-                </div>
-                <div class="sub-title">
-                    <div class="sub-title-inner">
-                        <?php
-                            $lastService = Date::of($this->queueStats['modified'])->relative();
-                            echo Lang::txt('COM_SEARCH_QUEUE_LAST_SERVICE')
-                                . ':' . $lastService;
-                        ?>
-                    </div>
-                </div>
-                <div class="sub-title">
-                    <div class="sub-title-inner">
-                        <?php
-                            echo Lang::txt('COM_SEARCH_QUEUE_AVERAGE_SERVICE')
-                                . ':' . $this->queueStats['serviceTime']
-                                . 'minutes';
-                        ?>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="content-inner">
-                        <div class="status"></div> <!-- /.status -->
-                    </div><!-- /.content-inner -->
-                </div><!-- /.content -->
-            </div><!-- /.inner -->
-        </div>
-    <?php endif; ?>
 </div>
