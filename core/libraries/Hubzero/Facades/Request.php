@@ -12,7 +12,7 @@ namespace Hubzero\Facades;
  * Request facade
  *
  * @method static bool    setVar(string $name, mixed $value = null, string $hash = 'method', bool $overwrite = true)
- * @method static int     getInt(string $key, mixed $default = 0, string $hash = 'input')
+ * @method static ($default is int ? int : mixed)  getInt(string $key, mixed $default = 0, string $hash = 'input')
  * @method static int     getUInt(string $name, int $default = 0, string $hash = 'input')
  * @method static float   getFloat(string $key, float $default = 0.0, string $hash = 'input')
  * @method static bool    getBool(string $key = null, bool $default = null, string $hash = 'input')

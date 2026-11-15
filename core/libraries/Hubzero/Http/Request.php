@@ -172,7 +172,7 @@ class Request extends BaseRequest
      * @param   string   $key      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  integer  Request variable
+     * @return  ($default is int ? int : ($default is null ? int|null : mixed))  The leading integer, else the default
      */
     public function getInt($key, $default = 0, $hash = 'input')
     {
@@ -212,7 +212,7 @@ class Request extends BaseRequest
      * @param   string   $name      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  float  Request variable
+     * @return  ($default is float ? float : mixed)  The leading number, else the default
      */
     public function getFloat($name, $default = 0.0, $hash = 'input')
     {
