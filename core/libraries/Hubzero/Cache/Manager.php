@@ -124,7 +124,7 @@ class Manager
      * Get the cache connection configuration.
      *
      * @param   string  $name
-     * @return  array
+     * @return  mixed  The store configuration as an array; null or a scalar when it is missing or malformed
      */
     protected function getConfig($name)
     {

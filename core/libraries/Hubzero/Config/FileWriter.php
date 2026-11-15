@@ -23,7 +23,7 @@ class FileWriter
     /**
      * The default configuration path.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $path;
 

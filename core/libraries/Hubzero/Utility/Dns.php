@@ -83,9 +83,6 @@ class Dns
     {
         $arr = self::getConfigArray();
         array_shift($arr);
-        if (is_null($arr)) {
-            $arr = [];
-        }
 
         $domain = implode('.', $arr);
         return $domain;
@@ -101,16 +98,14 @@ class Dns
         $domains = self::getConfigArray();
         array_pop($domains);
         // Config contained only a single domain (".com")
-        if (is_null($domains)) {
-            $domains = [];
-            return $domains;
+        if (empty($domains)) {
+            return [];
         }
 
         // Config contained no subdomains ("example.com")
         array_shift($domains);
-        if (is_null($domains)) {
-            $domains = [];
-            return $domains;
+        if (empty($domains)) {
+            return [];
         }
 
         return $domains;

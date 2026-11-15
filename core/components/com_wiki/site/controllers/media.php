@@ -59,7 +59,7 @@ class Media extends SiteController
     /**
      * Sub component?
      *
-     * @var  bool
+     * @var  bool|null
      */
     public $sub = false;
 
