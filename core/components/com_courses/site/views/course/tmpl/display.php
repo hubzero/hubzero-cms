@@ -776,7 +776,7 @@ $this
 
 <?php
 $after = Event::trigger('courses.onCourseViewAfter', [$this->course]);
-if ($after && count($after) > 0) { ?>
+if ($after) { ?>
 <section class="below course section">
     <?php echo implode("\n", $after); ?>
 </section><!-- / .course section -->

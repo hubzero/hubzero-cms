@@ -90,7 +90,7 @@ class Related extends Plugin
                 $ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
                 $groups = [];
                 $cns = [];
-                if ($ugs && count($ugs) > 0) {
+                if ($ugs) {
                     foreach ($ugs as $ug) {
                         $cns[] = $database->quote($ug->cn);
                         $groups[] = $database->quote($ug->gidNumber);

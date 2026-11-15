@@ -1222,7 +1222,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             // Check if they are in tool admin group
             if ($admingroup = trim($tconfig->get('admingroup', ''))) {
                 $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-                if ($ugs && count($ugs) > 0) {
+                if ($ugs) {
                     $admingroup = strtolower($admingroup);
                     foreach ($ugs as $ug) {
                         if (strtolower($ug->cn) == $admingroup) {

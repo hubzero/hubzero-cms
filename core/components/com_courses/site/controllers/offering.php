@@ -380,7 +380,7 @@ class Offering extends SiteController
                 $offering,
                 $offering->section(),
             ]);
-            if ($data && count($data) > 0) {
+            if ($data) {
                 $link = implode('', $data);
             }
             App::redirect(

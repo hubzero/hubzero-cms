@@ -1805,7 +1805,7 @@ class Jobs extends SiteController
             $admingroup = $this->config->get('admingroup', '');
             if ($admingroup) {
                 $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-                if ($ugs && count($ugs) > 0) {
+                if ($ugs) {
                     foreach ($ugs as $ug) {
                         if ($ug->cn == $admingroup) {
                             $admin = 1;

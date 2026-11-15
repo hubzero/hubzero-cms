@@ -94,7 +94,7 @@ class Resume extends Plugin
         // check if they belong to a dedicated admin group
         if ($this->config->get('admingroup') && User::get('id') != 0) {
             $ugs = User::groups('all');
-            if ($ugs && count($ugs) > 0) {
+            if ($ugs) {
                 foreach ($ugs as $ug) {
                     if ($ug->cn == $this->config->get('admingroup')) {
                         $emp = 1;
@@ -122,7 +122,7 @@ class Resume extends Plugin
         // check if they belong to a dedicated admin group
         if ($this->config->get('admingroup')) {
             $ugs = User::groups('all');
-            if ($ugs && count($ugs) > 0) {
+            if ($ugs) {
                 foreach ($ugs as $ug) {
                     if ($ug->cn == $this->config->get('admingroup')) {
                         $admin = 1;

@@ -983,7 +983,7 @@ class Curation extends SiteController
                 if ($group = \Hubzero\User\Group::getInstance($curatorgroup)) {
                     // Check if they're a member of this group
                     $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-                    if ($ugs && count($ugs) > 0) {
+                    if ($ugs) {
                         foreach ($ugs as $ug) {
                             if ($group && $ug->cn == $group->get('cn')) {
                                 $authorized = $ug->cn == $curatorgroup ? 'curator' : 'limited';

@@ -1638,7 +1638,7 @@ class Connections
         $output = Event::trigger('handlers.onHandleView', [$items]);
 
         // Check return type and for multiple responses
-        if ($output && count($output) > 0) {
+        if ($output) {
             foreach ($output as $o) {
                 if ($o instanceof \Hubzero\Plugin\View) {
                     $handler = $o;

@@ -1308,7 +1308,7 @@ class Offering extends Base
                     $this,
                     $this->section(),
                 ]);
-                if ($data && count($data) > 0) {
+                if ($data) {
                     $link = implode('', $data);
                 } else {
                     $link = $this->link . '&task=enroll';

@@ -521,7 +521,7 @@ class Attachments extends SiteController
         if (($admingroup = trim($this->config->get('admingroup', '')))) {
             // Check if they're a member of admin group
             $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-            if ($ugs && count($ugs) > 0) {
+            if ($ugs) {
                 $admingroup = strtolower($admingroup);
                 foreach ($ugs as $ug) {
                     if (strtolower($ug->cn) == $admingroup) {
