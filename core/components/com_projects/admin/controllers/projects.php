@@ -915,8 +915,7 @@ class Projects extends AdminController
 
         // Erase owner group
         $group = new \Hubzero\User\Group();
-        $group->read($prGroup);
-        if ($group) {
+        if ($group->read($prGroup)) {
             $group->delete();
         }
 
