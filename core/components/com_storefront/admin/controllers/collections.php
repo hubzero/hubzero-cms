@@ -344,7 +344,7 @@ class Collections extends AdminController
 
         $type = 'message';
 
-        if (isset($error) && $error) {
+        if (!empty($error)) {
             switch ($state) {
                 case '1':
                     $action = 'published';

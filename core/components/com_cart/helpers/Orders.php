@@ -81,11 +81,11 @@ class Orders
             $where[] = "t.`tLastUpdated` <= " . $db->quote($showTo);
         }
 
-        if (!empty($filters['pId']) && $filters['pId']) {
+        if (!empty($filters['pId'])) {
             $where[] = " p.`pId` = " . intval($filters['pId']);
         }
 
-        if (!empty($filters['sId']) && $filters['sId']) {
+        if (!empty($filters['sId'])) {
             $where[] = "sku.`sId` = " . intval($filters['sId']);
         }
 

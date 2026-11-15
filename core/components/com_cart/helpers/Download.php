@@ -124,15 +124,15 @@ class Download
             $sql .= " AND (" . implode(" OR ", $where) . ")";
         }
 
-        if (!empty($filters['uidNumber']) && $filters['uidNumber']) {
+        if (!empty($filters['uidNumber'])) {
             $sql .= " AND d.`uId` = " . intval($filters['uidNumber']);
         }
 
-        if (!empty($filters['pId']) && $filters['pId']) {
+        if (!empty($filters['pId'])) {
             $sql .= " AND p.`pId` = " . intval($filters['pId']);
         }
 
-        if (!empty($filters['sId']) && $filters['sId']) {
+        if (!empty($filters['sId'])) {
             $sql .= " AND s.`sId` = " . intval($filters['sId']);
         }
 

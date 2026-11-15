@@ -269,7 +269,7 @@ class CurrentCart extends Cart
      */
     private function cartChanged()
     {
-        return (!empty($this->cart->hasChanges) && $this->cart->hasChanges);
+        return (!empty($this->cart->hasChanges));
     }
 
     /**
@@ -278,7 +278,7 @@ class CurrentCart extends Cart
      */
     public function hasMessages()
     {
-        return ((!empty($this->cart->hasMessages) && $this->cart->hasMessages)
+        return ((!empty($this->cart->hasMessages))
                 || $this->cartChanged()
         );
     }
@@ -308,7 +308,7 @@ class CurrentCart extends Cart
 
         // Get messages
         $messages = [];
-        if ((!empty($this->cart->hasMessages) && $this->cart->hasMessages)) {
+        if ((!empty($this->cart->hasMessages))) {
             $messages = $this->cart->messages;
             // Reset messages flag
             $this->cart->hasMessages = false;

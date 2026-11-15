@@ -157,7 +157,7 @@ class Cart extends ComponentController
         }
 
         // Check for express add to cart
-        if (!empty($redirect) && $redirect) {
+        if (!empty($redirect)) {
             // If this is an express checkout (go to the confirm page right away)
             // there shouldn't be any items in the cart
             // Since redirect is set, there are no errors

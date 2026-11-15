@@ -43,7 +43,7 @@ class BaseAuditor
 
     public function getSku()
     {
-        if (!empty($this->sId) && $this->sId) {
+        if (!empty($this->sId)) {
             return $this->sId;
         }
         return false;

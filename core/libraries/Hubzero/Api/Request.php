@@ -210,7 +210,7 @@ class Request
                     $this->set('hostname', $_SERVER['HTTP_HOST']);
                     break;
                 case 'scheme':
-                    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
+                    if (!empty($_SERVER['HTTPS'])) {
                         $this->set('scheme', 'https');
                     } else {
                         $this->set('scheme', 'http');

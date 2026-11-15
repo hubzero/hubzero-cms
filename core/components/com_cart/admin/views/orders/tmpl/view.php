@@ -65,7 +65,7 @@ $this
                         <td><span><?php echo '$' . number_format($this->tInfo->tiSubtotal, 2); ?></span></td>
                     </tr>
                     <?php
-                    if (!empty($this->tInfo->tiTax) && $this->tInfo->tiTax) {
+                    if (!empty($this->tInfo->tiTax)) {
                         ?>
                         <tr>
                             <th>Tax:</th>

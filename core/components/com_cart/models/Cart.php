@@ -161,17 +161,17 @@ abstract class Cart
         // Get info
         $sql = "SELECT DISTINCT ";
         if (
-            (!empty($filters['userInfo']) && $filters['userInfo'])
+            (!empty($filters['userInfo']))
             || (isset($filters['search']) && $filters['search'])
         ) {
             $sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
         }
-        if (!empty($filters['report-notes']) && $filters['report-notes']) {
+        if (!empty($filters['report-notes'])) {
             $sql .= " ti.`tiNotes`, ";
         }
         $sql .= "t.`tId`, `tLastUpdated`, `tStatus`, ti.`tiPayment` FROM `#__cart_transactions` t";
         if (
-            (!empty($filters['userInfo']) && $filters['userInfo'])
+            (!empty($filters['userInfo']))
             || (isset($filters['search']) && $filters['search'])
         ) {
             $sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
@@ -195,15 +195,15 @@ abstract class Cart
 			)";
         }
 
-        if (!empty($filters['uidNumber']) && $filters['uidNumber']) {
+        if (!empty($filters['uidNumber'])) {
             $where[] = "crt.`uidNumber` = " . intval($filters['uidNumber']);
         }
 
-        if (!empty($filters['crtId']) && $filters['crtId']) {
+        if (!empty($filters['crtId'])) {
             $where[] = "t.`crtId` = {$filters['crtId']}";
         }
 
-        if (!empty($filters['report-notes']) && $filters['report-notes']) {
+        if (!empty($filters['report-notes'])) {
             $where[] = "(ti.`tiNotes` IS NOT NULL AND ti.`tiNotes` != '')";
         }
 
@@ -247,7 +247,7 @@ abstract class Cart
 
         $totalRows = $db->getNumRows();
 
-        if (!empty($filters['count']) && $filters['count']) {
+        if (!empty($filters['count'])) {
             return $totalRows;
         }
 
