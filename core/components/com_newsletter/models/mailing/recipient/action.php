@@ -72,10 +72,6 @@ class Action extends Relational
             ->whereEquals('action', $action)
             ->row();
 
-        if (!$row) {
-            $row = self::blank();
-        }
-
         return $row;
     }
 }

@@ -89,10 +89,6 @@ class Member extends Relational
             ->whereEquals('gidNumber', $gidNumber)
             ->row();
 
-        if (!$row) {
-            $row = self::blank();
-        }
-
         return $row;
     }
 

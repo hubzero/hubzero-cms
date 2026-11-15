@@ -447,7 +447,7 @@ class Media extends SiteController
             ->whereEquals('id', $detailedId)
             ->whereEquals('user_id', User::get('id'))
             ->row();
-        if (!$trackingInformationDetailed || !$trackingInformationDetailed->get('id')) {
+        if (!$trackingInformationDetailed->get('id')) {
             $trackingInformationDetailed = Detailed::blank();
         }
 

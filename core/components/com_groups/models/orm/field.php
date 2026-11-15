@@ -659,10 +659,6 @@ class Field extends Relational
             ->limit(1)
             ->row();
 
-        if (!$row) {
-            $row = self::blank();
-        }
-
         return $row;
     }
 }

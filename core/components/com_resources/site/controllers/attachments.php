@@ -606,7 +606,7 @@ class Attachments extends SiteController
             // Authorize against the parent resource the attachment belongs to, so
             // any of its editors (not only whoever uploaded the file) may rename it
             $assoc  = Association::all()->whereEquals('child_id', $id)->row();
-            $authOn = ($assoc && $assoc->get('parent_id')) ? Entry::oneOrFail($assoc->get('parent_id')) : $resource;
+            $authOn = ($assoc->get('parent_id')) ? Entry::oneOrFail($assoc->get('parent_id')) : $resource;
             if (!$authOn->access('edit') && !$authOn->access('edit-own')) {
                 App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             }

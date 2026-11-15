@@ -88,10 +88,6 @@ class Level extends Relational
             ->whereEquals('label', $label)
             ->row();
 
-        if (!$result) {
-            $result = self::blank();
-        }
-
         return $result;
     }
 }

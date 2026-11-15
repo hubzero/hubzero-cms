@@ -123,7 +123,7 @@ class Domain extends Relational
                 ->row();
         }
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             return false;
         }
 
@@ -183,7 +183,7 @@ class Domain extends Relational
         }
         $row = $query->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             return false;
         }
 
@@ -255,7 +255,7 @@ class Domain extends Relational
         }
         $row = $query->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             $row = self::blank();
             $row->set('type', $type);
             $row->set('authenticator', $authenticator);

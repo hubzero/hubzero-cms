@@ -1744,7 +1744,7 @@ class Items extends AdminController
                     ->limit(1)
                     ->row();
 
-                if (is_object($author) && $author->name) {
+                if ($author->name) {
                     $name = $author->name;
                     $org  = $author->organization;
                 }

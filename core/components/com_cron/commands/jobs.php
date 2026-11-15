@@ -324,7 +324,7 @@ class Jobs extends Base implements CommandInterface
 
         $job = Job::oneOrNew($id);
 
-        if (!$job || $job->isNew()) {
+        if ($job->isNew()) {
             $this->output->addLine(Lang::txt('Specified job %s does not exist.', $id), 'error');
             return;
         }
@@ -361,7 +361,7 @@ class Jobs extends Base implements CommandInterface
 
         $job = Job::oneOrNew($id);
 
-        if (!$job || $job->isNew()) {
+        if ($job->isNew()) {
             $this->output->addLine(Lang::txt('Specified job %s does not exist.', $id), 'error');
             return;
         }

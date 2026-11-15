@@ -62,7 +62,7 @@ class Solr extends Plugin
         $modelNamespace = explode('\\', $modelClass->getNamespaceName());
         $componentName = strtolower($modelNamespace[1]);
         $searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
-        if ($searchComponent && $searchComponent->get('state') == 1) {
+        if ($searchComponent->get('state') == 1) {
             $indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
             if ($indexResultModel) {
                 $config = Component::params('com_search');

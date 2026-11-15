@@ -323,7 +323,7 @@ class Projects extends AdminController
                 ->row();
 
             $this->view->set('suspended', null);
-            if ($result) {
+            if (!$result->isNew()) {
                 $this->view->set('suspended', $result->details->get('admin'));
             }
         }
@@ -426,7 +426,7 @@ class Projects extends AdminController
                 ->row();
 
             $suspended = null;
-            if ($result) {
+            if (!$result->isNew()) {
                 $suspended = $result->details->get('admin');
             }
         }

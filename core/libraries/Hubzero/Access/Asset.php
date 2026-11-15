@@ -140,10 +140,6 @@ class Asset extends Nested
             ->whereEquals('name', $name)
             ->row();
 
-        if (!$model) {
-            $model = self::blank();
-        }
-
         return $model;
     }
 

@@ -90,7 +90,7 @@ class Economy extends Obj
 
         $wish = Wish::oneOrNew($wishid);
 
-        if (is_object($wish) && $wish->bonus > 0) {
+        if ($wish->bonus > 0) {
             // Adjust credits
             $payees = $this->getPayees($wishid);
             if ($payees) {

@@ -38,7 +38,7 @@ $result = $log
     ->row();
 
 $suspended = null;
-if ($result) {
+if (!$result->isNew()) {
     $suspended = $result->details->get('admin');
 }
 ?>

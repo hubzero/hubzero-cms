@@ -206,7 +206,7 @@ trait HasUuid
         $result = $instance->whereEquals($column, $uuid)->row();
 
         // Return null if not found (row() returns blank model)
-        if (!$result || !$result->get($instance->getPrimaryKey())) {
+        if (!$result->get($instance->getPrimaryKey())) {
             return null;
         }
 

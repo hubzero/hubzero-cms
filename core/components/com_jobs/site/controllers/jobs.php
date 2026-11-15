@@ -583,7 +583,7 @@ class Jobs extends SiteController
             ->whereIn('status', [0, 1])
             ->row();
 
-        if (!$subscription || !$subscription->get('id')) {
+        if (!$subscription->get('id')) {
             $subscription = Subscription::blank();
             $subscription->set('uid', $uid);
             $subscription->set('serviceid', 0);
@@ -1628,7 +1628,7 @@ class Jobs extends SiteController
                     ->whereEquals('id', $employer->subscriptionid)
                     ->whereIn('status', [0])
                     ->row();
-                if ($subscription && $subscription->get('id')) {
+                if ($subscription->get('id')) {
                     App::redirect(
                         Route::url('index.php?option=com_jobs&task=dashboard'),
                         Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING'),

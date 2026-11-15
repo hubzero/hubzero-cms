@@ -572,7 +572,7 @@ class Job extends Relational
 
         $row = self::all()->whereEquals('id', $id)->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             return false;
         }
 

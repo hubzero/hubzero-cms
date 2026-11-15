@@ -102,7 +102,7 @@ class Data extends Relational
             ->whereEquals('domain_key', $domain_key)
             ->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             $row = self::blank();
         }
 

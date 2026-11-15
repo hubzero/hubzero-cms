@@ -409,7 +409,7 @@ class Projectsv2r0 extends ApiController
             ->whereEquals('alias', $row->get('alias'))
             ->row();
 
-        if ($exists && !$exists->isNew()) {
+        if (!$exists->isNew()) {
             throw new Exception(Lang::txt('COM_PROJECTS_ERROR_ALIAS_TAKEN'), 409);
         }
 

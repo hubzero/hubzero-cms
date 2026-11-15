@@ -167,7 +167,7 @@ class Link extends Relational
             ->whereEquals('username', $username)
             ->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             return false;
         }
 
@@ -225,7 +225,7 @@ class Link extends Relational
             ->whereEquals('username', $username)
             ->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             return false;
         }
 
@@ -275,7 +275,7 @@ class Link extends Relational
             ->whereEquals('username', $username)
             ->row();
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             $row = self::blank();
             $row->set('auth_domain_id', $hzad->get('id'));
             $row->set('username', $username);

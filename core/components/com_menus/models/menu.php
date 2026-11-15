@@ -446,10 +446,6 @@ class Menu extends Relational
             ->whereEquals('menutype', $menutype)
             ->row();
 
-        if (!$row) {
-            $row = self::blank();
-        }
-
         return $row;
     }
 }

@@ -163,7 +163,7 @@ class CustomExtensions extends Relational
                     ->whereEquals('home', 1)
                     ->row();
 
-                if ($style && $style->get('id')) {
+                if ($style->get('id')) {
                     $this->addError(Lang::txt('COM_INSTALLER_ERROR_DISABLE_DEFAULT_TEMPLATE_NOT_PERMITTED'));
                     return false;
                 }

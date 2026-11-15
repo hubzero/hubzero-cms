@@ -122,7 +122,7 @@ class Router extends Base
                     ->whereEquals('alias', $articleAlias)
                     ->whereEquals('published', Category::STATE_PUBLISHED)
                     ->row();
-                if ($category && $category->get('id')) {
+                if ($category->get('id')) {
                     $vars['task'] = 'category';
                     $vars['categoryAlias'] = $articleAlias;
                     return $vars;

@@ -270,7 +270,7 @@ class Author extends Table
                 $resId = $res->user_id;
                 $user = \Components\Members\Models\Member::oneOrNew($resId);
 
-                if ($user) {
+                if (!$user->isNew()) {
                     $res->p_name = $user->get('name');
                     $res->username = $user->get('username');
                     $res->p_organization = $user->get('organization');

@@ -304,7 +304,7 @@ class Membership extends Base
                 ->whereEquals('gidNumber', $ie['gidNumber'])
                 ->row();
 
-            if (!$group_inviteemails || !$group_inviteemails->get('id')) {
+            if (!$group_inviteemails->get('id')) {
                 $group_inviteemails = \Hubzero\User\Group\InviteEmail::blank();
                 $group_inviteemails->set('email', $ie['email']);
                 $group_inviteemails->set('gidNumber', $ie['gidNumber']);
