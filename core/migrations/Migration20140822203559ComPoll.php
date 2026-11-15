@@ -37,7 +37,7 @@ class Migration20140822203559ComPoll extends Base
                 ->from('#__polls')
                 ->loadObjectList();
 
-            if ($polls && count($polls) > 0) {
+            if ($polls) {
                 foreach ($polls as $poll) {
                     $alias = preg_replace("/[^a-zA-Z0-9]/", '', $poll->title);
                     $alias = strtolower($alias);

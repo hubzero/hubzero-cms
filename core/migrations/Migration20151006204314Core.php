@@ -30,7 +30,7 @@ class Migration20151006204314Core extends Base
             $exclude = [".", "..", "index.html"];
             $files   = array_diff(scandir(PATH_APP . DS . 'migrations'), $exclude);
 
-            if ($files && count($files) > 0) {
+            if ($files) {
                 foreach ($files as $file) {
                     $this->db
                         ->getQuery()

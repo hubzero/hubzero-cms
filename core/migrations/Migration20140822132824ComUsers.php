@@ -33,7 +33,7 @@ class Migration20140822132824ComUsers extends Base
             ->where('group_id', 'IS', Expression::raw('NULL'))
             ->loadColumn();
 
-        if ($ids && count($ids) > 0) {
+        if ($ids) {
             // Get the default new user group
             $group_id = $this->getParams('com_users')->get('new_usertype');
 

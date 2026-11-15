@@ -30,7 +30,7 @@ class Migration20140904174546ComKb extends Base
             ->whereIn('alias', ['login2', 'pwreset'])
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $result) {
                 $result->fulltxt = str_replace('/lostpassword', '/login/reset', $result->fulltxt);
                 $result->fulltxt = str_replace('/change_password', '/members/myaccount/account', $result->fulltxt);

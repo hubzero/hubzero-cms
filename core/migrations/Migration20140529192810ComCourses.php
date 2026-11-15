@@ -35,7 +35,7 @@ class Migration20140529192810ComCourses extends Base
 
         $ordering = [];
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $result) {
                 $offering = $this->db
                     ->getQuery()

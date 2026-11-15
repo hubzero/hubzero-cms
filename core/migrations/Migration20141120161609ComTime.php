@@ -45,7 +45,7 @@ class Migration20141120161609ComTime extends Base
                 ->from('#__time_records')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 $total = count($results);
                 $i     = 0;
                 $this->callback('progress', 'init', ['Updating existing start dates to include time:']);
@@ -85,7 +85,7 @@ class Migration20141120161609ComTime extends Base
                 ->from('#__time_records')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 $total = count($results);
                 $i     = 0;
                 $this->callback('progress', 'init', ['Adding end dates based on record duration:']);

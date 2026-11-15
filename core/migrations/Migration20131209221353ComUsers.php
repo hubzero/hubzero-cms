@@ -30,7 +30,7 @@ class Migration20131209221353ComUsers extends Base
             ->where('module', '=', 'mod_custom');
         $results = $query->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 $look_for     = ['/user/remind', '/user/reset'];
                 $replace_with = ['/users/remind', '/users/reset'];

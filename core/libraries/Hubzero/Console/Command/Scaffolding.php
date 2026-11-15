@@ -446,7 +446,7 @@ class Scaffolding extends Base implements CommandInterface
     {
         $files = array_diff(scandir($path), ['.', '..', '.DS_Store']);
 
-        if ($files && count($files) > 0) {
+        if ($files) {
             foreach ($files as $file) {
                 if (is_file($path . DS . $file)) {
                     $contents = file_get_contents($path . DS . $file);

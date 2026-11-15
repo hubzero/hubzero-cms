@@ -53,7 +53,7 @@ class DeleteModuleEntry extends Macro
         $this->db->setQuery($query->toString());
         $ids = $this->db->loadColumn();
 
-        if ($ids && count($ids) > 0) {
+        if ($ids) {
             // Delete modules and module menu entries
             $query = $this->db
                 ->getQuery()

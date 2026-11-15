@@ -43,7 +43,7 @@ class Migration20131024182332Core extends Base
             ->where('alias', '=', 'pwchange')
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 $sub1 = substr(stripslashes($r->fulltxt), 0, 254);
                 $sub2 = substr($current, 0, 254);

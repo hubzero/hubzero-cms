@@ -909,7 +909,7 @@ class Messages extends Plugin
         $ids = Request::getArray('ids', []);
 
         // Ensure we have data to work with
-        if ($settings && count($settings) > 0) {
+        if ($settings) {
             // Loop through each setting
             foreach ($settings as $key => $value) {
                 foreach ($value as $v) {

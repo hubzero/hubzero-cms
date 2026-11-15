@@ -40,7 +40,7 @@ class Migration20140305142845Core extends Base
 
         $need_to_run = false;
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 // Make them all match
                 if ($r->created == '2010-03-25 02:26:40') {

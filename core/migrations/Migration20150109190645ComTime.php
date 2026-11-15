@@ -72,7 +72,7 @@ class Migration20150109190645ComTime extends Base
                 ->where('liaison', '=', 1)
                 ->loadObjectList();
 
-            if ($liaisons && count($liaisons) > 0) {
+            if ($liaisons) {
                 foreach ($liaisons as $liaison) {
                     $this->db
                         ->getQuery()

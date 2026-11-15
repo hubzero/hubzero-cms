@@ -35,7 +35,7 @@ class Migration20140529172125ComCourses extends Base
             ->where('ca.type', '=', 'form')
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $result) {
                 $this->db
                     ->getQuery()

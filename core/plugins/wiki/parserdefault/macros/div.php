@@ -55,7 +55,7 @@ class Div extends WikiMacro
 
         if (trim($text) == 'start') {
             $atts = [];
-            if (!empty($attribs) && count($attribs) > 0) {
+            if (!empty($attribs)) {
                 foreach ($attribs as $a) {
                     $a = explode('=', $a);
                     $key = strtolower(trim($a[0]));

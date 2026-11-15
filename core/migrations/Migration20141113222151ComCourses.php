@@ -53,7 +53,7 @@ class Migration20141113222151ComCourses extends Base
             ->having('count', '>', 1)
             ->loadObjectList();
 
-        if ($assetIds && count($assetIds) > 0) {
+        if ($assetIds) {
             foreach ($assetIds as $aa) {
                 $toChange = $this->db
                     ->getQuery()

@@ -70,7 +70,7 @@ class Migration20150520110000ComPublications extends Base
 
                 $results = $query->loadObjectList();
 
-                if ($results && count($results) > 0) {
+                if ($results) {
                     foreach ($results as $result) {
                         // Determine version number
                         $query = $this->db

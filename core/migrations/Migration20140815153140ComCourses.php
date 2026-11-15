@@ -58,7 +58,7 @@ class Migration20140815153140ComCourses extends Base
             ->innerJoin('#__courses_forms AS cf', 'cfd.form_id', 'cf.id')
             ->loadObjectList();
 
-        if ($deployments && count($deployments) > 0) {
+        if ($deployments) {
             foreach ($deployments as $deployment) {
                 // Now set the score recorded dates for all existing forms
                 $results = $this->db

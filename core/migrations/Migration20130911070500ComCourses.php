@@ -37,7 +37,7 @@ class Migration20130911070500ComCourses extends Base
                 ->where('alias', '=', 'lectures');
             $results = $query->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $this->db
                         ->getQuery()

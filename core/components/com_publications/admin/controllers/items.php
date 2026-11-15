@@ -1441,7 +1441,7 @@ class Items extends AdminController
         // Make sure there are no duplicates
         $authors = array_unique($authors);
 
-        if ($authors && count($authors) > 0) {
+        if ($authors) {
             // Email all the contributors
             $from = [];
             $from['email'] = Config::get('mailfrom');

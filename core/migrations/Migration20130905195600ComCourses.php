@@ -34,7 +34,7 @@ class Migration20130905195600ComCourses extends Base
                 ->order('user_id', 'ASC')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 // A scope the switch below does not know keeps the course of
                 // the row before it, as it always has; the first row has none
                 $course_id = null;
@@ -109,7 +109,7 @@ class Migration20130905195600ComCourses extends Base
             ->whereIsNull('course_id')
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 $id = $this->db
                     ->getQuery()
@@ -136,7 +136,7 @@ class Migration20130905195600ComCourses extends Base
             ->from('#__courses_asset_views')
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $r) {
                 $id = $this->db
                     ->getQuery()
@@ -167,7 +167,7 @@ class Migration20130905195600ComCourses extends Base
                 ->from('#__courses_form_respondents')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $course_id = $this->db
                         ->getQuery()

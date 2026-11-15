@@ -31,7 +31,7 @@ class Migration20140131091600HubzeroComments extends Base
                 ->from('#__comments')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 $parents = [];
                 foreach ($results as $r) {
                     if (substr($r->category, -7) != 'comment') {

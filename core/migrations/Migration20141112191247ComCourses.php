@@ -54,7 +54,7 @@ class Migration20141112191247ComCourses extends Base
                     ->loadObjectList();
 
                 // Now, each section must have a section date entry
-                if ($sections && count($sections) > 0) {
+                if ($sections) {
                     foreach ($sections as $section) {
                         $found = $this->db
                             ->getQuery()

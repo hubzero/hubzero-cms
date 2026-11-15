@@ -42,7 +42,7 @@ class Migration20131022144858ComMembers extends Base
                 ->from('#__xprofiles_manager')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $this->db
                         ->getQuery()

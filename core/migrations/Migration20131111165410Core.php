@@ -69,7 +69,7 @@ class Migration20131111165410Core extends Base
 
         $found = [];
 
-        if (!empty($params) && count($params) > 0) {
+        if (!empty($params)) {
             foreach ($params as $k => $v) {
                 if ($k == 'period' && $v == '15') {
                     $found[] = 'period';

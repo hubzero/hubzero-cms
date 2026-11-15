@@ -532,7 +532,7 @@ class Pipeline extends SiteController
         $license = Request::getString('license', '');
         $matches = Request::getArray('matches', [], 'post');
 
-        if (!empty($matches) && count($matches) > 0) {
+        if (!empty($matches)) {
             foreach ($matches as $key => $match) {
                 if ($match !== '') {
                     $license = str_replace('[' . $key . ']', $match, $license);

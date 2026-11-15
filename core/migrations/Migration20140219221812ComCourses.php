@@ -37,7 +37,7 @@ class Migration20140219221812ComCourses extends Base
             ->having('num', '>', 1)
             ->loadObjectList();
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $result) {
                 $rows = $this->db
                     ->getQuery()

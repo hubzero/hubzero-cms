@@ -33,7 +33,7 @@ class Migration20140130105700ComAnswers extends Base
                 ->from('#__answers_questions')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $id = $this->db
                         ->getQuery()
@@ -61,7 +61,7 @@ class Migration20140130105700ComAnswers extends Base
                 ->from('#__answers_responses')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $id = $this->db
                         ->getQuery()
@@ -126,7 +126,7 @@ class Migration20140130105700ComAnswers extends Base
                 ->from('#__answers_questions')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $username = $this->db
                         ->getQuery()
@@ -154,7 +154,7 @@ class Migration20140130105700ComAnswers extends Base
                 ->from('#__answers_responses')
                 ->loadObjectList();
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $r) {
                     $username = $this->db
                         ->getQuery()

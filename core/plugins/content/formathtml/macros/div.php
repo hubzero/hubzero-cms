@@ -56,7 +56,7 @@ class Div extends Macro
         $div = '';
         if (trim($text) == 'start') {
             $atts = [];
-            if (!empty($attribs) && count($attribs) > 0) {
+            if (!empty($attribs)) {
                 foreach ($attribs as $a) {
                     $a = explode('=', $a);
                     $key = trim($a[0]);
