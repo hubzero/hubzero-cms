@@ -2502,29 +2502,27 @@ class Tickets extends SiteController
 
         if (strstr($group, ',')) {
             $groups = explode(',', $group);
-            if (is_array($groups)) {
-                foreach ($groups as $g) {
-                    $hzg = \Hubzero\User\Group::getInstance(trim($g));
+            foreach ($groups as $g) {
+                $hzg = \Hubzero\User\Group::getInstance(trim($g));
 
-                    if ($hzg->get('gidNumber')) {
-                        $members = $hzg->get('members');
+                if ($hzg->get('gidNumber')) {
+                    $members = $hzg->get('members');
 
-                        $users[] = Html::select('optgroup', stripslashes($hzg->description));
-                        foreach ($members as $member) {
-                            $u = User::getInstance($member);
-                            if (!($u->get('block') == '0')) {
-                                continue;
-                            }
-
-                            $m = new \stdClass();
-                            $m->value = $u->get('id');
-                            $m->text  = $u->get('name');
-                            $m->groupname = $g;
-
-                            $users[] = $m;
+                    $users[] = Html::select('optgroup', stripslashes($hzg->description));
+                    foreach ($members as $member) {
+                        $u = User::getInstance($member);
+                        if (!($u->get('block') == '0')) {
+                            continue;
                         }
-                        $users[] = Html::select('option', '</OPTGROUP>');
+
+                        $m = new \stdClass();
+                        $m->value = $u->get('id');
+                        $m->text  = $u->get('name');
+                        $m->groupname = $g;
+
+                        $users[] = $m;
                     }
+                    $users[] = Html::select('option', '</OPTGROUP>');
                 }
             }
         } else {

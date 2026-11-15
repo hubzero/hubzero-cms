@@ -283,7 +283,7 @@ class Jobs extends SiteController
 
         // Call the trigger
         $results = Event::trigger('members.' . $trigger, []);
-        if (is_array($results) && isset($results[0]) && isset($results[0]['html'])) {
+        if (isset($results[0]) && isset($results[0]['html'])) {
             $html = $results[0]['html'];
         }
 

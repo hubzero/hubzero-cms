@@ -1261,9 +1261,7 @@ class Publications extends SiteController
 
         // Call the trigger
         $results = Event::trigger('publications.' . $trigger, [$this->option]);
-        if (is_array($results)) {
-            $html = $results[0]['html'];
-        }
+        $html = $results[0]['html'];
 
         // Output HTML
         echo $html;

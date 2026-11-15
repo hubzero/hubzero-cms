@@ -1218,7 +1218,7 @@ class Filefsv1r0 extends ApiController
 
         $entities = array_merge($files, $directories);
 
-        if (!empty($entities) && is_array($entities)) {
+        if (!empty($entities)) {
             foreach ($entities as $entity) {
                 $path = trim(Request::getString('subdir', ''), '/') . '/' . urldecode($entity);
 

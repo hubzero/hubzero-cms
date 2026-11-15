@@ -48,23 +48,12 @@ class Parents extends WikiMacro
 
         if ($this->args) {
             $args = explode(',', $this->args);
-            if (is_array($args)) {
-                foreach ($args as $arg) {
-                    $arg = trim($arg);
-                    if (substr($arg, 0, 6) == 'depth=') {
-                        $bits = preg_split('#=#', $arg);
-                        $depth = intval(trim(end($bits)));
-                        continue;
-                    }
-                }
-            } else {
-                $arg = trim($args);
+            foreach ($args as $arg) {
+                $arg = trim($arg);
                 if (substr($arg, 0, 6) == 'depth=') {
                     $bits = preg_split('#=#', $arg);
                     $depth = intval(trim(end($bits)));
-                } else {
-                    $depth = intval(trim($arg));
-                    $depth = ($depth) ? $depth : 1;
+                    continue;
                 }
             }
         }
@@ -130,9 +119,6 @@ class Parents extends WikiMacro
         $uri = explode('/', $scope);
 
         $pages = [];
-        if (!is_array($uri)) {
-            return $pages;
-        }
 
         $uri = array_reverse($uri);
 

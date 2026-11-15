@@ -1034,31 +1034,29 @@ class Tickets extends AdminController
 
         if (strstr($group, ',')) {
             $groups = explode(',', $group);
-            if (is_array($groups)) {
-                foreach ($groups as $g) {
-                    $hzg = \Hubzero\User\Group::getInstance(trim($g));
+            foreach ($groups as $g) {
+                $hzg = \Hubzero\User\Group::getInstance(trim($g));
 
-                    if ($hzg->get('gidNumber')) {
-                        $members = $hzg->get('members');
+                if ($hzg->get('gidNumber')) {
+                    $members = $hzg->get('members');
 
-                        //$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
-                        $users[] = Html::select('optgroup', stripslashes($hzg->description));
-                        foreach ($members as $member) {
-                            $u = User::getInstance($member);
-                            if (!$u->get('id')) {
-                                continue;
-                            }
-
-                            $m = new \stdClass();
-                            $m->value = $u->get('id');
-                            $m->text  = $u->get('name');
-                            $m->groupname = $g;
-
-                            $users[] = $m;
+                    //$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
+                    $users[] = Html::select('optgroup', stripslashes($hzg->description));
+                    foreach ($members as $member) {
+                        $u = User::getInstance($member);
+                        if (!$u->get('id')) {
+                            continue;
                         }
-                        //$users[] = '</optgroup>';
-                        $users[] = Html::select('option', '</OPTGROUP>');
+
+                        $m = new \stdClass();
+                        $m->value = $u->get('id');
+                        $m->text  = $u->get('name');
+                        $m->groupname = $g;
+
+                        $users[] = $m;
                     }
+                    //$users[] = '</optgroup>';
+                    $users[] = Html::select('option', '</OPTGROUP>');
                 }
             }
         } else {

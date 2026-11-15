@@ -83,11 +83,9 @@ class Blogs extends Plugin
 
             $gs = [];
 
-            if (is_array($ugs)) {
-                foreach ($ugs as $g) {
-                    if ($g->published) {
-                        $gs[] = $g->gidNumber;
-                    }
+            foreach ($ugs as $g) {
+                if ($g->published) {
+                    $gs[] = $g->gidNumber;
                 }
             }
 

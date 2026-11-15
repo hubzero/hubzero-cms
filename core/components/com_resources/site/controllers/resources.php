@@ -2177,7 +2177,7 @@ class Resources extends SiteController
         $html = '';
 
         $results = Event::trigger('resources.' . $trigger, [$this->option]);
-        if (is_array($results) && !empty($results)) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 $html .= (is_array($result) ? $result['html'] : (string) $result);
             }

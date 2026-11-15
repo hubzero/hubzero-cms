@@ -1676,7 +1676,7 @@ class Connections
 
         $entities = array_merge($files, $directories);
 
-        if (!empty($entities) && is_array($entities)) {
+        if (!empty($entities)) {
             foreach ($entities as $entity) {
                 $entity = urldecode($entity);
                 if (count(explode('/', $entity)) > 1) {

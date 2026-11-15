@@ -139,7 +139,7 @@ class Jobs extends AdminController
         $plugins = [];
 
         $events = Event::trigger('cron.onCronEvents');
-        if ($events && is_array($events)) {
+        if ($events) {
             foreach ($events as $event) {
                 $plugins[$event->plugin] = $event;
             }
