@@ -642,8 +642,9 @@ class Auth extends SiteController
         if (count($profile_conflicts)) {
             foreach ($profile_conflicts as $auser) {
                 $auth_link  = \Hubzero\Auth\Link::findByUserId($auser->id);
-                $dname = (is_object($auth_link) && $auth_link->auth_domain_name)
-                    ? $auth_link->auth_domain_name
+                // The account's (first) linked sign-in service, if it has one
+                $dname = !empty($auth_link[0]['auth_domain_name'])
+                    ? $auth_link[0]['auth_domain_name']
                     : 'hubzero';
                 $conflict[] = [
                     'auth_domain_name' => $dname,
