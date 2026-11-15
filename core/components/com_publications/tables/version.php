@@ -610,7 +610,7 @@ class Version extends Table
      *
      * @param   int   $pid  publication id
      * @param   int   $verNumber    version number
-     * @param   string  $selectedReason the reason that users select
+     * @param   string|int  $selectedReason the reason that users select
      * @param   string  $otherReason    the reason that users specify
      * @return  null or void
      */

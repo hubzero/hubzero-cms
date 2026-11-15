@@ -67,7 +67,7 @@ class WinCache extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        return wincache_ucache_set($this->key($id), $data, ini_get("session.gc_maxlifetime"));
+        return wincache_ucache_set($this->key($id), $data, (int) ini_get("session.gc_maxlifetime"));
     }
 
     /**

@@ -1620,7 +1620,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $this->setQuery($this->buildShowColumnsQuery($table));
         $columns = $this->loadObjectList();
 
-        return is_array($columns) ? $columns : [];
+        return $columns;
     }
 
     /**
@@ -2047,10 +2047,6 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $this->ensureSequenceTable();
         $this->setQuery('SELECT * FROM `_sequences` ORDER BY `name`');
         $rows = $this->loadObjectList();
-
-        if (!is_array($rows)) {
-            return [];
-        }
 
         return array_map([$this, 'mapSequenceRowToInfo'], $rows);
     }

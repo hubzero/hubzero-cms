@@ -657,7 +657,7 @@ class Sanitize
         $source = preg_replace_callback(
             '/&#(\d+);/m',
             function ($matches) {
-                $str = chr($matches[1]);
+                $str = chr((int) $matches[1]);
                 if (function_exists('mbstring')) {
                     $str = mbstring($str);
                 }
@@ -670,7 +670,7 @@ class Sanitize
         $source = preg_replace_callback(
             '/&#x([a-f0-9]+);/mi',
             function ($matches) {
-                $str = chr('0x' . $matches[1]);
+                $str = chr((int) hexdec($matches[1]));
                 if (function_exists('mbstring')) {
                     $str = mbstring($str);
                 }

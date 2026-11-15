@@ -91,7 +91,7 @@ class Confirm extends Button
     /**
      * Get the JavaScript command for the button
      *
-     * @param   object   $msg   The message to display.
+     * @param   string   $msg   The message to display.
      * @param   string   $name  Not used.
      * @param   string   $task  The task used by the application
      * @param   boolean  $list  True is requires a list confirmation.

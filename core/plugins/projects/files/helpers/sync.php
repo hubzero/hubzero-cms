@@ -84,8 +84,8 @@ class Sync extends \Hubzero\Base\Obj
      * Sync local and remote changes since last sync
      *
      * @param   string   $service  Remote service name
-     * @param   boolean  $queue
-     * @param   boolean  $auto
+     * @param   bool|int  $queue
+     * @param   bool|int  $auto
      * @return  bool
      */
     public function sync($service = 'google', $queue = false, $auto = false)
@@ -899,7 +899,7 @@ class Sync extends \Hubzero\Base\Obj
      *
      * @param    string   $service  Remote service name
      * @param    bool     $unlock
-     * @param    integer  $queue
+     * @param    int|bool  $queue
      * @return  bool
      */
     public function lockSync($service = 'google', $unlock = false, $queue = 0)

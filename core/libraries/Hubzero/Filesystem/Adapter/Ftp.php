@@ -18,9 +18,9 @@ use RuntimeException;
 class Ftp implements AdapterInterface
 {
     /**
-     * FTP Transfer mode
+     * FTP Transfer mode (FTP_ASCII or FTP_BINARY)
      *
-     * @var int
+     * @var 1|2
      */
     protected $transferMode = FTP_BINARY;
 
@@ -242,7 +242,7 @@ class Ftp implements AdapterInterface
     /**
      * Get the transfer mode.
      *
-     * @return  int
+     * @return  1|2  FTP_ASCII or FTP_BINARY
      */
     public function getTransferMode()
     {
@@ -252,7 +252,7 @@ class Ftp implements AdapterInterface
     /**
      * Set the transfer mode.
      *
-     * @param   int     $mode
+     * @param   1|2  $mode  FTP_ASCII or FTP_BINARY
      * @return  object  $this
      */
     public function setTransferMode($mode)
@@ -380,7 +380,7 @@ class Ftp implements AdapterInterface
      */
     protected function login()
     {
-        set_error_handler(fn() => null);
+        set_error_handler(static fn () => true);
         $isLoggedIn = ftp_login($this->getConnection(), $this->getUsername(), $this->getPassword());
         restore_error_handler();
 
@@ -544,7 +544,7 @@ class Ftp implements AdapterInterface
      * Create a directory.
      *
      * @param   string    $directory
-     * @param   resource  $connection
+     * @param   \FTP\Connection  $connection
      * @return  bool
      */
     protected function createActualDirectory($directory, $connection)

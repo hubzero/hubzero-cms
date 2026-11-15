@@ -1347,8 +1347,8 @@ class Doi extends Obj
      * Update DOI status on EZID
      *
      * @param   string   $doi
-     * @param   string   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from
-     *                                  draft to published
+     * @param   string|int   $stateSwitch   0 - Publication changed from published to draft
+     *                                      1 - Publication changed from draft to published
      * @return  boolean
      */
     public function ezidDoiStatusUpdate($doi, $stateSwitch)

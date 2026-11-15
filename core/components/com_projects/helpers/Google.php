@@ -82,7 +82,7 @@ class Google extends Obj
      *
      * @param   object|null   $apiService  Drive API service instance
      * @param   array    $shared
-     * @param   string   $itemId
+     * @param   string|int   $itemId
      * @return  boolean
      */
     public static function clearPermissions($apiService, $shared, $itemId)
@@ -241,7 +241,7 @@ class Google extends Obj
                 $client,
                 $request,
                 $mimeType,
-                null,
+                '',
                 true,
                 $chunkSizeBytes,
             );
@@ -350,7 +350,7 @@ class Google extends Obj
                 $client,
                 $request,
                 $mimeType,
-                null,
+                '',
                 true,
                 $chunkSizeBytes,
             );

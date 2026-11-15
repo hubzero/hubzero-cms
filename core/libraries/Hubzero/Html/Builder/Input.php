@@ -20,7 +20,7 @@ class Input
      *
      * @param   string  $type
      * @param   string  $name
-     * @param   string|null  $value
+     * @param   string|int|null  $value
      * @param   array   $options
      * @return  string
      */

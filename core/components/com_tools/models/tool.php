@@ -1640,7 +1640,7 @@ class Tool
     /**
      * Get tool groups
      *
-     * @param   string  $toolid
+     * @param   int|string  $toolid
      * @param   array   $groups
      * @return  array
      */

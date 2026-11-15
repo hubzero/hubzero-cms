@@ -58,7 +58,7 @@ class Hosts extends AdminController
 
         if (!$host) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_HOST'));
-            $this->displayTask($id);
+            $this->displayTask($profile);
 
             return;
         }

@@ -785,7 +785,7 @@ class Pipeline extends SiteController
      *
      * @param   string   $toolname
      * @param   string   $codeaccess
-     * @param   string   $wikiaccess
+     * @param   string|null   $wikiaccess
      * @return  boolean
      */
     protected function setTracAccess($toolname, $codeaccess, $wikiaccess)
@@ -1598,7 +1598,7 @@ class Pipeline extends SiteController
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
 
         if ($comment) {
-            $this->newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
+            $this->newUpdateTicket($hzt->id, $hzt->ticketid, [], [], $comment, $access, 1);
             $this->_msg = Lang::txt('COM_TOOLS_NOTICE_MSG_SENT');
         }
 
@@ -1608,11 +1608,11 @@ class Pipeline extends SiteController
     /**
      * Send an email to one or more users
      *
-     * @param   string  $toolid    Tool ID
+     * @param   int|string  $toolid    Tool ID
      * @param   string  $summary   Message subject
      * @param   string  $comment   Message
-     * @param   string  $access
-     * @param   string  $action
+     * @param   int|string  $access
+     * @param   int|string  $action
      * @param   array   $toolinfo  Array of tool information
      * @return  void
      */
@@ -2219,7 +2219,7 @@ class Pipeline extends SiteController
                 $obj->saveTicketId($toolid, $row->get('id'));
 
                 // make a record
-                $this->updateTicket($toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
+                $this->updateTicket($toolid, [], [], Lang::txt('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
             }
         }
 
@@ -2275,7 +2275,7 @@ class Pipeline extends SiteController
         $obj->updateTool($this->_toolid, \Components\Tools\Helpers\Html::getStatusNum('Abandoned'), 5);
 
         // add comment to ticket
-        $this->updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
+        $this->updateTicket($this->_toolid, [], [], Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
 
         // continue output
         App::redirect(

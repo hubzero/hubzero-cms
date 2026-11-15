@@ -1668,7 +1668,7 @@ class Items extends AdminController
      * Builds a select list of users
      *
      * @param   string   $name        Name of the select element
-     * @param   string   $active      Selected value
+     * @param   string|int   $active      Selected value
      * @param   integer  $nouser      Display an empty start option
      * @param   string|null   $javascript  Any JS to attach to the select element
      * @param   string   $order       Field to order the users by

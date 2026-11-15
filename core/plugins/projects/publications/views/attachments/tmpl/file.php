@@ -24,7 +24,7 @@ $data = $this->data;
 $pub  = $data->get('pub');
 
 $details = $data->get('localPath');
-$details .= $data->getSize() ? ' | ' . $data->getSize('formatted') : '';
+$details .= $data->getSize() ? ' | ' . $data->getSize(true) : '';
 if ($data->get('viewer') != 'freeze') {
     $details .= !$data->exists() ? ' | ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE') : '';
 }

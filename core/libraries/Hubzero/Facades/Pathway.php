@@ -11,7 +11,7 @@ namespace Hubzero\Facades;
 /**
  * Pathway facade
  *
- * @method static object append(string $name, string $link = '')
+ * @method static object append(string|int $name, string $link = '')
  * @method static object prepend(string $name, string $link = '')
  * @method static array  names()
  * @method static array  items()

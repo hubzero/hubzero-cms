@@ -182,7 +182,7 @@ class Page extends Table
     /**
      * Get the last page in the ordering
      *
-     * @param      string  $offering_id    Course alias (cn)
+     * @param      int|string  $offering_id    Course alias (cn)
      * @return     string|null
      */
     public function getHighestPageOrder($course_id, $offering_id)

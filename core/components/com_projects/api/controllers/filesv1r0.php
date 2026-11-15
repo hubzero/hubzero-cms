@@ -1411,7 +1411,7 @@ class Filesv1r0 extends ApiController
      * @param   string  $fileName     The original file name
      * @param   string  $chunkSize    Each chunk size (in bytes)
      * @param   string  $totalSize    Original file size (in bytes)
-     * @param   int     $total_files  The total number of chunks for this file
+     * @param   int|string     $total_files  The total number of chunks for this file
      * @param   string  $subdir       Folder within the project's files to save into
      * @return  array|bool
      */

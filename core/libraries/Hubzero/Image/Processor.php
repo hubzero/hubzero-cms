@@ -609,7 +609,7 @@ class Processor extends Obj
     /**
      * Generate an image and save to a location
      *
-     * @param   string  $save_path  Path to save image
+     * @param   string|null  $save_path  Path to save image
      * @return  void
      */
     private function output($save_path)

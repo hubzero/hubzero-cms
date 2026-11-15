@@ -85,7 +85,7 @@ class Badge extends Base
     /**
      * Load by provider badge id
      *
-     * @param      integer $id  Provider badge id
+     * @param      int|string $id  Provider badge id
      * @return     \Components\Courses\Models\Section\Badge
      */
     public static function loadByProviderBadgeId($id)

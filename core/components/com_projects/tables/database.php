@@ -29,7 +29,7 @@ class Database extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string|null  $identifier  database name or id
+     * @param   int|string|null  $identifier  database name or id
      * @return  mixed   object or false
      */
     public function loadRecord($identifier = null)
@@ -77,7 +77,7 @@ class Database extends Table
      * Get items
      *
      * @param   integer|null  $projectid
-     * @param   array|null    $id
+     * @param   integer|null  $id
      * @return  mixed    object, integer or null
      */
     public function getResource($projectid = null, $id = null)

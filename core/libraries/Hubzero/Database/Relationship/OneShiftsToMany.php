@@ -25,8 +25,8 @@ class OneShiftsToMany extends OneToMany
      *
      * @param   \Hubzero\Database\Relational|static  $model       The primary model
      * @param   \Hubzero\Database\Relational|static  $related     The related model
-     * @param   \Hubzero\Database\Relational|static  $localKey    The local key
-     * @param   \Hubzero\Database\Relational|static  $relatedKey  The related key
+     * @param   string                               $localKey    The local key
+     * @param   string                               $relatedKey  The related key
      * @param   string                               $shifter     The field identifying model type
      * @return  void
      **/

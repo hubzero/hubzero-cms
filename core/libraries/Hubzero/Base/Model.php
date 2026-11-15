@@ -503,10 +503,10 @@ abstract class Model extends Obj
             $str .= get_class($subject) . " Object ( \n";
             $subject = (array) $subject;
             foreach ($subject as $key => $val) {
-                if (is_array($ignore) && !in_array($key, $ignore, 1)) {
+                if (is_array($ignore) && !in_array($key, $ignore, true)) {
                     if ($key[0] == "\0") {
                         $keyParts = explode("\0", $key);
-                        if (in_array($keyParts[2], $ignore, 1)) {
+                        if (in_array($keyParts[2], $ignore, true)) {
                             continue;
                         }
                         $str .= str_repeat(" ", $depth * 4) . '[';
@@ -525,7 +525,7 @@ abstract class Model extends Obj
         } elseif (is_array($subject)) {
             $str .= "Array ( \n";
             foreach ($subject as $key => $val) {
-                if (is_array($ignore) && !in_array($key, $ignore, 1)) {
+                if (is_array($ignore) && !in_array($key, $ignore, true)) {
                     $str .= str_repeat(" ", $depth * 4) . '[' . $key . '] => ';
                     $str .= $this->printR($val, $ignore, $depth + 1, $refChain);
                 }

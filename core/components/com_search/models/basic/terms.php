@@ -223,7 +223,7 @@ class Terms extends Obj
         $raw = trim(strtolower($this->raw));
         if (preg_match('/^([_.\-,a-z:]+):/', $raw, $match)) {
             $this->section = explode(':', $match[1]);
-            $raw = preg_replace('/^' . preg_quote($match[1]) . ':/', '', $raw);
+            $raw = preg_replace('/^' . preg_quote($match[1], '/') . ':/', '', $raw);
         } elseif (array_key_exists('section', $_GET) && is_string($_GET['section'])) {
             $this->section = [preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section'])];
         }

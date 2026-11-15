@@ -68,7 +68,7 @@ class Apc extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        return apc_store($this->key($id), $data, ini_get("session.gc_maxlifetime"));
+        return apc_store($this->key($id), $data, (int) ini_get("session.gc_maxlifetime"));
     }
 
     /**

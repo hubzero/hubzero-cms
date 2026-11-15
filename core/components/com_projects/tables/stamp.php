@@ -112,7 +112,7 @@ class Stamp extends Table
      * @param   integer  $projectid  Project ID
      * @param   string   $reference  Reference string to object (JSON)
      * @param   string   $type
-     * @param   integer|null  $listed
+     * @param   int|bool|null  $listed
      * @param   boolean|null  $expires
      * @return  mixed    False if error, Object on success
      */

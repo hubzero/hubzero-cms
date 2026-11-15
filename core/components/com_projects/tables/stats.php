@@ -31,8 +31,8 @@ class Stats extends Table
     /**
      * Load item
      *
-     * @param   integer|null  $year
-     * @param   integer|null  $month
+     * @param   int|string|null  $year
+     * @param   int|string|null  $month
      * @param   string   $week
      * @return  mixed    False if error, Object on success
      */
@@ -132,7 +132,7 @@ class Stats extends Table
      *
      * @param   object   $model
      * @param   bool     $cron
-     * @param   bool     $publishing
+     * @param   bool|int     $publishing
      * @param   string   $period
      * @param   integer  $limit
      * @return  array
@@ -156,7 +156,7 @@ class Stats extends Table
         $updated = null;
         $lastLog = null;
 
-        $pastMonth    = Date::of(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
+        $pastMonth    = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m-d');
         $thisYearNum  = Date::format('y');
         $thisMonthNum = Date::format('m');
         $thisWeekNum  = Date::format('W');

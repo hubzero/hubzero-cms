@@ -199,7 +199,7 @@ class Memcached extends Store
     /**
      * Get single session data as an object
      *
-     * @param   int  $id  Session Id
+     * @param   string  $id  Session Id
      * @return  object
      */
     public function session($id)

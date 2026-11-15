@@ -54,7 +54,7 @@ class Tool extends Model
      *
      * @param   mixed    $oid
      * @param   integer|null  $projectid
-     * @param   object|null   $instance
+     * @param   int|null   $instance
      * @return  void
      */
     public function __construct($oid = null, $projectid = null, $instance = null)

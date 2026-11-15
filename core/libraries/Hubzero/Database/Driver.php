@@ -1731,7 +1731,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
-     * @return  array|null
+     * @return  array
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {

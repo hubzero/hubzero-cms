@@ -54,7 +54,7 @@ class MasterType extends Table
     /**
      * Get record by alias name or ID
      *
-     * @param   string  $id
+     * @param   int|string  $id
      * @return  mixed   object or false
      */
     public function getType($id = '')

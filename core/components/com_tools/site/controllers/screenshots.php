@@ -653,8 +653,8 @@ class Screenshots extends SiteController
     /**
      * Transfer files from one version to another
      *
-     * @param   string   $sourceid  Source version ID
-     * @param   string   $destid    Destination version ID
+     * @param   int|string   $sourceid  Source version ID
+     * @param   int|string   $destid    Destination version ID
      * @param   integer  $rid       Resource ID
      * @return  boolean  False if errors, True on success
      */

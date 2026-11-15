@@ -40,7 +40,7 @@ namespace Hubzero\Facades;
  * @method static object   oneOrFail(int $id)
  * @method static object   oneByUsername(string $username)
  * @method static object   oneByEmail(string $email)
- * @method static object   oneByActivationToken(string $token)
+ * @method static object   oneByActivationToken(string|int $token)
  * @method static object   blank()
  * @method static object   all(mixed $columns = null)
  *

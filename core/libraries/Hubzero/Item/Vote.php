@@ -153,8 +153,8 @@ class Vote extends Relational
     /**
      * Load a record by scope and scope ID
      *
-     * @param   integer  $item_id     Item type
-     * @param   string   $item_type   Item ID
+     * @param   integer  $item_id     Item ID
+     * @param   string   $item_type   Item type
      * @param   integer  $created_by  User ID
      * @param   string|null   $ip          IP address
      * @return  object
@@ -179,7 +179,7 @@ class Vote extends Relational
     /**
      * Check if a user has voted
      *
-     * @param   integer  $item_type  Item type
+     * @param   string   $item_type  Item type
      * @param   integer  $item_id    Item ID
      * @param   integer|null  $user_id    User ID
      * @param   string|null   $ip         IP address
@@ -187,6 +187,6 @@ class Vote extends Relational
      */
     public function hasVoted($item_type, $item_id, $user_id = null, $ip = null)
     {
-        return self::oneByScope($item_type, $item_id, $user_id, $ip)->get('id');
+        return self::oneByScope($item_id, $item_type, $user_id, $ip)->get('id');
     }
 }

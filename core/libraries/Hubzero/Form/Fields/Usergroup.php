@@ -9,7 +9,6 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Html\Builder\Access;
 
 /**
@@ -33,7 +32,6 @@ class Usergroup extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $options = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -45,32 +43,16 @@ class Usergroup extends Field
         // Initialize JavaScript field attributes.
         $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
-        // Iterate through the children and build an array of options.
+        // Access::usergroup() lists the groups itself. <option /> children
+        // are not listed; declaring any adds its "All groups" entry.
+        $allowAll = false;
         foreach ($this->element->children() as $option) {
-            // Only add <option /> elements.
-            if ($option->getName() != 'option') {
-                continue;
+            if ($option->getName() == 'option') {
+                $allowAll = true;
+                break;
             }
-
-            // Create a new option object based on the <option /> element.
-            $tmp = Dropdown::option(
-                (string) $option['value'],
-                trim((string) $option),
-                'value',
-                'text',
-                ((string) $option['disabled'] == 'true'),
-            );
-
-            // Set some option attributes.
-            $tmp->class = (string) $option['class'];
-
-            // Set some JavaScript option attributes.
-            $tmp->onclick = (string) $option['onclick'];
-
-            // Add the option object to the result set.
-            $options[] = $tmp;
         }
 
-        return Access::usergroup($this->name, $this->value, $attr, $options);
+        return Access::usergroup($this->name, $this->value, $attr, $allowAll);
     }
 }

@@ -52,7 +52,7 @@ class FileWriter
     /**
      * Create a new file configuration loader.
      *
-     * @param   object  $contents
+     * @param   array|object  $contents
      * @param   string  $group
      * @param   string|null  $client
      * @return  boolean

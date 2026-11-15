@@ -716,7 +716,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Get a user's picture
      *
-     * @param   integer  $anonymous  Is user anonymous?
+     * @param   int|bool  $anonymous  Is user anonymous?
      * @param   boolean  $thumbnail  Show thumbnail or full picture?
      * @param   boolean  $serveFile  Serve file?
      * @return  string
@@ -832,7 +832,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Finds a user by activation token
      *
-     * @param   string  $token
+     * @param   string|int  $token
      * @return  object
      * @since   2.1.0
      */

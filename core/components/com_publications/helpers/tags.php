@@ -245,7 +245,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $object_id  Object ID
      * @param      string  $tag_string String of comma-separated tags
      * @param      integer $strength   Tag strength
-     * @param      boolean $admin      Has admin access?
+     * @param      bool|int $admin      Has admin access?
      * @return     boolean True on success, false if errors
      */
     public function tagObject($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')

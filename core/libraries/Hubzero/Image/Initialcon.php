@@ -55,7 +55,7 @@ class Initialcon
     private $fontPath;
 
     /**
-     * @var  float|null
+     * @var  int|null
      */
     private $pixelRatio;
 
@@ -68,7 +68,7 @@ class Initialcon
     public function setSize($size)
     {
         $this->size = $size;
-        $this->pixelRatio = round($size / 5);
+        $this->pixelRatio = (int) round($size / 5);
 
         return $this;
     }
@@ -201,7 +201,7 @@ class Initialcon
         //$y = $this->size - $y;
 
         // Print Text On Image
-        imagettftext($image, $fontsize, 0, $x, $y, $white, $this->getFontPath(), $string);
+        imagettftext($image, $fontsize, 0, (int) $x, (int) $y, $white, $this->getFontPath(), $string);
 
         imagepng($image);
     }

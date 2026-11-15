@@ -119,7 +119,7 @@ class Author extends Table
     /**
      * Load record by owner ID
      *
-     * @param   integer|null  $owner_id  Project owner ID
+     * @param   int|string|null  $owner_id  Project owner ID
      * @param   integer|null  $vid       Pub version ID
      * @return  mixed    False if error, Object on success
      */
@@ -856,7 +856,7 @@ class Author extends Table
     /**
      * Get profile info by owner ID
      *
-     * @param   integer  $owner_id  Owner ID
+     * @param   int|string  $owner_id  Owner ID
      * @return  mixed    False if error, Object on success
      */
     public function getProfileInfoByOwner($owner_id)

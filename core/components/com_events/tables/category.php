@@ -94,7 +94,7 @@ class Category extends Table
     /**
      * Get a count of categories in a section
      *
-     * @param   integer|null  $section  Section ID
+     * @param   int|string|null  $section  Section ID
      * @return  string|null
      */
     public function getCategoryCount($section = null)

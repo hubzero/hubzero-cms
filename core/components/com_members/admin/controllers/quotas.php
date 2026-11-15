@@ -123,7 +123,8 @@ class Quotas extends AdminController
     /**
      * Edit a member quota
      *
-     * @param   integer|null  $row  ID of entry to edit
+     * @param   \Components\Members\Models\Quota|null  $row  Entry to show again after a failed save;
+     *                                                       loaded from the request when null
      *
      * @return  void
      */

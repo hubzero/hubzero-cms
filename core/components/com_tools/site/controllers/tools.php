@@ -108,7 +108,7 @@ class Tools extends SiteController
         $this->view->set('isToolAdmin', $this->isToolAdmin());
 
         // Get the forge image
-        $this->view->set('image', \Hubzero\Document\Assets::getComponentImage($this->option, 'forge.png', 1));
+        $this->view->set('image', \Hubzero\Document\Assets::getComponentImage($this->option, 'forge.png'));
 
         // Get some vars to fill in text
         $this->view->set('title', $this->_title);

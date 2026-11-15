@@ -2877,10 +2877,8 @@ class Db2Driver extends BaseSqlDriver
     {
         $list = parent::loadObjectList($key, $class);
 
-        if (is_array($list)) {
-            foreach ($list as $k => $object) {
-                $list[$k] = $this->normalizeObjectTimestamps($object);
-            }
+        foreach ($list as $k => $object) {
+            $list[$k] = $this->normalizeObjectTimestamps($object);
         }
 
         return $list;

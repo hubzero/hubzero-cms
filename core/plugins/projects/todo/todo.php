@@ -472,9 +472,9 @@ class Todo extends Plugin
                         if (strlen($month) == 1) {
                             $month = '0' . $month;
                         }
-                        if (checkdate($month, $day, $year)) {
+                        if (checkdate((int) $month, (int) $day, (int) $year)) {
                             $serverTimezone = Config::get('offset');
-                            $userParams = json_decode(User::get('params'), 1);
+                            $userParams = json_decode(User::get('params'), true);
                             $timezone  = Arr::getValue($userParams, 'timezone', $serverTimezone);
 
                             $date = Date::of("$year-$month-$day", $timezone);

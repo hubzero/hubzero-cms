@@ -28,7 +28,7 @@ class Number
      * larger size then what the PHP integer type will hold, then use a string.
      * It will be converted to a double, which should always have 64 bit length.
      *
-     * @param   integer $bytes
+     * @param   int|float|string $bytes
      * @param   integer $decimals
      * @return  string
      */

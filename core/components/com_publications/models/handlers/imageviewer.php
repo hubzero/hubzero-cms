@@ -358,7 +358,7 @@ class ImageViewer extends Base
 
             $html .= '<span class="extras">';
             $html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
-            $html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+            $html .= $file->getSize() ? ' | ' . $file->getSize(true) : '';
             $html .= $file->get('ext') ? ')' : '';
             if ($authorized === 'administrator') {
                 $html .= ' <span class="edititem">';

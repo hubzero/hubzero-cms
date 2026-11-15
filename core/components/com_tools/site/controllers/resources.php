@@ -330,7 +330,7 @@ class Resources extends SiteController
      *
      * @param   integer|null  $rid        Resource ID
      * @param   array    $status     Fields to update
-     * @param   integer  $published  Published state
+     * @param   int|string  $published  Published state
      * @param   integer  $newtool    Updating for a new tool?
      * @return  boolean  True if no errors
      */

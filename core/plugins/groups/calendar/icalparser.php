@@ -136,7 +136,7 @@ class IcalParser
     /**
      * New instance of ical parser
      *
-     * @param  object  $file      [description]
+     * @param  string  $file      A path or URL to read, or the calendar text itself
      * @param  mixed  $callback
      */
     public function __construct($file, $callback = null)

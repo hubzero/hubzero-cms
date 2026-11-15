@@ -42,7 +42,7 @@ class Session extends Table
     /**
      * Load a record and bind it to $this object
      *
-     * @param   integer|null  $sess      Session number
+     * @param   int|string|null  $sess      Session number
      * @param   string|null   $username  User to delete for
      * @return  boolean  False if errors, True if success
      */
@@ -88,7 +88,7 @@ class Session extends Table
     /**
      * Retrieve a session
      *
-     * @param   string|null  $sess        Session number
+     * @param   int|string|null  $sess        Session number
      * @param   string|null  $authorized  Admin authorization?
      * @return  object|false
      */
@@ -122,7 +122,7 @@ class Session extends Table
     /**
      * Check if a user owns a session
      *
-     * @param   string|null  $sess        Session number
+     * @param   int|string|null  $sess        Session number
      * @param   string|null  $authorized  Admin authorization?
      * @return  object|false
      */

@@ -187,7 +187,7 @@ class Html
     {
         for ($a = 1; $a < 13; $a++) {
             $mnh = $a;
-            if ($mnh <= "9" & preg_match("/(^[0-9]{1})/", $mnh)) {
+            if ($mnh <= "9" & preg_match("/(^[0-9]{1})/", (string) $mnh)) {
                 $mnh = "0" . $mnh;
             }
             $name_of_month = self::getMonthName($mnh);
@@ -211,7 +211,7 @@ class Html
         $nbdays = date("d", mktime(0, 0, 0, ($month + 1), 0, $year));
         for ($a = 1; $a <= $nbdays; $a++) {
             $dys = $a;
-            if ($dys <= "9" & preg_match("/(^[1-9]{1})/", $dys)) {
+            if ($dys <= "9" & preg_match("/(^[1-9]{1})/", (string) $dys)) {
                 $dys = "0" . $dys;
             }
             $dayslist[] = \Html::select('option', $dys, $dys, 'value', 'text');
@@ -302,7 +302,7 @@ class Html
      * Build a select for categories
      *
      * @param      integer $catid  Category ID
-     * @param      array   $args   Arguments to add to select element
+     * @param      array|string   $args   Arguments to add to select element
      * @param      integer $gid    Group ID
      * @param      string  $option Component name
      * @return     string

@@ -20,14 +20,14 @@ class Archive extends Obj
     /**
      * Type
      *
-     * @var object|null
+     * @var string|null
      */
     private $type = null;
 
     /**
      * Constructor
      *
-     * @param   object|null  $type
+     * @param   string|null  $type
      * @return  void
      */
     public function __construct($type = null)

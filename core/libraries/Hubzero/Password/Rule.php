@@ -160,7 +160,7 @@ class Rule extends Relational
     /**
      * Insert default content
      *
-     * @param   integer  $restore  Whether or not to force restoration of default values (even if
+     * @param   int|bool  $restore  Whether or not to force restoration of default values (even if
      *                             other values are present)
      * @return  bool
      */

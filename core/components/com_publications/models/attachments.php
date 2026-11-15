@@ -208,7 +208,7 @@ class Attachments extends Obj
      *
      * @param   array|null    $elements
      * @param   object|null   $pub
-     * @param   boolean  $authorized
+     * @param   bool|string  $authorized
      * @param   string|null   $append
      * @return  mixed    string or bool
      */

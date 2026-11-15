@@ -52,7 +52,7 @@ class Host extends Table
      * Inserts a new row if id is zero or updates an existing row in the database table
      *
      * @param   boolean|null  $insert       If true, forces an insert
-     * @param   boolean|null  $kv           If false, null object variables are not updated
+     * @param   string|null   $kv           The current key (hostname) of the record to update, if it changed
      * @param   boolean  $updateNulls  If false, null object variables are not updated
      * @return  mixed    null|string null if successful otherwise returns and error message
      */

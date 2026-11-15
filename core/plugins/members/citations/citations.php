@@ -474,8 +474,9 @@ class Citations extends Plugin
 
             // tags & badges
 
-            $view->set('tags', \Components\Citations\Helpers\Format::citationTags($view->get('row'), false));
-            $view->set('badges', \Components\Citations\Helpers\Format::citationBadges($view->get('row'), false));
+            $row = $view->get('row');
+            $view->set('tags', \Components\Citations\Helpers\Format::citationTags($row, false));
+            $view->set('badges', \Components\Citations\Helpers\Format::citationBadges($row, false));
         }
 
         // Output HTML

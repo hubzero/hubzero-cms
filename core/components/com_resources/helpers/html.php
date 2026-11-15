@@ -113,8 +113,8 @@ class Html
     /**
      * Generate a select access list
      *
-     * @param   array   $as     Access levels
-     * @param   string  $value  Value to select
+     * @param   string  $as     Access levels, comma-separated
+     * @param   string|int  $value  Value to select
      * @param   string  $name
      * @return  string  HTML
      */

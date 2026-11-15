@@ -50,7 +50,7 @@ class Identicon
     private $size;
 
     /**
-     * @var  float|null
+     * @var  int|null
      */
     private $pixelRatio;
 
@@ -68,7 +68,7 @@ class Identicon
     public function setSize($size)
     {
         $this->size = $size;
-        $this->pixelRatio = round($size / 5);
+        $this->pixelRatio = (int) round($size / 5);
 
         return $this;
     }

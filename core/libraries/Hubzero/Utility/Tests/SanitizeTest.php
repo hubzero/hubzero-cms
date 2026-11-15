@@ -89,4 +89,15 @@ class SanitizeTest extends Basic
         $this->assertStringNotContainsString('onerror', $html);
         $this->assertStringNotContainsString('alert', $html);
     }
+
+    /**
+     * The string filter decodes numeric character references, hexadecimal
+     * ones included
+     *
+     * @return  void
+     */
+    public function testStringFilterDecodesNumericEntities()
+    {
+        $this->assertSame('ABC', \Hubzero\Utility\Sanitize::filter('&#65;&#x42;&#X43;', 'string'));
+    }
 }

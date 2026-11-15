@@ -293,7 +293,7 @@ class Author extends Relational
      * Get a record by its relationship
      *
      * @param   integer  $resource_id
-     * @param   integer  $user_id
+     * @param   int|string  $user_id
      * @return  object
      */
     public static function oneByRelationship($resource_id, $user_id)

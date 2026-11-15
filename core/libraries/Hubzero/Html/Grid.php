@@ -84,7 +84,7 @@ class Grid
      */
     public static function published($value, $i, $prefix = '', $checkbox = 'cb')
     {
-        return Builder\Grid::published($value, $i, $prefix, $checkbox);
+        return Builder\Grid::published($value, $i, $prefix, true, $checkbox);
     }
 
     /**
@@ -119,7 +119,7 @@ class Grid
         $archived = null,
         $trashed = null,
     ) {
-        return Builder\Grid::state($filter_state, $published, $unpublished, $archived, $trashed);
+        return Builder\Grid::states($filter_state, $published, $unpublished, $archived, $trashed);
     }
 
     /**

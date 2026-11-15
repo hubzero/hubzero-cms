@@ -398,7 +398,7 @@ class Date extends DateTime
      * Method to wrap the setTimezone() function and set the internal
      * time zone object.
      *
-     * @param   object  $tz  The new DateTimeZone object.
+     * @param   DateTimeZone|string  $tz  The new time zone, or its name.
      * @return  object  The old DateTimeZone object.
      */
     #[\ReturnTypeWillChange]
@@ -554,7 +554,7 @@ class Date extends DateTime
         }
 
         // Round to minutes
-        $diff = round($diff / 60);
+        $diff = (int) round($diff / 60);
 
         // 1 to 59 minutes
         if ($diff < 60 || $unit == 'minute') {
@@ -562,7 +562,7 @@ class Date extends DateTime
         }
 
         // Round to hours
-        $diff = round($diff / 60);
+        $diff = (int) round($diff / 60);
 
         // 1 to 23 hours
         if ($diff < 24 || $unit == 'hour') {
@@ -570,7 +570,7 @@ class Date extends DateTime
         }
 
         // Round to days
-        $diff = round($diff / 24);
+        $diff = (int) round($diff / 24);
 
         // 1 to 6 days
         if ($diff < 7 || $unit == 'day') {
@@ -578,7 +578,7 @@ class Date extends DateTime
         }
 
         // Round to weeks
-        $diff = round($diff / 7);
+        $diff = (int) round($diff / 7);
 
         // 1 to 4 weeks
         if ($diff <= 4 || $unit == 'week') {
@@ -701,19 +701,19 @@ class Date extends DateTime
         if ($translate) {
             // Manually modify the month and day strings in the formatted time.
             if (strpos($return, self::DAY_ABBR) !== false) {
-                $return = str_replace(self::DAY_ABBR, $this->dayToString(parent::format('w'), true), $return);
+                $return = str_replace(self::DAY_ABBR, $this->dayToString((int) parent::format('w'), true), $return);
             }
 
             if (strpos($return, self::DAY_NAME) !== false) {
-                $return = str_replace(self::DAY_NAME, $this->dayToString(parent::format('w')), $return);
+                $return = str_replace(self::DAY_NAME, $this->dayToString((int) parent::format('w')), $return);
             }
 
             if (strpos($return, self::MONTH_ABBR) !== false) {
-                $return = str_replace(self::MONTH_ABBR, $this->monthToString(parent::format('n'), true), $return);
+                $return = str_replace(self::MONTH_ABBR, $this->monthToString((int) parent::format('n'), true), $return);
             }
 
             if (strpos($return, self::MONTH_NAME) !== false) {
-                $return = str_replace(self::MONTH_NAME, $this->monthToString(parent::format('n')), $return);
+                $return = str_replace(self::MONTH_NAME, $this->monthToString((int) parent::format('n')), $return);
             }
         }
 

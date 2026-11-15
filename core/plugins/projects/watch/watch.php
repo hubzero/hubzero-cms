@@ -368,7 +368,7 @@ class Watch extends Plugin
      *
      * @param   object  $project
      * @param   object  $subscriber
-     * @param   array   $activities
+     * @param   array|\Hubzero\Database\Rows   $activities
      * @param   string  $subject
      * @return  bool
      */

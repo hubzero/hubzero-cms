@@ -1529,7 +1529,7 @@ class AseDriver extends BaseSqlDriver
      *
      * @param   string  $key    Column to key results by
      * @param   string  $class  Class name for result objects
-     * @return  array|null
+     * @return  array
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -1537,7 +1537,7 @@ class AseDriver extends BaseSqlDriver
 
         $result = parent::loadObjectList($key, $class);
 
-        if ($result !== null && ($offset > 0 || $limit !== null)) {
+        if ($offset > 0 || $limit !== null) {
             $result = $this->applyClientPagination($result, $offset, $limit, !empty($key));
         }
 

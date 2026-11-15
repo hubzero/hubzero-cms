@@ -232,7 +232,7 @@ class Version extends Table
     /**
      * Unpublish a tool version
      *
-     * @param   string|null   $toolid
+     * @param   int|string|null   $toolid
      * @param   mixed    $vid
      * @return  boolean
      */
@@ -330,7 +330,7 @@ class Version extends Table
     /**
      * Get versions for a tool
      *
-     * @param   string   $toolid
+     * @param   int|string   $toolid
      * @param   array    &$versions
      * @param   string   $toolname
      * @param   integer  $exclude_dev
@@ -377,7 +377,7 @@ class Version extends Table
     /**
      * Get tool version information
      *
-     * @param   integer  $id
+     * @param   int|string  $id
      * @param   string|null   $revision
      * @param   string   $toolname
      * @param   string   $instance

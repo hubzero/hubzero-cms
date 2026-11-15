@@ -315,7 +315,6 @@ class DriverTest extends AbstractDriverTestCase
             . " ORDER BY " . $driver->quoteName('id'));
         $result = $driver->loadObjectList();
 
-        $this->assertIsArray($result, 'Result should be an array');
         $this->assertCount(2, $result, 'Should have 2 rows');
         $this->assertIsObject($result[0], 'First item should be an object');
     }

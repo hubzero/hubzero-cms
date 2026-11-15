@@ -106,7 +106,7 @@ class Description extends Relational
     /**
      * Helper method to collect multi-value fields
      *
-     * @param   array  $data
+     * @param   iterable  $data
      * @return  array
      */
     public static function collect($data)

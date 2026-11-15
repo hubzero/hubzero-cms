@@ -1116,8 +1116,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Build and return the url
      *
-     * @param   string  $as
-     * @return  mixed  A list of names, a string, or the tag cloud itself when $as is false
+     * @param   string  $as  'list' for the tag names, 'cloud' for the cloud, anything else for the tags
+     * @return  mixed  A list of names, the tag cloud, or the tags
      */
     public function tags($as = 'list')
     {
@@ -1779,7 +1779,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         $obj->access_level = $this->transformAccessLevel();
         $groups = $this->getGroups();
-        $tags = $this->tags(false);
+        $tags = $this->tags('rows');
 
         if ($tags->count() > 0) {
             foreach ($tags as $tag) {

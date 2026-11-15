@@ -132,7 +132,8 @@ class Media extends Base
             $realSize = stream_copy_to_stream($input, $temp);
             fclose($input);
 
-            if (Helpers\Html::virusCheck($temp)) {
+            // Scan the copy by its path; the scanner reads files, not handles
+            if (Helpers\Html::virusCheck(stream_get_meta_data($temp)['uri'])) {
                 echo json_encode(['error' => Lang::txt('Virus detected, refusing to upload')]);
                 return null;
             }

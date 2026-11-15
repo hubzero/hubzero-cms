@@ -329,7 +329,7 @@ class Relationship
      * Loads the relationship content with the provided data
      *
      * @param   \Hubzero\Database\Rows   $rows  The rows that we'll be seeding
-     * @param   string  $data  The data to seed
+     * @param   \Hubzero\Database\Rows|array  $data  The data to seed
      * @param   string  $name  The name of the relationship
      * @return  \Hubzero\Database\Rows
      **/

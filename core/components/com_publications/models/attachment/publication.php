@@ -593,7 +593,7 @@ class Publication extends Base
     /**
      * Check for allowed formats
      *
-     * @param   array    $attachments
+     * @param   array|int|string    $attachments
      * @param   array    $formats
      * @return  boolean
      */

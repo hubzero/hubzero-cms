@@ -1543,7 +1543,7 @@ class Connect extends Obj
      * @param   string   $dir       Directory path
      * @param   string   $action    Action
      * @param   string   $newdir    New directory path
-     * @param   string   $parentId  Parent ID
+     * @param   string|int|false   $parentId  Parent ID
      * @return  bool|null
      */
     public function fixConvertedItems(
@@ -1595,7 +1595,7 @@ class Connect extends Obj
      *
      * @param   string   $service        Service name (google or dropbox)
      * @param   integer  $uid            User ID
-     * @param   string   $startChangeId  Last Change ID
+     * @param   string|int|false   $startChangeId  Last Change ID
      * @param   array    $remotes        Collector array for active items
      * @param   array    $deletes        Collector array for deleted items
      * @param   array    $connections    Array of local-remote connections
@@ -2007,7 +2007,7 @@ class Connect extends Obj
      * Store auth token for service
      *
      * @param   string   $param  Param name
-     * @param   string   $value  Param value
+     * @param   string|int   $value  Param value
      * @param   integer  $uid    User ID
      * @return  void
      */
@@ -2040,15 +2040,15 @@ class Connect extends Obj
         if ($method == 'GET') {
             $options = [
                 CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_RETURNTRANSFER => true,
             ];
             curl_setopt_array($ch, $options);
         } else {
             $options = [
                 CURLOPT_URL => $url,
-                CURLOPT_POST => 1,
+                CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $postvals,
-                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_RETURNTRANSFER => true,
             ];
             curl_setopt_array($ch, $options);
         }

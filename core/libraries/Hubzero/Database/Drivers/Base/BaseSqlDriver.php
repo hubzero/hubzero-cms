@@ -286,10 +286,6 @@ abstract class BaseSqlDriver extends PdoDriver
         $this->setQuery($query);
         $fields = $this->loadObjectList();
 
-        if (!is_array($fields)) {
-            return [];
-        }
-
         return $this->mapShowColumnsResult($fields, $typeOnly);
     }
 
@@ -502,7 +498,7 @@ abstract class BaseSqlDriver extends PdoDriver
             ? $this->loadObjectList($indexBy)
             : $this->loadObjectList();
 
-        return is_array($keys) ? $keys : [];
+        return $keys;
     }
 
     /**

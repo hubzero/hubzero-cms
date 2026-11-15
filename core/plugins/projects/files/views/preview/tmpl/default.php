@@ -75,7 +75,7 @@ endif;
 
         <?php if ($this->file->get('originalPath') && $this->file->getSize()) : ?>
             <li>
-                <?php echo strtoupper($this->file->getSize('formatted')); ?>
+                <?php echo strtoupper($this->file->getSize(true)); ?>
             </li>
         <?php endif; ?>
     </ul>

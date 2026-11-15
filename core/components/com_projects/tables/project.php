@@ -371,7 +371,7 @@ class Project extends Table
      * Get item count
      *
      * @param   array    $filters
-     * @param   boolean  $admin
+     * @param   bool|string  $admin
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete
@@ -806,7 +806,7 @@ class Project extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string|null  $identifier   project id or alias name
+     * @param   int|string|null  $identifier   project id or alias name
      * @return  mixed   object or false
      */
     public function loadProject($identifier = null)

@@ -192,7 +192,7 @@ class Tool extends Table
     /**
      * Get a ticket ID for a tool
      *
-     * @param   string|null   $toolid
+     * @param   int|string|null   $toolid
      * @return  string|false|null
      */
     public function getTicketId($toolid = null)
@@ -325,8 +325,8 @@ class Tool extends Table
      * Update a tool entry
      *
      * @param   string|null  $toolid
-     * @param   string|null  $newstate
-     * @param   string|null  $priority
+     * @param   int|string|null  $newstate
+     * @param   int|string|null  $priority
      * @return  boolean
      */
     public function updateTool($toolid = null, $newstate = null, $priority = null)
@@ -406,7 +406,7 @@ class Tool extends Table
     /**
      * Get tool developers
      *
-     * @param   integer  $toolid
+     * @param   int|string  $toolid
      * @return  array
      */
     public static function getToolDevelopers($toolid)
@@ -443,7 +443,7 @@ class Tool extends Table
     /**
      * Get tool status
      *
-     * @param   integer  $toolid
+     * @param   int|string  $toolid
      * @param   string   $option
      * @param   array    &$status
      * @param   string   $version

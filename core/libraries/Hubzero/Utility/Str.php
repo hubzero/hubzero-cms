@@ -171,7 +171,7 @@ class Str
      * - `regex` a custom regex rule that is used to match words, default is '|$tag|iu'
      *
      * @param   string  $text     Text to search the phrase in
-     * @param   string|array  $phrase   The phrase that will be searched
+     * @param   string|array|null  $phrase   The phrase that will be searched
      * @param   array   $options  An array of html attributes and options.
      * @return  string  The highlighted text
      */
@@ -348,7 +348,7 @@ class Str
                 $spacepos = mb_strrpos($result, ' ');
 
                 if ($spacepos !== false) {
-                    $lastWord = mb_strrpos($result, $spacepos);
+                    $lastWord = mb_substr($result, $spacepos);
                     // Some languages are written without word separation.
                     // We recognize a string as a word if it doesn't contain any full-width characters.
                     if (mb_strwidth($lastWord) === mb_strlen($lastWord)) {

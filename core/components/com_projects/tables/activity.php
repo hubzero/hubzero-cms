@@ -313,7 +313,7 @@ class Activity extends Table
      * Delete activities
      *
      * @param   integer  $projectid
-     * @param   boolean  $permanent
+     * @param   bool|int  $permanent
      * @return  boolean  true on success
      */
     public function deleteActivities($projectid = 0, $permanent = false)

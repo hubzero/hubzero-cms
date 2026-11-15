@@ -123,11 +123,15 @@ class ObjectExpander extends Middleware
     /**
      * Normalize expand keys
      *
-     * @param   array  $expandKeys  Raw expand keys
+     * @param   string|array  $expandKeys  Raw expand keys: a comma-separated list, or several (expand[]=...)
      * @return  array  Normalized expand keys
      */
     private function normalizeExpandKeys($expandKeys)
     {
+        if (is_array($expandKeys)) {
+            $expandKeys = implode(',', $expandKeys);
+        }
+
         // clean up expand keys
         $expandKeys = array_map('trim', explode(',', $expandKeys));
         $normalized = [];

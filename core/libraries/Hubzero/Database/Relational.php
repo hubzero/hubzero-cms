@@ -2143,7 +2143,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This method creates a model instance from database results and fires the
      * "retrieved" event, allowing post-load processing.
      *
-     * @param   object  $results  The results to set on the new model
+     * @param   object|array  $results  The results to set on the new model
      * @return  static
      **/
     public static function newFromResults($results)

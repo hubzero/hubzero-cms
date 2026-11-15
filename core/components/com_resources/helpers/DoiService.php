@@ -411,7 +411,7 @@ class DoiService extends Obj
      *
      * @param   string   $url
      * @param   string    $postvals
-     * @param   string   &$doi
+     * @param   string|null   &$doi
      * @return  boolean
      */
     public function regMetadata($url, $postvals, &$doi)

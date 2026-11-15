@@ -424,7 +424,7 @@ class File extends Base
                     : $icon . ' ' . $title . $notice;
             $html .= '<span class="extras">';
             $html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
-            $html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+            $html .= $file->getSize() ? ' | ' . $file->getSize(true) : '';
             $html .= $file->get('ext') ? ')' : '';
             if ($authorized === 'administrator') {
                 $html .= ' <span class="edititem">';
@@ -476,7 +476,7 @@ class File extends Base
                         : $icon . ' ' . $title . $notice;
                 $html .= '<span class="extras">';
                 $html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
-                $html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+                $html .= $file->getSize() ? ' | ' . $file->getSize(true) : '';
                 $html .= $file->get('ext') ? ')' : '';
                 if ($authorized === 'administrator') {
                     $html .= ' <span class="edititem">';
@@ -987,7 +987,7 @@ class File extends Base
      * @param   integer  $id
      * @param   object|null   $configs
      * @param   object|null   $params
-     * @param   string|null   $suffix
+     * @param   string|int|null   $suffix
      * @return  string
      */
     public function getFilePath($path, $id, $configs = null, $params = null, $suffix = null)

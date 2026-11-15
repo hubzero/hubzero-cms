@@ -34,7 +34,7 @@ class RemoteFile extends Table
      * @param   integer|null  $projectid  Project ID
      * @param   string   $service
      * @param   string   $local_dirpath
-     * @param   string   $converted
+     * @param   string|int   $converted
      * @return  array|false
      */
     public function getRemoteConnections($projectid = null, $service = '', $local_dirpath = '', $converted = 'na')
@@ -148,7 +148,7 @@ class RemoteFile extends Table
      * Load item
      *
      * @param   integer|null  $projectid   Project ID
-     * @param   string|null   $id          Remote ID
+     * @param   int|string|null   $id          Remote ID
      * @param   string   $service     Service name (google)
      * @param   string   $local_path  Local path to file
      * @return  mixed    False if error, Object on success
@@ -354,15 +354,15 @@ class RemoteFile extends Table
      *
      * @param   integer|null  $projectid   Project ID
      * @param   string   $service     Service name (google)
-     * @param   integer|null  $id          Remote ID
+     * @param   int|string|null  $id          Remote ID
      * @param   string   $local_path
      * @param   string   $type
      * @param   integer  $uid
-     * @param   integer  $parentId
+     * @param   int|string  $parentId
      * @param   string   $title
      * @param   string   $remote_md5
      * @param   string   $local_md5
-     * @param   string   $converted
+     * @param   string|int   $converted
      * @param   string   $remote_format
      * @param   string   $local_format
      * @param   string   $remote_modified

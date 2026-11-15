@@ -2060,7 +2060,7 @@ class Publication extends Obj
      * Save param
      *
      * @param   string  $param
-     * @param   string  $value
+     * @param   string|int  $value
      * @return  mixed
      */
     public function saveParam($param = '', $value = '')
@@ -2399,7 +2399,7 @@ class Publication extends Obj
      *
      * @param   string|null  $putCode
      *
-     * @return  boolean or array
+     * @return  string|false  The work as JSON, or false when there is no publication
      */
     public function getWorkData($putCode = null)
     {
@@ -2534,6 +2534,9 @@ class Publication extends Obj
         $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work';
         $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
         $data = $this->getWorkData();
+        if ($data === false) {
+            return false;
+        }
 
         $ch = curl_init();
         $headers = [];
@@ -2585,6 +2588,9 @@ class Publication extends Obj
             . $putCode;
         $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
         $data = $this->getWorkData($putCode);
+        if ($data === false) {
+            return false;
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $serviceURL);

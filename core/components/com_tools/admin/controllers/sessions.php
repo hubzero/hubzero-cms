@@ -214,7 +214,7 @@ class Sessions extends AdminController
     /**
      * Edit a quota class
      *
-     * @param   integer  $id  ID of class to edit
+     * @param   integer|Tables\SessionClass  $id  ID of class to edit, or a class that failed to save
      *
      * @return  void
      */
@@ -222,17 +222,22 @@ class Sessions extends AdminController
     {
         Request::setVar('hidemainmenu', 1);
 
-        if (!$id) {
-            // Incoming
-            $id = Request::getArray('id', []);
+        if ($id instanceof Tables\SessionClass) {
+            // A class that failed to save comes back with what was entered
+            $row = $id;
+        } else {
+            if (!$id) {
+                // Incoming
+                $id = Request::getArray('id', []);
 
-            // Get the single ID we're working with
-            $id = (!empty($id)) ? $id[0] : 0;
+                // Get the single ID we're working with
+                $id = (!empty($id)) ? $id[0] : 0;
+            }
+
+            // Initiate database class and load info
+            $row = new Tables\SessionClass($this->database);
+            $row->load($id);
         }
-
-        // Initiate database class and load info
-        $row = new Tables\SessionClass($this->database);
-        $row->load($id);
 
         // Output the HTML
         $this->view

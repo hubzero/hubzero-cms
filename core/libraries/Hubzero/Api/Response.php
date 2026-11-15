@@ -81,7 +81,7 @@ class Response extends BaseResponse
 
                 $output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-                $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
+                $output .= '<p id="status">' . htmlspecialchars((string) $status) . "</p>\n";
 
                 $output .= '<p id ="message">' . $content . "</p>\n";
 
@@ -110,7 +110,7 @@ class Response extends BaseResponse
 
                 $output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-                $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
+                $output .= '<p id="status">' . htmlspecialchars((string) $status) . "</p>\n";
                 $output .= '<p id ="message">' . $content . "</p>\n";
 
                 $output .= "</div>\n";

@@ -191,8 +191,8 @@ class Orcid extends SiteController
     /**
      * Search ORCID by name or email
      *
-     * @param   string  $fname  First name
-     * @param   string  $lname  Last name
+     * @param   string|null  $fname  First name
+     * @param   string|null  $lname  Last name
      * @param   string|null  $iname  Institution name
      * @return  \SimpleXMLElement|false
      */

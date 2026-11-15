@@ -66,8 +66,8 @@ class Link extends Button
     /**
      * Get the JavaScript command for the button
      *
-     * @param   object  $url  Button definition
-     * @return  object  JavaScript command string
+     * @param   string|null  $url  Button definition
+     * @return  string|null  JavaScript command string
      */
     protected function getCommand($url)
     {

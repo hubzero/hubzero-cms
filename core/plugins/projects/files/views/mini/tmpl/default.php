@@ -56,7 +56,7 @@ $boxClass = $hasFiles ? '' : ' suggestions';
             $shortName = \Components\Projects\Helpers\Html::shortenFileName(
                 $file->get('name'),
             );
-            $fileSize = $file->getSize('formatted');
+            $fileSize = $file->getSize(true);
             $fileDate = Date::of($file->get('date'))->toLocal('M d, Y');
             $authorName = \Components\Projects\Helpers\Html::shortenName(
                 $file->get('author'),

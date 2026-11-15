@@ -233,7 +233,7 @@ class Calendar extends Model
 
         // Assumes minutes
         // add refresh interval to last refreshed
-        $lastRefreshed->add($refreshInterval->i);
+        $lastRefreshed->add($refreshInterval);
 
         // if we havent passed our need to refresh date stop
         if ($now < $lastRefreshed && !$force) {
@@ -252,7 +252,7 @@ class Calendar extends Model
         $calendarUrl = str_replace('webcal', 'http', $this->get('url'));
 
         //test to see if this calendar is valid
-        $calendarHeaders = get_headers($calendarUrl, 1);
+        $calendarHeaders = get_headers($calendarUrl, true);
         $statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
 
         // if we got a 301, lets update the location

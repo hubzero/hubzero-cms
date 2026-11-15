@@ -90,7 +90,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     #[\ReturnTypeWillChange]
     public function getIterator()
     {
-        return new \ArrayIterator($this->data);
+        return new \ArrayIterator((array) $this->data);
     }
 
     /**

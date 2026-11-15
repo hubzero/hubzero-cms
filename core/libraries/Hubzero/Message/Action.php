@@ -61,7 +61,7 @@ class Action extends Relational
      *
      * @param   string   $type       Action type
      * @param   string   $component  Component name
-     * @param   integer  $element    ID of element that needs action
+     * @param   int|string  $element    ID of element that needs action
      * @param   integer  $uid        User ID
      * @return  object
      */

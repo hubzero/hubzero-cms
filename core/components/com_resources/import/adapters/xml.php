@@ -118,7 +118,7 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
      *
      * @param   object  $record     Resource Record
      * @param   array   $callbacks  Array of Callbacks
-     * @param   bool    $dryRun     Dry Run mode?
+     * @param   bool|int    $dryRun     Dry Run mode?
      * @return  object              Record object
      */
     public function map($record, $callbacks, $dryRun)

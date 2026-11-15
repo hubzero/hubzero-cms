@@ -143,7 +143,7 @@ class Writer
      * Parse the string level into a Monolog constant.
      *
      * @param   string  $level
-     * @return  int
+     * @return  100|200|250|300|400|500|550|600  A MonologLogger level
      */
     protected function parseLevel($level)
     {

@@ -989,7 +989,7 @@ class Sessions extends SiteController
             if (count($currentViewPerm) == 0) {
                 $mwViewperm->sessnum   = $sess;
                 $mwViewperm->viewuser  = $zuser->get('username');
-                $mwViewperm->viewtoken = md5(rand());
+                $mwViewperm->viewtoken = bin2hex(random_bytes(16));
                 $mwViewperm->geometry  = $rows[0]->geometry;
                 $mwViewperm->fwhost    = $rows[0]->fwhost;
                 $mwViewperm->fwport    = $rows[0]->fwport;

@@ -60,7 +60,7 @@ class Section extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string|null   $oid  Record alias
+     * @param   int|string|null   $oid  Record ID or alias
      * @return  boolean  True on success
      */
     public function load($oid = null, $offering_id = null)

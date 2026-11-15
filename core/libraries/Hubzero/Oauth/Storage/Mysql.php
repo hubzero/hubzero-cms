@@ -97,7 +97,7 @@ class Mysql implements
     /**
      * Get client details by client id
      *
-     * @param   string  $clientId  Load client details via client id.
+     * @param   string|int  $clientId  Load client details via client id.
      * @return  array|false
      */
     public function getClientDetails($clientId)

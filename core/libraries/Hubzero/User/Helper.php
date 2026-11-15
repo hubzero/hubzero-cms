@@ -26,7 +26,7 @@ class Helper
         $genpass = '';
         $salt = "abchefghjkmnpqrstuvwxyz0123456789";
 
-        srand((float) microtime() * 1000000);
+        srand((int) ((float) microtime() * 1000000));
 
         $i = 0;
 

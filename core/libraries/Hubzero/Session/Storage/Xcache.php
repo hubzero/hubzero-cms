@@ -72,7 +72,7 @@ class Xcache extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        return xcache_set($this->key($id), $data, ini_get("session.gc_maxlifetime"));
+        return xcache_set($this->key($id), $data, (int) ini_get("session.gc_maxlifetime"));
     }
 
     /**

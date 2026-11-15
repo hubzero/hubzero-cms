@@ -180,7 +180,7 @@ class Memcache extends Store
     /**
      * Get single session data as an object
      *
-     * @param   int  $id  Session Id
+     * @param   string  $id  Session Id
      * @return  Obj
      */
     public function session($id)

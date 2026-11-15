@@ -399,7 +399,7 @@ class MysqlDriver extends BaseSqlDriver
         $this->setQuery("SHOW ENGINES");
         $engines = $this->loadObjectList('Engine');
 
-        if (!is_array($engines) || empty($engines)) {
+        if (empty($engines)) {
             return null;
         }
 

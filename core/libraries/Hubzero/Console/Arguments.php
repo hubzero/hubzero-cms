@@ -121,7 +121,7 @@ class Arguments
     /**
      * Delete option
      *
-     * @param   string  $key  The argument to remove
+     * @param   string|int  $key  The argument to remove
      * @return  void
      **/
     public function deleteOpt($key)

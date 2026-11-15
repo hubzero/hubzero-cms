@@ -179,28 +179,28 @@ class EventsDate
     {
         switch ($task) {
             case 'year':
-                $url = 'year=' . $this->getYear(1);
+                $url = 'year=' . $this->getYear(true);
                 break;
             case 'month':
-                $url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1);
+                $url = 'year=' . $this->getYear(true) . '&amp;month=' . $this->getMonth(true);
                 break;
             case 'week':
                 $url = 'year='
-                    . $this->getYear(1)
+                    . $this->getYear(true)
                     . '&amp;month='
-                    . $this->getMonth(1)
+                    . $this->getMonth(true)
                     . '&amp;day='
-                    . $this->getDay(1)
+                    . $this->getDay(true)
                     . '&amp;task=week';
                 break;
             case 'day':
             default:
                 $url = 'year='
-                    . $this->getYear(1)
+                    . $this->getYear(true)
                     . '&amp;month='
-                    . $this->getMonth(1)
+                    . $this->getMonth(true)
                     . '&amp;day='
-                    . $this->getDay(1);
+                    . $this->getDay(true);
                 break;
         }
 

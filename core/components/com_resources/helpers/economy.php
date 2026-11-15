@@ -78,7 +78,7 @@ class Economy extends Obj
 
             if (intval($points) > 0) {
                 $msg = ($type == 'royalty') ? Lang::txt('Royalty payment for your resource contributions') : '';
-                $BTL->deposit($points, $msg, $cat, 0);
+                $BTL->deposit((int) $points, $msg, $cat, 0);
             }
         }
         return true;

@@ -2414,8 +2414,8 @@ class Publications extends Plugin
                 if (strlen($month) == 1) {
                     $month = '0' . $month;
                 }
-                if (checkdate($month, $day, $year)) {
-                    $pubdate = Date::of(gmmktime(0, 0, 0, $month, $day, $year))->toSql();
+                if (checkdate((int) $month, (int) $day, (int) $year)) {
+                    $pubdate = Date::of(gmmktime(0, 0, 0, (int) $month, (int) $day, (int) $year))->toSql();
                 }
                 // Prevent date before current
                 if ($pubdate < Date::toSql()) {

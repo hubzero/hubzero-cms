@@ -139,7 +139,7 @@ class Select
      * Generates a grouped HTML selection list from nested arrays.
      *
      * @param   array   $data     An array of groups, each of which is an array of options.
-     * @param   string  $name     The value of the HTML name attribute
+     * @param   string|null  $name     The value of the HTML name attribute
      * @param   array   $options  Options, an array of key/value pairs. Valid options are:
      *                            Selection options.
      *                            group.id: The property in each group to use as the group id
@@ -604,8 +604,8 @@ class Select
      * @param   string|array|null   $attribs    Additional HTML attributes for the <select> tag
      * @param   mixed    $optKey     The key that is selected
      * @param   string   $optText    The name of the object variable for the option value
-     * @param   string|array|null   $selected   The selected value, or a list of them
-     * @param   boolean  $idtag      Value of the field id or null by default
+     * @param   string|int|array|null   $selected   The selected value, or a list of them
+     * @param   string|false  $idtag      Value of the field id, or false to use the name
      * @param   boolean  $translate  True if options will be translated
      * @return  string   HTML for the select list
      */
@@ -695,7 +695,7 @@ class Select
     /**
      * Build the select list for Ordering derived from a query
      *
-     * @param   integer  $name      The scalar value
+     * @param   string   $name      The name of the select list
      * @param   string   $query     The query
      * @param   string|null   $attribs   HTML tag attributes
      * @param   string|null   $selected  The selected item

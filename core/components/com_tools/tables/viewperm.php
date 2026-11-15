@@ -29,7 +29,7 @@ class Viewperm extends Table
     /**
      * Load database rows
      *
-     * @param   integer|null  $sess      Session number
+     * @param   int|string|null  $sess      Session number
      * @param   string|null   $username  User to load for
      * @return  array|false
      */
@@ -82,7 +82,7 @@ class Viewperm extends Table
     /**
      * Delete a record
      *
-     * @param   integer|null  $sess      Session number
+     * @param   int|string|null  $sess      Session number
      * @param   string|null   $username  User to delete for
      * @return  boolean  False if errors, True if success
      */

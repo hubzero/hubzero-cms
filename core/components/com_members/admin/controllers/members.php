@@ -1116,7 +1116,7 @@ class Members extends AdminController
 
         // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the
         // value encoded in json in appropriate PHP type
-        $objString = json_encode($objRows, true);
+        $objString = json_encode($objRows);
         return json_decode($objString, true);
     }
 
@@ -1192,7 +1192,7 @@ class Members extends AdminController
             $this->runInsertQuery($insert_UserProfileWithStatus_Query, [$id]);
 
             // Running the plugin with all deletions
-            $result = Event::trigger('user.onUserDeidentify', $id);
+            $result = Event::trigger('user.onUserDeidentify', [$id]);
 
             if ($result) {
                 // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------

@@ -782,10 +782,10 @@ class Owner extends Table
      * Remove project owners
      *
      * @param   integer|null  $projectid
-     * @param   array    $users      user or owner ids to remove
+     * @param   array|string    $users      user or owner ids to remove
      * @param   boolean|int $byownerid  owner ids in users array?
      * @param   boolean|int $remove     permanently remove if true
-     * @param   integer  $status     what status to set
+     * @param   int|string  $status     what status to set
      * @param   boolean|int $all        if true delete all owners of a project
      * @return  mixed    false if errors, integer - number of deleted members
      */
@@ -1181,7 +1181,7 @@ class Owner extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param   string|null   $projectid
+     * @param   int|string|null   $projectid
      * @param   integer  $owner       owner user id
      * @return  boolean  False or object
      */

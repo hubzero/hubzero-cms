@@ -849,7 +849,7 @@ class Links extends Plugin
         // Pull DOI metadata
         if ($doi) {
             $output['rtype'] = 'doi';
-            $data = self::getDoiMetadata($doi, $citation, $url, $format);
+            $data = self::getDoiMetadata($doi, $citation, $url, false, $format);
 
             if ($this->getError()) {
                 $output['error'] = $this->getError();

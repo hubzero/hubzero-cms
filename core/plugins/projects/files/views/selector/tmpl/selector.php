@@ -82,7 +82,7 @@ defined('_HZEXEC_') or die();
         ?>
         <li class="<?= $classes ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->get('localPath')) ?>"
             data-connection="<?= Request::getInt('cid', 0) ?>">
-            <span class="item-info"><?= $item->get('type') == 'file' ? $item->getSize('formatted') : '' ?></span>
+            <span class="item-info"><?= $item->get('type') == 'file' ? $item->getSize(true) : '' ?></span>
             <span class="item-wrap <?= ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss ?>"
                 id="<?= urlencode($item->get('localPath')) ?>">
                 <?php if ($item->get('type') == 'folder') {

@@ -611,7 +611,7 @@ class Batchcreate extends AdminController
      * Collect file data
      *
      * @param   object   $file
-     * @param   string   $role
+     * @param   int|string   $role
      * @param   integer  $ordering
      * @param   object   $item
      * @param   integer  $element_id

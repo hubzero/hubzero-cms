@@ -33,7 +33,7 @@ class Publication extends Table
     /**
      * Load by alias
      *
-     * @param   string|null  $oid
+     * @param   int|string|null  $oid
      * @return  mixed   object or false
      */
     public function loadPublication($oid = null)

@@ -95,11 +95,11 @@ class Quota extends Relational
 
         if ($result) {
             $command = "update_quota "
-                . escapeshellarg((int) $this->get('user_id'))
+                . escapeshellarg((string) (int) $this->get('user_id'))
                 . " "
-                . escapeshellarg((int) $this->get('soft_blocks'))
+                . escapeshellarg((string) (int) $this->get('soft_blocks'))
                 . " "
-                . escapeshellarg((int) $this->get('hard_blocks'));
+                . escapeshellarg((string) (int) $this->get('hard_blocks'));
 
             $status = Utils::middleware($command, $output);
 

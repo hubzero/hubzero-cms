@@ -176,17 +176,8 @@ class HtmlMenu
                 ->order('ordering', 'asc')
                 ->toString();
 
-            $order = Html::select('ordering', $query);
-
-            $ordering = Html::select(
-                'genericlist',
-                $order,
-                'ordering',
-                [
-                    'list.attr' => 'class="inputbox" size="1"',
-                    'list.select' => intval($row->ordering),
-                ],
-            );
+            // The options come from the query; the list is named "ordering"
+            $ordering = Html::select('ordering', 'ordering', $query, 'class="inputbox" size="1"', $row->ordering);
         } else {
             $ordering = '<input type="hidden" name="ordering" value="' . $row->ordering . '" />'
                 . Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');

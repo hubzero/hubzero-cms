@@ -103,8 +103,8 @@ class Log extends Base implements CommandInterface
         $proc = proc_open("tail -f {$path}", $descs, $fp);
 
         // Set streams to be non-blocking so we aren't sitting and waiting
-        stream_set_blocking(STDIN, 0);
-        stream_set_blocking($fp[1], 0);
+        stream_set_blocking(STDIN, false);
+        stream_set_blocking($fp[1], false);
 
         // Print log info/formatting
         $class::format($this->output);

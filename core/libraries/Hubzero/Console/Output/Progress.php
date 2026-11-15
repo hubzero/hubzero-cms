@@ -181,7 +181,7 @@ class Progress extends Output
             case 'percentage':
             default:
                 // Set current progress to 0
-                $this->setProgress('0');
+                $this->setProgress(0);
                 break;
         }
 

@@ -31,7 +31,10 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
-     * @param      string|null $oid Record alias
+     * @param      mixed                $uid      User ID, or a record ID when no course is given
+     * @param      int|string|null      $oid      Offering ID
+     * @param      int|string|null      $sid      Section ID
+     * @param      int|bool|null        $student  Only students (1) or only managers (0)
      * @return     boolean True on success
      */
     public function load($uid = null, $cid = null, $oid = null, $sid = null, $student = null)
@@ -365,7 +368,7 @@ class Member extends Table
     /**
      * Get a count of course offerings
      *
-     * @param  array $section_id
+     * @param  int|array $section_id
      * @return object|bool Return course units
      */
     public function deleteBySection($section_id)

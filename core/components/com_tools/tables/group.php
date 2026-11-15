@@ -169,7 +169,7 @@ class Group extends Table
      * Write the list of group members
      *
      * @param   array|mixed    $new       New members
-     * @param   integer  $id
+     * @param   int|string  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message
      * @return  array
@@ -209,7 +209,7 @@ class Group extends Table
      * Get a list of team members
      *
      * @param   array|mixed    $new
-     * @param   integer  $id
+     * @param   int|string  $id
      * @param   object   $database  Database
      * @param   string   &$err      Error message
      * @return  array

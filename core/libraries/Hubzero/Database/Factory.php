@@ -562,7 +562,7 @@ abstract class Factory
     public static function randomFloat(float $min = 0, float $max = 1, int $decimals = 2)
     {
         $scale = pow(10, $decimals);
-        return random_int($min * $scale, $max * $scale) / $scale;
+        return random_int((int) ($min * $scale), (int) ($max * $scale)) / $scale;
     }
 
     /**

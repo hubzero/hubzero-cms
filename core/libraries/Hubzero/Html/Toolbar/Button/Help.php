@@ -94,7 +94,7 @@ class Help extends Button
      *
      * @param   string   $ref        The name of the help screen (its key reference).
      * @param   boolean  $com        Use the help file in the component directory.
-     * @param   string   $override   Use this URL instead of any other.
+     * @param   string|false   $override   Use this URL instead of any other.
      * @param   string   $component  Name of component to get Help (null for current component)
      * @return  string   JavaScript command string
      */

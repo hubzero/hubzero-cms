@@ -23,7 +23,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Create and add an item to the pathway.
      *
-     * @param   string  $name  The name of the item.
+     * @param   string|int  $name  The name of the item.
      * @param   string  $link  The link to the item.
      * @return  object
      */

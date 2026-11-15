@@ -296,7 +296,7 @@ class Html extends Base
 
         $renderer = $this->loadRenderer($type);
 
-        $this->setBuffer($renderer->render($name, $attribs, $result), $type, $name);
+        $this->setBuffer($renderer->render($name, $attribs, $result), ['type' => $type, 'name' => $name]);
 
         return parent::$buffer[$type][$name];
     }
