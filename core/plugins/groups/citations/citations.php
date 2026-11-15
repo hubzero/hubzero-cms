@@ -1532,10 +1532,6 @@ class Citations extends Plugin
     private function filterHandler($filters = [], $scope_id = 0)
     {
         $citations = \Components\Citations\Models\Citation::all();
-        // require citations
-        if (!$citations) {
-            return false;
-        }
 
         // Set default sort if none otherwise specified
         if (!isset($filters['sort'])) {

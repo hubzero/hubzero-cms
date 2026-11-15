@@ -191,7 +191,7 @@ trait Prunable
      * by the relationship introspection in Relational::introspectRelationships(),
      * which invokes all public methods to discover relationships.
      *
-     * @return  static  A query builder instance with prunable records
+     * @return  static|null  A query builder instance with prunable records, or null for none
      */
     abstract protected function prunable();
 }

@@ -1328,10 +1328,6 @@ class Citations extends Plugin
     private function filterHandler($filters = [], $scope_id = 0)
     {
         $citations = \Components\Citations\Models\Citation::all();
-        // require citations
-        if (!$citations) {
-            return false;
-        }
 
         // get the ones for this group
         $citations->where('scope', '=', 'member');
