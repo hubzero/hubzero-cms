@@ -320,7 +320,7 @@ class Message extends \Symfony\Component\Mime\Email
         }
 
         foreach ($addresses as $key => $value) {
-            if ($key === null || $key === '') {
+            if ($key === '') {
                 continue;
             } elseif (is_numeric($key)) {
                 if ($value === null) {
@@ -386,7 +386,7 @@ class Message extends \Symfony\Component\Mime\Email
         }
 
         foreach ($addresses as $key => $value) {
-            if ($key === null || $key === '') {
+            if ($key === '') {
                 continue;
             } elseif (is_numeric($key)) {
                 if ($value === null) {
@@ -452,7 +452,7 @@ class Message extends \Symfony\Component\Mime\Email
         }
 
         foreach ($addresses as $key => $value) {
-            if ($key === null || $key === '') {
+            if ($key === '') {
                 continue;
             } elseif (is_numeric($key)) {
                 if ($value === null) {
@@ -517,7 +517,7 @@ class Message extends \Symfony\Component\Mime\Email
         }
 
         foreach ($addresses as $key => $value) {
-            if ($key === null || $key === '') {
+            if ($key === '') {
                 continue;
             } elseif (is_numeric($key)) {
                 if ($value === null) {

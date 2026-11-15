@@ -96,11 +96,6 @@ class Excel implements Adapter
 
         // loop through each item
         foreach ($iterator as $index => $record) {
-            // make sure we have a record
-            if ($record === null) {
-                continue;
-            }
-
             // do we have a post parse callback ?
             $record = $this->map($record, $callbacks['postparse'], $dryRun);
 

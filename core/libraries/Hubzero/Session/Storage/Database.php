@@ -214,7 +214,7 @@ class Database extends Store
     /**
      * Get single session data as an object
      *
-     * @param   int  $id  Session Id
+     * @param   string|int|null  $id  Session Id (encrypted id strings are passed too)
      * @return  object|null
      */
     public function session($id)

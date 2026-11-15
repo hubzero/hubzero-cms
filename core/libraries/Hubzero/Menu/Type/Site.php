@@ -124,8 +124,8 @@ class Site extends Base
     /**
      * Gets menu items by attribute
      *
-     * @param   string   $attributes  The field name
-     * @param   string   $values      The value of the field
+     * @param   string|array  $attributes  The field name, or names
+     * @param   mixed         $values      The value of the field, or values; a null value drops that filter
      * @param   boolean  $firstonly   If true, only returns the first item found
      * @return  array
      */

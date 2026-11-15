@@ -63,7 +63,7 @@ class Reader implements Iterator
     /**
      * Get the current XML node
      *
-     * @return  object  XML node as a stdClass
+     * @return  object|null  XML node as a stdClass; null when the node cannot be converted
      */
 
     #[\ReturnTypeWillChange]

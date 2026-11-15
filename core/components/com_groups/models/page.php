@@ -102,7 +102,7 @@ class Page extends Model
      * Load Page Version
      *
      * @param   mixed   $vid  Version Id
-     * @return  object  \Components\Groups\Models\Page\Version
+     * @return  \Components\Groups\Models\Page\Version|null  Null when that version number does not exist
      */
     public function version($vid = null)
     {
