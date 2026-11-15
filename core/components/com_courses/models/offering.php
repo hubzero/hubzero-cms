@@ -479,7 +479,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->managers) || !is_array($this->managers) || $clear) {
+        if (!isset($this->managers) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -695,7 +695,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->members) || !is_array($this->members) || $clear) {
+        if (!isset($this->members) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -794,7 +794,7 @@ class Offering extends Base
 
             return $tbl->count($filters);
         }
-        if (!isset($this->roles) || !is_array($this->roles) || $clear) {
+        if (!isset($this->roles) || $clear) {
             $tbl = new Tables\Role($this->db);
 
             if (!($results = $tbl->find($filters))) {
@@ -862,7 +862,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->pages) || !is_array($this->pages) || $reload) {
+        if (!isset($this->pages) || $reload) {
             $tbl = new Tables\Page($this->db);
 
             $results = [];

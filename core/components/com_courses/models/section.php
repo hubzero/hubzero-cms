@@ -331,7 +331,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->members) || !is_array($this->members) || $clear) {
+        if (!isset($this->members) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];

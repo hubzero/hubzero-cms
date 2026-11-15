@@ -63,7 +63,7 @@ class Archive extends \Hubzero\Base\Obj
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->productsCount) || !is_numeric($this->productsCount) || $clear) {
+                if (!isset($this->productsCount) || $clear) {
                     $warehouse = new Warehouse();
                     // Reset limit, since all records count is needed here
                     unset($filters['limit']);

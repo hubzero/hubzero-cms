@@ -325,7 +325,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->managers) || !is_array($this->managers) || $clear) {
+        if (!isset($this->managers) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -372,7 +372,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->students) || !is_array($this->students) || $clear) {
+        if (!isset($this->students) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -639,7 +639,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->pages) || !is_array($this->pages)) {
+        if (!isset($this->pages)) {
             $tbl = new Tables\Page($this->db);
 
             $results = [];

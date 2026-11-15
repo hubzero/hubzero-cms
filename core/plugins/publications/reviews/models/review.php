@@ -181,7 +181,7 @@ class Review extends \Hubzero\Base\Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->comments_count) || !is_numeric($this->comments_count) || $clear) {
+                if (!isset($this->comments_count) || $clear) {
                     $this->comments_count = Comment::all()
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])

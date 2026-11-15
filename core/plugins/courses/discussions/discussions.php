@@ -801,7 +801,7 @@ class Discussions extends Plugin
      */
     protected function instructors()
     {
-        if (!isset($this->instructors) || !is_array($this->instructors)) {
+        if (!isset($this->instructors)) {
             $this->instructors = [];
 
             $inst = $this->course->instructors();

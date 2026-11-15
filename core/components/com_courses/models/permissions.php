@@ -231,7 +231,7 @@ class Permissions extends Obj
             return $tbl->count($filters);
         }
 
-        if (!isset($this->managers) || !is_array($this->managers) || $clear) {
+        if (!isset($this->managers) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -350,7 +350,7 @@ class Permissions extends Obj
             return $tbl->count($filters);
         }
 
-        if (!isset($this->students) || !is_array($this->students) || $clear) {
+        if (!isset($this->students) || $clear) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];

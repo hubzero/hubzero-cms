@@ -313,7 +313,7 @@ class Entry extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->commentsCount) || !is_numeric($this->commentsCount) || $clear) {
+                if (!isset($this->commentsCount) || $clear) {
                     $this->commentsCount = 0;
 
                     if (!$this->comments) {
