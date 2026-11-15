@@ -275,10 +275,8 @@ class Support extends Plugin
             $where[] = "t.`created` <= " . $database->quote($timestamp->toSql());
         }
 
-        if (count($where)  > 0) {
-            $slc .= " WHERE " . implode(" AND ", $where);
-            $upd .= " WHERE " . implode(" AND ", $where);
-        }
+        $slc .= " WHERE " . implode(" AND ", $where);
+        $upd .= " WHERE " . implode(" AND ", $where);
 
         $message_id = $params->get('support_ticketpending_message');
 
@@ -827,9 +825,7 @@ class Support extends Plugin
             $where[] = "t.`open`=1";
         }
 
-        if (count($where)  > 0) {
-            $sql .= " WHERE " . implode(" AND ", $where);
-        }
+        $sql .= " WHERE " . implode(" AND ", $where);
         $sql .= " ORDER BY t.`created` ASC LIMIT 0, 500";
 
         $database->setQuery($sql);

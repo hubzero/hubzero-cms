@@ -220,10 +220,8 @@ class Asset extends Table
         }
         $where[] = "a.state=" . $this->db->quote(intval($filters['state']));
 
-        if (count($where) > 0) {
-            $query .= " WHERE ";
-            $query .= implode(" AND ", $where);
-        }
+        $query .= " WHERE ";
+        $query .= implode(" AND ", $where);
 
         return $query;
     }

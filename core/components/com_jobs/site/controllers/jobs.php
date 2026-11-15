@@ -1890,22 +1890,20 @@ class Jobs extends SiteController
                 // get individual filters
                 $col = explode('&amp;', $p->filters);
 
-                if (count($col) > 0) {
-                    // only the search filters belong here: the stored text is built
-                    // from the request, so a name outside this list (say _admin)
-                    // must never become a property of the controller
-                    $allowed = ['filterby', 'match', 'search', 'category', 'type', 'sortby'];
+                // only the search filters belong here: the stored text is built
+                // from the request, so a name outside this list (say _admin)
+                // must never become a property of the controller
+                $allowed = ['filterby', 'match', 'search', 'category', 'type', 'sortby'];
 
-                    foreach ($col as $c) {
-                        $nuk = explode('=', $c, 2);
+                foreach ($col as $c) {
+                    $nuk = explode('=', $c, 2);
 
-                        if (count($nuk) != 2 || !in_array($nuk[0], $allowed, true)) {
-                            continue;
-                        }
-
-                        // set filter variables
-                        $this->setProperty($nuk[0], $nuk[1]);
+                    if (count($nuk) != 2 || !in_array($nuk[0], $allowed, true)) {
+                        continue;
                     }
+
+                    // set filter variables
+                    $this->setProperty($nuk[0], $nuk[1]);
                 }
             }
         }

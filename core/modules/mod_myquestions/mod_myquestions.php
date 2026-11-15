@@ -45,29 +45,27 @@ class Myquestions extends Module
         $out = '';
         $tags = explode(',', $string);
 
-        if (count($tags) > 0) {
-            $out .= '<span class="taggi">' . "\n";
-            $counter = 0;
+        $out .= '<span class="taggi">' . "\n";
+        $counter = 0;
 
-            for ($i = 0; $i < count($tags); $i++) {
-                $counter = $counter + strlen(stripslashes($tags[$i]));
-                if ($counter > $max) {
-                    $num = $num - 1;
-                }
-                if ($i < $num) {
-                    // display tag
-                    $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
-                    $normalized = strtolower($normalized);
-                    $tagUrl = Route::url('index.php?option=com_tags&tag=' . $normalized);
-                    $out .= "\t" . '<a href="' . $tagUrl . '">'
-                        . stripslashes($tags[$i]) . '</a> ' . "\n";
-                }
+        for ($i = 0; $i < count($tags); $i++) {
+            $counter = $counter + strlen(stripslashes($tags[$i]));
+            if ($counter > $max) {
+                $num = $num - 1;
             }
-            if ($i > $num) {
-                $out .= ' (&#8230;)';
+            if ($i < $num) {
+                // display tag
+                $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
+                $normalized = strtolower($normalized);
+                $tagUrl = Route::url('index.php?option=com_tags&tag=' . $normalized);
+                $out .= "\t" . '<a href="' . $tagUrl . '">'
+                    . stripslashes($tags[$i]) . '</a> ' . "\n";
             }
-            $out .= '</span>' . "\n";
         }
+        if ($i > $num) {
+            $out .= ' (&#8230;)';
+        }
+        $out .= '</span>' . "\n";
 
         return $out;
     }

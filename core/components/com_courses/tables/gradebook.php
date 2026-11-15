@@ -162,10 +162,8 @@ class GradeBook extends Table
         }
         $where[] = "cm.student = 1";
 
-        if (count($where) > 0) {
-            $query .= " WHERE ";
-            $query .= implode(" AND ", $where);
-        }
+        $query .= " WHERE ";
+        $query .= implode(" AND ", $where);
 
         $this->db->setQuery($query);
         return $this->db->loadObjectList($key);

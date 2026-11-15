@@ -203,10 +203,8 @@ class Support extends Plugin
             }
         }
 
-        if (count($where) > 0) {
-            $slc .= " WHERE " . implode(" AND ", $where);
-            $upd .= " WHERE " . implode(" AND ", $where);
-        }
+        $slc .= " WHERE " . implode(" AND ", $where);
+        $upd .= " WHERE " . implode(" AND ", $where);
 
         $message_id = $this->params->get('support_ticket_message');
 

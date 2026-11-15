@@ -1342,20 +1342,18 @@ class File extends Base
                         // Rebuild identifier
                         // We need to make sure the filename and directory are human readable at this point
                         $id = [];
-                        if (count($dirParts) > 0) {
-                            for ($p = 0; $p < count($dirParts) - 1; $p++) {
-                                // For some adapters that store files in a flat structure we need to actually
-                                // query each entity for its human readable name
-                                $tempParent = Entity::fromPath($dirParts[$p], $connection->adapter());
-                                if ($tempParent) {
-                                    $id[] = $tempParent->getDisplayName();
-                                }
+                        for ($p = 0; $p < count($dirParts) - 1; $p++) {
+                            // For some adapters that store files in a flat structure we need to actually
+                            // query each entity for its human readable name
+                            $tempParent = Entity::fromPath($dirParts[$p], $connection->adapter());
+                            if ($tempParent) {
+                                $id[] = $tempParent->getDisplayName();
                             }
-                            // Use a human readable subdir
-                            $subdir = implode(DS, $id);
-                            // Add the filename for a full path
-                            $id[] = $conFile->getFilename();
                         }
+                        // Use a human readable subdir
+                        $subdir = implode(DS, $id);
+                        // Add the filename for a full path
+                        $id[] = $conFile->getFilename();
                         $identifier = implode(DS, $id);
                     } else {
                         $tempFile = $conFile;

@@ -111,13 +111,11 @@ class Publications extends Plugin
             $apu = explode(',', $params->get('userids'));
             $apu = array_map('trim', $apu);
 
-            if (count($apu) > 0) {
-                foreach ($apu as $i => $a) {
-                    $apu[$i] = $database->quote($a);
-                }
-
-                $query .= " AND A.user_id IN (" . implode(',', $apu) . ") ";
+            foreach ($apu as $i => $a) {
+                $apu[$i] = $database->quote($a);
             }
+
+            $query .= " AND A.user_id IN (" . implode(',', $apu) . ") ";
         }
 
         $query .= " GROUP BY A.user_id ";

@@ -95,15 +95,11 @@ class AssetViews extends Table
             $query .= "\nFROM $this->tableName AS cav";
         }
 
-        if (count($where) > 0) {
-            $query .= "\nWHERE ";
-            $query .= implode(" AND ", $where);
-        }
+        $query .= "\nWHERE ";
+        $query .= implode(" AND ", $where);
 
-        if (count($group) > 0) {
-            $query .= "\nGROUP BY ";
-            $query .= implode(", ", $group);
-        }
+        $query .= "\nGROUP BY ";
+        $query .= implode(", ", $group);
 
         return $query;
     }

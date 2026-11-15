@@ -108,30 +108,28 @@ class UpdateTimezoneDatabase extends Base
         $sql = $this->executeWithEscalation($converter . " {$zoneinfo} 2>/dev/null");
         $sql = explode(";", $sql);
 
-        if (count($sql) > 0) {
-            foreach ($sql as $s) {
-                $s = trim($s);
+        foreach ($sql as $s) {
+            $s = trim($s);
 
-                if (
-                    $s == ''
-                    || strpos($s, 'Riyadh') !== false
-                    || strpos($s, 'zone.tab') !== false
-                    || strpos($s, 'iso3166.tab') !== false
-                    || strpos($s, 'Local time zone must be set') !== false
-                ) {
-                    continue;
-                }
+            if (
+                $s == ''
+                || strpos($s, 'Riyadh') !== false
+                || strpos($s, 'zone.tab') !== false
+                || strpos($s, 'iso3166.tab') !== false
+                || strpos($s, 'Local time zone must be set') !== false
+            ) {
+                continue;
+            }
 
-                try {
-                    $this->db->setQuery($s)->execute();
-                } catch (\Exception $e) {
-                    $return = [
-                        'success' => false,
-                        'message' => $e->getMessage(),
-                    ];
+            try {
+                $this->db->setQuery($s)->execute();
+            } catch (\Exception $e) {
+                $return = [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ];
 
-                    return $return;
-                }
+                return $return;
             }
         }
 

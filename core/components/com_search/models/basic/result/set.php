@@ -495,12 +495,10 @@ class Set extends Obj implements Iterator
         }
         $dont_show_because_nested_elsewhere = [];
         foreach ($link_map as $rows) {
-            if (count($rows) > 0) {
-                foreach ($rows as $row) {
-                    list($id, $has_parent) = $row;
-                    if ($has_parent) {
-                        $dont_show_because_nested_elsewhere[$id] = 1;
-                    }
+            foreach ($rows as $row) {
+                list($id, $has_parent) = $row;
+                if ($has_parent) {
+                    $dont_show_because_nested_elsewhere[$id] = 1;
                 }
             }
         }
