@@ -28,22 +28,18 @@ class Formathtml extends Plugin
      */
     public function onContentBeforeSave($context, &$article, $isNew)
     {
-        if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article') {
+        // Relational models (blog entries, comments, ...) save through here
+        // too; leaving them out skipped their sanitising and format marker
+        if (
+            !($article instanceof \Hubzero\Base\Obj || $article instanceof \Hubzero\Database\Relational)
+            || $context == 'com_content.article'
+        ) {
             return;
         }
 
-        $content = '';
-
         $key = $this->key($context);
 
-        if (
-            $article instanceof \Hubzero\Base\Obj
-            || $article instanceof \Hubzero\Database\Relational
-        ) {
-            $content = $article->get($key);
-        } elseif (isset($article->$key)) {
-            $content = $article->$key;
-        }
+        $content = $article->get($key);
 
         $content = ltrim($content == null ? '' : $content);
 
@@ -76,14 +72,7 @@ class Formathtml extends Plugin
             $content = '<!-- {FORMAT:HTML} -->' . $content;
         }
 
-        if (
-            $article instanceof \Hubzero\Base\Obj
-            || $article instanceof \Hubzero\Database\Relational
-        ) {
-            $article->set($key, $content);
-        } else {
-            $article->$key = $content;
-        }
+        $article->set($key, $content);
     }
 
     /**

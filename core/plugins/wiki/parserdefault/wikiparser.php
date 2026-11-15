@@ -122,13 +122,6 @@ class WikiParser
     ];
 
     /**
-     * List of macros
-     *
-     * @var array
-     */
-    private $macros = [];
-
-    /**
      * Flag for list element open/closed state
      *
      * @var bool
@@ -1531,8 +1524,6 @@ class WikiParser
         // Guard against null content (PHP 8.1+: passing null to preg_* is deprecated)
         $text = (string) $text;
 
-        $this->macros = [];
-
         // Get macros [[name(args)]]
         return preg_replace_callback(
             '/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',
@@ -2351,11 +2342,11 @@ class WikiParser
                         // First cell in a data row is a row header
                         $catts = ' scope="row"' . $catts;
                     }
-                } elseif ($ctyp === 'd' && $isFirstRow && $hasTheadRow) {
+                } elseif ($isFirstRow && $hasTheadRow) {
                     // Promote cells in header row to <th> when hasTheadRow
                     $ctyp = 'h';
                     $catts = ' scope="col"' . $catts;
-                } elseif ($ctyp === 'd' && $j === 0 && !$isFirstRow && $hasTheadRow) {
+                } elseif ($j === 0 && !$isFirstRow && $hasTheadRow) {
                     // Promote first cell in data rows to row header when table has a header row
                     $ctyp = 'h';
                     $catts = ' scope="row"' . $catts;
@@ -2420,15 +2411,10 @@ class WikiParser
             $shorter = $fl;
         }
 
-        for ($i = 0; $i < $shorter; ++$i) {
-            // @FIXME this whole function is broke
-            // but we "fix" the type error so that
-            // it cleanly results in same useless result
-            if (0 /*$st1[$i] != $st2[$i]*/) {
-                break;
-            }
-        }
-        return $i;
+        // @FIXME this whole function is broken: the comparison that should
+        // stop at the first difference ($st1[$i] != $st2[$i]) was switched off
+        // to avoid a type error, so it counts up to the smaller value
+        return max(0, $shorter);
     }
 
     /**
@@ -2626,6 +2612,10 @@ class WikiParser
                     }
                 } else {
                     $t = substr($oLine, $prefixLength);
+                    // Text indented by two spaces is a quotation
+                    if ($prefixLength == 2 && trim($oLine) !== '') {
+                        $t = '<blockquote>' . trim($oLine) . '</blockquote>' . "\n";
+                    }
                     // Not a list marker — don't treat leading spaces
                     // as list nesting depth.  Without this, indented
                     // text after a list item opens phantom nested
@@ -2639,11 +2629,6 @@ class WikiParser
                 $prefixLength = 0;
                 $pref = $pref2 = '';
                 $t = $oLine;
-            }
-
-            if ($prefixLength == 2 && $pref != '*' && $pref != '#' && $pref != ';' && !is_numeric($pref)) {
-                $t = '<blockquote>' . trim($oLine) . '</blockquote>' . "\n";
-                $prefixLength = 0;
             }
 
             // List generation
@@ -2812,11 +2797,7 @@ class WikiParser
      */
     public function toc($text, $standalone = false, $depth = 0)
     {
-        $isMain              = true;
         $showEditLink        = true;
-        $doNumberHeadings    = false;
-        $doTocNumberHeadings = true;
-        $forceTocPosition    = true;
         //$mShowToc            = true;
 
         // Placement of the inline TOC. Only meaningful when not standalone (i.e.
@@ -2869,9 +2850,8 @@ class WikiParser
             $matches,
         );
 
-        // If there are fewer than 4 headlines in the article, do not show TOC
-        // unless it's been explicitly enabled.
-        $enoughToc = (($numMatches >= 4) || $forceTocPosition); //$mShowToc &&
+        // Headings are not numbered; the TOC is numbered and always built,
+        // however few headlines there are
 
         // Headline counter
         $headlineCount = 0;
@@ -2892,7 +2872,6 @@ class WikiParser
         $prevtoclevel  = 0;
 
         foreach ($matches[3] as $headline) {
-            $istemplate = 0;
             $templatetitle = '';
             $templatesection = 0;
             $numbering = '';
@@ -2904,68 +2883,66 @@ class WikiParser
             }
             $level = $matches[1][$headlineCount];
 
-            if ($doNumberHeadings || $doTocNumberHeadings || $enoughToc) {
-                if ($level > $prevlevel) {
-                    // Increase TOC level
-                    $toclevel++;
-                    $sublevelCount[$toclevel] = 0;
-                    if ($toclevel < $maxTocLevel) {
-                        $prevtoclevel = $toclevel;
-                        if ($toc == '') {
-                            $toc .= $this->tocIndent($toclevel);
-                            $toc .= $this->tocLine($toc_title_anchor, '(Top)', '', 1);
-                        } else {
-                            $toc .= $this->tocIndent($toclevel);
-                        }
-                        $numVisible++;
-                    }
-                } elseif ($level < $prevlevel && $toclevel > 1) {
-                    // Decrease TOC level, find level to jump to
-
-                    if ($toclevel == 2 && $level <= $levelCount[1]) {
-                        // Can only go down to level 1
-                        $toclevel = 1;
+            if ($level > $prevlevel) {
+                // Increase TOC level
+                $toclevel++;
+                $sublevelCount[$toclevel] = 0;
+                if ($toclevel < $maxTocLevel) {
+                    $prevtoclevel = $toclevel;
+                    if ($toc == '') {
+                        $toc .= $this->tocIndent($toclevel);
+                        $toc .= $this->tocLine($toc_title_anchor, '(Top)', '', 1);
                     } else {
-                        for ($i = $toclevel; $i > 0; $i--) {
-                            if ($levelCount[$i] == $level) {
-                                // Found last matching level
-                                $toclevel = $i;
-                                break;
-                            } elseif ($levelCount[$i] < $level) {
-                                // Found first matching level below current level
-                                $toclevel = $i + 1;
-                                break;
-                            }
-                        }
+                        $toc .= $this->tocIndent($toclevel);
                     }
-                    if ($toclevel < $maxTocLevel) {
-                        if ($prevtoclevel < $maxTocLevel) {
-                            // Unindent only if the previous toc level was shown
-                            $toc .= $this->tocUnindent($prevtoclevel - $toclevel);
-                        } else {
-                            $toc .= $this->tocLineEnd();
-                        }
-                    }
+                    $numVisible++;
+                }
+            } elseif ($level < $prevlevel && $toclevel > 1) {
+                // Decrease TOC level, find level to jump to
+
+                if ($toclevel == 2 && $level <= $levelCount[1]) {
+                    // Can only go down to level 1
+                    $toclevel = 1;
                 } else {
-                    // No change in level, end TOC line
-                    if ($toclevel < $maxTocLevel) {
+                    for ($i = $toclevel; $i > 0; $i--) {
+                        if ($levelCount[$i] == $level) {
+                            // Found last matching level
+                            $toclevel = $i;
+                            break;
+                        } elseif ($levelCount[$i] < $level) {
+                            // Found first matching level below current level
+                            $toclevel = $i + 1;
+                            break;
+                        }
+                    }
+                }
+                if ($toclevel < $maxTocLevel) {
+                    if ($prevtoclevel < $maxTocLevel) {
+                        // Unindent only if the previous toc level was shown
+                        $toc .= $this->tocUnindent($prevtoclevel - $toclevel);
+                    } else {
                         $toc .= $this->tocLineEnd();
                     }
                 }
+            } else {
+                // No change in level, end TOC line
+                if ($toclevel < $maxTocLevel) {
+                    $toc .= $this->tocLineEnd();
+                }
+            }
 
-                $levelCount[$toclevel] = $level;
+            $levelCount[$toclevel] = $level;
 
-                // count number of headlines for each level
-                @$sublevelCount[$toclevel]++;
-                $dot = 0;
-                for ($i = 1; $i <= $toclevel; $i++) {
-                    if (!empty($sublevelCount[$i])) {
-                        if ($dot) {
-                            $numbering .= '.';
-                        }
-                        $numbering .= $sublevelCount[$i];
-                        $dot = 1;
+            // count number of headlines for each level
+            @$sublevelCount[$toclevel]++;
+            $dot = 0;
+            for ($i = 1; $i <= $toclevel; $i++) {
+                if (!empty($sublevelCount[$i])) {
+                    if ($dot) {
+                        $numbering .= '.';
                     }
+                    $numbering .= $sublevelCount[$i];
+                    $dot = 1;
                 }
             }
 
@@ -2995,21 +2972,12 @@ class WikiParser
             isset($refers[$canonized_headline]) ? $refers[$canonized_headline]++ : $refers[$canonized_headline] = 1;
             $refcount[$headlineCount] = $refers[$canonized_headline];
 
-            // Don't number the heading if it is the only one (looks silly)
-            if ($doNumberHeadings && count($matches[3]) > 1) {
-                // the two are different if the line contains a link
-                $headline = $numbering . ' ' . $headline;
-            }
-
             // Create the anchor for linking from the TOC to the section
             $anchor = $canonized_headline;
             if ($refcount[$headlineCount] > 1) {
                 $anchor .= '_' . $refcount[$headlineCount];
             }
-            if ($enoughToc && $toclevel < $maxTocLevel) {
-                if (!$doTocNumberHeadings) {
-                    $numbering = '';
-                }
+            if ($toclevel < $maxTocLevel) {
                 $toc .= $this->tocLine($anchor, $_tocLine, $numbering, $toclevel);
             }
             // Give headline the correct <h#> tag
@@ -3030,17 +2998,10 @@ class WikiParser
             );
 
             $headlineCount++;
-            if (!$istemplate) {
-                $sectionCount++;
-            }
+            $sectionCount++;
         }
 
         $toc .= ($toc) ? $this->tocUnindent($toclevel - 1) . '</ul>' : '';
-
-        // Never ever show TOC if no headers
-        if ($numVisible < 1) {
-            $enoughToc = false;
-        }
 
         // split up and insert constructed headlines
         $blocks = preg_split('/<H[1-6].*?' . '>.*?<\/H[1-6]>/i', $text ?: '');
@@ -3048,10 +3009,6 @@ class WikiParser
 
         foreach ($blocks as $block) {
             $full .= $block;
-            if ($enoughToc && !$i && $isMain && !$forceTocPosition) {
-                // Top anchor now in skin
-                $full = $full . $toc;
-            }
 
             if (!empty($head[$i])) {
                 $full .= $head[$i];

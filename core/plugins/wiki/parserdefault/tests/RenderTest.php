@@ -53,6 +53,29 @@ class RenderTest extends TestCase
 
 ',
             ],
+            'two-space indent is a quotation' => [
+                [],
+                'before
+
+  quoted text
+
+after',
+                '<p>before
+</p>
+<blockquote>quoted text</blockquote>
+
+<p>after
+</p>',
+            ],
+            'indent after a list item opens no list' => [
+                [],
+                ' * one
+   continued',
+                '<ul><li> one
+</li></ul>
+<p>continued
+</p>',
+            ],
             'anchor' => [
                 [],
                 'Text [[Anchor(here)]] more',
