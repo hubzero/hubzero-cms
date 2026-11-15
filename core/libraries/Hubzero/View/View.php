@@ -216,17 +216,16 @@ class View extends Obj
      *
      * @param  string|null  $tpl
      *    The name of the template file to parse; automatically searches through the template paths.
-     * @return  mixed   A string if successful, otherwise an exception.
+     * @return  null  The output is echoed
+     * @throws  InvalidLayoutException  When the layout cannot be found
      */
     public function display($tpl = null)
     {
         $result = $this->loadTemplate($tpl);
 
-        if ($result instanceof Exception) {
-            return $result;
-        }
-
         echo $result;
+
+        return null;
     }
 
     /**

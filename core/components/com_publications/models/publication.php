@@ -49,7 +49,7 @@ use Hubzero\Facades\Request;
  * @property  \Components\Projects\Models\Project  $_project                 By project()
  * @property  \Hubzero\User\Group|null             $_groupOwner              By groupOwner()
  * @property  mixed                                $_owner                   The user's project membership, by owner()
- * @property  \Hubzero\User\User                   $_creator                 By creator()
+ * @property  \Hubzero\User\User|null              $_creator                 By creator()
  * @property  string|null                          $title                    Column of publication_versions, when loaded
  * @property  string|null                          $abstract                 Column of publication_versions, when loaded
  * @property  int|string|null                      $state                    Column of publication_versions, when loaded
@@ -60,8 +60,8 @@ use Hubzero\Facades\Request;
  * @property  int|string|null                      $access                   Column of publications, when loaded
  * @property  int|string|null                      $group_owner              Column of publications, when loaded
  * @property  mixed                                $reviewedItems            Set by the curation controller
- * @property  \Hubzero\User\User                   $_modifier                By modifier()
- * @property  \Hubzero\User\User                   $_curator                 By curator()
+ * @property  \Hubzero\User\User|null              $_modifier                By modifier()
+ * @property  \Hubzero\User\User|null              $_curator                 By curator()
  * @property  array                                $_curatorGroups           By curatorGroups()
  * @property  array                                $_accessGroups            By getAccessGroups()
  * @property  array                                $_authors                 By authors()

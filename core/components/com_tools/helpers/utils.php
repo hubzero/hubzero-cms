@@ -58,15 +58,15 @@ class Utils
                 $instance = App::get('db');
             } else {
                 $options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
-                $instance = \Hubzero\Database\Driver::getInstance($options);
-                if ($instance instanceof Exception) {
+
+                // A middleware database that cannot be reached falls back to the
+                // hub's own, as this did when connecting returned an exception
+                try {
+                    $instance = \Hubzero\Database\Driver::getInstance($options);
+                } catch (Exception $e) {
                     $instance = App::get('db');
                 }
             }
-        }
-
-        if ($instance instanceof Exception) {
-            return null;
         }
 
         return $instance;

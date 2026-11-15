@@ -80,9 +80,7 @@ class Blogs extends Plugin
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
 
-        if (($rows = $rows->toAssociative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
-            return;
-        }
+        $rows = $rows->toAssociative();
 
         $id_map = [];
         foreach ($rows as $idx => $row) {

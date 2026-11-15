@@ -57,9 +57,7 @@ class Courses extends Plugin
 				$weight > 0"
                 . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
-        if (($rows = $rows->toAssociative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
-            return;
-        }
+        $rows = $rows->toAssociative();
 
         $results->add($rows);
     }
