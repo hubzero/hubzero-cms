@@ -30,46 +30,46 @@ class Request
     /**
      * Description for 'method'
      *
-     * @var string
+     * @var string|null
      */
     private $method = 'GET';
     /**
      * Description for 'path'
      *
-     * @var string
+     * @var string|null
      */
     private $scheme = 'http';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $username = '';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $password = '';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $hostname = 'localhost';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $port = '';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $path = '';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $query = '';
     /**
-     * @var  string
+     * @var  string|null
      */
     private $fragment = '';
 
     /**
-     * @var  string
+     * @var  string|null
      */
     private $version = 'HTTP/1.0';
 
