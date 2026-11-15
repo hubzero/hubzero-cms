@@ -706,7 +706,7 @@ class Events extends SiteController
         $row->load($id);
 
         // Ensure we have an event
-        if (!$row || !$row->id || $row->state != 1) {
+        if (!$row->id || $row->state != 1) {
             App::abort(404, Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'));
         }
 
@@ -1232,12 +1232,10 @@ class Events extends SiteController
             $register['email'] = User::get('email');
         }
 
-        if ($register) {
-            $register = array_map('trim', $register);
-            $register = array_map(['\\Hubzero\\Utility\\Sanitize', 'stripAll'], $register);
+        $register = array_map('trim', $register);
+        $register = array_map(['\\Hubzero\\Utility\\Sanitize', 'stripAll'], $register);
 
-            $validEmail = $this->validEmail($register['email']);
-        }
+        $validEmail = $this->validEmail($register['email']);
         if ($arrival) {
             $arrival = array_map('trim', $arrival);
             $arrival = array_map(['\\Hubzero\\Utility\\Sanitize', 'stripAll'], $arrival);
@@ -1302,7 +1300,7 @@ class Events extends SiteController
             $message = str_replace("\n", "\r\n", $message);
 
             // check to see if event manager email is configured
-            if ($email != "" || $email != null || !isset($email)) {
+            if ($email) {
                 // one for the event manager
                 $this->sendEmail($hub, $email, $subject, $message);
             }
@@ -1385,7 +1383,7 @@ class Events extends SiteController
         );
         $this->database->query();
         $races = Request::getArray('race', null, 'post');
-        if (!is_null($races) && (!isset($races['refused']) || !$races['refused'])) {
+        if (!isset($races['refused']) || !$races['refused']) {
             $resp_id = $this->database->insertid();
             foreach (['nativeamerican', 'asian', 'black', 'hawaiian', 'white', 'hispanic'] as $race) {
                 if (array_key_exists($race, $races) && $races[$race]) {
@@ -2213,7 +2211,7 @@ class Events extends SiteController
      * Check if an email address is valid
      *
      * @param   string   $email   Email address to check
-     * @return  integer|bool  1 = valid, 0 = invalid
+     * @return  bool
      */
     private function validEmail($email)
     {

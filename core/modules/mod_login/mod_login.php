@@ -35,10 +35,11 @@ class Login extends Module
             $db = App::get('db');
             $query = $db->getQuery();
 
-            $query->select($db->quoteName('link'));
+            // where() binds its values; a quoted id never matched
+            $query->select('link');
             $query->from('#__menu');
-            $query->where($db->quoteName('published'), '=', 1);
-            $query->where($db->quoteName('id'), '=', $db->quote($itemid));
+            $query->whereEquals('published', 1);
+            $query->whereEquals('id', (int) $itemid);
 
             $db->setQuery($query);
             if ($link = $db->loadResult()) {

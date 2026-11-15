@@ -704,7 +704,7 @@ class BibTex
                                 $islast = true;
                                 for ($k = ($j + 1); $k < ($size - 1); $k++) {
                                     $futurecase = $this->determineCase($tmparray[$k]);
-                                    if ($case instanceof \Exception) {
+                                    if ($futurecase instanceof \Exception) {
                                         // IGNORE?
                                     } elseif (0 == $futurecase) {
                                         $islast = false;

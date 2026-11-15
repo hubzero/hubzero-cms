@@ -108,7 +108,9 @@ class ModeDsl
                     $curator_groups[] = $dsl_curators;
                 }
 
-                if ($curation_enabled && $curator != '') {
+                // The publication's own curator; $curator is still '' here,
+                // so testing it kept the curator out
+                if ($curation_enabled && !empty($pub_version['curator'])) {
                     $curator = $pub_version['curator'];
                     $curator = User::getInstance($curator)->get('username');
                 }

@@ -386,7 +386,6 @@ class Threadsv1r0 extends ApiController
             'state'       => Post::STATE_PUBLISHED,
             'access'      => User::getAuthorisedViewLevels(),
         ];
-        $filters['threads'] = (!$filters['threads'] || $filters['threads'] == 'false') ? false : true;
 
         if ($filters['scope'] == 'group') {
             $group = \Hubzero\User\Group::getInstance($filters['scope_id']);

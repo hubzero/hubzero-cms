@@ -138,7 +138,7 @@ class Pagenavigation extends Plugin
             $query->where($whereClause);
             $query->order($orderby);
             if (App::isSite() && App::get('language.filter')) {
-                $query->where('a.language', 'in', '(' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
+                $query->whereIn('a.language', [Lang::getTag(), '*']);
             }
 
             $db->setQuery($query);

@@ -136,22 +136,21 @@ class Download
             $sql .= " AND s.`sId` = " . intval($filters['sId']);
         }
 
-        if (isset($filters['sort'])) {
-            if ($filters['sort'] == 'title') {
-                $filters['sort'] = 'uId';
-            } elseif ($filters['sort'] == 'product') {
-                $filters['sort'] = 'pName';
-            }
+        // The sort was given a default above; map the names offered to columns
+        $sort = $filters['sort'];
+        if ($sort == 'title') {
+            $filters['sort'] = 'uId';
+        } elseif ($sort == 'product') {
+            $filters['sort'] = 'pName';
+        }
 
-            $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
+        $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
-            $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
+        $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 
-            if ($filters['sort'] == 'product') {
-                $sql .= ', sSku';
-            }
-        } else {
-            $sql .= " ORDER BY dDownloaded DESC";
+        // Then by SKU within a product, which the renaming above used to hide
+        if ($sort == 'product') {
+            $sql .= ', sSku';
         }
 
         if (isset($filters['limit']) && is_numeric($filters['limit'])) {

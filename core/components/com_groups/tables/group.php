@@ -63,18 +63,18 @@ class Group extends Table
         $assetId = null;
         $db = $this->getDbo();
 
-        if ($assetId === null) {
-            // Build the query to get the asset id for the parent category.
-            $query = $db->getQuery();
-            $query->select('id');
-            $query->from('#__assets');
-            $query->where('name', '=', $db->quote('com_groups'));
+        // Build the query to get the asset id for the component. where()
+        // binds its value, so quoting it as well looked for 'com_groups'
+        // with the quotes and always fell back to the root asset.
+        $query = $db->getQuery();
+        $query->select('id');
+        $query->from('#__assets');
+        $query->whereEquals('name', 'com_groups');
 
-            // Get the asset id from the database.
-            $db->setQuery($query);
-            if ($result = $db->loadResult()) {
-                $assetId = (int) $result;
-            }
+        // Get the asset id from the database.
+        $db->setQuery($query);
+        if ($result = $db->loadResult()) {
+            $assetId = (int) $result;
         }
 
         // Return the asset id.

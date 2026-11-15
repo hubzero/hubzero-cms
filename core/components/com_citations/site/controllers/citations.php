@@ -198,20 +198,20 @@ class Citations extends SiteController
         }
 
         // Convert upload dates to correct time format
+        // A date, with or without a time; no value can be both, which the
+        // old test asked for, so every date was thrown away
         if (
-            !is_string($filters['startuploaddate'])
-            || !preg_match(
+            !preg_match(
                 "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
                 $filters['startuploaddate'],
             )
-            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['startuploaddate'])
+            && !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['startuploaddate'])
         ) {
             $filters['startuploaddate'] = '0000-00-00 00:00:00';
         }
         if (
             $filters['startuploaddate'] == '0000-00-00'
             || $filters['startuploaddate'] == '0000-00-00 00:00:00'
-            || $filters['startuploaddate'] == ''
         ) {
             $filters['startuploaddate'] = '0000-00-00 00:00:00';
         } else {
@@ -220,13 +220,14 @@ class Citations extends SiteController
             )->format('Y-m-d 00:00:00');
         }
 
+        // A date, with or without a time; no value can be both, which the
+        // old test asked for, so every date was thrown away
         if (
-            !is_string($filters['enduploaddate'])
-            || !preg_match(
+            !preg_match(
                 "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
                 $filters['enduploaddate'],
             )
-            || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['enduploaddate'])
+            && !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['enduploaddate'])
         ) {
             $filters['enduploaddate'] = '';
         }
@@ -852,10 +853,7 @@ class Citations extends SiteController
         }
 
         // Incoming (we're expecting an array)
-        $ids = (array) Request::getArray('id', []);
-        if (!is_array($ids)) {
-            $ids = [];
-        }
+        $ids = Request::getArray('id', []);
 
         // Make sure we have IDs to work with
         if (count($ids) > 0 && User::authorise('core.delete', 'com_citations')) {

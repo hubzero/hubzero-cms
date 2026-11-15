@@ -506,12 +506,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         $al = new Vote();
 
-        $vote = $al->automaticVote(['vote' => $vote]);
-
-        if ($vote === 0) {
+        // Before normalizing, which reads anything else as a dislike
+        if (!$vote) {
             $this->addError(Lang::txt('No vote provided'));
             return false;
         }
+
+        $vote = $al->automaticVote(['vote' => $vote]);
 
         $user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 

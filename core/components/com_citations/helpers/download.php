@@ -107,7 +107,7 @@ class Download
     /**
      * Get the reference
      *
-     * @return  object
+     * @return  object|null  Null until one is set
      */
     public function getReference()
     {
@@ -180,7 +180,7 @@ class Download
     {
         $format = ($format) ? $format : $this->format;
 
-        return (isset($this->formatters[$format])) ? $this->formatter[$format] : null;
+        return (isset($this->formatters[$format])) ? $this->formatters[$format] : null;
     }
 
     /**
@@ -195,7 +195,7 @@ class Download
             $reference = $this->getReference();
         }
 
-        if (!$reference || (!is_array($reference) && !is_object($reference))) {
+        if (!$reference) {
             return '';
         }
 

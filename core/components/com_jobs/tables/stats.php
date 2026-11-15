@@ -40,7 +40,7 @@ class Stats extends Table
             return false;
         }
 
-        if (intval($this->category) == '') {
+        if (trim((string) $this->category) == '') {
             $this->setError(Lang::txt('Missing category.'));
             return false;
         }
@@ -254,7 +254,7 @@ class Stats extends Table
      * Delete records for an item
      *
      * @param   integer|null  $itemid    Job ID
-     * @param   string   $category  Job category
+     * @param   string|null   $category  Job category
      * @return  boolean  True upon success
      */
     public function deleteStats($itemid, $category)

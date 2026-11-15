@@ -171,7 +171,7 @@ defined('_HZEXEC_') or die();
             <?php
             $spanText = Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code;
             ?>
-            <span><?= $spanText ?></span><?php $job->title . ' - '; ?>
+            <span><?= $spanText ?></span><?= $this->escape($job->title) . ' - ' ?>
             <?php if (preg_match('#^https?://#i', (string) $job->companyWebsite)) { ?>
                 <?php
                 $linkUrl = $this->escape($job->companyWebsite);

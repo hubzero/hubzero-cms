@@ -46,7 +46,7 @@ abstract class Multilangstatus
         $query = $db->getQuery();
         $query->select('COUNT(*)');
         $query->from('#__modules');
-        $query->where('module', '=', $db->quote('mod_languages'));
+        $query->whereEquals('module', 'mod_languages');
         $query->where('published', '=', 1);
         $query->where('client_id', '=', 0);
         $db->setQuery($query);

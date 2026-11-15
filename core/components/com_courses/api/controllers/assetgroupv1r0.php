@@ -122,11 +122,6 @@ class Assetgroupv1r0 extends Base
         // Create an asset group instance
         $assetGroup = new Assetgroup($id);
 
-        // Check to make sure we have an asset group object
-        if (!is_object($assetGroup)) {
-            App::abort(500, 'Failed to create an asset group object');
-        }
-
         // We'll always save the title again, even if it's just to the same thing
         $title = $assetGroup->get('title');
         $title = (!empty($title)) ? $title : 'New asset group';
@@ -164,9 +159,9 @@ class Assetgroupv1r0 extends Base
                 ->select('folder AS type, element AS name, params')
                 ->from('#__extensions')
                 ->where('enabled', '>=', 1)
-                ->where('type', '=', $db->quote('plugin'))
+                ->whereEquals('type', 'plugin')
                 ->where('state', '>=', 0)
-                ->where('folder', '=', $db->quote('courses'))
+                ->whereEquals('folder', 'courses')
                 ->order('ordering', 'asc');
 
             if ($plugins = $db->setQuery($query)->loadObjectList()) {
@@ -266,9 +261,7 @@ class Assetgroupv1r0 extends Base
         $order = 1;
 
         foreach ($groups as $id) {
-            if (!$assetGroup = new Assetgroup($id)) {
-                App::abort(500, 'Loading asset group {$id} failed');
-            }
+            $assetGroup = new Assetgroup($id);
 
             // Set the new order
             $assetGroup->set('ordering', $order);

@@ -42,7 +42,7 @@ $profile = User::getInstance($this->object->get('created_by'));
 $message .= Lang::txt('Created By:') . ' ' . $profile->get('name') . ' (' . $profile->get('username') . ')' . "\n";
 $message .= Lang::txt('Status:')
     . ' '
-    . ($this->object->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved')
+    . (($this->object->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved'))
     . "\n";
 $message .= Lang::txt('Approve Link:') . ' ' . $adminLink . "\n";
 $message .= "--------------------------------------------\n\n";

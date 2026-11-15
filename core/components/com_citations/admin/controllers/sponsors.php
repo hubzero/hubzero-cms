@@ -41,11 +41,9 @@ class Sponsors extends AdminController
      */
     public function displayTask()
     {
-        $sponsors = Sponsor::all();
-
-        if (!is_array($sponsors)) {
-            $sponsors = [$sponsors];
-        }
+        // The rows, not the query; wrapping the query in an array listed
+        // one empty sponsor
+        $sponsors = Sponsor::all()->rows();
 
         // Output the HTML
         $this->view

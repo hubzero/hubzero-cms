@@ -43,7 +43,7 @@ $profile = User::getInstance($page->version()->get('created_by'));
 $message .= Lang::txt('Created By:') . ' ' . $profile->get('name') . ' (' . $profile->get('username') . ')' . "\n";
 $message .= Lang::txt('Status:')
     . ' '
-    . ($page->version()->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved')
+    . (($page->version()->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved'))
     . "\n";
 $message .= Lang::txt('Page Link:') . ' ' . $groupLink . '/' . $this->object->get('alias') . "\n";
 $message .= Lang::txt('Approve Link:') . ' ' . $adminLink . "\n";

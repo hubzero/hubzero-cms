@@ -1252,49 +1252,48 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public function formattedResourceLinks()
     {
-        if (!$this->resources) {
+        // The relationship gives rows, empty or not
+        $resourceCount = count($this->resources);
+        if ($resourceCount == 0) {
             return null;
-        } else {
-            $resourceCount = count($this->resources);
-            if ($resourceCount > 0) {
-                $config = Component::params('com_citations');
-                $internallyCitedImage = $config->get('citation_cited', 0);
-                $internallyCitedImageSingle = $config->get('citation_cited_single', '');
-                $internallyCitedImageMultiple = $config->get('citation_cited_multiple', '');
-                $image = '';
-                $label = '';
-                $links = '';
-                $count = 1;
-                $multiple = false;
-
-                if ($resourceCount > 1) {
-                    $links .= '<span>|</span><span class="cited-resources">'
-                        . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
-                        . ':</span>';
-                    $multiple = true;
-                } else {
-                    $links .= '<span>|</span>';
-                }
-                $imageSrc = $multiple
-                    ? (!empty($internallyCitedImageMultiple))
-                        ? $internallyCitedImageMultiple
-                        : $internallyCitedImageSingle
-                    : $internallyCitedImageSingle;
-
-                $linkText = Lang::txt('COM_CITATIONS_RESOURCES_CITED');
-                $linkImage = '<img src="' . $imageSrc . '" />';
-
-                $displayValue = ($internallyCitedImage) ? 'linkImage' : 'linkText';
-                foreach ($this->resources as $resource) {
-                    if ($multiple) {
-                        $linkText = '[' . $count . ']';
-                    }
-                    $links .= '<a href="' . $resource->link() . '">' . $$displayValue . '</a>';
-                    $count++;
-                }
-                return $links;
-            }
         }
+
+        $config = Component::params('com_citations');
+        $internallyCitedImage = $config->get('citation_cited', 0);
+        $internallyCitedImageSingle = $config->get('citation_cited_single', '');
+        $internallyCitedImageMultiple = $config->get('citation_cited_multiple', '');
+        $image = '';
+        $label = '';
+        $links = '';
+        $count = 1;
+        $multiple = false;
+
+        if ($resourceCount > 1) {
+            $links .= '<span>|</span><span class="cited-resources">'
+                . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                . ':</span>';
+            $multiple = true;
+        } else {
+            $links .= '<span>|</span>';
+        }
+        $imageSrc = $multiple
+            ? (!empty($internallyCitedImageMultiple))
+                ? $internallyCitedImageMultiple
+                : $internallyCitedImageSingle
+            : $internallyCitedImageSingle;
+
+        $linkText = Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+        $linkImage = '<img src="' . $imageSrc . '" />';
+
+        $displayValue = ($internallyCitedImage) ? 'linkImage' : 'linkText';
+        foreach ($this->resources as $resource) {
+            if ($multiple) {
+                $linkText = '[' . $count . ']';
+            }
+            $links .= '<a href="' . $resource->link() . '">' . $$displayValue . '</a>';
+            $count++;
+        }
+        return $links;
     }
 
     /**
@@ -1306,7 +1305,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     {
         $html = '<ul class="tags badges">';
         foreach ($this->tags() as $badge) {
-            if ($badge->label == "badge" && $badge->tbl = 'citations') {
+            if ($badge->label == "badge" && $badge->tbl == 'citations') {
                 $html .= '<li><a href="#" class="tag">' . stripslashes($badge->tag->tag) . '</a></li>';
             }
         }
@@ -1334,7 +1333,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             foreach ($tags as $tag) {
                 if ($tag->tbl == 'citations' && $tag->label == '') {
                     //display tag if not admin tag or if admin tag and user is administrator
-                    if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin)) {
+                    if (!$tag->tag->admin || $isAdmin) {
                         $html .= '<li'
                             . ($tag->tag->admin ? ' class="admin"' : '')
                             . '><a class="tag '

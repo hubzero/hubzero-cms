@@ -383,10 +383,11 @@ class Mailinglists extends SiteController
         }
 
         //get newsletter mailing to get mailing list id mailing was sent to
-        $mailing = Mailing::oneOrFail($recipient->mid);
+        // one(), not oneOrFail(), so a missing mailing gets the message below
+        $mailing = Mailing::one($recipient->mid);
 
         //make sure we have a mailing object
-        if (!is_object($mailing)) {
+        if (!$mailing) {
             App::redirect(
                 Route::url('index.php?option=com_newsletter&task=subscribe'),
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),

@@ -119,13 +119,14 @@ class Medialist extends AdminController
 
         if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $data['name'])) {
             $data['type'] = 'img';
-            try {
-                $dimensions = getimagesize($data['absolute_path']);
+            // getimagesize() warns and gives false; it does not throw
+            $dimensions = @getimagesize($data['absolute_path']);
 
+            if ($dimensions === false) {
+                $this->setError(Lang::txt('There was a problem reading the image dimensions.'));
+            } else {
                 $data['width'] = $dimensions[0];
                 $data['height'] = $dimensions[1];
-            } catch (\Exception $e) {
-                $this->setError(Lang::txt('There was a problem reading the image dimensions.'));
             }
         }
 

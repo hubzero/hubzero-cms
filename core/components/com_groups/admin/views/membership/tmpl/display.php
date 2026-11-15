@@ -311,9 +311,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
         foreach ($this->rows as $row) {
             if (isset($row->username)) {
                 $reason = new \Components\Groups\Tables\Reason($database);
-                $reason->loadReason($row->username, $this->filters['gidNumber']);
                 $reasonforjoin = '';
-                if ($reason) {
+                // Reasons are kept by account number, not username
+                if ($reason->loadReason($row->uidNumber, $this->filters['gidNumber'])) {
                     $reasonforjoin = stripslashes($reason->reason == null ? '' : $reason->reason);
                 }
             }
@@ -377,7 +377,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 </td>
                 <td class="priority-3">
                     <span>
-                        <?php echo $this->escape(stripslashes($row->username) ?? ''); ?>
+                        <?php echo $this->escape(stripslashes($row->username)); ?>
                     </span>
                 </td>
                 <td class="priority-5">

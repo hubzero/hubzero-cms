@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Component\View&object{sponsors: mixed} $this
+ * @var \Hubzero\Component\View&object{sponsors: \Hubzero\Database\Rows} $this
  */
 
 $canDo = \Components\Citations\Helpers\Permissions::getActions('sponsor');
@@ -42,7 +42,7 @@ Toolbar::help('sponsors');
             </tr>
         </thead>
         <tbody>
-            <?php if (is_array($this->sponsors) && count($this->sponsors) > 0) : ?>
+            <?php if ($this->sponsors->count() > 0) : ?>
                 <?php foreach ($this->sponsors as $sponsor) : ?>
                     <tr>
                         <td class="priority-3"><?php echo $sponsor['id']; ?></td>
