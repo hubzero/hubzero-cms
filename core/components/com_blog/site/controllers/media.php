@@ -336,7 +336,7 @@ class Media extends SiteController
         // Build the file path
         $path = $archive->filespace();
 
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
             $this->displayTask();
 

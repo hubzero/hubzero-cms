@@ -24,7 +24,7 @@ class Google extends Obj
     /**
      * Load file metadata
      *
-     * @param   object  $apiService  Drive API service instance
+     * @param   object|null  $apiService  Drive API service instance
      * @param   string  $id          Remote id
      * @return  mixed   array or false
      */
@@ -49,7 +49,7 @@ class Google extends Obj
      *
      * Written for Drive v3 and not yet run against a Drive account.
      *
-     * @param   object  $apiService  Drive API service instance
+     * @param   object|null  $apiService  Drive API service instance
      * @param   string  $fileId      Remote id
      * @param   string  $value       Who it is for: an e-mail address (user, group) or a domain (domain)
      * @param   string  $type        user, group, domain or anyone
@@ -121,7 +121,7 @@ class Google extends Obj
     /**
      * Patch file metadata (SYNC)
      *
-     * @param   object  $apiService  Drive API service instance
+     * @param   object|null  $apiService  Drive API service instance
      * @param   string  $id          Remote id
      * @param   string  $title       File title
      * @param   string  $parentId    Parent id
@@ -496,7 +496,7 @@ class Google extends Obj
     /**
      * Create remote folder
      *
-     * @param   object  $apiService  Drive API service instance
+     * @param   object|null  $apiService  Drive API service instance
      * @param   string  $title       Folder name
      * @param   string|mixed  $parentId    Parent id
      * @param   array   &$metadata   Collector array
@@ -533,7 +533,7 @@ class Google extends Obj
     /**
      * Get and sort through remote changes since last sync
      *
-     * @param   object  $apiService     Drive API service instance
+     * @param   object|null  $apiService     Drive API service instance
      * @param   string  $folderID       Folder ID
      * @param   array   &$remotes       Collector array for active items
      * @param   array   &$deletes       Collector array for deleted items
@@ -806,7 +806,7 @@ class Google extends Obj
     /**
      * Get folders
      *
-     * @param   object  $apiService      Drive API service instance
+     * @param   object|null  $apiService      Drive API service instance
      * @param   string  $folderID        Folder ID
      * @param   array   &$remoteFolders  Collector array for remote folders
      * @param   string  $path            Path
@@ -913,7 +913,7 @@ class Google extends Obj
     /**
      * Get remote folder content
      *
-     * @param   object  $apiService   Drive API service instance
+     * @param   object|null  $apiService   Drive API service instance
      * @param   string  $folderID     Folder ID
      * @param   array   $remotes      Array of remote items
      * @param   string  $path         Path

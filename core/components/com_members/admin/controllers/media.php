@@ -177,7 +177,7 @@ class Media extends AdminController
         $path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
         // if we have file
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_MEMBERS_FILE_NOT_FOUND'));
         } else {
             // Attempt to delete the file

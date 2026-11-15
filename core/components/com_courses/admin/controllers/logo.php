@@ -450,7 +450,7 @@ class Logo extends AdminController
         $type = strtolower(Request::getWord('type', ''));
         $path = $this->path($type, $id);
 
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
         } else {
             // Attempt to delete the file

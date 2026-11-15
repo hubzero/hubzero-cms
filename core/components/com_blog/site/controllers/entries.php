@@ -408,7 +408,7 @@ class Entries extends SiteController
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
-            if ($process && !$confirmdel) {
+            if ($process) {
                 $this->setError(Lang::txt('COM_BLOG_ERROR_CONFIRM_DELETION'));
             }
 

@@ -281,7 +281,7 @@ class Asset extends Table
 
             $file = $path . DS . $this->filename;
 
-            if (!file_exists($file) or !$file) {
+            if (!file_exists($file)) {
                 $this->setError(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND'));
                 return false;
             }

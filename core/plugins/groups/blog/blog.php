@@ -887,7 +887,7 @@ class Blog extends Plugin
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
-            if ($process && !$confirmdel) {
+            if ($process) {
                 $this->setError(Lang::txt('PLG_GROUPS_BLOG_ERROR_CONFIRM_DELETION'));
             }
 

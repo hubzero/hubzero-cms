@@ -1654,7 +1654,7 @@ class Collections extends Plugin
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
-            if ($process && !$confirmdel) {
+            if ($process) {
                 $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_ERROR_CONFIRM_DELETION'));
                 if ($no_html) {
                     echo '';
@@ -2246,7 +2246,7 @@ class Collections extends Plugin
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
-            if ($process && !$confirmdel) {
+            if ($process) {
                 $this->setError(Lang::txt('PLG_GROUPS' . strtoupper($this->pluginName) . 'ERROR_CONFIRM_DELETION'));
             }
 

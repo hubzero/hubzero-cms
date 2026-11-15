@@ -284,7 +284,7 @@ class Media extends Base
         $webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
         $path   = PATH_APP . $webdir . DS . $this->model->get('alias') . DS . 'images';
 
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
             if ($ajax) {
                 echo json_encode(['error' => $this->getError()]);

@@ -361,7 +361,7 @@ class Media extends AdminController
         }
 
         // Check if the folder even exists
-        if (!is_dir($path . DS . $folder) or !$folder) {
+        if (!is_dir($path . DS . $folder)) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_MISSING_DIRECTORY'));
         } else {
             // Attempt to delete the file
@@ -407,7 +407,7 @@ class Media extends AdminController
         }
 
         // Check if the file even exists
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
         } else {
             // Attempt to delete the file

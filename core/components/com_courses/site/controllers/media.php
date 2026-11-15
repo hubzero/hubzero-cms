@@ -600,7 +600,7 @@ class Media extends SiteController
         // Build the file path
         $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             Notify::error(Lang::txt('FILE_NOT_FOUND'));
             $this->displayTask();
 

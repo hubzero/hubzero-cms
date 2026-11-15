@@ -227,7 +227,7 @@ class Media extends SiteController
         }
 
         // Check if the file even exists
-        if (!file_exists($path . DS . $file) or !$file) {
+        if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
         } else {
             // Attempt to delete the file

@@ -579,7 +579,7 @@ class Course extends SiteController
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
-            if ($process && !$confirmdel) {
+            if ($process) {
                 Notify::error(Lang::txt('COM_COURSES_ERROR_CONFIRM_DELETION'), 'courses');
             }
 
