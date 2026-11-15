@@ -31,7 +31,7 @@ class Entriesv1r0 extends ApiController
     private function authorizeOrFail()
     {
         if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(401, 'Unauthorized');
+            App::abort(403, 'Not Authorized');
         }
     }
 
@@ -104,10 +104,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $model = Plugin::all();
 
@@ -197,10 +194,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $fields = [
             'type'           => 'plugin',
@@ -243,10 +237,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $id = Request::getInt('id', 0);
 
@@ -319,10 +310,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $row = Plugin::oneOrFail(Request::getInt('extension_id', 0));
 
@@ -370,10 +358,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $ids = Request::getArray('extension_id', []);
 
@@ -425,10 +410,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        // authorizeOrFail() does not exist on this controller; check rights directly
-        if (!User::authorise('core.manage', 'com_plugins')) {
-            App::abort(403, 'Not Authorized');
-        }
+        $this->authorizeOrFail();
 
         $event  = Request::getString('event', '');
         $folder = Request::getString('folder', '');
