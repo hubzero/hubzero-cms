@@ -84,12 +84,10 @@ class Courses extends Macro
         ];
 
         // make sure to replace group cname with group id
-        if (isset($filters['group'])) {
-            $group = \Hubzero\User\Group::getInstance($filters['group']);
-            if ($group) {
-                $filters['group_id'] = $group->get('gidNumber');
-                unset($filters['group']);
-            }
+        $group = \Hubzero\User\Group::getInstance($filters['group']);
+        if ($group) {
+            $filters['group_id'] = $group->get('gidNumber');
+            unset($filters['group']);
         }
 
         // instantiate courses model

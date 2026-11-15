@@ -145,9 +145,7 @@ class Download
 
             $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
-            if (isset($filters['sort_Dir'])) {
-                $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
-            }
+            $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 
             if ($filters['sort'] == 'product') {
                 $sql .= ', sSku';
@@ -251,20 +249,16 @@ class Download
 
         $sql .= ' GROUP BY d.sId';
 
-        if (isset($filters['sort'])) {
-            if ($filters['sort'] == 'product') {
-                $filters['sort'] = 'pName';
-            }
+        if ($filters['sort'] == 'product') {
+            $filters['sort'] = 'pName';
+        }
 
-            $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
+        $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
-            if (isset($filters['sort_Dir'])) {
-                $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
-            }
+        $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 
-            if ($filters['sort'] == 'product') {
-                $sql .= ', sSku';
-            }
+        if ($filters['sort'] == 'product') {
+            $sql .= ', sSku';
         }
 
         if (isset($filters['limit']) && is_numeric($filters['limit'])) {

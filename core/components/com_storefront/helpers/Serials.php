@@ -129,13 +129,9 @@ class Serials
         $sql .= "FROM #__storefront_serials s";
         $sql .= " WHERE srSId = " . $db->quote($sId);
 
-        if (isset($filters['sort'])) {
-            $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
+        $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
-            if (isset($filters['sort_Dir'])) {
-                $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
-            }
-        }
+        $sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 
         if (isset($filters['limit']) && is_numeric($filters['limit']) && $filters['return'] != 'count') {
             $sql .= ' LIMIT ' . $filters['limit'];
