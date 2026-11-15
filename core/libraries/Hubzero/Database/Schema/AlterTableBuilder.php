@@ -1599,12 +1599,9 @@ class AlterTableBuilder
     {
         $statements = $this->toSql();
         foreach ($statements as $sql) {
+            // A failed statement throws
             $this->driver->setQuery($sql);
-            $result = $this->driver->execute();
-            // Check for explicit false (error), not falsy (0 affected rows is OK)
-            if ($result === false) {
-                return false;
-            }
+            $this->driver->execute();
         }
         return true;
     }

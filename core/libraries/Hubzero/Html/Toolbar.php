@@ -158,11 +158,6 @@ class Toolbar extends Obj
         $type = $node[0];
 
         $button = $this->loadButtonType($type);
-
-        // Check for error.
-        if ($button === false) {
-            return Lang::txt('JLIB_HTML_BUTTON_NOT_DEFINED', $type);
-        }
         return $button->render($node);
     }
 

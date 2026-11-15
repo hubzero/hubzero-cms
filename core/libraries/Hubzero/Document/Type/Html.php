@@ -294,11 +294,6 @@ class Html extends Base
             return parent::$buffer[$type][$name];
         }
 
-        // If the buffer has been explicitly turned off don't display or attempt to render
-        if ($result === false) {
-            return null;
-        }
-
         $renderer = $this->loadRenderer($type);
 
         $this->setBuffer($renderer->render($name, $attribs, $result), $type, $name);

@@ -221,11 +221,6 @@ class Migration extends Base implements CommandInterface
             }
         }
 
-        // Make sure we got a migration object
-        if ($migration === false) {
-            $this->output->error('Error: failed to instantiate new migration object.');
-        }
-
         // All-or-nothing transaction mode
         if ($this->arguments->getOpt('all-or-nothing')) {
             $migration->setAllOrNothing(true);
@@ -610,10 +605,6 @@ class Migration extends Base implements CommandInterface
         // Create migration object
         $migration = new \Hubzero\Content\Migration($directory, $alternativeDatabase);
 
-        if ($migration === false) {
-            $this->output->error('Error: failed to instantiate new migration object.');
-        }
-
         // Register callback for interactive output
         if ($this->output->isInteractive()) {
             $output = $this->output;
@@ -751,10 +742,6 @@ class Migration extends Base implements CommandInterface
 
         // Create migration object
         $migration = new \Hubzero\Content\Migration($directory, $alternativeDatabase);
-
-        if ($migration === false) {
-            $this->output->error('Error: failed to instantiate new migration object.');
-        }
 
         // Register callback for interactive output
         if ($this->output->isInteractive()) {
@@ -980,10 +967,6 @@ class Migration extends Base implements CommandInterface
 
         // Create migration object
         $migration = new \Hubzero\Content\Migration($directory, $alternativeDatabase);
-
-        if ($migration === false) {
-            $this->output->error('Error: failed to instantiate new migration object.');
-        }
 
         // Register callback for interactive output
         if ($this->output->isInteractive()) {

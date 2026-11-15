@@ -2607,9 +2607,7 @@ abstract class BaseSqlDriver extends PdoDriver
         $statements = $this->getSchemaGrammar()->compileAlterTable($builder);
         foreach ($statements as $sql) {
             $this->setQuery($sql);
-            if ($this->execute() === false) {
-                return false;
-            }
+            $this->execute();
         }
 
         return true;
