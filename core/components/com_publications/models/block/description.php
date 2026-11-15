@@ -297,7 +297,7 @@ class Description extends Base
         }
 
         // Check against manifested requirements
-        if ($this->manifest && $this->manifest->elements) {
+        if ($this->manifest->elements) {
             // Check if requirements are satisfied for each attachment element
             $i          = 0;
             $success    = 0;

@@ -56,9 +56,7 @@ class Router extends Base
 
         $vars['pagename'] = end($segments);
 
-        if (!isset($vars['task']) || !$vars['task']) {
-            $vars['task'] = Request::getWord('task', '');
-        }
+        $vars['task'] = Request::getWord('task', '');
 
         switch ($vars['task']) {
             case 'upload':

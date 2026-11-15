@@ -28,7 +28,7 @@ class Migration20180924160808ComTools extends Base
         if ($mwdb->tableExists('display')) {
             $keys = $mwdb->getTableKeys('display');
             $primary_keys = [];
-            if (is_array($keys) && (count($keys) > 0)) {
+            if (count($keys) > 0) {
                 foreach ($keys as $k) {
                     if ($k->Key_name == 'PRIMARY') {
                         $primary_keys[] = $k->Column_name;

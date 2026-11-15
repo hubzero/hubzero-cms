@@ -890,12 +890,8 @@ class Pipeline extends SiteController
             // display form with errors
             //$title = Lang::txt(strtoupper($this->_option)).': '.Lang::txt('COM_TOOLS_EDIT_TOOL');
             //Document::setTitle($title);
-            if (is_array($err)) {
-                foreach ($err as $error) {
-                    $this->setError($error);
-                }
-            } else {
-                $this->setError($err);
+            foreach ($err as $error) {
+                $this->setError($error);
             }
 
             if ($id) {

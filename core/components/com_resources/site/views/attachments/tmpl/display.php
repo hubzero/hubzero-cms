@@ -151,7 +151,7 @@ $hideform = Request::getInt('hideform', 0);
                     </td>
                     <td class="u">
                         <?php
-                        if ($i > 0 || ($i + 0 > 0)) {
+                        if ($i > 0) {
                             echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller
                                 . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id
                                 . '&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '&amp;'
@@ -165,7 +165,7 @@ $hideform = Request::getInt('hideform', 0);
                     </td>
                     <td class="d">
                         <?php
-                        if ($i < $n - 1 || $i + 0 < $n - 1) {
+                        if ($i < $n - 1) {
                             echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller
                                 . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id
                                 . '&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '&amp;'

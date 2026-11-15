@@ -172,7 +172,7 @@ class Restrictions extends AdminController
                 $matched++;
             } else {
                 // Are we adding by username?
-                if ($user && is_string($user)) {
+                if ($user) {
                     RestrictionsHelper::addPermittedSkuUser($uId, $sId, $user);
                     $matched++;
                 } else {

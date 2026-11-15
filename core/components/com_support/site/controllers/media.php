@@ -216,7 +216,7 @@ class Media extends SiteController
             $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file,
-                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext,
+                'ext'    => ($ext === '') ? '(none)' : $ext,
             ]);
             echo json_encode(['error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')]);
             return;
@@ -428,7 +428,7 @@ class Media extends SiteController
             $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file['name'],
-                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext,
+                'ext'    => ($ext === '') ? '(none)' : $ext,
             ]);
             $this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
             $this->displayTask();

@@ -153,7 +153,7 @@ if ($this->contributors) {
                         </select>
                     </td>
                     <td class="u"><?php
-                    if ($i > 0 || ($i + 0 > 0)) {
+                    if ($i > 0) {
                         echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option
                             . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id
                             . '&amp;id=' . $contributor->authorid . '&amp;task=reorder&amp;move=up&amp;'
@@ -165,7 +165,7 @@ if ($this->contributors) {
                     }
                     ?></td>
                     <td class="d"><?php
-                    if ($i < $n - 1 || $i + 0 < $n - 1) {
+                    if ($i < $n - 1) {
                         echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option
                             . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id
                             . '&amp;id=' . $contributor->authorid . '&amp;task=reorder&amp;move=down&amp;'

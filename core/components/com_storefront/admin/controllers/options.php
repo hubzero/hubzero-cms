@@ -305,7 +305,6 @@ class Options extends AdminController
                     $msg,
                     $type,
                 );
-                break;
         }
     }
 

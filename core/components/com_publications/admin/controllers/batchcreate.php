@@ -209,7 +209,7 @@ class Batchcreate extends AdminController
         }
 
         // Check for file
-        if (!is_array($file) || $file['size'] == 0 || $file['error'] != 0) {
+        if ($file['size'] == 0 || $file['error'] != 0) {
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
@@ -345,7 +345,7 @@ class Batchcreate extends AdminController
         $curationModel = new \Components\Publications\Models\Curation($mastertype->curation);
 
         // Get defaults from manifest
-        $title = $curationModel && isset($curationModel->manifest->params->default_title)
+        $title = isset($curationModel->manifest->params->default_title)
             ? $curationModel->manifest->params->default_title
             : 'Untitled Draft';
         $title = $title ? $title : 'Untitled Draft';
@@ -359,15 +359,13 @@ class Batchcreate extends AdminController
         $elementGalleryId = 2;
         $elementSupportId = 3;
 
-        if ($this->curationModel) {
-            $elements1 = $this->curationModel->getElements(1);
-            $elements2 = $this->curationModel->getElements(2);
-            $elements3 = $this->curationModel->getElements(3);
+        $elements1 = $this->curationModel->getElements(1);
+        $elements2 = $this->curationModel->getElements(2);
+        $elements3 = $this->curationModel->getElements(3);
 
-            $elementPrimeId   = !empty($elements1) ? $elements1[0]->id : $elementPrimeId;
-            $elementGalleryId = !empty($elements3) ? $elements3[0]->id : $elementGalleryId;
-            $elementSupportId = !empty($elements2) ? $elements2[0]->id : $elementSupportId;
-        }
+        $elementPrimeId   = !empty($elements1) ? $elements1[0]->id : $elementPrimeId;
+        $elementGalleryId = !empty($elements3) ? $elements3[0]->id : $elementGalleryId;
+        $elementSupportId = !empty($elements2) ? $elements2[0]->id : $elementSupportId;
 
         // Get project repo path
         $this->projectPath = $this->project->repo()->get('path');
@@ -695,67 +693,63 @@ class Batchcreate extends AdminController
         // $vcs_hash = $this->_git->gitLog($attachment->path, '', 'hash');
 
         // Create attachment record
-        if ($this->curationModel || $fileRecord['type'] != 'gallery') {
-            $attachment->publication_id         = $pid;
-            $attachment->publication_version_id = $vid;
-            $attachment->vcs_hash               = null;
-            $attachment->created_by             = $this->_uid;
-            $attachment->created                = Date::toSql();
-            $attachment->store();
-        }
+        $attachment->publication_id         = $pid;
+        $attachment->publication_version_id = $vid;
+        $attachment->vcs_hash               = null;
+        $attachment->created_by             = $this->_uid;
+        $attachment->created                = Date::toSql();
+        $attachment->store();
 
         // Copy files to the right location
-        if ($this->curationModel) {
-            // Get attachment type model
-            $attModel = new \Components\Publications\Models\Attachments($this->database);
-            $fileAttach = $attModel->loadAttach('file');
-            if (!$fileAttach) {
-                return false;
-            }
+        // Get attachment type model
+        $attModel = new \Components\Publications\Models\Attachments($this->database);
+        $fileAttach = $attModel->loadAttach('file');
+        if (!$fileAttach) {
+            return false;
+        }
 
-            // Get element manifest
-            $elements = $this->curationModel->getElements($attachment->role);
-            if (!$elements) {
-                return false;
-            }
-            $element = $elements[0];
+        // Get element manifest
+        $elements = $this->curationModel->getElements($attachment->role);
+        if (!$elements) {
+            return false;
+        }
+        $element = $elements[0];
 
-            $pubmodel = new \Components\Publications\Models\Publication($pid, $version, $vid);
-            $pubmodel->project();
+        $pubmodel = new \Components\Publications\Models\Publication($pid, $version, $vid);
+        $pubmodel->project();
 
-            // Set configs
-            $configs  = $fileAttach->getConfigs(
-                $element->manifest->params,
-                $element->id,
-                $pubmodel,
-                $element->block,
-            );
+        // Set configs
+        $configs  = $fileAttach->getConfigs(
+            $element->manifest->params,
+            $element->id,
+            $pubmodel,
+            $element->block,
+        );
 
-            // Check if names is already used
-            $suffix = $fileAttach->checkForDuplicate(
-                $configs->path . DS . $attachment->path,
-                $attachment,
-                $configs,
-            );
+        // Check if names is already used
+        $suffix = $fileAttach->checkForDuplicate(
+            $configs->path . DS . $attachment->path,
+            $attachment,
+            $configs,
+        );
 
-            // Save params if applicable
-            if ($suffix) {
-                $pa = new \Components\Publications\Tables\Attachment($this->database);
-                $pa->saveParam($attachment, 'suffix', $suffix);
-            }
+        // Save params if applicable
+        if ($suffix) {
+            $pa = new \Components\Publications\Tables\Attachment($this->database);
+            $pa->saveParam($attachment, 'suffix', $suffix);
+        }
 
-            // Copy file into the right spot
-            $fileAttach->publishAttachment($attachment, $pub, $configs);
+        // Copy file into the right spot
+        $fileAttach->publishAttachment($attachment, $pub, $configs);
 
-            // Take care of thumbnail, if appropriate
-            if (
-                $fileRecord['subtype'] == 'thumbnail'
-                && $configs->handler
-                && $configs->handler->getName() == 'imageviewer'
-                && !$attachment->getDefault($pub->version_id)
-            ) {
-                $configs->handler->makeDefault($attachment, $pub, $configs);
-            }
+        // Take care of thumbnail, if appropriate
+        if (
+            $fileRecord['subtype'] == 'thumbnail'
+            && $configs->handler
+            && $configs->handler->getName() == 'imageviewer'
+            && !$attachment->getDefault($pub->version_id)
+        ) {
+            $configs->handler->makeDefault($attachment, $pub, $configs);
         }
 
         return null;

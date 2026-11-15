@@ -24,13 +24,6 @@ class Note extends \Components\Wiki\Models\Book
     protected $scope;
 
     /**
-     * Project group cn
-     *
-     * @var  string
-     */
-    private $group_cn = '';
-
-    /**
      * Project id
      *
      * @var  string|int
@@ -41,15 +34,13 @@ class Note extends \Components\Wiki\Models\Book
      * Constructor
      *
      * @param   string   $scope
-     * @param   string   $group_cn
      * @param   integer  $project_id
      * @return  void
      */
-    public function __construct($scope = 'project', $group_cn = '', $project_id = 0)
+    public function __construct($scope = 'project', $project_id = 0)
     {
         $this->db = App::get('db');
         $this->scope = $scope;
-        $this->group_cn = $group_cn;
         $this->project_id = $project_id;
 
         parent::__construct($scope);
@@ -86,7 +77,8 @@ class Note extends \Components\Wiki\Models\Book
 
         $page = $this->page($id);
 
-        if (!$page) {
+        // The lookup gives an empty page when there is none
+        if (!$page->get('id')) {
             return false;
         }
 

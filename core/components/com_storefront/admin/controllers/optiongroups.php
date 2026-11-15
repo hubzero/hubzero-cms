@@ -297,7 +297,6 @@ class Optiongroups extends AdminController
                     $msg,
                     $type,
                 );
-                break;
         }
     }
 

@@ -162,14 +162,13 @@ $sortDirSelected = function ($value) use ($view) {
                                                 name="q[<?= $this->escape($field->get('name')) ?>]"
                                                 id="filter-value-<?= $this->escape($field->get('name')) ?>"
                                                 min="<?= $field->get('min', 0) ?>"
-                                                <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?>
+                                                max="<?= $field->get('max') ?>"
                                                 step="1" value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } else { ?>
                                             <input type="number" class="form-control"
                                                 name="q[<?= $this->escape($field->get('name')) ?>]"
                                                 id="filter-value-<?= $this->escape($field->get('name')) ?>"
                                                 <?= $field->get('min') ? ' min="' . $field->get('min') . '"' : '' ?>
-                                                <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?>
                                                 value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } ?>
                                     </label>
@@ -265,7 +264,7 @@ $sortDirSelected = function ($value) use ($view) {
                                                         if ($kkey == $key) {
                                                             continue;
                                                         }
-                                                        $route .= (is_array($ss) ? implode('', $ss) : $ss);
+                                                        $route .= $ss;
                                                     }
                                                 }
                                                 continue;

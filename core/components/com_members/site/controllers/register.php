@@ -673,21 +673,19 @@ class Register extends SiteController
             }
 
             // Notify administration
-            if ($method == 'POST') {
-                $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
+            $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-                $eaview = new \Hubzero\Component\View([
-                    'name'   => 'emails',
-                    'layout' => 'adminupdate',
-                ]);
-                $eaview->set('option', $this->option);
-                $eaview->set('controller', $this->controller);
-                $eaview->set('sitename', Config::get('sitename'));
-                $eaview->set('xprofile', $xprofile);
-                $eaview->set('baseURL', $this->baseURL);
-                $message = $eaview->loadTemplate();
-                $message = str_replace("\n", "\r\n", $message);
-            }
+            $eaview = new \Hubzero\Component\View([
+                'name'   => 'emails',
+                'layout' => 'adminupdate',
+            ]);
+            $eaview->set('option', $this->option);
+            $eaview->set('controller', $this->controller);
+            $eaview->set('sitename', Config::get('sitename'));
+            $eaview->set('xprofile', $xprofile);
+            $eaview->set('baseURL', $this->baseURL);
+            $message = $eaview->loadTemplate();
+            $message = str_replace("\n", "\r\n", $message);
 
             if (!$updateEmail) {
                 $suri = urldecode(Request::getString('return', ''));
@@ -1017,6 +1015,7 @@ class Register extends SiteController
      * Display the form for registering an account
      *
      * @param   object|null  &$xregistration
+     * @param-out object  $xregistration
      * @param   string  $task
      *
      * @return  void
@@ -1146,13 +1145,13 @@ class Register extends SiteController
         if ($score < Registration::PASS_SCORE_MEDIOCRE) {
             $cls = 'bad';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_BAD');
-        } elseif ($score >= Registration::PASS_SCORE_MEDIOCRE && $score < Registration::PASS_SCORE_GOOD) {
+        } elseif ($score < Registration::PASS_SCORE_GOOD) {
             $cls = 'mediocre';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_MEDIOCRE');
-        } elseif ($score >= Registration::PASS_SCORE_GOOD && $score < Registration::PASS_SCORE_STRONG) {
+        } elseif ($score < Registration::PASS_SCORE_STRONG) {
             $cls = 'good';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_GOOD');
-        } elseif ($score >= Registration::PASS_SCORE_STRONG) {
+        } else {
             $cls = 'strong';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_STRONG');
         }

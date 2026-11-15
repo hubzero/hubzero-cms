@@ -678,7 +678,7 @@ class Sessionsv1r0 extends ApiController
 
         $preferences = new \Components\Tools\Tables\Preferences($database);
         $preferences->loadByUser($result->get('uidNumber'));
-        if (!$preferences || !$preferences->id) {
+        if (!$preferences->id) {
             $scls = new \Components\Tools\Tables\SessionClass($database);
             $default = $scls->find('one', ['alias' => 'default']);
             $preferences->user_id  = $result->get('uidNumber');
@@ -755,9 +755,7 @@ class Sessionsv1r0 extends ApiController
         $output->readonly = 0;
 
         //return result
-        if ($status) {
-            $this->send($output);
-        }
+        $this->send($output);
     }
 
     /**
@@ -887,7 +885,7 @@ class Sessionsv1r0 extends ApiController
 
         $preferences = new \Components\Tools\Tables\Preferences($database);
         $preferences->loadByUser($profile->get('id'));
-        if (!$preferences || !$preferences->id) {
+        if (!$preferences->id) {
             $default = $preferences->find('one', ['alias' => 'default']);
             $preferences->user_id  = $profile->get('id');
             $preferences->class_id = $default->id;

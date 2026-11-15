@@ -452,6 +452,7 @@ class Ticket extends Relational
      *
      * @param   integer|null  $user_id  User ID
      * @return  boolean  True if watching, False if not
+     * @phpstan-impure
      */
     public function isWatching($user_id = null)
     {

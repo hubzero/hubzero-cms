@@ -80,7 +80,7 @@ class Google extends Obj
     /**
      * Clear permission for user
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   array    $shared
      * @param   string   $itemId
      * @return  boolean
@@ -159,7 +159,7 @@ class Google extends Obj
     /**
      * Insert new file in remote (SYNC)
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string   $title       File title
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
@@ -275,7 +275,7 @@ class Google extends Obj
     /**
      * Update remote file with local change (SYNC)
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string   $id          Remote id
      * @param   string   $title       File title
      * @param   string   $mimeType    MIME type
@@ -383,7 +383,7 @@ class Google extends Obj
     /**
      * Untrash remote item
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @return  boolean
      */
@@ -406,7 +406,7 @@ class Google extends Obj
     /**
      * Delete parent
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @return  boolean
      */
@@ -431,7 +431,7 @@ class Google extends Obj
     /**
      * Delete all parents
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @return  boolean
      */
@@ -468,7 +468,7 @@ class Google extends Obj
     /**
      * Delete remote item
      *
-     * @param   object   $apiService  Drive API service instance
+     * @param   object|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
      * @param   boolean  $permanent   Delete permanently? (or trash)
      * @return  boolean
@@ -843,7 +843,8 @@ class Google extends Obj
 
                     $title  = Filesystem::cleanPath($item->getName());
                     $fpath  = $lpath ? $lpath . DS . $title : $title;
-                    $status = $item->getTrashed() ? 'D' : 'A';
+                    // Trashed items were skipped above
+                    $status = 'A';
 
                     $remoteFolders[$fpath] = [
                         'remoteid' => $item->getId(),
@@ -948,7 +949,8 @@ class Google extends Obj
                 $lpath = $path ? $path : '';
                 foreach ($items as $item) {
                     $time   = strtotime($item->getModifiedTime());
-                    $status = $item->getTrashed() ? 'D' : 'A';
+                    // Trashed items were skipped above
+                    $status = 'A';
                     $skip   = 0;
 
                     // Check against modified date

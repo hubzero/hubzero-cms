@@ -61,7 +61,7 @@ class Media extends SiteController
         // (a caller passed a version NUMBER), reload by number so the decision is
         // made on the requested publication
         $pub = new Models\Publication($pid, null, $vid);
-        if ($vid && $pub->exists() && (int) $pub->get('id') !== (int) $pid) {
+        if ($pub->exists() && (int) $pub->get('id') !== (int) $pid) {
             $pub = new Models\Publication($pid, $vid);
         }
         if (!$pub->exists() || (int) $pub->get('id') !== (int) $pid || !$pub->access('view')) {

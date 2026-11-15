@@ -172,7 +172,7 @@ class Whitelist extends AdminController
                 $matched++;
             } else {
                 // Are we adding by username?
-                if ($user && is_string($user)) {
+                if ($user) {
                     RestrictionsHelper::addWhitelistedSkuUser($uId, $sId, $user);
                 } else {
                     $noHubUserMatch[] = $user;

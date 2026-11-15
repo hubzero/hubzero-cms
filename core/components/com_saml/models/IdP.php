@@ -417,7 +417,7 @@ class IdP
 
             $profile = \Components\Members\Models\Profile::oneByKeyAndUser($key, $user->get('id'));
 
-            return $profile ? (string) $profile->get('profile_value', '') : '';
+            return (string) $profile->get('profile_value', '');
         }
 
         return null;

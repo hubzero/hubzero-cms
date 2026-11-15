@@ -185,9 +185,7 @@ class Ticketsv2r1 extends ApiController
         $tickets = Ticket::all();
 
         $type = Request::getInt('type', 0);
-        if (!is_null($type)) {
-            $tickets->whereEquals('type', $type);
-        }
+        $tickets->whereEquals('type', $type);
 
         // 0 is a real value for each of these (unassigned, status "new/closed",
         // no category): test for presence, not truth

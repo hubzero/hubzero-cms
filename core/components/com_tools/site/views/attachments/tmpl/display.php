@@ -130,7 +130,7 @@ if ($this->children) {
         if ($this->allowupload) {
             $out .= '  <td class="d">';
 
-            if ($i > 0 || ($i + 0 > 0)) {
+            if ($i > 0) {
                 $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
                     . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id
                     . '&amp;task=reorder&amp;move=up&amp;' . Session::getFormToken() . '=1" class="order up" title="'
@@ -142,7 +142,7 @@ if ($this->children) {
 
             $out .= '  <td class="u">';
 
-            if ($i < $n - 1 || $i + 0 < $n - 1) {
+            if ($i < $n - 1) {
                 $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
                     . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id
                     . '&amp;task=reorder&amp;move=down&amp;' . Session::getFormToken()

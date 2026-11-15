@@ -456,23 +456,23 @@ class Version extends Table
         }
 
         if ($thistool) {
-            $resource->revision      = ($thistool) ? $thistool->revision : 1;
+            $resource->revision      = $thistool->revision;
             $resource->revision      = ($revision != 'dev') ? $resource->revision : 'dev';
             $revision                = $resource->revision;
-            $resource->versionid     = ($revision && $thistool) ? $thistool->id : 0;
-            $resource->version       = ($revision && $thistool) ? $thistool->version : 1;
-            $resource->tool          = ($revision && $thistool)
+            $resource->versionid     = $revision ? $thistool->id : 0;
+            $resource->version       = $revision ? $thistool->version : 1;
+            $resource->tool          = $revision
                 ? $thistool->instance
                 : $resource->alias . '_r' . $revision;
-            $resource->toolpublished = ($revision && $thistool) ? $thistool->state : 1;
-            $resource->license       = ($revision && $thistool) ? $thistool->license : '';
-            $resource->title         = ($revision && $thistool)
+            $resource->toolpublished = $revision ? $thistool->state : 1;
+            $resource->license       = $revision ? $thistool->license : '';
+            $resource->title         = $revision
                 ? stripslashes($thistool->title)
                 : $resource->title;
-            $resource->introtext     = ($revision && $thistool && isset($thistool->description))
+            $resource->introtext     = ($revision && isset($thistool->description))
                 ? stripslashes($thistool->description)
                 : $resource->introtext;
-            $resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt))
+            $resource->fulltxt       = ($revision && isset($thistool->fulltxt))
                 ? $thistool->fulltxt
                 : $resource->fulltxt;
             $resource->toolsource    = (

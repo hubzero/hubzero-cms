@@ -149,7 +149,7 @@ class Utilities
             }
 
             $meta = [];
-            $meta['legacy']       = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
+            $meta['legacy']       = ($xml->getName() == 'install');
             $meta['name']         = (string) $xml->name;
 
             // Check if we're a language. If so use metafile.

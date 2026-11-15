@@ -131,9 +131,7 @@ class Plugins extends AdminController
         }
 
         // Filter by folder.
-        if ($filters['folder']) {
-            $query->whereEquals($p . '.folder', $filters['folder']);
-        }
+        $query->whereEquals($p . '.folder', $filters['folder']);
 
         // Filter by search: "id:N", or text in the name or element (the name
         // is a language key like plg_members_profile, so the element is the

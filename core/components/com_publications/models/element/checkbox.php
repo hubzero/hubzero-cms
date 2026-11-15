@@ -55,12 +55,10 @@ class Checkbox extends Base
 
         $pattern = "/<\d>(.*?)<\/\d>/i";
         preg_match_all($pattern, $value, $matches);
-        if ($matches) {
-            foreach ($matches[1] as $match) {
-                $pattern = "/<\d>$match<\/\d>/i";
-                $value = preg_replace($pattern, '', $value);
-                $values[] = $match;
-            }
+        foreach ($matches[1] as $match) {
+            $pattern = "/<\d>$match<\/\d>/i";
+            $value = preg_replace($pattern, '', $value);
+            $values[] = $match;
         }
         $values[] = $value;
 
@@ -84,16 +82,11 @@ class Checkbox extends Base
         if (isset($element->options) && is_array($element->options)) {
             foreach ($element->options as $option) {
                 $sel = '';
-                if (is_array($values)) {
-                    foreach ($values as $val) {
-                        $k2 = is_object($val) ? $val->value : $val;
-                        if ($option->value == $k2) {
-                            $sel .= ' checked="checked"';
-                            break;
-                        }
+                foreach ($values as $val) {
+                    if ($option->value == $val) {
+                        $sel .= ' checked="checked"';
+                        break;
                     }
-                } else {
-                    $sel .= ($option->value == $value ? ' checked="checked"' : '');
                 }
 
                 $optionId = $control_name . '-' . $name . $option->value;
@@ -170,12 +163,10 @@ class Checkbox extends Base
 
         $pattern = "/<\d>(.*?)<\/\d>/i";
         preg_match_all($pattern, $value, $matches);
-        if ($matches) {
-            foreach ($matches[1] as $match) {
-                $pattern = "/<\d>$match<\/\d>/i";
-                $value = preg_replace($pattern, '', $value);
-                $values[] = '<li>' . $match . '</li>';
-            }
+        foreach ($matches[1] as $match) {
+            $pattern = "/<\d>$match<\/\d>/i";
+            $value = preg_replace($pattern, '', $value);
+            $values[] = '<li>' . $match . '</li>';
         }
 
         $values[] = '</ul>';

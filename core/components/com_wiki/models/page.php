@@ -555,9 +555,6 @@ class Page extends Relational
      */
     public static function addAdapterPath($path)
     {
-        if (!isset(static::$paths)) {
-            static::$paths = [];
-        }
 
         if (!empty($path)) {
             if (!in_array($path, static::$paths)) {
@@ -765,6 +762,7 @@ class Page extends Relational
      * @param   string  $key      Property to return
      * @param   mixed   $default  Value to return if key isn't found
      * @return  mixed
+     * @phpstan-impure
      */
     public function config($key = '', $default = null)
     {

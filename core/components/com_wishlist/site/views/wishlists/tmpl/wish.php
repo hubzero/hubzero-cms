@@ -323,7 +323,6 @@ $categoryChecked = function ($value) use ($view) {
             <?php
             if (
                 $this->wishlist->access('manage')
-                && !$this->wish->isDeleted()
                 && !$this->wish->isWithdrawn()
                 && $voters > 0
             ) { ?>
@@ -346,18 +345,11 @@ $categoryChecked = function ($value) use ($view) {
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <?php
-                                    // My opinion is available for list owners/advisory committee only
-                                    if ($this->wishlist->access('manage')) { ?>
-                                        <th><?php echo Lang::txt('COM_WISHLIST_MY_OPINION'); ?></th>
-                                    <?php } ?>
+                                    <th><?php echo Lang::txt('COM_WISHLIST_MY_OPINION'); ?></th>
                                     <th><?php echo Lang::txt('COM_WISHLIST_CONSENSUS'); ?></th>
                                     <th><?php echo Lang::txt('COM_WISHLIST_COMMUNITY_VOTE'); ?></th>
                                 </tr>
                             </thead>
-                        <?php
-                        // My opinion is available for list owners/advisory committee only
-                        if ($this->wishlist->access('manage')) { ?>
                             <tfoot>
                                 <tr>
                                     <td></td>
@@ -378,33 +370,29 @@ $categoryChecked = function ($value) use ($view) {
                                     <td></td>
                                 </tr>
                             </tfoot>
-                        <?php } ?>
                             <tbody>
                                 <tr>
                                     <th><?php echo Lang::txt('COM_WISHLIST_IMPORTANCE'); ?></th>
                                 <?php
-                                // My opinion is available for list owners/advisory committee only
-                                if ($this->wishlist->access('manage')) {
-                                    $importance = [
-                                        ''    => Lang::txt('COM_WISHLIST_SELECT_IMP'),
-                                        '0.0' => '0 -' . Lang::txt('COM_WISHLIST_RUBBISH'),
-                                        '1'   => '1 - ' . Lang::txt('COM_WISHLIST_MAYBE'),
-                                        '2'   => '2 - ' . Lang::txt('COM_WISHLIST_INTERESTING'),
-                                        '3'   => '3 - ' . Lang::txt('COM_WISHLIST_GOODIDEA'),
-                                        '4'   => '4 - ' . Lang::txt('COM_WISHLIST_IMPORTANT'),
-                                        '5'   => '5 - ' . Lang::txt('COM_WISHLIST_CRITICAL'),
-                                    ];
-                                    ?>
-                                    <td>
-                                        <?= \Components\Wishlist\Helpers\Html::formSelect(
-                                            'importance',
-                                            $importance,
-                                            $this->wish->ranking('importance'),
-                                            'rankchoices',
-                                        ) ?>
-                                    </td>
-                                    <?php
-                                }
+                                $importance = [
+                                    ''    => Lang::txt('COM_WISHLIST_SELECT_IMP'),
+                                    '0.0' => '0 -' . Lang::txt('COM_WISHLIST_RUBBISH'),
+                                    '1'   => '1 - ' . Lang::txt('COM_WISHLIST_MAYBE'),
+                                    '2'   => '2 - ' . Lang::txt('COM_WISHLIST_INTERESTING'),
+                                    '3'   => '3 - ' . Lang::txt('COM_WISHLIST_GOODIDEA'),
+                                    '4'   => '4 - ' . Lang::txt('COM_WISHLIST_IMPORTANT'),
+                                    '5'   => '5 - ' . Lang::txt('COM_WISHLIST_CRITICAL'),
+                                ];
+                                ?>
+                                <td>
+                                    <?= \Components\Wishlist\Helpers\Html::formSelect(
+                                        'importance',
+                                        $importance,
+                                        $this->wish->ranking('importance'),
+                                        'rankchoices',
+                                    ) ?>
+                                </td>
+                                <?php
                                 if ($this->wish->rankings()->total() == 0) {
                                     ?>
                                     <td><?php echo Lang::txt('COM_WISHLIST_NA'); ?></td>
@@ -438,29 +426,26 @@ $categoryChecked = function ($value) use ($view) {
                                 <tr>
                                     <th><?php echo Lang::txt('COM_WISHLIST_EFFORT'); ?></th>
                                 <?php
-                                // My opinion is available for list owners/advisory committee only
-                                if ($this->wishlist->access('manage')) {
-                                    $effort = [
-                                        ''    => Lang::txt('COM_WISHLIST_SELECT_EFFORT'),
-                                        '5'   => Lang::txt('COM_WISHLIST_FOURHOURS'),
-                                        '4'   => Lang::txt('COM_WISHLIST_ONEDAY'),
-                                        '3'   => Lang::txt('COM_WISHLIST_TWODAYS'),
-                                        '2'   => Lang::txt('COM_WISHLIST_ONEWEEK'),
-                                        '1'   => Lang::txt('COM_WISHLIST_TWOWEEKS'),
-                                        '0.0' => Lang::txt('COM_WISHLIST_TWOMONTHS'),
-                                        '6'   => Lang::txt('COM_WISHLIST_DONT_KNOW'),
-                                    ];
-                                    ?>
-                                    <td>
-                                        <?= \Components\Wishlist\Helpers\Html::formSelect(
-                                            'effort',
-                                            $effort,
-                                            $this->wish->ranking('effort'),
-                                            'rankchoices',
-                                        ) ?>
-                                    </td>
-                                    <?php
-                                }
+                                $effort = [
+                                    ''    => Lang::txt('COM_WISHLIST_SELECT_EFFORT'),
+                                    '5'   => Lang::txt('COM_WISHLIST_FOURHOURS'),
+                                    '4'   => Lang::txt('COM_WISHLIST_ONEDAY'),
+                                    '3'   => Lang::txt('COM_WISHLIST_TWODAYS'),
+                                    '2'   => Lang::txt('COM_WISHLIST_ONEWEEK'),
+                                    '1'   => Lang::txt('COM_WISHLIST_TWOWEEKS'),
+                                    '0.0' => Lang::txt('COM_WISHLIST_TWOMONTHS'),
+                                    '6'   => Lang::txt('COM_WISHLIST_DONT_KNOW'),
+                                ];
+                                ?>
+                                <td>
+                                    <?= \Components\Wishlist\Helpers\Html::formSelect(
+                                        'effort',
+                                        $effort,
+                                        $this->wish->ranking('effort'),
+                                        'rankchoices',
+                                    ) ?>
+                                </td>
+                                <?php
 
                                 if ($this->wish->rankings()->total() == 0) {
                                     ?>
@@ -634,7 +619,7 @@ $categoryChecked = function ($value) use ($view) {
                 </div><!-- / .takeaction -->
             <?php } ?>
 
-            <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
+            <?php if (!$this->wish->isWithdrawn()) { ?>
                 <?php
                 if (
                     $this->wish->get('action') == 'addbonus'

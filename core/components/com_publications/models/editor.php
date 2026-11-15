@@ -9,7 +9,6 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
-use Hubzero\Facades\App;
 
 /**
  * Model for a handler editor
@@ -26,13 +25,6 @@ class Editor extends Obj
     public $handler = null;
 
     /**
-     * Database
-     *
-     * @var  object|null
-     */
-    private $db = null;
-
-    /**
      * Constructor
      *
      * @param   object  $handler
@@ -41,8 +33,6 @@ class Editor extends Obj
      */
     public function __construct($handler, $configs)
     {
-        $this->db = App::get('db');
-
         $this->handler  = $handler;
         $this->configs  = $configs;
     }

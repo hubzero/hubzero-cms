@@ -808,7 +808,7 @@ class Wish extends Relational
                 break;
             case 'plan':
                 $plan = $this->plan;
-                $rows = ($plan && $plan->get('id')) ? [$plan] : [];
+                $rows = $plan->get('id') ? [$plan] : [];
                 break;
             default:
                 return false;
@@ -884,7 +884,7 @@ class Wish extends Relational
 
                     // If the wish is not private or (wish is private and user can manage the list)
                     // set the wish to viewable
-                    if (!$this->isPrivate() || ($this->isPrivate() && $this->config()->get('access-manage-list'))) {
+                    if (!$this->isPrivate() || $this->config()->get('access-manage-list')) {
                         $this->config()->set('access-view-wish', true);
                     }
 

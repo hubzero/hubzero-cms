@@ -47,7 +47,7 @@ class Storagev1r0 extends ApiController
 
         // A healthy response carries the quota keys; anything less is an error
         // talking to the storage host.
-        if (!is_array($du) || !isset($du['space'])) {
+        if (!isset($du['space'])) {
             throw new Exception(Lang::txt('Unable to retrieve storage usage.'), 503);
         }
 

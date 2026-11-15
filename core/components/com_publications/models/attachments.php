@@ -483,7 +483,7 @@ class Attachments extends Obj
      *
      * @param   object|null  $zip
      * @param   array   $elements
-     * @param   object  $pub
+     * @param   object|null  $pub
      * @param   string  $readme
      * @param   string  $bundleDir
      * @return  mixed   object or bool

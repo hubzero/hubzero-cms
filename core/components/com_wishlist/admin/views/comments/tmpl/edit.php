@@ -127,9 +127,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <td>
                             <?php
                             $editor = User::getInstance($this->row->created_by);
-                            echo ($editor)
-                                ? $this->escape(stripslashes($editor->get('name')))
-                                : Lang::txt('unknown');
+                            echo $this->escape(stripslashes($editor->get('name')));
                             ?>
                             <input type="hidden"
                                 name="fields[created_by]"

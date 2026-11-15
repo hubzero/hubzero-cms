@@ -237,9 +237,7 @@ class Entriesv1r0 extends ApiController
             if ($raw) {
                 $record->set('raw_tag', $raw);
             }
-            if ($tag) {
-                $record->set('tag', $tag);
-            }
+            $record->set('tag', $tag);
             if ($desc) {
                 $record->set('description', $desc);
             }

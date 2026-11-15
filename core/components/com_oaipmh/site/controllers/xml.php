@@ -189,7 +189,7 @@ class Xml extends SiteController
                     }
 
                     if (!$service->getError()) {
-                        if (!$data || !is_array($data)) {
+                        if (!$data) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
                             $service->set(
@@ -262,7 +262,7 @@ class Xml extends SiteController
                     }
 
                     if (!$service->getError()) {
-                        if (!$data || !is_array($data)) {
+                        if (!$data) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
                             $service->set(
@@ -318,7 +318,7 @@ class Xml extends SiteController
                     }
 
                     if (!$service->getError()) {
-                        if (!$data || !is_array($data)) {
+                        if (!$data) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
                             $service->set(

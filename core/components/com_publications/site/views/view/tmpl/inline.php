@@ -58,13 +58,11 @@ $cType      = $mTypeParts[0];
 if ($attributes) {
     $a = explode(',', $attributes);
     $bits = [];
-    if ($a) {
-        foreach ($a as $b) {
-            if (strstr($b, ':')) {
-                $b = explode(':', $b);
-                // Attribute names and values come from the author's file description
-                $bits[] = preg_replace('/[^a-zA-Z0-9_-]/', '', trim($b[0])) . '="' . $this->escape(trim($b[1])) . '"';
-            }
+    foreach ($a as $b) {
+        if (strstr($b, ':')) {
+            $b = explode(':', $b);
+            // Attribute names and values come from the author's file description
+            $bits[] = preg_replace('/[^a-zA-Z0-9_-]/', '', trim($b[0])) . '="' . $this->escape(trim($b[1])) . '"';
         }
     }
     $attributes = implode(' ', $bits);

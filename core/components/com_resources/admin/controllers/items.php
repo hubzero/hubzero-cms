@@ -414,7 +414,7 @@ class Items extends AdminController
                     if ($cid) {
                         $child = Entry::oneOrFail($cid);
 
-                        if ($child && $child->title != '') {
+                        if ($child->title != '') {
                             // Link 'em up!
                             $this->attachChild($cid, $pid);
                         } else {
@@ -534,7 +534,7 @@ class Items extends AdminController
         }
 
         // Make sure we have children IDs
-        if (!$ids || count($ids) < 1) {
+        if (!$ids) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
@@ -1724,7 +1724,7 @@ class Items extends AdminController
             $profile = Member::oneByUsername((string) $id);
         }
 
-        if (!is_object($profile) || !$profile->get('id')) {
+        if (!$profile->get('id')) {
             $profile = User::all()
                 ->whereEquals('name', $id)
                 ->row();
@@ -1787,7 +1787,7 @@ class Items extends AdminController
             $profile = Member::oneByUsername((string) $id);
         }
 
-        if (!is_object($profile) || !$profile->get('id')) {
+        if (!$profile->get('id')) {
             $profile = User::all()
                 ->whereEquals('name', $id)
                 ->row();
@@ -1847,7 +1847,6 @@ class Items extends AdminController
             foreach ($audits as $key => $tester) {
                 $test = $key;
             }
-            $status = $status ? $status : 'failed';
         }
 
         $this->view

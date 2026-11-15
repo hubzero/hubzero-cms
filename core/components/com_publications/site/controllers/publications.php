@@ -1449,7 +1449,7 @@ class Publications extends SiteController
         ];
 
         $content = Event::trigger('projects.onProject', $plugin_params);
-        $this->view->set('content', (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '');
+        $this->view->set('content', $content[0]['html'] ?? '');
 
         if (isset($content[0]['msg']) && !empty($content[0]['msg'])) {
             $this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);

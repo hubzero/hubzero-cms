@@ -498,13 +498,8 @@ class Registration
             $score = $this->scorePassword($registration['password'], $registration['login']);
             if ($score < self::PASS_SCORE_MEDIOCRE) {
                 $this->invalid['password'] = 'Password strength is too weak.';
-            } elseif ($score >= self::PASS_SCORE_MEDIOCRE && $score < self::PASS_SCORE_GOOD) {
-                // Mediocre pass
-            } elseif ($score >= self::PASS_SCORE_GOOD && $score < self::PASS_SCORE_STRONG) {
-                // Good pass
-            } elseif ($score >= self::PASS_SCORE_STRONG) {
-                // Strong pass
             }
+            // Mediocre, good and strong passwords all pass
 
             $rules = \Hubzero\Password\Rule::all()
                 ->whereEquals('enabled', 1)

@@ -124,7 +124,7 @@ class Notes extends Plugin
         $scope = 'projects' . DS . $model->get('alias') . DS . 'notes';
 
         // Get our model
-        $note = new \Components\Projects\Models\Note($scope, $groupname, $model->get('id'));
+        $note = new \Components\Projects\Models\Note($scope, $model->get('id'));
 
         $counts['notes'] = $note->getNoteCount();
 
@@ -202,7 +202,6 @@ class Notes extends Plugin
             // Get our model
             $this->note = new \Components\Projects\Models\Note(
                 $this->masterScope,
-                $this->group,
                 $this->model->get('id'),
             );
 
@@ -723,7 +722,7 @@ class Notes extends Plugin
         $scope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
         // Get our model
-        $this->note = new \Components\Projects\Models\Note($scope, $groupname, $projectid);
+        $this->note = new \Components\Projects\Models\Note($scope, $projectid);
 
         // Fix pathway (com_wiki screws it up)
         $this->fixupPathway();
@@ -783,7 +782,6 @@ class Notes extends Plugin
         // Get our model
         $note = new \Components\Projects\Models\Note(
             $masterScope,
-            $group,
             $model->get('id'),
         );
         $view->set('notes', $note->getNotes());

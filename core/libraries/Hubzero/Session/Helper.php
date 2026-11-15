@@ -38,7 +38,7 @@ class Helper
      * Get Session by id
      *
      * @param   integer  $id  Session ID
-     * @return  object
+     * @return  object|null  Null when there is no such session
      */
     public static function getSession($id)
     {

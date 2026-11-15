@@ -220,7 +220,7 @@ class Coupon
             throw new \Exception(Lang::txt('Bad coupon action.'));
         }
 
-        if ($action == 'discount' && !is_numeric($actionValue)) {
+        if (!is_numeric($actionValue)) {
             $lastChar = substr($actionValue, strlen($actionValue) - 1);
             $val = substr($actionValue, 0, strlen($actionValue) - 1);
 

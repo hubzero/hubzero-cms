@@ -453,78 +453,76 @@ class Tickets extends AdminController
             // Get any set emails that should be notified of ticket submission
             $defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
 
-            if ($defs) {
-                // Get some email settings
-                $msg = new \Hubzero\Mail\Message();
-                $msg->setSubject(
-                    Config::get('sitename')
-                        . ' '
-                        . Lang::txt('COM_SUPPORT')
-                        . ', '
-                        . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')),
-                );
-                $msg->addFrom(
-                    Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
-                );
+            // Get some email settings
+            $msg = new \Hubzero\Mail\Message();
+            $msg->setSubject(
+                Config::get('sitename')
+                    . ' '
+                    . Lang::txt('COM_SUPPORT')
+                    . ', '
+                    . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')),
+            );
+            $msg->addFrom(
+                Config::get('mailfrom'),
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
+            );
 
-                // Plain text email
-                $eview = new \Hubzero\Mail\View([
-                    'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
-                    'name'      => 'emails',
-                    'layout'    => 'ticket_plain',
-                ]);
-                $eview->set('option', $this->option);
-                $eview->set('controller', $this->controller);
-                $eview->set('ticket', $ticket);
-                $eview->set('config', $this->config);
-                $eview->set('delimiter', '');
+            // Plain text email
+            $eview = new \Hubzero\Mail\View([
+                'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
+                'name'      => 'emails',
+                'layout'    => 'ticket_plain',
+            ]);
+            $eview->set('option', $this->option);
+            $eview->set('controller', $this->controller);
+            $eview->set('ticket', $ticket);
+            $eview->set('config', $this->config);
+            $eview->set('delimiter', '');
 
-                $plain = $eview->loadTemplate(false);
-                $plain = str_replace("\n", "\r\n", $plain);
+            $plain = $eview->loadTemplate(false);
+            $plain = str_replace("\n", "\r\n", $plain);
 
-                $msg->addPart($plain, 'text/plain');
+            $msg->addPart($plain, 'text/plain');
 
-                // HTML email
-                $eview->setLayout('ticket_html');
+            // HTML email
+            $eview->setLayout('ticket_html');
 
-                $html = $eview->loadTemplate();
-                $html = str_replace("\n", "\r\n", $html);
+            $html = $eview->loadTemplate();
+            $html = str_replace("\n", "\r\n", $html);
 
-                if (!$this->config->get('email_terse')) {
-                    foreach ($ticket->attachments as $attachment) {
-                        if ($attachment->size() < 2097152) {
-                            if ($attachment->isImage()) {
-                                $file = basename($attachment->path());
-                                $pattern = '/<a class="img" data\-filename="'
-                                    . str_replace('.', '\.', $file)
-                                    . '" href="(.*?)"\>(.*?)<\/a>/i';
-                                $replacement = '<img src="'
-                                    . $msg->getEmbed($attachment->path()) . '" alt="" />';
-                                $html = preg_replace($pattern, $replacement, $html);
-                            } else {
-                                $msg->addAttachment($attachment->path());
-                            }
+            if (!$this->config->get('email_terse')) {
+                foreach ($ticket->attachments as $attachment) {
+                    if ($attachment->size() < 2097152) {
+                        if ($attachment->isImage()) {
+                            $file = basename($attachment->path());
+                            $pattern = '/<a class="img" data\-filename="'
+                                . str_replace('.', '\.', $file)
+                                . '" href="(.*?)"\>(.*?)<\/a>/i';
+                            $replacement = '<img src="'
+                                . $msg->getEmbed($attachment->path()) . '" alt="" />';
+                            $html = preg_replace($pattern, $replacement, $html);
+                        } else {
+                            $msg->addAttachment($attachment->path());
                         }
                     }
                 }
+            }
 
-                $msg->addPart($html, 'text/html');
+            $msg->addPart($html, 'text/html');
 
-                // Loop through the addresses
-                foreach ($defs as $def) {
-                    $def = trim($def);
+            // Loop through the addresses
+            foreach ($defs as $def) {
+                $def = trim($def);
 
-                    // Check if the address should come from site config
-                    if ($def == '{config.mailfrom}') {
-                        $def = Config::get('mailfrom');
-                    }
-                    // Check for a valid address
-                    if (Validate::email($def)) {
-                        // Send e-mail
-                        $msg->setTo([$def]);
-                        $msg->send();
-                    }
+                // Check if the address should come from site config
+                if ($def == '{config.mailfrom}') {
+                    $def = Config::get('mailfrom');
+                }
+                // Check for a valid address
+                if (Validate::email($def)) {
+                    // Send e-mail
+                    $msg->setTo([$def]);
+                    $msg->send();
                 }
             }
         }

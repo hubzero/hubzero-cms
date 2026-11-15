@@ -627,7 +627,7 @@ class Members extends AdminController
         // Was a user secret reset requested?
         $newSecret = trim(Request::getVar('resetSecret', '', 'post'));
         // set new secret if indicated
-        if (null !== $newSecret && $newSecret == 1) {
+        if ($newSecret == 1) {
             $user->set('secret', Member::generateSecret());
             $user->save();
         }
@@ -1818,7 +1818,7 @@ class Members extends AdminController
         // Iterate through the rules and add the appropriate classes (passed/error)
         if (count($pw_rules) > 0) {
             foreach ($pw_rules as $rule) {
-                if (!empty($msg) && is_array($msg)) {
+                if (!empty($msg)) {
                     $err = in_array($rule, $msg);
                 } else {
                     $err = '';
@@ -1827,7 +1827,7 @@ class Members extends AdminController
                 $html .= "<li $mclass>" . $rule . '</li>';
             }
 
-            if (!empty($msg) && is_array($msg)) {
+            if (!empty($msg)) {
                 foreach ($msg as $message) {
                     if (!in_array($message, $pw_rules)) {
                         $html .= '<li class="error">' . $message . '</li>';

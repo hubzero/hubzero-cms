@@ -11,7 +11,6 @@ namespace Components\Projects\Helpers;
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Manager;
 use Hubzero\Facades\Component;
-use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 
 /**
@@ -20,13 +19,6 @@ use Hubzero\Facades\Lang;
 class Nogit extends Obj
 {
     protected $adapter;
-
-    /**
-     * User ID
-     *
-     * @var integer|null
-     */
-    private $uid = null;
 
     /**
      * Full path to Git repo
@@ -53,7 +45,6 @@ class Nogit extends Obj
         $this->adapter = Manager::adapter('local', $params);
 
         // Set acting user
-        $this->uid = User::get('id');
     }
 
     /**

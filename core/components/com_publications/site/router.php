@@ -88,7 +88,7 @@ class Router extends Base
         if (empty($segments[0])) {
             return $vars;
         }
-        if (!empty($segments[0]) && $segments[0] == 'curation') {
+        if ($segments[0] == 'curation') {
             $vars['controller'] = 'curation';
 
             if (!empty($segments[1]) && is_numeric($segments[1])) {

@@ -262,7 +262,7 @@ class Log extends Table
             $this->month                  = $month;
         }
         if ($category == 'unique') {
-            $field .= $category ? '_' . $category : '';
+            $field .= '_' . $category;
         } elseif (!$category || $category == 'filtered') {
             // Also save unfiltered
             $uField = $field . '_unfiltered';

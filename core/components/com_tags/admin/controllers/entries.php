@@ -330,7 +330,7 @@ class Entries extends AdminController
         // Make sure we have some IDs to work with
         if (
             $step == 1
-            && (!$ids || count($ids) < 1)
+            && !$ids
         ) {
             $this->cancelTask();
 
@@ -453,7 +453,7 @@ class Entries extends AdminController
         // Make sure we have some IDs to work with
         if (
             $step == 1
-            && (!$ids || count($ids) < 1)
+            && !$ids
         ) {
             $this->cancelTask();
 

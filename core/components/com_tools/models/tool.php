@@ -363,18 +363,13 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param   string|null   $toolname
+     * @param   string|int|mixed|null   $toolname
      * @return  boolean
      */
     public function read($toolname = null)
     {
         if (is_null($toolname)) {
             $toolname = $this->toolname;
-
-            if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname)) {
-                $this->error(__FUNCTION__ . ": invalid tool version instance defined", E_USER_ERROR);
-                die();
-            }
         }
 
         if (!empty($toolname) && !is_string($toolname) && !is_numeric($toolname)) {
@@ -631,7 +626,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     string|null $property Parameter description (if any) ...
-     * @return   string|null Return description (if any) ...
+     * @return   mixed  A value, or a list of them
      */
     public function __get($property = null)
     {
@@ -1452,7 +1447,7 @@ class Tool
             }
         }
 
-        if (is_array($err) && count($err) > 0) {
+        if (count($err) > 0) {
             return false;
         }
 

@@ -165,9 +165,6 @@ class Migration20180820101435ComPublications extends Base
         $tarname = $bundleWithVersion . '.zip';
         $linkPath = $this->linkPath();
         $link = $linkPath . '/' . $tarname;
-        if ($link == false) {
-            return false;
-        }
         if (file_exists($link)) {
             unlink($link);
         }

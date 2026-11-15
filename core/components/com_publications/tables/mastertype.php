@@ -255,16 +255,8 @@ class MasterType extends Table
      */
     protected function buildQuery($filters = [])
     {
-        $query  = "FROM $this->tableName AS c";
-
-        $where = [];
-
-        if (count($where) > 0) {
-            $query .= " WHERE ";
-            $query .= implode(" AND ", $where);
-        }
-
-        return $query;
+        // No filters narrow the master types
+        return "FROM $this->tableName AS c";
     }
 
     /**

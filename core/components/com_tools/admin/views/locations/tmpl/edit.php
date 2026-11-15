@@ -386,20 +386,18 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                                     value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
                                 <?php
                                 //if ($countries = \Hubzero\Geocode\Geocode::countries())
-                                if ($countries) {
-                                    if (!$this->row->get('continent')) {
-                                        //$this->row->set('continent', 'NA');
+                                if (!$this->row->get('continent')) {
+                                    //$this->row->set('continent', 'NA');
+                                }
+                                foreach ($countries as $country) {
+                                    if ($country['continent'] != $this->row->get('continent')) {
+                                        continue;
                                     }
-                                    foreach ($countries as $country) {
-                                        if ($country['continent'] != $this->row->get('continent')) {
-                                            continue;
-                                        }
-                                        echo '<option value="' . $country['code'] . '"';
-                                        if (strtoupper($this->row->get('countrySHORT')) == $country['code']) {
-                                            echo ' selected="selected"';
-                                        }
-                                        echo '>' . $this->escape($country['name']) . '</option>' . "\n";
+                                    echo '<option value="' . $country['code'] . '"';
+                                    if (strtoupper($this->row->get('countrySHORT')) == $country['code']) {
+                                        echo ' selected="selected"';
                                     }
+                                    echo '>' . $this->escape($country['name']) . '</option>' . "\n";
                                 }
                                 ?>
                             </select>

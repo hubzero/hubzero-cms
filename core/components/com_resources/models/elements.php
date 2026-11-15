@@ -158,7 +158,6 @@ class Elements
 
         if (!strpos($path, '.')) {
             $hasValue = isset($this->data->$path)
-                && $this->data->$path !== null
                 && $this->data->$path !== '';
             return $hasValue ? $this->data->$path : $default;
         }
@@ -178,7 +177,7 @@ class Elements
                 break;
             }
         }
-        if ($found && $node !== null && $node !== '') {
+        if ($found && $node !== '') {
             $result = $node;
         }
 
@@ -739,11 +738,7 @@ class Elements
         $elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 
         if (!class_exists($elementClass)) {
-            if (isset($this->elementPath)) {
-                $dirs = $this->elementPath;
-            } else {
-                $dirs = [];
-            }
+            $dirs = $this->elementPath;
 
             $source = str_replace('_', DS, $type) . '.php';
             $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*'

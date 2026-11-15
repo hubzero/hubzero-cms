@@ -290,7 +290,7 @@ class Tags extends Cloud
                     . $this->db->quote($tag)
                     . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } elseif ($tag2 && !$tag) {
+            } elseif (!$tag) {
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN ("
                     . $this->db->quote($tag2)
                     . "))";
@@ -351,7 +351,7 @@ class Tags extends Cloud
 						AND ta.objectid=" . $id;
         }
 
-        if (!$id && $alias) {
+        if (!$id) {
             $query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t, `#__resources` AS r
 						WHERE ta.tagid=t.id

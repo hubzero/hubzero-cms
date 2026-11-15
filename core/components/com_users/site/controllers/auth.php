@@ -367,6 +367,8 @@ class Auth extends SiteController
     public function loginTask()
     {
         // Populate the data array:
+        // An authentication plugin's login() may fill these in
+        /** @var array<string, mixed> $options */
         $options = [];
 
         $data = [

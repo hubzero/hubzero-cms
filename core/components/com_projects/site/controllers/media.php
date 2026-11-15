@@ -82,7 +82,7 @@ class Media extends Base
         $pathinfo = pathinfo($file);
         $filename = $pathinfo['filename'];
         $ext      = $pathinfo['extension'] ?? '';
-        if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
+        if (!in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
             echo json_encode(
                 ['error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')],
@@ -330,17 +330,16 @@ class Media extends Base
                 }
             }
 
-            // Instantiate a project, change some info and save
-            if (!file_exists($path . DS . $file)) {
-                $this->model->set('picture', '');
-                if (!$this->model->store()) {
-                    $this->setError($this->model->getError());
-                    if ($ajax) {
-                        echo json_encode(['error' => $this->model->getError()]);
-                        return;
-                    }
+            // Instantiate a project, change some info and save; the file
+            // was deleted above
+            $this->model->set('picture', '');
+            if (!$this->model->store()) {
+                $this->setError($this->model->getError());
+                if ($ajax) {
+                    echo json_encode(['error' => $this->model->getError()]);
                     return;
                 }
+                return;
             }
         }
 

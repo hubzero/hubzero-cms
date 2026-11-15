@@ -841,13 +841,6 @@ class Pages extends SiteController
             );
         }
 
-        if (!is_object($this->page)) {
-            App::redirect(
-                Route::url($this->page->link('base')),
-                Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
-                'error',
-            );
-        }
         // Make sure they're authorized to delete. access('delete') already
         // encodes ownership via the ACL.
         if (!$this->page->access('delete') && !$this->page->access('manage')) {

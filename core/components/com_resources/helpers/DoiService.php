@@ -781,7 +781,7 @@ class DoiService extends Obj
         }
 
         // Are we sending extended data?
-        if ($sendXml == true && $doi) {
+        if ($sendXml == true) {
             $xml = $this->buildXml($doi);
 
             // Load the xml document in the DOMDocument object

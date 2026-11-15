@@ -1079,7 +1079,7 @@ class Setup extends Base
 
         if (
             $this->config->get('custom_profile') == 'custom'
-            && ($this->section == 'info' || $this->section == 'info_custom')
+            && $this->section == 'info'
         ) {
             //$sections = array('info_custom', 'team', 'settings');
             $this->view->set('fields', Field::all()->order('ordering', 'ASC'));

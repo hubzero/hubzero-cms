@@ -276,10 +276,10 @@ class Editor extends Obj
         // Build editor plugin classname
         $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
-        if ($this->editor = new $name($this, (array) $plugin)) {
-            // Load plugin parameters
-            $this->initialise();
-        }
+        $this->editor = new $name($this, (array) $plugin);
+
+        // Load plugin parameters
+        $this->initialise();
     }
 
     /**

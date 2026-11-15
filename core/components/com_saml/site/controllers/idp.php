@@ -384,7 +384,8 @@ class Idp extends SiteController
         $status = \LightSaml\SamlConstants::STATUS_RESPONDER;
 
         $sessionIndex = (string) $message->getSessionIndex();
-        $nameId = $message->getNameID() ? $message->getNameID()->getValue() : '';
+        // getNameID() is declared to return one, so a request always has it
+        $nameId = $message->getNameID()->getValue();
 
         if ($sessionIndex) {
             $samlSession = SamlSession::oneByIndex($sessionIndex);

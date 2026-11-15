@@ -222,26 +222,22 @@ class Router extends Base
             return $vars;
         }
 
-        if (is_numeric($userId)) {
-            // Get the package id from the packages table by alias.
-            $db = App::get('db');
-            $db->setQuery(
-                'SELECT ' . $db->quoteName('id')
-                . ' FROM ' . $db->quoteName('#__users')
-                . ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId,
-            );
-            $userId = $db->loadResult();
-        }
+        // Get the package id from the packages table by alias.
+        $db = App::get('db');
+        $db->setQuery(
+            'SELECT ' . $db->quoteName('id')
+            . ' FROM ' . $db->quoteName('#__users')
+            . ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId,
+        );
+        $userId = $db->loadResult();
 
         // Set the package id if present.
         if ($userId) {
             // Set the package id.
             $vars['user_id'] = (int) $userId;
 
-            // Set the view to package if not already set.
-            if (empty($vars['view'])) {
-                $vars['view'] = 'login';
-            }
+            // Set the view to package
+            $vars['view'] = 'login';
         } else {
             App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
         }

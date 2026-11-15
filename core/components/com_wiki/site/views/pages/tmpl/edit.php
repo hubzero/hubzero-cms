@@ -356,7 +356,7 @@ $allowCommentsChecked = function ($value) use ($view) {
                                     <div id="file-uploader-list"></div>
                                 </div>
                                 <div class="col span-half omega">
-                                    <?php if ($macros) { ?>
+                                    <?php if ($macros->get('id')) { ?>
                                         <p>
                                             <?= Lang::txt(
                                                 'COM_WIKI_IMAGE_MACRO_HINT',

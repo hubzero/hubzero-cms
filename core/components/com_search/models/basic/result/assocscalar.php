@@ -17,9 +17,9 @@ use Exception;
 class AssocScalar extends SearchResult
 {
     /**
-     * Description for 'tag_weight_modifier'
+     * Tag weight modifier, once worked out
      *
-     * @var number
+     * @var int|float|null
      */
     private static $tag_weight_modifier;
 

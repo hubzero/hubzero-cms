@@ -327,12 +327,12 @@ class Doi extends Obj
 
         // Map related identifier
         $prevPub = $pub->prevPublication();
-        if ($prevPub && $prevPub->doi) {
+        if ($prevPub->doi) {
             $this->set('doiOfPrevPub', $prevPub->doi);
         }
 
         $nextPub = $pub->nextPublication();
-        if ($nextPub && $nextPub->doi) {
+        if ($nextPub->doi) {
             $this->set('doiOfNextPub', $nextPub->doi);
         }
 
@@ -901,9 +901,7 @@ class Doi extends Obj
                     )
                     . '</size>';
             }
-            if ($this->get('size')) {
-                $xmlfile .= '	<size>' . $this->get('size') . '</size>';
-            }
+            $xmlfile .= '	<size>' . $this->get('size') . '</size>';
             $xmlfile .= '</sizes>';
         }
         // Subject
@@ -1320,7 +1318,7 @@ class Doi extends Obj
         }
 
         // Are we sending extended data?
-        if ($sendXml == true && $doi) {
+        if ($sendXml == true) {
             $xml = $this->buildXml($doi);
 
             // Load the xml document in the DOMDocument object

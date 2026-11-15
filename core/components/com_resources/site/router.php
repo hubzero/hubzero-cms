@@ -38,13 +38,11 @@ class Router extends Base
             'access',
         ];
         if (!empty($query['task']) && in_array($query['task'], $createTasks)) {
-            if (!empty($query['task'])) {
-                if ($query['task'] == 'start') {
-                    $query['task'] = 'draft';
-                }
-                $segments[] = $query['task'];
-                unset($query['task']);
+            if ($query['task'] == 'start') {
+                $query['task'] = 'draft';
             }
+            $segments[] = $query['task'];
+            unset($query['task']);
             if (!empty($query['id'])) {
                 $segments[] = $query['id'];
                 unset($query['id']);

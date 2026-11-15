@@ -498,7 +498,7 @@ class Profilesv1r0 extends ApiController
         // Iterate through the rules and add the appropriate classes (passed/error)
         if (count($pw_rules) > 0) {
             foreach ($pw_rules as $rule) {
-                if (!empty($msg) && is_array($msg)) {
+                if (!empty($msg)) {
                     $err = in_array($rule, $msg);
                 } else {
                     $err = '';
@@ -507,7 +507,7 @@ class Profilesv1r0 extends ApiController
                 $html .= "<li $mclass>" . $rule . '</li>';
             }
 
-            if (!empty($msg) && is_array($msg)) {
+            if (!empty($msg)) {
                 foreach ($msg as $message) {
                     if (!in_array($message, $pw_rules)) {
                         $html .= '<li class="error">' . $message . '</li>';

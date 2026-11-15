@@ -66,9 +66,9 @@ if ($this->sections) {
             if ($this->no_html) {
                 echo $section;
             } else {
-                $cls  = ($c) ? $c . ' ' : '';
+                $cls  = $c . ' ';
                 if (key($this->cats[$k]) != $this->task) {
-                    $cls .= ($h) ? $h . ' ' : '';
+                    $cls .= $h . ' ';
                 }
                 ?>
                 <section class="<?php echo $cls; ?>section" id="statistics">

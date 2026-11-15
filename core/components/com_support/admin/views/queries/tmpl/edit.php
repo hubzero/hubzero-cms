@@ -225,7 +225,7 @@ if (!$tmpl) :
         <input
             type="hidden"
             name="no_html"
-            value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>"
+            value="<?php echo Request::getInt('no_html', 0); ?>"
         />
         <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
         <input type="hidden" name="task" value="save" />
@@ -398,7 +398,7 @@ if (!$tmpl) :
         <input
             type="hidden"
             name="no_html"
-            value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>"
+            value="1"
         />
         <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
         <input type="hidden" name="task" value="save" />

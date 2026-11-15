@@ -229,7 +229,7 @@ class Imports extends AdminController
         }
 
         // if we have a file
-        if (is_array($file) && !empty($file['size']) && isset($file['error']) && $file['error'] == 0) {
+        if (!empty($file['size']) && isset($file['error']) && $file['error'] == 0) {
             $ext = strtolower(Filesystem::extension($file['name']));
 
             if (!in_array($ext, ['csv', 'xml'])) {

@@ -252,43 +252,41 @@ class Content extends Base
         $status = new \Components\Publications\Models\Status();
 
         // Check against manifested requirements
-        if ($this->manifest) {
-            // Get attachment elements from manifest
-            $mAttach = [];
-            foreach ($this->manifest->elements as $id => $element) {
-                if ($element->type == 'attachment') {
-                    $mAttach[$id] = $element->params;
-                }
+        // Get attachment elements from manifest
+        $mAttach = [];
+        foreach ($this->manifest->elements as $id => $element) {
+            if ($element->type == 'attachment') {
+                $mAttach[$id] = $element->params;
             }
-
-            // Return element status
-            if ($elementId && isset($mAttach[$elementId])) {
-                return self::getElementStatus($elementId, $mAttach[$elementId], $pub->_attachments);
-            }
-
-            // Check if requirements are satisfied for each attachment element
-            $i          = 0;
-            $success    = 0;
-            $incomplete = 0;
-            foreach ($mAttach as $elementId => $elementparams) {
-                if (!isset($status->elements)) {
-                    $status->elements = new stdClass();
-                }
-                $status->elements->$elementId = self::getElementStatus($elementId, $elementparams, $pub->_attachments);
-
-                if ($status->elements->$elementId->status >= 1) {
-                    $success++;
-                }
-                if ($status->elements->$elementId->status == 2) {
-                    $incomplete++;
-                }
-
-                $i++;
-            }
-
-            $success = $success == $i ? 1 : 0;
-            $status->status = $success == 1 && $incomplete ? 2 : $success;
         }
+
+        // Return element status
+        if ($elementId && isset($mAttach[$elementId])) {
+            return self::getElementStatus($elementId, $mAttach[$elementId], $pub->_attachments);
+        }
+
+        // Check if requirements are satisfied for each attachment element
+        $i          = 0;
+        $success    = 0;
+        $incomplete = 0;
+        foreach ($mAttach as $elementId => $elementparams) {
+            if (!isset($status->elements)) {
+                $status->elements = new stdClass();
+            }
+            $status->elements->$elementId = self::getElementStatus($elementId, $elementparams, $pub->_attachments);
+
+            if ($status->elements->$elementId->status >= 1) {
+                $success++;
+            }
+            if ($status->elements->$elementId->status == 2) {
+                $incomplete++;
+            }
+
+            $i++;
+        }
+
+        $success = $success == $i ? 1 : 0;
+        $status->status = $success == 1 && $incomplete ? 2 : $success;
 
         return $status;
     }

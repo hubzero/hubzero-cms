@@ -99,7 +99,7 @@ defined('_HZEXEC_') or die();
         <div class="input-wrap">
             <label title="shadowLastChange"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_LAST_CHANGE'); ?>:</label>
             <?php
-            if (is_object($this->password) && $this->password->get('shadowLastChange')) {
+            if ($this->password->get('shadowLastChange')) {
                 $shadowLastChange = $this->password->get('shadowLastChange') * 86400;
                 // UTC days, like "Expires on" and pam_unix
                 echo gmdate("Y-m-d", $shadowLastChange);

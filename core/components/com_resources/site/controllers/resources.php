@@ -46,7 +46,7 @@ use Hubzero\Facades\Filesystem;
  * @property  string                              $_title         The page title, set by buildTitle()
  * @property  string                              $_task_title    The pathway title of the task, set by a task
  * @property  string                              $type           The type of resource browsed by tag, browsetagsTask()
- * @property  \Components\Resources\Models\Entry  $activechild    The child being played, set by playTask()
+ * @property  \Components\Resources\Models\Entry|null  $activechild    The child being played, set by playTask()
  * @property  \Components\Resources\Models\Entry  $model          The resource being shown, set by viewTask()
  * @property  array                               $allowedgroups  The groups that may see it, checkGroupAccess()
  */
@@ -895,7 +895,7 @@ class Resources extends SiteController
             $slide_video = [];
 
             //build array for checking slide video formats
-            if ($slides && is_array($slides)) {
+            if ($slides) {
                 foreach ($slides as $s) {
                     $parts = explode('.', $s);
                     $ext = array_pop($parts);
@@ -992,8 +992,7 @@ class Resources extends SiteController
 
         //do we want to redirect user with time added to url
         if (
-            is_object($tracking)
-            && !$hasTime
+            !$hasTime
             && $tracking->current_position > 0
             && $tracking->current_position != $tracking->object_duration
         ) {
@@ -1133,8 +1132,7 @@ class Resources extends SiteController
 
         // Do we want to redirect user with time added to url
         if (
-            is_object($tracking)
-            && !$hasTime
+            !$hasTime
             && $tracking->current_position > 0
             && $tracking->current_position != $tracking->object_duration
         ) {
@@ -1871,9 +1869,6 @@ class Resources extends SiteController
 
                 $queried_logical_types = @explode(' ', $feedtype);
 
-                if (is_null($queried_logical_types) || !is_array($queried_logical_types)) {
-                    App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
-                }
 
                 $relevant_logical_types_by_id = [];
                 foreach ($queried_logical_types as $queried) {

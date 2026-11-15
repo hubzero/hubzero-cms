@@ -27,7 +27,7 @@ $group_prefix = $this->config->get('group_prefix', 'pr-');
 $group = $group_prefix . $this->model->get('alias');
 
 // Get our model
-$note = new \Components\Projects\Models\Note($masterscope, $group, $this->model->get('id'));
+$note = new \Components\Projects\Models\Note($masterscope, $this->model->get('id'));
 
 // Get notes to choose from
 $items = $note->getNotes();

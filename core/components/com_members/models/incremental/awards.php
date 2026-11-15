@@ -17,9 +17,9 @@ use Hubzero\Facades\App;
 class Awards
 {
     /**
-     * Database connection
+     * Database connection, once looked up
      *
-     * @var  object
+     * @var  object|null
      */
     private static $dbh;
 

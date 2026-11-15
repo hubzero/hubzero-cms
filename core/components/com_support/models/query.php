@@ -453,7 +453,7 @@ class Query extends Relational
                     . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
                     . '))';
                 $having = " GROUP BY f.id ";
-            } elseif (count($tags) && count($nottags)) {
+            } elseif (count($nottags)) {
                 $e[] = '(t.'
                     . $db->quoteName('tag')
                     . ' '

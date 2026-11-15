@@ -1255,7 +1255,7 @@ class Projects extends Base
                 // Add to project activity feed
                 if ($notify) {
                     $activity = '';
-                    if ($apvSpon && $reviewer == 'sponsored') {
+                    if ($apvSpon) {
                         $activity = $apvSpon == 2
                                 ? Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS_ACTIVITY')
                                 : Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS_ACTIVITY');

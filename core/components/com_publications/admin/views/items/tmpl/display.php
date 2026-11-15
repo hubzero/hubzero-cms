@@ -89,7 +89,7 @@ $statusSelected = function ($value) use ($view) {
                         value="3"<?= $statusSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
                     <option
                         value="5"<?= $statusSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
-                    <option value="0"<?= $statusSelected(0 && $this->filters['status'] != 'all') ?>>
+                    <option value="0"<?= $statusSelected(0) ?>>
                         <?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?>
                     </option>
                     <option value="10"<?= $statusSelected(10) ?>>

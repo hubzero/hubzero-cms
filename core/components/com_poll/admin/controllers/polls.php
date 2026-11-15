@@ -392,10 +392,8 @@ class Polls extends AdminController
     public function cancelTask()
     {
         if ($id = Request::getInt('id', 0)) {
-            if (is_int($id)) {
-                $row = Poll::oneOrFail($id);
-                $row->checkin();
-            }
+            $row = Poll::oneOrFail($id);
+            $row->checkin();
         }
 
         App::redirect(

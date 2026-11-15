@@ -65,7 +65,7 @@ class Mediav1r0 extends ApiController
         }
 
         // Are we creating a new tracking record?
-        if (!is_object($trackingInformation) || $trackingInformation->isNew()) {
+        if ($trackingInformation->isNew()) {
             $trackingInformation = Mediatracking::blank();
             $trackingInformation->set([
                 'user_id'                     => User::get('id'),

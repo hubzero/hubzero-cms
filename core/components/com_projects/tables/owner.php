@@ -994,7 +994,7 @@ class Owner extends Table
      *
      * @param   integer|null  $projectid
      * @param   string|int $actor             user id of person adding new member
-     * @param   integer  $userid
+     * @param   integer|mixed  $userid
      * @param   integer  $groupid
      * @param   integer  $role
      * @param   integer  $status

@@ -89,12 +89,10 @@ class Results extends SiteController
                 'index.php?option=' . $this->option,
             );
         }
-        if ($this->task) {
-            Pathway::append(
-                Lang::txt('PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task)),
-                'index.php?option=' . $this->option . '&task=' . $this->task,
-            );
-        }
+        Pathway::append(
+            Lang::txt('PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task)),
+            'index.php?option=' . $this->option . '&task=' . $this->task,
+        );
 
         // Get the sections
         $this->view->set('sections', Event::trigger('usage.onUsageDisplay', [
@@ -108,10 +106,8 @@ class Results extends SiteController
 
         // Build the page title
         $title = Lang::txt(strtoupper($this->option));
-        if ($this->task) {
-            $langKey = 'PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task);
-            $title .= ': ' . Lang::txt($langKey);
-        }
+        $langKey = 'PLG_' . strtoupper($this->name) . '_' . strtoupper($this->task);
+        $title .= ': ' . Lang::txt($langKey);
 
         // Set the page title
         Document::setTitle($title);

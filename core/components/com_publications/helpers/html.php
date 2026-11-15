@@ -455,9 +455,7 @@ class Html
         }
 
         // Output
-        if ($text) {
-            return '<p class="' . $class . '">' . $text . '</p>';
-        }
+        return '<p class="' . $class . '">' . $text . '</p>';
     }
 
     /**
@@ -1185,8 +1183,8 @@ class Html
         $body['multipart'] = $eview->loadTemplate();
         $body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
-        $body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
-        $body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : null;
+        $body_plain = $body['plaintext'];
+        $body_html  = $body['multipart'];
 
         // Send HUB message
         if ($hubMessage) {
@@ -1346,7 +1344,7 @@ class Html
      * Get the MIME types for primary file and support file
      *
      * @param   int  $role
-     * @param   array  $attachments
+     * @param   array|false  $attachments  False when there are none
      * @param   array  $mimeTypes
      *
      * @return  null|false or false

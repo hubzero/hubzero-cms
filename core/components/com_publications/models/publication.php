@@ -1310,7 +1310,7 @@ class Publication extends Obj
         }
         if ($property) {
             $property = ($property == 'uidNumber' ? 'id' : $property);
-            return $this->_modifier ? $this->_modifier->get($property) : null;
+            return $this->_modifier->get($property);
         }
         return $this->_modifier;
     }
@@ -1335,7 +1335,7 @@ class Publication extends Obj
         }
         if ($property) {
             $property = ($property == 'uidNumber' ? 'id' : $property);
-            return $this->_curator ? $this->_curator->get($property) : null;
+            return $this->_curator->get($property);
         }
         return $this->_curator;
     }
@@ -2132,7 +2132,7 @@ class Publication extends Obj
             return false;
         }
 
-        if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group)) {
+        if (!isset($this->_groupOwner)) {
             $this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('group_owner'));
         }
 
@@ -2306,7 +2306,7 @@ class Publication extends Obj
         if ($row === null) {
             $row = $this->version;
         }
-        $status = $row && isset($row->state) ? $row->state : $this->get('state');
+        $status = isset($row->state) ? $row->state : $this->get('state');
 
         switch ($status) {
             case self::STATE_UNPUBLISHED:

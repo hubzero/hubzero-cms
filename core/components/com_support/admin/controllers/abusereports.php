@@ -303,7 +303,7 @@ class Abusereports extends AdminController
         }
 
         // Notify item owner
-        if ($email && $reported) {
+        if ($reported) {
             Lang::load($this->option . '.abuse', dirname(dirname(__DIR__)) . '/site');
 
             $user = User::getInstance($reported->author);
@@ -366,7 +366,7 @@ class Abusereports extends AdminController
         $banking = Component::params('com_members')->get('bankAccounts');
 
         // Give some points to whoever reported abuse
-        if ($banking && $gratitude) {
+        if ($banking) {
             $BC = \Hubzero\Bank\Config::values();
             $ar = $BC->get('abusereport');  // How many points?
             if ($ar) {

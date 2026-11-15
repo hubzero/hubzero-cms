@@ -606,7 +606,7 @@ class Authors extends Base
         }
 
         // (Re)send email invitation
-        if ($sendInvite && $email && $emailConfig) {
+        if ($sendInvite) {
             // Get project model
             $project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 

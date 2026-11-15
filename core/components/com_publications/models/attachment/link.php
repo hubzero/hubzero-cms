@@ -301,9 +301,6 @@ class Link extends Base
         $desc     = Request::getArray('desc', '', 'post');
 
         // Incoming selections
-        if (!is_array($toAttach)) {
-            $toAttach = [$toAttach];
-        }
 
         // Get configs
         $configs = $this->getConfigs($element, $elementId, $pub, $blockParams);

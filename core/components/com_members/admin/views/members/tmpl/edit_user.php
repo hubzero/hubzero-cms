@@ -386,40 +386,36 @@ $approvedSelected = function ($value) use ($view) {
                             $confirmed .= '</fieldset>';
                         }
                     } elseif ($this->profile->get('activation') < 0) {
-                        if ($this->profile->get('email')) {
-                            $confirmed  = '<span class="unconfirmed">'
-                                . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION')
-                                . '<br />[code: '
-                                . -$this->profile->get('activation')
-                                . ']</span>';
-                            $confirmed .= '<label for="activation"><input type="checkbox" name="activation" '
-                                . 'id="activation" value="1" '
-                                . '/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
-                            $return = base64_encode(Route::url(
-                                'index.php?option=' . $this->option
-                                    . '&controller=' . $this->controller
-                                    . '&id=' . $this->profile->get('id')
-                                    . '&task=edit&',
-                                false,
-                                true,
-                            ));
-
-                            $confirmLink = Route::url(
-                                'index.php?option=' . $this->option
+                        $confirmed  = '<span class="unconfirmed">'
+                            . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION')
+                            . '<br />[code: '
+                            . -$this->profile->get('activation')
+                            . ']</span>';
+                        $confirmed .= '<label for="activation"><input type="checkbox" name="activation" '
+                            . 'id="activation" value="1" '
+                            . '/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+                        $return = base64_encode(Route::url(
+                            'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
                                 . '&id=' . $this->profile->get('id')
-                                . '&task=resendConfirm&'
-                                . Session::getFormToken() . '=1'
-                                . '&return=' . $return,
-                            );
-                            $confirmed .= '<div class="input-wrap"><a href="'
-                                . $confirmLink
-                                . '" class="button">'
-                                . Lang::txt('COM_MEMBERS_RESEND_CONFIRM')
-                                . '</a></div>';
-                        } else {
-                            $confirmed  = Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE');
-                        }
+                                . '&task=edit&',
+                            false,
+                            true,
+                        ));
+
+                        $confirmLink = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&id=' . $this->profile->get('id')
+                            . '&task=resendConfirm&'
+                            . Session::getFormToken() . '=1'
+                            . '&return=' . $return,
+                        );
+                        $confirmed .= '<div class="input-wrap"><a href="'
+                            . $confirmLink
+                            . '" class="button">'
+                            . Lang::txt('COM_MEMBERS_RESEND_CONFIRM')
+                            . '</a></div>';
                     } else {
                         $confirmed = '['
                             . Lang::txt('COM_MEMBERS_FIELD_EMAIL_UNKNOWN_STATUS')

@@ -51,7 +51,7 @@ class Stats extends AdminController
         // Users
         $this->view->set('users', null);
 
-        if ($filters['group'] || $filters['group'] == '_none_') {
+        if ($filters['group']) {
             $query = "SELECT a.username, a.name, a.id
 				FROM `#__users` AS a, `#__xgroups` AS g, `#__xgroups_members` AS gm
 				WHERE g.cn=" . $this->database->quote($filters['group'])

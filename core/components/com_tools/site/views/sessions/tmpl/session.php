@@ -96,7 +96,6 @@ if (!$this->app->sess) {
             ?>
             <h2 id="session-title" class="session-title item:name id:<?= $this->app->sess ?> <?= $editable ?>"
                 rel="<?= $this->app->sess ?>"><?= $this->escape($this->app->caption) ?></h2>
-            <?php if ($this->app->sess) { ?>
                 <ul class="app-toolbar" id="session-options">
                     <li class="timer-li">
                         <div id="session-timer" hidden
@@ -188,7 +187,6 @@ if (!$this->app->sess) {
                         </li>
                     <?php } ?>
                 </ul>
-            <?php } ?>
         </div><!-- #app-header -->
         <?php if (count($plugins) > 1) { ?>
             <div id="app-options">
@@ -367,7 +365,7 @@ if (!$this->app->sess) {
                 </div><!-- .grid -->
             </div><!-- #app-zone -->
         <?php } ?>
-        <?php if ($this->app->owns && $this->app->sess) : ?>
+        <?php if ($this->app->owns) : ?>
             <?php
             // Shared confirmation for the Keep (leave) and Terminate toolbar buttons.
             // Both open this chooser; the button pressed is the default (focused)

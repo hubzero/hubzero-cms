@@ -101,8 +101,8 @@ class Tags extends \Hubzero\Base\Obj
      * 2) Adds a reference linking tag with object
      *
      * @param      integer|null $tagger_id Tagger ID
-     * @param      integer $object_id Object ID
-     * @param      string  $tag       Tag
+     * @param      integer|null $object_id Object ID
+     * @param      string|null  $tag       Tag
      * @param      integer $strength  Tag strength
      * @return     boolean True on success, false if errors
      */
@@ -517,7 +517,7 @@ class Tags extends \Hubzero\Base\Obj
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->tbl' "
                     . "AND (TA.tag IN ('" . $tag . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } elseif ($tag2 && !$tag) {
+            } elseif (!$tag) {
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->tbl' "
                     . "AND (TA.tag IN ('" . $tag2 . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
@@ -572,7 +572,7 @@ class Tags extends \Hubzero\Base\Obj
 						AND ta.tbl='publications'
 						AND ta.objectid=" . $id;
         }
-        if (!$id && $alias) {
+        if (!$id) {
             $query = "SELECT COUNT(*)
 						FROM $this->objTbl AS ta, $this->tagTbl AS t, #__publications AS r
 						WHERE ta.tagid=t.id

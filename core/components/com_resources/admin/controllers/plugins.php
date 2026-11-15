@@ -130,9 +130,7 @@ class Plugins extends AdminController
         }
 
         // Filter by folder.
-        if ($filters['folder']) {
-            $query->whereEquals($p . '.folder', $filters['folder']);
-        }
+        $query->whereEquals($p . '.folder', $filters['folder']);
 
         // Filter by search in id
         if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0) {

@@ -499,17 +499,6 @@ class Entriesv1r1 extends ApiController
                     ];
                 }
 
-                // Make sure we have expected data
-                if (
-                    !isset($receiver['scope'])
-                    || !isset($receiver['scope_id'])
-                ) {
-                    $receiver = array_values($receiver);
-
-                    $receiver['scope']    = $receiver[0];
-                    $receiver['scope_id'] = $receiver[1];
-                }
-
                 $key = $receiver['scope'] . '.' . $receiver['scope_id'];
 
                 // No duplicate sendings
@@ -761,17 +750,6 @@ class Entriesv1r1 extends ApiController
                         'scope'    => 'user',
                         'scope_id' => $receiver,
                     ];
-                }
-
-                // Make sure we have expected data
-                if (
-                    !isset($receiver['scope'])
-                    || !isset($receiver['scope_id'])
-                ) {
-                    $receiver = array_values($receiver);
-
-                    $receiver['scope']    = $receiver[0];
-                    $receiver['scope_id'] = $receiver[1];
                 }
 
                 $key = $receiver['scope'] . '.' . $receiver['scope_id'];

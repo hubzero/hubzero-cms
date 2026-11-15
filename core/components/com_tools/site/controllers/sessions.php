@@ -28,7 +28,7 @@ use Hubzero\Facades\Plugin;
  * Tools controller class for simulation sessions
  *
  * @property  string     $_title     The page title, set by buildTitle()
- * @property  object     $app        The tool asked for, set by a task
+ * @property  object|null     $app        The tool asked for, set by a task
  * @property  float|int  $percent    The share of the quota used, getDiskUsage()
  * @property  float|int  $total      The quota in GB, set by getDiskUsage()
  * @property  int        $remaining  The space remaining, set by getDiskUsage()
@@ -625,7 +625,7 @@ class Sessions extends SiteController
 
         $preferences = new \Components\Tools\Tables\Preferences($this->database);
         $preferences->loadByUser(User::get('id'));
-        if (!$preferences || !$preferences->id) {
+        if (!$preferences->id) {
             $scls = new \Components\Tools\Tables\SessionClass($this->database);
             $default = $scls->find('one', ['alias' => 'default']);
             $preferences->user_id  = User::get('id');
@@ -695,11 +695,10 @@ class Sessions extends SiteController
             );
             $middleware->set('allowed', $this->database->loadColumn());
 
-            if ($zone = $middleware->zoning($app->ip, $middleware->get('allowed'))) {
-                if ($zone->exists()) {
-                    $toolparams .= ' zone=' . escapeshellarg($zone->get('zone'));
-                    $app->zone_id = $zone->get('id');
-                }
+            $zone = $middleware->zoning($app->ip, $middleware->get('allowed'));
+            if ($zone->exists()) {
+                $toolparams .= ' zone=' . escapeshellarg($zone->get('zone'));
+                $app->zone_id = $zone->get('id');
             }
         }
 
@@ -1480,14 +1479,12 @@ class Sessions extends SiteController
         $this->view->set('total', $this->total);
 
         // Get everyone sharing this session
-        if ($app->sess) {
-            // Get the middleware database
-            $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+        // Get the middleware database
+        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-            // Load the viewperm
-            $ms = new \Components\Tools\Tables\Viewperm($mwdb);
-            $this->view->set('shares', $ms->loadViewperm($app->sess));
-        }
+        // Load the viewperm
+        $ms = new \Components\Tools\Tables\Viewperm($mwdb);
+        $this->view->set('shares', $ms->loadViewperm($app->sess));
 
         // Set any error messages
         foreach ($this->getErrors() as $error) {

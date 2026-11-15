@@ -96,11 +96,6 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                 $members    = \Hubzero\User\Helper::getGroups($this->id, 'members');
                 $managers   = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
-                $applicants = (is_array($applicants)) ? $applicants : [];
-                $invitees   = (is_array($invitees)) ? $invitees : [];
-                $members    = (is_array($members)) ? $members : [];
-                $managers   = (is_array($managers)) ? $managers : [];
-
                 $groups = array_merge($applicants, $invitees);
                 $managerids = [];
                 foreach ($managers as $manager) {

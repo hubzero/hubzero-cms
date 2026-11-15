@@ -380,7 +380,7 @@ class Router extends Base
 
                 // Links
                 if (!empty($segments[2]) && $vars['active'] == 'links') {
-                    if (!empty($segments[2]) && is_numeric($segments[2])) {
+                    if (is_numeric($segments[2])) {
                         $vars['pid'] = $segments[2];
                     }
                     if (!empty($segments[3])) {
@@ -389,7 +389,7 @@ class Router extends Base
                 }
                 // Team
                 if (!empty($segments[2]) && $vars['active'] == 'team') {
-                    if (!empty($segments[2]) && is_numeric($segments[2])) {
+                    if (is_numeric($segments[2])) {
                         $vars['pid'] = $segments[2];
                         if (!empty($segments[3])) {
                             $vars['action'] = $segments[3];

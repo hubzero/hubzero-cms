@@ -205,15 +205,13 @@ class Conditions extends Obj
 
         $severities = Utilities::getSeverities($this->config->get('severities'));
         $items = 'text';
-        if (is_array($severities)) {
-            $items = [];
-            foreach ($severities as $severity) {
-                $sel = false;
-                if ($severity == 'normal') {
-                    $sel = true;
-                }
-                $items[] = $this->value($severity, Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . $severity), $sel);
+        $items = [];
+        foreach ($severities as $severity) {
+            $sel = false;
+            if ($severity == 'normal') {
+                $sel = true;
             }
+            $items[] = $this->value($severity, Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . $severity), $sel);
         }
         $conditions->severity = $this->expression([
             $this->operator('=', 'is', true),

@@ -476,8 +476,7 @@ class Tool extends Model
             // Verify name uniqueness
             if (
                 $this->table->checkUniqueName($name, $this->get('id'))
-                || ($reserved
-                && in_array($name, $reserved))
+                || in_array($name, $reserved)
                 || in_array($name, $tasks)
             ) {
                 $this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
@@ -527,7 +526,7 @@ class Tool extends Model
             $this->statusChanger = User::getInstance($this->get('status_changed_by'));
         }
         if ($property) {
-            return is_object($this->statusChanger) ? $this->statusChanger->get($property) : null;
+            return $this->statusChanger->get($property);
         }
         return $this->statusChanger;
     }

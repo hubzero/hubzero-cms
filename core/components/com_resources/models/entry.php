@@ -1394,7 +1394,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                         $tool->state == 1
                         && (
                             count($revisions) == 1
-                            || (count($revisions) > 1 && $revisions[1]->version == $tool->version)
+                            || $revisions[1]->version == $tool->version
                         )
                     ) {
                         $this->curtool = $tool;

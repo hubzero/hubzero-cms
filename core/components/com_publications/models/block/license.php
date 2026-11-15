@@ -197,16 +197,14 @@ class License extends Base
 
                 // Do we have template items to replace?
                 preg_match_all('/\[([^\]]*)\]/', $objL->text, $substitutes);
-                if (count($substitutes) > 1) {
-                    foreach ($substitutes[1] as $sub) {
-                        if (!isset($custom[$sub]) || !$custom[$sub]) {
-                            $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM'));
-                            return false;
-                        } else {
-                            $pattern = '/\[' . $sub . '\]/';
-                            $replacement = trim($custom[$sub]);
-                            $row->license_text = preg_replace($pattern, $replacement, $row->license_text);
-                        }
+                foreach ($substitutes[1] as $sub) {
+                    if (!isset($custom[$sub]) || !$custom[$sub]) {
+                        $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM'));
+                        return false;
+                    } else {
+                        $pattern = '/\[' . $sub . '\]/';
+                        $replacement = trim($custom[$sub]);
+                        $row->license_text = preg_replace($pattern, $replacement, $row->license_text);
                     }
                 }
             }

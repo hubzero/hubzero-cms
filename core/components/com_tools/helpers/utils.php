@@ -596,25 +596,22 @@ class Utils
             $retval = false;
         }
 
-        if (is_array($results)) {
-            // Maxwell may emit non-JSON lines before the JSON payload.
-            // Find the first line that decodes successfully instead of
-            // concatenating everything (which would produce invalid JSON).
-            $output = null;
-            foreach ($results as $line) {
-                $decoded = json_decode(trim($line));
-                if ($decoded !== null) {
-                    $output = $decoded;
-                    break;
-                }
+        // exec() gives its output as lines
+        // Maxwell may emit non-JSON lines before the JSON payload.
+        // Find the first line that decodes successfully instead of
+        // concatenating everything (which would produce invalid JSON).
+        $output = null;
+        foreach ($results as $line) {
+            $decoded = json_decode(trim($line));
+            if ($decoded !== null) {
+                $output = $decoded;
+                break;
             }
-            if ($output === null) {
-                // Fall back to concatenated output in case the JSON spans lines.
-                $results = trim(implode('', $results));
-                $output = json_decode($results);
-            }
-        } else {
-            $output = json_decode(trim($results));
+        }
+        if ($output === null) {
+            // Fall back to concatenated output in case the JSON spans lines.
+            $results = trim(implode('', $results));
+            $output = json_decode($results);
         }
 
         if ($execFailed) {

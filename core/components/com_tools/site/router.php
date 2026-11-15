@@ -234,7 +234,7 @@ class Router extends Base
                     $url = 'index.php?option=com_support&task=tickets&find=group:app-'
                         . $segments[0];
                     App::redirect(Route::url($url));
-                    break;
+                    // no break: redirect() does not return
 
                 case 'forge.png':
                     $vars['task'] = 'image';

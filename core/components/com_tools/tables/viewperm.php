@@ -56,11 +56,11 @@ class Viewperm extends Table
      */
     public function updateViewPerm()
     {
-        if (!isset($this->sessnum) || $this->sessnum === null || $this->sessnum == '') {
+        if (!isset($this->sessnum) || $this->sessnum == '') {
             return false;
         }
 
-        if (!isset($this->viewuser) || $this->viewuser === null || $this->viewuser == '') {
+        if (!isset($this->viewuser) || $this->viewuser == '') {
             return false;
         }
 

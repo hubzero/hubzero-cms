@@ -168,20 +168,16 @@ class ImageViewer extends Base
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
-        // Copy to master
-        if (is_file($path)) {
-            Filesystem::copy($path, $copyToMaster);
+        // Copy to master; the file was found above
+        Filesystem::copy($path, $copyToMaster);
 
-            // Create/update thumb
-            Filesystem::copy($path, $copyToThumb);
+        // Create/update thumb
+        Filesystem::copy($path, $copyToThumb);
 
-            $hi = new \Hubzero\Image\Processor($copyToThumb);
-            if (count($hi->getErrors()) == 0) {
-                $hi->resize(100, false, true, true);
-                $hi->save($copyToThumb);
-            }
-        } else {
-            return false;
+        $hi = new \Hubzero\Image\Processor($copyToThumb);
+        if (count($hi->getErrors()) == 0) {
+            $hi->resize(100, false, true, true);
+            $hi->save($copyToThumb);
         }
 
         // Get current default

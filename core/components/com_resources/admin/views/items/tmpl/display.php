@@ -514,9 +514,7 @@ $this->css();
                         <?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
                     <?php } else { ?>
                         <?php
-                        $hasModified = $row->modified
-                            && $row->modified != '0000-00-00 00:00:00';
-                        $dateVal = $hasModified ? $row->modified : $row->created;
+                        $dateVal = $row->modified;
                         $dateFmt = Date::of($dateVal)
                             ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                         ?>

@@ -874,7 +874,7 @@ class Tickets extends SiteController
         // Trigger any events that need to be called
         $customValidation = true;
         $result = Event::trigger('support.onValidateTicketSubmission', [$reporter, $problem]);
-        $customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
+        $customValidation = !empty($result) ? $result[0] : $customValidation;
 
         // Check for some required fields
         if (
@@ -959,7 +959,7 @@ class Tickets extends SiteController
         }
 
         // Cut suggestion at 70 characters
-        if (!$problem['short'] && $problem['long']) {
+        if (!$problem['short']) {
             $problem['short'] = substr($problem['long'], 0, 70);
             if (strlen($problem['short']) >= 70) {
                 $problem['short'] .= '...';
@@ -1050,73 +1050,71 @@ class Tickets extends SiteController
         // Get any set emails that should be notified of ticket submission
         $defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
 
-        if ($defs) {
-            $message = new \Hubzero\Mail\Message();
-            $message->setSubject(
-                Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')),
-            );
-            $message->addFrom(
-                Config::get('mailfrom'),
-                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
-            );
+        $message = new \Hubzero\Mail\Message();
+        $message->setSubject(
+            Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')),
+        );
+        $message->addFrom(
+            Config::get('mailfrom'),
+            Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
+        );
 
-            // Plain text email
-            $eview = new \Hubzero\Mail\View([
-                'name'   => 'emails',
-                'layout' => 'ticket_plain',
-            ]);
-            $eview->set('option', $this->option);
-            $eview->set('controller', $this->controller);
-            $eview->set('ticket', $row);
-            $eview->set('config', $this->config);
-            $eview->set('delimiter', '');
+        // Plain text email
+        $eview = new \Hubzero\Mail\View([
+            'name'   => 'emails',
+            'layout' => 'ticket_plain',
+        ]);
+        $eview->set('option', $this->option);
+        $eview->set('controller', $this->controller);
+        $eview->set('ticket', $row);
+        $eview->set('config', $this->config);
+        $eview->set('delimiter', '');
 
-            $plain = $eview->loadTemplate(false);
-            $plain = str_replace("\n", "\r\n", $plain);
+        $plain = $eview->loadTemplate(false);
+        $plain = str_replace("\n", "\r\n", $plain);
 
-            $message->addPart($plain, 'text/plain');
+        $message->addPart($plain, 'text/plain');
 
-            // HTML email
-            $eview->setLayout('ticket_html');
+        // HTML email
+        $eview->setLayout('ticket_html');
 
-            $html = $eview->loadTemplate();
-            $html = str_replace("\n", "\r\n", $html);
+        $html = $eview->loadTemplate();
+        $html = str_replace("\n", "\r\n", $html);
 
-            if (!$this->config->get('email_terse')) {
-                foreach ($row->attachments as $attachment) {
-                    if ($attachment->size() < 2097152) {
-                        if ($attachment->isImage()) {
-                            $file = basename($attachment->path());
-                            $html = preg_replace(
-                                '/<a class="img" data\-filename="'
-                                    . str_replace('.', '\.', $file)
-                                    . '" href="(.*?)"\>(.*?)<\/a>/i',
-                                '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />',
-                                $html,
-                            );
-                        } else {
-                            $message->addAttachment($attachment->path());
-                        }
+        if (!$this->config->get('email_terse')) {
+            foreach ($row->attachments as $attachment) {
+                if ($attachment->size() < 2097152) {
+                    if ($attachment->isImage()) {
+                        $file = basename($attachment->path());
+                        $html = preg_replace(
+                            '/<a class="img" data\-filename="'
+                                . str_replace('.', '\.', $file)
+                                . '" href="(.*?)"\>(.*?)<\/a>/i',
+                            '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />',
+                            $html,
+                        );
+                    } else {
+                        $message->addAttachment($attachment->path());
                     }
                 }
             }
+        }
 
-            $message->addPart($html, 'text/html');
+        $message->addPart($html, 'text/html');
 
-            // Loop through the addresses
-            foreach ($defs as $def) {
-                $def = trim($def);
+        // Loop through the addresses
+        foreach ($defs as $def) {
+            $def = trim($def);
 
-                // Check if the address should come from site config
-                if ($def == '{config.mailfrom}') {
-                    $def = Config::get('mailfrom');
-                }
-                // Check for a valid address
-                if (Validate::email($def)) {
-                    // Send e-mail
-                    $message->setTo([$def]);
-                    $message->send();
-                }
+            // Check if the address should come from site config
+            if ($def == '{config.mailfrom}') {
+                $def = Config::get('mailfrom');
+            }
+            // Check for a valid address
+            if (Validate::email($def)) {
+                // Send e-mail
+                $message->setTo([$def]);
+                $message->send();
             }
         }
 
@@ -1715,13 +1713,13 @@ class Tickets extends SiteController
         // Update ticket status if necessary
         $row->set('open', $row->status->get('open', 1));
 
-        if ($id && isset($incoming['status']) && $incoming['status'] == 0) {
+        if (isset($incoming['status']) && $incoming['status'] == 0) {
             $row->set('open', 0);
             $row->set('resolved', Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'));
         }
 
         // If an existing ticket AND closed AND previously open
-        if ($id && !$row->get('open') && $row->get('open') != $old->get('open')) {
+        if (!$row->get('open') && $row->get('open') != $old->get('open')) {
             // Record the closing time
             $row->set('closed', Date::toSql());
         }

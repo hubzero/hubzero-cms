@@ -587,7 +587,6 @@ class Projectsv2r0 extends ApiController
 
         foreach ($team as $user_id) {
             $owner = Owner::oneByProjectAndUser($row->get('id'), $user_id);
-            $owner = $owner ? $owner : Owner::blank();
 
             $owner->set($o);
             $owner->set('userid', $user_id);
@@ -1082,7 +1081,6 @@ class Projectsv2r0 extends ApiController
 
                 foreach ($team as $user_id) {
                     $owner = Owner::oneByProjectAndUser($row->get('id'), $user_id);
-                    $owner = $owner ? $owner : Owner::blank();
 
                     // We only need to add new people
                     if (!$owner->isNew()) {

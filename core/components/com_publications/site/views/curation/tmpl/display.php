@@ -170,11 +170,9 @@ $this
                                         $reviewer = User::getInstance($row->reviewed_by);
                                         $name = $reviewer->get('name');
                                         $name = $name ?: Lang::txt('JUNKNOWN');
-                                        $reviewed .= $reviewer
-                                            ? ' <span class="block">'
-                                                . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name))
-                                                . '</span>'
-                                            : '';
+                                        $reviewed .= ' <span class="block">'
+                                            . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name))
+                                            . '</span>';
                                     }
                                 }
 

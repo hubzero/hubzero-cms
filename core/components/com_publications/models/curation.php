@@ -464,7 +464,7 @@ class Curation extends Obj
                         // Take the first one matching our role and type
                         // It's technically possible to have more than one match, but no way of
                         // telling which one is correct at that point as fas as I can tell
-                        if ($role == $element->params->role && (!$type || ($type && $type == $element->params->type))) {
+                        if ($role == $element->params->role && (!$type || $type == $element->params->type)) {
                             $output = new stdClass();
                             $output->block   = $block;
                             $output->blockId = $blockId;
@@ -853,19 +853,17 @@ class Curation extends Obj
             }
 
             // Look at both auto and review status to determine if complete
-            if ($reviewStatus) {
-                if ($block->elements) {
-                    foreach ($block->elements as $elementId => $element) {
-                        if (isset($element->active) && $element->active == 0) {
-                            continue;
-                        }
-                        if (
-                            $autoStatus->elements->$elementId->status == 0
-                            && $reviewStatus->elements->$elementId->status == 2
-                        ) {
-                            $i--;
-                            $reviewStatus->status = 2;
-                        }
+            if ($block->elements) {
+                foreach ($block->elements as $elementId => $element) {
+                    if (isset($element->active) && $element->active == 0) {
+                        continue;
+                    }
+                    if (
+                        $autoStatus->elements->$elementId->status == 0
+                        && $reviewStatus->elements->$elementId->status == 2
+                    ) {
+                        $i--;
+                        $reviewStatus->status = 2;
                     }
                 }
             }
@@ -2572,8 +2570,8 @@ class Curation extends Obj
         $current = $this->getCurationVersion();
 
         // Save this version if changed
-        if (!$current || $current->curation != $manifest) {
-            $versionNumber = $current ? $current->version_number + 1 : 1;
+        if ($current->curation != $manifest) {
+            $versionNumber = $current->version_number + 1;
 
             $this->curationVersion = new Tables\CurationVersion($this->db);
             $this->curationVersion->type_id        = $this->pub->get('master_type');

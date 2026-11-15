@@ -95,18 +95,16 @@ $accessSelected = function ($value) use ($view) {
                             <?php
                             $owner  = $this->row->group_owner->get('cn');
                             $listed = false;
-                            if ($this->groups) {
-                                foreach ($this->groups as $group) {
-                                    $listed = $listed || ($owner == $group->cn);
-                                    ?>
-                                    <?php
-                                    $fieldValue = $this->escape($group->cn);
-                                    $selectedAttr = $owner == $group->cn ? ' selected="selected"' : '';
-                                    $optionText = $this->escape(stripslashes($group->description));
-                                    ?>
-                                <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
-                                    <?php
-                                }
+                            foreach ($this->groups as $group) {
+                                $listed = $listed || ($owner == $group->cn);
+                                ?>
+                                <?php
+                                $fieldValue = $this->escape($group->cn);
+                                $selectedAttr = $owner == $group->cn ? ' selected="selected"' : '';
+                                $optionText = $this->escape(stripslashes($group->description));
+                                ?>
+                            <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                                <?php
                             }
                             // Keep a group the editor isn't a member of, or it would be dropped on save
                             if ($owner && !$listed) {

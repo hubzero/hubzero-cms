@@ -240,7 +240,7 @@ class Activity extends Table
     /**
      * Delete activity by reference
      *
-     * @param   integer  $projectid
+     * @param   integer|mixed  $projectid
      * @param   string|int $refid
      * @param   string   $class
      * @param   boolean  $permanent

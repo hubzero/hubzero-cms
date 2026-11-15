@@ -68,7 +68,7 @@ class SoftwareSku extends Sku
         parent::verify();
 
         // Check if the download file is set
-        if (empty($this->data->meta['downloadFile']) || !$this->data->meta['downloadFile']) {
+        if (empty($this->data->meta['downloadFile'])) {
             throw new \Exception(Lang::txt('Download file must be set'));
         }
 

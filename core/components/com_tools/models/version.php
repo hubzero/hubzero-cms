@@ -594,14 +594,6 @@ class Version
     {
         if (is_null($instance)) {
             $instance = $this->instance;
-
-            if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
-                $this->error(
-                    __FUNCTION__ . ": invalid tool version instance defined",
-                    E_USER_ERROR,
-                );
-                die();
-            }
         }
 
         if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
@@ -921,7 +913,7 @@ class Version
      * Long description (if any) ...
      *
      * @param     string|null $property Parameter description (if any) ...
-     * @return   string|null Return description (if any) ...
+     * @return   mixed  A value, or a list of them
      */
     public function __get($property = null)
     {

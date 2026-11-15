@@ -26,16 +26,16 @@ class Set extends Obj implements Iterator
     protected $terms;
 
     /**
-     * Description for 'plugin_weights'
+     * Weights by plugin, once loaded
      *
-     * @var array
+     * @var array|null
      */
     private static $plugin_weights;
 
     /**
-     * Description for 'tags'
+     * Tags matching the terms
      *
-     * @var array
+     * @var AssocList|array
      */
     private $tags = [];
 
@@ -131,13 +131,6 @@ class Set extends Obj implements Iterator
     private $total_count;
 
     /**
-     * Tag mode
-     *
-     * @var bool
-     */
-    private $tag_mode = false;
-
-    /**
      * Results counts
      *
      * @var array
@@ -191,7 +184,7 @@ class Set extends Obj implements Iterator
      */
     public function getTags()
     {
-        return ($this->tags instanceof Blank) ? [] : $this->tags;
+        return $this->tags;
     }
 
     /**

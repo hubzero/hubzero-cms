@@ -1007,7 +1007,7 @@ class Wishlists extends SiteController
         }
 
         // Build page title
-        $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage')))
+        $this->_list_title = ($wishlist->isPublic() or $wishlist->access('manage'))
             ? $wishlist->get('title')
             : '';
         $this->buildTitle();
@@ -1397,7 +1397,7 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             // Set page title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2))
+            $this->_list_title = ($wishlist->isPublic() or $wishlist->get('admin') == 2)
                 ? $wishlist->get('title')
                 : '';
             $this->buildTitle();
@@ -2515,7 +2515,7 @@ class Wishlists extends SiteController
             $wishlist = Wishlist::oneOrFail($wish->get('wishlist'));
 
             // Set page title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2))
+            $this->_list_title = ($wishlist->isPublic() or $wishlist->get('admin') == 2)
                 ? $wishlist->get('title')
                 : '';
             $this->buildTitle();
@@ -2550,7 +2550,7 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             // Get List Title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage')))
+            $this->_list_title = ($wishlist->isPublic() or $wishlist->access('manage'))
                 ? $wishlist->get('title')
                 : '';
             $this->buildTitle();

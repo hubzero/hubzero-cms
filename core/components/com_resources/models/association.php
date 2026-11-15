@@ -100,7 +100,7 @@ class Association extends Relational
                 ->order('ordering', 'desc')
                 ->row();
 
-            $data['ordering'] = ($last && $last->ordering ? $last->ordering : 0) + 1;
+            $data['ordering'] = ($last->ordering ?: 0) + 1;
         }
 
         return $data['ordering'];

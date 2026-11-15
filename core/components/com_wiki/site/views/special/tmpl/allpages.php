@@ -106,38 +106,35 @@ $namespaces = \Components\Wiki\Models\Page::all()
                 ?>
                     <div class="col span4 <?php echo $cls; ?>">
                         <?php
-                        if (count($column) > 0) {
-                            $k = 0;
-                            foreach ($column as $row) {
-                                if (strtoupper(substr($row->title ?? '', 0, 1)) != $index) {
-                                    $index = strtoupper(substr($row->title ?? '', 0, 1));
-                                    if ($k != 0) {
-                                        ?>
-                                    </ul>
-                                    <?php } ?>
-                                    <h3><?php echo $index; ?></h3>
-                                    <ul>
-                                    <?php
-                                } elseif ($k == 0) {
+                        // Every column holds at least one page
+                        $k = 0;
+                        foreach ($column as $row) {
+                            if (strtoupper(substr($row->title ?? '', 0, 1)) != $index) {
+                                $index = strtoupper(substr($row->title ?? '', 0, 1));
+                                if ($k != 0) {
                                     ?>
-                                    <h3><?php echo Lang::txt('COM_WIKI_INDEX_CONTINUED', $index); ?></h3>
-                                    <ul>
-                                    <?php
-                                }
-                                ?>
-                                <li>
-                                    <a href="<?php echo Route::url($row->link()); ?>">
-                                        <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
-                                    </a>
-                                </li>
+                                </ul>
+                                <?php } ?>
+                                <h3><?php echo $index; ?></h3>
+                                <ul>
                                 <?php
-                                $k++;
+                            } elseif ($k == 0) {
+                                ?>
+                                <h3><?php echo Lang::txt('COM_WIKI_INDEX_CONTINUED', $index); ?></h3>
+                                <ul>
+                                <?php
                             }
                             ?>
-                            </ul>
+                            <li>
+                                <a href="<?php echo Route::url($row->link()); ?>">
+                                    <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
+                                </a>
+                            </li>
                             <?php
+                            $k++;
                         }
                         ?>
+                        </ul>
                     </div>
                 <?php
                 $i++;

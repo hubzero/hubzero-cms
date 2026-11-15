@@ -176,7 +176,7 @@ class Elements
                 break;
             }
         }
-        if ($found && $node !== null && $node !== '') {
+        if ($found && $node !== '') {
             $result = $node;
         }
 

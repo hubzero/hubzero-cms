@@ -150,9 +150,7 @@ class Tools extends SiteController
             exit();
         }
 
-        if ($type == 'css') {
-            $this->cssTask($file);
-        }
+        $this->cssTask($file);
     }
 
     /**

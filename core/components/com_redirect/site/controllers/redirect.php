@@ -105,14 +105,12 @@ class Redirect extends SiteController
         } elseif (in_array($host['host'], $blacklist) !== false) {
             App::redirect('https://' . $_SERVER['HTTP_HOST']);
         } else {
-            if ($params) {
-                if (
-                    isset($params["delay_enabled"])
-                    && $params["delay_enabled"] == "ENABLED"
-                    && isset($params["delay_seconds"])
-                ) {
-                    $time = intval($params["delay_seconds"]);
-                }
+            if (
+                isset($params["delay_enabled"])
+                && $params["delay_enabled"] == "ENABLED"
+                && isset($params["delay_seconds"])
+            ) {
+                $time = intval($params["delay_seconds"]);
             }
             $this->view->set('domain', $this->extractBaseDomain($host['host']));
             $this->view->set('url', $url);

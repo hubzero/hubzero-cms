@@ -79,7 +79,7 @@ class Bundle extends Base implements CommandInterface
             },
         ]);
 
-        if ($queued && $entry) {
+        if ($entry) {
             if ($result['ok']) {
                 $entry->markReady($result['file'], $result['size'], $result['source_hash']);
             } else {

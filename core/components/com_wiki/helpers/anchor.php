@@ -64,11 +64,11 @@ class Anchor
         return preg_replace_callback(
             self::REFERENCE,
             function ($match) {
-                if (isset($match[3]) && $match[3] !== '') {
+                if (isset($match[3])) {
                     return self::character(hexdec($match[3]));
                 }
 
-                if (isset($match[2]) && $match[2] !== '') {
+                if (isset($match[2])) {
                     return self::character(intval($match[2]));
                 }
 

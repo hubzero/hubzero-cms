@@ -911,7 +911,7 @@ class Attachments extends SiteController
         $path = $resource->basepath() . DS . $listdir;
 
         // Check if the path is a URL or exists
-        if (!file_exists($path) or !$path or substr($resource->get('path'), 0, strlen('http')) == 'http') {
+        if (!file_exists($path) or substr($resource->get('path'), 0, strlen('http')) == 'http') {
             //$this->setError(Lang::txt('COM_CONTRIBUTE_FILE_NOT_FOUND'));
         } else {
             if (
