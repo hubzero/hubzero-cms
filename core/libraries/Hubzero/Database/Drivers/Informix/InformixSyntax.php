@@ -157,7 +157,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             }
 
             // See if we're including an alias
-            if (isset($select['as']) && $select['as'] !== null) {
+            if (isset($select['as'])) {
                 $string .= " AS {$select['as']}";
             }
 

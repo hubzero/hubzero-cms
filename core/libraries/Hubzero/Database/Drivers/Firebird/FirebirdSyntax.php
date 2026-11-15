@@ -302,7 +302,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             }
 
             // See if we're including an alias
-            if (isset($select['as']) && $select['as'] !== null) {
+            if (isset($select['as'])) {
                 $alias = $select['as'];
                 // Quote reserved words to avoid SQL errors
                 if (in_array(strtolower($alias), self::$reservedWords)) {
@@ -994,7 +994,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 // Firebird uses SUBSTRING(str FROM start FOR length)
                 $col = $this->buildExpressionArgument($args[0]);
                 $start = (int) $args[1];
-                if (isset($args[2]) && $args[2] !== null) {
+                if (isset($args[2])) {
                     return "SUBSTRING({$col} FROM {$start} FOR " . (int) $args[2] . ')';
                 }
                 return "SUBSTRING({$col} FROM {$start})";

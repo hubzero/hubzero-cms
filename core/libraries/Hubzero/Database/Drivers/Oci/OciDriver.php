@@ -571,7 +571,7 @@ class OciDriver extends BaseSqlDriver
             }
 
             // DEFAULT value
-            if (isset($col->Default) && $col->Default !== null) {
+            if (isset($col->Default)) {
                 $def .= ' DEFAULT ' . $col->Default;
             }
 

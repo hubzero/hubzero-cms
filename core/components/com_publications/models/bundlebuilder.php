@@ -2181,7 +2181,7 @@ class BundleBuilder
 
             if ($a->organization !== null && $a->organization !== '') {
                 $org = $a->organization;
-            } elseif (isset($a->up_organization) && $a->up_organization !== null && $a->up_organization !== '') {
+            } elseif (isset($a->up_organization) && $a->up_organization !== '') {
                 $org = $a->up_organization;
             } else {
                 $org = (string) $a->p_organization;

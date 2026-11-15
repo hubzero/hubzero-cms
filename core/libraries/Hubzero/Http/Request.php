@@ -146,7 +146,7 @@ class Request extends BaseRequest
                     $result = $res;
                 }*/
                 $result = null;
-                if (isset($_FILES[$key]) && $_FILES[$key] !== null) {
+                if (isset($_FILES[$key])) {
                     $result = $_FILES[$key];
                 }
                 $result = ($result !== null ? $result : $default);

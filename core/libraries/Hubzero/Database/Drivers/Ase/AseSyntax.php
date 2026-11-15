@@ -252,7 +252,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $string = $select['column'];
             }
 
-            if (isset($select['as']) && $select['as'] !== null) {
+            if (isset($select['as'])) {
                 $string .= " AS " . $this->quoteAlias($select['as']);
             }
 

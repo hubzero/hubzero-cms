@@ -609,7 +609,7 @@ class Item extends Nested
             // A declared route replaces this item's whole address rather than
             // its last segment, and what is under it follows - which is what
             // moving a section means. A child that wants out declares its own.
-            $newPath = (isset($node->route) && $node->route !== null && $node->route !== '')
+            $newPath = (isset($node->route) && $node->route !== '')
                 ? self::cleanRoute($node->route)
                 : $path . (empty($path) ? '' : '/') . $node->alias;
 

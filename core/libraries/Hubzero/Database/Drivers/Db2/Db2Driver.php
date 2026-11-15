@@ -500,7 +500,7 @@ class Db2Driver extends BaseSqlDriver
             }
 
             // DEFAULT value
-            if (isset($col->Default) && $col->Default !== null) {
+            if (isset($col->Default)) {
                 $def .= ' DEFAULT ' . $col->Default;
             }
 
