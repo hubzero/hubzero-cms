@@ -45,11 +45,12 @@ class FeedYoutube extends Module
         $rssDoc->enable_cache(false);
         $rssDoc->set_feed_url($this->params->get('rssurl', ''));
         $rssDoc->force_feed(true);
-        $rssDoc->init();
+        // init() says whether the feed was fetched and parsed
+        $fetched = $rssDoc->init();
 
         $this->feed = new stdclass();
 
-        if ($rssDoc != false) {
+        if ($fetched) {
             // Channel header and link
             $this->feed->title        = $rssDoc->get_title();
             $this->feed->link         = $rssDoc->get_link();

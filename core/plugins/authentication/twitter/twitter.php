@@ -189,10 +189,15 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', [
-            'code' => Request::getString('code'),
-            'code_verifier' => Session::get('oauth2verifier', null, $this->name),
-        ]);
+        try {
+            $token = $this->provider->getAccessToken('authorization_code', [
+                'code' => Request::getString('code'),
+                'code_verifier' => Session::get('oauth2verifier', null, $this->name),
+            ]);
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            // A refused or expired code is handled as a failure below
+            $token = null;
+        }
 
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
@@ -304,10 +309,15 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             );
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', [
-            'code' => Request::getString('code'),
-            'code_verifier' => Session::get('oauth2verifier', null, $this->name),
-        ]);
+        try {
+            $token = $this->provider->getAccessToken('authorization_code', [
+                'code' => Request::getString('code'),
+                'code_verifier' => Session::get('oauth2verifier', null, $this->name),
+            ]);
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            // A refused or expired code is handled as a failure below
+            $token = null;
+        }
 
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);

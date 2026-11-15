@@ -210,7 +210,7 @@ class Provider extends AbstractService
             '/' . $this->akismetVersion . '/verify-key',
         );
 
-        if (!$response || !is_array($response) || !isset($response[1])) {
+        if (!isset($response[1])) {
             // Service unavailable?
             return false;
         }
@@ -295,7 +295,7 @@ class Provider extends AbstractService
             '/' . $this->akismetVersion . '/comment-check',
         );
 
-        if (!$response || !is_array($response) || !isset($response[1])) {
+        if (!isset($response[1])) {
             // Service unavailable?
             return false;
         }
@@ -319,8 +319,9 @@ class Provider extends AbstractService
      */
     public function submitSpam()
     {
+        // The API wants the site, as for checking
         $this->sendRequest(
-            $this->getQueryString(),
+            'blog=' . Request::base() . '&' . $this->getQueryString(),
             $this->apiKey . '.' . $this->akismetServer,
             '/' . $this->akismetVersion . '/submit-spam',
         );
@@ -335,10 +336,35 @@ class Provider extends AbstractService
      */
     public function submitHam()
     {
+        // The API wants the site, as for checking
         $this->sendRequest(
-            $this->getQueryString(),
+            'blog=' . Request::base() . '&' . $this->getQueryString(),
             $this->apiKey . '.' . $this->akismetServer,
             '/' . $this->akismetVersion . '/submit-ham',
         );
+    }
+
+    /**
+     * Train Akismet by reporting content as spam or not
+     *
+     * @param   string   $data    The content
+     * @param   boolean  $isSpam  Whether it is spam
+     * @return  boolean
+     */
+    public function learn($data, $isSpam)
+    {
+        if (!$data) {
+            return false;
+        }
+
+        $this->setValue($data);
+
+        if ($isSpam) {
+            $this->submitSpam();
+        } else {
+            $this->submitHam();
+        }
+
+        return true;
     }
 }

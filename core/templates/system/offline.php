@@ -40,14 +40,14 @@ defined('_HZEXEC_') or die();
             </h1>
             <?php
             $offlineMsg = str_replace(' ', '', Config::get('offline_message'));
-            $langOfflineMsg = null;
+            // Worked out here: set inside the first branch, the second never saw it
+            $langOfflineMsg = str_replace(' ', '', Lang::txt('JOFFLINE_MESSAGE'));
             if (Config::get('display_offline_message', 1) == 1 && $offlineMsg != '') :
                 ?>
                 <p>
                     <?php echo Config::get('offline_message'); ?>
                 </p>
                 <?php
-                $langOfflineMsg = str_replace(' ', '', Lang::txt('JOFFLINE_MESSAGE'));
             elseif (Config::get('display_offline_message', 1) == 2 && $langOfflineMsg != '') :
                 ?>
                 <p>

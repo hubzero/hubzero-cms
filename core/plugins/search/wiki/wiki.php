@@ -203,7 +203,7 @@ class Wiki extends Plugin
                 }
 
                 // Public condition
-                if ($row->state == 1 && ($row->access == 0 || $row->access = 1)) {
+                if ($row->state == 1 && ($row->access == 0 || $row->access == 1)) {
                     $access_level = 'public';
                 } elseif ($row->state == 1 && $row->access == 2) {
                     // Registered condition

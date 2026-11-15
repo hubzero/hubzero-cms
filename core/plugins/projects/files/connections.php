@@ -92,7 +92,7 @@ class Connections
             // A connection may only be used inside the project it belongs to,
             // and a private (unshared) one only by its owner: every task below
             // operates on the connection's stored provider credentials
-            $projectId = $this->model ? (int) $this->model->get('id') : 0;
+            $projectId = (int) $this->model->get('id');
             if (
                 (int) $this->connection->get('project_id') !== $projectId
                 || (
@@ -424,7 +424,7 @@ class Connections
 
         Plugin::import('filesystem');
 
-        $alias  = $this->connection->provider ? $this->connection->provider->alias : '';
+        $alias  = $this->connection->provider->alias;
         $plugin = 'Plugins\\Filesystem\\' . ucfirst($alias) . '\\' . ucfirst($alias);
 
         if ($alias && method_exists($plugin, 'authorize')) {
@@ -721,7 +721,7 @@ class Connections
         }
 
         // Check items
-        if (!$items || count($items) == 0) {
+        if (count($items) == 0) {
             //$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
             return;
         }
@@ -904,7 +904,7 @@ class Connections
                             return json_encode([
                                 'success'   => 1,
                                 'file'      => $file,
-                                'isNew'     => $updateType == 'uploaded' ? true : false,
+                                'isNew'     => true,
                             ]);
                         }
                     }
@@ -981,9 +981,10 @@ class Connections
                 $results['failed'][] = $file->getPath();
             }
 
-            if (is_resource($file)) {
-                // Some (3rd party) adapters close the stream internally.
-                fclose($file);
+            // The stream, not the entity; some (3rd party) adapters close it
+            // internally, and it was left open otherwise
+            if (is_resource($fp)) {
+                fclose($fp);
             }
 
             // Rename the temporary directory (to avoid access from other

@@ -109,7 +109,7 @@ $roles = [
             </label>
 
             <div class="group-action group-action-selective">
-                <?php if (count($notteam) >= 0) { ?>
+                <?php if (count($notteam) > 0) { ?>
                     <?php
                     $chooseUrl = Route::url(
                         'index.php?option=' . $this->option . '&task=' . $this->task . '&alias='

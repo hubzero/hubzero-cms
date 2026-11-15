@@ -278,6 +278,7 @@ class EventsCal extends Module
 
             // do we have events
             if (count($rows) > 0) {
+                $monthHasEvent = true;
                 $class = 'daywithevents';
                 if ($selected_date == $to_day) {
                     $class = 'todaywithevents';

@@ -147,10 +147,10 @@ class Citations extends Plugin
                     break;
                 case 'delete':
                     $arr['html'] .= $this->deleteAction();
-                    break;
+                    // no break: deleteAction() redirects
                 case 'publish':
                     $arr['html'] .= $this->publishAction();
-                    break;
+                    // no break: publishAction() redirects
                 case 'browse':
                     $arr['html'] .= $this->browseAction();
                     break;
@@ -162,13 +162,13 @@ class Citations extends Plugin
                     break;
                 case 'upload':
                     $arr['html'] .= $this->uploadAction();
-                    break;
+                    // no break: uploadAction() redirects
                 case 'review':
                     $arr['html'] .= $this->reviewAction();
                     break;
                 case 'process':
                     $arr['html'] .= $this->processAction();
-                    break;
+                    // no break: processAction() redirects
                 case 'saved':
                     $arr['html'] .= $this->savedAction();
                     break;
@@ -356,7 +356,7 @@ class Citations extends Plugin
         $view->set('option', $this->option);
         $view->set('database', $this->database);
         $view->set('allow_tags', $this->member->getParam('citation_allow_tags', 'yes'));
-        $view->set('allow_badges', $this->member->getParam('citatoin_allow_badges', 'yes'));
+        $view->set('allow_badges', $this->member->getParam('citation_allow_badges', 'yes'));
 
         // Get the citation types
         $citationsType = \Components\Citations\Models\Type::all();
@@ -601,13 +601,9 @@ class Citations extends Plugin
                 $author->set('cid', $citation->id);
                 $author->save();
             }
-        } elseif (!$isNew && ($authorCount == 0)) {
+        } elseif ($authorCount == 0) {
+            // explode() always gives at least one name
             $authorField = explode(',', Request::getString('author'));
-            $totalAuths = count($authorField);
-
-            if ($totalAuths == 0) {
-                // Redirect
-            }
 
             foreach ($authorField as $key => $a) {
                 // Create a new row
@@ -692,7 +688,7 @@ class Citations extends Plugin
              **/
 
             // when no selection has been made
-            if ($bulk == true && $citationIDs == '') {
+            if ($citationIDs == '') {
                 // redirect and warn
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->pluginName),
@@ -758,7 +754,7 @@ class Citations extends Plugin
             $citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
 
             // if the setting a custom member citation type
-            if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew())) {
+            if ($citationFormat->isNew() || $citationFormat->style == $name) {
                 $citationFormat->set([
                     'format' => Request::getString('template'),
                     'style'  => $name,
@@ -926,7 +922,7 @@ class Citations extends Plugin
              ***/
 
             // when no selection has been made
-            if ($bulk == true && $citationIDs == '') {
+            if ($citationIDs == '') {
                 // redirect and warn
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->pluginName),
@@ -1201,13 +1197,9 @@ class Citations extends Plugin
             );
         }
 
-        // vars
-        $allow_tags   = "yes";
-        $allow_badges = "yes";
-
         $this->importer->set('user', User::get('id'));
-        $this->importer->setTags($allow_tags == 'yes');
-        $this->importer->setBadges($allow_badges == 'yes');
+        $this->importer->setTags(true);
+        $this->importer->setBadges(true);
         $this->importer->set('scope_id', $this->member->get('id'));
         $this->importer->set('scope', 'member');
 
@@ -1323,7 +1315,7 @@ class Citations extends Plugin
     /**
      * Applies filters to Citations model and returns applied filters
      * @param array  $filters array of POST values
-     * @return  array|false sanitized and validated filter values
+     * @return  array sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {

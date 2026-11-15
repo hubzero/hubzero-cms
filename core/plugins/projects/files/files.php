@@ -186,8 +186,6 @@ class Files extends Plugin
      */
     public function onProject($model, $action = '', $areas = null, $params = [])
     {
-        $returnhtml = true;
-
         $arr = [
             'html'     => '',
             'metadata' => '',
@@ -220,200 +218,197 @@ class Files extends Plugin
             return $arr;
         }
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            // Load repo model
-            $repoName   = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
-            $this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
+        // Load repo model
+        $repoName   = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
+        $this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
-            $default = $this->params->get('default_action', 'browse');
+        $default = $this->params->get('default_action', 'browse');
 
-            $this->publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
-            $this->database   = App::get('db');
-            $this->uid        = User::get('id');
-            $this->task       = $action ? $action : Request::getString('action', $default);
-            $this->subdir      = $subdir; // already confined above
-            $this->publication = Request::getInt('pid', 0);
+        $this->publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+        $this->database   = App::get('db');
+        $this->uid        = User::get('id');
+        $this->task       = $action ? $action : Request::getString('action', $default);
+        $this->subdir      = $subdir; // already confined above
+        $this->publication = Request::getInt('pid', 0);
 
-            // Set repo path
-            if (!$this->model->exists()) {
-                // Contribute process outside of projects
-                $this->model->set('provisioned', 1);
-                $this->path = $this->getMembersPath();
-            } else {
-                if (!$this->repo->exists()) {
-                    // Default to local repo (will redirect to add repo page in the future)
-                    $this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
-                }
-                $this->path = $this->repo->get('path');
+        // Set repo path
+        if (!$this->model->exists()) {
+            // Contribute process outside of projects
+            $this->model->set('provisioned', 1);
+            $this->path = $this->getMembersPath();
+        } else {
+            if (!$this->repo->exists()) {
+                // Default to local repo (will redirect to add repo page in the future)
+                $this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
+            }
+            $this->path = $this->repo->get('path');
+        }
+
+        //  Establish connection to external services
+        if ($this->model->exists() && !$this->model->isProvisioned()) {
+            $this->connect = new \Components\Projects\Helpers\Connect(
+                $this->model,
+                $this->uid,
+                date_default_timezone_get(),
+            );
+
+            // Sync service is Google
+            if (!empty($this->connect->active) && $this->repo->isLocal()) {
+                $this->remoteService = 'google';
+            }
+        }
+
+        $ctask = 'connections';
+        if (
+            ($connection = Request::getInt('connection', null))
+            || $this->task == 'editconnection'
+            || $this->task == 'saveconnection'
+            || $this->task == 'newconnection'
+            || $this->task == 'deleteconnection'
+            || $this->task == 'refreshconnection'
+        ) {
+            $ctask       = $this->task;
+            $this->task = 'connections';
+        }
+
+        // Someone who is not a member got this far only because subdir is
+        // in the public directory. That lets them read files there and do
+        // nothing else: no trash, sync, selectors or connections, and no
+        // item named with a path that climbs back out of the directory.
+        if ($this->model->exists() && !$this->model->access('member')) {
+            if (!in_array($this->task, ['browse', 'download', 'open', 'history', 'diff', 'serve'])) {
+                App::abort(403, Lang::txt('ALERTNOTAUTH'));
             }
 
-            //  Establish connection to external services
-            if ($this->model->exists() && !$this->model->isProvisioned()) {
-                $this->connect = new \Components\Projects\Helpers\Connect(
-                    $this->model,
-                    $this->uid,
-                    date_default_timezone_get(),
-                );
-
-                // Sync service is Google
-                if (!empty($this->connect->active) && $this->repo->isLocal()) {
-                    $this->remoteService = 'google';
-                }
-            }
-
-            $ctask = 'connections';
-            if (
-                ($connection = Request::getInt('connection', null))
-                || $this->task == 'editconnection'
-                || $this->task == 'saveconnection'
-                || $this->task == 'newconnection'
-                || $this->task == 'deleteconnection'
-                || $this->task == 'refreshconnection'
-            ) {
-                $ctask       = $this->task;
-                $this->task = 'connections';
-            }
-
-            // Someone who is not a member got this far only because subdir is
-            // in the public directory. That lets them read files there and do
-            // nothing else: no trash, sync, selectors or connections, and no
-            // item named with a path that climbs back out of the directory.
-            if ($this->model->exists() && !$this->model->access('member')) {
-                if (!in_array($this->task, ['browse', 'download', 'open', 'history', 'diff', 'serve'])) {
-                    App::abort(403, Lang::txt('ALERTNOTAUTH'));
-                }
-
-                foreach (['asset', 'folder', 'file'] as $key) {
-                    foreach (Request::getArray($key, []) as $item) {
-                        if (!is_scalar($item) || !AccessHelper::isPublicPath($this->subdir . DS . urldecode($item))) {
-                            App::abort(403, Lang::txt('ALERTNOTAUTH'));
-                        }
+            foreach (['asset', 'folder', 'file'] as $key) {
+                foreach (Request::getArray($key, []) as $item) {
+                    if (!is_scalar($item) || !AccessHelper::isPublicPath($this->subdir . DS . urldecode($item))) {
+                        App::abort(403, Lang::txt('ALERTNOTAUTH'));
                     }
                 }
             }
+        }
 
-            // File actions
-            switch ($this->task) {
-                // Basic file management
-                case 'upload':
-                    $arr['html'] = $this->upload();
-                    break;
+        // File actions
+        switch ($this->task) {
+            // Basic file management
+            case 'upload':
+                $arr['html'] = $this->upload();
+                break;
 
-                case 'save':
-                case 'saveprov':
-                    $arr['html'] = $this->save();
-                    break;
+            case 'save':
+            case 'saveprov':
+                $arr['html'] = $this->save();
+                break;
 
-                case 'delete':
-                case 'removeit':
-                    $arr['html'] = $this->delete();
-                    break;
+            case 'delete':
+            case 'removeit':
+                $arr['html'] = $this->delete();
+                break;
 
-                case 'move':
-                case 'moveit':
-                    $arr['html'] = $this->move();
-                    break;
+            case 'move':
+            case 'moveit':
+                $arr['html'] = $this->move();
+                break;
 
-                case 'rename':
-                case 'renameit':
-                    $arr['html'] = $this->rename();
-                    break;
+            case 'rename':
+            case 'renameit':
+                $arr['html'] = $this->rename();
+                break;
 
-                case 'share':
-                case 'shareit':
-                    $arr['html'] = $this->share();
-                    break;
+            case 'share':
+            case 'shareit':
+                $arr['html'] = $this->share();
+                break;
 
-                    // History
-                case 'history':
-                    $arr['html'] = $this->history();
-                    break;
-                case 'diff':
-                    $arr['html'] = $this->diff();
-                    break;
+                // History
+            case 'history':
+                $arr['html'] = $this->history();
+                break;
+            case 'diff':
+                $arr['html'] = $this->diff();
+                break;
 
-                    // Serve/preview
-                case 'compile':
-                    $arr['html'] = $this->compile();
-                    break;
-                case 'serve':
-                    $arr['html'] = $this->serve();
-                    break;
-                case 'download':
-                case 'open':
-                    $arr['html'] = $this->download();
-                    break;
+                // Serve/preview
+            case 'compile':
+                $arr['html'] = $this->compile();
+                break;
+            case 'serve':
+                $arr['html'] = $this->serve();
+                break;
+            case 'download':
+            case 'open':
+                $arr['html'] = $this->download();
+                break;
 
-                    // Manage directory
-                case 'newdir':
-                    $arr['html'] = $this->newDir();
-                    break;
-                case 'deletedir':
-                    $arr['html'] = $this->deleteDir();
-                    break;
-                case 'savedir':
-                    $arr['html'] = $this->saveDir();
-                    break;
+                // Manage directory
+            case 'newdir':
+                $arr['html'] = $this->newDir();
+                break;
+            case 'deletedir':
+                $arr['html'] = $this->deleteDir();
+                break;
+            case 'savedir':
+                $arr['html'] = $this->saveDir();
+                break;
 
-                    // Manage deleted
-                case 'trash':
-                    $arr['html'] = $this->showTrash();
-                    break;
-                case 'restore':
-                    $arr['html'] = $this->restore();
-                    break;
+                // Manage deleted
+            case 'trash':
+                $arr['html'] = $this->showTrash();
+                break;
+            case 'restore':
+                $arr['html'] = $this->restore();
+                break;
 
-                    // Disk space management
-                case 'diskspace':
-                    $arr['html'] = $this->diskspace(
-                        $this->model,
-                        $this->repo->get('name'),
-                        $this->uid,
-                    );
-                    break;
-                case 'optimize':
-                case 'advoptimize':
-                    $arr['html'] = $this->optimize(
-                        $this->model,
-                        $this->repo->get('name'),
-                    );
-                    break;
+                // Disk space management
+            case 'diskspace':
+                $arr['html'] = $this->diskspace(
+                    $this->model,
+                    $this->repo->get('name'),
+                    $this->uid,
+                );
+                break;
+            case 'optimize':
+            case 'advoptimize':
+                $arr['html'] = $this->optimize(
+                    $this->model,
+                    $this->repo->get('name'),
+                );
+                break;
 
-                    // Publishing selectors
-                case 'select':
-                case 'filter':
-                    $arr['html'] = $this->select();
-                    break;
+                // Publishing selectors
+            case 'select':
+            case 'filter':
+                $arr['html'] = $this->select();
+                break;
 
-                    // Connections
-                case 'connect':
-                case 'disconnect':
-                    $arr['html'] = $this->connect();
-                    break;
+                // Connections
+            case 'connect':
+            case 'disconnect':
+                $arr['html'] = $this->connect();
+                break;
 
-                    // Sync with remote
-                case 'sync':
-                    $arr['html'] = $this->iniSync();
-                    break;
-                case 'sync_status':
-                    $arr['html'] = $this->syncStatus();
-                    break;
-                case 'sync_error':
-                    $arr['html'] = $this->syncError();
-                    break;
+                // Sync with remote
+            case 'sync':
+                $arr['html'] = $this->iniSync();
+                break;
+            case 'sync_status':
+                $arr['html'] = $this->syncStatus();
+                break;
+            case 'sync_error':
+                $arr['html'] = $this->syncError();
+                break;
 
-                    // New connected methods
-                case 'connections':
-                    $controller = new Connections($this, $this->componentOption, $connection);
-                    $arr['html'] = $controller->execute($ctask);
-                    break;
-                    // File browser
-                case 'browse':
-                default:
-                    $arr['html'] = $this->browse();
-                    break;
-            }
+                // New connected methods
+            case 'connections':
+                $controller = new Connections($this, $this->componentOption, $connection);
+                $arr['html'] = $controller->execute($ctask);
+                break;
+                // File browser
+            case 'browse':
+            default:
+                $arr['html'] = $this->browse();
+                break;
         }
 
         // Return data
@@ -1537,7 +1532,10 @@ class Files extends Plugin
             $view->set('connected', $this->connect->getStoredParam($this->remoteService . '_token', $this->uid));
         }
 
-        $this->repo->versions($params, $versions, $timestamps);
+        // Typed here so the versions it fills in by reference are seen
+        /** @var \Components\Projects\Models\Repo $repo */
+        $repo = $this->repo;
+        $repo->versions($params, $versions, $timestamps);
 
         // Get file previews
         $i = 0;
@@ -3231,7 +3229,7 @@ class Files extends Plugin
         }
 
         // Pass success or error message
-        if (!empty($failed) && !$uploaded && !$uploaded) {
+        if (!empty($failed) && !$uploaded && !$updated) {
             Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_TO_UPLOAD') . $failed, 'error', 'projects');
         } elseif ($uploaded || $updated || $expanded) {
             $uploadParts = explode(',', $uploaded ?: '');
@@ -3345,10 +3343,8 @@ class Files extends Plugin
             }
 
             // Force sync
-            if ($sync) {
-                //$this->model->saveParam('google_sync_queue', 1);
-                $this->forceSync = 1;
-            }
+            //$this->model->saveParam('google_sync_queue', 1);
+            $this->forceSync = 1;
 
             // Record activity
             $aid = $model->recordActivity(

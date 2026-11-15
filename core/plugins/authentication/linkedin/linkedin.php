@@ -187,10 +187,15 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken(
-            'authorization_code',
-            ['code' => Request::getString('code')],
-        );
+        try {
+            $token = $this->provider->getAccessToken(
+                'authorization_code',
+                ['code' => Request::getString('code')],
+            );
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            // A refused or expired code is handled as a failure below
+            $token = null;
+        }
 
         Session::clear('oauth2state', $this->name);
 
@@ -304,10 +309,15 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
             );
         }
 
-        $token = $this->provider->getAccessToken(
-            'authorization_code',
-            ['code' => Request::getString('code')],
-        );
+        try {
+            $token = $this->provider->getAccessToken(
+                'authorization_code',
+                ['code' => Request::getString('code')],
+            );
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            // A refused or expired code is handled as a failure below
+            $token = null;
+        }
 
         Session::clear('oauth2state', $this->name);
 

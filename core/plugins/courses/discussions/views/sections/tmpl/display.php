@@ -112,7 +112,6 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                             if (
                                 $this->config->get('access-edit-section')
                                 && $this->edit != $section->get('alias')
-                                && $section->get('id')
                             ) { ?>
                                 <?php
                                 $linkUrl = Route::url(
@@ -235,6 +234,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                 </form>
                 <?php } ?>
             </div><!-- /.container -->
+            <?php $i++; ?>
         <?php } ?>
 
         <?php if ($this->config->get('access-create-section')) { ?>

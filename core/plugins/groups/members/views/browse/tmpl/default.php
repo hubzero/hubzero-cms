@@ -568,9 +568,8 @@ $option = 'com_groups';
                                 if ($this->filter == 'pending') {
                                     $database = App::get('db');
                                     $row = new Components\Groups\Tables\Reason($database);
-                                    $row->loadReason($u->get('id'), $this->group->gidNumber);
-
-                                    if ($row) {
+                                    // Only when a reason was found
+                                    if ($row->loadReason($u->get('id'), $this->group->gidNumber)) {
                                         $html .= '<span class="reason" data-title="'
                                             . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
                                         $html .= '<span class="reason-reason">'

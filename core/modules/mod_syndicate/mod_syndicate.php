@@ -31,7 +31,7 @@ class Syndicate extends Module
 
         $link = self::getLink($params);
 
-        if (is_null($link)) {
+        if ($link === '') {
             return;
         }
 
