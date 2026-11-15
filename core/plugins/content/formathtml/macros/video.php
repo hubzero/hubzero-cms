@@ -405,12 +405,10 @@ class Video extends Macro
         // Set width if just a pixel size is given
         // e.g., [[File(myfile.jpg, width=120px)]]
         if (preg_match($size, $val, $matches) && $key != 'border') {
-            if ($matches[0]) {
-                $at = (isset($this->attr['width'])) ? 'height' : 'width';
-                $this->attr['style'][$at] = $val;
-                $this->attr[$at] = $val;
-                return;
-            }
+            $at = (isset($this->attr['width'])) ? 'height' : 'width';
+            $this->attr['style'][$at] = $val;
+            $this->attr[$at] = $val;
+            return;
         }
 
         // Set width if just a numeric size is given
@@ -475,12 +473,10 @@ class Video extends Macro
         // Set width if just a pixel size is given
         // e.g., [[File(myfile.jpg, 120px)]]
         if (preg_match('/[0-9+](%|px|em)$/', $key, $matches)) {
-            if ($matches[0]) {
-                $at = (isset($this->attr['width'])) ? 'height' : 'width';
-                $this->attr['style'][$at] = $key;
-                $this->attr[$at] = $key;
-                return;
-            }
+            $at = (isset($this->attr['width'])) ? 'height' : 'width';
+            $this->attr['style'][$at] = $key;
+            $this->attr[$at] = $key;
+            return;
         }
 
         // Set width if just a numeric size is given

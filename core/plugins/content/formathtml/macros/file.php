@@ -353,11 +353,9 @@ class File extends Macro
         // EX: [[File(myfile.jpg, 120px)]]
         $size   = '/[0-9+](%|px|em)+$/';
         if (preg_match($size, $key, $matches)) {
-            if ($matches[0]) {
-                $this->attr['style'][$ky] = $key;
-                //$this->attr[$ky] = $key;
-                return;
-            }
+            $this->attr['style'][$ky] = $key;
+            //$this->attr[$ky] = $key;
+            return;
         }
 
         if (is_numeric($key)) {

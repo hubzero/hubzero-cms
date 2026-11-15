@@ -258,11 +258,9 @@ Examples:
         // Set width if just a pixel size is given
         // e.g., [[File(myfile.jpg, width=120px)]]
         if (preg_match($size, $val, $matches) && $key != 'border') {
-            if ($matches[0]) {
-                $this->attr['style']['width'] = $val;
-                //$this->attr['width'] = $val;
-                return;
-            }
+            $this->attr['style']['width'] = $val;
+            //$this->attr['width'] = $val;
+            return;
         }
 
         if (is_numeric($val)) {
@@ -360,11 +358,9 @@ Examples:
         // e.g., [[File(myfile.jpg, 120px)]]
         $size   = '/[0-9+](%|px|em)+$/';
         if (preg_match($size, $key, $matches)) {
-            if ($matches[0]) {
-                $this->attr['style']['width'] = $key;
-                //$this->attr['width'] = $key;
-                return;
-            }
+            $this->attr['style']['width'] = $key;
+            //$this->attr['width'] = $key;
+            return;
         }
 
         if (is_numeric($key)) {
