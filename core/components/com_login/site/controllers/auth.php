@@ -752,7 +752,7 @@ class Auth extends SiteController
         $authenticator = Request::getString('authenticator', '');
         $singleSignOn  = Request::getVar('sso', false);
 
-        if (empty($authenticator) || $authenticator == '') {
+        if (empty($authenticator)) {
             $cookie = \Hubzero\Utility\Cookie::eat('authenticator');
             if (isset($cookie->authenticator)) {
                 $authenticator = $cookie->authenticator;

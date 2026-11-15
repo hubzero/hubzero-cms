@@ -750,7 +750,7 @@ class Git extends Obj
         $out = $this->callGit('log --diff-filter=D --pretty=format:">>>%ct||%an||%ae||%H||%f" --name-only ');
 
         $files = [];
-        if (empty($out) || count($out) == 0) {
+        if (empty($out)) {
             return $files;
         }
 
@@ -1064,7 +1064,7 @@ class Git extends Obj
         // Get local file history
         $out = $this->callGit('log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' ' . escapeshellarg($file));
 
-        if (empty($out) || count($out) == 0) {
+        if (empty($out)) {
             return $hashes;
         }
 

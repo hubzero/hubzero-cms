@@ -1409,7 +1409,7 @@ class Members extends AdminController
         $id = Request::getInt('id', 0);
 
         // Check to make sure we have an id
-        if (!$id || $id == 0) {
+        if (!$id) {
             return;
         }
 

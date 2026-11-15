@@ -364,7 +364,7 @@ class Citations extends SiteController
         $id = Request::getInt('id', 0);
 
         //make sure we have an id
-        if (!$id || $id == 0) {
+        if (!$id) {
             App::abort(404, Lang::txt('COM_CITATIONS_MUST_HAVE_ID'));
         }
 
@@ -635,7 +635,7 @@ class Citations extends SiteController
 
         // Set the pathway
         Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
-        if ($id && $id != 0) {
+        if ($id) {
             Pathway::append(
                 $shortenedTitle,
                 'index.php?option=' . $this->option . '&task=view&id=' . $row->id,

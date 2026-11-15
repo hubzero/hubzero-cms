@@ -52,7 +52,7 @@ class Media extends SiteController
         $source = null;
 
         // Need pub and version ID
-        if (!$pid || $pid == 0 || !$vid) {
+        if (!$pid || !$vid) {
             return;
         }
 

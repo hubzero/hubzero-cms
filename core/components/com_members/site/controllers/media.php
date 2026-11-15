@@ -597,7 +597,7 @@ class Media extends SiteController
         $id = Request::getInt('id', 0);
 
         //check to make sure we have an id
-        if (!$id || $id == 0) {
+        if (!$id) {
             return;
         }
 

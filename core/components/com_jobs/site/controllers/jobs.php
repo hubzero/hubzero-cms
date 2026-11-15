@@ -1321,7 +1321,7 @@ class Jobs extends SiteController
             $js = new Seeker($this->database);
             foreach ($job->applications as $ap) {
                 $seeker = $js->getSeeker($ap->uid, $job->employerid);
-                $ap->seeker = (!$seeker or count($seeker) == 0) ? null : $seeker[0];
+                $ap->seeker = (!$seeker) ? null : $seeker[0];
 
                 if ($ap->status == 2) {
                     $job->withdrawnlist[] = $ap;

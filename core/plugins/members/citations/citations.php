@@ -407,7 +407,7 @@ class Citations extends Plugin
         : $view->get('row')->title;
 
         // Set the pathway
-        if ($id && $id != 0) {
+        if ($id) {
             Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->get('row')->id);
             Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
         } else {

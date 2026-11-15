@@ -286,13 +286,13 @@ class Date extends Base
         $day   = intval($this->getValue('day', $value));
 
         $html = '';
-        if ($day && $day != 0) {
+        if ($day) {
             $html .= $day . ' ';
         }
-        if ($month && $month != 0) {
+        if ($month) {
             $html .= $this->getMonth($month) . ' ';
         }
-        if ($year && $year != 0) {
+        if ($year) {
             $html .= $year;
         }
         return $html;
