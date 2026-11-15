@@ -135,6 +135,11 @@ class SearchComponent extends Relational
         $model = $this->getSearchableModel();
         $newQuery = $this->getSearchIndexer();
 
+        // A component with no searchable model has nothing to index
+        if (!$model) {
+            return false;
+        }
+
         $modelResults = $model::searchResults($batchSize, $offset);
         $blackListIds = Blacklist::getDocIdsByScope($model::searchNamespace());
 
@@ -213,7 +218,7 @@ class SearchComponent extends Relational
     /**
      * Get model that contains the searchable records
      *
-     * @return  object  Interface Hubzero\Search\Searchable
+     * @return  string|false  Name of a class implementing Hubzero\Search\Searchable, if any
      */
     public function getSearchableModel()
     {

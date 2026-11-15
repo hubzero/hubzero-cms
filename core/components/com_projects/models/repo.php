@@ -43,13 +43,6 @@ class Repo extends Obj
     private $db = null;
 
     /**
-     * Registry
-     *
-     * @var  object
-     */
-    private $config;
-
-    /**
      * Data management adapter
      *
      * @var  object|null
@@ -139,7 +132,7 @@ class Repo extends Obj
     /**
      * Return the adapter for this repo
      *
-     * @return  \Components\Projects\Models\Adapters\Git|\Components\Projects\Models\Adapters\Nogit|string
+     * @return  \Components\Projects\Models\Adapters\Git|\Components\Projects\Models\Adapters\Nogit
      */
     private function adapter()
     {
@@ -1333,7 +1326,7 @@ class Repo extends Obj
         }
 
         // One last check
-        if ($tmp_name && ($virusChecked !== true || $virusChecked === false)) {
+        if ($tmp_name && $virusChecked !== true) {
             if (Helpers\Html::virusCheck($tmp_name)) {
                 $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
                 return false;
@@ -1522,7 +1515,7 @@ class Repo extends Obj
             if ($current['commitStatus'] == 'M') {
                 if (
                     ($next && $next['local'] && $current['local'])
-                    || ($next && $next['remote'] && $next['remote']) || !$next
+                    || ($next && $next['remote'] && $current['remote']) || !$next
                 ) {
                     $current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
                 }

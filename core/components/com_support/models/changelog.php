@@ -105,22 +105,22 @@ class Changelog extends Obj
                             $obj['field'] = $matches[1];
                         }
                     }
-                    if (preg_match('/<em>(.*?)<\/em>/i', $item, $matches)) {
-                        if (isset($matches[2])) {
-                            if (isset($obj['field'])) {
-                                $obj['before'] = trim($matches[1]);
-                                $obj['after']  = trim($matches[2]);
-                            } else {
-                                $obj['name']    = trim($matches[1]);
-                                $obj['address'] = trim($matches[2]);
-                            }
+                    // Two values ("from <em>a</em> to <em>b</em>") before one; a
+                    // single pattern only ever captured the first
+                    if (preg_match('/<em>(.*?)<\/em>.*?<em>(.*?)<\/em>/is', $item, $matches)) {
+                        if (isset($obj['field'])) {
+                            $obj['before'] = trim($matches[1]);
+                            $obj['after']  = trim($matches[2]);
                         } else {
-                            if (isset($obj['field'])) {
-                                $obj['after'] = trim($matches[1]);
-                            } else {
-                                $obj['name']    = Lang::txt('COM_SUPPORT_NONE');
-                                $obj['address'] = trim($matches[1]);
-                            }
+                            $obj['name']    = trim($matches[1]);
+                            $obj['address'] = trim($matches[2]);
+                        }
+                    } elseif (preg_match('/<em>(.*?)<\/em>/i', $item, $matches)) {
+                        if (isset($obj['field'])) {
+                            $obj['after'] = trim($matches[1]);
+                        } else {
+                            $obj['name']    = Lang::txt('COM_SUPPORT_NONE');
+                            $obj['address'] = trim($matches[1]);
                         }
                     }
                     if (isset($obj['role'])) {
@@ -324,7 +324,7 @@ class Changelog extends Obj
             // Is this a username or email address?
             if (!strstr($acc, '@')) {
                 // Username or user ID - load the user
-                $acc  = (is_string($acc)) ? strtolower($acc) : $acc;
+                $acc  = strtolower($acc);
                 $user = User::getInstance($acc);
 
                 // Did we find an account?

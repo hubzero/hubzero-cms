@@ -787,11 +787,7 @@ class Profiles extends SiteController
         $tab = Request::getString('active');  // The active tab (section)
 
         // Get the member's info
-        if (is_numeric($id)) {
-            $profile = Member::oneOrNew(intval($id));
-        } else {
-            $profile = Member::oneByUsername((string) $id);
-        }
+        $profile = Member::oneOrNew($id);
 
         // Ensure we have a member
         if (!$profile->get('id')) {
@@ -1224,19 +1220,18 @@ class Profiles extends SiteController
 
         // Incoming
         $request = Request::getString('request', null, 'post');
-        $raiselimit = Request::getString('raiselimit', null, 'post');
+        // The form posts raiselimit[sessions] or raiselimit[storage]; read as a
+        // string it was empty, and no request was ever handled
+        $raiselimit = Request::getArray('raiselimit', [], 'post');
 
         if ($raiselimit) {
-            $k = '';
-            if (is_array($raiselimit)) {
-                $k = key($raiselimit);
-            }
+            $k = key($raiselimit);
 
             switch ($k) {
                 case 'sessions':
                     $preferences = new \Components\Tools\Tables\Preferences($this->database);
                     $preferences->loadByUser($profile->get('id'));
-                    if (!$preferences || !$preferences->id) {
+                    if (!$preferences->id) {
                         $default = $preferences->find('one', ['alias' => 'default']);
                         $preferences->user_id  = $profile->get('id');
                         $preferences->class_id = $default->id;
@@ -1790,7 +1785,7 @@ class Profiles extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . ($id ? '&id=' . $id . '&active=profile' : '')),
+            Route::url('index.php?option=' . $this->option . '&id=' . $id . '&active=profile'),
         );
     }
 
@@ -1871,16 +1866,14 @@ class Profiles extends SiteController
                 array_push($user, ['ip' => $row->ip, 'idle' => $row->idle]);
             }
 
-            if ($user) {
-                $profile = Member::oneOrNew($prevuser);
+            $profile = Member::oneOrNew($prevuser);
 
-                $users[$prevuser] = $user;
-                $users[$prevuser]['uidNumber']       = $profile->get('id');
-                $users[$prevuser]['name']            = $profile->get('name');
-                $users[$prevuser]['org']             = $profile->get('organization');
-                $users[$prevuser]['orgtype']         = $profile->get('orgtype');
-                $users[$prevuser]['countryresident'] = $profile->get('countryresident');
-            }
+            $users[$prevuser] = $user;
+            $users[$prevuser]['uidNumber']       = $profile->get('id');
+            $users[$prevuser]['name']            = $profile->get('name');
+            $users[$prevuser]['org']             = $profile->get('organization');
+            $users[$prevuser]['orgtype']         = $profile->get('orgtype');
+            $users[$prevuser]['countryresident'] = $profile->get('countryresident');
         }
 
         // get sessions

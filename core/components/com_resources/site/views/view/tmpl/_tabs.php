@@ -41,7 +41,8 @@ foreach ($this->cats as $cat) {
     if (strtolower($name) == $this->active) {
         Pathway::append($cat[$name], $url);
 
-        if ($active != 'about') {
+        // The About tab adds nothing to the title
+        if (strtolower($name) != 'about') {
             Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
         }
 

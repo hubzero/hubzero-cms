@@ -806,8 +806,8 @@ class Curation extends SiteController
         // Load publication model
         $this->pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
-        // If publication not found, raise error
-        if (!$this->pub) {
+        // If publication not found, raise error; the model is made either way
+        if (!$this->pub->exists()) {
             echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('Error loading publication'),
@@ -985,7 +985,7 @@ class Curation extends SiteController
                     $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
                     if ($ugs) {
                         foreach ($ugs as $ug) {
-                            if ($group && $ug->cn == $group->get('cn')) {
+                            if ($ug->cn == $group->get('cn')) {
                                 $authorized = $ug->cn == $curatorgroup ? 'curator' : 'limited';
                             }
                         }

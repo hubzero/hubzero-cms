@@ -36,7 +36,6 @@ $user_messaging = (Plugin::isEnabled('members', 'messages') ? $this->config->get
 
 $prefix = $this->profile->get('name') . "'s";
 $edit = false;
-$password = false;
 $messaging = false;
 
 $tab = $this->active;
@@ -61,8 +60,8 @@ switch ($user_messaging) {
 //if user is this member turn on editing and password change, turn off messaging
 if ($this->profile->get('id') == User::get("id")) {
     if ($this->active == 'profile') {
+        // Editing the profile and changing the password go together
         $edit = true;
-        $password = true;
     }
     $messaging = false;
     $prefix = 'My';
@@ -232,9 +231,8 @@ if (!$no_html) {
             <?php endif; ?>
         </div><!-- /#page_sidebar -->
         <div id="page_main">
-            <?php if ($edit || $password) : ?>
+            <?php if ($edit) : ?>
                 <ul id="page_options">
-                    <?php if ($edit) : ?>
                         <li>
                             <?php $val = Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
                             <?php
@@ -252,20 +250,17 @@ if (!$no_html) {
                                 <?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
                             </a>
                         </li>
-                    <?php endif; ?>
-                    <?php if ($password) : ?>
                         <li>
-                            <?php $val = Route::url($this->profile->link('changepassword')); ?>
+                            <?php $passwordUrl = Route::url($this->profile->link('changepassword')); ?>
                             <?php $val = Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
                             <a
                                 class="password tooltips"
                                 id="change-password"
                                 title="<?php echo $val; ?> :: <?php echo Lang::txt('Change your password'); ?>"
-                                href="<?php echo $val; ?>">
+                                href="<?php echo $passwordUrl; ?>">
                                 <?php echo Lang::txt('COM_MEMBERS_CHANGE_PASSWORD'); ?>
                             </a>
                         </li>
-                    <?php endif; ?>
                 </ul>
             <?php endif; ?>
             <div id="page_header">

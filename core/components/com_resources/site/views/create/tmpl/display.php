@@ -256,7 +256,7 @@ $this
 
 <?php
 $categories = Components\Resources\Models\Type::getMajorTypes();
-if ($categories) {
+if ($categories->count()) {
     ?>
     <div class="grid">
         <div class="col span3">

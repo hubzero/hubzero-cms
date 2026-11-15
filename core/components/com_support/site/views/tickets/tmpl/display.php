@@ -436,7 +436,8 @@ $this
                                 );
                             }
                             ?>
-                            <tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
+                            <?php $cls = ($cls == 'odd') ? 'even' : 'odd'; ?>
+                            <tr class="<?php echo $cls; ?>">
                                 <td class="status-<?php echo $row->status->get('id'); ?>">
                                     <?php
                                     $titleText = Lang::txt('COM_SUPPORT_DETAILS') . ' :: '

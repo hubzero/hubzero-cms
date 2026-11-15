@@ -332,13 +332,13 @@ class Git extends Obj
 
         $moved = 0;
 
-        if ($type == 'folder' && $from != '' && $from != $where  && is_dir($this->path . DS . $from)) {
+        if ($type == 'folder' && $from != $where && is_dir($this->path . DS . $from)) {
             // Make Git call
             $out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
             $commitMsg .= 'Moved folder ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
             $moved++;
-        } elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->path . DS . $from)) {
+        } elseif ($type == 'file' && $from != $where && file_exists($this->path . DS . $from)) {
             // Make Git call
             $out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
@@ -1327,7 +1327,7 @@ class Git extends Obj
             if ($current['commitStatus'] == 'M') {
                 if (
                     ($next && $next['local'] && $current['local'])
-                    || ($next && $next['remote'] && $next['remote']) || !$next
+                    || ($next && $next['remote'] && $current['remote']) || !$next
                 ) {
                     $current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
                 }

@@ -722,7 +722,7 @@ class Html extends Obj
         if (strlen($name) > $chars) {
             $names = explode(' ', $name);
             $name = $names[0];
-            if (count($names) > 0 && $names[1] != '') {
+            if (isset($names[1]) && $names[1] != '') {
                 $name  = $name . ' ';
                 $name .= substr($names[1], 0, 1);
                 $name .= '.';
@@ -1134,16 +1134,14 @@ class Html extends Obj
 
         $desectPath = explode(DS, $dir);
 
-        if ($dir && count($desectPath) > 0) {
+        if ($dir) {
             for ($p = 0; $p < count($desectPath); $p++) {
                 $parent  = count($desectPath) > 1 && $p != count($desectPath) ? $href : '';
                 $href   .= DS . $desectPath[$p];
                 $name = $desectPath[$p];
                 if ($adapter) {
                     $temp = Entity::fromPath($desectPath[$p], $adapter);
-                    if ($temp) {
-                        $name = $temp->displayName();
-                    }
+                    $name = $temp->displayName();
                 }
                 // the segment comes from the request (subdir=) or a stored name
                 $name = htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8');

@@ -930,7 +930,7 @@ class Filesv1r0 extends ApiController
         $items = $this->getCollection();
 
         // Check items
-        if (!$items || count($items) == 0) {
+        if (count($items) == 0) {
             // (an API controller has no error bag; setError() here was a fatal)
             throw new Exception(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'), 404);
         }
@@ -1456,9 +1456,10 @@ class Filesv1r0 extends ApiController
                 $result = false;
             }
 
-            if (is_resource($file)) {
-                // Some (3rd party) adapters close the stream internally.
-                fclose($file);
+            // The stream, not the entity; some (3rd party) adapters close it
+            // internally, and it was left open otherwise
+            if (is_resource($fp)) {
+                fclose($fp);
             }
 
             // Rename the temporary directory (to avoid access from other
