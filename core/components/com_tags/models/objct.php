@@ -254,7 +254,7 @@ class Objct extends Relational
             ->whereEquals('tagid', $oldtagid)
             ->rows();
 
-        if ($rows) {
+        if (count($rows)) {
             $entries = [];
 
             foreach ($rows as $row) {

@@ -250,7 +250,7 @@ class Wishes extends AdminController
 
         $assignees = null;
 
-        if ($lists) {
+        if (count($lists)) {
             foreach ($lists as $k => $list) {
                 $none = new stdClass();
                 $none->id = '0';

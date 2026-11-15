@@ -639,7 +639,7 @@ class Auth extends SiteController
 
         $conflict = [];
 
-        if ($profile_conflicts) {
+        if (count($profile_conflicts)) {
             foreach ($profile_conflicts as $auser) {
                 $auth_link  = \Hubzero\Auth\Link::findByUserId($auser->id);
                 $dname = (is_object($auth_link) && $auth_link->auth_domain_name)

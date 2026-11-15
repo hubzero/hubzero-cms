@@ -93,7 +93,7 @@ class RecentPage extends WikiMacro
         $html = '';
 
         // Did we get a result from the database?
-        if ($rows) {
+        if (count($rows)) {
             foreach ($rows as $row) {
                 $txt = strip_tags((string) $row->version->get('pagehtml'));
                 $txt = str_replace(["\n", "\r", "\t", '   '], ' ', $txt);

@@ -309,7 +309,7 @@ if (!$tmpl) :
                         ->order('ordering', 'ASC')
                         ->rows();
 
-                    if ($folders) :
+                    if (count($folders)) :
                         foreach ($folders as $folder) :
                             ?><option
                                 value="<?php echo $folder->id; ?>"

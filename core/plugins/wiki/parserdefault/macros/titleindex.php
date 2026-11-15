@@ -101,7 +101,7 @@ class TitleIndex extends WikiMacro
         $rows = $pages->rows();
 
         // Did we get a result from the database?
-        if ($rows && count($rows)) {
+        if (count($rows)) {
             $items = '';
             foreach ($rows as $row) {
                 if ($row->get('pagename') == $this->pagename) {

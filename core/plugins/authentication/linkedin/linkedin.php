@@ -398,7 +398,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
             ->rows();
 
         // Only adopt an unambiguous match
-        if (!$rows || $rows->count() != 1) {
+        if ($rows->count() != 1) {
             return;
         }
 

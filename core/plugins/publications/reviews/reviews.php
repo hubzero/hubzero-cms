@@ -195,7 +195,7 @@ class Reviews extends Plugin
             ->ordered()
             ->rows();
 
-        if ($comments) {
+        if (count($comments)) {
             foreach ($comments as $comment) {
                 //$comment->replies = self::getComments($id, $comment, 'pubreview', $level, $abuse);
 

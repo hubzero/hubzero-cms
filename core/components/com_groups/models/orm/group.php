@@ -880,7 +880,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 
         $result = $query->rows();
 
-        return $result ? $result : false;
+        return $result;
     }
 
     /**

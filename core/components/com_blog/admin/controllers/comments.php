@@ -117,7 +117,7 @@ class Comments extends AdminController
         $list       = [];
         $children   = [];
 
-        if ($rows) {
+        if (count($rows)) {
             // First pass - collect children
             foreach ($rows as $k) {
                 $pt = $k->get('parent');

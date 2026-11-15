@@ -215,10 +215,6 @@ class HtmlMenu
             ->order('ordering', 'asc')
             ->rows();
 
-        if (!$mitems) {
-            $mitems = [];
-        }
-
         $mitems_temp = $mitems;
 
         // Establish the hierarchy of the menu

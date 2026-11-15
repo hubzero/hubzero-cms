@@ -110,7 +110,7 @@ class Preference extends Relational
             ->whereEquals('class_id', $class->get('id'))
             ->rows();
 
-        if ($records && count($records) > 0) {
+        if (count($records) > 0) {
             foreach ($records as $preference) {
                 $preference->set('jobs', $class->get('jobs'));
                 $preference->save();
@@ -138,7 +138,7 @@ class Preference extends Relational
             ->whereEquals('class_id', $id)
             ->rows();
 
-        if ($records && count($records) > 0) {
+        if (count($records) > 0) {
             foreach ($records as $preference) {
                 $preference->set('jobs', $class->get('jobs'));
                 $preference->set('class_id', $class->get('id'));

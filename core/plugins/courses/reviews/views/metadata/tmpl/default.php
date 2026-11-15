@@ -40,7 +40,7 @@ $ratings = \Components\Courses\Models\Comment::all()
     ])
     ->rows();
 
-if ($ratings) {
+if (count($ratings)) {
     $sum = 0;
     $total = count($ratings);
     foreach ($ratings as $item) {

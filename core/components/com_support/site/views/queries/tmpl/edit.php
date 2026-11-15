@@ -268,7 +268,7 @@ if (!$tmpl && !$no_html) {
                         ->order('ordering', 'ASC')
                         ->rows();
 
-                    if ($folders) {
+                    if (count($folders)) {
                         foreach ($folders as $folder) {
                             $selectedAttr = $folderIdSelected($folder->id);
                             $optionText = $this->escape(stripslashes($folder->title));

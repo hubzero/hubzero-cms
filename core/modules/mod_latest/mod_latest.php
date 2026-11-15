@@ -210,7 +210,7 @@ class Latest extends Module
                     // query model is a relationship object, not the parent row)
                     $parentLevel = (int) Category::oneOrNew((int) $catid)->get('level');
 
-                    if ($items) {
+                    if (count($items)) {
                         foreach ($items as $category) {
                             $condition = (($category->level - $parentLevel) <= $levels);
                             if ($condition) {

@@ -249,7 +249,7 @@ class Substitute extends Relational
             ->whereEquals('tag_id', $oldtagid)
             ->rows();
 
-        if ($rows) {
+        if (count($rows)) {
             $entries = [];
 
             foreach ($rows as $row) {

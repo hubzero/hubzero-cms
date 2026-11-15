@@ -59,7 +59,7 @@ class FileIndex extends WikiMacro
         $rows = $attach->rows();
 
         // Did we get a result from the database?
-        if ($rows) {
+        if (count($rows)) {
             $config = Component::params('com_wiki');
             if ($this->filepath != '') {
                 $config->set('filepath', $this->filepath);

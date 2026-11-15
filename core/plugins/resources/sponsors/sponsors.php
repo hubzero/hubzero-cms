@@ -68,7 +68,7 @@ class Sponsors extends Plugin
             ->whereEquals('state', 1)
             ->rows();
 
-        if (!$records) {
+        if (!count($records)) {
             return $arr;
         }
 

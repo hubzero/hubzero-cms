@@ -389,7 +389,7 @@ class Author extends Table
             $members = \Components\Members\Models\Member::all()
                 ->whereIn('id', array_keys($userIds))
                 ->rows();
-            if ($members) {
+            if (count($members)) {
                 foreach ($members as $m) {
                     $mid = (int) $m->get('id');
                     if ($mid) {

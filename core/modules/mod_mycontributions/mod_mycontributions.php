@@ -147,7 +147,7 @@ class Mycontributions extends Module
 
                             $unranked = 0;
 
-                            if ($wishes) {
+                            if (count($wishes)) {
                                 foreach ($wishes as $w) {
                                     if ($w->ranked == 0) {
                                         $unranked++;
