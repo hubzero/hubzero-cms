@@ -175,6 +175,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      * @param   string  $table  A table name
      * @param   string  $field  A field name
      * @return  bool
+     * @phpstan-impure
      */
     public function tableHasField($table, $field)
     {
@@ -372,6 +373,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
      *
      * @param   string  $table
      * @return  bool
+     * @phpstan-impure
      */
     public function tableExists($table)
     {

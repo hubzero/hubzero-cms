@@ -29,9 +29,8 @@ namespace Hubzero\Inertia\Tests {
 
         protected function setUp(): void
         {
-            if ((new \ReflectionClass('App'))->getName() === AppStub::class) {
-                AppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            AppStub::reset();
 
             $request = new RequestStub([], 'GET', ['REQUEST_URI' => '/unit/inertia']);
             \App::set('request', $request);

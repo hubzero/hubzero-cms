@@ -3466,6 +3466,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   string  $table  The table we're looking for
      * @return  bool
+     * @phpstan-impure
      */
     abstract public function tableExists($table);
 
@@ -3475,6 +3476,7 @@ abstract class Driver implements LoggerAwareInterface
      * @param   string  $table  A table name
      * @param   string  $field  A field name
      * @return  bool
+     * @phpstan-impure
      */
     abstract public function tableHasField($table, $field);
 

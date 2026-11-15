@@ -19,13 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class LoaderTest extends TestCase
 {
-    /**
-     * Hubzero\Template\Loader
-     *
-     * @var  object
-     */
-    private $instance;
-
     private $loader;
 
     /**

@@ -169,7 +169,7 @@ class Checker
     }
 
     /**
-     * Get IP address
+     * What each detector found in the last check
      *
      * @return  array
      */

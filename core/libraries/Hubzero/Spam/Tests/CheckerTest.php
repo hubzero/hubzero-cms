@@ -93,18 +93,22 @@ class CheckerTest extends Basic
     }
 
     /**
-     * Test that getReport() returns an array
+     * Test that getReport() holds one entry per detector after a check
      *
      * @return  void
      **/
     public function testGetReport()
     {
+        // Nothing is reported until something is checked
+        $this->assertSame([], (new Checker())->getReport());
+
         $service = new Checker();
         $service->registerDetector(new Detector());
-
+        $service->check(['text' => 'this is spam']);
         $report = $service->getReport();
 
-        $this->assertTrue(is_array($report));
+        $this->assertCount(1, $report);
+        $this->assertTrue($report[0]['is_spam']);
     }
 
     /**

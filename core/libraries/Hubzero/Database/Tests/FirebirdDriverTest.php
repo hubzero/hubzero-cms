@@ -889,11 +889,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         );
 
         $driver->setQuery("SELECT DESCRIPTION FROM FT_ITEMS WHERE TITLE = 'Blob Test'");
-        $description = $driver->loadResult();
-
-        if (is_resource($description)) {
-            $description = stream_get_contents($description);
-        }
+        $description = $this->blobText($driver->loadResult());
 
         $this->assertEquals($longText, $description);
 
@@ -1554,5 +1550,16 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             AND TRIM(rf.RDB\$FIELD_NAME) = 'REQUIRED_FIELD'
         ");
         $this->assertEquals(1, (int) $driver->loadResult());
+    }
+
+    /**
+     * A BLOB column may come back as a stream rather than a string
+     *
+     * @param   mixed  $value  What the driver returned
+     * @return  string
+     */
+    private function blobText($value): string
+    {
+        return is_resource($value) ? (string) stream_get_contents($value) : (string) $value;
     }
 }

@@ -25,7 +25,7 @@ use Hubzero\Template\Tests\Support\Environment;
 class OverridesTest extends Basic
 {
     /**
-     * @var  Environment
+     * @var  Environment|null
      */
     private $env;
 

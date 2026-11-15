@@ -31,9 +31,8 @@ namespace Hubzero\Component\Tests {
                         . '2.4-main.',
                 );
             }
-            if ((new \ReflectionClass('App'))->getName() === AppStub::class) {
-                AppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            AppStub::reset();
         }
 
         #[Test]

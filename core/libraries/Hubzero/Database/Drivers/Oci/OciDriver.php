@@ -787,6 +787,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string  $table  A table name (with or without prefix)
      * @return  bool
+     * @phpstan-impure
      */
     public function tableExists($table)
     {

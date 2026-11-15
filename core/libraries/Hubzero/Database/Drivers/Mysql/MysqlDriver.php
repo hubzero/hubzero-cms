@@ -1421,6 +1421,7 @@ class MysqlDriver extends BaseSqlDriver
      *
      * @param   string  $table  The table we're looking for
      * @return  bool
+     * @phpstan-impure
      */
     public function tableExists($table)
     {
@@ -1433,6 +1434,7 @@ class MysqlDriver extends BaseSqlDriver
      * @param   string  $table  A table name
      * @param   string  $field  A field name
      * @return  bool
+     * @phpstan-impure
      */
     public function tableHasField($table, $field)
     {

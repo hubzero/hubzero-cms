@@ -27,9 +27,8 @@ namespace Hubzero\Component\Tests {
             string $uri,
             string $version = 'v1',
         ): TestableInertiaFlowService {
-            if ((new \ReflectionClass('App'))->getName() === InertiaFlowAppStub::class) {
-                InertiaFlowAppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            InertiaFlowAppStub::reset();
 
             $request = new InertiaFlowRequestStub($headers, $method, ['REQUEST_URI' => $uri]);
             \App::set('request', $request);

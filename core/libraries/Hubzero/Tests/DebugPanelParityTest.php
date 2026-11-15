@@ -25,9 +25,8 @@ namespace Hubzero\Tests {
     {
         protected function setUp(): void
         {
-            if ((new \ReflectionClass('App'))->getName() === DebugParityAppStub::class) {
-                DebugParityAppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            DebugParityAppStub::reset();
 
             \App::set('response', new DebugParityResponseStub());
         }

@@ -1331,6 +1331,7 @@ class FirebirdDriver extends BaseSqlDriver
 
     /**
      * {@inheritdoc}
+     * @phpstan-impure
      */
     public function tableExists($table)
     {

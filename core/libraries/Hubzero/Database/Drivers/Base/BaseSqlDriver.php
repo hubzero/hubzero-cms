@@ -204,6 +204,7 @@ abstract class BaseSqlDriver extends PdoDriver
      *
      * @param   string  $table  The table we're looking for
      * @return  bool
+     * @phpstan-impure
      */
     public function tableExists($table)
     {
@@ -239,6 +240,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * @param   string  $table  A table name
      * @param   string  $field  A field name
      * @return  bool
+     * @phpstan-impure
      */
     public function tableHasField($table, $field)
     {

@@ -180,6 +180,11 @@ class SeedRepairTest extends Basic
     private function repairUsage($db)
     {
         $migration = new class ($db) extends Migration20261110130000ComUsage {
+            /**
+             * The test database stands in for the metrics one
+             *
+             * @return  object
+             */
             protected function metricsDatabase()
             {
                 return $this->db;

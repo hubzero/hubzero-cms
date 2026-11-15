@@ -23,9 +23,8 @@ namespace Hubzero\Component\Tests {
     {
         protected function setUp(): void
         {
-            if ((new \ReflectionClass('App'))->getName() === HtmxFlowAppStub::class) {
-                HtmxFlowAppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            HtmxFlowAppStub::reset();
 
             \App::set('request', new HtmxFlowRequestStub(['HX-Request' => 'true']));
             \App::set('response', new HtmxFlowResponseStub());

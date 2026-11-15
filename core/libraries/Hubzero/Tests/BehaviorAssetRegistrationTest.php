@@ -27,9 +27,8 @@ namespace Hubzero\Tests {
 
         protected function setUp(): void
         {
-            if ((new \ReflectionClass('App'))->getName() === BehaviorAssetAppStub::class) {
-                BehaviorAssetAppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            BehaviorAssetAppStub::reset();
 
             \App::set('request', new BehaviorAssetRequestStub());
             \App::set('config', new BehaviorAssetConfigStub());

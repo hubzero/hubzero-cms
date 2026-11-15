@@ -1372,6 +1372,7 @@ class AlterTableBuilder
      * cannot be checked is emitted and the server decides.
      *
      * @return bool
+     * @phpstan-impure
      */
     public function tableExists(): bool
     {

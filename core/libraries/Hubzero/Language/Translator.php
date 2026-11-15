@@ -277,6 +277,7 @@ class Translator extends Obj
      * @param   boolean  $jsSafe                Make the result javascript safe
      * @param   boolean  $interpretBackSlashes  Interpret \t and \n
      * @return  string   The translation of the string
+     * @phpstan-impure
      */
     public function translate($string, $jsSafe = false, $interpretBackSlashes = true)
     {

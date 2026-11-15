@@ -31,9 +31,8 @@ namespace Hubzero\Component\Tests {
                         . '2.4-main.',
                 );
             }
-            if ((new \ReflectionClass('App'))->getName() === HtmxAppStub::class) {
-                HtmxAppStub::reset();
-            }
+            // The stub's own state; clearing it is harmless when App is not the stub
+            HtmxAppStub::reset();
 
             \App::set('response', new HtmxResponseStub());
         }

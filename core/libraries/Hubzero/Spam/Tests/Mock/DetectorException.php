@@ -22,7 +22,7 @@ class DetectorException extends Service
      * Run content through spam detection
      *
      * @codeCoverageIgnore
-     * @param   array  $data
+     * @param   mixed  $data  Whatever the checker is given
      * @return  bool
      * @throws  Exception
      */

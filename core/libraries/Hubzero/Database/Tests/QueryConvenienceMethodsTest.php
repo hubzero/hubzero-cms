@@ -718,7 +718,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
             ->whereEquals('id', 1)
             ->increment('login_count');
 
-        $this->assertIsInt($result);
+        // One row matched the WHERE
+        $this->assertSame(1, $result);
     }
 
     /**
@@ -736,7 +737,8 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
             ->whereEquals('id', 1)
             ->decrement('stock');
 
-        $this->assertIsInt($result);
+        // One row matched the WHERE
+        $this->assertSame(1, $result);
     }
 
     // =========================================================================

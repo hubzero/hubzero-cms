@@ -270,9 +270,10 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $descCol = $table->getColumn('description');
         $this->assertTrue($descCol->isNullable());
 
-        // Name was NOT nullable
+        // Name was given no nullable() either: the schema builder makes columns
+        // nullable unless notNull() says otherwise
         $nameCol = $table->getColumn('name');
-        $this->assertIsBool($nameCol->isNullable());
+        $this->assertTrue($nameCol->isNullable());
 
         // Cleanup
         $driver->dropTable($tableName, true);
@@ -542,10 +543,10 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $this->assertTrue($schema->hasColumn($tableName, 'name'));
 
         $columns = $schema->getTableColumns($tableName);
-        $this->assertIsArray($columns);
+        $this->assertArrayHasKey('name', $columns);
 
         $keys = $schema->getTableKeys($tableName);
-        $this->assertIsArray($keys);
+        $this->assertNotEmpty($keys);
 
         // introspectTable provides the same data in structured form
         $table = $schema->introspectTable($tableName);

@@ -260,6 +260,7 @@ class SchemaManager
      *
      * @param   string  $table  The table name to check
      * @return  bool
+     * @phpstan-impure
      */
     public function tableExists(string $table): bool
     {
