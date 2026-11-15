@@ -364,7 +364,7 @@ class Events extends GroupMacro
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/for[\s]*=[\s]*([\w\d\s]*)/', $arg, $matches)) {
-                $for = (isset($matches[1])) ? $matches[1] : '';
+                $for = $matches[1];
                 unset($args[$k]);
 
                 // Validation - Check if from is a number, space, then word
@@ -395,7 +395,7 @@ class Events extends GroupMacro
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/from[\s]*=[\s]*([\w\d-]*)/', $arg, $matches)) {
-                $from = (isset($matches[1])) ? $matches[1] : '';
+                $from = $matches[1];
                 unset($args[$k]);
 
                 // Validation - Check if from is a number, space, then word, or the word "today"
@@ -436,7 +436,7 @@ class Events extends GroupMacro
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/to[\s]*=[\s]*([\w\d-]*)/', $arg, $matches)) {
-                $to = (isset($matches[1])) ? $matches[1] : '';
+                $to = $matches[1];
                 unset($args[$k]);
 
                 // Validation - Check if to is a number, space, then word, or the word "today"
@@ -473,7 +473,7 @@ class Events extends GroupMacro
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
             if (preg_match('/order[\s]*=[\s]*([a-z]*)/', $arg, $matches)) {
-                $order = (isset($matches[1])) ? $matches[1] : '';
+                $order = $matches[1];
                 unset($args[$k]);
 
                 // Validation - Check if order is either "forward" or "backward"

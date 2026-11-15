@@ -131,7 +131,7 @@ class Supergroup extends Plugin
             $currentSegments = explode('/', trim(Request::path(), '/'));
 
             // make sure were building within groups
-            if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups') {
+            if (!isset($currentSegments[1]) || $currentSegments[0] != 'groups') {
                 return $uri;
             }
 
@@ -141,7 +141,7 @@ class Supergroup extends Plugin
             $urlSegments = explode('/', trim($url, '/'));
 
             // make sure this is not a group route.
-            if (!isset($urlSegments[0]) || $urlSegments[0] == 'groups') {
+            if ($urlSegments[0] == 'groups') {
                 return $uri;
             }
 

@@ -293,7 +293,7 @@ class Feed extends Macro
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {
-                $class = (isset($matches[1])) ? $matches[1] : '';
+                $class = $matches[1];
                 unset($args[$k]);
                 return $class;
             }

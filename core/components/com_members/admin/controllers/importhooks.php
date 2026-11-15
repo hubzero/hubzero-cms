@@ -74,7 +74,7 @@ class ImportHooks extends AdminController
 
         $model = Hook::all();
 
-        if (isset($filters['state']) && $filters['state']) {
+        if ($filters['state']) {
             if (!is_array($filters['state'])) {
                 $filters['state'] = [$filters['state']];
             }
@@ -83,7 +83,7 @@ class ImportHooks extends AdminController
             $model->whereIn('state', $filters['state']);
         }
 
-        if (isset($filters['type']) && $filters['type']) {
+        if ($filters['type']) {
             $model->whereEquals('type', $filters['type']);
         }
 

@@ -590,7 +590,7 @@ class Feed extends Plugin
 
         // In this case, we're expecting JSON output
         // @TODO: Move to API
-        if (isset($filters['created']) && $filters['created']) {
+        if ($filters['created']) {
             $data = new \stdClass();
             $data->activities = [];
 

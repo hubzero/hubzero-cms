@@ -2152,7 +2152,7 @@ abstract class Driver implements LoggerAwareInterface
 
         $file = $caller['file'] ?? 'unknown';
         $line = $caller['line'] ?? 0;
-        $function = $caller['function'] ?? '';
+        $function = $caller['function'];
         $sqlPreview = substr($sql, 0, 200);
 
         if ($this->rawQueryMode === 'log') {

@@ -18,7 +18,7 @@ namespace Hubzero\Facades;
  * @method static bool    getBool(string $key = null, bool $default = null, string $hash = 'input')
  * @method static string  getWord(string $key, mixed $default = null, string $hash = 'input')
  * @method static string  getCmd(string $key = null, mixed $default = null, string $hash = 'input')
- * @method static string  getString(string $key, mixed $default = null, string $hash = 'input')
+ * @method static ($default is null ? string|null : string) getString(string $key, $default = null, $hash = 'input')
  * @method static array   getArray(string $key = null, mixed $default = [], string $hash = 'input')
  * @method static array   getSimpleArray(string $key = null, array $default = [], string $hash = 'input')
  * @method static string  method()

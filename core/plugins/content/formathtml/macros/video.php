@@ -295,10 +295,10 @@ class Video extends Macro
 
             // Optional WebVTT captions: [[Video(clip.mp4, captions="clip.en.vtt")]]
             if (isset($this->attr['captions']) && $this->attr['captions'] != '') {
-                $capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '')
+                $capLang  = ($this->attr['captionlang'] != '')
                     ? $this->attr['captionlang']
                     : 'en';
-                $capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '')
+                $capLabel = ($this->attr['captionlabel'] != '')
                     ? $this->attr['captionlabel']
                     : 'Captions';
                 $html .= '<track kind="captions" src="'

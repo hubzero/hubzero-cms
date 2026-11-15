@@ -169,7 +169,7 @@ $tool_path = $config->get('tool_path');
                     <?php foreach ($tools as $tool) : ?>
                         <?php
                         preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr);
-                        $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias)
+                        $selected = ($substr && $substr[1] == $tool->alias)
                             ? 'selected="selected"'
                             : '';
                         ?>

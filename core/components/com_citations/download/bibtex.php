@@ -90,7 +90,7 @@ class Bibtex extends Downloadable
                 $addarray['author'][$i]['first'] = (!empty($first)) ? $first : '';
                 $addarray['author'][$i]['last']  = (!empty($last)) ? trim($last) : '';
             } else {
-                $addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
+                $addarray['author'][$i]['first'] = $author_arr[1];
                 $addarray['author'][$i]['last']  = $author_arr[0];
             }
 

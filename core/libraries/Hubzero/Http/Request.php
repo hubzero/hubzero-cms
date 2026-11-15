@@ -313,7 +313,7 @@ class Request extends BaseRequest
      * @param   string  $name      Request key
      * @param   mixed   $default  Default value
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  string  Request variable
+     * @return  ($default is null ? string|null : string)  Request variable, or the default when absent
      */
     public function getString($name, $default = null, $hash = 'input')
     {

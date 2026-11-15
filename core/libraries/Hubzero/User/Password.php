@@ -809,7 +809,7 @@ class Password
 
             $salt = $parts[0];
 
-            switch (isset($parts[1]) ? $parts[1] : '6') {
+            switch ($parts[1]) {
                 case '6':
                 default:
                     $encryption = 'crypt-sha512';

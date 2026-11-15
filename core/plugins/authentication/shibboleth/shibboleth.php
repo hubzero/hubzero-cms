@@ -453,7 +453,7 @@ class Shibboleth extends Plugin
                 $attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);
             }
             // Eppn is sometimes or maybe always in practice an email address
-            if (!isset($attrs['email']) && isset($attrs['eppn']) && strpos($attrs['eppn'], '@')) {
+            if (!isset($attrs['email']) && strpos($attrs['eppn'], '@')) {
                 $attrs['email'] = $attrs['eppn'];
             }
             if (!isset($attrs['displayName']) && isset($attrs['givenName']) && isset($attrs['sn'])) {

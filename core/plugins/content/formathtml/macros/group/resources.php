@@ -174,7 +174,7 @@ class Resources extends GroupMacro
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {
-                $class = (isset($matches[1])) ? $matches[1] : '';
+                $class = $matches[1];
                 unset($args[$k]);
                 return $class;
             }
@@ -191,7 +191,7 @@ class Resources extends GroupMacro
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/type=([\w]*)/', $arg, $matches)) {
-                $type = (isset($matches[1])) ? $matches[1] : '';
+                $type = $matches[1];
                 unset($args[$k]);
                 return $type;
             }

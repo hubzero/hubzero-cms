@@ -238,7 +238,7 @@ class Resources extends Plugin
             // Get results
             $query = \Components\Resources\Models\Entry::allWithFilters($filters);
 
-            if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
+            if (($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
                 $s = \Components\Resources\Models\Stat::blank()->getTableName();
 
                 $query->select(

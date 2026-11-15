@@ -416,7 +416,7 @@ class Db
                         $where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
                     }
                 } elseif (isset($val['filtered_view'])) {
-                    if (isset($val['filter_type']) && $val['filter_type'] == 'like') {
+                    if ($val['filter_type'] == 'like') {
                         $where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
                     } else {
                         $where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
@@ -528,7 +528,7 @@ class Db
                         $having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
                     }
                 } elseif (isset($val['filtered_view'])) {
-                    if (isset($val['filter_type']) && $val['filter_type'] == 'like') {
+                    if ($val['filter_type'] == 'like') {
                         $having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
                     } else {
                         $having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";

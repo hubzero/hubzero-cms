@@ -731,7 +731,7 @@ class Calendar extends Plugin
         $event['repeating_rule'] = $this->buildRepeatingRule();
 
         //stringify params
-        if (isset($event['params']) && count($event['params']) > 0) {
+        if (count($event['params']) > 0) {
             $params = new \Hubzero\Config\Registry($event['params']);
             $event['params'] = $params->toString();
         }
@@ -834,7 +834,7 @@ class Calendar extends Plugin
             return $this->edit();
         }
 
-        if (isset($event['content']) && $event['content']) {
+        if ($event['content']) {
             $event['content'] = \Hubzero\Utility\Sanitize::clean($event['content']);
         }
 

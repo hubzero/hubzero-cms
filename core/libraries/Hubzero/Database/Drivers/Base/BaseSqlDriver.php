@@ -549,7 +549,7 @@ abstract class BaseSqlDriver extends PdoDriver
             return null;
         }
 
-        return $matches[1] ?? null;
+        return $matches[1];
     }
 
     /**

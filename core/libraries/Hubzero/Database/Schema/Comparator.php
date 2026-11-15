@@ -1014,8 +1014,8 @@ class Comparator
         // Extract base type and parameters
         if (preg_match('/^([a-z]+)(?:\(([^)]+)\))?(.*)$/', $type, $matches)) {
             $baseType = $matches[1];
-            $params = $matches[2] ?? '';
-            $suffix = trim($matches[3] ?? '');
+            $params = $matches[2];
+            $suffix = trim($matches[3]);
 
             // Apply type aliases
             if (isset($this->typeAliases[$baseType])) {

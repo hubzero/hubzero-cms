@@ -193,14 +193,14 @@ class Tickets extends AdminController
         ];
 
         if ($filters['show'] < 0) {
-            if (!isset($filters['sort']) || !$filters['sort']) {
+            if (!$filters['sort']) {
                 $filters['sort'] = trim(Request::getState(
                     $this->option . '.' . $this->controller . '.sort',
                     'filter_order',
                     'created',
                 ));
             }
-            if (!isset($filters['sortdir']) || !$filters['sortdir']) {
+            if (!$filters['sortdir']) {
                 $filters['sortdir'] = trim(Request::getState(
                     $this->option . '.' . $this->controller . '.sortdir',
                     'filter_order_Dir',

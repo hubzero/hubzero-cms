@@ -94,7 +94,7 @@ class Url extends Content
     public function preview($asset)
     {
         if (preg_match('/http[s]*:\/\/(www\.)?youtube.com\/watch\?v=([0-9A-Za-z_-]+)/', $asset->get('url'), $matches)) {
-            if (isset($matches[2]) && !empty($matches[2])) {
+            if (!empty($matches[2])) {
                 $content  = '';
                 $content .= '<iframe width="560" height="315" src="https://www.youtube.com/embed/';
                 $content .= $matches[2];

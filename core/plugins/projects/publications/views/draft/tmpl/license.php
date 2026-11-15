@@ -176,7 +176,7 @@ $text = $this->pub->get('license_text', $defaultText);
                         );
                         $i = 0;
 
-                        if ($this->license->text && isset($substitutes[1]) && !empty($substitutes[1])) { ?>
+                        if ($this->license->text && !empty($substitutes[1])) { ?>
                             <div class="replacements">
                                 <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_REPLACE_DEFAULTS'); ?></p>
                                 <?php

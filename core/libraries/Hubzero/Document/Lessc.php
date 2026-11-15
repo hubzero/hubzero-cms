@@ -47,7 +47,7 @@ class Lessc extends \LesserPHP\Lessc
                 // structure does not contain any file information we should
                 // specify the root to trigger a rebuild.
                 $root = $in['root'];
-            } elseif (isset($in['files']) and is_array($in['files'])) {
+            } elseif (is_array($in['files'])) {
                 foreach ($in['files'] as $fname => $ftime) {
                     if (!file_exists($fname) or filemtime($fname) > $ftime) {
                         // One of the files we knew about previously has changed

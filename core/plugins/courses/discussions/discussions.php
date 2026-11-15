@@ -934,7 +934,7 @@ class Discussions extends Plugin
                 ->view('_threads', 'threads')
                 ->set('category', 'categorysearch')
                 ->set('option', $this->option)
-                ->set('threads', (isset($filters['id']) && count($filters['id']) > 0) ? $post->find($filters) : null)
+                ->set('threads', (count($filters['id']) > 0) ? $post->find($filters) : null)
                 ->set('config', $this->params)
                 ->set('cls', 'odd')
                 ->set('search', $srch) // Pass the search term along so it can be highlighted in text

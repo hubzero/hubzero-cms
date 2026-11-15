@@ -761,7 +761,7 @@ class Json
             $link = substr($path, strlen(PATH_ROOT));
             if (!$label) {
                 $pi = pathinfo($path);
-                $label = isset($pi['filename']) ? $pi['filename'] : false;
+                $label = $pi['filename'];
                 if (isset($pi['extension'])) {
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }
@@ -770,7 +770,7 @@ class Json
             $link = $path;
             if (!$label) {
                 $pi = pathinfo($path);
-                $label = isset($pi['filename']) ? $pi['filename'] : false;
+                $label = $pi['filename'];
                 if (isset($pi['extension'])) {
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }
@@ -779,7 +779,7 @@ class Json
             $link = $path;
             if (!$label) {
                 $pi = pathinfo($path);
-                $label = isset($pi['filename']) ? $pi['filename'] : false;
+                $label = $pi['filename'];
                 if (isset($pi['extension'])) {
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }
@@ -792,7 +792,7 @@ class Json
             $link = '/' . DvConfig::$com_name . '/stream_file/' . $dd['db_id']['id'] . '/?hash=' . $hash;
             if (!$label) {
                 $pi = pathinfo($path);
-                $label = isset($pi['filename']) ? $pi['filename'] : false;
+                $label = $pi['filename'];
                 if (isset($pi['extension'])) {
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }

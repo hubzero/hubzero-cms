@@ -157,7 +157,7 @@ class Router extends Base
                 break;
 
             case 'reportabuse':
-                $vars['task'] = (isset($segments[0])) ? $segments[0] : '';
+                $vars['task'] = $segments[0];
                 if (!empty($segments[1])) {
                     if (is_numeric($segments[1])) {
                         $vars['id'] = $segments[1];
@@ -171,7 +171,7 @@ class Router extends Base
             case 'ticket':
             case 'delete':
             default:
-                $vars['task'] = (isset($segments[0])) ? $segments[0] : '';
+                $vars['task'] = $segments[0];
 
                 if (!empty($segments[1])) {
                     if (is_numeric($segments[1])) {

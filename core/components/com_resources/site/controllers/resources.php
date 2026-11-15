@@ -240,7 +240,7 @@ class Resources extends SiteController
             $filters['access'][] = 1;
         }
 
-        if (isset($filters['tag']) && $filters['tag'] != '') {
+        if ($filters['tag'] != '') {
             $tagging = new Tags(0);
             $tags = $tagging->parseTags($filters['tag']);
             if (count($tags) > 5) {

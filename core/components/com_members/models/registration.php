@@ -136,7 +136,7 @@ class Registration
             $name['middle']  = htmlentities($name['middle'], ENT_QUOTES, "UTF-8");
             $name['last']  = htmlentities($name['last'], ENT_QUOTES, "UTF-8");
             $nm  = trim($name['first']);
-            $nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' ' . $name['middle'] : '';
+            $nm .= (trim($name['middle']) != '') ? ' ' . $name['middle'] : '';
             $nm .= ' ' . trim($name['last']);
             $this->registration['name'] = $nm;
             $this->registration['givenName'] = $name['first'];

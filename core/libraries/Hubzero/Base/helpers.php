@@ -118,7 +118,7 @@ if (! function_exists('classExists')) {
         $result = false;
 
         foreach (spl_autoload_functions() as $loader) {
-            if (is_array($loader) && isset($loader[0]) && $loader[0] == 'Hubzero\Facades\Facade') {
+            if (is_array($loader) && $loader[0] == 'Hubzero\Facades\Facade') {
                 $autoloader = $loader;
                 break;
             }

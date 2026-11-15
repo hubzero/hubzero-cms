@@ -707,7 +707,7 @@ class Filefsv1r0 extends ApiController
                 'name'    => 'preview',
             ]);
 
-            $view->set('file', isset($collector[0]) ? $collector[0] : null);
+            $view->set('file', $collector[0]);
 
             // Get last revision
             if (!$view->get('file')->get('converted') && !$hash) {
@@ -726,7 +726,7 @@ class Filefsv1r0 extends ApiController
 
         // Other rendering?
         if ($render == 'thumb' || $render == 'inline' || $render == 'medium') {
-            $file = isset($collector[0]) ? $collector[0] : null;
+            $file = $collector[0];
             if (!($file instanceof \Components\Projects\Models\File)) {
                 App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
             }
@@ -758,7 +758,7 @@ class Filefsv1r0 extends ApiController
                 $serveas        = 'Project Files ' . Date::of('now')->toSql() . '.zip';
             }
         } else {
-            $file = isset($collector[0]) ? $collector[0] : null;
+            $file = $collector[0];
             if (!($file instanceof \Components\Projects\Models\File)) {
                 App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
             }
