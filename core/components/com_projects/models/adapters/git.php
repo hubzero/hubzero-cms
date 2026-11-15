@@ -737,7 +737,7 @@ class Git extends Models\Adapter
 
             exec('du -sb --exclude=.git ' . $where, $out);
 
-            if ($out && isset($out[0])) {
+            if ($out) {
                 $dir = $git == true ? '.git' : '.';
                 $used = str_replace($dir, '', trim($out[0]));
             }

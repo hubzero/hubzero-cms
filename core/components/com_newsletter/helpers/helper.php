@@ -114,7 +114,7 @@ class Helper
         $mailingTokenParts = explode(':', $mailingToken);
 
         //get the mailing id and email from parts
-        $mailingId = (isset($mailingTokenParts[0])) ? $mailingTokenParts[0] : '';
+        $mailingId = $mailingTokenParts[0];
         $email = (isset($mailingTokenParts[1])) ? $mailingTokenParts[1] : '';
 
         //make sure we have a mailing id and email
@@ -165,7 +165,7 @@ class Helper
         $confirmationTokenParts = array_map("trim", explode(':', $confirmationToken));
 
         //get mailing list id & email
-        $mailinglistId = (isset($confirmationTokenParts[0])) ? $confirmationTokenParts[0] : '';
+        $mailinglistId = $confirmationTokenParts[0];
         $email = (isset($confirmationTokenParts[1])) ? $confirmationTokenParts[1] : '';
 
         //make sure we have a mailing list and email

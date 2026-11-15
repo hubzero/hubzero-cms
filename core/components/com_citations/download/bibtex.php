@@ -91,7 +91,7 @@ class Bibtex extends Downloadable
                 $addarray['author'][$i]['last']  = (!empty($last)) ? trim($last) : '';
             } else {
                 $addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
-                $addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
+                $addarray['author'][$i]['last']  = $author_arr[0];
             }
 
             $addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/', '', $addarray['author'][$i]['first']);

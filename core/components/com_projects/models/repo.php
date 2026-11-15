@@ -1404,7 +1404,7 @@ class Repo extends Obj
             exec('du -sb ', $out);
             $used = 0;
 
-            if ($out && isset($out[0])) {
+            if ($out) {
                 $used = str_replace('.', '', trim($out[0]));
             }
 

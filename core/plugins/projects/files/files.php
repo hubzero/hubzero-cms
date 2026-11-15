@@ -560,7 +560,7 @@ class Files extends Plugin
 
         // Parse props for curation
         $parts   = explode('-', $props);
-        $block   = (isset($parts[0]) && in_array($parts[0], ['content', 'extras']))
+        $block   = (in_array($parts[0], ['content', 'extras']))
                     ? $parts[0]
                     : 'content';
         $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;

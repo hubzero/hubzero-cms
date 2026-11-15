@@ -61,7 +61,7 @@ class Twitter extends Macro
         $args = array_map('trim', explode(',', $this->args));
 
         // get screen name & num tweets
-        $screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
+        $screenName = ltrim($args[0], '@');
         $widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
         $chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
         $width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';

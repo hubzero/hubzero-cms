@@ -2685,7 +2685,7 @@ class Resources extends SiteController
                         $author_arr = array_map('trim', $author_arr);
 
                         $addarray['author'][$i]['first'] = (isset($author_arr[1])) ? trim($author_arr[1]) : '';
-                        $addarray['author'][$i]['last']  = (isset($author_arr[0])) ? trim($author_arr[0]) : '';
+                        $addarray['author'][$i]['last']  = trim($author_arr[0]);
                     } else {
                         $author_arr = explode(' ', $author);
                         $author_arr = array_map('trim', $author_arr);

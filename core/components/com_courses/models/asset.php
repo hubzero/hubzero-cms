@@ -95,7 +95,7 @@ class Asset extends Base
             return $tbl->get($property, $default);
         } elseif (strpos($property, '.') !== false) {
             $parts = explode('.', $property);
-            if (isset($parts[0]) && array_key_exists($parts[0], self::$auxTablekeys)) {
+            if (array_key_exists($parts[0], self::$auxTablekeys)) {
                 $key = str_replace('_', ' ', $parts[0]);
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);

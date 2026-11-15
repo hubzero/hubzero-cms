@@ -425,7 +425,7 @@ class Nogit extends Models\Adapter
 
             exec('du -sb --exclude=.git ', $out);
 
-            if ($out && isset($out[0])) {
+            if ($out) {
                 $used = str_replace('.', '', trim($out[0]));
             }
         }

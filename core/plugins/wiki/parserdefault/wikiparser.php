@@ -1104,7 +1104,7 @@ class WikiParser
         $ttxt = trim($txt);
 
         $lines = explode("\n", $ttxt);
-        $t = (isset($lines[0])) ? trim($lines[0]) : '';
+        $t = trim($lines[0]);
 
         // Check for processor flag
         if (substr($t, 0, 2) == '#!') {
@@ -1115,7 +1115,7 @@ class WikiParser
 
             switch ($t) {
                 case 'wiki':
-                    $cls = (isset($lines[0])) ? trim($lines[0]) : '';
+                    $cls = trim($lines[0]);
                     $cls = trim(strstr($cls, ' '));
 
                     $txt = str_replace('#!wiki ' . $cls, '', $txt);

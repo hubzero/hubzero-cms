@@ -150,7 +150,7 @@ class Pages
             // Due to the way some paths are built, a menu item can result
             // in a path like /menualias/cn/page instead of /menualias/page
             $segments = explode('/', $path);
-            if (isset($segments[0]) && $segments[0] == $cn) {
+            if ($segments[0] == $cn) {
                 array_shift($segments);
             }
         }

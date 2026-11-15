@@ -1204,7 +1204,7 @@ class Publications extends SiteController
                         $author_arr = array_map('trim', $author_arr);
 
                         $addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
-                        $addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
+                        $addarray['author'][$i]['last']  = $author_arr[0];
                         $i++;
                     }
                 }

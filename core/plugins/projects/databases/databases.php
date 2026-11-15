@@ -307,7 +307,7 @@ class Databases extends Plugin
 
         // Parse props for curation
         $parts = explode('-', $props);
-        $block = isset($parts[0]) ? $parts[0] : 'content';
+        $block = $parts[0];
         $step = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 

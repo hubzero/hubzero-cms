@@ -2468,7 +2468,7 @@ class Publication extends Obj
                 $authorArr = explode(',', $name);
                 $authorArr = array_map('trim', $authorArr);
                 $arr['author'][$i]['first'] = (isset($authorArr[1])) ? $authorArr[1] : '';
-                $arr['author'][$i]['last']  = (isset($authorArr[0])) ? $authorArr[0] : '';
+                $arr['author'][$i]['last']  = $authorArr[0];
                 $i++;
             }
         }

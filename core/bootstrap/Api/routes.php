@@ -141,7 +141,7 @@ $router->rules('parse')->append('version', function ($uri) {
     $segments  = explode('/', $uri->getPath());
 
     // Shift /api off the beginning
-    if (isset($segments[0]) && $segments[0] == 'api') {
+    if ($segments[0] == 'api') {
         $prefix = array_shift($segments);
         $uri->setPath(implode('/', $segments));
     }

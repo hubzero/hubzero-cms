@@ -174,7 +174,7 @@ class Opengraph extends Plugin
             foreach ($other as $v) {
                 if ($v != '') {
                     $vother = explode('=', $v);
-                    if (isset($vother[0]) && isset($vother[1])) {
+                    if (isset($vother[1])) {
                         $metaName = htmlspecialchars(strip_tags($vother[0]));
                         $metaValue = htmlspecialchars($vother[1]);
                         Document::setMetaData($metaName, $metaValue);

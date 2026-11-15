@@ -806,10 +806,10 @@ class Events extends SiteController
         }
 
         $bits   = explode('-', (string) $row->publish_up);
-        $eyear  = $bits[0] ?? '';
+        $eyear  = $bits[0];
         $emonth = $bits[1] ?? '';
         $edbits = explode(' ', $bits[2] ?? '');
-        $eday   = $edbits[0] ?? '';
+        $eday   = $edbits[0];
 
         // An event with no start date has no day to show the calendar at;
         // show it at the requested (or current) date instead
@@ -977,10 +977,10 @@ class Events extends SiteController
         $auth = $this->authorize('core.create');
 
         $bits = explode('-', (string) $event->publish_up);
-        $eyear = $bits[0] ?? '';
+        $eyear = $bits[0];
         $emonth = $bits[1] ?? '';
         $edbits = explode(' ', $bits[2] ?? '');
-        $eday = $edbits[0] ?? '';
+        $eday = $edbits[0];
 
         // As in the details view: no start date, so use the requested date
         if (!ctype_digit($eyear) || !ctype_digit($emonth) || !ctype_digit($eday)) {
