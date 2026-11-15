@@ -222,12 +222,7 @@ class Imports extends AdminController
         $model->set('params', $iparams->toString());
 
         // Bind input to model
-        if (!$model->set($import)) {
-            $this->setError($model->getError());
-            $this->editTask($model);
-
-            return;
-        }
+        $model->set($import);
 
         // Is this a new import?
         $isNew = false;

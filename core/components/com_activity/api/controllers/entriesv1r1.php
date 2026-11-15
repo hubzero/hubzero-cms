@@ -445,9 +445,7 @@ class Entriesv1r1 extends ApiController
             }
         }
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_BINDING_DATA'), 500);
-        }
+        $row->set($fields);
 
         if (!$row->save()) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_SAVING_DATA'), 500);
@@ -711,9 +709,7 @@ class Entriesv1r1 extends ApiController
             'parent'         => Request::getInt('parent', $row->get('parent')),
         ];
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_BINDING_DATA'), 422);
-        }
+        $row->set($fields);
 
         if (!$row->save()) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_SAVING_DATA'), 500);

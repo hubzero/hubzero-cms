@@ -325,9 +325,7 @@ class Entriesv1r0 extends ApiController
 
         $row = new Entry();
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
-        }
+        $row->set($fields);
 
         // Trigger before save event
         $isNew  = $row->isNew();
@@ -602,9 +600,7 @@ class Entriesv1r0 extends ApiController
             'hits'           => Request::getInt('hits', $row->get('hits')),
         ];
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
-        }
+        $row->set($fields);
 
         // Trigger before save event
         $isNew  = $row->isNew();

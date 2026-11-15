@@ -216,9 +216,7 @@ class Entriesv1r0 extends ApiController
 
         $row = Plugin::blank();
 
-        if (!$row->set($fields)) {
-            App::abort(500, Lang::txt('COM_PLUGINS_ERROR_BINDING_DATA'));
-        }
+        $row->set($fields);
 
         if (!$row->save()) {
             App::abort(500, Lang::txt('COM_PLUGINS_ERROR_SAVING_DATA'));
@@ -345,9 +343,7 @@ class Entriesv1r0 extends ApiController
             'params'       => Request::getString('params', $row->get('params')),
         ];
 
-        if (!$row->set($fields)) {
-            App::abort(422, Lang::txt('COM_PLUGINS_ERROR_BINDING_DATA'));
-        }
+        $row->set($fields);
 
         if (!$row->save()) {
             App::abort(500, Lang::txt('COM_PLUGINS_ERROR_SAVING_DATA'));

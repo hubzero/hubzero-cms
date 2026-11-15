@@ -1963,10 +1963,7 @@ class Tickets extends SiteController
 
         // initiate class and bind posted items to database fields
         $row = Ticket::blank();
-        if (!$row->set($incoming)) {
-            echo $row->getError();
-            return;
-        }
+        $row->set($incoming);
 
         // Check for a session token
         $sessnum = '';

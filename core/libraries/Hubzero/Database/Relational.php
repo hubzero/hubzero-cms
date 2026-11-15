@@ -4371,6 +4371,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * - system.onContentSave (existing HubZero event)
      *
      * @return  bool
+     * @phpstan-impure
      **/
     public function save()
     {

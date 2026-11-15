@@ -663,9 +663,7 @@ class Threadsv1r0 extends ApiController
 
         $row = Post::blank();
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_FORUM_ERROR_BINDING_DATA'), 500);
-        }
+        $row->set($fields);
 
         $row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
         $row->set('created_by', User::get('id'));

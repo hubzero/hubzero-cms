@@ -403,9 +403,7 @@ class Projectsv2r0 extends ApiController
             throw new Exception(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'), 403);
         }
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_PROJECTS_ERROR_BINDING_DATA'), 500);
-        }
+        $row->set($fields);
 
         $exists = Project::all()
             ->whereEquals('alias', $row->get('alias'))

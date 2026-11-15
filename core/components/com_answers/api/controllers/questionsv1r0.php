@@ -237,9 +237,7 @@ class Questionsv1r0 extends ApiController
 
         $row = new Question();
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 500);
-        }
+        $row->set($fields);
 
         $row->set('email', ($fields['email'] ? 1 : 0));
         $row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
@@ -398,9 +396,7 @@ class Questionsv1r0 extends ApiController
             'reward'     => ($manager ? Request::getInt('reward', $row->get('reward')) : $row->get('reward')),
         ];
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
-        }
+        $row->set($fields);
 
         $row->set('email', ($fields['email'] ? 1 : 0));
         $row->set('anonymous', ($fields['anonymous'] ? 1 : 0));

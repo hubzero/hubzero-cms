@@ -567,9 +567,7 @@ class Points extends AdminController
                 $dat['action']       = $log['action'];
                 $dat['log']          = $data['description'];
 
-                if (!$MH->set($dat)) {
-                    $this->setError($MH->getError());
-                }
+                $MH->set($dat);
 
                 if (!$this->getError()) {
                     if (!$MH->save()) {
@@ -658,9 +656,7 @@ class Points extends AdminController
                     $data['action']       = $action;
                     $data['log']          = $this->message;
 
-                    if (!$MH->set($data)) {
-                        $err = $MH->getError();
-                    }
+                    $MH->set($data);
 
                     if (!$MH->save()) {
                         $err = $MH->getError();
@@ -705,9 +701,7 @@ class Points extends AdminController
                 $data['action']       = $action;
                 $data['log']          = $rmsg;
 
-                if (!$MH->set($data)) {
-                    $err = $MH->getError();
-                }
+                $MH->set($data);
 
                 if (!$MH->save()) {
                     $err = $MH->getError();
@@ -746,9 +740,7 @@ class Points extends AdminController
                 $data['action']       = $action;
                 $data['log']          = $resmsg;
 
-                if (!$MH->set($data)) {
-                    $err = $MH->getError();
-                }
+                $MH->set($data);
 
                 if (!$MH->save()) {
                     $err = $MH->getError();
