@@ -218,12 +218,13 @@ class PrivilegeManager
             // which is how deployment permissions are usually granted -- comes
             // back as permission denied. initgroups() needs root itself, so it
             // has to run before the euid changes.
+            $groupsLoaded = true;
             if (
                 function_exists('posix_initgroups')
                 && posix_geteuid() === self::ROOT_UID
                 && $this->sudoUser !== null
             ) {
-                posix_initgroups($this->sudoUser, $this->sudoUserInfo['gid']);
+                $groupsLoaded = posix_initgroups($this->sudoUser, $this->sudoUserInfo['gid']);
             }
 
             $gidChanged = posix_setegid($this->sudoUserInfo['gid']);
@@ -233,7 +234,7 @@ class PrivilegeManager
                 $this->elevated = false;
             }
 
-            return $gidChanged && $uidChanged;
+            return $groupsLoaded && $gidChanged && $uidChanged;
         }
 
         return false;

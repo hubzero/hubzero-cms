@@ -6490,17 +6490,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 $rightKey = $alias . '.' . $relatedKey;
                 break;
 
-            case $relationship instanceof OneToOne:
-            case $relationship instanceof OneToMany:
-                // OneToOne/OneToMany: local primary key -> related foreign key
-                // Join: related_table AS alias ON this.local_key = alias.related_key
-                $localKey = $relationship->getLocalKey();
-                $relatedKey = $relationship->getRelatedKey();
-                $thisTable = $this->getTableAlias() ?: $this->getTableName();
-                $leftKey = $thisTable . '.' . $localKey;
-                $rightKey = $alias . '.' . $relatedKey;
-                break;
-
+            // Both extend OneToMany, so they are matched before it
             case $relationship instanceof ManyToMany:
                 throw new RuntimeException(
                     "ManyToMany relationships require manual join handling. "
@@ -6512,6 +6502,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                     "OneToManyThrough relationships require manual join handling. "
                     . "Use \$query->join() directly with the intermediate model's table.",
                 );
+
+            case $relationship instanceof OneToOne:
+            case $relationship instanceof OneToMany:
+                // OneToOne/OneToMany: local primary key -> related foreign key
+                // Join: related_table AS alias ON this.local_key = alias.related_key
+                $localKey = $relationship->getLocalKey();
+                $relatedKey = $relationship->getRelatedKey();
+                $thisTable = $this->getTableAlias() ?: $this->getTableName();
+                $leftKey = $thisTable . '.' . $localKey;
+                $rightKey = $alias . '.' . $relatedKey;
+                break;
 
             default:
                 throw new RuntimeException(
@@ -7049,7 +7050,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if ($cachedRelation instanceof Rows) {
                 $pk = $relationship->getRelated()->getPrimaryKey();
                 $currentIds = $cachedRelation->fieldsByKey($pk);
-            } elseif ($cachedRelation instanceof self && !$cachedRelation->isNew()) {
+            } elseif (!$cachedRelation->isNew()) {
                 $currentIds = [$cachedRelation->getPkValue()];
             }
 

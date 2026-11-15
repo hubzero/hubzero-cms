@@ -69,15 +69,14 @@ class Geocode
 
         $countries = [];
 
-        if ($data = $geocoder->geocode($continent)) {
-            foreach ($data as $item) {
-                $country = new \stdClass();
-                $country->code      = $item->getCountry()->getCode();
-                $country->name      = $item->getCountry()->getName();
-                $country->continent = $item->getLocality();
+        $data = $geocoder->geocode($continent);
+        foreach ($data as $item) {
+            $country = new \stdClass();
+            $country->code      = $item->getCountry()->getCode();
+            $country->name      = $item->getCountry()->getName();
+            $country->continent = $item->getLocality();
 
-                $countries[] = $country;
-            }
+            $countries[] = $country;
         }
 
         self::$countries[$continent] = $countries;
@@ -119,7 +118,9 @@ class Geocode
 
         $country = $code;
 
-        if ($data = $geocoder->geocode($code)) {
+        // first() throws when nothing was found
+        $data = $geocoder->geocode($code);
+        if (!$data->isEmpty()) {
             $country = $data->first()->getCountry()->getName();
         }
 
@@ -160,7 +161,8 @@ class Geocode
 
         $continent = null;
 
-        if ($data = $geocoder->geocode($country)) {
+        $data = $geocoder->geocode($country);
+        if (!$data->isEmpty()) {
             $continent = $data->first()->getLocality();
         }
 

@@ -488,7 +488,7 @@ class Db2Driver extends BaseSqlDriver
         }
 
         $columns = $this->getTableColumns($table, false);
-        $pk = $this->getPrimaryKey($table);
+        $pkColumns = $this->getPrimaryKeyColumns($table);
 
         $columnDefs = [];
         foreach ($columns as $name => $col) {
@@ -508,8 +508,7 @@ class Db2Driver extends BaseSqlDriver
         }
 
         // Add primary key constraint
-        if ($pk) {
-            $pkColumns = is_array($pk) ? $pk : [$pk];
+        if ($pkColumns) {
             $pkList = implode(', ', array_map([$this, 'quoteName'], $pkColumns));
             $columnDefs[] = 'PRIMARY KEY (' . $pkList . ')';
         }
@@ -2855,10 +2854,6 @@ class Db2Driver extends BaseSqlDriver
      */
     protected function normalizeObjectTimestamps($object)
     {
-        if (!is_object($object)) {
-            return $object;
-        }
-
         foreach (get_object_vars($object) as $key => $value) {
             $object->$key = $this->normalizeTimestamp($value);
         }

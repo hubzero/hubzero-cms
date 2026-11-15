@@ -70,13 +70,6 @@ class Base
     public $useTransaction = true;
 
     /**
-     * Base database object (should have extensions and migrations log tables in it)
-     *
-     * @var  object
-     **/
-    private $baseDb;
-
-    /**
      * Db object available to migrations
      *
      * @var  \Hubzero\Database\Driver
@@ -142,7 +135,6 @@ class Base
      **/
     public function __construct($db, $callbacks = [], $altDb = null)
     {
-        $this->baseDb    = $db;
         $this->db        = (isset($altDb)) ? $altDb : $db;
         $this->callbacks = $callbacks;
 
@@ -230,7 +222,8 @@ class Base
             } else {
                 try {
                     $instance = Driver::getInstance($options);
-                } catch (\PDOException $e) {
+                } catch (\Hubzero\Database\Exception\RuntimeException $e) {
+                    // The driver wraps a failed connection in its own exception
                     $instance = null;
                     return false;
                 }

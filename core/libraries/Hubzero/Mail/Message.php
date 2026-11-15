@@ -16,9 +16,9 @@ use Hubzero\Facades\Config;
 class Message extends \Symfony\Component\Mime\Email
 {
     /**
-     * Failed email address
+     * Addresses the last send did not reach; null before a send
      *
-     * @var  array|null
+     * @var  array<int, string>|null
      */
     private $failures = null;
 
@@ -177,10 +177,18 @@ class Message extends \Symfony\Component\Mime\Email
 
         $mailer = new \Symfony\Component\Mailer\Mailer($transport);
 
+        $this->failures = [];
+
         try {
-            $mailer->send($this, $this->failures);
+            // The second argument is an envelope, not a list of failures
+            $mailer->send($this);
             $result = true;
         } catch (\Exception $e) {
+            // A transport takes the message whole or not at all
+            foreach (array_merge($this->getTo(), $this->getCc(), $this->getBcc()) as $address) {
+                $this->failures[] = $address->getAddress();
+            }
+
             // Unqualified, this named Hubzero\Mail\Exception, which does not
             // exist, so a transport failure escaped as a 500 after the caller
             // had already saved its data

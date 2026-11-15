@@ -79,38 +79,22 @@ class Ldap
         $pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
 
         $negotiate_tls = $ldap_params->get('ldap_tls', 0);
-        $port = '389';
 
-        if (!is_numeric($port)) {
-            $port = '389';
-
-            $pattern = "/^\s*(ldap[s]{0,1}:\/\/|)([^:]*)(\:(\d+)|)\s*$/";
-
-            if (preg_match($pattern, $pldap, $matches)) {
-                $pldap = $matches[2];
-
-                if ($matches[1] == 'ldaps://') {
-                    $negotiate_tls = false;
-                }
-
-                if (isset($matches[4]) && is_numeric($matches[4])) {
-                    $port = $matches[4];
-                }
-            }
-        }
-
-        $conn = ldap_connect($pldap, $port);
+        // The server is a URI such as ldap://host:389 or a bare host name; a
+        // URI carries its own port, and a separate port argument, which
+        // ldap_connect() ignored for a URI anyway, is deprecated since PHP 8.3
+        $conn = ldap_connect($pldap);
 
         if ($conn === false) {
             if ($debug) {
-                Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] ");
+                Log::debug("getLDO(): ldap_connect($pldap) failed. [" . posix_getpid() . "] ");
             }
 
             return false;
         }
 
         if ($debug) {
-            Log::debug("getLDO(): ldap_connect($pldap,$port) success. ");
+            Log::debug("getLDO(): ldap_connect($pldap) success. ");
         }
 
         if (ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false) {
@@ -699,24 +683,22 @@ class Ldap
 
         $ldapinfo = null;
 
-        if ($count > 0) {
-            $firstentry = ldap_first_entry($conn, $entry);
+        $firstentry = ldap_first_entry($conn, $entry);
 
-            $attr = ldap_get_attributes($conn, $firstentry);
+        $attr = ldap_get_attributes($conn, $firstentry);
 
-            if (!empty($attr) && $attr['count'] > 0) {
-                foreach ($reqattr as $key) {
-                    unset($attr[$key]['count']);
+        if (!empty($attr) && $attr['count'] > 0) {
+            foreach ($reqattr as $key) {
+                unset($attr[$key]['count']);
 
-                    if (isset($attr[$key][0])) {
-                        if (count($attr[$key]) <= 2) {
-                            $ldapinfo[$key] = $attr[$key][0];
-                        } else {
-                            $ldapinfo[$key] = $attr[$key];
-                        }
+                if (isset($attr[$key][0])) {
+                    if (count($attr[$key]) <= 2) {
+                        $ldapinfo[$key] = $attr[$key][0];
                     } else {
-                        $ldapinfo[$key] = null;
+                        $ldapinfo[$key] = $attr[$key];
                     }
+                } else {
+                    $ldapinfo[$key] = null;
                 }
             }
         }

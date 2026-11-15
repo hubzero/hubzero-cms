@@ -32,11 +32,11 @@ class Memcached extends Store
     private $engine;
 
     /**
-     * Use compression?
+     * Use compression? Null leaves the extension's default (on)
      *
-     * @var  int|false
+     * @var  bool|null
      */
-    private $compress = false;
+    private $compress = null;
 
     /**
      * List of servers
@@ -63,8 +63,9 @@ class Memcached extends Store
 
         parent::__construct($options);
 
-        if (isset($options['compress']) && $options['compress']) {
-            $this->compress = \Memcached::OPT_COMPRESSION;
+        // OPT_COMPRESSION is the option's name, not a value to store
+        if (isset($options['compress'])) {
+            $this->compress = (bool) $options['compress'];
         }
 
         if (!isset($options['servers']) || empty($options['servers'])) {
@@ -92,6 +93,10 @@ class Memcached extends Store
     public function open($save_path, $name)
     {
         $this->engine = new \Memcached();
+
+        if ($this->compress !== null) {
+            $this->engine->setOption(\Memcached::OPT_COMPRESSION, $this->compress);
+        }
 
         // For each server in the array, we'll just extract the configuration and add
         // the server to the Memcached connection. Once we have added all of these

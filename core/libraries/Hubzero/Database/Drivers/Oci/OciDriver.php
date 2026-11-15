@@ -559,7 +559,7 @@ class OciDriver extends BaseSqlDriver
         }
 
         $columns = $this->getTableColumns($table, false);
-        $pk = $this->getPrimaryKey($table);
+        $pkColumns = $this->getPrimaryKeyColumns($table);
 
         $columnDefs = [];
         foreach ($columns as $name => $col) {
@@ -579,8 +579,7 @@ class OciDriver extends BaseSqlDriver
         }
 
         // Add primary key constraint
-        if ($pk) {
-            $pkColumns = is_array($pk) ? $pk : [$pk];
+        if ($pkColumns) {
             $pkList = implode(', ', array_map([$this, 'quoteName'], $pkColumns));
             $columnDefs[] = 'PRIMARY KEY (' . $pkList . ')';
         }
@@ -773,10 +772,6 @@ class OciDriver extends BaseSqlDriver
     public function tableHasKey($table, $key)
     {
         $keys = $this->getTableKeys($table);
-
-        if (!is_array($keys)) {
-            return false;
-        }
 
         // Check exact match first, then case-insensitive
         return isset($keys[$key]) || isset($keys[strtolower($key)]);

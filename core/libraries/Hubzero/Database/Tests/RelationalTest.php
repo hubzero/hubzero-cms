@@ -291,6 +291,21 @@ class RelationalTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
+    public function testJoinWithManyToManyAsksForAManualJoin(string $dbName, BaseSqlDriver $driver): void
+    {
+        $this->setupTables($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        // ManyToMany extends OneToMany; it must not be joined as one
+        $this->expectException(\Hubzero\Database\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('ManyToMany relationships require manual join handling');
+
+        Post::blank()->joinWith('tags');
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
     public function testOneOrNewReturnsNewModel(string $dbName, BaseSqlDriver $driver): void
     {
         $this->setupTables($driver, $dbName);
