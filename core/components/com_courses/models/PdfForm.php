@@ -478,7 +478,7 @@ class PdfForm
     /**
      * Get asset id
      *
-     * @return  object
+     * @return  string|null  The asset id, or null when the form has none
      **/
     public function getAssetId()
     {

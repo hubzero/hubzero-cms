@@ -124,21 +124,20 @@ class Elements
     public function exists($path)
     {
         // Explode the registry path into an array
-        if ($nodes = explode('.', $path)) {
-            // Initialize the current node to be the registry root.
-            $node = $this->data;
+        $nodes = explode('.', $path);
+        // Initialize the current node to be the registry root.
+        $node = $this->data;
 
-            // Traverse the registry to find the correct node for the result.
-            for ($i = 0,$n = count($nodes); $i < $n; $i++) {
-                if (isset($node->{$nodes[$i]})) {
-                    $node = $node->{$nodes[$i]};
-                } else {
-                    break;
-                }
+        // Traverse the registry to find the correct node for the result.
+        for ($i = 0,$n = count($nodes); $i < $n; $i++) {
+            if (isset($node->{$nodes[$i]})) {
+                $node = $node->{$nodes[$i]};
+            } else {
+                break;
+            }
 
-                if ($i + 1 == $n) {
-                    return true;
-                }
+            if ($i + 1 == $n) {
+                return true;
             }
         }
 
@@ -352,21 +351,20 @@ class Elements
         $result = null;
 
         // Explode the registry path into an array
-        if ($nodes = explode('.', $path)) {
-            // Initialize the current node to be the registry root.
-            $node = $this->data;
+        $nodes = explode('.', $path);
+        // Initialize the current node to be the registry root.
+        $node = $this->data;
 
-            // Traverse the registry to find the correct node for the result.
-            for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++) {
-                if (!isset($node->{$nodes[$i]}) && ($i != $n)) {
-                    $node->{$nodes[$i]} = new stdClass();
-                }
-                $node = $node->{$nodes[$i]};
+        // Traverse the registry to find the correct node for the result.
+        for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++) {
+            if (!isset($node->{$nodes[$i]}) && ($i != $n)) {
+                $node->{$nodes[$i]} = new stdClass();
             }
-
-            // Get the old value if exists so we can return it
-            $result = $node->{$nodes[$i]} = $value;
+            $node = $node->{$nodes[$i]};
         }
+
+        // Get the old value if exists so we can return it
+        $result = $node->{$nodes[$i]} = $value;
 
         return $result;
     }

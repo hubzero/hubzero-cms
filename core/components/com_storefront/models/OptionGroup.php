@@ -184,7 +184,7 @@ class OptionGroup
         $this->db->setQuery($sql);
         //print_r($this->db->replacePrefix($this->db->getQuery())); die;
         $this->db->query();
-        if ($action = 'add') {
+        if ($action == 'add') {
             $this->setId($this->db->insertid());
         }
     }

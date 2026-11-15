@@ -529,7 +529,8 @@ class Record extends Obj
 
             // load name
             if ($authorid != null) {
-                if ($profile = \Hubzero\User\User::oneOrNew($authorid)) {
+                $profile = \Hubzero\User\User::oneOrNew($authorid);
+                if ($profile->get('id')) {
                     $resourceContributor->authorid = $profile->get('id');
                 }
             }
