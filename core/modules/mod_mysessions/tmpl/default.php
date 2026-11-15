@@ -169,7 +169,7 @@ $classes = $this->module->module . ' ' . $this->params->get('moduleclass_sfx', '
             href="<?= $storageUrl ?>"><?= Lang::txt('MOD_MYSESSIONS_MANAGE') ?></a>)</span>
         <?php
             $diskUsage = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
-        if (!is_array($diskUsage) || !isset($diskUsage['space'])) {
+        if (!isset($diskUsage['space'])) {
             echo '<p class="error">' . Lang::txt('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . '</p></div>';
             return;
         } elseif (isset($diskUsage['softspace']) && $diskUsage['softspace'] == 0) {

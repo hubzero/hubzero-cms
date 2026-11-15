@@ -40,12 +40,6 @@ if (!$this->entry->exists()) {
 }
 
 $type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
-if (!$type) {
-    $type = 'file';
-}
-if ($type && !in_array($type, ['file', 'image', 'text', 'link'])) {
-    $type = 'link';
-}
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
@@ -328,7 +322,7 @@ $idSelected = function ($value) use ($view) {
 
         <?php if ($item->get('id')) { ?>
             <a class="btn btn-secondary"
-                href="<?= Route::url($base . ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')) ?>">
+                href="<?= Route::url($base . '&scope=' . $this->collection->get('alias')) ?>">
                 <?php echo Lang::txt('Cancel'); ?>
             </a>
         <?php } ?>

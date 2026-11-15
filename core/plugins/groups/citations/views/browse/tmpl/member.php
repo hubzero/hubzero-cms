@@ -111,35 +111,6 @@ if (count($this->citations) > 0) :
                             }
 
                                 echo $formatted; ?>
-                            <?php
-                                //get this citations rollover param
-                                $params = new \Hubzero\Html\Parameter($cite->params);
-                                $citation_rollover = 0;
-                            ?>
-                            <?php if ($citation_rollover && $cite->abstract != "") : ?>
-                                <div class="citation-notes">
-                                    <?php
-                                    $final = "";
-                                    foreach ($cite->sponsors as $s) {
-                                        $final .= '<a rel="external" href="'
-                                            . $s->get('link')
-                                            . '">'
-                                            . $s->get('sponsor')
-                                            . '</a>, ';
-                                    }
-                                    ?>
-                                <?php
-                                $showSponsors = $final != ''
-                                && $this->config->get("citation_sponsors", "yes") == 'yes';
-                                ?>
-                                    <?php if ($showSponsors) : ?>
-                                        <?php $final = substr($final, 0, -2); ?>
-                                        <?php $abstractBy = Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?>
-                                        <p class="sponsor"><?php echo $abstractBy; ?> <?php echo $final; ?></p>
-                                    <?php endif; ?>
-                                    <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
-                                </div>
-                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr>

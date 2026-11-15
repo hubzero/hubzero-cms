@@ -151,13 +151,12 @@ class Detector implements DetectorInterface
         if (!$this->regex || $this->rebuild) {
             $dbList = [];
 
-            if ($storage = $this->getModel()) {
-                $rows = $storage->rows();
+            $storage = $this->getModel();
+            $rows = $storage->rows();
 
-                if ($rows->count()) {
-                    foreach ($rows as $row) {
-                        $dbList[] = $row->get('word');
-                    }
+            if ($rows->count()) {
+                foreach ($rows as $row) {
+                    $dbList[] = $row->get('word');
                 }
             }
 

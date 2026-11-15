@@ -115,7 +115,7 @@ class Usage extends Plugin
         $downloads = $usageHelper->totalDownloads();
 
         // Are we returning HTML?
-        if ($rtrn == 'all' || $rtrn == 'html') {
+        if ($rtrn == 'all') {
             $helper = new \Components\Publications\Helpers\Usage($database, $publication->id, $publication->base);
 
             // Instantiate a view

@@ -105,7 +105,7 @@ $this->css();
                 </td>
                 <?php if ($this->banking) { ?>
                     <td class="reward">
-                        <?php if ($row->get('reward') == 1 && $this->banking) { ?>
+                        <?php if ($row->get('reward') == 1) { ?>
                             <?php
                             $titleText = Lang::txt(
                                 'COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING',

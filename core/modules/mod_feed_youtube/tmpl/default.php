@@ -46,7 +46,7 @@ if ($this->feed) {
         <h3 class="feed_title">
             <?php
             $hasFeedTitle = !is_null($this->feed->title) || $this->params->get('feedtitle', '');
-            if ($hasFeedTitle && $this->params->get('rsstitle', 1)) {
+            if ($hasFeedTitle) {
                 ?>
                 <a href="<?php echo $morelink; ?>" rel="external">
                     <?php

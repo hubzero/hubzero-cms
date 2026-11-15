@@ -158,7 +158,6 @@ class Debug extends Plugin
 
         if (!empty($filterGroups)) {
             $userGroups = User::getAuthorisedGroups();
-            $userGroups = (is_array($userGroups) ? $userGroups : []);
 
             if (!array_intersect($filterGroups, $userGroups)) {
                 echo $contents;

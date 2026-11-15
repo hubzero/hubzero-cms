@@ -552,6 +552,7 @@ class SchemaManager
      * @param   string  $table   The table name
      * @param   string  $column  The column name
      * @return  bool
+     * @phpstan-impure
      */
     public function hasColumn(string $table, string $column): bool
     {

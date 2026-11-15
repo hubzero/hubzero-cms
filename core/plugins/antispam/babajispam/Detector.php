@@ -67,24 +67,21 @@ class Detector implements DetectorInterface
 
         foreach ($baba as $b) {
             if (
-                (($b[0] == '/') && preg_match($b, $context))
-                || (($b[0] != '/') && strpos($context, $b) !== false)
+                preg_match($b, $context)
             ) {
                 $spam += 10;
                 $reason |= 2;
             }
 
             if (
-                (($b[0] == '/') && preg_match($b, $email))
-                || (($b[0] != '/') && strpos($email, $b) !== false)
+                preg_match($b, $email)
             ) {
                 $spam += 10;
                 $reason |= 4;
             }
 
             if (
-                (($b[0] == '/') && preg_match($b, $username))
-                || (($b[0] != '/') && strpos($username, $b) !== false)
+                preg_match($b, $username)
             ) {
                 $spam += 10;
                 $reason |= 8;

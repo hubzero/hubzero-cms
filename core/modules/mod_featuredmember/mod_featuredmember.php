@@ -66,18 +66,16 @@ class Featuredmember extends Module
         }
 
         // Did we have a result to display?
-        if ($this->row) {
-            $this->cls = trim($this->params->get('moduleclass_sfx', ''));
-            $this->txt_length = trim($this->params->get('txt_length', ''));
+        $this->cls = trim($this->params->get('moduleclass_sfx', ''));
+        $this->txt_length = trim($this->params->get('txt_length', ''));
 
-            $config = Component::params('com_members');
+        $config = Component::params('com_members');
 
-            $rparams = new Registry($this->row->get('params'));
-            $this->params = $config;
-            $this->params->merge($rparams);
+        $rparams = new Registry($this->row->get('params'));
+        $this->params = $config;
+        $this->params->merge($rparams);
 
-            require $this->getLayoutPath();
-        }
+        require $this->getLayoutPath();
 
         return null;
     }

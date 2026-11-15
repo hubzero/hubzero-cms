@@ -497,10 +497,10 @@ class Hubzero extends Plugin
         if (isset($user['auth_link'])) {
             $domain = \Hubzero\Auth\Domain::findById($user['auth_link']->auth_domain_id);
 
-            if ($domain && is_object($domain)) {
+            if ($domain) {
                 $params = \Plugin::params('authentication', $domain->authenticator);
 
-                if ($params && is_object($params) && $params->get('auto_approve', false)) {
+                if ($params->get('auto_approve', false)) {
                     $instance->set('approved', 2);
                 }
             }
@@ -839,11 +839,7 @@ class Hubzero extends Plugin
     {
         // create 32-character secret:
         $secretLength = 32;
-        $newSecret = \Hubzero\User\Password::genRandomPassword($secretLength);
-
-        if (!is_null($newSecret)) {
-            return $newSecret;
-        }
+        return \Hubzero\User\Password::genRandomPassword($secretLength);
     }
 
     /**

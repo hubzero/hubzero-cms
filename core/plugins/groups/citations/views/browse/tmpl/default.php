@@ -224,7 +224,6 @@ if (isset($this->messages)) {
 
                                         //get this citations rollover param
                                         //$params = new \Hubzero\Config\Registry($cite->params);
-                                        $citation_rollover = 0;
 
                                         $links = $cite->links()->rows();
                                         ?>
@@ -239,30 +238,6 @@ if (isset($this->messages)) {
                                                     </li>
                                                 <?php } ?>
                                             </ul>
-                                        <?php endif; ?>
-                                        <?php if ($citation_rollover && $cite->abstract != "") : ?>
-                                            <div class="citation-notes">
-                                                <?php
-                                                $final = "";
-
-                                                foreach ($cite->sponsors as $s) {
-                                                    $final .= '<a rel="external" href="' . $s->get('link') . '">'
-                                                        . $s->get('sponsor') . '</a>, ';
-                                                }
-                                                ?>
-                                                <?php
-                                                if (
-                                                    $final != ''
-                                                    && $this->config->get('citation_sponsors', 'yes') == 'yes'
-                                                ) : ?>
-                                                    <?php
-                                                    $sponsorText = Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY');
-                                                    $paragraphText = substr($final, 0, -2);
-                                                    ?>
-                                                    <p class="sponsor"><?= $sponsorText ?> <?= $paragraphText ?></p>
-                                                <?php endif; ?>
-                                                <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
-                                            </div>
                                         <?php endif; ?>
                                         <?php
                                         $unpublishedDetailsClass = ($cite->published == $cite::STATE_UNPUBLISHED)

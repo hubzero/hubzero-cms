@@ -54,8 +54,6 @@ class Info extends Plugin
      */
     public function onProject($model, $action = '', $areas = null)
     {
-        $returnhtml = true;
-
         $arr = [
             'html' => '',
             'metadata' => '',
@@ -80,37 +78,34 @@ class Info extends Plugin
             return $arr;
         }
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            $fields = \Components\Projects\Models\Orm\Description\Field::all()
-                ->order('ordering', 'ASC')
-                ->rows();
+        $fields = \Components\Projects\Models\Orm\Description\Field::all()
+            ->order('ordering', 'ASC')
+            ->rows();
 
-            $projectDescription = \Components\Projects\Models\Orm\Description::all()
-                ->where('project_id', '=', $model->get('id'))
-                ->rows();
+        $projectDescription = \Components\Projects\Models\Orm\Description::all()
+            ->where('project_id', '=', $model->get('id'))
+            ->rows();
 
-            $info = [];
-            foreach ($fields as $field) {
-                foreach ($projectDescription as $description) {
-                    if ($description->description_key == $field->name) {
-                        $f = new \stdClass();
-                        $f->label = $field->label;
-                        $f->value = $description->description_value;
-                        array_push($info, $f);
-                    }
+        $info = [];
+        foreach ($fields as $field) {
+            foreach ($projectDescription as $description) {
+                if ($description->description_key == $field->name) {
+                    $f = new \stdClass();
+                    $f->label = $field->label;
+                    $f->value = $description->description_value;
+                    array_push($info, $f);
                 }
             }
-
-            // Set vars
-            $view = $this
-                ->view('default', 'view')
-                ->set('option', 'com_projects')
-                ->set('info', $info)
-                ->set('model', $model);
-
-            $arr['html'] = $view->loadTemplate();
         }
+
+        // Set vars
+        $view = $this
+            ->view('default', 'view')
+            ->set('option', 'com_projects')
+            ->set('info', $info)
+            ->set('model', $model);
+
+        $arr['html'] = $view->loadTemplate();
 
         // Return data
         return $arr;

@@ -34,13 +34,6 @@ class Impact extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Publication areas
-     *
-     * @var array|null
-     */
-    private $areas = null;
-
-    /**
      * Publication stats
      *
      * @var boolean|null
@@ -190,8 +183,6 @@ class Impact extends Plugin
             'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS'),
         ];
         //}
-
-        $this->areas = $areas;
 
         return $areas;
     }

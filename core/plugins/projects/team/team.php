@@ -99,8 +99,6 @@ class Team extends Plugin
      */
     public function onProject($model, $action = '', $areas = null)
     {
-        $returnhtml = true;
-
         $arr = [
             'html'     => '',
             'metadata' => '',
@@ -129,70 +127,67 @@ class Team extends Plugin
         // Model
         $this->model = $model;
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            // Set vars
-            $act = Request::getString('action', '');
-            $this->task     = $action ? $action : $act;
-            if ($act && ($this->task == 'edit' || $this->task == 'setup')) {
-                $this->task = $act;
-            }
-            $this->database = App::get('db');
-            $this->uid      = User::get('id');
-            $this->config   = $model->config();
+        // Set vars
+        $act = Request::getString('action', '');
+        $this->task     = $action ? $action : $act;
+        if ($act && ($this->task == 'edit' || $this->task == 'setup')) {
+            $this->task = $act;
+        }
+        $this->database = App::get('db');
+        $this->uid      = User::get('id');
+        $this->config   = $model->config();
 
-            switch ($this->task) {
-                case 'edit':
-                case 'setup':
-                    $arr['html'] = $this->display(1);
-                    break;
+        switch ($this->task) {
+            case 'edit':
+            case 'setup':
+                $arr['html'] = $this->display(1);
+                break;
 
-                case 'delete':
-                case 'deleteit':
-                    $arr['html'] = $this->delete();
-                    break;
+            case 'delete':
+            case 'deleteit':
+                $arr['html'] = $this->delete();
+                break;
 
-                case 'changerole':
-                case 'assignrole':
-                    $arr['html'] = $this->changeRole();
-                    break;
+            case 'changerole':
+            case 'assignrole':
+                $arr['html'] = $this->changeRole();
+                break;
 
-                case 'changeowner':
-                    $arr['html'] = $this->changeOwner();
-                    break;
+            case 'changeowner':
+                $arr['html'] = $this->changeOwner();
+                break;
 
-                case 'save':
-                    $arr['html'] = $this->save();
-                    break;
+            case 'save':
+                $arr['html'] = $this->save();
+                break;
 
-                case 'sync':
-                    $arr['html'] = $this->sync();
-                    break;
+            case 'sync':
+                $arr['html'] = $this->sync();
+                break;
 
-                case 'choose':
-                    $arr['html'] = $this->choose();
-                    break;
+            case 'choose':
+                $arr['html'] = $this->choose();
+                break;
 
-                case 'quit':
-                    $arr['html'] = $this->quit();
-                    break;
+            case 'quit':
+                $arr['html'] = $this->quit();
+                break;
 
-                case 'view':
-                default:
-                    $arr['html'] = $this->display();
-                    break;
+            case 'view':
+            default:
+                $arr['html'] = $this->display();
+                break;
 
-                case 'select':
-                case 'newauthor':
-                    $arr['html'] = $this->select();
-                    break;
-                case 'approvemembership':
-                    $arr['html'] = $this->approveMembership();
-                    break;
-                case 'denymembership':
-                    $arr['html'] = $this->denyMembership();
-                    break;
-            }
+            case 'select':
+            case 'newauthor':
+                $arr['html'] = $this->select();
+                break;
+            case 'approvemembership':
+                $arr['html'] = $this->approveMembership();
+                break;
+            case 'denymembership':
+                $arr['html'] = $this->denyMembership();
+                break;
         }
 
         // Return data
@@ -1329,7 +1324,7 @@ class Team extends Plugin
         $message['multipart'] = $eview->loadTemplate();
         $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-        if ($uid != 0 && $uid != false) {
+        if ($uid != 0) {
             // Send HUB message
             $recipient = User::getInstance($uid);
 

@@ -357,7 +357,6 @@ class Migration20130924000009ComMenus extends Base
             // If we have the nested set class available, use it to rebuild lft/rgt
             if (
                 class_exists('Components\Menus\Models\Menu')
-                && method_exists('Components\Menus\Models\Menu', 'rebuild')
             ) {
                 $table = \Components\Menus\Models\Menu::blank();
                 $table->rebuild();

@@ -46,7 +46,7 @@ class TranslationServiceProvider extends ServiceProvider
         $appLangDir = PATH_APP . DS . 'language' . DS . strtolower($this->app['client']->name);
 
         // If a language was specified it has priority
-        if (!$language && $this->app->has('request')) {
+        if ($this->app->has('request')) {
             $lang = $this->app['request']->getString('language', null);
 
             if ($lang && is_dir($appLangDir . DS . $lang)) {
@@ -55,7 +55,7 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         // Detect user specified language
-        if (!$language && $this->app->has('user')) {
+        if ($this->app->has('user')) {
             $lang = $this->app['user']->getParam('api_language');
 
             if ($lang && is_dir($appLangDir . DS . $lang)) {

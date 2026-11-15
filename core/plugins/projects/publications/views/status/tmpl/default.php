@@ -184,15 +184,11 @@ if ($revertAllowed && $this->pub->accepted()) {
                         <tr>
                             <td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
                             <?php
-                            $cellText = $this->pub->version->get('doi')
-                                ? $this->pub->version->get('doi')
-                                : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA');
+                            $cellText = $this->pub->version->get('doi');
                             ?>
                             <td class="tbl-input"><?= $cellText ?>
-                            <?= $this->pub->version->get('doi')
-                                ? ' <a href="' . $this->pub->config('doi_verify', 'http://data.datacite.org/')
-                                    . $this->pub->version->get('doi') . '" rel="external">[&rarr;]</a>'
-                                : '' ?>
+                            <?= ' <a href="' . $this->pub->config('doi_verify', 'http://data.datacite.org/')
+                                . $this->pub->version->get('doi') . '" rel="external">[&rarr;]</a>' ?>
                             </td>
                         </tr>
                         <?php } if ($this->pub->submitted()) { ?>

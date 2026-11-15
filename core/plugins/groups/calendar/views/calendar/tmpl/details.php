@@ -143,7 +143,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             $start = Request::getInt('start', null, 'get');
             $end   = Request::getInt('end', null, 'get');
 
-        if ($start || ($start && $end)) {
+        if ($start) {
             $publish_up   = Date::of($start)->toSql();
             $publish_down = Date::of($end)->toSql();
         }

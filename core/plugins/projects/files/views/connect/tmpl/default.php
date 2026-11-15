@@ -73,10 +73,10 @@ $i = 0;
             : '';
 
         ?>
-    <div class="connect-service <?php echo !$service['on'] ? 'inactive' : ''; ?> <?php echo $servicename; ?>">
-        <?php if ($service['on'] && $allowed) { ?>
+    <div class="connect-service <?php echo $servicename; ?>">
+        <?php if ($allowed) { ?>
         <div class="connect-info">
-            <?php if ($connected && $service['active']) { ?>
+            <?php if ($connected) { ?>
                 <p><span class="connected"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_CONNECTED')) ?></span></p>
                 <p><?php echo $this->oparams->get($servicename . '_email'); ?></p>
             <?php } else { ?>
@@ -91,9 +91,7 @@ $i = 0;
         <?php } ?>
         <div class="service-info">
             <h5><?php echo $service['servicename']; ?></h5>
-            <?php if (!$service['on']) { ?>
-            <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_OFF'); ?></p>
-            <?php } elseif ($service['active'] || $connected) { ?>
+            <?php if ($service['active']) { ?>
             <p class="green prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_ACTIVE'); ?></p>
                 <?php
                 $spanText = count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' '

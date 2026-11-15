@@ -31,7 +31,6 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-$cls = 'even';
 
 $this->css('usage', 'com_usage');
 ?>
@@ -49,9 +48,7 @@ $this->css('usage', 'com_usage');
             </tr>
         </thead>
         <tbody>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="odd">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS'); ?>:</th>
                 <td><?php echo $this->contribution['contribs']; ?></td>
             </tr>
@@ -67,34 +64,24 @@ $this->css('usage', 'com_usage');
                 <td><?php echo number_format($this->total_andmore_users); ?></td>
             </tr>
         <?php }*/ ?>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="even">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_RANK'); ?>:</th>
                 <td><?php echo $this->rank; ?></td>
             </tr>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="odd">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_FIRST'); ?>:</th>
                 <td><?php echo Date::of($this->contribution['first'])->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
             </tr>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="even">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_LAST'); ?>:</th>
                 <td><?php echo Date::of($this->contribution['last'])->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
             </tr>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="odd">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CITATIONS'); ?>:</th>
                 <td><?php echo $this->citation_count; ?></td>
             </tr>
         <?php if ($this->cluster_users) { ?>
-            <tr class="<?php
-                $cls = ($cls == 'even') ? 'odd' : 'even';
-                echo $cls; ?>">
+            <tr class="even">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
                 <td>
                     <?= Lang::txt(
@@ -153,24 +140,24 @@ $this->css('usage', 'com_usage');
                     <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $row->title ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
-                    $linkText = (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12;
+                    $linkText = number_format($user_count_12);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
-                    $linkText = (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12;
+                    $linkText = number_format($sim_count_12);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
                     ?>
                     <?php
-                    $userCount = (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14;
+                    $userCount = number_format($user_count_14);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $userCount ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
-                    $linkText = (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14;
+                    $linkText = number_format($sim_count_14);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <td><?php echo PlgMembersUsage::getCitationcount($row->id, 0); ?></td>

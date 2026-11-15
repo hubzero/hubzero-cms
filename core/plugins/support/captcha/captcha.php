@@ -500,7 +500,6 @@ class Captcha extends Plugin
         $width = 120;
         $height = 60;
         $fluctuation_amplitude = 5;
-        $no_spaces = true;
 
         $this->setColors();
 
@@ -564,39 +563,35 @@ class Captcha extends Plugin
 
                 $y = random_int(-$fluctuation_amplitude, $fluctuation_amplitude) + ($height - $fontfile_height) / 2 + 2;
 
-                if ($no_spaces) {
-                    $shift = 0;
-                    if ($i > 0) {
-                        $shift = 10000;
-                        for ($sy = 7; $sy < $fontfile_height - 20; $sy += 1) {
-                            for ($sx = $m['start'] - 1; $sx < $m['end']; $sx += 1) {
-                                $rgb = imagecolorat($font, $sx, $sy);
-                                $opacity = $rgb >> 24;
-                                if ($opacity < 127) {
-                                    $left = $sx - $m['start'] + $x;
-                                    $py = $sy + $y;
-                                    if ($py > $height) {
-                                        break;
-                                    }
-                                    for ($px = min($left, $width - 1); $px > $left - 12 && $px >= 0; $px -= 1) {
-                                        $color = imagecolorat($img, $px, $py) & 0xff;
-                                        if ($color + $opacity < 190) {
-                                            if ($shift > $left - $px) {
-                                                $shift = $left - $px;
-                                            }
-                                            break;
-                                        }
-                                    }
+                $shift = 0;
+                if ($i > 0) {
+                    $shift = 10000;
+                    for ($sy = 7; $sy < $fontfile_height - 20; $sy += 1) {
+                        for ($sx = $m['start'] - 1; $sx < $m['end']; $sx += 1) {
+                            $rgb = imagecolorat($font, $sx, $sy);
+                            $opacity = $rgb >> 24;
+                            if ($opacity < 127) {
+                                $left = $sx - $m['start'] + $x;
+                                $py = $sy + $y;
+                                if ($py > $height) {
                                     break;
                                 }
+                                for ($px = min($left, $width - 1); $px > $left - 12 && $px >= 0; $px -= 1) {
+                                    $color = imagecolorat($img, $px, $py) & 0xff;
+                                    if ($color + $opacity < 190) {
+                                        if ($shift > $left - $px) {
+                                            $shift = $left - $px;
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
                             }
                         }
-                        if ($shift == 10000) {
-                            $shift = random_int(4, 6);
-                        }
                     }
-                } else {
-                    $shift = 1;
+                    if ($shift == 10000) {
+                        $shift = random_int(4, 6);
+                    }
                 }
                 imagecopy($img, $font, $x - $shift, $y, $m['start'], 1, $m['end'] - $m['start'], $fontfile_height);
                 $x += $m['end'] - $m['start'] - $shift;

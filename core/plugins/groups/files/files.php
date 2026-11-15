@@ -237,7 +237,7 @@ class Files extends Plugin
         // get list of folders
         $folders = Filesystem::directoryTree($this->path, '.', 10);
         foreach ($folders as $i => $folder) {
-            if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads')) {
+            if ($folder['parent'] || $folder['name'] == 'uploads') {
                 continue;
             }
             unset($folders[$i]);

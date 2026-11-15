@@ -251,13 +251,8 @@ class Codemirror extends Plugin
         Html::behavior('modal', 'a.modal-button');
 
         $html = [];
-        $results[] = $this->onGetInsertMethod();
-
-        foreach ($results as $result) {
-            if (is_string($result) && trim($result)) {
-                $html[] = $result;
-            }
-        }
+        // Sets up inserting into the editor; it gives nothing to show
+        $this->onGetInsertMethod();
 
         if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
             $results = $this->subject->getButtons($name, $buttons, $asset, $author);

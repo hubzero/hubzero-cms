@@ -67,7 +67,7 @@ class Middleware extends Plugin
                 $row->set('user_id', $userId);
 
                 // If (no quota record OR a record and a quota class [e.g., not custom]) ...
-                if (!$row->get('id') || ($row->get('id') && $row->get('class_id'))) {
+                if (!$row->get('id') || $row->get('class_id')) {
                     $val = [
                         'hard_files'  => $row->get('hard_files', 0),
                         'soft_files'  => $row->get('soft_files', 0),
@@ -134,7 +134,7 @@ class Middleware extends Plugin
                 }
 
                 // If (no quota record OR a record and a quota class [e.g., not custom]) ...
-                if (!$row->id || ($row->id && $row->class_id)) {
+                if (!$row->id || $row->class_id) {
                     $val = [
                         'jobs'  => 0,
                     ];

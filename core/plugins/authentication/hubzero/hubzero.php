@@ -151,7 +151,7 @@ class Hubzero extends Plugin
                     null,
                     false,
                 );
-                if (is_array($msg) && !empty($msg[0])) {
+                if (!empty($msg[0])) {
                     App::get('session')->set('badpassword', '1');
                 }
                 if (\Hubzero\User\Password::isPasswordExpired($hzup)) {

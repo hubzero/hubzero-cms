@@ -28,26 +28,9 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
-/**
- * Set by the code that includes this file.
- *
- * @var mixed $dirpath
- * @var mixed $gone
- */
-
 $title       = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
 $placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 $dTitle      = null;
-
-$allowRename = false;
-
-if ($this->row->type == 'file') {
-    $dirpath = dirname($this->row->path) == '.' ? '' : dirname($this->row->path) . DS;
-    $gone    = is_file($this->path . DS . $this->row->path) ? false : true;
-    $title   = !$allowRename
-        ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL')
-        : Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
-}
 
 // Get element properties
 $element = $this->pub->curation('blocks', $this->step, 'elements', $this->element);
@@ -111,7 +94,6 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                     </p>
                 <?php } ?>
                 <?php if ($this->row->type == 'file') { ?>
-                    <?php if ($gone || !$allowRename) { ?>
                         <p class="c-wrapper">
                             <?php
                             $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
@@ -130,16 +112,6 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                             <textarea name="description" class="long" rows="10" cols="60" maxlength="5000"
                                 placeholder="Enter up to 5000 characters..."><?= $fieldText ?></textarea>
                         </p>
-                    <?php } else { ?>
-                        <p class="c-wrapper">
-                            <?php
-                            $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH'));
-                            ?>
-                            <span class="leftshift faded"><?= $spanText ?>*:</span>
-                            <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100"
-                                value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
-                        </p>
-                    <?php } ?>
                 <?php } ?>
 
                 <p class="submitarea">

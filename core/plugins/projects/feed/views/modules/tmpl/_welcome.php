@@ -30,7 +30,6 @@ if ($actual_s <= 1) {
 }
 $i = 0;
 ?>
-<?php if ($actual_s > 1) { ?>
     <div class="welcome">
         <p class="closethis"><a href="<?php echo Route::url('index.php?option=' . $this->option
 
@@ -63,4 +62,3 @@ $i = 0;
             <div class="clear" aria-hidden="true"></div>
         </div>
     </div>
-<?php }

@@ -814,8 +814,7 @@ class Announcements extends Plugin
 
         // Format publish up
         if (
-            isset($fields['publish_up'])
-            && $fields['publish_up'] != ''
+            $fields['publish_up'] != ''
             && $fields['publish_up'] != '0000-00-00 00:00:00'
         ) {
             $fields['publish_up'] = Date::of(
@@ -826,8 +825,7 @@ class Announcements extends Plugin
 
         // Format publish down
         if (
-            isset($fields['publish_down'])
-            && $fields['publish_down'] != ''
+            $fields['publish_down'] != ''
             && $fields['publish_down'] != '0000-00-00 00:00:00'
         ) {
             $fields['publish_down'] = Date::of(

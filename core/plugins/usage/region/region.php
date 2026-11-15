@@ -193,7 +193,6 @@ class Region extends Plugin
                 }
             }
 
-            $cls = 'even';
 
             // Print region list table...
             $html .= '<table summary="' . $regionname . '">' . "\n";
@@ -207,7 +206,7 @@ class Region extends Plugin
             $html .= "\t" . '</thead>' . "\n";
             $html .= "\t" . '<tbody>' . "\n";
 
-            $cls = ($cls == 'even') ? 'odd' : 'even';
+            $cls = 'odd';
             $html .= "\t\t" . '<tr class="summary">' . "\n";
             $k = 0;
             for ($pidx = 0; $pidx < count($period); $pidx++) {

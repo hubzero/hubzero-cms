@@ -266,33 +266,6 @@ class Domainrestriction extends Plugin
     }
 
     /**
-     * Match email address
-     *
-     * @param   array  $keys
-     * @return  bool
-     */
-    private function mailmatch($keys = [])
-    {
-        $ret = false;
-
-        //print_r($keys); die;
-
-        if ($this->{$keys[0]} || $this->{$keys[1]} || $this->{$keys[2]}) {
-            if (
-                in_array($this->tld, $this->{$keys[0]})
-                || in_array($this->domain, $this->{$keys[1]})
-                || in_array($this->email, $this->{$keys[2]})
-            ) {
-                $ret = true;
-            }
-        }
-
-        //echo '-->'; var_dump($ret); die('oops');
-
-        return $ret;
-    }
-
-    /**
      * Sort params
      *
      * @return  void

@@ -243,9 +243,9 @@ class Ckeditor extends Plugin
             . '" id="'
             . $id
             . '" '
-            . ($row ? 'rows="' . $row . '"' : '')
+            . 'rows="' . $row . '"'
             . ' '
-            . ($col ? 'cols="' . $col . '"' : '')
+            . 'cols="' . $col . '"'
             . ' '
             . implode(' ', $atts)
             . '>'
@@ -273,13 +273,8 @@ class Ckeditor extends Plugin
         Html::behavior('modal', 'a.modal-button');
 
         $return = '';
-        $results[] = $this->onGetInsertMethod($name);
-
-        foreach ($results as $result) {
-            if (is_string($result) && trim($result)) {
-                $return .= $result;
-            }
-        }
+        // Sets up inserting into the editor; it gives nothing to show
+        $this->onGetInsertMethod($name);
 
         if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
             $results = $this->subject->getButtons($name, $buttons, $asset, $author);

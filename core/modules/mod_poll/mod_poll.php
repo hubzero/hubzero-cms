@@ -36,7 +36,7 @@ class Poll extends Module
             $poll = PollModel::current();
         }
 
-        if ($poll && $poll->id) {
+        if ($poll->id) {
             require $this->getLayoutPath();
         }
     }

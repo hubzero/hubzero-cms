@@ -218,7 +218,7 @@ class Members extends Plugin
 				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where),
         );
         $assoc = $sql->toAssociative();
-        if (!($assoc instanceof \Countable) || !count($assoc)) {
+        if (!count($assoc)) {
             return false;
         }
 

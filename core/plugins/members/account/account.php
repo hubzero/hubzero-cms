@@ -76,7 +76,6 @@ class Account extends Plugin
     public function onMembers($user, $member, $option, $areas)
     {
         $returnhtml = true;
-        $returnmeta = true;
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -144,31 +143,29 @@ class Account extends Plugin
         }
 
         // Build the HTML for the account metadat portion
-        if ($returnmeta) {
-            // Make sure only I can see this
-            if ($member->get('id') == $user->get("id")) {
-                // Make sure a password is set and information has been found about it
-                if ($passinfo = $this->getPassInfo()) {
-                    // If that password is within the warning or expiration period...
-                    if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0) {
-                        $title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
-                        $link  = Route::url($member->link() . '&active=account#password');
+        // Make sure only I can see this
+        if ($member->get('id') == $user->get("id")) {
+            // Make sure a password is set and information has been found about it
+            if ($passinfo = $this->getPassInfo()) {
+                // If that password is within the warning or expiration period...
+                if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0) {
+                    $title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
+                    $link  = Route::url($member->link() . '&active=account#password');
 
-                        $arr['metadata']['alert'] = '<a class="alrt" href="'
-                            . $link
-                            . '"><span><h5>Password Expiration</h5>'
-                            . $title
-                            . '</span></a>';
-                    } elseif ($passinfo['diff'] < 0) {
-                        $title = 'Your password has expired!';
-                        $link  = Route::url($member->link() . '&active=account#password');
+                    $arr['metadata']['alert'] = '<a class="alrt" href="'
+                        . $link
+                        . '"><span><h5>Password Expiration</h5>'
+                        . $title
+                        . '</span></a>';
+                } elseif ($passinfo['diff'] < 0) {
+                    $title = 'Your password has expired!';
+                    $link  = Route::url($member->link() . '&active=account#password');
 
-                        $arr['metadata']['alert'] = '<a class="alrt" href="'
-                            . $link
-                            . '"><span><h5>Password Expiration</h5>'
-                            . $title
-                            . '</span></a>';
-                    }
+                    $arr['metadata']['alert'] = '<a class="alrt" href="'
+                        . $link
+                        . '"><span><h5>Password Expiration</h5>'
+                        . $title
+                        . '</span></a>';
                 }
             }
         }
@@ -983,7 +980,7 @@ class Account extends Plugin
     /**
      * Retrieve activation token from the database
      *
-     * @return  object  id and activation token for user
+     * @return  object|null  id and activation token for user; null when none is set
      */
     private function getToken()
     {
@@ -1061,7 +1058,7 @@ class Account extends Plugin
         // Iterate through the rules and add the appropriate classes (passed/error)
         if (count($pw_rules) > 0) {
             foreach ($pw_rules as $rule) {
-                if (!empty($msg) && is_array($msg)) {
+                if (!empty($msg)) {
                     $err = in_array($rule, $msg);
                 } else {
                     $err = '';
@@ -1069,7 +1066,7 @@ class Account extends Plugin
                 $mclass = ($err) ? ' class="error"' : 'class="passed"';
                 echo "<li $mclass>" . $rule . "</li>";
             }
-            if (!empty($msg) && is_array($msg)) {
+            if (!empty($msg)) {
                 foreach ($msg as $message) {
                     if (!in_array($message, $pw_rules)) {
                         echo '<li class="error">' . $message . "</li>";

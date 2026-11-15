@@ -178,7 +178,7 @@ class Featuredresource extends Module
      *
      * @param   string   $path       Path to look for screenshots in
      * @param   integer  $versionid  Tool version
-     * @return  string|void
+     * @return  string
      */
     private function getToolImage($path, $versionid = 0)
     {

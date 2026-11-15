@@ -142,8 +142,6 @@ class Notes extends Plugin
      */
     public function onProject($model, $action = '', $areas = null, $tool = null)
     {
-        $returnhtml = true;
-
         $arr = [
             'html'     => '',
             'metadata' => '',
@@ -171,120 +169,117 @@ class Notes extends Plugin
         // Model
         $this->model = $model;
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            // Load wiki language file
-            Lang::load('com_wiki') || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
+        // Load wiki language file
+        Lang::load('com_wiki') || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
-            if ($model->access('readonly')) {
-                Component::params('com_wiki')->set('access-page-view', true);
-                Component::params('com_wiki')->set('access-check-done', true);
-            }
+        if ($model->access('readonly')) {
+            Component::params('com_wiki')->set('access-page-view', true);
+            Component::params('com_wiki')->set('access-check-done', true);
+        }
 
-            // Set vars
-            $this->database = App::get('db');
-            $this->uid      = User::get('id');
+        // Set vars
+        $this->database = App::get('db');
+        $this->uid      = User::get('id');
 
-            // Load component configs
-            $this->config = $model->config();
-            $this->group = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
+        // Load component configs
+        $this->config = $model->config();
+        $this->group = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
 
-            // Incoming
-            $this->pagename = trim(Request::getString('pagename', ''));
-            if (strstr($this->pagename, '/')) {
-                $bits = explode('/', $this->pagename);
-                $this->pagename = array_pop($bits);
-                $scope = implode('/', $bits);
-                Request::setVar('scope', $scope);
-            }
-            $this->masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
+        // Incoming
+        $this->pagename = trim(Request::getString('pagename', ''));
+        if (strstr($this->pagename, '/')) {
+            $bits = explode('/', $this->pagename);
+            $this->pagename = array_pop($bits);
+            $scope = implode('/', $bits);
+            Request::setVar('scope', $scope);
+        }
+        $this->masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
-            // Get our model
-            $this->note = new \Components\Projects\Models\Note(
-                $this->masterScope,
-                $this->model->get('id'),
-            );
+        // Get our model
+        $this->note = new \Components\Projects\Models\Note(
+            $this->masterScope,
+            $this->model->get('id'),
+        );
 
-            // What's the task?
-            $this->task = $action ? $action : Request::getString('action', 'view');
+        // What's the task?
+        $this->task = $action ? $action : Request::getString('action', 'view');
 
-            // Publishing?
-            if ($this->task == 'browser') {
-                return $this->browser();
-            }
+        // Publishing?
+        if ($this->task == 'browser') {
+            return $this->browser();
+        }
 
-            // Import some needed libraries
-            switch ($this->task) {
-                case 'upload':
-                case 'download':
-                case 'deletefolder':
-                case 'deletefile':
-                case 'media':
-                case 'list':
-                    $this->controllerName = 'media';
-                    break;
-
-                case 'history':
-                case 'compare':
-                case 'approve':
-                case 'deleterevision':
-                    $this->controllerName = 'history';
-                    break;
-
-                case 'editcomment':
-                case 'addcomment':
-                case 'savecomment':
-                case 'reportcomment':
-                case 'removecomment':
-                case 'comments':
-                    $this->controllerName = 'comments';
-                    $cid = Request::getInt('cid', 0);
-                    if ($cid) {
-                        Request::setVar('comment', $cid);
-                    }
-                    break;
-
-                case 'delete':
-                case 'edit':
-                case 'save':
-                case 'rename':
-                case 'saverename':
-                default:
-                    $this->controllerName = 'pages';
-                    break;
-            }
-
-            if (
-                substr(strtolower($this->pagename), 0, strlen('image:')) == 'image:'
-                || substr(strtolower($this->pagename), 0, strlen('file:')) == 'file:'
-            ) {
+        // Import some needed libraries
+        switch ($this->task) {
+            case 'upload':
+            case 'download':
+            case 'deletefolder':
+            case 'deletefile':
+            case 'media':
+            case 'list':
                 $this->controllerName = 'media';
-                $this->task = 'download';
-            }
+                break;
 
-            if (
-                !file_exists(
-                    Component::path('com_wiki')
-                        . DS
-                        . 'site'
-                        . DS
-                        . 'controllers'
-                        . DS
-                        . $this->controllerName
-                        . '.php',
-                )
-            ) {
+            case 'history':
+            case 'compare':
+            case 'approve':
+            case 'deleterevision':
+                $this->controllerName = 'history';
+                break;
+
+            case 'editcomment':
+            case 'addcomment':
+            case 'savecomment':
+            case 'reportcomment':
+            case 'removecomment':
+            case 'comments':
+                $this->controllerName = 'comments';
+                $cid = Request::getInt('cid', 0);
+                if ($cid) {
+                    Request::setVar('comment', $cid);
+                }
+                break;
+
+            case 'delete':
+            case 'edit':
+            case 'save':
+            case 'rename':
+            case 'saverename':
+            default:
                 $this->controllerName = 'pages';
-            }
-            // Listing/unlisting?
-            if ($this->task == 'publist' || $this->task == 'unlist') {
-                $arr['html'] = $this->list();
-            } elseif ($this->task == 'share') {
-                $arr['html'] = $this->share();
-            } else {
-                // Display page
-                $arr['html'] = $this->page();
-            }
+                break;
+        }
+
+        if (
+            substr(strtolower($this->pagename), 0, strlen('image:')) == 'image:'
+            || substr(strtolower($this->pagename), 0, strlen('file:')) == 'file:'
+        ) {
+            $this->controllerName = 'media';
+            $this->task = 'download';
+        }
+
+        if (
+            !file_exists(
+                Component::path('com_wiki')
+                    . DS
+                    . 'site'
+                    . DS
+                    . 'controllers'
+                    . DS
+                    . $this->controllerName
+                    . '.php',
+            )
+        ) {
+            $this->controllerName = 'pages';
+        }
+        // Listing/unlisting?
+        if ($this->task == 'publist' || $this->task == 'unlist') {
+            $arr['html'] = $this->list();
+        } elseif ($this->task == 'share') {
+            $arr['html'] = $this->share();
+        } else {
+            // Display page
+            $arr['html'] = $this->page();
         }
 
         // Return data

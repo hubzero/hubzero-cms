@@ -182,18 +182,6 @@ Lang::load('tpl_' . $this->template)
                                                 </a>
                                             </li>
                                         <?php } ?>
-                                        <?php if (false) : ?>
-                                            <?php
-                                            // set module REPORTPROBLEMS parameter to work with .helpme
-                                            $supportUrl = Route::url('index.php?option=com_support');
-                                            ?>
-                                            <li class="subnav-helpme helpme">
-                                                <a href="<?php echo $supportUrl; ?>"
-                                                   title="<?php echo Lang::txt('Help'); ?>">
-                                                    <span><?php echo Lang::txt('Help'); ?></span>
-                                                </a>
-                                            </li>
-                                        <?php endif; ?>
                                     </ul>
                                 </nav>
                             </nav>

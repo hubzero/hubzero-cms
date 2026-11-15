@@ -103,11 +103,9 @@ class Mycontributions extends Module
 
                         $unanswered = 0;
 
-                        if ($results) {
-                            foreach ($results as $r) {
-                                if ($r->responses->count() == 0) {
-                                    $unanswered++;
-                                }
+                        foreach ($results as $r) {
+                            if ($r->responses->count() == 0) {
+                                $unanswered++;
                             }
                         }
 

@@ -62,7 +62,6 @@ class Groups extends Plugin
     public function onMembers($user, $member, $option, $areas)
     {
         $returnhtml = true;
-        $returnmeta = true;
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -145,12 +144,7 @@ class Groups extends Plugin
                 $groups[$mem->description] = $mem;
             }
         }
-        // SORT_NATURAL is PHP 5.4+
-        if (PHP_VERSION_ID > 50400) {
-            ksort($groups, SORT_NATURAL | SORT_FLAG_CASE);
-        } else {
-            ksort($groups);
-        }
+        ksort($groups, SORT_NATURAL | SORT_FLAG_CASE);
 
         // Build the final HTML
         if ($returnhtml) {
@@ -238,19 +232,17 @@ class Groups extends Plugin
         }
 
         // Build the HTML meant for the "profile" tab's metadata overview
-        if ($returnmeta) {
-            // Display a message if it's me
-            if ($member->get('id') == $user->get('id')) {
-                $arr['metadata']['count'] = count($groups);
+        // Display a message if it's me
+        if ($member->get('id') == $user->get('id')) {
+            $arr['metadata']['count'] = count($groups);
 
-                if (count($invitees)) {
-                    $title = Lang::txt('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
-                    $link = Route::url($member->link() . '&active=groups&filter=invitees');
+            if (count($invitees)) {
+                $title = Lang::txt('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
+                $link = Route::url($member->link() . '&active=groups&filter=invitees');
 
-                    $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span>' . $title . '</span></a>';
+                $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span>' . $title . '</span></a>';
 
-                    Notify::info($arr['metadata']['alert'], 'com_members.profile');
-                }
+                Notify::info($arr['metadata']['alert'], 'com_members.profile');
             }
         }
 

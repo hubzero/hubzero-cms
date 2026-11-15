@@ -28,27 +28,20 @@ $thirdlevel = [];
 $pNotes = $this->note->getNotes();
 if ($pNotes) {
     foreach ($pNotes as $note) {
-        $show = 1;
-
-        if (!$show) {
-            // Skip
-            continue;
-        }
-
         $level = 1;
         $parent = '';
 
         if (trim($note->path)) {
             $parts = explode('/', trim($note->path));
             $level = count($parts) + 1;
-            $parent = $level > 1 ? array_pop($parts) : '';
+            $parent = array_pop($parts);
         }
 
         if ($level == 1) {
             $notes[$note->pagename] = [$level => [$note]];
         } elseif ($level == 2) {
             $notes[$parent][$level][] = $note;
-        } elseif ($level >= 3) {
+        } else {
             $thirdlevel[$parent][] = $note;
         }
     }
@@ -76,7 +69,7 @@ if ($pNotes) {
                         </li>
                         <?php
                         // Third level of notes
-                        if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
+                        if (isset($thirdlevel[$entry->pagename])) {
                             foreach ($thirdlevel[$entry->pagename] as $subpage) {
                                 ?>
                                 <li <?= $subpage->pagename == $this->page->get('pagename') ? 'class="active"' : '' ?>>

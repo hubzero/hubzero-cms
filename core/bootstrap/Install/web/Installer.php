@@ -63,9 +63,9 @@ class Installer
     ];
 
     /**
-     * Security guard instance
+     * Security guard instance, once made
      *
-     * @var SecurityGuard
+     * @var SecurityGuard|null
      */
     private $security;
 

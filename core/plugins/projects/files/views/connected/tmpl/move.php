@@ -32,7 +32,6 @@ defined('_HZEXEC_') or die();
 $f          = 1;
 $i          = 1;
 $skipped    = 0;
-$maxlevel   = 100;
 $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 ?>
 
@@ -97,7 +96,6 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
                         </ul>
                     <?php endif; ?>
-                    <?php if ($maxlevel <= 100) : ?>
                         <?php if (count($this->list) > 0) : ?>
                             <div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
                         <?php endif; ?>
@@ -127,7 +125,6 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                                 maxlength="50"
                                 value="" />
                         </label>
-                    <?php endif; ?>
                 </div>
                 <p class="submitarea">
                     <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />

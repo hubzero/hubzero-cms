@@ -136,14 +136,14 @@ $this
                         . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
                         . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE')
                         . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
-                } elseif ($group->registered && !$group->regconfirmed) {
+                } elseif ($group->registered) {
                     $status = 'pending';
 
                     $options = '<button type="submit" form="hz-post-action" formaction="'
                         . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
                         . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE')
                         . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
-                } elseif (!$group->registered && $group->regconfirmed) {
+                } elseif ($group->regconfirmed) {
                     $status = 'invitee';
 
                     //$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option .

@@ -33,13 +33,7 @@ $this->css()->js();
 $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations';
 
 //$allow_tags = $this->config->get("citation_allow_tags", "no");
-$allow_tags = "no";
-$allow_badges = "no";
 //$allow_badges = $this->config->get("citation_allow_badges", "no");
-
-$fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
-$fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
-$fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
 
 $t = [];
 $b = [];

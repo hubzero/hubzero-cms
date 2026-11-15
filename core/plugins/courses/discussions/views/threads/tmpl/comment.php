@@ -160,12 +160,10 @@ if ($this->lecture) {
                             --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!--
                         --></button>
                     <?php } ?>
-                    <?php if ($this->config->get('access-edit-thread')) { ?>
                         <a class="icon-edit edit" data-id="c<?= $this->comment->get('id') ?>"
                             href="<?= Route::url($this->comment->link('edit')) ?>"><!--
                             --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!--
                         --></a>
-                    <?php } ?>
                 <?php } ?>
                 <?php if (!$this->comment->isReported()) { ?>
                     <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>

@@ -2288,7 +2288,6 @@ class Collections extends Plugin
 
         if (
             !$collection->exists()
-            || ($collection->get('access') == 1 && User::isGuest())
             || ($collection->get('access') == 4 && !in_array(User::get('id'), $this->members))
         ) {
             App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));

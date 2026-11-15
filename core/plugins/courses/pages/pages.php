@@ -208,7 +208,7 @@ class Pages extends Plugin
             }
         }
         if (!$active) {
-            $page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
+            $page = $pages[0] ?? null;
         }
         if (!$this->view->offering->access('manage', 'section') && (!$page || !$page->exists())) {
             if ($active) {

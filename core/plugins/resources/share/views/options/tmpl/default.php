@@ -41,7 +41,7 @@ foreach ($sharing as $shared) {
              ->set('name', $shared)
              ->loadTemplate();
 
-        $metadata .= (!$limit || $i <= $limit) ? $link : '';
+        $metadata .= ($i <= $limit) ? $link : '';
 
         $popup    .= '<li class="';
         $popup    .= ($i % 2) ? 'odd' : 'even';

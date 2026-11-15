@@ -865,9 +865,7 @@ class Sync extends \Hubzero\Base\Obj
         $output .= 'Sync completed in: ' . $length . "\n";
 
         // Determine next sync ID
-        if (!$nextSyncId) {
-            $nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
-        }
+        $nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
 
         // Save sync time
         $this->model->saveParam($service . '_sync', $endTime);

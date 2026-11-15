@@ -40,11 +40,8 @@ class Icons
     public static function button($button)
     {
         if (!empty($button['access'])) {
-            if (is_bool($button['access'])) {
-                if ($button['access'] == false) {
-                    return '';
-                }
-            } else {
+            // true lets anyone see it; a list is pairs of action and context
+            if (!is_bool($button['access'])) {
                 // Take each pair of permission, context values.
                 for ($i = 0, $n = count($button['access']); $i < $n; $i += 2) {
                     if (!User::authorise($button['access'][$i], $button['access'][$i + 1])) {
@@ -64,7 +61,7 @@ class Icons
         if (isset($button['image']) && $button['image']) {
             $html[] = Html::asset(
                 'image',
-                empty($button['image']) ? '' : $button['image'],
+                $button['image'],
                 empty($button['alt']) ? null : $button['alt'],
                 null,
                 true,

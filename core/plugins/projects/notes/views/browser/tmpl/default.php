@@ -48,7 +48,7 @@ if ($items) {
             $notes[$note->pagename] = [ $level => [$note]];
         } elseif ($level == 2) {
             $notes[$parent][$level][] = $note;
-        } elseif ($level >= 3) {
+        } else {
             $r = array_shift($remaining);
             $thirdlevel[$r][] = $note;
         }
@@ -105,7 +105,7 @@ $route = $this->model->isProvisioned()
                     $shown[] = $entry->id;
 
                     // Third level of notes
-                    if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
+                    if (isset($thirdlevel[$entry->pagename])) {
                         foreach ($thirdlevel[$entry->pagename] as $subpage) {
                             ?>
                             <li class="c-click notes wikilevel_3"

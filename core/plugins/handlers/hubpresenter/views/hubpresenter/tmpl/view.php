@@ -92,8 +92,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
 
     // Do we want to redirect user with time added to url
     if (
-        is_object($tracking)
-        && !$hasTime
+        !$hasTime
         && $tracking->current_position > 0
         && $tracking->current_position != $tracking->object_duration
         && !Request::getInt('no_html', 0)

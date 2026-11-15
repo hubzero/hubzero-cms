@@ -136,9 +136,7 @@ class Shibboleth extends Plugin
         }
 
         if (
-            $result
-            && isset($result->answer)
-            && count($result->answer) > 0
+            count($result->answer) > 0
             && isset($result->answer[0]->ptrdname)
         ) {
             return (string) $result->answer[0]->ptrdname;
@@ -449,9 +447,7 @@ class Shibboleth extends Plugin
                     $attrs['eppn'] = $attrs['eduPersonPrincipalName'];
                 }
             }
-            if (!isset($attrs['username']) && isset($attrs['eppn'])) {
-                $attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);
-            }
+            $attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);
             // Eppn is sometimes or maybe always in practice an email address
             if (!isset($attrs['email']) && strpos($attrs['eppn'], '@')) {
                 $attrs['email'] = $attrs['eppn'];

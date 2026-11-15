@@ -199,7 +199,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 <?php $noJsMsg = Lang::txt('Enable JavaScript in your browser for advanced file management.'); ?>
                 <span class="faded ipadded"><?php echo $noJsMsg; ?></span>
             </noscript>
-                <?php if ($sharing && $versionTracking == 1) { ?>
+                <?php if ($sharing) { ?>
             <span class="rightfloat">
                 <span id="sync-status"><?php echo $lastsync; ?></span>
             </span>

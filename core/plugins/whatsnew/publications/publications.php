@@ -29,13 +29,6 @@ class Publications extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Results total
-     *
-     * @var  array|null
-     */
-    private $total = null;
-
-    /**
      * Constructor
      *
      * @param   object  &$subject  Event observer
@@ -101,17 +94,6 @@ class Publications extends Plugin
         }
 
         if ($limit) {
-            if ($this->total != null) {
-                $total = 0;
-                $t = $this->total;
-                foreach ($t as $l) {
-                    $total += $l;
-                }
-                if ($total == 0) {
-                    return [];
-                }
-            }
-
             $filters['limit'] = $limit;
             $filters['start'] = $limitstart;
 
@@ -149,7 +131,7 @@ class Publications extends Plugin
             // Execute count query
             $results = $rr->getCount($filters);
 
-            return ($results && is_array($results)) ? count($results) : $results;
+            return $results;
         }
     }
 

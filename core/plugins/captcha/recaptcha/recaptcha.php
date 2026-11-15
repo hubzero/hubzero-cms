@@ -109,7 +109,7 @@ class Recaptcha extends Plugin
         $remoteIp = Request::ip();
 
         // Discard empty solution submissions
-        if ($response == null || strlen($response) == 0) {
+        if ($response == '') {
             $this->setError('missing-input');
             return false;
         }

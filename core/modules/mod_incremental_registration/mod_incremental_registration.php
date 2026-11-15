@@ -242,7 +242,7 @@ class IncrementalRegistration extends Module
                     if (isset($row['mailPreferenceOption']) && $mailPreferenceOption == -1) {
                         $errors['mailPreferenceOption'] = true;
                     }
-                    if (isset($row['location']) && !$location) {
+                    if (isset($row['location'])) {
                         if (isset($_POST['location'])) {
                             $location = trim($_POST['location']);
                         } else {

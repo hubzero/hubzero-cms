@@ -217,11 +217,10 @@ class Publications extends Plugin
 
         $sorter = new PublicationChildSorter($placed);
         $rows = [];
+        // Nothing is placed under a parent now (see above), so every row is listed
         foreach ($id_assoc as $id => $row) {
-            if (!array_key_exists((int) $id, $placed)) {
-                $row->sortChildren([$sorter, 'sort']);
-                $rows[] = $row;
-            }
+            $row->sortChildren([$sorter, 'sort']);
+            $rows[] = $row;
         }
 
         usort($rows, function ($a, $b) {

@@ -140,7 +140,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         $this->row->log->details->get('projectid', $this->row->log->get('scope_id')),
                     );
 
-                    if ($project) {
+                    if ($project->exists()) {
                         $projectDetailUrl = $this->row->log->details->get('url');
                         // The stored URL is only followed to a site path or an http(s) address
                         $projectDetailUrl = (

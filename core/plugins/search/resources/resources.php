@@ -218,11 +218,10 @@ class Resources extends Plugin
         */
         $sorter = new ResourceChildSorter($placed);
         $rows = [];
+        // Nothing is placed under a parent now (see above), so every row is listed
         foreach ($id_assoc as $id => $row) {
-            if (!array_key_exists((int) $id, $placed)) {
-                $row->sortChildren([$sorter, 'sort']);
-                $rows[] = $row;
-            }
+            $row->sortChildren([$sorter, 'sort']);
+            $rows[] = $row;
         }
 
         usort($rows, function ($a, $b) {
@@ -346,10 +345,8 @@ class Resources extends Plugin
                 $fileData = '';
                 $content = '';
                 foreach ($children as $child) {
-                    if (false) {
-                        // Call the helper to read the file
-                        //$fileData .= /Helper/FileScan::scan($child['path']) . ' ';
-                    }
+                    // Call the helper to read the file
+                    //$fileData .= /Helper/FileScan::scan($child['path']) . ' ';
 
                     $content .= $child['childTitle'] . ' ';
                 }

@@ -29,7 +29,7 @@ class Massmail extends Plugin
      * enabled state to the mass-mail sending switch.
      *
      * @param   string   $context  Save context (expects 'com_config.component')
-     * @param   object   $table    The saved extension record
+     * @param   object|mixed   $table    The saved extension record
      * @param   boolean  $isNew    Whether the record is new
      * @return  void
      */

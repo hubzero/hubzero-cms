@@ -145,7 +145,6 @@ class Resume extends Plugin
      */
     public function onMembers($user, $member, $option, $areas)
     {
-        $return = 'html';
         $active = 'resume';
 
         // Check if our area is in the array of areas we want to return results for
@@ -165,11 +164,6 @@ class Resume extends Plugin
             'searchresult' => '',
         ];
 
-        // Do we need to return any data?
-        if ($return != 'html' && $return != 'metadata') {
-            return $arr;
-        }
-
         // Jobs component needs to be enabled
         if (!$this->config->get('component_enabled')) {
             $arr['html'] = '<p class="warning">' . Lang::txt('PLG_MEMBERS_RESUME_WARNING_DISABLED') . '</p>';
@@ -180,7 +174,7 @@ class Resume extends Plugin
         $emp = $this->isEmployer($user, $member);
 
         // Are we returning HTML?
-        if ($return == 'html'  && $areas[0] == 'resume') {
+        if ($areas[0] == 'resume') {
             $database = App::get('db');
 
             $task = Request::getCmd('action', '');

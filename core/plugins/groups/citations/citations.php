@@ -489,11 +489,8 @@ class Citations extends Plugin
         $id = Request::getInt('id', 0);
         $id = ($id < 0 ? 0 : $id);
 
-        // Pub author
-        $pubAuthor = false;
-
         // Is user authorized to edit citations?
-        if (!$view->get('isManager') && !$pubAuthor) {
+        if (!$view->get('isManager')) {
             $id = 0;
         }
 
@@ -700,23 +697,19 @@ class Citations extends Plugin
                 $author->set('cid', $citation->id);
                 $author->save();
             }
-        } elseif (!$isNew && ($authorCount == 0)) {
+        } elseif ($authorCount == 0) {
+            // explode() always gives at least one name
             $authorField = explode(',', Request::getString('author'));
-            $totalAuths = count($authorField);
 
-            if ($totalAuths == 0) {
-                // redirect with Error
-            } else {
-                foreach ($authorField as $key => $a) {
-                    // create a new author entry
-                    $authorObj = \Components\Citations\Models\Author::blank()->set([
-                        'cid'      => $citation->id,
-                        'ordering' => $key,
-                        'author'   => $a,
-                    ]);
+            foreach ($authorField as $key => $a) {
+                // create a new author entry
+                $authorObj = \Components\Citations\Models\Author::blank()->set([
+                    'cid'      => $citation->id,
+                    'ordering' => $key,
+                    'author'   => $a,
+                ]);
 
-                    $authorObj->save();
-                }
+                $authorObj->save();
             }
         }
 
@@ -1048,7 +1041,7 @@ class Citations extends Plugin
             $citationFormat = \Components\Citations\Models\Format::oneOrNew($format);
 
             // if the setting a custom group citation type
-            if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew())) {
+            if ($citationFormat->isNew() || $citationFormat->style == $name) {
                 $citationFormat->set([
                     'format' => Request::getString('template'),
                     'style'  => $name,
@@ -1336,15 +1329,11 @@ class Citations extends Plugin
             );
         }
 
-        // vars
-        $allow_tags   = "yes";
-        $allow_badges = "yes";
-
         $this->importer->set('user', User::get('id'));
         $this->importer->set('scope', 'group');
         $this->importer->set('scope_id', $this->group->get('gidNumber'));
-        $this->importer->setTags($allow_tags == 'yes');
-        $this->importer->setBadges($allow_badges == 'yes');
+        $this->importer->setTags(true);
+        $this->importer->setBadges(true);
 
         // Process
         $results = $this->importer->process(
@@ -1527,7 +1516,7 @@ class Citations extends Plugin
      *
      * @param   array    $filters   Array of POST values
      * @param   integer  $scope_id  Value of scope id
-     * @return  array|false    Sanitized and validated filter values
+     * @return  array    Sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)
     {
@@ -1537,8 +1526,6 @@ class Citations extends Plugin
         if (!isset($filters['sort'])) {
             $filters['sort'] = $this->params->get('sort', 'year DESC');
         }
-
-        $filterCount = count($filters);
 
         // see if we have members too
         $config = json_decode($this->group->get('params'));
@@ -1602,116 +1589,113 @@ class Citations extends Plugin
         }
 
         // apply filters on the set of citations
-        if ($filterCount > 0) {
-            foreach ($filters as $filter => $value) {
-                // sanitization
-                $value = \Hubzero\Utility\Sanitize::clean($value);
+        // The sort has a default, so there is always a filter
+        foreach ($filters as $filter => $value) {
+            // sanitization
+            $value = \Hubzero\Utility\Sanitize::clean($value);
 
-                // we handle things differently in search and sorting
-                if (
-                    $filter != 'search'
-                    && $filter != 'sort'
-                    && $filter != 'tag'
-                    && $value != ""
-                    && $filter != 'filter'
-                ) {
-                    switch ($filter) {
-                        case 'author':
-                            $citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
-                            break;
-                        case 'publishedin':
-                            $citations->where('date_publish', 'LIKE', "%{$value}-%");
-                            break;
-                        case 'year_start':
-                            $citations->where('year', '>=', $value);
-                            break;
-                        case 'year_end':
-                            $citations->where('year', '<=', $value);
-                            break;
-                        default:
-                            // filters[] keys are request-supplied; only real, filterable
-                            // columns reach the query
-                            if (
-                                in_array(
-                                    $filter,
-                                    ['type', 'scope', 'scope_id', 'published', 'year', 'affiliated', 'fundedby'],
-                                    true,
-                                )
-                            ) {
-                                $citations->where($filter, '=', $value);
-                            }
-                            break;
-                    }
-                }
-
-                // for searching
-                if ($filter == "search" && $value != "") {
-                    $terms = preg_split('/\s+/', $value);
-
-                    $value = \Hubzero\Utility\Sanitize::clean($value);
-                    $term = $value;
-                    $collection = [];
-                    $columns = ['author', 'title', 'isbn', 'doi', 'publisher', 'abstract'];
-                    foreach ($columns as $column) {
-                        foreach ($terms as $term) {
-                            // copy the original item
-                            $cite = clone($citations);
-
-                            // do some searching
-                            $cite->where($column, 'LIKE', "%{$term}%");
-
-                            foreach ($cite as $c) {
-                                // put for collection later
-                                array_push($collection, $c->id);
-                            }
+            // we handle things differently in search and sorting
+            if (
+                $filter != 'search'
+                && $filter != 'sort'
+                && $filter != 'tag'
+                && $value != ""
+                && $filter != 'filter'
+            ) {
+                switch ($filter) {
+                    case 'author':
+                        $citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
+                        break;
+                    case 'publishedin':
+                        $citations->where('date_publish', 'LIKE', "%{$value}-%");
+                        break;
+                    case 'year_start':
+                        $citations->where('year', '>=', $value);
+                        break;
+                    case 'year_end':
+                        $citations->where('year', '<=', $value);
+                        break;
+                    default:
+                        // filters[] keys are request-supplied; only real, filterable
+                        // columns reach the query
+                        if (
+                            in_array(
+                                $filter,
+                                ['type', 'scope', 'scope_id', 'published', 'year', 'affiliated', 'fundedby'],
+                                true,
+                            )
+                        ) {
+                            $citations->where($filter, '=', $value);
                         }
-                    }
-
-                    // remove duplicates
-                    $collection = array_unique($collection);
-
-                    // pull the appropriate ones.
-                    $citations->whereIn('id', $collection);
-                }
-
-                // for tags
-                if ($filter == "tag" && $value != "") {
-                    $collection = [];
-                    $cite = clone($citations);
-                    foreach ($cite as $c) {
-                        foreach ($c->tags as $tag) {
-                            if ($tag->tag == $value) {
-                                array_push($collection, $c->id);
-                            }
-                        }
-                    }
-
-                    // remove duplicates
-                    $collection = array_unique($collection);
-
-                    // get the tagged ones
-                    $citations->whereIn('id', $collection);
-                }
-
-                if ($filter == "sort" && $value != "") {
-                    // "column direction" from the request: only the offered columns
-                    // and directions are honoured
-                    $clause = explode(" ", $value);
-                    $column = strtolower($clause[0]);
-                    $dir    = isset($clause[1]) ? strtolower($clause[1]) : 'asc';
-                    if (
-                        in_array($column, ['year', 'created', 'title', 'author', 'journal'], true)
-                        && in_array($dir, ['asc', 'desc'], true)
-                    ) {
-                        $citations->order($column, $dir);
-                    }
+                        break;
                 }
             }
 
-            return ['citations' => $citations, 'filters' => $filters];
-        } else {
-            return ['citations' => $citations, 'filters' => []];
+            // for searching
+            if ($filter == "search" && $value != "") {
+                $terms = preg_split('/\s+/', $value);
+
+                $value = \Hubzero\Utility\Sanitize::clean($value);
+                $term = $value;
+                $collection = [];
+                $columns = ['author', 'title', 'isbn', 'doi', 'publisher', 'abstract'];
+                foreach ($columns as $column) {
+                    foreach ($terms as $term) {
+                        // copy the original item
+                        $cite = clone($citations);
+
+                        // do some searching
+                        $cite->where($column, 'LIKE', "%{$term}%");
+
+                        foreach ($cite as $c) {
+                            // put for collection later
+                            array_push($collection, $c->id);
+                        }
+                    }
+                }
+
+                // remove duplicates
+                $collection = array_unique($collection);
+
+                // pull the appropriate ones.
+                $citations->whereIn('id', $collection);
+            }
+
+            // for tags
+            if ($filter == "tag" && $value != "") {
+                $collection = [];
+                $cite = clone($citations);
+                foreach ($cite as $c) {
+                    foreach ($c->tags as $tag) {
+                        if ($tag->tag == $value) {
+                            array_push($collection, $c->id);
+                        }
+                    }
+                }
+
+                // remove duplicates
+                $collection = array_unique($collection);
+
+                // get the tagged ones
+                $citations->whereIn('id', $collection);
+            }
+
+            if ($filter == "sort" && $value != "") {
+                // "column direction" from the request: only the offered columns
+                // and directions are honoured
+                $clause = explode(" ", $value);
+                $column = strtolower($clause[0]);
+                $dir    = isset($clause[1]) ? strtolower($clause[1]) : 'asc';
+                if (
+                    in_array($column, ['year', 'created', 'title', 'author', 'journal'], true)
+                    && in_array($dir, ['asc', 'desc'], true)
+                ) {
+                    $citations->order($column, $dir);
+                }
+            }
         }
+
+        return ['citations' => $citations, 'filters' => $filters];
     }
 
     /**
@@ -1724,64 +1708,5 @@ class Citations extends Plugin
     public function onGroupMemberAfter($group, $profile)
     {
         return null;
-
-        $view = $this->view('default', 'member');
-        $view->group    = $group;
-        $view->option   = 'com_groups';
-        $view->task     = $this->pluginName;
-        $view->database = App::get('db');
-        $view->title    = Lang::txt(strtoupper($this->pluginName));
-
-        $view->citationTemplate = 'apa';
-
-        $view->filters['search'] = "";
-        $view->filters['type'] = '';
-        $view->filters['tag'] = '';
-        $view->filters['author'] = '';
-        $view->filters['publishedin'] = '';
-        $view->filters['year_start'] = '';
-        $view->filters['year_end'] = '';
-        $view->filters['startuploaddate'] = '';
-        $view->filters['enduploaddate'] = '';
-        $view->filters['sort'] = '';
-
-        // get the preferred labeling scheme
-        $view->label = null;
-
-        switch ($view->label) {
-            case 'none':
-                $view->citations_label_class = 'no-label';
-                break;
-            case 'number':
-                $view->citations_label_class = 'number-label';
-                break;
-            case 'type':
-                $view->citations_label_class = 'type-label';
-                break;
-            case 'both':
-            default:
-                $view->citations_label_class = 'both-label';
-                break;
-        }
-
-        // enable coins support
-        $view->coins = 1;
-
-        // types
-        $view->types = \Components\Citations\Models\Type::all();
-
-        // OpenURL
-        $openURL = $this->handleOpenURL();
-        $view->openurl['link'] = $openURL['link'];
-        $view->openurl['text'] = $openURL['text'];
-        $view->openurl['icon'] = $openURL['icon'];
-
-        $view->citations = [];
-
-        if ($this->group->isSuperGroup()) {
-            $view->addTemplatePath($this->path . DS . 'member');
-        }
-
-        return $view->loadTemplate();
     }
 }

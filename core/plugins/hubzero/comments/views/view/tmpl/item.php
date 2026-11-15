@@ -125,7 +125,7 @@ $this->comment->set('url', $rtrn);
                     foreach ($this->comment->files()->rows() as $attachment) {
                         if (
                             !$attachment->get('description')
-                            || ($attachment->get('description') && !trim($attachment->get('description')))
+                            || !trim($attachment->get('description'))
                         ) {
                             $attachment->set('description', $attachment->get('filename'));
                         }

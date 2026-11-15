@@ -34,21 +34,19 @@ class Migration20140305142845Core extends Base
 
         // Nothing to judge by means nothing to convert: a hub with no content
         // yet, or one whose content arrived already in UTC.
-        if (!$results || count($results) == 0) {
+        if (!$results) {
             return;
         }
 
         $need_to_run = false;
 
-        if ($results) {
-            foreach ($results as $r) {
-                // Make them all match
-                if ($r->created == '2010-03-25 02:26:40') {
-                    $need_to_run = true;
-                } else {
-                    $need_to_run = false;
-                    break;
-                }
+        foreach ($results as $r) {
+            // Make them all match
+            if ($r->created == '2010-03-25 02:26:40') {
+                $need_to_run = true;
+            } else {
+                $need_to_run = false;
+                break;
             }
         }
 

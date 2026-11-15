@@ -88,7 +88,6 @@ class Forum extends Plugin
         // If daily, include all daily posts from previous day
         // If weekly, include all weekly posts from past week (only run this one on mondays)
         // If monthly, include all monthly posts from past month (only run this on on the 1st of the month)
-        $isDay   = true;
         $isWeek  = (Date::of('now')->toLocal('N') == 1) ? true : false;
         $isMonth = (Date::of('now')->toLocal('j') == 1) ? true : false;
 
@@ -102,14 +101,12 @@ class Forum extends Plugin
                 // It's possible to receive up to three emails if the 1st were a monday
                 // and you had groups set to all three options
                 // Or should we combine and overlapping emails when they fall on the same day?
-                if ($isDay) {
-                    $groups = $db->bind([$user, 2])->loadColumn();
-                    $posts  = $this->getPosts($groups);
+                $groups = $db->bind([$user, 2])->loadColumn();
+                $posts  = $this->getPosts($groups);
 
-                    // Gather up applicable posts and queue up the emails
-                    if (count($posts) > 0) {
-                        $this->sendEmail($user, $posts);
-                    }
+                // Gather up applicable posts and queue up the emails
+                if (count($posts) > 0) {
+                    $this->sendEmail($user, $posts);
                 }
 
                 if ($isWeek) {

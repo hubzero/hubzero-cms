@@ -102,8 +102,6 @@ class Feed extends Plugin
      */
     public function onProject($model, $action = '', $areas = null)
     {
-        $returnhtml = true;
-
         $arr = [
             'html'     => '',
             'metadata' => '',
@@ -131,63 +129,60 @@ class Feed extends Plugin
         // Model
         $this->model = $model;
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            $ajax = Request::getInt('ajax', 0);
+        $ajax = Request::getInt('ajax', 0);
+
+        // Record page visit
+        if (!$ajax) {
+            // First-time visit, record join activity
+            $model->recordFirstJoinActivity();
 
             // Record page visit
-            if (!$ajax) {
-                // First-time visit, record join activity
-                $model->recordFirstJoinActivity();
+            $model->recordVisit();
+        }
 
-                // Record page visit
-                $model->recordVisit();
-            }
+        // Hide welcome screen?
+        $c = Request::getInt('c', 0);
+        if ($c) {
+            $model->member()->saveParam(
+                $model->get('id'),
+                User::get('id'),
+                $param = 'hide_welcome',
+                1,
+            );
+            App::redirect(Route::url($model->link()));
+        }
 
-            // Hide welcome screen?
-            $c = Request::getInt('c', 0);
-            if ($c) {
-                $model->member()->saveParam(
-                    $model->get('id'),
-                    User::get('id'),
-                    $param = 'hide_welcome',
-                    1,
-                );
-                App::redirect(Route::url($model->link()));
-            }
+        // Set vars
+        $this->config = $model->config();
+        $this->task   = Request::getString('action', '');
+        $this->uid    = User::get('id');
 
-            // Set vars
-            $this->config = $model->config();
-            $this->task   = Request::getString('action', '');
-            $this->uid    = User::get('id');
-
-            switch ($this->task) {
-                case 'delete':
-                    $arr['html'] = $this->delete();
-                    break;
-                case 'save':
-                    $arr['html'] = $this->save();
-                    break;
-                    // comments are activity entries: _save()/_delete() handle them
-                    // (_saveComment()/_deleteComment() were never defined). The
-                    // comment form and delete link name the comment 'cid'; the
-                    // handlers read the entry as 'activity'.
-                case 'savecomment':
-                    Request::setVar('activity', Request::getInt('cid', 0));
-                    $arr['html'] = $this->save();
-                    break;
-                case 'deletecomment':
-                    Request::setVar('activity', Request::getInt('cid', 0));
-                    $arr['html'] = $this->delete();
-                    break;
-                case 'update':
-                    $arr['html'] = $this->updateFeed();
-                    break;
-                case 'page':
-                default:
-                    $arr['html'] = $this->page();
-                    break;
-            }
+        switch ($this->task) {
+            case 'delete':
+                $arr['html'] = $this->delete();
+                break;
+            case 'save':
+                $arr['html'] = $this->save();
+                break;
+                // comments are activity entries: _save()/_delete() handle them
+                // (_saveComment()/_deleteComment() were never defined). The
+                // comment form and delete link name the comment 'cid'; the
+                // handlers read the entry as 'activity'.
+            case 'savecomment':
+                Request::setVar('activity', Request::getInt('cid', 0));
+                $arr['html'] = $this->save();
+                break;
+            case 'deletecomment':
+                Request::setVar('activity', Request::getInt('cid', 0));
+                $arr['html'] = $this->delete();
+                break;
+            case 'update':
+                $arr['html'] = $this->updateFeed();
+                break;
+            case 'page':
+            default:
+                $arr['html'] = $this->page();
+                break;
         }
 
         // Return data

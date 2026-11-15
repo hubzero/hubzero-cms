@@ -153,7 +153,7 @@ class Publications extends Plugin
             $pubLog = new \Components\Publications\Tables\Log($database);
             $pubstats = $pubLog->getAuthorStats($author->user_id);
 
-            if (!$pubstats || !count($pubstats)) {
+            if (!count($pubstats)) {
                 // Nothing to send
                 continue;
             }
@@ -308,7 +308,7 @@ class Publications extends Plugin
             $aipName = count($doiParts) > 1 ? $doiParts[0] . '__' . $doiParts[1] : '';
 
             // Archival package exists?
-            if ($aipBasePath && $aipName && is_dir($aipBasePath . DS . $aipName)) {
+            if ($aipName && is_dir($aipBasePath . DS . $aipName)) {
                 // Save approved date and archive date
                 $pv->archived = $pv->accepted;
                 $pv->store();

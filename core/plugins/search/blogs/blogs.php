@@ -77,7 +77,7 @@ class Blogs extends Plugin
 			WHERE
 				be.state=1 AND
 				$weight > 0"
-                . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
+                . ' AND ' . join(' AND ', $addtl_where),
         );
 
         $rows = $rows->toAssociative();

@@ -43,7 +43,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') as $idp) {
 
     // output metadata only once even if there are duplicates, variants or conflicting entries
     // print $done[$dname];
-    if (isset($done[$dname]) && $done[$dname] == 1) {
+    if (isset($done[$dname])) {
         // print "already done\n";
         continue;
     } else {

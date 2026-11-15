@@ -67,8 +67,6 @@ $pa = new \Components\Publications\Tables\Author($database);
         <?php
         if (count($results) > 0) {
             foreach ($results as $item) {
-                $selected = false;
-
                 $liId = 'choice-' . $item->get('version_id');
 
                 /*$info = $item->info;
@@ -106,7 +104,7 @@ $pa = new \Components\Publications\Tables\Author($database);
                     $info[] = 'doi:' . $this->escape($item->get('doi'));
                 }
                 ?>
-            <li class="type-publication allowed <?= $selected ? ' selectedfilter' : '' ?>" id="<?= $liId ?>">
+            <li class="type-publication allowed " id="<?= $liId ?>">
                 <div class="item-thumb"><img src="<?= Route::url($item->link('thumb')) ?>" width="40" height="40"
                     alt=""/></div>
                 <!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->

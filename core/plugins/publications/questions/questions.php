@@ -334,12 +334,6 @@ class Questions extends Plugin
 
         // If offering a reward, do some checks
         if ($reward) {
-            // Is it an actual number?
-            if (!is_numeric($reward)) {
-                $this->setError(Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
-                return $this->new($row);
-            }
-
             // Are they offering more than they can afford?
             if ($reward > $funds) {
                 $this->setError(Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));

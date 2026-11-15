@@ -93,7 +93,6 @@ class Messages extends Plugin
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
-        $return = 'html';
         $active = 'messages';
 
         // The output array we're returning
@@ -112,74 +111,72 @@ class Messages extends Plugin
         }
 
         // Are we returning HTML?
-        if ($return == 'html') {
-            //get group members plugin access level
-            $group_plugin_acl = $access[$active];
+        //get group members plugin access level
+        $group_plugin_acl = $access[$active];
 
-            //get the group members
-            $members = $group->get('members');
+        //get the group members
+        $members = $group->get('members');
 
-            // Set some variables so other functions have access
-            $this->authorized = $authorized;
-            $this->members = $members;
-            $this->group = $group;
-            $this->componentOption = $option;
-            $this->action = $action;
+        // Set some variables so other functions have access
+        $this->authorized = $authorized;
+        $this->members = $members;
+        $this->group = $group;
+        $this->componentOption = $option;
+        $this->action = $action;
 
-            //if set to nobody make sure cant access
-            if ($group_plugin_acl == 'nobody') {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
-                return $arr;
-            }
+        //if set to nobody make sure cant access
+        if ($group_plugin_acl == 'nobody') {
+            $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+            return $arr;
+        }
 
-            //check if guest and force login if plugin access is registered or members
-            if (
-                User::isGuest()
-                && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
-            ) {
-                $groupUrl = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active;
-                $url = Route::url($groupUrl, false, true);
+        //check if guest and force login if plugin access is registered or members
+        if (
+            User::isGuest()
+            && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
+        ) {
+            $groupUrl = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active;
+            $url = Route::url($groupUrl, false, true);
 
-                App::redirect(
-                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-                    Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning',
-                );
-            }
+            App::redirect(
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+                Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+                'warning',
+            );
+        }
 
-            //check to see if user is member and plugin access requires members
-            if (
-                !in_array(User::get('id'), $members)
-                && $group_plugin_acl == 'members'
-                && $authorized != 'admin'
-            ) {
-                $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
-                $arr['html'] = '<p class="info">' . $msg . '</p>';
-                return $arr;
-            }
+        //check to see if user is member and plugin access requires members
+        if (
+            !in_array(User::get('id'), $members)
+            && $group_plugin_acl == 'members'
+            && $authorized != 'admin'
+        ) {
+            $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
+            $arr['html'] = '<p class="info">' . $msg . '</p>';
+            return $arr;
+        }
 
-            //push styles to the view
-            $this
-                ->css()
-                ->js();
+        //push styles to the view
+        $this
+            ->css()
+            ->js();
 
-            $task = strtolower(trim($action));
+        $task = strtolower(trim($action));
 
-            switch ($task) {
-                case 'send':
-                    $arr['html'] = $this->send();
-                    break;
-                case 'new':
-                    $arr['html'] = $this->create();
-                    break;
-                case 'viewmessage':
-                    $arr['html'] = $this->renderView();
-                    break;
-                case 'sent':
-                default:
-                    $arr['html'] = $this->sent();
-                    break;
-            }
+        switch ($task) {
+            case 'send':
+                $arr['html'] = $this->send();
+                break;
+            case 'new':
+                $arr['html'] = $this->create();
+                break;
+            case 'viewmessage':
+                $arr['html'] = $this->renderView();
+                break;
+            case 'sent':
+            default:
+                $arr['html'] = $this->sent();
+                break;
         }
 
         // Return data
@@ -447,7 +444,7 @@ class Messages extends Plugin
         // get all group members
         $recipients = [];
         foreach ((array) $mbrs as $mbr) {
-            if (($profile = User::getInstance($mbr)) && $profile->get('email')) {
+            if (($profile = User::getInstance($mbr))->get('email')) {
                 $recipients[$profile->get('email')] = $profile->get('name');
             }
         }

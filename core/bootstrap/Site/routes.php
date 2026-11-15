@@ -129,7 +129,7 @@ $router->rules('build')->append('content', function ($uri) {
         $result = implode('/', $segments);
         $result = str_replace(':', '-', $result);
 
-        $route .= ($result != '') ? '/' . $result : '';
+        $route .= '/' . $result;
 
         // Unset unneeded query information
         unset($query['Itemid']);

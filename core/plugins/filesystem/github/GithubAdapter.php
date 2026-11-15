@@ -62,9 +62,6 @@ class GithubAdapter implements FilesystemAdapter
     /** @var string  Git reference (branch/tag/sha) used for tree and content reads */
     private $reference;
 
-    /** @var string  Branch used when listing a file's commit history */
-    private $branch;
-
     /** @var bool */
     private $authenticated = false;
 
@@ -80,7 +77,6 @@ class GithubAdapter implements FilesystemAdapter
      * @param   string       $repository  Repository in "owner/repo" form
      * @param   string|null  $token       OAuth access token, or null for public read
      * @param   string       $reference   Git reference to read from (branch/tag/sha)
-     * @param   string       $branch      Branch for commit-history lookups
      * @param   Client|null  $client      Pre-built knplabs client (optional)
      * @throws  \InvalidArgumentException  When the repository name is malformed
      **/
@@ -88,7 +84,6 @@ class GithubAdapter implements FilesystemAdapter
         $repository,
         $token = null,
         $reference = 'HEAD',
-        $branch = 'master',
         ?Client $client = null,
     ) {
         $repository = $this->normalizeRepository($repository);
@@ -109,7 +104,6 @@ class GithubAdapter implements FilesystemAdapter
 
         $this->token            = $token;
         $this->reference        = (string) $reference;
-        $this->branch           = (string) $branch;
         $this->client           = $client ?: new Client();
         $this->mimeTypeDetector = new ExtensionMimeTypeDetector();
     }

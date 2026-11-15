@@ -133,9 +133,6 @@ class Migration20190306000000ModAdminmenu extends Base
             // Get the root item.
             $this->db->setQuery("SELECT id FROM `#__menu` WHERE parent_id = 0");
             $parentId = $this->db->loadResult();
-            if ($parentId === false) {
-                return false;
-            }
         }
 
         // Build the structure of the recursive query.

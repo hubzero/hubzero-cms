@@ -65,7 +65,6 @@ if ($this->row->log->get('created_by') == User::get('id')) {
 
     if (
         isset($this->online)
-        && !$this->row->log->get('anonymous')
         && in_array($this->row->log->get('created_by'), $this->online)
     ) {
         $online = true;
@@ -183,7 +182,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 
                     $project = new Components\Projects\Models\Project($this->row->log->get('scope_id'));
 
-                    if ($project) {
+                    if ($project->exists()) {
                         ?>
                         <div class="activity-source icon-project">
                             <?php

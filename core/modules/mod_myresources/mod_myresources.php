@@ -66,7 +66,7 @@ class Myresources extends Module
                 $query .= "publish_up DESC, title ASC";
                 break;
         }
-        if ($this->limit > 0 && $this->limit != 'all') {
+        if ($this->limit > 0) {
             $query .= " LIMIT " . $this->limit;
         }
 

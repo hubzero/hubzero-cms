@@ -516,10 +516,7 @@ class Publications extends Plugin
         if (!$view->get('handler')) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER'));
         } else {
-            // Perform request
-            if ($action) {
-                $modelHandler->update($view->get('handler'), $view->get('publication'), $element, $action);
-            }
+            // Handler actions are not done yet (Handlers::update() is a stub)
 
             // Load editor
             $view->set('editor', $modelHandler->loadEditor($view->get('handler'), $view->get('publication'), $element));
@@ -733,7 +730,6 @@ class Publications extends Plugin
         if (!$back || !\Hubzero\Utility\Uri::isInternal($back)) {
             $back = Route::url($this->model->link('publications'));
         }
-        $new     = false;
         $props   = Request::getString('p', '');
         $parts   = explode('-', $props);
 
@@ -767,7 +763,7 @@ class Publications extends Plugin
         }
 
         // Error loading publication record
-        if (!$pub->exists() && $new == false) {
+        if (!$pub->exists()) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
         }
@@ -1265,7 +1261,7 @@ class Publications extends Plugin
         // Provision draft
         if (!$pid) {
             $pub = $this->createDraft();
-            if (!$pub || !$pub->exists()) {
+            if (!$pub->exists()) {
                 throw new \Exception(Lang::txt('Error creating a publication draft'), 500);
             }
 
@@ -1713,7 +1709,7 @@ class Publications extends Plugin
             $used_labels = $pub->version->getUsedLabels($pid, 'dev');
             if (!$label) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE'));
-            } elseif ($label && in_array($label, $used_labels)) {
+            } elseif (in_array($label, $used_labels)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
             } else {
                 // Create new version
@@ -2187,7 +2183,7 @@ class Publications extends Plugin
         * @FIXME Better error handling across Event
         * Does not bubble up to component
         **/
-        if (isset($doiErr) && $doiErr === true) {
+        if (isset($doiErr)) {
             $link .= '&doierr=1';
         }
 
@@ -2226,6 +2222,8 @@ class Publications extends Plugin
             [false, false, true] => Lang::txt(
                 'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING',
             ),
+            // Only asked when something is missing
+            default => '',
         };
     }
 
@@ -2299,9 +2297,7 @@ class Publications extends Plugin
 
         // Send out notifications
         $profile = User::getInstance($this->uid);
-        $actor  = $profile
-                ? $profile->get('name')
-                : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
+        $actor  = $profile->get('name');
         $sef     = Route::url($pub->link('version'));
         $link    = rtrim(Request::base(), DS) . DS . trim($sef, DS);
         $message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;

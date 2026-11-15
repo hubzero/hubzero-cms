@@ -346,7 +346,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         // A code this browser did not ask for is not redeemed: redeemed in a
         // victim's session it would link someone else's ORCID account to theirs.
-        if (Request::getString('code') && !self::consumeAuthorization('orcid')) {
+        if (!self::consumeAuthorization('orcid')) {
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),

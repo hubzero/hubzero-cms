@@ -59,7 +59,6 @@ class Points extends Plugin
     public function onMembers($user, $member, $option, $areas)
     {
         $returnhtml = true;
-        $returnmeta = true;
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -106,16 +105,14 @@ class Points extends Plugin
         }
 
         // Build the HTML meant for the "about" tab's metadata overview
-        if ($returnmeta) {
-            $arr['metadata'] = [];
+        $arr['metadata'] = [];
 
-            $points = $BTL->summary();
+        $points = $BTL->summary();
 
-            $prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
-            $title = $prefix . ' ' . $points . ' points.';
+        $prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
+        $title = $prefix . ' ' . $points . ' points.';
 
-            $arr['metadata']['count'] = $points;
-        }
+        $arr['metadata']['count'] = $points;
 
         return $arr;
     }

@@ -225,41 +225,39 @@ $bars = [];
                 </p>
                 <div id="users-overview">
                 <?php
-                if ($results) {
-                    // Find the highest value
-                    $vals = [];
-                    foreach ($results as $result) {
-                        $vals[] = $result->users;
-                    }
-                    asort($vals);
+                // Find the highest value
+                $vals = [];
+                foreach ($results as $result) {
+                    $vals[] = $result->users;
+                }
+                asort($vals);
 
-                    $highest = array_pop($vals);
+                $highest = array_pop($vals);
 
-                    $sparkline  = '<span class="sparkline">' . "\n";
-                    foreach ($results as $result) {
-                        $height = ($highest) ? round(($result->users / $highest) * 100) : 0;
+                $sparkline  = '<span class="sparkline">' . "\n";
+                foreach ($results as $result) {
+                    $height = ($highest) ? round(($result->users / $highest) * 100) : 0;
 
-                        $nm = 'count' . $height;
-                        if (!in_array($nm, $sparklines)) {
-                            $this->css('
+                    $nm = 'count' . $height;
+                    if (!in_array($nm, $sparklines)) {
+                        $this->css('
 								.sparkline .' . $nm . ' {
 									height: ' . $height . '%;
 								}
 							');
-                            $sparklines[] = $nm;
-                        }
-
-                        $sparkline .= "\t" . '<span class="index">';
-                        $sparkline .= '<span class="count count' . $height . '" title="'
-                            . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': '
-                            . number_format($result->users) . '">';
-                        $sparkline .= number_format($result->users);
-                        $sparkline .= '</span> ';
-                        $sparkline .= '</span>' . "\n";
+                        $sparklines[] = $nm;
                     }
+
+                    $sparkline .= "\t" . '<span class="index">';
+                    $sparkline .= '<span class="count count' . $height . '" title="'
+                        . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': '
+                        . number_format($result->users) . '">';
+                    $sparkline .= number_format($result->users);
+                    $sparkline .= '</span> ';
                     $sparkline .= '</span>' . "\n";
-                    echo $sparkline;
                 }
+                $sparkline .= '</span>' . "\n";
+                echo $sparkline;
                 ?>
                 </div>
                 <div id="users-overview-timeline">

@@ -171,34 +171,7 @@ if (isset($this->messages)) {
 
                                             //get this citations rollover param
                                             //$params = new \Hubzero\Config\Registry($cite->params);
-                                            $citation_rollover = 0;
                                         ?>
-                                        <?php if ($citation_rollover && $cite->abstract != "") : ?>
-                                            <div class="citation-notes">
-                                                <?php
-                                                    $sponsors = $cite->sponsors;
-                                                    $final = "";
-                                                if ($sponsors) {
-                                                    foreach ($sponsors as $s) {
-                                                        $final .= '<a rel="external" href="' . $s->get('link') . '">'
-                                                            . $s->get('sponsor') . '</a>, ';
-                                                    }
-                                                }
-                                                ?>
-                                                <?php
-                                                if (
-                                                    $final != ''
-                                                    && $this->config->get("citation_sponsors", "yes") == 'yes'
-                                                ) : ?>
-                                                    <?php $final = substr($final, 0, -2); ?>
-                                                    <?php
-                                                    $sponsorText = Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY');
-                                                    ?>
-                                                    <p class="sponsor"><?= $sponsorText ?> <?= $final ?></p>
-                                                <?php endif; ?>
-                                                <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
-                                            </div>
-                                        <?php endif; ?>
                                     </td>
                                     <?php if ($this->isAdmin === true) : ?>
                                         <td class="col-edit"><a class="icon-edit edit individual"

@@ -52,10 +52,6 @@ class Remember extends Plugin
                 try {
                     $str = $crypt->decrypt($str);
 
-                    if (!is_string($str)) {
-                        throw new \Exception('Decoded cookie is not a string.');
-                    }
-
                     $cookieData = json_decode($str);
 
                     if (null === $cookieData) {

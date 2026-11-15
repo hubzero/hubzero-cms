@@ -215,7 +215,7 @@ class Miner extends Obj implements Provider
     public function match($identifier)
     {
         if (preg_match('/(.*?)\/publications\/(\d+)(?:\/(\d+))?/i', $identifier, $matches)) {
-            return $matches[2] . (isset($matches[3]) && is_numeric($matches[3]) ? ':' . $matches[3] : '');
+            return $matches[2] . (isset($matches[3]) ? ':' . $matches[3] : '');
         }
 
         $resolver = $this->doiResolver();

@@ -148,7 +148,6 @@ $tool_path = $config->get('tool_path');
         <?php
         if (
             $tool_path
-            && $tools
             && count($tools) > 0
             && (
                 ($asset->get('type') == 'file' && $asset->get('subtype') == 'file')

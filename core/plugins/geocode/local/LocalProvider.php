@@ -348,7 +348,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
         }
 
         // No continent? Return the whole list
-        if (!$address || $address == 'all') {
+        if ($address == 'all') {
             $countries = self::$countries;
         } else {
             // Subset of countries by continent

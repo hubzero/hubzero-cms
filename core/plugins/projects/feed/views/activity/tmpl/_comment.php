@@ -118,7 +118,7 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                 <?php if ($this->edit && $deletable && $this->model->access('content')) { ?>
                     <div class="activity-options">
                         <ul>
-                            <?php if ($this->edit && $this->model->access('manager')) { ?>
+                            <?php if ($this->model->access('manager')) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_edit">
                                     <?php
                                     $editcommentUrl = Route::url(
@@ -132,7 +132,6 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                     --></a>
                                 </li>
                             <?php } ?>
-                            <?php if ($deletable) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_delete">
                                     <?php
                                     $deletecommentUrl = Route::url(
@@ -144,12 +143,11 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                         class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>"
                                         data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </li>
-                            <?php } ?>
                         </ul>
                     </div><!-- / .activity-options -->
                 <?php } ?>
 
-                <?php if ($this->edit && $this->model->access('manager')) { ?>
+                <?php if ($this->model->access('manager')) { ?>
                     <div class="commentform editcomment hidden" id="comment-form<?php echo $comment->id; ?>">
                         <form method="post" action="<?php echo Route::url($this->model->link()); ?>">
                             <fieldset>

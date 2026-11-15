@@ -29,18 +29,11 @@ class Publications extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Types
+     * Publication categories, once loaded
      *
-     * @var array|null
+     * @var \Hubzero\Database\Rows|null
      */
     private $cats  = null;
-
-    /**
-     * Record count
-     *
-     * @var integer|null
-     */
-    private $total = null;
 
     /**
      * Constructor
@@ -159,6 +152,7 @@ class Publications extends Plugin
                 ->whereEquals('state', Category::STATE_PUBLISHED)
                 ->order('name', 'asc')
                 ->rows();
+            $this->cats = $categories;
         }
 
         // Normalize the category names

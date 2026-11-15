@@ -205,7 +205,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     <span id="meter-percent" data-percent="<?= $this->completeness ?>"
                         data-percent-level="<?= $dataPercentLevel ?>"></span>
                 </div>
-                <?php if ($isUser && $isIncrementalEnabled) : ?>
+                <?php if ($isIncrementalEnabled) : ?>
                     <span id="completeness-info"><?= Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS') ?></span>
                 <?php endif; ?>
             </li>
@@ -350,7 +350,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     }
                     ?>
                 </div>
-                <?php if ($isUser && Field::state('registrationFullname', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
+                <?php if (Field::state('registrationFullname', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
                 <div class="section-edit">
                     <a class="edit-profile-section" href="#">
                         <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -445,7 +445,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     </div>
                     <?php
                     if (
-                        $isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)
+                        Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY
                     ) : ?>
                     <div class="section-edit">
                         <a class="edit-profile-section" href="#">
@@ -472,7 +472,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     </div>
                     <?php
                     if (
-                        $isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)
+                        Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY
                     ) : ?>
                     <div class="section-edit">
                         <a href="<?php echo Route::url($this->profile->link() . '&active=account'); ?>">
@@ -498,7 +498,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     if ($this->params->get('access_email', 2) == 2) {
                         $cls .= 'private';
                     }
-                    if ($this->profile->get("email") == '' || is_null($this->profile->get("email"))) {
+                    if ($this->profile->get("email") == '') {
                         $cls .= ($isUser) ? " hidden" : " hide";
                     }
 
@@ -910,7 +910,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             if ($this->params->get('access_optin') == 2) {
                 $cls .= 'private';
             }
-            if ($this->profile->get("sendEmail") == "" || is_null($this->profile->get("sendEmail"))) {
+            if ($this->profile->get("sendEmail") == "") {
                 $cls .= ($isUser) ? " hidden" : " hide";
             }
             if (isset($update_missing) && in_array("optin", array_keys($update_missing))) {
@@ -939,7 +939,6 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                 <div class="section-content">
                     <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
                     <div class="value"><?php echo $mailPreferenceValue; ?></div>
-                    <?php if ($isUser) : ?>
                         <br class="clear" />
                         <?php
                             //define mail preference options
@@ -977,9 +976,8 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                                  ->set('access', $access)
                                  ->display();
                             ?>
-                    <?php endif; ?>
                 </div>
-                <?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
+                <?php if (Field::state('registrationOptIn', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
                     <div class="section-edit">
                         <a class="edit-profile-section" href="#">
                         <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>

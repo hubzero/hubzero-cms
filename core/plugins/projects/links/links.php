@@ -951,119 +951,110 @@ class Links extends Plugin
                 $output['url'] = $finalUrl;
             }
 
-            if ($content) {
-                $out = '';
+            $out = '';
 
-                // Parse the body we already fetched (and checked) rather than fetching
-                // the final URL a second time with no check at all. HtmlDomParser
-                // always hands back a parser, so an empty body is caught here instead
-                if (trim((string) $content) === '') {
-                    $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
-                    return json_encode($output);
-                }
-
-                $html = new HtmlDomParser($content);
-
-                // Title Of Page -- find() returns null when there is none, and the
-                // remote markup is rendered into the preview, so escape it
-                $titleNode = $html->find('title', 0);
-                $title = $titleNode ? htmlspecialchars(trim((string) $titleNode->innertext), ENT_QUOTES, 'UTF-8') : '';
-
-                $out .= $title
-                    ? stripslashes('<h5>' . addslashes($title) . '</h5>')
-                    : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
-
-                //Get all images found on this page
-                $jpgs = $html->find('img[src$=jpg],img[src$=png]');
-                $images = [];
-
-                if ($jpgs) {
-                    foreach ($jpgs as $jpg) {
-                        $src   = $jpg->getAttribute('src');
-                        $width = $jpg->getAttribute('width');
-
-                        $pathCounter = substr_count($src, "../");
-                        $src = self::getImgSrc($src);
-
-                        // Must be larger than 25px
-                        if ($width && $width <= 100) {
-                            continue;
-                        }
-
-                        if (!$src) {
-                            continue;
-                        }
-
-                        if (!preg_match("/https?\:\/\//i", $src)) {
-                            $src = self::getImageUrl($pathCounter, self::getLink($src, $finalUrl));
-                        }
-
-                        // Can only show images served via https
-                        //$src = str_replace('http://', 'https://', $src);
-                        if (preg_match("/https/i", $src)) {
-                            $images[] = $src;
-                        }
-                    }
-                }
-
-                if ($images) {
-                    $out .= '<div id="link-image"><img src="'
-                        . htmlspecialchars((string) $images[0], ENT_QUOTES, 'UTF-8')
-                        . '" alt="" /></div>';
-                }
-
-                $description = null;
-
-                // Get description from paragraphs
-                $pars = $html->find('body div p');
-                if ($pars) {
-                    foreach ($pars as $p) {
-                        if (strlen($p->plaintext) > 200) {
-                            $description = $p->plaintext;
-                            break;
-                        }
-                    }
-                }
-
-                if (!$description) {
-                    // Set description if desc meta tag found else grab a little plain text of the page
-                    // find($selector, 0) returns a blank node, not null, when
-                    // there is no match - and a blank node is truthy
-                    $meta = $html->findOneOrFalse('meta[name="description"]');
-
-                    if ($meta) {
-                        $description = $meta->getAttribute('content');
-                    } else {
-                        $bodyNode = $html->find('body', 0);
-                        $description = $bodyNode ? $bodyNode->plaintext : '';
-                    }
-                }
-
-                $out .= $description
-                        ? stripslashes(
-                            '<p>'
-                                . \Hubzero\Utility\Str::truncate(
-                                    addslashes(htmlspecialchars((string) $description, ENT_QUOTES, 'UTF-8')),
-                                    200,
-                                )
-                                . '</p>',
-                        )
-                        : '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
-
-                if ($images) {
-                    $out .= '<span class="clear"></span>';
-                }
-
-                // Preview of the url
-                if ($incPreview) {
-                    $output['preview'] = $out;
-                }
-                $output['description'] = $description;
-                $output['title']       = $title;
-            } else {
-                $output['error'] = Lang::txt('PLG_PROJECTS_LINKS_FAILED_TO_LOAD_URL');
+            // Parse the body we already fetched (and checked) rather than fetching
+            // the final URL a second time with no check at all. HtmlDomParser
+            // always hands back a parser, so an empty body is caught here instead
+            if (trim((string) $content) === '') {
+                $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
                 return json_encode($output);
             }
+
+            $html = new HtmlDomParser($content);
+
+            // Title Of Page -- find() gives an empty element when there is
+            // none, and the remote markup is rendered into the preview, so
+            // escape it
+            $titleNode = $html->find('title', 0);
+            $title = htmlspecialchars(trim((string) $titleNode->innertext), ENT_QUOTES, 'UTF-8');
+
+            $out .= $title
+                ? stripslashes('<h5>' . addslashes($title) . '</h5>')
+                : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
+
+            //Get all images found on this page
+            $jpgs = $html->find('img[src$=jpg],img[src$=png]');
+            $images = [];
+
+            foreach ($jpgs as $jpg) {
+                $src   = $jpg->getAttribute('src');
+                $width = $jpg->getAttribute('width');
+
+                $pathCounter = substr_count($src, "../");
+                $src = self::getImgSrc($src);
+
+                // Must be larger than 25px
+                if ($width && $width <= 100) {
+                    continue;
+                }
+
+                if (!$src) {
+                    continue;
+                }
+
+                if (!preg_match("/https?\:\/\//i", $src)) {
+                    $src = self::getImageUrl($pathCounter, self::getLink($src, $finalUrl));
+                }
+
+                // Can only show images served via https
+                //$src = str_replace('http://', 'https://', $src);
+                if (preg_match("/https/i", $src)) {
+                    $images[] = $src;
+                }
+            }
+
+            if ($images) {
+                $out .= '<div id="link-image"><img src="'
+                    . htmlspecialchars((string) $images[0], ENT_QUOTES, 'UTF-8')
+                    . '" alt="" /></div>';
+            }
+
+            $description = null;
+
+            // Get description from paragraphs
+            $pars = $html->find('body div p');
+            foreach ($pars as $p) {
+                if (strlen($p->plaintext) > 200) {
+                    $description = $p->plaintext;
+                    break;
+                }
+            }
+
+            if (!$description) {
+                // Set description if desc meta tag found else grab a little plain text of the page
+                // find($selector, 0) returns a blank node, not null, when
+                // there is no match - and a blank node is truthy
+                $meta = $html->findOneOrFalse('meta[name="description"]');
+
+                if ($meta) {
+                    $description = $meta->getAttribute('content');
+                } else {
+                    $description = $html->find('body', 0)->plaintext;
+                }
+            }
+
+            $out .= $description
+                    ? stripslashes(
+                        '<p>'
+                            . \Hubzero\Utility\Str::truncate(
+                                addslashes(htmlspecialchars((string) $description, ENT_QUOTES, 'UTF-8')),
+                                200,
+                            )
+                            . '</p>',
+                    )
+                    : '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
+
+            if ($images) {
+                $out .= '<span class="clear"></span>';
+            }
+
+            // Preview of the url
+            if ($incPreview) {
+                $output['preview'] = $out;
+            }
+            $output['description'] = $description;
+            $output['title']       = $title;
         }
 
         return json_encode($output);

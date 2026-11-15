@@ -60,10 +60,8 @@ if ($this->citations) {
                 ) . '" title="' . Lang::txt('PLG_PUBLICATION_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";
         }
         if ($cite->eprint) {
-            if ($cite->eprint) {
-                $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">'
-                    . Lang::txt('PLG_PUBLICATION_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
-            }
+            $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">'
+                . Lang::txt('PLG_PUBLICATION_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
         }
         $item .= "\t\t" . '</p>' . "\n";
         $item .= "\t" . '</li>' . "\n";

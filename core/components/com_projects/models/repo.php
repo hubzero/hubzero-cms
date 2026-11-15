@@ -479,6 +479,9 @@ class Repo extends Obj
     /**
      * Get file history
      *
+     * @param   array  $params      Which file, and where
+     * @param   array  $versions    Filled in with the file's versions
+     * @param   array  $timestamps  Filled in with when each version was made
      * @return  boolean
      */
     public function versions($params = [], &$versions = [], &$timestamps = [])

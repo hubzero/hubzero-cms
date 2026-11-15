@@ -299,10 +299,6 @@ class Answers extends Plugin
                 if ($banking) {
                     $reward = $this->getReward($parentid);
                 }
-                $responders = [];
-                // (the reward notice below tested a flag nothing ever set; it stays off)
-                $email = false;
-
                 // Get all the answers for this question
                 $database->setQuery(
                     "SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid,
@@ -317,9 +313,6 @@ class Answers extends Plugin
                             $this->setError($database->getErrorMsg());
                             return false;
                         }
-
-                        // Collect responders names
-                        $responders[] = $answer->created_by;
                     }
                 }
 
@@ -330,40 +323,6 @@ class Answers extends Plugin
                 }
 
                 if ($banking && $reward) {
-                    // Send email to people who answered question with reward
-                    if ($responders) {
-                        foreach ($responders as $r) {
-                            $zuser = User::getInstance($r);
-                            if (
-                                \Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email'))
-                                && $email
-                            ) {
-                                $admin_email = Config::get('mailfrom');
-                                $sub  = Lang::txt(
-                                    'PLG_SUPPORT_ANSWERS_SUBJECT',
-                                    Config::get('sitename'),
-                                    $referenceid,
-                                );
-                                $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
-                                $hub  = [
-                                    'email' => $admin_email,
-                                    'name'  => $from,
-                                ];
-
-                                $mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
-                                $mes .= '----------------------------' . "\r\n\r\n";
-                                $mes .= Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
-
-                                \Components\Support\Helpers\Utilities::sendEmail(
-                                    $hub,
-                                    $zuser->get('email'),
-                                    $sub,
-                                    $mes,
-                                );
-                            }
-                        }
-                    }
-
                     // get id of asker
                     $database->setQuery("SELECT created_by FROM `#__answers_questions` WHERE id=" . $parentid);
                     $asker = $database->loadResult();

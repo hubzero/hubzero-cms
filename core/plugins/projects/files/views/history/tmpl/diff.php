@@ -82,8 +82,7 @@ $modeChecked = function ($value) use ($view) {
     ];
     ?>
 
-<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="get" action="<?php echo $this->url; ?>">
-    <?php if (!$this->ajax) { ?>
+<form id="plg-form" method="get" action="<?php echo $this->url; ?>">
         <div id="plg-header">
             <h3 class="files">
                 <a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) {
@@ -92,7 +91,6 @@ $modeChecked = function ($value) use ($view) {
             <?php echo $endPath; ?>
             </h3>
         </div>
-    <?php } ?>
 
     <fieldset class="diff-form">
         <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />

@@ -234,8 +234,8 @@ class ArticlesCategory extends Module
         }
 
         // an empty multi-select is not saved at all, so the param may be missing
-        $creator = (array) $params->get('created_by', []);
-        if (count($creator) > 0 && implode(',', $creator) != '') {
+        $creator = array_filter((array) $params->get('created_by', []));
+        if (count($creator) > 0) {
             $query->whereEquals('created_by', $creator);
         }
 

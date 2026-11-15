@@ -29,7 +29,7 @@ class Submenu extends Module
         // Initialise variables.
         $list = \Hubzero\Facades\Submenu::getItems();
 
-        if (!is_array($list) || !count($list)) {
+        if (!count($list)) {
             return;
         }
 

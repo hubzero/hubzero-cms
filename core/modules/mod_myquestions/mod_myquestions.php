@@ -106,10 +106,6 @@ class Myquestions extends Module
         if (is_string($interests)) {
             $interests = explode(',', $interests);
         }
-
-        if (is_string($interests)) {
-            $interests = explode(',', $interests);
-        }
         $records = \Components\Answers\Models\Question::all()
             ->including(['responses', function ($response) {
                 $response
@@ -123,7 +119,7 @@ class Myquestions extends Module
         }
 
         if ($kind == 'interest') {
-            $tags = (!is_array($interests) || count($interests) <= 0) ? $this->getInterests() : $interests;
+            $tags = (count($interests) <= 0) ? $this->getInterests() : $interests;
         }
 
         if ($kind == 'assigned') {

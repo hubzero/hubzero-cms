@@ -249,7 +249,7 @@ class Collections extends Plugin
                     break;
                 case 'vote':
                     $arr['html'] = $this->vote();
-                    break;
+                    // no break: vote() redirects
                 case 'collect':
                     $arr['html'] = $this->repost();
                     break;

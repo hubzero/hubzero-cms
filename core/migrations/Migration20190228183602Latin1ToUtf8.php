@@ -51,7 +51,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
 
         foreach (self::$tables as $tbl) {
             if ($schema->tableExists($tbl)) {
-                if (strtolower($schema->getCharacterSet($tbl) ?? '') != 'utf8') {
+                if (strtolower($schema->getCharacterSet($tbl)) != 'utf8') {
                     $schema->convertToCharset($tbl, 'utf8');
                 }
             }
@@ -69,7 +69,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
 
         foreach (self::$tables as $tbl) {
             if ($schema->tableExists($tbl)) {
-                if (strtolower($schema->getCharacterSet($tbl) ?? '') != 'latin1') {
+                if (strtolower($schema->getCharacterSet($tbl)) != 'latin1') {
                     $schema->convertToCharset($tbl, 'latin1');
                 }
             }

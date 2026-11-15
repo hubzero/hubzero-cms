@@ -139,9 +139,7 @@ class Storefront extends Plugin
             $notify = $notify['notifyDays'];
             // each day value
             foreach ($notify as $day => $val) {
-                if ($val) {
-                    $skusInfo[$k] = $skus[$k];
-                }
+                $skusInfo[$k] = $skus[$k];
             }
         }
 
@@ -201,9 +199,7 @@ class Storefront extends Plugin
             $notify = $notify['notifyDays'];
             // each day value
             foreach ($notify as $day => $val) {
-                if ($val) {
-                    $productsInfo[$k] = $products[$k];
-                }
+                $productsInfo[$k] = $products[$k];
             }
         }
 

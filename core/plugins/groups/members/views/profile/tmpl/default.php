@@ -32,7 +32,6 @@ $this->css('profile.css');
 
 
 $loggedin = (! User::isGuest());
-$isUser   = false;
 
 $profiles = $this->profile->profiles()->ordered()->rows();
 
@@ -127,7 +126,6 @@ foreach ($profiles as $profile) {
                 <?php if (
                 $this->params->get('access_email', 2) == 0
                         || ($this->params->get('access_email', 2) == 1 && $loggedin)
-                        || ($this->params->get('access_email', 2) == 2 && $isUser)
 ) : ?>
                     <li class="profile-email field">
                         <div class="field-content">

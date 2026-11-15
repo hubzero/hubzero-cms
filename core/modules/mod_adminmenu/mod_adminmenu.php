@@ -137,7 +137,7 @@ class Adminmenu extends Module
             if ($component->parent_id == 1) {
                 // Only add this top level if it is authorised and enabled.
                 $canManage = User::authorise('core.manage', $component->element);
-                if ($authCheck == false || ($authCheck && $canManage)) {
+                if ($authCheck == false || $canManage) {
                     // Root level.
                     $result[$component->id] = $component;
                     if (!isset($result[$component->id]->submenu)) {

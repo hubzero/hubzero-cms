@@ -74,9 +74,9 @@ class Languagefilter extends Plugin
     protected static $default_sef;
 
     /**
-     * Cookie
+     * Whether the session id travels in a cookie
      *
-     * @var  string|false
+     * @var  bool|null
      */
     protected static $cookie;
 
@@ -99,7 +99,8 @@ class Languagefilter extends Plugin
         parent::__construct($subject, $config);
 
         // Ensure that constructor is called one time
-        self::$cookie = (SID == '');
+        // The session id travels in a cookie (what an empty SID means)
+        self::$cookie = isset($_COOKIE[session_name()]);
 
         if (!self::$default_lang) {
             $router = App::get('router');
@@ -124,25 +125,21 @@ class Languagefilter extends Plugin
                 App::set('language.filter', true);
                 $uri = \Hubzero\Utility\Uri::getInstance();
 
-                if (self::$mode_sef) {
-                    // Get the route path from the request.
-                    $path = substr($uri->toString(), strlen(Request::root()));
+                // Get the route path from the request.
+                $path = substr($uri->toString(), strlen(Request::root()));
 
-                    // Apache mod_rewrite is Off
-                    $path = Config::get('sef_rewrite') ? $path : substr($path, 10);
+                // Apache mod_rewrite is Off
+                $path = Config::get('sef_rewrite') ? $path : substr($path, 10);
 
-                    // Trim any spaces or slashes from the ends of the path and explode into segments.
-                    $path  = trim($path, '/ ');
-                    $parts = explode('/', $path);
+                // Trim any spaces or slashes from the ends of the path and explode into segments.
+                $path  = trim($path, '/ ');
+                $parts = explode('/', $path);
 
-                    // The language segment is always at the beginning of the route path if it exists.
-                    $sef = $uri->getUriVar('lang');
+                // The language segment is always at the beginning of the route path if it exists.
+                $sef = $uri->getUriVar('lang');
 
-                    if (empty($sef)) {
-                        $sef = reset($parts);
-                    }
-                } else {
-                    $sef = $uri->getUriVar('lang');
+                if (empty($sef)) {
+                    $sef = reset($parts);
                 }
 
                 if (isset(self::$sefs[$sef])) {

@@ -189,6 +189,7 @@ class Builder
      * @param  string  $table   Table name
      * @param  string  $column  Column name
      * @return bool
+     * @phpstan-impure
      */
     public function hasColumn(string $table, string $column): bool
     {

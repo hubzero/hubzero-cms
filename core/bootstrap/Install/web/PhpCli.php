@@ -32,13 +32,13 @@ class PhpCli
      */
     public static function find(): string
     {
-        if (PHP_SAPI === 'cli' && PHP_BINARY !== '') {
-            return escapeshellarg(PHP_BINARY);
+        if (PHP_SAPI === 'cli' && self::binary() !== '') {
+            return escapeshellarg(self::binary());
         }
 
         // FrankenPHP is its own command line, as frankenphp php-cli
         if (PHP_SAPI === 'frankenphp') {
-            $self = PHP_BINARY !== '' ? PHP_BINARY : (string) @readlink('/proc/self/exe');
+            $self = self::binary() !== '' ? self::binary() : (string) @readlink('/proc/self/exe');
 
             if ($self !== '' && is_executable($self)) {
                 return escapeshellarg($self) . ' php-cli';
@@ -95,5 +95,15 @@ class PhpCli
             'HOME'          => $home !== '' && is_writable($home) ? $home : $composerHome,
             'COMPOSER_HOME' => $composerHome,
         ];
+    }
+
+    /**
+     * The PHP binary's path; empty when PHP cannot tell where it is
+     *
+     * @return  string
+     */
+    private static function binary(): string
+    {
+        return PHP_BINARY;
     }
 }

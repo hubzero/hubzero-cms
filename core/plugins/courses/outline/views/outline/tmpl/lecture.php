@@ -89,8 +89,8 @@ if (
                 // Render video
                 foreach ($lecture->assets() as $a) {
                     if (
-                        $a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished()
-                        && $this->course->offering()->access('manage')))
+                        $a->get('type') == 'video'
+                        && ($a->isPublished() || $this->course->offering()->access('manage'))
                     ) {
                         // Prefer published assets
                         if ($used) {

@@ -111,9 +111,7 @@ class Forum extends Plugin
                 f.scope != 'course' AND
                 $weight > 0";
 
-        if ($addtl_where) {
-            $sql .= ' AND ' . join(' AND ', $addtl_where);
-        }
+        $sql .= ' AND ' . join(' AND ', $addtl_where);
 
         $sql .= " AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			ORDER BY $weight DESC";

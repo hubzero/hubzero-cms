@@ -35,7 +35,7 @@ class Migration20150630201210Core extends Base
             $system = $query->loadObjectList();
 
             // Make sure we have results
-            if (!$system || count($system) <= 0) {
+            if (!$system) {
                 return;
             }
 

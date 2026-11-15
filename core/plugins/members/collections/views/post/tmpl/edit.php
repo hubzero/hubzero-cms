@@ -42,12 +42,6 @@ if (!$this->entry->exists()) {
 $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $item->tags('string')]]);
 
 $type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
-if (!$type) {
-    $type = 'file';
-}
-if ($type && !in_array($type, ['file', 'image', 'text', 'link'])) {
-    $type = 'link';
-}
 
 $base = $this->member->link() . '&active=' . $this->name;
 
@@ -347,7 +341,7 @@ $idSelected = function ($value) use ($view) {
 
         <?php if ($item->get('id')) { ?>
             <a class="btn btn-secondary"
-                href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
+                href="<?= Route::url($base . '&task=' . $this->collection->get('alias')) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         <?php } ?>

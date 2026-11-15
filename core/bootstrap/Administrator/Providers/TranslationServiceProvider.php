@@ -47,7 +47,7 @@ class TranslationServiceProvider extends ServiceProvider
         $appLangDir = PATH_APP . DS . 'language' . DS . strtolower($this->app['client']->name);
 
         // Detect user specified language
-        if (!$language && $this->app->has('user')) {
+        if ($this->app->has('user')) {
             $lang = User::getParam($this->app['client']->alias . '_language');
 
             if ($lang && is_dir($appLangDir . DS . $lang)) {

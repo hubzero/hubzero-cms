@@ -100,7 +100,6 @@ class Usage extends Plugin
      */
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
-        $return = 'html';
         $active = 'usage';
 
         // The output array we're returning
@@ -119,126 +118,124 @@ class Usage extends Plugin
             }
         }
 
-        if ($return == 'html') {
-            //set group members plugin access level
-            $group_plugin_acl = $access[$active];
+        //set group members plugin access level
+        $group_plugin_acl = $access[$active];
 
-            //get the group members
-            $members = $group->get('members');
+        //get the group members
+        $members = $group->get('members');
 
-            //if set to nobody make sure cant access
-            if ($group_plugin_acl == 'nobody') {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
-                return $arr;
-            }
-
-            //check if guest and force login if plugin access is registered or members
-            if (
-                User::isGuest()
-                && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
-            ) {
-                $url = Route::url(
-                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
-                    false,
-                    true,
-                );
-
-                App::redirect(
-                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-                    Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning',
-                );
-            }
-
-            //check to see if user is member and plugin access requires members
-            if (
-                !in_array(User::get('id'), $members)
-                && $group_plugin_acl == 'members'
-                && $authorized != 'admin'
-            ) {
-                $arr['html'] = '<p class="info">'
-                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
-                    . '</p>';
-                return $arr;
-            }
-
-            //instantiate the db
-            $database = App::get('db');
-
-            //reference group for other functions
-            $this->group = $group;
-
-            //add usage stylesheet to view
-            $this->css();
-
-            //add datepicker stylesheet to view
-            $this
-                ->css('jquery.datepicker.css', 'system')
-                ->css('jquery.timepicker.css', 'system');
-
-            //add google charts loader (modern API, replaces deprecated jsapi)
-            Document::addScript('https://www.gstatic.com/charts/loader.js');
-
-            //add jquery from google cdn
-            //Document::addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
-
-            //add usage custom script
-            $this->js('usage.js');
-
-            //add datepicker script
-            //$this->js('datepicker.js');
-
-            //get the page id if we want to view stats on a specific page
-            $pid = Request::getString('pid', '');
-
-            //get start and end dates
-            $start = Request::getString('start', gmdate("Y-m-d 00:00:00", strtotime('-30 DAYS')));
-            $end   = Request::getString('end', gmdate("Y-m-d 23:59:59"));
-            if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $start)) {
-                $start = Date::of($start)->format('Y-m-d') . ' 00:00:00';
-            }
-            if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $end)) {
-                $end = Date::of($end)->format('Y-m-d') . ' 00:00:00';
-            }
-
-            //make sure start date is a full php datetime
-            if (strlen($start) != 19) {
-                $start .= " 00:00:00";
-            }
-
-            //make sure end date is a full php datetime
-            if (strlen($end) != 19) {
-                $end .= " 23:59:59";
-            }
-
-            //generate script to draw chart and push to the page
-            $script = $this->drawChart($pid, $start, $end);
-            Document::addScriptDeclaration($script);
-
-            //import and create view
-            $view = $this->view('default', 'index');
-
-            //get the group pages
-            $query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber="
-                . $database->quote($group->get('gidNumber'));
-            $database->setQuery($query);
-            $view->set('pages', $database->loadAssocList());
-
-            $view->set('option', $option);
-            $view->set('group', $group);
-            $view->set('authorized', $authorized);
-            $view->set('database', $database);
-
-            $view->set('pid', $pid);
-            $view->set('start', $start);
-            $view->set('end', $end);
-
-            foreach ($this->getErrors() as $error) {
-                $view->setError($error);
-            }
-
-            $arr['html'] = $view->loadTemplate();
+        //if set to nobody make sure cant access
+        if ($group_plugin_acl == 'nobody') {
+            $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+            return $arr;
         }
+
+        //check if guest and force login if plugin access is registered or members
+        if (
+            User::isGuest()
+            && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
+        ) {
+            $url = Route::url(
+                'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                false,
+                true,
+            );
+
+            App::redirect(
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+                Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+                'warning',
+            );
+        }
+
+        //check to see if user is member and plugin access requires members
+        if (
+            !in_array(User::get('id'), $members)
+            && $group_plugin_acl == 'members'
+            && $authorized != 'admin'
+        ) {
+            $arr['html'] = '<p class="info">'
+                . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                . '</p>';
+            return $arr;
+        }
+
+        //instantiate the db
+        $database = App::get('db');
+
+        //reference group for other functions
+        $this->group = $group;
+
+        //add usage stylesheet to view
+        $this->css();
+
+        //add datepicker stylesheet to view
+        $this
+            ->css('jquery.datepicker.css', 'system')
+            ->css('jquery.timepicker.css', 'system');
+
+        //add google charts loader (modern API, replaces deprecated jsapi)
+        Document::addScript('https://www.gstatic.com/charts/loader.js');
+
+        //add jquery from google cdn
+        //Document::addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
+
+        //add usage custom script
+        $this->js('usage.js');
+
+        //add datepicker script
+        //$this->js('datepicker.js');
+
+        //get the page id if we want to view stats on a specific page
+        $pid = Request::getString('pid', '');
+
+        //get start and end dates
+        $start = Request::getString('start', gmdate("Y-m-d 00:00:00", strtotime('-30 DAYS')));
+        $end   = Request::getString('end', gmdate("Y-m-d 23:59:59"));
+        if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $start)) {
+            $start = Date::of($start)->format('Y-m-d') . ' 00:00:00';
+        }
+        if (preg_match('/\d{2}\/\d{2}\/\d{4}/', $end)) {
+            $end = Date::of($end)->format('Y-m-d') . ' 00:00:00';
+        }
+
+        //make sure start date is a full php datetime
+        if (strlen($start) != 19) {
+            $start .= " 00:00:00";
+        }
+
+        //make sure end date is a full php datetime
+        if (strlen($end) != 19) {
+            $end .= " 23:59:59";
+        }
+
+        //generate script to draw chart and push to the page
+        $script = $this->drawChart($pid, $start, $end);
+        Document::addScriptDeclaration($script);
+
+        //import and create view
+        $view = $this->view('default', 'index');
+
+        //get the group pages
+        $query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber="
+            . $database->quote($group->get('gidNumber'));
+        $database->setQuery($query);
+        $view->set('pages', $database->loadAssocList());
+
+        $view->set('option', $option);
+        $view->set('group', $group);
+        $view->set('authorized', $authorized);
+        $view->set('database', $database);
+
+        $view->set('pid', $pid);
+        $view->set('start', $start);
+        $view->set('end', $end);
+
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
+
+        $arr['html'] = $view->loadTemplate();
 
         return $arr;
     }

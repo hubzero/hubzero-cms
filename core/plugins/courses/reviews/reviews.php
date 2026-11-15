@@ -291,7 +291,7 @@ class Reviews extends Plugin
             $how = -1;
         }
 
-        if (!$item_id || !$how) {
+        if (!$how) {
             App::redirect($this->url);
         }
 

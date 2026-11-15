@@ -51,7 +51,7 @@ $this->css('jobs', 'com_jobs');
     <?php if ($this->self && $this->file) { ?>
         <div id="prefs" class="<?php echo $this->js->active ? 'yes_search' : 'no_search'; ?>">
             <p>
-                <?php if ($this->js->active && $this->file) { ?>
+                <?php if ($this->js->active) { ?>
                     <?php echo Lang::txt('PLG_MEMBERS_RESUME_PROFILE_INCLUDED'); ?>
                 <?php } elseif ($this->file) { ?>
                     <?php echo Lang::txt('PLG_MEMBERS_RESUME_PROFILE_NOT_INCLUDED'); ?>
@@ -62,11 +62,11 @@ $this->css('jobs', 'com_jobs');
                     <?php
                     $activateUrl = Route::url(
                         $this->member->link() . '&active=resume&action=activate' . '&on='
-                            . ($this->js->active && $this->file ? 0 : 1),
+                            . ($this->js->active ? 0 : 1),
                     );
                     ?>
                     <a href="<?= $activateUrl ?>">
-                <?php if ($this->js->active && $this->file) { ?>
+                <?php if ($this->js->active) { ?>
                     [-] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
                 <?php } elseif ($this->file) { ?>
                     [+] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_INCLUDE'); ?>
@@ -217,7 +217,7 @@ $this->css('jobs', 'com_jobs');
                     <tr>
                         <th class="col halfwidth"><?php echo ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')); ?></th>
                         <th class="col"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LAST_UPDATED'); ?></th>
-                        <?= $this->self ? '<th scope="col">' . Lang::txt('PLG_MEMBERS_RESUME_OPTIONS') . '</th>' : '' ?>
+                        <th scope="col"><?= Lang::txt('PLG_MEMBERS_RESUME_OPTIONS') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -230,7 +230,7 @@ $this->css('jobs', 'com_jobs');
                                         . Lang::txt('PLG_MEMBERS_RESUME')
                                     : $this->member->get('name') . ' ' . Lang::txt('PLG_MEMBERS_RESUME');
                         ?>
-                        <?php if ($this->edittitle && $this->self) { ?>
+                        <?php if ($this->edittitle) { ?>
                             <form id="editTitleForm" method="post"
                                 action="<?= Route::url($this->member->link() . '&active=resume&action=savetitle') ?>">
                                 <fieldset>

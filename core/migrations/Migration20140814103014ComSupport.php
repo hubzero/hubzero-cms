@@ -70,11 +70,9 @@ class Migration20140814103014ComSupport extends Base
                     $i++;
                 }
 
-                if (count($entries)) {
-                    $this->db
-                        ->getQuery()
-                        ->insertMany('#__support_statuses', $entries);
-                }
+                $this->db
+                    ->getQuery()
+                    ->insertMany('#__support_statuses', $entries);
             }
 
             // Update closed tickets

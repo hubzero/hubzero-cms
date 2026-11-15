@@ -243,6 +243,7 @@ class ComponentRoute
      *
      * @param   string  $option  com_xyz
      * @return  mixed   The menu item id, or false
+     * @phpstan-impure
      */
     public function exists($option)
     {

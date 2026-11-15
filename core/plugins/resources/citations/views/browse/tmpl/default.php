@@ -58,10 +58,8 @@ if ($this->citations) {
                 'index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=endnote&no_html=1',
             ) . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";
         if ($cite->eprint) {
-            if ($cite->eprint) {
-                $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">'
-                    . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
-            }
+            $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">'
+                . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
         }
         $item .= "\t\t" . '</p>' . "\n";
         $item .= "\t" . '</li>' . "\n";

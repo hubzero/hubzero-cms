@@ -85,7 +85,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
     <?php } ?>
 
     <div id="course-outline">
-        <?php if (!$offeringViewAccess && $sparamsPreview) : ?>
+        <?php if (!$offeringViewAccess) : ?>
             <div class="advertise-enroll">
                 <div class="advertise-text">
                     <?php echo Lang::txt('PLG_COURSES_OUTLINE_PREVIEW_MODE'); ?>
@@ -387,7 +387,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                         $section->get('id'),
                                                                     );
 
-                                                                    if ($dep && $dep->getState() == 'pending') {
+                                                                    if ($dep->getState() == 'pending') {
                                                                         continue;
                                                                     }
                                                                 }

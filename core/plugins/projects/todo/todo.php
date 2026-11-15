@@ -116,8 +116,6 @@ class Todo extends Plugin
      */
     public function onProject($model, $action = '', $areas = null)
     {
-        $returnhtml = true;
-
         $arr = [
             'html'     => '',
             'metadata' => '',
@@ -146,50 +144,47 @@ class Todo extends Plugin
         // Model
         $this->model = $model;
 
-        // Are we returning HTML?
-        if ($returnhtml) {
-            // Get our To do model
-            $this->todo = new \Components\Projects\Models\Todo();
+        // Get our To do model
+        $this->todo = new \Components\Projects\Models\Todo();
 
-            // Set vars
-            $this->task     = $action ? $action : Request::getString('action', '');
-            $this->todoid   = Request::getInt('todoid', 0);
-            $this->database = App::get('db');
-            $this->uid      = User::get('id');
+        // Set vars
+        $this->task     = $action ? $action : Request::getString('action', '');
+        $this->todoid   = Request::getInt('todoid', 0);
+        $this->database = App::get('db');
+        $this->uid      = User::get('id');
 
-            switch ($this->task) {
-                case 'save':
-                    $arr['html'] = $this->save();
-                    break;
-                case 'changestate':
-                    $arr['html'] = $this->save();
-                    break;
-                case 'delete':
-                    $arr['html'] = $this->delete();
-                    break;
-                case 'assign':
-                    $arr['html'] = $this->save();
-                    break;
-                case 'view':
-                case 'new':
-                case 'edit':
-                    $arr['html'] = $this->item();
-                    break;
-                case 'savecomment':
-                    $arr['html'] = $this->saveComment();
-                    break;
-                case 'deletecomment':
-                    $arr['html'] = $this->deleteComment();
-                    break;
-                case 'reorder':
-                case 'sortitems':
-                    $arr['html'] = $this->reorder();
-                    break;
-                case 'page':
-                default:
-                    $arr['html'] = $this->page();
-                    break;
-            }
+        switch ($this->task) {
+            case 'save':
+                $arr['html'] = $this->save();
+                break;
+            case 'changestate':
+                $arr['html'] = $this->save();
+                break;
+            case 'delete':
+                $arr['html'] = $this->delete();
+                break;
+            case 'assign':
+                $arr['html'] = $this->save();
+                break;
+            case 'view':
+            case 'new':
+            case 'edit':
+                $arr['html'] = $this->item();
+                break;
+            case 'savecomment':
+                $arr['html'] = $this->saveComment();
+                break;
+            case 'deletecomment':
+                $arr['html'] = $this->deleteComment();
+                break;
+            case 'reorder':
+            case 'sortitems':
+                $arr['html'] = $this->reorder();
+                break;
+            case 'page':
+            default:
+                $arr['html'] = $this->page();
+                break;
         }
 
         // Return data

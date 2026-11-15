@@ -790,7 +790,7 @@ class Calendar extends Plugin
         //parse publish up date/time
         if (isset($event['publish_up']) && $event['publish_up'] != '' && !$allday) {
             // combine date & time
-            if (isset($event['publish_up_time']) && !$allday) {
+            if (isset($event['publish_up_time'])) {
                 $event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
             }
             $event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'], $ignoreDst)->toSql();
@@ -1145,20 +1145,15 @@ class Calendar extends Plugin
 
         //is the plugin for registered or members only?
         if ($plugin_access == 'registered' || $plugin_access == 'members') {
-            //authenticate user
+            // Authenticate the user; anyone who cannot is turned away there,
+            // which is all registered-only access asks
             $auth = $this->authenticateSubscriptionRequest();
-
-            //is it registered users only?
-            if ($plugin_access == 'registered' && !is_object($auth)) {
-                header('HTTP/1.1 403 Not Authorized');
-                die(Lang::txt('GROUPS_PLUGIN_REGISTERED', 'Calendar'));
-            }
 
             //make sure we are a member (authenticateSubscriptionRequest() always
             //returns a user object, so the membership test has to run on it)
             if (
                 $plugin_access == 'members'
-                && (!is_object($auth) || !in_array($auth->id, $this->group->get('members')))
+                && !in_array($auth->id, $this->group->get('members'))
             ) {
                 header('HTTP/1.1 403 Unauthorized');
                 die(Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar'));
