@@ -352,19 +352,6 @@ class Version
     }
 
     /**
-     * Short description for 'logDebug'
-     *
-     * Long description (if any) ...
-     *
-     * @param     mixed $msg Parameter description (if any) ...
-     * @return   void
-     */
-    private function logDebug($msg)
-    {
-        Log::debug($msg);
-    }
-
-    /**
      * Short description for 'getTool_VersionNames'
      *
      * Long description (if any) ...

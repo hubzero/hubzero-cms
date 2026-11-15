@@ -149,33 +149,4 @@ class Content extends Plugin
         // Return output
         return $html;
     }
-
-    /**
-     * Find the menu item alias for a page
-     *
-     * @param   integer  $id        Menu item ID
-     * @param   boolean  $startnew  Reset the array?
-     * @return  array
-     */
-    private function recursiveMenuLookup($id, $startnew = true)
-    {
-        static $aliases = [];
-
-        if ($startnew) {
-            unset($aliases);
-        }
-
-        $database = App::get('db');
-        $database->setQuery(
-            "SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1",
-        );
-        $level = $database->loadRow();
-
-        $aliases[] = $level[0];
-        if ($level[1]) {
-            $a = $this->recursiveMenuLookup($level[1], false);
-        }
-
-        return $aliases;
-    }
 }

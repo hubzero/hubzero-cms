@@ -165,17 +165,6 @@ class Tool
     }
 
     /**
-     * Log a debug message
-     *
-     * @param   string  $msg  Message to log
-     * @return  void
-     */
-    private function logDebug($msg)
-    {
-        Log::debug($msg);
-    }
-
-    /**
      * Get the names of all tools
      *
      * @return  array

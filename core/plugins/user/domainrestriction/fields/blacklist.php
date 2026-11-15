@@ -69,24 +69,4 @@ class Blacklist extends Field
 
         return $return;
     }
-
-    /**
-     * Get the value from a field
-     *
-     * @param   string  $name
-     * @return  string
-     */
-    private function getField($name)
-    {
-        foreach ($this->formfields as $field) {
-            if (
-                $field->name == 'fields[params][' . $name . ']'
-                || $field->name == 'fields[params][' . $name . '][]'
-            ) {
-                return $field->value;
-            }
-        }
-
-        return '';
-    }
 }

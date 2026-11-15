@@ -68,27 +68,6 @@ class Orcid extends SiteController
     ];
 
     /**
-     * Recursively parse XML
-     *
-     * @param   object  $root
-     * @param   array   $fields
-     * @return  void
-     */
-    private function parseXml($root, &$fields)
-    {
-        foreach ($root->children() as $ch) {
-            if ($ch->getName() == 'external-identifiers') {
-                continue;
-            }
-            if ($ch->count() == 0) { // && !empty($ch))
-                $fields[$ch->getName()] = $ch->__toString(); //$ch;
-            } else {
-                $this->parseXml($ch, $fields);
-            }
-        }
-    }
-
-    /**
      * Query the ORCID user's name
      *
      * @param   string  $token

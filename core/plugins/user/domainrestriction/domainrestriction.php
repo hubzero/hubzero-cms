@@ -266,20 +266,6 @@ class Domainrestriction extends Plugin
     }
 
     /**
-     * Match email
-     *
-     * @param   bool  $allowed
-     * @return  bool
-     */
-    private function decision($allowed = false)
-    {
-        $ret = $allowed
-                ? $this->mailmatch(['tlds', 'domains', 'emails'])
-                : !$this->mailmatch(['badtlds', 'baddomains', 'bademails']);
-        return $ret;
-    }
-
-    /**
      * Match email address
      *
      * @param   array  $keys

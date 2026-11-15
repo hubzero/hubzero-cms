@@ -23,53 +23,6 @@ class Mysessions extends Module
     protected $toolsConfig;
 
     /**
-     * Set the time when the session will tiemout
-     *
-     * @param   integer  $sess  Session ID
-     * @return  void
-     */
-    private function setTimeout($sess)
-    {
-        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
-
-        $ms = new \Components\Tools\Tables\Session($mwdb);
-        $ms->load($sess);
-        $ms->timeout = 1209600;
-        $ms->store();
-    }
-
-    /**
-     * Get the time when the session will tiemout
-     *
-     * @param   integer  $sess  Session ID
-     * @return  string
-     */
-    private function getTimeout($sess)
-    {
-        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
-
-        $ms = new \Components\Tools\Tables\Session($mwdb);
-        $remaining = $ms->getTimeout($sess);
-
-        $tl = 'unknown';
-
-        if (is_numeric($remaining)) {
-            $days_left    = floor($remaining / 60 / 60 / 24);
-            $hours_left   = floor(($remaining - $days_left * 60 * 60 * 24) / 60 / 60);
-            $minutes_left = floor(($remaining - $days_left * 60 * 60 * 24 - $hours_left * 60 * 60) / 60);
-
-            $left = [$days_left, $hours_left, $minutes_left];
-
-            $tl  = '';
-            $tl .= ($days_left > 0) ? $days_left . ' days, ' : '';
-            $tl .= ($hours_left > 0) ? $hours_left . ' hours, ' : '';
-            $tl .= ($minutes_left > 0) ? $minutes_left . ' minute' : '';
-            $tl .= ($minutes_left > 1) ? 's' : '';
-        }
-        return $tl;
-    }
-
-    /**
      * Display module content
      *
      * @return  bool|null

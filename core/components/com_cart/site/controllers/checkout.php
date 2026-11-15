@@ -614,27 +614,4 @@ class Checkout extends ComponentController
             'warning',
         );
     }
-
-    /**
-     * Print transacttion info
-     *
-     * @param   array  $t
-     * @return  void
-     */
-    private function printTransaction($t)
-    {
-        echo '<div class="cartSection">';
-        foreach ($t as $k => $v) {
-            echo '<p>';
-            echo $v['info']->pName;
-            echo ' @ ';
-            echo $v['info']->sPrice;
-            echo ' x';
-            echo $v['transactionInfo']->qty;
-            echo ' @ ';
-            echo $v['transactionInfo']->tiPrice;
-            echo '</p>';
-        }
-        echo '</div>';
-    }
 }

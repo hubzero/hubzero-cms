@@ -97,18 +97,6 @@ class Forum extends Plugin
     }
 
     /**
-     * Get the thread ID
-     *
-     * @param   integer  $parent  Parent comment to load
-     * @return  array
-     */
-    private function getThread($parent = 0)
-    {
-        $comment = \Components\Forum\Models\Post::oneOrFail($parent);
-        return $comment->get('thread');
-    }
-
-    /**
      * Mark an item as flagged
      *
      * @param   string  $refid     ID of the database table row

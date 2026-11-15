@@ -376,39 +376,4 @@ class Migration20130924000002Core extends Base
             }
         }
     }
-
-    private function rebuildAssets($parentId = 1, $leftId = 0, $level = 0)
-    {
-        $children = $this->db
-            ->getQuery()
-            ->select('id')
-            ->from('#__assets')
-            ->where('parent_id', '=', (int) $parentId)
-            ->order('parent_id', 'asc')
-            ->order('lft', 'asc')
-            ->loadObjectList();
-
-        $rightId = $leftId + 1;
-
-        foreach ($children as $node) {
-            $rightId = $this->rebuildAssets($node->id, $rightId, $level + 1);
-
-            if ($rightId === false) {
-                return false;
-            }
-        }
-
-        $this->db
-            ->getQuery()
-            ->update('#__assets')
-            ->set([
-                'lft'   => (int) $leftId,
-                'rgt'   => (int) $rightId,
-                'level' => (int) $level,
-            ])
-            ->where('id', '=', (int) $parentId)
-            ->execute();
-
-        return $rightId + 1;
-    }
 }

@@ -299,41 +299,4 @@ class EventsLatest extends Module
         }
         return ($aStrtTime > $bStrtTime) ? -1 : 1;
     }
-
-    /**
-     * The function below is essentially the 'ShowEventsByDate' function in the com_events module,
-     * except no actual output is performed.  Rather this function returns an array of references to
-     * $rows within the $rows (ie events) input array which occur on the input '$date'.  This
-     * is determined by the complicated com_event algorithm according to the event's repeatting type.
-     *
-     * @param   array    &$rows           Parameter description (if any) ...
-     * @param   mixed  $date            Parameter description (if any) ...
-     * @param   array    &$seenThisEvent  Parameter description (if any) ...
-     * @return  array    Return description (if any) ...
-     */
-    private function getEventsByDate(&$rows, $date, &$seenThisEvent)
-    {
-        $num_events = count($rows);
-        $new_rows_events = [];
-
-        if ($num_events > 0) {
-            $year  = date('Y', $date);
-            $month = date('m', $date);
-            $day   = date('d', $date);
-
-            for ($r = 0; $r < count($rows); $r++) {
-                $row = $rows[$r];
-                if (isset($seenThisEvent[$row->id])) {
-                    continue;
-                }
-
-                $seenThisEvent[$row->id] = 1;
-                $new_rows_events[] = & $rows[$r];
-            }
-
-            usort($new_rows_events, [$this, 'cmpByStartTime']);
-        }
-
-        return $new_rows_events;
-    }
 }

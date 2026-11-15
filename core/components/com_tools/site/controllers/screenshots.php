@@ -514,40 +514,6 @@ class Screenshots extends SiteController
     }
 
     /**
-     * Create a thumbnail for an animation
-     *
-     * @param      string  $tmpname   Uploaded file name
-     * @param      integer $maxwidth  Max image width
-     * @param      integer $maxheight Max image height
-     * @param      string  $save_dir  Directory to save to
-     * @param      string  $save_name Name to save file as
-     * @return     boolean False if errors, True if successful
-     */
-    private function createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
-    {
-        $imorig = imagecreatefromjpeg(dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
-        $x = imageSX($imorig);
-        $y = imageSY($imorig);
-
-        $yc = $y * 1.555555;
-        $d  = $x > $yc ? $x : $yc;
-        $c  = $d > $maxwidth ? $maxwidth / $d : $maxwidth;
-        $av = $x * $c;
-        $ah = $y * $c;
-
-        $im = imagecreate($av, $ah);
-        $im = imagecreatetruecolor($av, $ah);
-        if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y)) {
-            if (imagegif($im, $save_dir . $save_name)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Create a thumbnail from a picture
      *
      * @param      string  $tmpname   Uploaded file name

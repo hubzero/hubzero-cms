@@ -79,18 +79,6 @@ class Project
     }
 
     /**
-     * Log a debug message
-     *
-     * @param   string  $msg  Message to log
-     * @return  void
-     */
-    private function logDebug($msg)
-    {
-        $xlog = App::get('log')->logger('debug');
-        $xlog->debug($msg);
-    }
-
-    /**
      * Output data as an array
      *
      * @return  array

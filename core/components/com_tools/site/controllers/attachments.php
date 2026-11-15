@@ -423,37 +423,6 @@ class Attachments extends SiteController
     }
 
     /**
-     * Build the absolute path to a resource's file upload
-     *
-     * @param      string $listdir Primary upload directory
-     * @param      string $subdir  Sub directory of $listdir
-     * @return     string
-     */
-    private function buildUploadPath($listdir, $subdir = '')
-    {
-        if ($subdir) {
-            $subdir = DS . trim($subdir, DS);
-        }
-
-        // Get the configured upload path
-        $base = DS . trim($this->rconfig->get('uploadpath', '/site/resources'), DS);
-
-        // Make sure the path doesn't end with a slash
-        $listdir = DS . trim($listdir, DS);
-
-        // Does the beginning of the $listdir match the config path?
-        if (substr($listdir, 0, strlen($base)) == $base) {
-            // Yes - ... this really shouldn't happen
-        } else {
-            // No - append it
-            $listdir = $base . $listdir;
-        }
-
-        // Build the path
-        return PATH_APP . $listdir . $subdir;
-    }
-
-    /**
      * Get the child's type ID based on file extension
      *
      * @param   string   $filename  File name

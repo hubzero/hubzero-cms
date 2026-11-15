@@ -1285,20 +1285,4 @@ class Membership extends Base
         // Push through to the groups listing
         App::redirect($url);
     }
-
-    /**
-     *  Creates Random Token String
-     *
-     * @param   int     $strLength  Length of string desired
-     * @return  String  Random string
-     */
-    private function randomString($strLength = 25)
-    {
-        $str = '';
-        for ($i = 0; $i < $strLength; $i++) {
-            $d = rand(1, 30) % 2;
-            $str .= $d ? chr(rand(65, 90)) : chr(rand(48, 57));
-        }
-        return strtoupper($str);
-    }
 }

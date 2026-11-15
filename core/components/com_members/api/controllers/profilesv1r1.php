@@ -673,21 +673,6 @@ class Profilesv1r1 extends ApiController
     }
 
     /**
-     * Get a resource based on tool name
-     *
-     * @param   string  $appname
-     * @param   object  $database
-     * @return  object
-     */
-    private function getResourceFromAppname($appname, $database)
-    {
-        $sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv "
-            . "WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
-        $database->setQuery($sql);
-        return $database->loadObject();
-    }
-
-    /**
      * Retrieves option values for a profile field
      *
      * @apiMethod GET

@@ -20,18 +20,6 @@ class History
     private $user_id;
 
     /**
-     * Log a message
-     *
-     * @param   string  $msg
-     * @return  void
-     */
-    private function logDebug($msg)
-    {
-        $xlog = App::get('log')->logger('debug');
-        $xlog->debug($msg);
-    }
-
-    /**
      * Get an instance of a user's password History
      *
      * @param   mixed  $instance  User ID (integer) or username (string)

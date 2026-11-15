@@ -306,30 +306,4 @@ class Author extends Table
 
         return true;
     }
-
-    /**
-     * Check the author's name
-     * Ensures the individual name fields are filled in
-     *
-     * @param   integer  $id  User ID
-     * @return  void
-     */
-    private function authorCheck($id)
-    {
-        $xprofile = User::getInstance($id);
-        if (
-            $xprofile->get('givenName') == ''
-            && $xprofile->get('middleName') == ''
-            && $xprofile->get('surname') == ''
-        ) {
-            $bits = explode(' ', $xprofile->get('name'));
-            $xprofile->set('surname', array_pop($bits));
-            if (count($bits) >= 1) {
-                $xprofile->set('givenName', array_shift($bits));
-            }
-            if (count($bits) >= 1) {
-                $xprofile->set('middleName', implode(' ', $bits));
-            }
-        }
-    }
 }

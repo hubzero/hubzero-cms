@@ -327,29 +327,4 @@ class Media extends SiteController
             ->setLayout('display')
             ->display();
     }
-
-    /**
-     * Scans directory and builds multi-dimensional array of all files and sub-directories
-     *
-     * @param      string $base Directory to scan
-     * @return     array
-     */
-    private function recursiveListDir($base)
-    {
-        static $filelist = [];
-        static $dirlist  = [];
-
-        if (is_dir($base)) {
-            $dh = opendir($base);
-            while (false !== ($dir = readdir($dh))) {
-                if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
-                    $subbase    = $base . DS . $dir;
-                    $dirlist[]  = $subbase;
-                    $subdirlist = $this->recursiveListDir($subbase);
-                }
-            }
-            closedir($dh);
-        }
-        return $dirlist;
-    }
 }

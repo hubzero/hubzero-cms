@@ -321,23 +321,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
     }
 
     /**
-     * Split a string into multiple values based on delimiter(s)
-     *
-     * @param   mixed   $data   String or array of field values
-     * @param   string  $delim  List of delimiters, separated by a pipe "|"
-     * @return  array
-     */
-    private function multiValueField($data, $delim = ',|;')
-    {
-        if (is_string($data)) {
-            $data = array_map('trim', preg_split("/($delim)/", $data));
-            $data = array_values(array_filter($data));
-        }
-
-        return $data;
-    }
-
-    /**
      * Save profile
      *
      * @return  void

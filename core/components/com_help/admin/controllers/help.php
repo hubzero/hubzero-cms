@@ -168,45 +168,6 @@ class Help extends AdminController
     /**
      * Get array of help pages for component
      *
-     * @param   string  $component  Component to get pages for
-     * @return  array
-     */
-    private function helpPagesForComponent($component)
-    {
-        // Get component name from database
-        $sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote('component')
-            . " AND `element`=" . $this->database->quote($component) . " AND `enabled`=1";
-        $this->database->setQuery($sql);
-        $name = $this->database->loadResult();
-
-        // Make sure we have a component
-        if ($name == '') {
-            return [];
-        }
-
-        // Path to help pages
-        $path  = Component::path($component) . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
-
-        // Make sure directory exists
-        $pages = [];
-
-        // Get help pages for this component
-        $pages = Filesystem::files($path, '.phtml');
-        $pages = array_map(function ($file) {
-            return ltrim($file, DS);
-        }, $pages);
-
-        // Return pages
-        return [
-            'name'   => $name,
-            'option' => $component,
-            'pages'  => $pages,
-        ];
-    }
-
-    /**
-     * Get array of help pages for component
-     *
      * @param   array   $componentAndPages  Component info and corresponding help pages
      * @param   string  $headingLevel       Leading level for component separation
      * @return  string

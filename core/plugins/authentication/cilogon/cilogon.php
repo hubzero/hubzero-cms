@@ -383,32 +383,4 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             );
         }
     }
-
-    /**
-     * Generate return url
-     *
-     * @param   string|null  $return  url
-     * @param   bool    $encode  whether or not to encode return before using
-     * @return  string  url
-     */
-    private static function getReturnUrl($return = null, $encode = false)
-    {
-        // Get the hub url
-        $service = trim(Request::base(), '/');
-
-        if (empty($service)) {
-            $service = $_SERVER['HTTP_HOST'];
-        }
-
-        // Check if a return is specified
-        $rtrn = '';
-        if (isset($return) && !empty($return)) {
-            if ($encode) {
-                $return = base64_encode($return);
-            }
-            $rtrn = '&return=' . $return;
-        }
-
-        return self::getRedirectUri('cilogon') . $rtrn;
-    }
 }

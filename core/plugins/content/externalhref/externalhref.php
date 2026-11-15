@@ -187,37 +187,6 @@ class Externalhref extends Plugin
     }
 
     /**
-     * Create a link tag with specified attributes for external links
-     *
-     * @param   array   $matches
-     * @return  string
-     */
-    private function nofollow($matches)
-    {
-        static $rel;
-
-        if (!$rel) {
-            $rel = ['external'];
-            if ($this->params->get('nofollow', 1)) {
-                $rel[] = 'nofollow';
-            }
-            if ($this->params->get('noreferrer', 0)) {
-                $rel[] = 'noreferrer';
-            }
-            if ($other = $this->params->get('other')) {
-                $other = explode(' ', $other);
-                $other = array_map('trim', $other);
-                $rel = array_merge($rel, $other);
-            }
-            $rel = array_filter($rel);
-            $rel = array_unique($rel);
-            $rel = implode(' ', $rel);
-        }
-
-        return '<a href="' . $matches[1] . '" rel="' . $rel . '">' . $matches[2] . '</a>';
-    }
-
-    /**
      * Check if the context provided the content field name as
      * it may vary between models.
      *

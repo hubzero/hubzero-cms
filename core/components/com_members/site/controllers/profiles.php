@@ -1795,65 +1795,6 @@ class Profiles extends SiteController
     }
 
     /**
-     * Send a confirmation code to a user's email address
-     *
-     * @param   string   $login    Username
-     * @param   string   $email    User email address
-     * @param   string   $confirm  Confirmation code
-     * @return  boolean
-     */
-    private function sendConfirmationCode($login, $email, $confirm, $name, $registerDate)
-    {
-        // Email subject
-        $subject = Config::get('sitename') . ' account email confirmation';
-
-        // Email message
-        $eview = new \Hubzero\Component\View([
-            'name'   => 'emails',
-            'layout' => 'confirm',
-        ]);
-
-        $eview
-            ->set('option', $this->option)
-            ->set('sitename', Config::get('sitename'))
-            ->set('login', $login)
-            ->set('email', $email)
-            ->set('confirm', $confirm)
-            ->set('baseURL', Request::base())
-            ->set('registerDate', $registerDate)
-            ->set('name', $name);
-
-        $message = $eview->loadTemplate();
-        $message = str_replace("\n", "\r\n", $message);
-
-        $msg = new \Hubzero\Mail\Message();
-        $msg
-            ->setSubject($subject)
-            ->addTo($email)
-            ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-            ->addHeader('X-Component', $this->option)
-            ->setBody($message);
-
-        $result = false;
-
-        // Send the email
-        if ($msg->send()) {
-            Notify::success(
-                'A confirmation email has been sent to "'
-                    . htmlentities($email, ENT_COMPAT, 'UTF-8')
-                    . '". You must click the link in that email to re-activate your account.',
-            );
-            $result = true;
-        } else {
-            Notify::error(
-                'An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.',
-            );
-        }
-
-        return $result;
-    }
-
-    /**
      * Show the current user activity
      *
      * @return  void

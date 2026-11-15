@@ -464,17 +464,6 @@ class MathRenderer
     }
 
     /**
-     * Decode blob
-     *
-     * @param      string $b Blob to decode
-     * @return     string
-     */
-    private function decodeBlob($b)
-    {
-        return $b;
-    }
-
-    /**
      * Check of a formula exists, rendering if not
      * This will return either an image tag with link to image (complicated formulas)
      * or html (simple)

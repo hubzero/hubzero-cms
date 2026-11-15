@@ -830,24 +830,6 @@ class Course extends SiteController
     }
 
     /**
-     * Generate a random string
-     *
-     * @param   integer  $length  Length of string
-     * @return  string
-     */
-    private function randomString($length)
-    {
-        $str = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $d = rand(1, 30) % 2;
-            $str .= $d ? chr(rand(65, 90)) : chr(rand(48, 57));
-        }
-
-        return strtoupper($str);
-    }
-
-    /**
      * Get a course's availability
      *
      * @param   object|null  $course  CoursesCourse

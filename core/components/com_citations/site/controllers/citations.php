@@ -994,33 +994,6 @@ class Citations extends SiteController
     }
 
     /**
-     * Check if an array is empty, ignoring keys in the $ignored list
-     *
-     * @param   array    $b        Array of data to check
-     * @param   array    $ignored  Array of keys to bypass
-     * @return  boolean  True if empty, false if not
-     */
-    private function isempty($b, $ignored = [])
-    {
-        foreach ($ignored as $ignore) {
-            if (array_key_exists($ignore, $b)) {
-                $b[$ignore] = null;
-            }
-        }
-        if (array_key_exists('id', $b)) {
-            $b['id'] = null;
-        }
-        $values = array_values($b);
-        $e = true;
-        foreach ($values as $v) {
-            if ($v) {
-                $e = false;
-            }
-        }
-        return $e;
-    }
-
-    /**
      * Serve up a file
      *
      * @param   boolean  $inline  Serve inline?
