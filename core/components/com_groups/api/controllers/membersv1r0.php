@@ -83,11 +83,9 @@ class Membersv1r0 extends ApiController
         $list = Request::getString('list', 'members, managers, invitees, applicants');
 
         // split by comma
-        if (is_string($list)) {
-            $list = explode(',', $list);
-            $list = array_map('trim', $list);
-            $list = array_map('strtolower', $list);
-        }
+        $list = explode(',', $list);
+        $list = array_map('trim', $list);
+        $list = array_map('strtolower', $list);
 
         // var to hold return
         $response = [];

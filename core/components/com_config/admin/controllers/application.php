@@ -63,7 +63,7 @@ class Application extends AdminController
         }
 
         // Bind the form to the data.
-        if ($form && $data) {
+        if ($data) {
             $form->bind($data);
         }
 
@@ -170,12 +170,11 @@ class Application extends AdminController
         switch (Request::getCmd('task')) {
             case 'apply':
                 App::redirect(Route::url('index.php?option=' . $this->option, false));
-                break;
+                // no break: redirect() does not return
 
             case 'save':
             default:
                 App::redirect(Route::url('index.php', false));
-                break;
         }
     }
 

@@ -363,7 +363,7 @@ class Oauth extends Base implements CommandInterface
             ? User::oneOrNew($identifier)
             : User::oneByUsername($identifier);
 
-        if (!$user || !$user->get('id')) {
+        if (!$user->get('id')) {
             $this->output->error('No such user: ' . $identifier);
         }
 

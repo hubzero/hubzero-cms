@@ -120,7 +120,6 @@ $this
                                 if (
                                     $this->config->get('access-edit-section')
                                     && $this->edit != $section->get('alias')
-                                    && $section->get('id')
                                 ) { ?>
                                     <?php
                                     $editUrl = Route::url(

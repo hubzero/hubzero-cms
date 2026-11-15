@@ -18,13 +18,6 @@ use Hubzero\Base\Obj;
 abstract class Base extends Obj
 {
     /**
-     * File path
-     *
-     * @var string|null
-     */
-    private $image = null;
-
-    /**
      * URL
      *
      * @var string
@@ -69,11 +62,11 @@ abstract class Base extends Obj
     /**
      * Get this item's image
      *
-     * @return  string
+     * @return  string|null  None for this kind of item
      */
     public function image()
     {
-        return $this->image;
+        return null;
     }
 
     /**

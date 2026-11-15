@@ -165,6 +165,7 @@ class Asset extends Base
      *
      * @param   boolean $check Perform data validation check?
      * @return  boolean False if error, True on success
+     * @phpstan-impure
      */
     public function store($check = true)
     {

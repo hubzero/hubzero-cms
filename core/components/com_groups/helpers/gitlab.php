@@ -91,7 +91,7 @@ class Gitlab
     {
         // do we have repo management on
         // make sure we have a url and key if repot management is on
-        if (!$this->active || ($this->active && ($this->url == '' || $this->token == ''))) {
+        if (!$this->active || $this->url == '' || $this->token == '') {
             Notify::warning(Lang::txt('COM_GROUPS_GITLAB_NOT_SETUP'));
             return false;
         }

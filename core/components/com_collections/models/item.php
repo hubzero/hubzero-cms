@@ -300,7 +300,7 @@ class Item extends Base
      */
     public function addAsset($asset = null)
     {
-        if (!isset($this->assets) || !($this->assets instanceof ItemList)) {
+        if (!isset($this->assets)) {
             $this->assets = new ItemList([]);
         }
         if ($asset) {

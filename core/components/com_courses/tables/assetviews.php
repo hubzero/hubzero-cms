@@ -82,18 +82,10 @@ class AssetViews extends Table
 
         $query = "SELECT ";
 
-        if (count($select) > 0) {
-            $query .= implode(", ", $select);
-        } else {
-            $query .= "*";
-        }
+        $query .= implode(", ", $select);
 
-        if (count($from) > 0) {
-            $query .= "\nFROM ";
-            $query .= implode("\n", $from);
-        } else {
-            $query .= "\nFROM $this->tableName AS cav";
-        }
+        $query .= "\nFROM ";
+        $query .= implode("\n", $from);
 
         $query .= "\nWHERE ";
         $query .= implode(" AND ", $where);

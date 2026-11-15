@@ -326,7 +326,7 @@ class Overrides extends AdminController
             foreach ($files as $file) {
                 $strings = Override::parseFile($file);
 
-                if ($strings && count($strings)) {
+                if ($strings) {
                     foreach ($strings as $key => $string) {
                         $entry = Overrider::blank()->set([
                             'constant' => $key,
@@ -394,7 +394,7 @@ class Overrides extends AdminController
         $messages = Notify::messages();
 
         // Build the sorted messages list
-        if (is_array($messages) && count($messages)) {
+        if (count($messages)) {
             foreach ($messages as $message) {
                 if (isset($message['type']) && isset($message['message'])) {
                     $lists[$message['type']][] = $message['message'];
@@ -403,7 +403,7 @@ class Overrides extends AdminController
         }
 
         // If messages exist add them to the output
-        if (isset($lists) && is_array($lists)) {
+        if (isset($lists)) {
             $results['messages'] = $lists;
         }
 
@@ -411,7 +411,7 @@ class Overrides extends AdminController
         $response = new \stdClass();
 
         // If messages exist add them to the output
-        if (isset($lists) && is_array($lists)) {
+        if (isset($lists)) {
             $response->messages = $lists;
         }
         $response->success = ($this->getError() ? false : true);

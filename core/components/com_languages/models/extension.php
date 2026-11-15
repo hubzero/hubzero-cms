@@ -207,9 +207,6 @@ class Extension extends Relational
                 false,
                 ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'],
             );
-            if (!$this->folders || !is_array($this->folders)) {
-                $this->folders = [];
-            }
         }
 
         return $this->folders;

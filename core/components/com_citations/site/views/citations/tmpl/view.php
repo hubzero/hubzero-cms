@@ -94,7 +94,7 @@ if ($citationUrlFormatString != '') {
 $citationURL = ($citationUrlFormat == 'custom' && $customUrl != '') ? $customUrl : $url;
 
 //if we have an eprint use that
-$citationURL = ($eprintUrl && $eprintUrl != '') ? $eprintUrl : $citationURL;
+$citationURL = $eprintUrl ?: $citationURL;
 
 
 //are we showing abstracts hub wide

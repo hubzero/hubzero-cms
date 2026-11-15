@@ -94,6 +94,8 @@ class Login extends AdminController
 
         $credentials = $model->getState('credentials');
         $return      = $model->getState('return');
+        // An authentication plugin's login() may fill these in
+        /** @var array<string, mixed> $options */
         $options     = [];
 
         // If a specific authenticator is specified try to call the login method for that plugin
@@ -137,9 +139,7 @@ class Login extends AdminController
         ];
 
         // Set the application login entry point
-        if (!array_key_exists('entry_url', $options)) {
-            $options['entry_url'] = Request::base() . 'index.php?option=com_login&task=login';
-        }
+        $options['entry_url'] = Request::base() . 'index.php?option=com_login&task=login';
 
         $result = App::get('auth')->login($credentials, $options);
 

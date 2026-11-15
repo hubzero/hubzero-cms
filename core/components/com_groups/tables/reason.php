@@ -31,7 +31,7 @@ class Reason extends Table
      * Load a record based on group ID and user ID and bind to $this
      *
      * @param   integer|null  $uid  User ID
-     * @param   integer  $gid  Group ID
+     * @param   integer|null  $gid  Group ID
      * @return  boolean  True on success
      */
     public function loadReason($uid, $gid)
@@ -53,7 +53,7 @@ class Reason extends Table
      * Delete an entry based on group ID and user ID
      *
      * @param   integer|null  $uid  User ID
-     * @param   integer  $gid  Group ID
+     * @param   integer|null  $gid  Group ID
      * @return  boolean  True on success
      */
     public function deleteReason($uid, $gid)

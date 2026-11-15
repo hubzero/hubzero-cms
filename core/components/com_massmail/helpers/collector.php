@@ -119,6 +119,7 @@ class PostfixCollector
      * Count external sends in an open stream, adding to hour/day buckets.
      *
      * @return  integer  messages counted
+     * @phpstan-impure
      */
     protected static function scanStream($fh, $refTime, &$hours, &$days, $gz = false)
     {

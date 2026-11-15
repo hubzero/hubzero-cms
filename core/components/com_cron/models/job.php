@@ -591,12 +591,18 @@ class Job extends Relational
      * ->job is set by the runner before triggering the job and cleared once
      * it has released it itself; anything still set at shutdown is released.
      *
-     * @return  \stdClass  Holder with a ->job property
+     * @return  object  Holder with a ->job property
      */
     public static function releaseOnShutdown()
     {
-        $inFlight = new \stdClass();
-        $inFlight->job = null;
+        $inFlight = new class {
+            /**
+             * Set by the runner while a job runs
+             *
+             * @var  Job|null
+             */
+            public $job = null;
+        };
 
         register_shutdown_function(function () use ($inFlight) {
             if (!$inFlight->job) {

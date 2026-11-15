@@ -70,9 +70,9 @@ class Controller
             return true;
         }
 
-        if (DvConfig::$conf['access_limit_to_group'] !== false && !User::isGuest()) {
+        if (!User::isGuest()) {
             $groups = \Hubzero\User\Helper::getGroups(User::get('id'));
-            if ($groups && count($groups)) {
+            if ($groups) {
                 foreach ($groups as $g) {
                     if ($g->cn == DvConfig::$conf['access_limit_to_group']) {
                         return true;

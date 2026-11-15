@@ -65,7 +65,7 @@ class Helper
      * Generate Confirmation Token
      *
      * @param   string  $emailAddress        Confirmation Email Address
-     * @param   object   $mailinglistObject  Mailing list
+     * @param   object|mixed   $mailinglistObject  Mailing list
      * @return  string|false
      */
     public static function generateConfirmationToken($emailAddress, $mailinglistObject)
@@ -323,7 +323,7 @@ class Helper
         preg_match_all('/<a.*href="([^"]+)"[^>]*>/', $emailMessage, $urls);
 
         //add clicking to each link
-        if ($urls && count($urls[1]) > 0) {
+        if (count($urls[1]) > 0) {
             foreach ($urls[1] as $url) {
                 //only track http & https links
                 if (substr($url, 0, 4) == 'http') {

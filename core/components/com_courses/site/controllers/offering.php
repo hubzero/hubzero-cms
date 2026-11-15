@@ -389,7 +389,7 @@ class Offering extends SiteController
         }
 
         // If enrollment is srestricted and the user isn't enrolled yet
-        if ($offering->section()->get('enrollment') == 1 && !$enrolled) {
+        if ($offering->section()->get('enrollment') == 1) {
             // Show a form for entering a coupon code
             $this->view->setLayout('enroll_restricted');
         }

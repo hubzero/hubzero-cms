@@ -446,11 +446,8 @@ class Db
 
             $where_filter_str = '(' . implode(' AND ', $where_filter_arr) . ')';
 
-            if ($where_str == '') {
-                $where_str = ' WHERE ' . $where_filter_str;
-            } else {
-                $where_str .= ' AND ' . $where_filter_str;
-            }
+            // The first condition
+            $where_str = ' WHERE ' . $where_filter_str;
         }
 
         if (count($having_filter) > 0) {
@@ -558,11 +555,8 @@ class Db
 
             $having_filter_str = '(' . implode(' AND ', $having_filter_arr) . ')';
 
-            if ($having_str == '') {
-                $having_str = ' HAVING ' . $having_filter_str;
-            } else {
-                $having_str .= ' AND ' . $having_filter_str;
-            }
+            // The first condition
+            $having_str = ' HAVING ' . $having_filter_str;
         }
 
         // Full search

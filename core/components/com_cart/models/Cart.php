@@ -227,7 +227,7 @@ abstract class Cart
             $sql .= " WHERE " . implode(" AND ", $where) . " ";
         }
 
-        if (isset($filters['sort']) && (empty($filters['count']) || !$filters['count'])) {
+        if (isset($filters['sort']) && empty($filters['count'])) {
             $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
             if (isset($filters['sort_Dir'])) {
@@ -237,7 +237,7 @@ abstract class Cart
             $sql .= " ORDER BY `tLastUpdated` DESC";
         }
 
-        if (isset($filters['limit']) && isset($filters['start']) && (empty($filters['count']) || !$filters['count'])) {
+        if (isset($filters['limit']) && isset($filters['start']) && empty($filters['count'])) {
             $sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
         }
 
@@ -450,18 +450,16 @@ abstract class Cart
                 }
                 // Check if there is this product already in the cart (different SKU)
                 $allSkus = $warehouse->getProductSkus($skuInfo->pId);
-                if (is_array($allSkus) || is_object($allSkus)) {
-                    foreach ($allSkus as $skuId) {
-                        // Skip the current SKU, look only at other SKUs
-                        if ($skuId != $sId) {
-                            $otherSkuInfo = $this->getCartItem($skuId);
-                            // Error if there is already another SKU of the same product in the cart
-                            if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0) {
-                                //throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
-                                throw new \Exception(
-                                    $skuInfo->pName . " is already in the cart and cannot be added multiple times",
-                                );
-                            }
+                foreach ($allSkus as $skuId) {
+                    // Skip the current SKU, look only at other SKUs
+                    if ($skuId != $sId) {
+                        $otherSkuInfo = $this->getCartItem($skuId);
+                        // Error if there is already another SKU of the same product in the cart
+                        if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0) {
+                            //throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
+                            throw new \Exception(
+                                $skuInfo->pName . " is already in the cart and cannot be added multiple times",
+                            );
                         }
                     }
                 }

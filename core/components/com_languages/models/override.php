@@ -298,7 +298,7 @@ class Override extends Obj
                 return [];
             }
 
-            if ($version == '5.3.0' && is_array($strings)) {
+            if ($version == '5.3.0') {
                 foreach ($strings as $key => $string) {
                     $strings[$key] = str_replace('_QQ_', '"', $string);
                 }

@@ -75,7 +75,7 @@ $dateCreated->setTimezone($userTZ);
 $dateCreatedString = $dateCreated->format('Y-m-d H:i:s');
 
 $abbrTimeZone = $dateCreated->format('T');
-$abbrTimeZoneString = $abbrTimeZone ? "(" . $abbrTimeZone . ")" : null;
+$abbrTimeZoneString = "(" . $abbrTimeZone . ")";
 
 $dateModified = new DateTime($this->item->modified ? $this->item->modified : 'now', $UTC);
 $dateModified->setTimezone($userTZ);

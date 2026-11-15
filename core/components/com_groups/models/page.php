@@ -140,7 +140,7 @@ class Page extends Model
     /**
      * Load Approved Page version
      *
-     * @return  object  \Components\Groups\Models\Page\Version
+     * @return  \Components\Groups\Models\Page\Version|null  Null when none is approved
      */
     public function approvedVersion()
     {

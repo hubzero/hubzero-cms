@@ -34,7 +34,7 @@ class Migration20260810000000ComGroups extends Base
     {
         $keys = $this->db->getTableKeys($table);
 
-        return is_array($keys) && array_key_exists($key, $keys);
+        return array_key_exists($key, $keys);
     }
 
     /**

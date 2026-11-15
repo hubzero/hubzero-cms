@@ -87,18 +87,8 @@ class Imports extends AdminController
 
         $model = Import::all();
 
-        if ($filters['state']) {
-            if (!is_array($filters['state'])) {
-                $filters['state'] = [$filters['state']];
-            }
-            $filters['state'] = array_map('intval', $filters['state']);
-
-            $model->whereIn('state', $filters['state']);
-        }
-
-        if ($filters['type']) {
-            $model->whereEquals('type', $filters['type']);
-        }
+        $model->whereIn('state', $filters['state']);
+        $model->whereEquals('type', $filters['type']);
 
         $imports = $model
             ->ordered()
@@ -250,7 +240,7 @@ class Imports extends AdminController
         }
 
         // If we have a file
-        if (is_array($file) && !empty($file) && $file['size'] > 0 && $file['error'] == 0) {
+        if (!empty($file) && $file['size'] > 0 && $file['error'] == 0) {
             $file['name'] = \Hubzero\Filesystem\Util::normalizeFile(basename(str_replace('\\', '/', $file['name'])));
             move_uploaded_file($file['tmp_name'], $model->fileSpacePath() . DS . $file['name']);
             $model->set('file', $file['name']);

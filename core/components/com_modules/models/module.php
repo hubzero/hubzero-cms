@@ -584,7 +584,7 @@ class Module extends Relational
     /**
      * Save menu assignments for a module
      *
-     * @param   integer  $assignment
+     * @param   integer|string|mixed  $assignment  A menu item number, or none
      * @param   array    $assigned
      * @return  bool
      */

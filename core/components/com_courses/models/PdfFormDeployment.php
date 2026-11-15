@@ -563,10 +563,6 @@ class PdfFormDeployment
                 App::abort(422, 'expected a value to be supplied for ' . $key);
             }
 
-            if (($key == 'endTime' || $key == 'startTime') && !empty($data[$key])) {
-                $data[$key] = Date::of(strtotime($data[$key]))->toSql();
-            }
-
             $dep->$key = $data[$key];
         }
 

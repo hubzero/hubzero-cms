@@ -69,19 +69,17 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
             continue;
         }
 
-        if ($value) {
-            // If the type is a block of text, parse for macros
-            if ($field->get('type') == 'textarea') {
-                $value = Html::content('prepare', $value);
+        // If the type is a block of text, parse for macros
+        if ($field->get('type') == 'textarea') {
+            $value = Html::content('prepare', $value);
+        }
+        // IF the type is a URL, link it
+        if ($field->get('type') == 'url') {
+            $parsed = parse_url($value);
+            if (empty($parsed['scheme'])) {
+                $value = 'http://' . ltrim($value, '/');
             }
-            // IF the type is a URL, link it
-            if ($field->get('type') == 'url') {
-                $parsed = parse_url($value);
-                if (empty($parsed['scheme'])) {
-                    $value = 'http://' . ltrim($value, '/');
-                }
-                $value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
-            }
+            $value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
         }
 
         if (is_array($value)) {

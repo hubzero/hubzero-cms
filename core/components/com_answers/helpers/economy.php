@@ -216,7 +216,6 @@ class Economy extends Obj
                     $auser = User::getInstance($e);
                     if (
                         $auser->get('id')
-                        && $ba_user->get('id')
                         && $ba_user->get('id') != $auser->get('id')
                     ) {
                         $BTL_A = new Teller($auser->get('id'));
@@ -230,7 +229,6 @@ class Economy extends Obj
                     // is best answer eligible for extra points?
                     if (
                         $auser->get('id')
-                        && $ba_user->get('id')
                         && ($ba_user->get('id') == $auser->get('id'))
                     ) {
                         $ba_extra = 1;

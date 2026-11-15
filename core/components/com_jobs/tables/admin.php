@@ -30,7 +30,7 @@ class Admin extends Table
      * Check if a user is an admin for a job
      *
      * @param   integer|null  $uid  User ID
-     * @param   integer  $jid  Job ID
+     * @param   integer|null  $jid  Job ID
      * @return  boolean  True if admin
      */
     public function isAdmin($uid, $jid)

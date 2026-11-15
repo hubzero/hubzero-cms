@@ -225,11 +225,9 @@ $this->js('events.js');
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
                         <?php
-                        $cellText = $this->row->modified
-                            ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>'
-                                . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY') . '</th><td>'
-                                . $this->escape($userm)
-                            : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED');
+                        $cellText = Date::of($this->row->modified)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>'
+                            . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY') . '</th><td>'
+                            . $this->escape($userm);
                         ?>
                         <td><?= $cellText ?></td>
                     </tr>

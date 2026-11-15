@@ -268,7 +268,7 @@ class Extension extends Relational
         }
 
         $data = [];
-        $data['legacy'] = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
+        $data['legacy'] = ($xml->getName() == 'install');
         $data['name'] = (string) $xml->name;
 
         // Check if we're a language. If so use metafile.

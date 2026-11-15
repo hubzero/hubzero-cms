@@ -433,7 +433,7 @@ class Event extends Table
         }
 
         // publish up/down
-        if (isset($filters['publish_up']) && isset($filters['publish_down'])) {
+        if (isset($filters['publish_up'])) {
             $q  = "(publish_up >="
                 . $this->db->quote($filters['publish_up'])
                 . " AND publish_up <= "

@@ -322,7 +322,7 @@ $idSelected = function ($value) use ($view) {
                 value="<?= Lang::txt(strtoupper($this->option) . '_SAVE') ?>" />
             <?php if ($item->get('id')) { ?>
                 <?php
-                $linkUrl = Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : ''));
+                $linkUrl = Route::url($base . '&task=' . $this->collection->get('alias'));
                 ?>
                 <a class="btn btn-secondary" href="<?= $linkUrl ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

@@ -205,20 +205,14 @@ foreach ($this->notifications as $notification) {
         <section class="featuredgroups">
             <h3><?php echo Lang::txt('COM_GROUPS_INTRO_FEATURED_GROUPS_TITLE'); ?></h3>
 
-            <?php if (!count($this->featuredgroups)) : ?>
-                <div class="results-none">
-                    <p><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>
-                </div>
-            <?php else : ?>
-                <div class="groups-container">
-                <?php foreach ($this->featuredgroups as $group) {
-                    $this
-                        ->view('_group')
-                        ->set('group', $group)
-                        ->display();
-                } ?>
-                </div>
-            <?php endif; ?>
+            <div class="groups-container">
+            <?php foreach ($this->featuredgroups as $group) {
+                $this
+                    ->view('_group')
+                    ->set('group', $group)
+                    ->display();
+            } ?>
+            </div>
         </section><!-- / .featuredgroups -->
     <?php endif; ?>
 </section><!-- / .section -->

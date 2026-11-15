@@ -53,7 +53,7 @@ switch ($this->action) {
         } else {
             exit;
         }
-        break;
+        // no break: either branch above ends the request
 
     case 'criteria':
         $title = Lang::txt('COM_COURSES_BADGE_CRITERIA');
@@ -99,7 +99,6 @@ switch ($this->action) {
 
     default:
         App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
-        break;
 }
 ?>
 

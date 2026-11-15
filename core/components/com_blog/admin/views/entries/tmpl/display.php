@@ -231,14 +231,14 @@ $formAction = Route::url(
 
             $times = '';
             if ($row->get('publish_up')) {
-                if (!$row->get('publish_up') || $row->get('publish_up') == $nullDate) {
+                if ($row->get('publish_up') == $nullDate) {
                     $times .= Lang::txt('COM_BLOG_START') . ': ' . Lang::txt('COM_BLOG_ALWAYS');
                 } else {
                     $times .= Lang::txt('COM_BLOG_START') . ': ' . $publish_up->toSql();
                 }
             }
             if ($row->get('publish_down')) {
-                if (!$row->get('publish_down') || $row->get('publish_down') == $nullDate) {
+                if ($row->get('publish_down') == $nullDate) {
                     $times .= '<br />' . Lang::txt('COM_BLOG_FINISH') . ': ' . Lang::txt('COM_BLOG_NO_EXPIRY');
                 } else {
                     $times .= '<br />' . Lang::txt('COM_BLOG_FINISH') . ': ' . $publish_down->toSql();

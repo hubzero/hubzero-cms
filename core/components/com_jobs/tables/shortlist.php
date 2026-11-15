@@ -51,7 +51,7 @@ class Shortlist extends Table
      * Load a record and bind to $this
      *
      * @param   integer|null  $emp       Employer ID
-     * @param   integer  $seeker    Seeker ID
+     * @param   integer|null  $seeker    Seeker ID
      * @param   string   $category  Category
      * @return  boolean  True upon success
      */

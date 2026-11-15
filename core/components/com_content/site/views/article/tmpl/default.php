@@ -43,7 +43,6 @@ $canEdit = $this->item->params->get('access-edit');
 <?php
 if (
     !empty($this->item->pagination)
-    && $this->item->pagination
     && !$this->item->paginationposition
     && $this->item->paginationrelative
 ) {
@@ -236,7 +235,6 @@ if (
             <?php
             if (
                 !empty($this->item->pagination)
-                && $this->item->pagination
                 && !$this->item->paginationposition
                 && !$this->item->paginationrelative
             ) :
@@ -249,7 +247,6 @@ if (
             <?php
             if (
                 !empty($this->item->pagination)
-                && $this->item->pagination
                 && $this->item->paginationposition
                 && !$this->item->paginationrelative
             ) :
@@ -296,7 +293,6 @@ if (
         <?php
         if (
             !empty($this->item->pagination)
-            && $this->item->pagination
             && $this->item->paginationposition
             && $this->item->paginationrelative
         ) :

@@ -76,12 +76,6 @@ class ModeDb
             $dd_json_file = $jsonPath;
         }
 
-        $dd_php_file = false;
-        $phpPath = DvConfig::$dv_conf['dd_json'] . DS . $dv_id . '.php';
-        if (isset(DvConfig::$dv_conf['dd_json']) && file_exists($phpPath)) {
-            $dd_php_file = $phpPath;
-        }
-
         if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
             $dd = ['title' => 'Table : ' . $dv_id];
             $dd['table'] = $dv_id;
@@ -101,16 +95,8 @@ class ModeDb
             }
         } else {
             // Definitions are read from JSON; the PHP form is the admin's source only
-            $dd_php_file = false;
-
             if ($dd_json_file) {
                 $dd = json_decode(file_get_contents($dd_json_file), true);
-            } elseif ($dd_php_file) {
-                require_once($dd_php_file);
-                $dd_func = 'get_' . $dv_id;
-                if (function_exists($dd_func)) {
-                    $dd = $dd_func();
-                }
             } else {
                 App::abort(404, 'Invalid or Missing Dataview');
             }

@@ -219,7 +219,7 @@ class Assetv1r0 extends Base
         $return = $assetHandler->doEdit($asset_id);
 
         // Check for errors in response
-        if (is_array($return) && array_key_exists('error', $return)) {
+        if (array_key_exists('error', $return)) {
             App::abort(400, $return['error']);
         }
 
@@ -265,7 +265,7 @@ class Assetv1r0 extends Base
         $return = $assetHandler->preview($asset_id);
 
         // Check for errors in response
-        if (is_array($return) && array_key_exists('error', $return)) {
+        if (array_key_exists('error', $return)) {
             App::abort(400, $return['error']);
         }
 
@@ -324,10 +324,6 @@ class Assetv1r0 extends Base
             App::abort(403, 'Asset is not a part of this course.');
         }
 
-        // Check to make sure we have an asset group object
-        if (!is_object($asset)) {
-            App::abort(500, 'Failed to create an asset object');
-        }
 
         // We'll always save the title again, even if it's just to the same thing
         $orgTitle = $asset->get('title');
@@ -931,10 +927,6 @@ class Assetv1r0 extends Base
             App::abort(403, 'Asset is not a part of this course.');
         }
 
-        // Make sure we have an asset model
-        if (!is_object($asset) || !$asset instanceof \Components\Courses\Models\Asset) {
-            App::abort(500, "Loading asset {$id} failed");
-        }
 
         // If the current state is 1 (published), we'll toggle to 0 (unpublished)
         $state = ($asset->get('state') == 1) ? 0 : 1;

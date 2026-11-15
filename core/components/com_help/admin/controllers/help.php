@@ -120,7 +120,7 @@ class Help extends AdminController
 
             if ($component->parent_id == 1) {
                 // Only add this top level if it is authorised and enabled.
-                if ($authCheck == false || ($authCheck && User::authorise('core.manage', $component->element))) {
+                if ($authCheck == false || User::authorise('core.manage', $component->element)) {
                     // Root level.
                     $result[$component->id] = $component;
                     if (!isset($result[$component->id]->submenu)) {

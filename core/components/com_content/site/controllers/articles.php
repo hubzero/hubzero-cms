@@ -90,22 +90,17 @@ class Articles extends SiteController
             }
         }
 
-        // Compute view access permissions.
-        if ($access = $filters['access']) {
-            // If the access filter has been set, we already know this user can view.
-            $item->params->set('access-view', true);
-        } else {
-            // If no access filter is set, the layout takes some responsibility for display of limited information.
-            $groups = User::getAuthorisedViewLevels();
+        // Compute view access permissions. No access filter is set here, so
+        // the layout takes some responsibility for display of limited information.
+        $groups = User::getAuthorisedViewLevels();
 
-            if ($item->catid == 0 || $item->category_access === null) {
-                $item->params->set('access-view', in_array($item->access, $groups));
-            } else {
-                $item->params->set(
-                    'access-view',
-                    in_array($item->access, $groups) && in_array($item->category_access, $groups),
-                );
-            }
+        if ($item->catid == 0 || $item->category_access === null) {
+            $item->params->set('access-view', in_array($item->access, $groups));
+        } else {
+            $item->params->set(
+                'access-view',
+                in_array($item->access, $groups) && in_array($item->category_access, $groups),
+            );
         }
 
         // Add router helpers.
@@ -234,7 +229,7 @@ class Articles extends SiteController
 
             // Build the menu route segments for comparison so we can skip
             // category entries already covered by the menu trail
-            $menuSegments = $menu ? array_map('strtolower', explode('/', $menu->route)) : [];
+            $menuSegments = array_map('strtolower', explode('/', $menu->route));
 
             while (
                 $category
@@ -278,13 +273,13 @@ class Articles extends SiteController
 
         if ($item->metadesc) {
             Document::setDescription($item->metadesc);
-        } elseif (!$item->metadesc && $params->get('menu-meta_description')) {
+        } elseif ($params->get('menu-meta_description')) {
             Document::setDescription($params->get('menu-meta_description'));
         }
 
         if ($item->metakey) {
             Document::setMetaData('keywords', $item->metakey);
-        } elseif (!$item->metakey && $params->get('menu-meta_keywords')) {
+        } elseif ($params->get('menu-meta_keywords')) {
             Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
@@ -724,9 +719,7 @@ class Articles extends SiteController
         $query = Article::allByFilters($filters);
 
         // Filter by frontpage.
-        if ($filters['frontpage']) {
-            $query->join('#__content_frontpage AS fp', 'fp.content_id', 'a.id', 'inner');
-        }
+        $query->join('#__content_frontpage AS fp', 'fp.content_id', 'a.id', 'inner');
 
         // Filter by categories
         //
@@ -1196,17 +1189,8 @@ class Articles extends SiteController
         $numIntro   = (int) $params->def('num_intro_articles', 4);
         $numLinks   = (int) $params->def('num_links', 4);
 
+        // A category lists more than the front page, from no featured categories
         $query = Article::allByFilters($filters);
-
-        // Filter by frontpage.
-        if ($filters['frontpage']) {
-            $query->join('#__content_frontpage AS fp', 'fp.content_id', 'a.id', 'inner');
-        }
-
-        // Filter by categories
-        if (is_array($featuredCategories = $filters['frontpage.categories'])) {
-            $query->whereIn('a.catid', $featuredCategories);
-        }
 
         $articleOrderby   = $params->get('orderby_sec', 'rdate');
         $articleOrderDate = $params->get('order_date');
@@ -1401,13 +1385,13 @@ class Articles extends SiteController
 
         if ($category->metadesc) {
             Document::setDescription($category->metadesc);
-        } elseif (!$category->metadesc && $params->get('menu-meta_description')) {
+        } elseif ($params->get('menu-meta_description')) {
             Document::setDescription($params->get('menu-meta_description'));
         }
 
         if ($category->metakey) {
             Document::setMetaData('keywords', $category->metakey);
-        } elseif (!$category->metakey && $params->get('menu-meta_keywords')) {
+        } elseif ($params->get('menu-meta_keywords')) {
             Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 

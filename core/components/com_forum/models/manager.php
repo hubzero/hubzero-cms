@@ -211,7 +211,7 @@ class Manager extends Obj
         $model = Post::all();
 
         if ($filters['scope']) {
-            if (is_array($filters['scope']) && !empty($filters['scope'])) {
+            if (is_array($filters['scope'])) {
                 $model->whereIn('scope', $filters['scope']);
             } else {
                 $model->whereEquals('scope', $filters['scope']);

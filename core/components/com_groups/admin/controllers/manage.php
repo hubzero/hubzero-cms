@@ -633,12 +633,9 @@ class Manage extends AdminController
         } elseif (count($gitLabGroup) > 1) {  // If search returns more than one match, return with error.
             Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE') . $groupName);
             return;
-        } elseif (count($gitLabGroup) == 1) {
-            // Grab first element of array
-            $gitLabGroup = $gitLabGroup[0];
         } else {
-            Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_UNKNOWN_ERROR'));
-            return;
+            // Exactly one: grab first element of array
+            $gitLabGroup = $gitLabGroup[0];
         }
 
         //Search for project in Gitlab
@@ -659,7 +656,7 @@ class Manage extends AdminController
                 'snippets_enabled'       => true,
             ]);
             // Possible error check here
-        } elseif ($gitLabProject) {
+        } else {
             // search result must match hub group name to gitlab project name exactly or create new gitlab project
             foreach ($gitLabProject as $glproj) {
                 if ($glproj['name'] == $projectName) {
@@ -682,9 +679,6 @@ class Manage extends AdminController
                 ]);
                 // Possible error checking here
             }
-        } else {
-            Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_PROJECTS_UNKNOWN_ERROR'));
-            return;
         }
 
         // path to group folder

@@ -210,9 +210,7 @@ class Repositories extends AdminController
             $success++;
         }
 
-        if ($success) {
-            Notify::success(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ITEMS_REMOVED', $success));
-        }
+        Notify::success(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ITEMS_REMOVED', $success));
 
         $this->cancelTask();
     }

@@ -746,10 +746,6 @@ class Questions extends SiteController
 
         // If offering a reward, do some checks
         if ($fields['reward']) {
-            // Is it an actual number?
-            if (!is_numeric($fields['reward'])) {
-                App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
-            }
             // Are they offering more than they can afford?
             if ($fields['reward'] > (int) ($fields['funds'] ?? 0)) {
                 App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
@@ -975,7 +971,7 @@ class Questions extends SiteController
 
         // Incoming
         $id = Request::getInt('qid', 0);
-        $ip = (!User::isGuest()) ? Request::ip() : '';
+        $ip = Request::ip();
 
         $reward = 0;
         if ($this->config->get('banking')) {
@@ -1004,7 +1000,8 @@ class Questions extends SiteController
             App::abort(500, $question->getError());
         }
 
-        if ($reward && $this->config->get('banking')) {
+        // Only a hub with banking holds a reward
+        if ($reward) {
             /*
             // Get all the answers for this question
             $responses = $question->responses()->rows();

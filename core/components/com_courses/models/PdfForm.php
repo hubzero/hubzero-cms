@@ -224,7 +224,7 @@ class PdfForm
         $versions = [];
         $dirs     = is_dir($base) ? scandir($base) : [];
         foreach ($dirs as $dir) {
-            if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..') {
+            if (is_numeric($dir) && is_dir($base . DS . $dir)) {
                 $versions[] = $dir;
             }
         }
@@ -375,12 +375,7 @@ class PdfForm
                     $crop[$this->pages]['y'],
                 );
                 $im->borderImage('white', 15, 15);
-                // paintTransparentImage() was deprecated at some point in favor of transparentPaintImage()
-                if (method_exists($im, 'transparentPaintImage')) {
-                    $im->transparentPaintImage($im->getImagePixelColor(0, 0), 0.0, 0, false);
-                } else {
-                    $im->paintTransparentImage($im->getImagePixelColor(0, 0), 0.0, 0);
-                }
+                $im->transparentPaintImage($im->getImagePixelColor(0, 0), 0.0, 0, false);
                 $im->writeImage($path . DS . ($this->pages + 1) . '.png');
             }
         } catch (ImagickException $ex) {
@@ -701,7 +696,7 @@ class PdfForm
             $versions = [];
             $dirs     = scandir($base);
             foreach ($dirs as $dir) {
-                if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..') {
+                if (is_numeric($dir) && is_dir($base . DS . $dir)) {
                     $versions[] = $dir;
                 }
             }

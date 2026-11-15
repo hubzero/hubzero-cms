@@ -89,9 +89,7 @@ class Orders
             $where[] = "sku.`sId` = " . intval($filters['sId']);
         }
 
-        if (count($where)) {
-            $sql .= " WHERE " . implode(" AND ", $where) . " ";
-        }
+        $sql .= " WHERE " . implode(" AND ", $where) . " ";
 
         $sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 

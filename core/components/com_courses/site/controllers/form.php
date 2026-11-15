@@ -408,7 +408,7 @@ class Form extends SiteController
         switch ($dep->getState()) {
             case 'pending':
                 App::abort(422, Lang::txt('COM_COURSES_DEPLOYMENT_UNAVAILABLE'));
-                break;
+                // no break: abort() does not return
 
             case 'expired':
                 $attempt = Request::getInt('attempt', 1);

@@ -236,10 +236,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                                 <span title="<?php echo Lang::txt('JON'); ?>">
                                     <?php echo Html::asset('icon', 'ok-sign'); ?>
                                 </span>
-                            <?php elseif (
-                                !$contentlang->published
-                                && array_key_exists($contentlang->lang_code, $this->homepages)
-) : ?>
+                            <?php elseif (array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
                                 <span title="<?php echo Lang::txt('WARNING'); ?>">
                                     <?php echo Html::asset('icon', 'warning-sign'); ?>
                                 </span>

@@ -127,7 +127,7 @@ class Status extends AdminController
             $d = gmdate('Y-m-d', strtotime("-$i day"));
             $q30[] = isset($qdmap[$d]) ? $qdmap[$d] : 0;
         }
-        $qPeak30d = $q30 ? max($q30) : 0;
+        $qPeak30d = max($q30);
 
         // --- Postfix outbound volume (all senders, from the log collector) ---
         // Buckets are keyed in UTC (see PostfixCollector); look them up the same way.

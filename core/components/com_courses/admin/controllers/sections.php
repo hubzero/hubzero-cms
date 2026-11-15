@@ -483,45 +483,43 @@ class Sections extends AdminController
                 $badgesHandler  = new \Hubzero\Badges\Wallet($providerNameUpper, $request_type);
                 $badgesProvider = $badgesHandler->getProvider();
 
-                if (is_object($badgesProvider)) {
-                    $credentials = new stdClass();
-                    $providerName = $badgeObj->get('provider_name');
-                    $credentials->client_id = $cconfig->get($providerName . '_consumer_key', 0);
-                    $credentials->client_secret = $cconfig->get($providerName . '_consumer_secret', 0);
-                    $credentials->username = $cconfig->get($providerName . '_username', 0);
-                    $credentials->password = $cconfig->get($providerName . '_password', 0);
-                    $credentials->issuerId = $cconfig->get($providerName . '_issuer_id', 0);
-                    $badgesProvider->setCredentials($credentials);
+                $credentials = new stdClass();
+                $providerName = $badgeObj->get('provider_name');
+                $credentials->client_id = $cconfig->get($providerName . '_consumer_key', 0);
+                $credentials->client_secret = $cconfig->get($providerName . '_consumer_secret', 0);
+                $credentials->username = $cconfig->get($providerName . '_username', 0);
+                $credentials->password = $cconfig->get($providerName . '_password', 0);
+                $credentials->issuerId = $cconfig->get($providerName . '_issuer_id', 0);
+                $badgesProvider->setCredentials($credentials);
 
-                    $offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
-                    $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
+                $offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
+                $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
-                    $data = [];
-                    $data['Name']          = $course->get('title');
-                    $data['Description']   = trim($course->get('title')) . ' Badge';
-                    $rootUrl = rtrim(Request::root(), '/');
-                    $badgeId = $badgeObj->get('id');
-                    $data['CriteriaUrl']   = $rootUrl . '/courses/badge/' . $badgeId . '/criteria';
-                    $data['Version']       = '1';
-                    $imgUrl = trim($badgeObj->get('img_url'), '/');
-                    $data['BadgeImageUrl'] = $rootUrl . '/' . $imgUrl;
+                $data = [];
+                $data['Name']          = $course->get('title');
+                $data['Description']   = trim($course->get('title')) . ' Badge';
+                $rootUrl = rtrim(Request::root(), '/');
+                $badgeId = $badgeObj->get('id');
+                $data['CriteriaUrl']   = $rootUrl . '/courses/badge/' . $badgeId . '/criteria';
+                $data['Version']       = '1';
+                $imgUrl = trim($badgeObj->get('img_url'), '/');
+                $data['BadgeImageUrl'] = $rootUrl . '/' . $imgUrl;
 
-                    if (!$credentials->client_id || !$credentials->client_secret) {
-                        $this->setError(Lang::txt('COM_COURSES_ERROR_BADGE_MISSING_OPTIONS'));
+                if (!$credentials->client_id || !$credentials->client_secret) {
+                    $this->setError(Lang::txt('COM_COURSES_ERROR_BADGE_MISSING_OPTIONS'));
+                } else {
+                    try {
+                        $provider_badge_id = $badgesProvider->createBadge($data);
+                    } catch (Exception $e) {
+                        $this->setError($e->getMessage());
+                    }
+
+                    if (isset($provider_badge_id) && $provider_badge_id) {
+                        // We've successfully created a badge, so save that id to the database
+                        $badgeObj->bind(['provider_badge_id' => $provider_badge_id]);
+                        $badgeObj->store();
                     } else {
-                        try {
-                            $provider_badge_id = $badgesProvider->createBadge($data);
-                        } catch (Exception $e) {
-                            $this->setError($e->getMessage());
-                        }
-
-                        if (isset($provider_badge_id) && $provider_badge_id) {
-                            // We've successfully created a badge, so save that id to the database
-                            $badgeObj->bind(['provider_badge_id' => $provider_badge_id]);
-                            $badgeObj->store();
-                        } else {
-                            $this->setError(Lang::txt('COM_COURSES_ERROR_FAILED_TO_SAVE_BADGE'));
-                        }
+                        $this->setError(Lang::txt('COM_COURSES_ERROR_FAILED_TO_SAVE_BADGE'));
                     }
                 }
             }

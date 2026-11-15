@@ -105,7 +105,7 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                             <span class="icon-file"><?php echo $docs[$doc_name]; ?></span>
                         </td>
                         <td>
-                            <?php if (is_object($course)) : ?>
+                            <?php if ($course->exists()) : ?>
                                 <?php
                                 $dataPath = $siteUrl . DS . 'courses' . DS
                                     . $course->get('cn') . DS . 'File:' . $docs[$doc_name];
@@ -146,7 +146,7 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                             <span class="icon-image"><?php echo $images[$image_name]; ?></span>
                         </td>
                         <td>
-                            <?php if (is_object($course)) : ?>
+                            <?php if ($course->exists()) : ?>
                                 <?php
                                 $dataPath = $siteUrl . DS . 'courses' . DS
                                     . $course->get('cn') . DS . 'Image:' . $images[$image_name];

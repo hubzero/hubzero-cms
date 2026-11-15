@@ -140,9 +140,7 @@ class Respondents extends AdminController
             if (!is_array($filters['event_id'])) {
                 $filters['event_id'] = [$filters['event_id']];
             }
-            if (!empty($filters['event_id'])) {
-                $query->whereIn('event_id', $filters['event_id']);
-            }
+            $query->whereIn('event_id', $filters['event_id']);
         }
 
         $rows = $query

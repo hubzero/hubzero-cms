@@ -424,12 +424,6 @@ class Mailinglists extends AdminController
         if ($this->emailBox != '') {
             // parse emails
             $emailBoxEmails = $this->parseEmails($this->emailBox);
-
-            if ($emailBoxEmails === false) {
-                $this->addEmailTask();
-
-                return;
-            }
         }
 
         // merge emails from file and box

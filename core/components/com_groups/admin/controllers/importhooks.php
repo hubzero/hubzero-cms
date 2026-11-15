@@ -79,22 +79,8 @@ class ImportHooks extends AdminController
 
         $model = Hook::all();
 
-        if ($filters['state']) {
-            if (!is_array($filters['state'])) {
-                $filters['state'] = [$filters['state']];
-            }
-            $filters['state'] = array_map('intval', $filters['state']);
-
-            $model->whereIn('state', $filters['state']);
-        }
-
-        if ($filters['type']) {
-            $model->whereEquals('type', $filters['type']);
-        }
-
-        if (isset($filters['event']) && $filters['event']) {
-            $model->whereEquals('event', $filters['event']);
-        }
+        $model->whereIn('state', $filters['state']);
+        $model->whereEquals('type', $filters['type']);
 
         $hooks = $model
             ->ordered()

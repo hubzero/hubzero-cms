@@ -74,7 +74,7 @@ class CurrentCart extends Cart
         if ($cart) {
             // If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
             if (!$user->get('guest')) {
-                if (empty($this->cart->linked) || !$this->cart->linked) {
+                if (empty($this->cart->linked)) {
                     // link carts if not linked (this should only happen when user logs in with a cart created while not
                     // logged in) if linking fails create a new cart
                     if (!$this->linkCarts()) {

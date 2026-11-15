@@ -53,7 +53,7 @@ use Hubzero\Facades\Notify;
  * @property  string                       $_jobCode             The job's code, from the request or the job
  * @property  string                       $_jobtitle            The title of the job being shown
  * @property  int                          $_jobid               The ID of the job being shown
- * @property  \Components\Jobs\Tables\Job  $_job                 The job being saved, kept to redisplay the form
+ * @property  \Components\Jobs\Tables\Job|null  $_job                 The job being saved, kept to redisplay the form
  * @property  string                       $_title               The page title, set by buildTitle()
  * @property  string                       $_subtitle            The page subtitle, set by a task
  * @property  string                       $_msg                 A message for the user, set by a task
@@ -786,9 +786,7 @@ class Jobs extends SiteController
             $subscription->units          = $autoapprove && !$total ? $units : 0;
             $subscription->pendingunits   = $autoapprove && !$total ? 0 : $units;
             $subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-            $subscription->pendingpayment = $credit
-                ? $subscription->pendingpayment < $credit
-                : $subscription->pendingpayment;
+            // Credit toward an upgrade is not worked out yet, so none is taken off
             $subscription->pendingpayment = $subscription->pendingpayment < 0 ? 0 : $subscription->pendingpayment;
             $subscription->expires        = $newexprire;
         }
@@ -1280,7 +1278,7 @@ class Jobs extends SiteController
         if (User::isGuest() && $job->status != 1) {
             // Not authorized
             $error  = Lang::txt('COM_JOBS_ERROR_NOT_AUTHORIZED_JOB_VIEW');
-            $error .= User::isGuest() ? ' ' . Lang::txt('COM_JOBS_WARNING_LOGIN_REQUIRED') : '';
+            $error .= ' ' . Lang::txt('COM_JOBS_WARNING_LOGIN_REQUIRED');
             $this->setError($error);
 
             // Output HTML
@@ -2061,7 +2059,7 @@ class Jobs extends SiteController
             if ($zip->open(PATH_APP . $base_path . DS . $zipname, ZipArchive::OVERWRITE) === true) {
                 foreach ($files as $avalue => $alabel) {
                     $apath = Event::trigger('members.build_path', [$avalue]);
-                    $path  = is_array($apath) ? $apath[0] : '';
+                    $path  = $apath[0] ?? '';
                     $file = $path ? PATH_APP . $path . DS . $alabel : '';
 
                     if (!is_file($file)) {

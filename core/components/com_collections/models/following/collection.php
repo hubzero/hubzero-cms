@@ -26,13 +26,6 @@ class Collection extends Base
     private $obj = null;
 
     /**
-     * File path
-     *
-     * @var string|null
-     */
-    private $image = null;
-
-    /**
      * URL
      *
      * @var string|null
@@ -122,11 +115,11 @@ class Collection extends Base
     /**
      * Get an image path
      *
-     * @return  string
+     * @return  string|null  None for this kind of item
      */
     public function image()
     {
-        return $this->image;
+        return null;
     }
 
     /**

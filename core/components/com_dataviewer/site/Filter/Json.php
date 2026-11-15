@@ -752,7 +752,7 @@ class Json
             $url = parse_url($link);
             if (!$label) {
                 $pi = pathinfo($path);
-                $label = isset($pi['filename']) ? $pi['filename'] : (isset($url['host']) ? $url['host'] : false);
+                $label = $pi['filename'];
                 if (isset($pi['extension'])) {
                     $label .= isset($dd['cols'][$key]['ext']) ? '.' . $pi['extension'] : '';
                 }

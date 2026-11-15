@@ -41,17 +41,18 @@ class Auth
             return;
         }
 
-        if ($usersAllowed !== false && $usersAllowed == 'registered' && !User::isGuest()) {
+        // Guests were sent to log in above
+        if ($usersAllowed !== false && $usersAllowed == 'registered') {
             return true;
-        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !User::isGuest()) {
+        } elseif (isset($usersAllowed) && is_array($usersAllowed)) {
             if (in_array(User::get('username'), $usersAllowed)) {
                 return true;
             }
         }
 
-        if ($groupsAllowed !== false && is_array($groupsAllowed) && !User::isGuest()) {
+        if ($groupsAllowed !== false && is_array($groupsAllowed)) {
             $groups = \Hubzero\User\Helper::getGroups(User::get('id'));
-            if ($groups && count($groups)) {
+            if ($groups) {
                 foreach ($groups as $g) {
                     if (in_array($g->cn, DvConfig::$dv_conf['acl']['allowed_groups'])) {
                         return true;

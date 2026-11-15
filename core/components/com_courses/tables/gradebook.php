@@ -391,10 +391,10 @@ class GradeBook extends Table
                     if (array_key_exists($member_id . '.unit.' . $unit_id, $existing_grades)) {
                         $key = $member_id . '.unit.' . $unit_id;
 
+                        // The weighted grade is numeric, so not null
                         $scoreNull = is_null($existing_grades[$key]['score']);
-                        $unitNull = !is_null($unit['unit_weighted']);
                         $scoreMismatch = $existing_grades[$key]['score'] != $unit['unit_weighted'];
-                        if (($scoreNull && $unitNull) || $scoreMismatch) {
+                        if ($scoreNull || $scoreMismatch) {
                             $updates[] = "UPDATE `#__courses_grade_book` "
                                 . "SET `score` = '{$unit['unit_weighted']}' "
                                 . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
@@ -421,10 +421,10 @@ class GradeBook extends Table
                 if (array_key_exists($member_id . '.course.' . $course_id, $existing_grades)) {
                     $key = $member_id . '.course.' . $course_id;
 
+                    // The weighted grade is numeric, so not null
                     $scoreNull = is_null($existing_grades[$key]['score']);
-                    $courseNull = !is_null($member['course_weighted']);
                     $scoreMismatch = $existing_grades[$key]['score'] != $member['course_weighted'];
-                    if (($scoreNull && $courseNull) || $scoreMismatch) {
+                    if ($scoreNull || $scoreMismatch) {
                         $updates[] = "UPDATE `#__courses_grade_book` "
                             . "SET `score` = '{$member['course_weighted']}' "
                             . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
@@ -468,7 +468,7 @@ class GradeBook extends Table
      * Clear grades for a given course/user combination
      *
      * @param      array|mixed $member_id
-     * @param      object $course
+     * @param      object|mixed $course
      * @return     bool|null
      */
     public function clearGrades($member_id, $course)

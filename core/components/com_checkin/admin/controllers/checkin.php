@@ -83,8 +83,8 @@ class Checkin extends AdminController
 
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
-            ($msg ?: null),
-            ($cls ?: null),
+            $msg,
+            $cls,
         );
     }
 

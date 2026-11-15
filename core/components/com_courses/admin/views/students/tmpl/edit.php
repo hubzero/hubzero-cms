@@ -177,7 +177,7 @@ foreach ($roles as $role) {
                         <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
                         <td><?php echo $this->escape($this->row->get('user_id')); ?></td>
                     </tr>
-                    <?php if ($profile) { ?>
+                    <?php if ($profile->get('id')) { ?>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
                             <td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>

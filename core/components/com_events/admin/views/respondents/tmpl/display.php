@@ -149,8 +149,8 @@ Toolbar::cancel();
     </table>
 
     <?php $id = Request::getArray('id', []); ?>
-    <input type="hidden" name="event" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
-    <input type="hidden" name="id[]" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
+    <input type="hidden" name="event" value="<?php echo $this->escape(implode(',', $id)); ?>" />
+    <input type="hidden" name="id[]" value="<?php echo $this->escape(implode(',', $id)); ?>" />
 
     <input type="hidden" name="task" value="" autocomplete="" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

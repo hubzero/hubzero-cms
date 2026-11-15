@@ -220,7 +220,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticParams($data)
     {
-        if (!isset($data['params']) || is_null($data['params'])) {
+        if (!isset($data['params'])) {
             $data['params'] = '';
         }
         return $data['params'];

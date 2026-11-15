@@ -82,11 +82,6 @@ class Unitv1r0 extends Base
         // Create our unit model
         $unit = Unit::getInstance($id);
 
-        // Check to make sure we have a unit object
-        if (!is_object($unit)) {
-            App::abort(500, 'Failed to instantiate a unit object');
-        }
-
         // Ensure the unit's offering belongs to the authorized course
         $offeringId = $id ? $unit->get('offering_id') : Request::getInt('offering_id', 0);
         $offering = \Components\Courses\Models\Offering::getInstance($offeringId);

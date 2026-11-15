@@ -358,6 +358,7 @@ abstract class Model extends Obj
      * Perform data validation
      *
      * @return  boolean  False if error, True on success
+     * @phpstan-impure
      */
     public function check()
     {

@@ -81,23 +81,21 @@ class Order extends ComponentController
             $verificationVar = 'custom';
         }
 
-        if ($verificationVar) {
-            // Check the GET values passed
-            $customVar = Request::getString($verificationVar, '');
+        // Check the GET values passed
+        $customVar = Request::getString($verificationVar, '');
 
-            $tId = false;
-            if (strstr($customVar, '-')) {
-                $customData = explode('-', $customVar);
-                $token = $customData[0];
-                $tId = $customData[1];
-            } else {
-                $token = $customVar;
-            }
+        $tId = false;
+        if (strstr($customVar, '-')) {
+            $customData = explode('-', $customVar);
+            $token = $customData[0];
+            $tId = $customData[1];
+        } else {
+            $token = $customVar;
+        }
 
-            // Verify token
-            if (!$token || !Cart::verifySecurityToken($token, $tId)) {
-                App::abort(500, 'Error processing your order. Failed to verify security token.');
-            }
+        // Verify token
+        if (!$token || !Cart::verifySecurityToken($token, $tId)) {
+            App::abort(500, 'Error processing your order. Failed to verify security token.');
         }
 
         // Get transaction info

@@ -115,16 +115,14 @@ class Newsletters extends SiteController
             $id = $current->get('id');
         }
 
-        if (is_object($current)) {
-            //build newsletter
-            $newsletter = $current->buildnewsletter($current, $stripTags);
-            $newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", '', $newsletter);
-        }
+        //build newsletter
+        $newsletter = $current->buildnewsletter($current, $stripTags);
+        $newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", '', $newsletter);
 
         //are we trying to output the newsletter by itself?
         if (Request::getInt('no_html', 0)) {
             $lang = Lang::getTag();
-            $title = is_object($current) ? htmlspecialchars($current->get('name', 'Newsletter')) : 'Newsletter';
+            $title = htmlspecialchars($current->get('name', 'Newsletter'));
             // Make the fixed-width email HTML fit narrow (mobile) viewports inside
             // the newsletter iframe: cap tables/images to the available width and
             // let long words/URLs wrap, so the content reflows instead of forcing
@@ -238,9 +236,7 @@ class Newsletters extends SiteController
                 . ' '
                 . $escPdf
                 . ' 8.5in*11in';
-            if (!$cmd) {
-                $cmd = $fallback;
-            }
+            $cmd = $fallback;
         }
 
         if ($cmd) {

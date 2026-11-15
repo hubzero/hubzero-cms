@@ -458,7 +458,7 @@ class Section extends Base
             }
 
             // Append to the members list
-            if (isset($this->members) && is_array($this->members)) {
+            if (isset($this->members)) {
                 $this->members[$user_id] = $model;
             }
         }

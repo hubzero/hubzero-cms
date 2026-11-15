@@ -81,7 +81,7 @@ class Newsletters extends AdminController
         }
 
         // Is the cron job turned off?
-        if (is_object($sendMailingsCronJob) && $sendMailingsCronJob->state == 0) {
+        if ($sendMailingsCronJob->state == 0) {
             return false;
         }
 

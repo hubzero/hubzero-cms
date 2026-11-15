@@ -91,7 +91,7 @@ class Unityv1r0 extends Base
         $key  = $course->config()->get('unity_key', 0);
 
         // Fail closed: without a configured key any payload could be forged
-        if (empty($key) || $key === '0') {
+        if (empty($key)) {
             App::abort(500, 'Unity key is not configured');
         }
 

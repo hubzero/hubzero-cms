@@ -360,16 +360,13 @@ class Router extends Base
             }
 
             if ($found == 0) {
-                if ($advanced) {
-                    $query = 'SELECT id FROM `#__content` WHERE catid = '
-                        . $vars['catid']
-                        . ' AND alias = '
-                        . $db->Quote($segment);
-                    $db->setQuery($query);
-                    $cid = $db->loadResult();
-                } else {
-                    $cid = $segment;
-                }
+                // Only advanced links get this far
+                $query = 'SELECT id FROM `#__content` WHERE catid = '
+                    . $vars['catid']
+                    . ' AND alias = '
+                    . $db->Quote($segment);
+                $db->setQuery($query);
+                $cid = $db->loadResult();
 
                 $vars['id'] = $cid;
 

@@ -79,10 +79,6 @@ class Cart extends ComponentController
 
                     $skus[$product_skus[0]] = $qty;
                 }
-            } else {
-                if (!is_array($skus)) {
-                    $skus = [$skus => 1];
-                }
             }
 
             // Turn off syncing to prevent redundant session update queries

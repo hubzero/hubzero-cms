@@ -142,15 +142,9 @@ if ($label == 'none') {
 
                     <?php if (count($this->citations) > 0) : ?>
                         <?php
-
-                            // Fixes the counter so it starts counting at the current
-                            // citation number instead of restarting on 1 at every page
-                            $counter = intval($this->filters['limitstart']) + 1;
-
-                        if ($counter == '') {
-                            $counter = 1;
-                        }
-
+                        // Fixes the counter so it starts counting at the current
+                        // citation number instead of restarting on 1 at every page
+                        $counter = intval($this->filters['limitstart']) + 1;
                         ?>
                         <table class="citations entries">
                             <thead>

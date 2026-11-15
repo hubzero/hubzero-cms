@@ -205,14 +205,13 @@ class Component extends AdminController
                 $url = 'index.php?option=' . $this->option . '&view=component&component='
                     . $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1';
                 App::redirect(Route::url($url, false));
-                break;
+                // no break: redirect() does not return
 
             case 'save':
             default:
                 $url = 'index.php?option=' . $this->option . '&view=close&tmpl=component&path='
                     . $model->get('component.path');
                 App::redirect(Route::url($url, false));
-                break;
         }
     }
 }

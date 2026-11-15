@@ -231,31 +231,29 @@ class Tool extends Content
         $matches = [];
 
         if (preg_match('/^([0-9]*):\/\//', $identifier, $matches)) {
-            if (isset($matches[1])) {
-                // Grab the connection id
-                $connection = $matches[1];
+            // Grab the connection id
+            $connection = $matches[1];
 
-                // Reset identifier
-                $identifier = str_replace($matches[0], '', $identifier);
-                $connection = Connection::oneOrFail($connection);
-                // The connection (and its stored credentials) may only be used
-                // through a project the current user can access
-                $conProject = new Project((int) $connection->get('project_id'));
-                if (!$conProject->get('id') || !$conProject->access('member')) {
-                    return false;
-                }
+            // Reset identifier
+            $identifier = str_replace($matches[0], '', $identifier);
+            $connection = Connection::oneOrFail($connection);
+            // The connection (and its stored credentials) may only be used
+            // through a project the current user can access
+            $conProject = new Project((int) $connection->get('project_id'));
+            if (!$conProject->get('id') || !$conProject->access('member')) {
+                return false;
+            }
 
-                // Create file objects
-                $conFile = Entity::fromPath($identifier, $connection->adapter());
-                /*
-                if (!$conFile->isLocal())
-                {
-                    return $conFile;
-                }
-                */
-                // It it doesn't have to be local (iData storage): https://mygeohub.org/support/ticket/1536#c9499
+            // Create file objects
+            $conFile = Entity::fromPath($identifier, $connection->adapter());
+            /*
+            if (!$conFile->isLocal())
+            {
                 return $conFile;
             }
+            */
+            // It it doesn't have to be local (iData storage): https://mygeohub.org/support/ticket/1536#c9499
+            return $conFile;
         }
         return false;
     }
@@ -297,7 +295,7 @@ class Tool extends Content
     {
         $path = self::getToolDirectory() . $asset->get('path') . '/';
         $files = [];
-        if ($path && is_dir($path)) {
+        if (is_dir($path)) {
             $files = array_diff(scandir($path), ['..', '.', '.DS_Store']);
         }
         return $files;

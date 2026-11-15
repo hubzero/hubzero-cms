@@ -217,8 +217,7 @@ $redeemedSelected = function ($value) use ($view) {
                 <?php if ($row->get('redeemed')) { ?>
                     <td>
                         <?php
-                            $hasRedeemed = ($row->get('redeemed')
-                                && $row->get('redeemed') != '0000-00-00 00:00:00');
+                            $hasRedeemed = $row->get('redeemed') != '0000-00-00 00:00:00';
                             $stateClass = ($hasRedeemed || $row->get('redeemed_by'))
                                 ? 'yes'
                                 : 'no';

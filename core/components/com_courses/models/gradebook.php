@@ -146,9 +146,10 @@ class GradeBook extends Base
         $stats = [];
         foreach ($grades as $asset_id => $grade) {
             $stats[$asset_id]['responses'] = count($grade);
-            $stats[$asset_id]['average']   = (count($grade) > 0) ? round(array_sum($grade) / count($grade), 2) : null;
-            $stats[$asset_id]['min']       = (count($grade) > 0) ? round(min($grade)) : null;
-            $stats[$asset_id]['max']       = (count($grade) > 0) ? round(max($grade)) : null;
+            // Only assets with grades are listed
+            $stats[$asset_id]['average']   = round(array_sum($grade) / count($grade), 2);
+            $stats[$asset_id]['min']       = round(min($grade));
+            $stats[$asset_id]['max']       = round(max($grade));
         }
 
         return $stats;
@@ -340,11 +341,11 @@ class GradeBook extends Base
         }
 
         // Get the course id
-        if (!is_null($this->course) && is_object($this->course)) {
+        if (is_object($this->course)) {
             // Get our course model as well (to retrieve grade policy)
             $course = $this->course;
             $course_id = $this->course->get('id');
-        } elseif (!is_null($asset_id) && is_numeric($asset_id)) {
+        } elseif (is_numeric($asset_id)) {
             $asset = new Tables\Asset(App::get('db'));
             $asset->load($asset_id);
             $course_id = $asset->course_id;

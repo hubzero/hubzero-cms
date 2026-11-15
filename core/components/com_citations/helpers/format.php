@@ -815,7 +815,7 @@ class Format
                     $cls = ($tag->admin) ? 'admin' : '';
 
                     //display tag if not admin tag or if admin tag and user is administrator
-                    if (!$tag->admin || ($tag->admin && $isAdmin)) {
+                    if (!$tag->admin || $isAdmin) {
                         $html .= '<li class="'
                             . $cls
                             . '"><a class="tag'
@@ -925,7 +925,7 @@ class Format
             $a = [];
             foreach ($auths as $auth) {
                 preg_match('/{{(.*?)}}/s', $auth, $matches);
-                if (isset($matches[0]) && $matches[0] != '') {
+                if (isset($matches[0])) {
                     $matches[0] = preg_replace('/{{(.*?)}}/s', '\\1', $matches[0]);
                     $aid = 0;
                     if (is_numeric($matches[0])) {

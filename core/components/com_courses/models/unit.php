@@ -217,7 +217,7 @@ class Unit extends Base
             $filters['section_id'] = (int) $this->get('section_id');
         }
 
-        if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Traversable)) {
+        if (!isset($this->assetgroups)) {
             $tbl = new Tables\AssetGroup($this->db);
             if (($results = $tbl->find(['w' => $filters]))) {
                 $list = [];

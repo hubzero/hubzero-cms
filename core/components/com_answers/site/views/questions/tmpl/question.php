@@ -507,11 +507,8 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             >
                                 <p class="comment-member-photo">
                                     <span class="comment-anchor"></span>
-                                    <?php
-                                    $anon = (!User::isGuest() ? 0 : 1);
-                                    ?>
                                     <img
-                                        src="<?php echo User::picture($anon); ?>"
+                                        src="<?php echo User::picture(0); ?>"
                                         alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>"
                                     />
                                 </p>
@@ -710,9 +707,9 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                 </div>
                 <div class="aside">
                     <?php
+                    // Within the block for a question that is not reported
                     $showAnswerBtn = $this->question->isOpen()
-                        && $this->task != 'answer'
-                        && !$this->question->isReported();
+                        && $this->task != 'answer';
                     if ($showAnswerBtn) {
                         $route = Route::url(
                             $this->question->link('answer'),

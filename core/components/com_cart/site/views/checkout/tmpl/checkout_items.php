@@ -116,24 +116,22 @@ if (!empty($this->transactionItems)) {
 
     // Display shipping discount
     if (!empty($this->perks['shipping']) && !empty($this->tiShippingDiscount) && $this->tiShippingDiscount > 0) {
-        if ($this->tiShippingDiscount) {
-            //print_r($this->perks); die;
-            echo '<tr class="cartDiscount">';
+        //print_r($this->perks); die;
+        echo '<tr class="cartDiscount">';
 
-            echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-            echo $this->escape($this->perks['shipping']->name);
-            echo '</td>';
+        echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
+        echo $this->escape($this->perks['shipping']->name);
+        echo '</td>';
 
-            echo '<td class="cartDiscountDiscount">';
-            echo '-$' . number_format($this->tiShippingDiscount, 2);
-            echo '</td>';
+        echo '<td class="cartDiscountDiscount">';
+        echo '-$' . number_format($this->tiShippingDiscount, 2);
+        echo '</td>';
 
-            echo '<td>';
-            echo '&nbsp;';
-            echo '</td>';
+        echo '<td>';
+        echo '&nbsp;';
+        echo '</td>';
 
-            echo '</tr>';
-        }
+        echo '</tr>';
     }
 
     echo '</table>';

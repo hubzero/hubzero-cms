@@ -229,7 +229,7 @@ class Import extends SiteController
         // Instantiate a new view
         $this->view->set('title', Lang::txt(strtoupper($this->option)) . ': '
             . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)));
-        if (!empty($citations_require_attention) && is_array($citations_require_attention)) {
+        if (!empty($citations_require_attention)) {
             $citationRequiredIds = array_map(function ($value) {
                 return $value['duplicate'];
             }, $citations_require_attention);

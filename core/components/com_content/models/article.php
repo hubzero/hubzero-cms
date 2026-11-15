@@ -212,7 +212,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticFulltext($data)
     {
-        if (!isset($data['fulltext']) || is_null($data['fulltext'])) {
+        if (!isset($data['fulltext'])) {
             $data['fulltext'] = '';
         }
 
@@ -227,7 +227,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticImages($data)
     {
-        if (!isset($data['images']) || is_null($data['images'])) {
+        if (!isset($data['images'])) {
             $data['images'] = '';
         }
 
@@ -242,7 +242,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticUrls($data)
     {
-        if (!isset($data['urls']) || is_null($data['urls'])) {
+        if (!isset($data['urls'])) {
             $data['urls'] = '';
         }
 
@@ -815,13 +815,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         // Make sure the article timestamp is beyond publish up date
         // acceptable publish_up: null or less than current date
-        if (isset($publishUp) && !is_null($publishUp) && $publishUp >= $now) {
+        if (isset($publishUp) && $publishUp >= $now) {
             return false;
         }
 
         // Make sure the article timestamp is less than publish down date
         // acceptable publish_down: null or greater than current date
-        if (isset($publishDown) && !is_null($publishDown) && $publishDown <= $now) {
+        if (isset($publishDown) && $publishDown <= $now) {
             return false;
         }
 
@@ -968,7 +968,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Filter by published state.
-        if (isset($filters['published']) && $publishedWhere) {
+        if (isset($filters['published'])) {
             if (!is_array($filters['published'])) {
                 $filters['published'] = [$filters['published']];
             }
@@ -1024,10 +1024,6 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             }
 
             if (is_numeric($categoryId)) {
-                if (!isset($filters['category_id.include'])) {
-                    $filters['category_id.include'] = true;
-                }
-
                 $type = $filters['category_id.include'] ? '=' : '<>';
 
                 if (!isset($filters['subcategories'])) {

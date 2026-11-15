@@ -704,7 +704,7 @@ class Offering extends Base
                 $mdl = '\\Components\\Courses\\Models\\Member';
                 if (isset($filters['student']) && $filters['student']) {
                     $mdl = '\\Components\\Courses\\Models\\Student';
-                } elseif (isset($filters['student']) && !$filters['student']) {
+                } elseif (isset($filters['student'])) {
                     $mdl = '\\Components\\Courses\\Models\\Manager';
                 }
 
@@ -893,19 +893,18 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->announcements) || !is_array($this->announcements)) {
-            $tbl = new Tables\Announcement($this->db);
+        // Not cached: callers ask with different filters
+        $tbl = new Tables\Announcement($this->db);
 
-            $results = [];
+        $results = [];
 
-            if (($data = $tbl->find($filters))) {
-                foreach ($data as $key => $result) {
-                    $results[] = new Announcement($result);
-                }
+        if (($data = $tbl->find($filters))) {
+            foreach ($data as $key => $result) {
+                $results[] = new Announcement($result);
             }
-
-            $this->announcements = new Iterator($results);
         }
+
+        $this->announcements = new Iterator($results);
 
         return $this->announcements;
     }
@@ -1232,27 +1231,25 @@ class Offering extends Base
             }
 
             // Copy assets (grab the assets from the original offering)
-            if ($oldOfferingAssets) {
-                foreach ($oldOfferingAssets as $asset) {
-                    $oldAssetId = $asset->get('id');
-                    if (!$asset->copy()) {
-                        $this->setError($asset->getError());
-                    } else {
-                        // Copy asset associations
-                        $tbl = new Tables\AssetAssociation($this->db);
-                        $findParams = [
-                            'scope_id' => $o_id,
-                            'scope' => 'offering',
-                            'asset_id' => $oldAssetId,
-                        ];
-                        foreach ($tbl->find($findParams) as $aa) {
-                            $tbl->bind($aa);
-                            $tbl->id = 0;
-                            $tbl->scope_id = $this->get('id');
-                            $tbl->asset_id = $asset->get('id');
-                            if (!$tbl->store()) {
-                                $this->setError($tbl->getError());
-                            }
+            foreach ($oldOfferingAssets as $asset) {
+                $oldAssetId = $asset->get('id');
+                if (!$asset->copy()) {
+                    $this->setError($asset->getError());
+                } else {
+                    // Copy asset associations
+                    $tbl = new Tables\AssetAssociation($this->db);
+                    $findParams = [
+                        'scope_id' => $o_id,
+                        'scope' => 'offering',
+                        'asset_id' => $oldAssetId,
+                    ];
+                    foreach ($tbl->find($findParams) as $aa) {
+                        $tbl->bind($aa);
+                        $tbl->id = 0;
+                        $tbl->scope_id = $this->get('id');
+                        $tbl->asset_id = $asset->get('id');
+                        if (!$tbl->store()) {
+                            $this->setError($tbl->getError());
                         }
                     }
                 }

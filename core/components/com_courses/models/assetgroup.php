@@ -429,29 +429,27 @@ class Assetgroup extends Base
 
         if ($deep) {
             // Copy assets (grab the assets from the original asset group)
-            if ($oldAssetGroupAssets) {
-                foreach ($oldAssetGroupAssets as $asset) {
-                    $oldAssetId = $asset->get('id');
+            foreach ($oldAssetGroupAssets as $asset) {
+                $oldAssetId = $asset->get('id');
 
-                    if (!$asset->copy()) {
-                        $this->setError($asset->getError());
-                    } else {
-                        // Copy asset associations
-                        $tbl = new Tables\AssetAssociation($this->db);
-                        foreach (
-                            $tbl->find([
-                                'scope_id' => $oldAssetGroupId,
-                                'scope' => 'asset_group',
-                                'asset_id' => $oldAssetId,
-                            ]) as $aa
-                        ) {
-                            $tbl->bind($aa);
-                            $tbl->id = 0;
-                            $tbl->scope_id = $this->get('id');
-                            $tbl->asset_id = $asset->get('id');
-                            if (!$tbl->store()) {
-                                $this->setError($tbl->getError());
-                            }
+                if (!$asset->copy()) {
+                    $this->setError($asset->getError());
+                } else {
+                    // Copy asset associations
+                    $tbl = new Tables\AssetAssociation($this->db);
+                    foreach (
+                        $tbl->find([
+                            'scope_id' => $oldAssetGroupId,
+                            'scope' => 'asset_group',
+                            'asset_id' => $oldAssetId,
+                        ]) as $aa
+                    ) {
+                        $tbl->bind($aa);
+                        $tbl->id = 0;
+                        $tbl->scope_id = $this->get('id');
+                        $tbl->asset_id = $asset->get('id');
+                        if (!$tbl->store()) {
+                            $this->setError($tbl->getError());
                         }
                     }
                 }
@@ -509,33 +507,31 @@ class Assetgroup extends Base
         // Need to work on the parents condition
         // DEEP COPY
         if ($deep) {
-            if ($startingAssetGroupAssets) {
-                foreach ($startingAssetGroupAssets as $asset) {
-                    $startingAssetId = $asset->get('id');
+            foreach ($startingAssetGroupAssets as $asset) {
+                $startingAssetId = $asset->get('id');
 
-                    // Duplicate the asset, returning 'true' will copy asset association
-                    if (!$asset->duplicate($courseId)) {
-                        $this->setError($asset->getError());
-                    } else {
-                        // With the new duplicated asset, find the row with the previous
-                        // scope_id, scope, and asset_id to duplicate
-                        $tbl = new Tables\AssetAssociation($this->db);
-                        $findParams = [
-                            'scope_id' => $startingAssetGroupId,
-                            'scope' => 'asset_group',
-                            'asset_id' => $startingAssetId,
-                        ];
-                        foreach (
-                            $tbl->find($findParams) as $aa
-                        ) {
-                            // Take the selected row, adjust scope_id and asset_id
-                            $tbl->bind($aa);
-                            $tbl->id = 0;
-                            $tbl->scope_id = $this->get('id');
-                            $tbl->asset_id = $asset->get('id');
-                            if (!$tbl->store()) {
-                                $this->setError($tbl->getError());
-                            }
+                // Duplicate the asset, returning 'true' will copy asset association
+                if (!$asset->duplicate($courseId)) {
+                    $this->setError($asset->getError());
+                } else {
+                    // With the new duplicated asset, find the row with the previous
+                    // scope_id, scope, and asset_id to duplicate
+                    $tbl = new Tables\AssetAssociation($this->db);
+                    $findParams = [
+                        'scope_id' => $startingAssetGroupId,
+                        'scope' => 'asset_group',
+                        'asset_id' => $startingAssetId,
+                    ];
+                    foreach (
+                        $tbl->find($findParams) as $aa
+                    ) {
+                        // Take the selected row, adjust scope_id and asset_id
+                        $tbl->bind($aa);
+                        $tbl->id = 0;
+                        $tbl->scope_id = $this->get('id');
+                        $tbl->asset_id = $asset->get('id');
+                        if (!$tbl->store()) {
+                            $this->setError($tbl->getError());
                         }
                     }
                 }

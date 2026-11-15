@@ -267,7 +267,7 @@ $stateSelected = function ($value) use ($view) {
                                     <td>
                                         <span id="img-name">
                                             <?php
-                                                $picName = ($pic && $pic != 'blank.png')
+                                                $picName = ($pic != 'blank.png')
                                                     ? $pic
                                                     : Lang::txt('COM_COURSES_NONE');
                                                 echo $picName;

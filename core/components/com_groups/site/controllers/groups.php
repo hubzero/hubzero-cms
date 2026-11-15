@@ -33,9 +33,9 @@ use Hubzero\Facades\Session;
 /**
  * Groups controller class
  *
- * @property  \Hubzero\User\Group  $group  The unsaved group saveTask() hands back to editTask()
- * @property  string               $tags   The unsaved tags saveTask() hands back to editTask()
- * @property  int                  $lid    The upload folder id saveTask() hands back to editTask()
+ * @property  \Hubzero\User\Group|null  $group  The unsaved group saveTask() hands back to editTask()
+ * @property  string|null               $tags   The unsaved tags saveTask() hands back to editTask()
+ * @property  int|null                  $lid    The upload folder id saveTask() hands back to editTask()
  */
 class Groups extends Base
 {
@@ -239,18 +239,15 @@ class Groups extends Base
             return;
         }
 
-        // A group may set its own site template. Guarded on is_object rather
-        // than relying on the not-found check above still sitting in front of
-        // it: Group::getInstance() returns false for an unknown cn, and this
-        // block has been moved above that check before now, which turns every
-        // hit on a missing group into a warning in the error log.
-        if (is_object($this->view->get('group'))) {
-            $gparams       = new Registry($this->view->get('group')->get('params'));
-            $page_template = $gparams->get('page_template');
+        // A group may set its own site template. This must stay below the
+        // not-found check above: Group::getInstance() returns false for an
+        // unknown cn, and this block has been moved above that check before
+        // now, which turned every hit on a missing group into a warning.
+        $gparams       = new Registry($this->view->get('group')->get('params'));
+        $page_template = $gparams->get('page_template');
 
-            if ($page_template) {
-                App::get('template')->template = $page_template;
-            }
+        if ($page_template) {
+            App::get('template')->template = $page_template;
         }
 
         // Ensure it's an allowable group type to display
@@ -496,7 +493,7 @@ class Groups extends Base
 
         // Create dir for uploads
         $this->view->set('lid', time() . rand(0, 1000));
-        if ($this->lid != '') {
+        if ($this->lid) {
             $this->view->set('lid', $this->lid);
         } elseif ($this->view->get('group')->get('gidNumber')) {
             $this->view->set('lid', $this->view->get('group')->get('gidNumber'));
@@ -1418,29 +1415,20 @@ class Groups extends Base
             exit();
         }
 
-        // Limit number of returned rows because PHP runs out of memory and the hub fails with large numbers
-        if ($filters['cn']) {
-            $query = "SELECT u.username, u.name
+        // Limit number of returned rows because PHP runs out of memory and the hub fails with large numbers.
+        // A group was required above, so every account is never listed.
+        $query = "SELECT u.username, u.name
 						FROM `#__users` AS u, `#__xgroups_members` AS m, `#__xgroups` AS g
 						WHERE g.cn=" . $this->database->quote($filters['cn'])
-                . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND "
+            . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND "
             . "u.block = '0'
 						ORDER BY u.name ASC LIMIT 10000";
-        } else {
-            $query = "SELECT a.username, a.name
-						FROM `#__users` AS a
-						WHERE a.block = '0'
-						ORDER BY a.name LIMIT 10000";
-        }
 
         $this->database->setQuery($query);
         $rows = $this->database->loadObjectList();
 
         // Output search results in JSON format
         $json = [];
-        if ($filters['cn'] == '') {
-            $json[] = '{"username":"","name":"No User"}';
-        }
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 $json[] = json_encode([

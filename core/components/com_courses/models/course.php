@@ -603,7 +603,7 @@ class Course extends Base
         ) {
             $this->page = null;
 
-            if (isset($this->pages) && is_array($this->pages) && isset($this->pages[$url])) {
+            if (isset($this->pages[$url])) {
                 $this->page = $this->pages[$url];
             }
 

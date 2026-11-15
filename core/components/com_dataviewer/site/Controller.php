@@ -150,21 +150,22 @@ class Controller
             return;
         }
 
-        if (!User::isGuest() && isset($dd['acl']['registered'])) {
+        // Guests were sent to log in above
+        if (isset($dd['acl']['registered'])) {
             return true;
         }
 
-        if ($usersAllowed !== false && $usersAllowed == 'registered' && !User::isGuest()) {
+        if ($usersAllowed !== false && $usersAllowed == 'registered') {
             return true;
-        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !User::isGuest()) {
+        } elseif (isset($usersAllowed) && is_array($usersAllowed)) {
             if (in_array(User::get('username'), DvConfig::$dv_conf['acl']['allowed_users'])) {
                 return true;
             }
         }
 
-        if ($groupsAllowed !== false && is_array($groupsAllowed) && !User::isGuest()) {
+        if ($groupsAllowed !== false && is_array($groupsAllowed)) {
             $groups = \Hubzero\User\Helper::getGroups(User::get('id'));
-            if ($groups && count($groups)) {
+            if ($groups) {
                 foreach ($groups as $g) {
                     if (in_array($g->cn, DvConfig::$dv_conf['acl']['allowed_groups'])) {
                         return true;
