@@ -245,7 +245,7 @@ class Memcache extends None
 
             $namearr = explode('-', $key->name);
 
-            if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache') {
+            if ($namearr[0] == $hash && $namearr[1] == 'cache') {
                 $group = $namearr[2];
 
                 if (!isset($data[$group])) {

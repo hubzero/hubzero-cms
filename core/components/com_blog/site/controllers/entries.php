@@ -897,7 +897,7 @@ class Entries extends SiteController
 
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
-                $asset .= ($assetId) ? '.' . $assetId : '';
+                $asset .= '.' . $assetId;
 
                 if ($assetType != 'component') {
                     $at = '.' . $assetType;

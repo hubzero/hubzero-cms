@@ -550,7 +550,7 @@ class Categories extends SiteController
             $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'component') ? '.' . $assetType : '';
-                $asset .= ($assetId) ? '.' . $assetId : '';
+                $asset .= '.' . $assetId;
             }
 
             $at = '';

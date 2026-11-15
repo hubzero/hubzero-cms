@@ -696,7 +696,7 @@ class Wishlist extends Relational
                 $asset  = 'com_wishlist';
                 if ($assetId) {
                     $asset .= ($assetType != 'component') ? '.' . $assetType : '';
-                    $asset .= ($assetId) ? '.' . $assetId : '';
+                    $asset .= '.' . $assetId;
                 }
 
                 $at = '';

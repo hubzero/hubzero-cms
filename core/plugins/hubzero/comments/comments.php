@@ -149,7 +149,7 @@ class Comments extends Plugin
             $asset  = $this->option;
             if ($assetId) {
                 $asset .= ($assetType != 'comment') ? '.' . $assetType : '';
-                $asset .= ($assetId) ? '.' . $assetId : '';
+                $asset .= '.' . $assetId;
             }
 
             // Are they an admin?

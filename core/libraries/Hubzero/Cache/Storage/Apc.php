@@ -191,7 +191,7 @@ class Apc extends None
             $name    = $key['info'];
             $namearr = explode('-', $name);
 
-            if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache') {
+            if ($namearr[0] == $hash && $namearr[1] == 'cache') {
                 $group = $namearr[2];
 
                 if (!isset($data[$group])) {

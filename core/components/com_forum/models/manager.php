@@ -330,7 +330,7 @@ class Manager extends Obj
                 $asset  = 'com_forum';
                 if ($assetId) {
                     $asset .= ($assetType != 'component') ? '.' . $assetType : '';
-                    $asset .= ($assetId) ? '.' . $assetId : '';
+                    $asset .= '.' . $assetId;
                 }
 
                 $at = '';

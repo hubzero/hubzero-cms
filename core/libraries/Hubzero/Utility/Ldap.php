@@ -871,7 +871,7 @@ class Ldap
         $gids = [];
 
         if ($sr !== false) {
-            if (ldap_count_entries($conn, $sr) !== false) {
+            if (ldap_count_entries($conn, $sr) > 0) {
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
@@ -941,7 +941,7 @@ class Ldap
         $gids = [];
 
         if ($sr !== false) {
-            if (ldap_count_entries($conn, $sr) !== false) {
+            if (ldap_count_entries($conn, $sr) > 0) {
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
@@ -998,7 +998,7 @@ class Ldap
         $uids = [];
 
         if ($sr !== false) {
-            if (ldap_count_entries($conn, $sr) !== false) {
+            if (ldap_count_entries($conn, $sr) > 0) {
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
@@ -1046,7 +1046,7 @@ class Ldap
             $sr = ldap_search($conn, "ou=users," . $hubLDAPBaseDN, "uid=$row");
 
             if ($sr !== false) {
-                if (ldap_count_entries($conn, $sr) !== false) {
+                if (ldap_count_entries($conn, $sr) > 0) {
                     $count = ldap_count_entries($conn, $sr);
                 }
             }
@@ -1070,7 +1070,7 @@ class Ldap
         $uids = [];
 
         if ($sr !== false) {
-            if (ldap_count_entries($conn, $sr) !== false) {
+            if (ldap_count_entries($conn, $sr) > 0) {
                 $entry = ldap_first_entry($conn, $sr);
 
                 while ($entry !== false) {
