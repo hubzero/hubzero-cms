@@ -730,9 +730,7 @@ class Offering extends Base
     public function membership($user_id = 0)
     {
         $filters = [];
-        if (!isset($filters['course_id'])) {
-            $filters['course_id'] = (int) $this->get('course_id');
-        }
+        $filters['course_id'] = (int) $this->get('course_id');
         /*if (!isset($filters['offering_id']))
         {
             $filters['offering_id'] = (int) $this->get('id');
@@ -743,12 +741,6 @@ class Offering extends Base
         $filters['user_id'] = (int) $user_id;
         $filters['sort'] = 'offering_id ASC, student';
         $filters['sort_Dir'] = 'ASC';
-
-        if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->db);
-
-            return $tbl->count($filters);
-        }
 
         if (!isset($this->membership[$user_id]) || !is_array($this->membership[$user_id])) {
             $tbl = new Tables\Member($this->db);
