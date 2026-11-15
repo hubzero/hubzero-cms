@@ -353,7 +353,7 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $key = false;
 
-        if ($keys && is_array($keys) && count($keys) > 0) {
+        if ($keys && is_array($keys)) {
             foreach ($keys as $k) {
                 if (isset($k->Key_name) && $k->Key_name == $primaryKeyName) {
                     $key = $k->Column_name ?? false;

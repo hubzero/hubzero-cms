@@ -460,7 +460,7 @@ class Offering extends SiteController
                 }
             } elseif ($preview == 2) { // Preview is only for first unit
                 $units = $asset->units();
-                if ($units && count($units) > 0) {
+                if ($units) {
                     foreach ($units as $unit) {
                         if ($unit->get('ordering') > 1) {
                             // Check if they're logged in

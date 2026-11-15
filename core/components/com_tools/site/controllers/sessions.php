@@ -644,7 +644,7 @@ class Sessions extends SiteController
 
         if ($this->config->get('warn_multiples', 0) && !Request::getInt('newinstance', 0)) {
             $sessions = $ms->getRecords(User::get('username'), $app->name, false);
-            if ($sessions && count($sessions) > 0) {
+            if ($sessions) {
                 $this->view->setLayout('list');
                 $this->view->set('app', $app);
                 $this->view->set('config', $this->config);

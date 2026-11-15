@@ -39,7 +39,7 @@ class Migration20141112191247ComCourses extends Base
             ->leftJoin('#__courses_units AS cu', 'cag.unit_id', 'cu.id')
             ->loadObjectList();
 
-        if ($deployments && count($deployments) > 0) {
+        if ($deployments) {
             $this->callback('progress', 'init', ['Running ' . __CLASS__ . '.php:']);
             $total = count($deployments);
             $i     = 1;

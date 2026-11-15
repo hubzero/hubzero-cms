@@ -306,7 +306,7 @@ class Publications extends SiteController
         $messages = Notify::messages($this->option);
 
         // Return first message of type
-        if ($messages && count($messages) > 0) {
+        if ($messages) {
             foreach ($messages as $message) {
                 if ($message['type'] == $type) {
                     return $message['message'];

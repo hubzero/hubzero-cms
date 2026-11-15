@@ -571,7 +571,7 @@ class Progress extends Plugin
             // Folder was already there - do a sanity check and make sure no old responses zips are lying around
             $files = Filesystem::files($tmp);
 
-            if ($files && count($files) > 0) {
+            if ($files) {
                 foreach ($files as $file) {
                     if (strstr($file, 'responses.zip') !== false) {
                         Filesystem::delete($tmp . DS . $file);

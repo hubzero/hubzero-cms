@@ -103,7 +103,7 @@ class Column extends WikiMacro
             }
 
             $atts = [];
-            if (!empty($attribs) && count($attribs) > 0) {
+            if (!empty($attribs)) {
                 foreach ($attribs as $a) {
                     $a = preg_split('/=/', $a);
                     $key = strtolower(trim($a[0]));

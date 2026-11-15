@@ -169,7 +169,7 @@ class Git extends Obj
         // Get Git status
         $out = $this->callGit('status');
 
-        if (!empty($out) && count($out) > 0 && $out[0] != '') {
+        if (!empty($out) && $out[0] != '') {
             foreach ($out as $line) {
                 $status .=  '<br />' . $line;
             }

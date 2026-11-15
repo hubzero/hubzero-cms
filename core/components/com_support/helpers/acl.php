@@ -115,7 +115,7 @@ class ACL extends Obj
         }
 
         // Check user's groups
-        if ($this->memberGroups && count($this->memberGroups) > 0) {
+        if ($this->memberGroups) {
             foreach ($this->memberGroups as $ug) {
                 foreach ($this->rawData as $line) {
                     // Get the aco permission
@@ -285,7 +285,7 @@ class ACL extends Obj
      */
     public function authorize($group = null)
     {
-        if ($group && $this->memberGroups && count($this->memberGroups) > 0) {
+        if ($group && $this->memberGroups) {
             foreach ($this->memberGroups as $ug) {
                 if ($ug->gidNumber == $group) {
                     return true;

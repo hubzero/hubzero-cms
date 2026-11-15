@@ -593,7 +593,7 @@ class Owner extends Table
             $groups[] = (object) ['groupid' => $owned_by_group, 'native' => 1];
         }
 
-        if ($groups && count($groups) > 0) {
+        if ($groups) {
             // Get arrays of project owners in groups and regardless of group membership
             $filters['select'] = 'o.userid AS uidNumber, o.groupid AS gidNumber';
             $filters['sortby'] = 'added';

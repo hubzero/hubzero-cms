@@ -316,7 +316,7 @@ class GradeBook extends Base
 
         $views = [];
 
-        if ($results && count($results) > 0) {
+        if ($results) {
             foreach ($results as $result) {
                 $views[$result->member_id][] = $result->asset_id;
             }
@@ -815,7 +815,7 @@ class GradeBook extends Base
         if ($this->course->offering()->section()->badge()->isAvailable()) {
             $members = $this->isEligibleForRecognition($member_id);
 
-            if ($members && count($members) > 0) {
+            if ($members) {
                 foreach ($members as $m) {
                     // Mark student as having earned badge
                     $badge = MemberBadge::loadByMemberId($m);

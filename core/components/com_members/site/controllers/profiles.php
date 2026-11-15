@@ -1850,7 +1850,7 @@ class Profiles extends SiteController
             'guest' => 0,
         ]);
 
-        if ($result && count($result) > 0) {
+        if ($result) {
             foreach ($result as $row) {
                 $row->idle = time() - $row->time;
 

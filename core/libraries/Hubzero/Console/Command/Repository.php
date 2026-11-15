@@ -423,7 +423,7 @@ class Repository extends Base implements CommandInterface
         }
 
         // Did we find any files?
-        if ($files && count($files) > 0) {
+        if ($files) {
             // Base standards directory
             if (!$standards = Config::get('repository_standards_dir')) {
                 $this->output

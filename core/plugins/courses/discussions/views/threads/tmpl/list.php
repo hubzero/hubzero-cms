@@ -61,7 +61,7 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
     <?php
 }
 ?>
-<?php if ($this->comments && is_array($this->comments) && count($this->comments) > 0) : ?>
+<?php if ($this->comments && is_array($this->comments)) : ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
     <?php
     {

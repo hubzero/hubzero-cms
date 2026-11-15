@@ -87,7 +87,7 @@ class Migration20140815153140ComCourses extends Base
                     ->order('finished', 'ASC')
                     ->loadObjectList('member_id');
 
-                if ($results && count($results) > 0) {
+                if ($results) {
                     foreach ($results as $result) {
                         if (isset($result->finished)) {
                             $this->db

@@ -95,7 +95,7 @@ $accessSelected = function ($value) use ($view) {
                             <?php
                             $owner  = $this->row->group_owner->get('cn');
                             $listed = false;
-                            if ($this->groups && count($this->groups) > 0) {
+                            if ($this->groups) {
                                 foreach ($this->groups as $group) {
                                     $listed = $listed || ($owner == $group->cn);
                                     ?>

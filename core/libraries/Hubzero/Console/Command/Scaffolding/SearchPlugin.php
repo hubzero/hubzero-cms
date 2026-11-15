@@ -37,7 +37,7 @@ class SearchPlugin extends Scaffolding
         // Determine our base path
         $base       = $this->arguments->getOpt('app') ? PATH_APP : PATH_CORE;
         $installDir = trim($this->arguments->getOpt('install-dir'));
-        if ($installDir && strlen($installDir) > 0) {
+        if ($installDir) {
             if (substr($installDir, 0, 1) == DS) {
                 $base = rtrim($installDir, DS);
             } else {

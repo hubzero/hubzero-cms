@@ -149,7 +149,7 @@ $this
 
                     $fields = $elements->getElements('nbtag');
 
-                    if ($fields && count($fields) > 0) {
+                    if ($fields) {
                         foreach ($fields as $field) {
                             ?>
                             <div class="input-wrap">

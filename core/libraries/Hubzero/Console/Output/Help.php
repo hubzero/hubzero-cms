@@ -72,7 +72,7 @@ class Help extends Output
         $class = new \ReflectionClass($command);
         $tasks = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        if ($tasks && count($tasks) > 0) {
+        if ($tasks) {
             $list = [];
             $max  = 0;
 

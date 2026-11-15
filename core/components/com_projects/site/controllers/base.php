@@ -123,7 +123,7 @@ class Base extends SiteController
         }
 
         // Return first message of type
-        if ($this->messages && count($this->messages) > 0) {
+        if ($this->messages) {
             foreach ($this->messages as $message) {
                 if ($message['type'] == $type) {
                     return $message['message'];

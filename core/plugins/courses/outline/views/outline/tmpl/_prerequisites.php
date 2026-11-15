@@ -54,7 +54,7 @@ endif; ?>
     <div class="prerequisites-wrap">
         <div class="title">Prerequisites:</div>
         <ul>
-            <?php if ($existing && count($existing) > 0) : ?>
+            <?php if ($existing) : ?>
                 <?php foreach ($existing as $v) : ?>
                     <li class="requisite-list-item" data-id="<?php echo $v->requisite_id; ?>">
                         <div class="requisite-item clearfix">

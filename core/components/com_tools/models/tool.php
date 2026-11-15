@@ -467,7 +467,7 @@ class Tool
                 $list = [$list];
             }
 
-            if (is_array($list) && count($list) > 0) {
+            if (is_array($list)) {
                 $first = true;
 
                 if ($property == 'version') {
