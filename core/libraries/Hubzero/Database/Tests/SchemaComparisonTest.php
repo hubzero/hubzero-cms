@@ -127,7 +127,6 @@ class SchemaComparisonTest extends AbstractDriverTestCase
         // Generate SQL
         $sql = $schema->generateTableDiffSql('cmp_test_v1', 'cmp_test_v2');
 
-        $this->assertIsArray($sql, "[$dbName]");
         $this->assertNotEmpty($sql, "[$dbName]");
 
         // SQL should contain ADD COLUMN for email
@@ -267,9 +266,6 @@ class SchemaComparisonTest extends AbstractDriverTestCase
 
         // Generate reverse SQL (v2 -> v1)
         $downSql = $schema->generateTableDiffSqlReverse('cmp_test_v1', 'cmp_test_v2');
-
-        $this->assertIsArray($upSql, "[$dbName]");
-        $this->assertIsArray($downSql, "[$dbName]");
 
         // Up should add email
         $upString = strtoupper(implode(' ', $upSql));

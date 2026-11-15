@@ -90,7 +90,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $table = $schema->introspectTable($tableName);
         $columns = $table->getColumns();
 
-        $this->assertIsArray($columns);
         $this->assertNotEmpty($columns);
 
         foreach ($columns as $column) {
@@ -157,7 +156,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $table = $schema->introspectTable($tableName);
         $names = $table->getColumnNames();
 
-        $this->assertIsArray($names);
         $this->assertContains('id', $names);
         $this->assertContains('name', $names);
         $this->assertContains('email', $names);
@@ -179,7 +177,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $table = $schema->introspectTable($tableName);
         $indexes = $table->getIndexes();
 
-        $this->assertIsArray($indexes);
 
         foreach ($indexes as $index) {
             $this->assertInstanceOf(IndexInfo::class, $index);
@@ -221,7 +218,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $table = $schema->introspectTable($tableName);
         $array = $table->toArray();
 
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('name', $array);
         $this->assertArrayHasKey('columns', $array);
         $this->assertArrayHasKey('indexes', $array);
@@ -342,7 +338,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $col = $table->getColumn('name');
         $array = $col->toArray();
 
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('name', $array);
         $this->assertArrayHasKey('type', $array);
         $this->assertArrayHasKey('nullable', $array);
@@ -401,7 +396,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         foreach ($indexes as $index) {
             $columns = $index->getColumns();
-            $this->assertIsArray($columns);
             $this->assertNotEmpty($columns);
         }
 
@@ -446,7 +440,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         if (!empty($indexes)) {
             $array = $indexes[0]->toArray();
-            $this->assertIsArray($array);
             $this->assertArrayHasKey('name', $array);
             $this->assertArrayHasKey('columns', $array);
             $this->assertArrayHasKey('primary', $array);
@@ -522,7 +515,6 @@ class TableIntrospectionTest extends AbstractDriverTestCase
 
         $array = $fk->toArray();
 
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('name', $array);
         $this->assertArrayHasKey('columns', $array);
         $this->assertArrayHasKey('foreign_table', $array);

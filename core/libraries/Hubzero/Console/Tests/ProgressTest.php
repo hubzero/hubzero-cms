@@ -268,7 +268,6 @@ class ProgressTest extends Basic
         usleep(1000);
 
         $elapsed = $progress->getElapsedTime();
-        $this->assertIsFloat($elapsed);
         $this->assertGreaterThan(0, $elapsed);
     }
 
@@ -289,7 +288,6 @@ class ProgressTest extends Basic
         usleep(10000);
 
         $rate = $progress->getRate(50);
-        $this->assertIsFloat($rate);
         $this->assertGreaterThan(0, $rate);
     }
 

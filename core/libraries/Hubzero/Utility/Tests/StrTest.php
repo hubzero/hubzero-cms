@@ -44,7 +44,6 @@ class StrTest extends Basic
         foreach ($strings as $string => $pairs) {
             $result = Str::parseAttributes($string);
 
-            $this->assertTrue(is_array($result), 'Value returned was not an array');
             $this->assertEquals($result, $pairs);
         }
     }

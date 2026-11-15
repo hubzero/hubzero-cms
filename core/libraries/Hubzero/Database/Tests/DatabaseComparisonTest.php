@@ -185,7 +185,6 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         // Generate SQL
         $sql = $schema->generateSchemaDiffSql($schema1, $schema2);
 
-        $this->assertIsArray($sql);
         $this->assertNotEmpty($sql);
 
         // Should contain CREATE TABLE for new table
@@ -733,7 +732,6 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
         $generator = new DiffSqlGenerator($driver);
         $sql = $generator->generateSchemaUp($diff);
 
-        $this->assertIsArray($sql);
         $this->assertNotEmpty($sql);
 
         // Execute the migration

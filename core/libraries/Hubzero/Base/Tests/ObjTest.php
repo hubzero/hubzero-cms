@@ -111,7 +111,6 @@ class ObjTest extends Basic
 
         $prop = $obj->getProperties();
 
-        $this->assertTrue(is_array($prop));
         $this->assertCount(4, $prop);
 
         foreach ($prop as $key => $val) {
@@ -130,6 +129,8 @@ class ObjTest extends Basic
 
         $this->assertSame(['title' => 'declared', 'added' => 'data'], $obj->getProperties());
         $this->assertArrayHasKey('cache', $obj->getProperties(false));
+        $this->assertArrayNotHasKey('count', $obj->getProperties(false));
+        $this->assertSame(0, $obj->counted());
     }
 
     /**

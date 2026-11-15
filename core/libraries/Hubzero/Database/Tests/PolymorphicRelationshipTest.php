@@ -375,7 +375,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         // Load the video and access its image
         PolyVideo::clearBootedModels();
         $loaded = PolyVideo::one($videoId);
-        $this->assertNotNull($loaded, "[$dbName] Video should be found");
+        $this->assertNotFalse($loaded, "[$dbName] Video should be found");
 
         $relatedImage = $loaded->image;
         $this->assertInstanceOf(PolyImage::class, $relatedImage, "[$dbName] Should return PolyImage");

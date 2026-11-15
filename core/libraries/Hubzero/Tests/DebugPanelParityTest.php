@@ -25,7 +25,7 @@ namespace Hubzero\Tests {
     {
         protected function setUp(): void
         {
-            if (is_a('\\App', DebugParityAppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === DebugParityAppStub::class) {
                 DebugParityAppStub::reset();
             }
 

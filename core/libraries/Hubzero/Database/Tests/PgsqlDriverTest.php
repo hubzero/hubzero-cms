@@ -224,7 +224,6 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         }
 
         $info = $driver->getServerInfo();
-        $this->assertIsArray($info);
         $this->assertArrayHasKey('version', $info);
     }
 
@@ -869,7 +868,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         $this->assertTrue($driver->addPrimaryKey('pg_pk_test', ['record_id']));
 
         $pk = $driver->getPrimaryKey('pg_pk_test');
-        $this->assertNotNull($pk);
+        $this->assertSame('record_id', $pk);
 
         $this->assertTrue($driver->dropPrimaryKey('pg_pk_test'));
     }

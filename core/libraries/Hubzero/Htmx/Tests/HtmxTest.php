@@ -33,7 +33,7 @@ namespace Hubzero\Htmx\Tests {
 
         protected function setUp(): void
         {
-            if (is_a('\\App', AppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === AppStub::class) {
                 AppStub::reset();
             }
 

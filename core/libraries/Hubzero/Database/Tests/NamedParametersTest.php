@@ -247,7 +247,6 @@ class NamedParametersTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
 
-        $this->assertIsArray($query->getNamedParameters());
         $this->assertEmpty($query->getNamedParameters());
     }
 

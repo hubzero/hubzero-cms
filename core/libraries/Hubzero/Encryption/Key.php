@@ -18,14 +18,14 @@ class Key
     /**
      * The private key.
      *
-     * @var  string
+     * @var  string|null
      */
     public $private;
 
     /**
      * The public key.
      *
-     * @var  string
+     * @var  string|null
      */
     public $public;
 

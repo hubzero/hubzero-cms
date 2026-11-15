@@ -1050,7 +1050,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * Gets the primary key of a table
      *
      * @param   string  $table  The table name
-     * @return  string|bool
+     * @return  string|bool|null  The key column; false or null when the table has none
      */
     abstract public function getPrimaryKey($table);
 

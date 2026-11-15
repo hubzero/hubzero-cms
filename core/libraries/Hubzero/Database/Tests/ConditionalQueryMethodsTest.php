@@ -48,6 +48,18 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
     }
 
     /**
+     * Values as a controller receives them from the request: known only to
+     * be some value per key, as in the scenarios these tests act out
+     *
+     * @param   array<string, mixed>  $values
+     * @return  array<string, mixed>
+     */
+    private function fromRequest(array $values): array
+    {
+        return $values;
+    }
+
+    /**
      * Seed users table with deterministic data for functional tests
      *
      * @param  \Hubzero\Database\Drivers\Base\BaseSqlDriver $driver
@@ -299,13 +311,12 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $page = 2;
         $rows = $query
             ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->limit(2)
-            ->startWhen($page > 1, ($page - 1) * 2)
+            ->startWhen(true, 2)
             ->fetch('rows');
 
         $this->assertEquals(3, (int) $rows[0]->id);
@@ -323,13 +334,12 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $page = 1;
         $rows = $query
             ->select('id')
             ->from('conditional_test_users')
             ->order('id', 'asc')
             ->limit(2)
-            ->startWhen($page > 1, 0)
+            ->startWhen(false, 0)
             ->fetch('rows');
 
         $this->assertEquals(1, (int) $rows[0]->id);
@@ -849,13 +859,13 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $this->seedUsers($driver);
         $query = new Query($driver);
 
-        $filters = [
+        $filters = $this->fromRequest([
             'name' => 'Bob',
             'email' => null,
             'sort' => 'id',
             'limit' => 1,
             'page' => 2,
-        ];
+        ]);
 
         $rows = $query
             ->select('*')
@@ -984,14 +994,24 @@ class ConditionalQueryMethodsTest extends AbstractDriverTestCase
         $query = new Query($driver);
 
         // Simulate a search controller with optional filters
-        $search = 'test';
-        $emailFilter = null;  // Not filtering by email
-        $ids = [1, 2, 3];
-        $excludeIds = [];  // No exclusions
-        $sortBy = 'name';
-        $sortDir = 'asc';
-        $page = 1;
-        $perPage = 25;
+        $input = $this->fromRequest([
+            'search'     => 'test',
+            'email'      => null,      // Not filtering by email
+            'ids'        => [1, 2, 3],
+            'excludeIds' => [],        // No exclusions
+            'sortBy'     => 'name',
+            'sortDir'    => 'asc',
+            'page'       => 1,
+            'perPage'    => 25,
+        ]);
+        $search      = $input['search'];
+        $emailFilter = $input['email'];
+        $ids         = $input['ids'];
+        $excludeIds  = $input['excludeIds'];
+        $sortBy      = $input['sortBy'];
+        $sortDir     = $input['sortDir'];
+        $page        = $input['page'];
+        $perPage     = $input['perPage'];
 
         $rows = $query
             ->select('*')

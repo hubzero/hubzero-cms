@@ -34,7 +34,6 @@ class ArrTest extends Basic
 
         Arr::toInteger($data);
 
-        $this->assertTrue(is_array($data), 'Value returned was not an array');
 
         foreach ($data as $val) {
             $this->assertTrue(is_int($val), 'Value returned was not an integer');
@@ -47,7 +46,6 @@ class ArrTest extends Basic
 
         Arr::toInteger($data);
 
-        $this->assertTrue(is_array($data), 'Value returned was not an array');
         $this->assertTrue(empty($data), 'Value returned was not an empty array');
 
         $dflt = [
@@ -65,7 +63,6 @@ class ArrTest extends Basic
 
         Arr::toInteger($data, $dflt);
 
-        $this->assertTrue(is_array($data), 'Value returned was not an array');
         $this->assertFalse(empty($data), 'Value returned was an empty array');
 
         foreach ($data as $key => $val) {
@@ -81,7 +78,6 @@ class ArrTest extends Basic
 
         Arr::toInteger($data2, $dflt2);
 
-        $this->assertTrue(is_array($data2), 'Value returned was not an array');
         $this->assertFalse(empty($data2), 'Value returned was an empty array');
 
         foreach ($data2 as $key => $val) {
@@ -122,7 +118,6 @@ class ArrTest extends Basic
         foreach ($datas as $data) {
             $result = Arr::toObject($data);
 
-            $this->assertTrue(is_object($result), 'Value returned was not an object');
 
             foreach ((array) $data as $key => $val) {
                 $this->assertTrue(isset($result->$key), 'Property "' . $key . '" not set on returned object');
@@ -175,7 +170,6 @@ class ArrTest extends Basic
         foreach ($datas as $data) {
             $result = Arr::fromObject($data);
 
-            $this->assertTrue(is_array($result), 'Value returned was not an array');
 
             foreach ((array) $data as $key => $val) {
                 $this->assertTrue(isset($result[$key]), 'Array value not set from object property');
@@ -194,7 +188,6 @@ class ArrTest extends Basic
 
         $result = Arr::fromObject($data2, false);
 
-        $this->assertTrue(is_array($result), 'Value returned was not an array');
         foreach ((array) $data2 as $key => $val) {
             $this->assertTrue(isset($result[$key]), 'Array value not set from object property');
             $this->assertEquals($result[$key], $val);
@@ -250,7 +243,6 @@ class ArrTest extends Basic
 
         $result = Arr::toString($data, '=', '&');
 
-        $this->assertTrue(is_string($result), 'Value is not a string');
         $this->assertEquals($result, 'one="1"&two="322"&three="55"&a="foo"&b="bar"');
 
         $result = Arr::toString($data, '=', '&', true);
@@ -393,7 +385,7 @@ class ArrTest extends Basic
         $original = ['a' => 0, 'b' => 1, 'c' => 2];
         $copy = $original;
 
-        Arr::filterKeys($original, []);
+        $this->assertSame([], Arr::filterKeys($original, []));
 
         $this->assertEquals($original, $copy);
     }

@@ -26,4 +26,14 @@ class StatefulObj extends Obj
      * @var  int
      */
     private $count = 0;
+
+    /**
+     * The object's own counter, which is not part of its data
+     *
+     * @return  int
+     */
+    public function counted(): int
+    {
+        return $this->count;
+    }
 }

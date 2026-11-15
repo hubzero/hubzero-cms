@@ -582,7 +582,7 @@ abstract class Factory
      * @param   int  $chanceOfTrue  Percentage chance of true (0-100)
      * @return  bool
      */
-    public static function boolean(int $chanceOfTrue = 50)
+    public static function boolean(int $chanceOfTrue = 50): bool
     {
         return random_int(1, 100) <= $chanceOfTrue;
     }

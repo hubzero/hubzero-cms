@@ -113,7 +113,6 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         // The fki_grandparent table has no foreign keys
         $foreignKeys = $driver->getForeignKeys('fki_grandparent');
 
-        $this->assertIsArray($foreignKeys, "[$dbName] getForeignKeys should return an array");
         $this->assertCount(0, $foreignKeys, "[$dbName] Table without FKs should return empty array");
     }
 
@@ -127,7 +126,6 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
     {
         $foreignKeys = $driver->getForeignKeys('fki_child');
 
-        $this->assertIsArray($foreignKeys, "[$dbName] getForeignKeys should return an array");
         $this->assertCount(1, $foreignKeys, "[$dbName] fki_child should have one foreign key");
 
         $fk = $this->normalizeFk($foreignKeys[0]);
@@ -232,7 +230,6 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
 
         $foreignKeys = $schema->getForeignKeys('fki_child');
 
-        $this->assertIsArray($foreignKeys, "[$dbName] SchemaManager::getForeignKeys should return an array");
         $this->assertCount(1, $foreignKeys, "[$dbName] Should have one foreign key");
 
         $fk = $this->normalizeFk($foreignKeys[0]);
@@ -281,7 +278,6 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
 
         $foreignKeys = $table->getForeignKeys();
 
-        $this->assertIsArray($foreignKeys, "[$dbName] Table::getForeignKeys should return an array");
         $this->assertCount(1, $foreignKeys, "[$dbName] Should have one foreign key");
 
         $fk = $this->normalizeFk($foreignKeys[0]);
@@ -351,7 +347,6 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
     {
         $foreignKeys = $driver->getForeignKeys('nonexistent_table_xyz');
 
-        $this->assertIsArray($foreignKeys, "[$dbName] Should return an array");
         $this->assertCount(0, $foreignKeys, "[$dbName] Should be empty for nonexistent table");
     }
 

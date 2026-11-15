@@ -396,8 +396,14 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
             ->on('fkdsl_users')
             ->cascadeOnDelete();
 
-        $statements = $builder->toSql();
-        $this->assertIsArray($statements);
+        // The statements name the referenced table. SQLite cannot add a foreign
+        // key with ALTER TABLE, and its builder gives no statement for one.
+        $sql = implode("\n", $builder->toSql());
+        if ($driver instanceof \Hubzero\Database\Drivers\Sqlite\SqliteDriver) {
+            $this->assertSame('', $sql);
+        } else {
+            $this->assertStringContainsString('fkdsl_users', $sql);
+        }
 
         $this->cleanUpChildTables($driver);
     }

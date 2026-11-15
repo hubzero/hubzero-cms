@@ -227,7 +227,6 @@ class MysqlDriverTest extends AbstractDriverTestCase
         }
 
         $info = $driver->getServerInfo();
-        $this->assertIsArray($info);
         $this->assertArrayHasKey('version', $info);
         $this->assertArrayHasKey('driver_version', $info);
     }

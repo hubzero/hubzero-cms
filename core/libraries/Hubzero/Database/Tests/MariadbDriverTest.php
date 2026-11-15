@@ -223,7 +223,6 @@ class MariadbDriverTest extends AbstractDriverTestCase
         }
 
         $info = $driver->getServerInfo();
-        $this->assertIsArray($info);
         $this->assertArrayHasKey('version', $info);
     }
 
@@ -546,8 +545,9 @@ class MariadbDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        // Just verify the method works — result depends on version
-        $this->assertIsBool($driver->supportsSequences());
+        // The answer depends on the server version; asking must not fail
+        $driver->supportsSequences();
+        $this->addToAssertionCount(1);
     }
 
     // =========================================================================

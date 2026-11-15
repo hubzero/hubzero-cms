@@ -27,7 +27,7 @@ namespace Hubzero\Component\Tests {
             string $uri,
             string $version = 'v1',
         ): TestableInertiaFlowService {
-            if (is_a('\\App', InertiaFlowAppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === InertiaFlowAppStub::class) {
                 InertiaFlowAppStub::reset();
             }
 

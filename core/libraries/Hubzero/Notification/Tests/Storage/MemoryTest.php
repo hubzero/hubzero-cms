@@ -95,7 +95,6 @@ class MemoryTest extends Basic
 
         $messages = $memory->retrieve('test');
 
-        $this->assertTrue(is_array($messages), 'Getting all messages should return an array');
         $this->assertCount(count($this->data), $messages, 'Total messages returned does not equal number added');
     }
 

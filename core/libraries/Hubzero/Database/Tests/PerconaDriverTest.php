@@ -212,7 +212,6 @@ class PerconaDriverTest extends AbstractDriverTestCase
         }
 
         $info = $driver->getServerInfo();
-        $this->assertIsArray($info);
         $this->assertArrayHasKey('version', $info);
     }
 

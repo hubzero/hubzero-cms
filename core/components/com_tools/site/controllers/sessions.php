@@ -1185,7 +1185,7 @@ class Sessions extends SiteController
         if ($res->get('id') > 0) {
             $page_template = $res->params->get("page_template");
             if ($page_template && $page_template != "") {
-                $_app = App::getApplication()->template;
+                $_app = App::get('template');
                 $_app->template = $page_template;
             }
         }

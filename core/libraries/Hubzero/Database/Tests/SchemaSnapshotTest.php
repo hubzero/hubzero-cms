@@ -412,7 +412,6 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         $snapshot = new SchemaSnapshot($driver, $testDir, 'test_');
 
         $list = $snapshot->list();
-        $this->assertIsArray($list, "[$dbName]");
         $this->assertEmpty($list, "[$dbName]");
 
         // Clean up (directory may not have been created if empty)

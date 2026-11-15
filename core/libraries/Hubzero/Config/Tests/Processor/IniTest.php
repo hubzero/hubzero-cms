@@ -32,13 +32,6 @@ class IniTest extends TestCase
     private $obj = null;
 
     /**
-     * Expected data as an array
-     *
-     * @var  array|null
-     */
-    private $arr = null;
-
-    /**
      * Expected data as a string
      *
      * @var  string
@@ -104,10 +97,6 @@ sitename_pagetitles=0';
         $data->seo->sitename_pagetitles = 0;
 
         $this->obj = $data;
-        $this->arr = [
-            'app' => (array) $data->app,
-            'seo' => (array) $data->seo,
-        ];
 
         $this->processor = new Ini();
 

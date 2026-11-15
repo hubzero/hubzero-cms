@@ -26,7 +26,7 @@ class ArgumentsTest extends Basic
     /**
      * The real one, to put back
      *
-     * @var  string|null
+     * @var  string|false|null
      **/
     private static $realHome = null;
 

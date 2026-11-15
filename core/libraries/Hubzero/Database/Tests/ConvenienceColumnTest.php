@@ -333,7 +333,6 @@ class ConvenienceColumnTest extends AbstractDriverTestCase
         $builder->addColumn('public_id', 'char', ['length' => 36]);
 
         $statements = $builder->toSql();
-        $this->assertIsArray($statements);
         $this->assertNotEmpty($statements);
 
         // Execute and verify

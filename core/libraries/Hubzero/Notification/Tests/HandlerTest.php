@@ -60,7 +60,6 @@ class HandlerTest extends Basic
 
         $messages = $handler->messages();
 
-        $this->assertTrue(is_array($messages), 'Getting all messages should return an array');
         $this->assertCount(1, $messages, 'Total messages returned does not equal number added');
 
         $handler = new Handler(new Memory());
@@ -108,7 +107,6 @@ class HandlerTest extends Basic
 
         $messages = $handler->messages();
 
-        $this->assertTrue(is_array($messages), 'Getting all messages should return an array');
         $this->assertCount(count($this->data), $messages, 'Total messages returned does not equal number added');
     }
 
@@ -263,7 +261,6 @@ class HandlerTest extends Basic
 
         $messages = $handler->toArray();
 
-        $this->assertTrue(is_array($messages), 'Getting all messages should return an array');
         $this->assertCount(count($this->data), $messages, 'Total messages returned does not equal number added');
     }
 
@@ -282,7 +279,6 @@ class HandlerTest extends Basic
 
         $messages = $handler->toJson();
 
-        $this->assertTrue(is_string($messages));
         $this->assertJson($messages);
     }
 
@@ -301,7 +297,6 @@ class HandlerTest extends Basic
 
         $messages = (string) $handler;
 
-        $this->assertTrue(is_string($messages));
         $this->assertJson($messages);
     }
 }

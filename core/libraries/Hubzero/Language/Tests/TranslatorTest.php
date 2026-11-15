@@ -451,7 +451,6 @@ namespace Hubzero\Language\Tests {
 
             $result = Translator::parseIniFile($file);
 
-            $this->assertIsArray($result);
             $this->assertSame('Simple value', $result['KEY1']);
             $this->assertSame('Value with (parentheses)', $result['KEY2']);
         }
@@ -655,12 +654,13 @@ namespace Hubzero\Language\Tests {
         public function customTransliteratorCanBeSet(): void
         {
             $t = TestableTranslator::make();
-            $t->setTransliterator(function ($str) {
+            $upper = function ($str) {
                 return strtoupper($str);
-            });
+            };
+            $t->setTransliterator($upper);
 
             $this->assertSame('HELLO', $t->transliterate('hello'));
-            $this->assertNotNull($t->getTransliterator());
+            $this->assertSame($upper, $t->getTransliterator());
         }
 
         // -----------------------------------------------------------------

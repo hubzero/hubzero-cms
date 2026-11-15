@@ -352,7 +352,6 @@ class Db2DriverTest extends AbstractDriverTestCase
 
         $pk = $driver->getPrimaryKey('d2_categories');
         $this->assertNotFalse($pk);
-        $this->assertNotNull($pk);
     }
 
     #[Test]

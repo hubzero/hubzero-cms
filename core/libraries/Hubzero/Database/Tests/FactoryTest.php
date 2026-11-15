@@ -153,7 +153,6 @@ class FactoryTest extends AbstractDriverTestCase
     public function randomIntDefaultsToZeroAndPhpIntMax(): void
     {
         $value = Factory::randomInt();
-        $this->assertIsInt($value);
         $this->assertGreaterThanOrEqual(0, $value);
     }
 
@@ -224,13 +223,6 @@ class FactoryTest extends AbstractDriverTestCase
     // =========================================================================
     // Boolean Generator Tests
     // =========================================================================
-
-    #[Test]
-    public function booleanReturnsBooleanType(): void
-    {
-        $value = Factory::boolean();
-        $this->assertIsBool($value);
-    }
 
     #[Test]
     public function booleanWithZeroChanceReturnsFalse(): void
@@ -510,7 +502,6 @@ class FactoryTest extends AbstractDriverTestCase
     public function paragraphIsNonEmptyString(): void
     {
         $paragraph = Factory::paragraph();
-        $this->assertIsString($paragraph);
         $this->assertNotEmpty($paragraph);
     }
 

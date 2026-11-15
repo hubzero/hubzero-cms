@@ -6764,6 +6764,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $name  The relationship to return
      * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|null  Null if it is not loaded
+     * @phpstan-impure
      **/
     public function getRelationship($name)
     {

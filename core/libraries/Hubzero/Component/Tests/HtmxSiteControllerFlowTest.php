@@ -23,7 +23,7 @@ namespace Hubzero\Component\Tests {
     {
         protected function setUp(): void
         {
-            if (is_a('\\App', HtmxFlowAppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === HtmxFlowAppStub::class) {
                 HtmxFlowAppStub::reset();
             }
 

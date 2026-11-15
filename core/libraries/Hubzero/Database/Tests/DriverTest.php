@@ -447,7 +447,6 @@ class DriverTest extends AbstractDriverTestCase
         $table = self::$testTable;
         $columns = $driver->getTableColumns($table);
 
-        $this->assertIsArray($columns, 'Should return array of columns');
         $this->assertArrayHasKey('id', $columns, 'Should have id column');
         $this->assertArrayHasKey('name', $columns, 'Should have name column');
         $this->assertArrayHasKey('email', $columns, 'Should have email column');
@@ -459,7 +458,6 @@ class DriverTest extends AbstractDriverTestCase
     {
         $tables = $driver->getTableList();
 
-        $this->assertIsArray($tables, 'Should return array of tables');
         $this->assertNotEmpty($tables, 'Should have at least one table');
     }
 
@@ -559,38 +557,6 @@ class DriverTest extends AbstractDriverTestCase
     // =========================================================================
     // Database-Specific Feature Tests
     // =========================================================================
-
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testSupportsEnum(string $dbName, BaseSqlDriver $driver): void
-    {
-        $result = $driver->supportsEnum();
-        $this->assertIsBool($result, 'supportsEnum should return boolean');
-    }
-
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testSupportsEngine(string $dbName, BaseSqlDriver $driver): void
-    {
-        $result = $driver->supportsEngine();
-        $this->assertIsBool($result, 'supportsEngine should return boolean');
-    }
-
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testSupportsColumnPositioning(string $dbName, BaseSqlDriver $driver): void
-    {
-        $result = $driver->supportsColumnPositioning();
-        $this->assertIsBool($result, 'supportsColumnPositioning should return boolean');
-    }
-
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testSupportsTableCharset(string $dbName, BaseSqlDriver $driver): void
-    {
-        $result = $driver->supportsTableCharset();
-        $this->assertIsBool($result, 'supportsTableCharset should return boolean');
-    }
 
     #[Test]
     #[DataProvider('databaseProvider')]

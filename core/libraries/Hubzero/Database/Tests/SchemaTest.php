@@ -284,7 +284,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $columns = $schema->getTableColumns('users', true);
 
-        $this->assertIsArray($columns);
         $this->assertArrayHasKey('id', $columns);
         $this->assertArrayHasKey('name', $columns);
     }
@@ -301,7 +300,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $columns = $schema->getColumnListing('users');
 
-        $this->assertIsArray($columns);
         $this->assertContains('id', $columns);
         $this->assertContains('name', $columns);
         $this->assertContains('email', $columns);
@@ -379,7 +377,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $keys = $schema->getTableKeys('users');
 
-        $this->assertIsArray($keys);
         $this->assertArrayHasKey('PRIMARY', $keys);
     }
 
@@ -395,7 +392,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $names = $schema->getIndexNames('users');
 
-        $this->assertIsArray($names);
         $this->assertContains('PRIMARY', $names);
     }
 
@@ -876,7 +872,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $tables = $schema->getTableList();
 
-        $this->assertIsArray($tables);
         $this->assertContains('users', $tables);
         $this->assertContains('posts', $tables);
     }
@@ -893,7 +888,6 @@ class SchemaTest extends AbstractDriverTestCase
         $schema = $driver->schema();
         $create = $schema->getTableCreate('users');
 
-        $this->assertIsArray($create);
         $this->assertArrayHasKey('users', $create);
         $this->assertStringContainsString('CREATE', strtoupper($create['users']));
     }

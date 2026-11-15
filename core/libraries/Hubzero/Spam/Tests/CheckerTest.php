@@ -88,7 +88,6 @@ class CheckerTest extends Basic
 
         $detectors = $service->getDetectors();
 
-        $this->assertTrue(is_array($detectors), 'Getting all detectors should return an array');
         $this->assertCount(1, $detectors, 'Get detectors should have returned one detector');
         $this->assertEquals($detectors, $data);
     }
@@ -131,7 +130,6 @@ class CheckerTest extends Basic
         $this->assertTrue($result->isSpam());
 
         $messages = $result->getMessages();
-        $this->assertTrue(is_array($messages));
         $this->assertTrue(in_array('Text contained the word "spam".', $messages));
 
         // Make sure string processors do their job

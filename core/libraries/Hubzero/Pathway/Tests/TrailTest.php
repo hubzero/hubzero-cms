@@ -157,7 +157,6 @@ class TrailTest extends Basic
 
         $names = $pathway->names();
 
-        $this->assertTrue(is_array($names), 'names() should return an array');
         $this->assertCount(2, $names, 'names() returned incorrect number of entries');
         $this->assertEquals($names, $data);
     }
@@ -183,7 +182,6 @@ class TrailTest extends Basic
 
         $items = $pathway->items();
 
-        $this->assertTrue(is_array($items), 'items() should return an array');
         $this->assertCount(2, $items, 'items() should have returned two Items');
         $this->assertEquals($items, $data);
     }

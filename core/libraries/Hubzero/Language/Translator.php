@@ -356,7 +356,7 @@ class Translator extends Obj
     /**
      * Getter for transliteration function
      *
-     * @return  string  Function name or the actual function for PHP 5.3.
+     * @return  callable|string|array|null  The transliterator, null when none is set
      */
     public function getTransliterator()
     {

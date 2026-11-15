@@ -683,7 +683,6 @@ class SyntaxTest extends AbstractDriverTestCase
     {
         $columns = $driver->getTableColumns(self::$testTable);
 
-        $this->assertIsArray($columns);
         $this->assertNotEmpty($columns);
 
         // All databases should have these columns (case-insensitive check)

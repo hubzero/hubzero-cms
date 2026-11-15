@@ -31,7 +31,7 @@ namespace Hubzero\Component\Tests {
                         . '2.4-main.',
                 );
             }
-            if (is_a('\\App', AppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === AppStub::class) {
                 AppStub::reset();
             }
         }

@@ -40,7 +40,7 @@ abstract class Facade
     /**
      * Get the application instance behind the facade.
      *
-     * @return  object  \Hubzero\Base\Application
+     * @return  \Hubzero\Base\Application|null  Null until an application is set
      */
     public static function getApplication()
     {

@@ -369,7 +369,6 @@ class HasUuidTest extends AbstractDriverTestCase
 
         $article = UuidArticle::findByUuidOrFail($uuid);
 
-        $this->assertNotNull($article);
         $this->assertEquals('Test Article', $article->get('title'));
     }
 

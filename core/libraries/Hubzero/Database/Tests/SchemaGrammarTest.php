@@ -144,7 +144,6 @@ class SchemaGrammarTest extends AbstractDriverTestCase
 
         $compiled = $grammar->compileCreateTableFromDefinition($definition);
 
-        $this->assertIsArray($compiled);
         $this->assertNotEmpty($compiled);
         $this->assertIsString($compiled[0]);
         $this->assertStringStartsWith('CREATE TABLE', $compiled[0]);

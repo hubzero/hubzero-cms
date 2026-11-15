@@ -27,7 +27,7 @@ namespace Hubzero\Tests {
 
         protected function setUp(): void
         {
-            if (is_a('\\App', BehaviorAssetAppStub::class, true)) {
+            if ((new \ReflectionClass('App'))->getName() === BehaviorAssetAppStub::class) {
                 BehaviorAssetAppStub::reset();
             }
 

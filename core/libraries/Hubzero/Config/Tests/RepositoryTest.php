@@ -426,7 +426,6 @@ class RepositoryTest extends TestCase
 
         $arr = $config->toArray();
 
-        $this->assertIsArray($arr);
         $this->assertArrayHasKey('app', $arr);
         $this->assertArrayHasKey('seo', $arr);
         $this->assertIsArray($arr['app']);
@@ -446,7 +445,6 @@ class RepositoryTest extends TestCase
 
         $flat = $config->flatten();
 
-        $this->assertIsArray($flat);
         $this->assertArrayHasKey('app.application_env', $flat);
         $this->assertArrayHasKey('app.debug', $flat);
         $this->assertArrayHasKey('seo.sef', $flat);
@@ -586,14 +584,11 @@ class RepositoryTest extends TestCase
 
         $json = $config->toString('json');
 
-        $this->assertIsString($json);
-
         $decoded = json_decode($json, true);
         $this->assertEquals('development', $decoded['app']['application_env']);
 
         // __toString should also work
         $str = (string) $config;
-        $this->assertIsString($str);
         $this->assertStringContainsString('application_env', $str);
     }
 
@@ -810,12 +805,10 @@ class RepositoryTest extends TestCase
         // debug = '1' (truthy string)
         $debug = $config->get('debug');
         $this->assertSame('1', $debug);
-        $this->assertTrue((bool) $debug);
 
         // gzip = '0' (falsy string)
         $gzip = $config->get('gzip');
         $this->assertSame('0', $gzip);
-        $this->assertFalse((bool) $gzip);
 
         // caching = '0'
         $caching = $config->get('caching');
@@ -1058,7 +1051,6 @@ class RepositoryTest extends TestCase
 
         $arr = $config->toArray();
 
-        $this->assertIsArray($arr);
         $this->assertIsArray($arr['app']);
         $this->assertIsArray($arr['database']);
         $this->assertIsArray($arr['session']);

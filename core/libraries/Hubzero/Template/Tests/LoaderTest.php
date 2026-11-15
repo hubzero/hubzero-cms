@@ -326,7 +326,6 @@ class LoaderTest extends TestCase
         // Load admin template by client name
         $template = $this->loader->load();
 
-        $this->assertTrue(is_object($template));
         $this->assertEquals($template->template, 'system');
     }
 

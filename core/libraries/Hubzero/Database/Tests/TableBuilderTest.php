@@ -147,7 +147,6 @@ class TableBuilderTest extends AbstractDriverTestCase
 
         $definition = $builder->toCreateDefinition();
 
-        $this->assertIsArray($definition, "[$dbName]");
         $this->assertSame('tdf_users', $definition['table'], "[$dbName]");
         $this->assertFalse($definition['ifNotExists'], "[$dbName]");
         $this->assertSame('InnoDB', $definition['options']['engine'], "[$dbName]");

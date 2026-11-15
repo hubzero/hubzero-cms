@@ -450,10 +450,6 @@ abstract class AbstractDriverTestCase extends TestCase
         $classDrivers = static::getClassDrivers();
 
         foreach ($classDrivers as $dbName => $driver) {
-            if (!$driver instanceof Driver) {
-                continue;
-            }
-
             // Commit any pending transactions before dropping tables
             try {
                 $connection = $driver->getConnection();

@@ -173,7 +173,7 @@ class CharacterClassTest extends Basic
     {
         $result = CharacterClass::match('');
 
-        $this->assertIsArray($result);
+        $this->assertSame([], $result);
     }
 
     /**

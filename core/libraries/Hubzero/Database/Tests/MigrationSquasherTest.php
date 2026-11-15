@@ -276,7 +276,6 @@ class MigrationSquasherTest extends AbstractDriverTestCase
 
         $stats = $squasher->getSquashStats($schema);
 
-        $this->assertIsArray($stats);
         $this->assertArrayHasKey('tables', $stats);
         $this->assertArrayHasKey('columns', $stats);
         $this->assertArrayHasKey('indexes', $stats);
@@ -312,10 +311,13 @@ class MigrationSquasherTest extends AbstractDriverTestCase
     {
         $squasher = new MigrationSquasher($driver);
 
-        $tempDir = sys_get_temp_dir();
+        // A directory with no migration files in it
+        $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'squasher_' . uniqid();
+        mkdir($tempDir);
         $migrations = $squasher->getExistingMigrations($tempDir);
+        rmdir($tempDir);
 
-        $this->assertIsArray($migrations);
+        $this->assertSame([], $migrations);
     }
 
     /**

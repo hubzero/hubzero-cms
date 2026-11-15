@@ -233,7 +233,6 @@ class RegistryTest extends TestCase
 
         $arr = $data->toArray();
 
-        $this->assertTrue(is_array($arr));
         $this->assertTrue(isset($arr['bar']));
         $this->assertTrue(isset($arr['lorem']['ipsum']));
         $this->assertEquals($arr['lorem']['ipsum'], 'sham');
@@ -255,7 +254,6 @@ class RegistryTest extends TestCase
 
         $arr = $data->flatten();
 
-        $this->assertTrue(is_array($arr));
         $this->assertTrue(isset($arr['bar']));
         $this->assertTrue(isset($arr['lorem.ipsum']));
         $this->assertEquals($arr['lorem.ipsum'], 'sham');
@@ -312,7 +310,6 @@ class RegistryTest extends TestCase
 
         $results = $data->processors();
 
-        $this->assertTrue(is_array($results));
         $this->assertTrue(count($results) > 0);
 
         foreach ($results as $result) {
@@ -434,7 +431,6 @@ class RegistryTest extends TestCase
         $data = new Registry();
 
         // `toObject()` returns the `$data` property which is set in the constructor
-        $this->assertTrue(is_object($data->toObject()));
         $this->assertInstanceOf('stdClass', $data->toObject());
 
         $json = '{"one":"bar","bar":"foo","lorem":{"ipsum":"sham"}}';

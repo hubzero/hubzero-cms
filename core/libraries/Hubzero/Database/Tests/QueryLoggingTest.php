@@ -161,7 +161,6 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
         $bindings = $query->getBindings();
 
-        $this->assertIsArray($bindings);
         $this->assertCount(2, $bindings);
         $this->assertContains('published', $bindings);
         $this->assertContains(100, $bindings);
@@ -182,7 +181,6 @@ class QueryLoggingTest extends AbstractDriverTestCase
             ->whereEquals('status', 'draft')
             ->getQueryBindings();
 
-        $this->assertIsArray($bindings);
         $this->assertContains('draft', $bindings);
     }
 
@@ -298,7 +296,6 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
         $debug = $query->getDebugInfo();
 
-        $this->assertIsArray($debug);
         $this->assertArrayHasKey('sql', $debug);
         $this->assertArrayHasKey('bindings', $debug);
         $this->assertArrayHasKey('raw_sql', $debug);
@@ -555,7 +552,6 @@ class QueryLoggingTest extends AbstractDriverTestCase
 
         $totalTime = $driver->getQueryLogTotalTime();
 
-        $this->assertIsFloat($totalTime);
         $this->assertGreaterThanOrEqual(0, $totalTime);
     }
 
