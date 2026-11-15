@@ -509,7 +509,7 @@ class Html
     /**
      * Display a link to the license associated with this resource
      *
-     * @param      array $license License name
+     * @param      string $license License name
      * @return     string HTML
      */
     public static function license($license)

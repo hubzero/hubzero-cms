@@ -211,7 +211,7 @@ class File extends Macro
      * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
      *
      * @param   array $matches Values matching attr=val pairs
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseAttributeValuePair($matches)
     {
@@ -229,7 +229,7 @@ class File extends Macro
             if (in_array($key, ['width', 'height'])) {
                 $this->attr['style'][$key] = $val;
                 //$this->attr[$key] = $val;
-                return;
+                return '';
             }
         }
 
@@ -241,7 +241,7 @@ class File extends Macro
         // Links images by default
         if ($key == 'nolink') {
             $this->attr['href'] = 'none';
-            return;
+            return '';
         }
         // Specific call to NOT show file details
         if ($key == 'details') {
@@ -259,7 +259,7 @@ class File extends Macro
                     $this->attr['details'] = true;
                     break;
             }
-            return;
+            return '';
         }
         // Check for a specific link given
         if ($key == 'link') {
@@ -278,7 +278,7 @@ class File extends Macro
                     && !in_array(strtolower($m[1]), ['http', 'https', 'mailto', 'ftp'])
                 ) {
                     $this->attr['href'] = '';
-                    return;
+                    return '';
                 }
 
                 $this->attr['href'] = $val;
@@ -289,7 +289,7 @@ class File extends Macro
                     $this->attr['rel']  = 'external';
                 }
             }
-            return;
+            return '';
         }
         // Check for alignment, no key given
         // EX: [[File(myfile.jpg, left)]]
@@ -306,7 +306,7 @@ class File extends Macro
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-            return;
+            return '';
         }
 
         // Look for any other attributes
@@ -328,7 +328,7 @@ class File extends Macro
         } else {
             $this->attr[$key] = $val;
         }
-        return;
+        return '';
     }
 
     /**
@@ -336,7 +336,7 @@ class File extends Macro
      * EX: [[Image(myimage.png, nolink, right)]]
      *
      * @param   array $matches Values matching the single attribute pattern
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseSingleAttribute($matches)
     {
@@ -353,7 +353,7 @@ class File extends Macro
         if (preg_match($size, $key, $matches)) {
             $this->attr['style'][$ky] = $key;
             //$this->attr[$ky] = $key;
-            return;
+            return '';
         }
 
         if (is_numeric($key)) {
@@ -365,13 +365,13 @@ class File extends Macro
         // Links images by default
         if ($key == 'nolink') {
             $this->attr['href'] = 'none';
-            return;
+            return '';
         }
 
         // Specific call to NOT display file metadata
         if ($key == 'nodetails') {
             $this->attr['details'] = false;
-            return;
+            return '';
         }
 
         // Check for alignment, no key given
@@ -390,10 +390,10 @@ class File extends Macro
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-            return;
+            return '';
         }
 
-        return;
+        return '';
     }
 
     /**
@@ -415,13 +415,15 @@ class File extends Macro
                 foreach ($bits as $bit) {
                     if (is_numeric($bit)) {
                         $nid = $bit;
-                        $id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
                         break;
                     }
                 }
 
                 if ($nid) {
-                    $this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+                    $this->config->set(
+                        'filepath',
+                        str_replace($nid, (string) intval($nid), $this->config->get('filepath')),
+                    );
                 }
             }
             $path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);

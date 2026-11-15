@@ -86,7 +86,7 @@ class Orcid extends SiteController
         curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $header);
         curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, true);
 
         $curlData = curl_exec($initedCurl);
 
@@ -230,7 +230,7 @@ class Orcid extends SiteController
         curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $header);
         curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, true);
         $curlData = curl_exec($initedCurl);
 
         $xmlStr = htmlentities($curlData);
@@ -540,7 +540,7 @@ class Orcid extends SiteController
                     . '</orcid-message>';
 
         $initedCurl = curl_init($url);
-        curl_setopt($initedCurl, CURLOPT_POST, 1);
+        curl_setopt($initedCurl, CURLOPT_POST, true);
         curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
         $headers = [
             'Accept: application/xml',
@@ -550,8 +550,8 @@ class Orcid extends SiteController
         curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
         curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($initedCurl, CURLOPT_HEADER, 1);
+        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($initedCurl, CURLOPT_HEADER, true);
         $curl_response = curl_exec($initedCurl);
         curl_close($initedCurl);
         $parsed_response = $this->httpParseHeaders($curl_response);
@@ -600,10 +600,10 @@ class Orcid extends SiteController
         }
 
         $initedCurl = curl_init($url);
-        curl_setopt($initedCurl, CURLOPT_POST, 1);
+        curl_setopt($initedCurl, CURLOPT_POST, true);
         curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, true);
         $postData = "client_id=" . $client_id . "&client_secret=" . $client_secret
             . "&grant_type=client_credentials&scope=/orcid-profile/create";
         curl_setopt($initedCurl, CURLOPT_POSTFIELDS, $postData);

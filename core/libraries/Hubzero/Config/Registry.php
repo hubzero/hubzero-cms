@@ -209,7 +209,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         // Explode the registry path into an array and remove empty
         // nodes that occur as a result of a double separator. ex: foo..test
         // Finally, re-key the array so they are sequential.
-        $nodes = array_values(array_filter(explode($separator, $path), 'strlen'));
+        $nodes = array_values(array_filter(explode($separator, $path), static fn ($value) => $value !== ''));
 
         if (!$nodes) {
             return $this;

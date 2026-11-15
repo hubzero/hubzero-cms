@@ -120,7 +120,7 @@ class Media extends SiteController
         Request::checkToken();
 
         // Ensure we have an ID to work with
-        $listdir = Request::getInt('dir', 0, 'post');
+        $listdir = strtolower(Request::getString('dir', '', 'post'));
         if (!$listdir) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
             $this->displayTask();

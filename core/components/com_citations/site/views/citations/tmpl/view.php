@@ -747,7 +747,7 @@ if (function_exists('mbstring')) {
 
     //add authors to coins
     if ($citation->author) {
-        $authors = array_filter(array_values(explode(";", $citation->author)));
+        $authors = array_filter(explode(";", $citation->author));
         foreach ($authors as $a) {
             $coinsData[] = 'rft.au=' . trim($a);
         }

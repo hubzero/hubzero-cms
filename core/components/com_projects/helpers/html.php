@@ -190,7 +190,7 @@ class Html extends Obj
     /**
      * Convert file size
      *
-     * @param   int|float     $file_size
+     * @param   int|float|string  $file_size
      * @param   string  $from
      * @param   string  $to
      * @param   string|int $round
@@ -198,7 +198,7 @@ class Html extends Obj
      */
     public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
     {
-        $file_size = str_replace(' ', '', $file_size);
+        $file_size = (float) str_replace(' ', '', (string) $file_size);
 
         if ($from == 'b') {
             if ($to == 'GB') {

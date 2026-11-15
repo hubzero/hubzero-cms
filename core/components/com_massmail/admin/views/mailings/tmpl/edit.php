@@ -70,7 +70,8 @@ $isScheduled = ($scheduledLocal !== '');
 // --- Build the To: chips + the hidden field values they serialize back to ----
 $gChips = Recipients::describeGroups($spec['groups']);
 $uChips = Recipients::describeUsers($spec['users']);
-$emails = array_values(array_filter(array_map('trim', (array) $spec['emails']), 'strlen'));
+$emails = array_map('trim', (array) $spec['emails']);
+$emails = array_values(array_filter($emails, static fn ($value) => $value !== ''));
 
 $toChips = [];
 if (!empty($spec['all'])) {
@@ -109,7 +110,7 @@ $rcptState = [
     'users'  => array_map(function ($u) {
         return ['token' => (string) $u['token'], 'label' => $u['label']];
     }, $uChips),
-    'emails' => array_values($emails),
+    'emails' => $emails,
 ];
 $composeLang = [
     'everyone' => Lang::txt('COM_MASSMAIL_EVERYONE'),

@@ -704,7 +704,7 @@ class Pages extends SiteController
         if ($lid != $this->page->get('id')) {
             if (is_dir($path . DS . $lid)) {
                 if (!Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id'))) {
-                    $this->setError(Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')));
+                    $this->setError(Lang::txt('JLIB_FILESYSTEM_ERROR_RENAME_FILE'));
                 }
             }
 

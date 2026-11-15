@@ -220,7 +220,7 @@ class Questions extends Plugin
 
         $view = $this
             ->view('default', 'browse')
-            ->setError($this->getErrors())
+            ->setErrors($this->getErrors())
             ->set('option', $this->option)
             ->set('publication', $this->publication)
             ->set('banking', Component::params('com_members')->get('bankAccounts'))

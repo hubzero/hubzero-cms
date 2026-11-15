@@ -225,7 +225,7 @@ class Blacklist extends Relational
             '2' => 'Z',
         ];
 
-        $word2 = str_replace(array_keys($subs), array_values($subs), $word);
+        $word2 = str_replace(array_map('strval', array_keys($subs)), array_values($subs), $word);
 
         return strtolower($word2);
     }
@@ -419,7 +419,7 @@ class Blacklist extends Relational
             ' u '   => ' you ',
         ];
 
-        $word2 = str_replace(array_keys($subs), array_values($subs), $word);
+        $word2 = str_replace(array_map('strval', array_keys($subs)), array_values($subs), $word);
         $word2 = strtolower($word2);
         $word2 = str_replace(array_keys($wordsubs), array_values($wordsubs), $word2);
 

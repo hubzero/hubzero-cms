@@ -240,7 +240,7 @@ class Media extends SiteController
         }
 
         // Build the upload path if it doesn't exist
-        $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
+        $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
@@ -526,7 +526,7 @@ class Media extends SiteController
         $del_folder = DS
             . trim($this->config->get('uploadpath', '/site/courses'), DS)
             . DS
-            . trim($listdir, DS)
+            . $listdir
             . DS
             . ltrim($folder, DS);
 

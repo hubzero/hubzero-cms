@@ -55,7 +55,7 @@ class ProfileFieldsTest extends TestCase
         $profile->add('race', 'black');
         $profile->remove('race', 'white');
 
-        $this->assertSame(['asian', 'black'], array_values($profile->get('race')));
+        $this->assertSame(['asian', 'black'], $profile->get('race'));
     }
 
     /**

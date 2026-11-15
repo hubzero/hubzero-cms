@@ -410,7 +410,7 @@ class DoiService extends Obj
      * Run cURL to register metadata and create DOI on DataCite
      *
      * @param   string   $url
-     * @param   array    $postvals
+     * @param   string    $postvals
      * @param   string   &$doi
      * @return  boolean
      */
@@ -461,7 +461,7 @@ class DoiService extends Obj
      * Run cURL to register DOI name and URL that refers to the dataset on DataCite
      *
      * @param   string   $url
-     * @param   array    $postvals
+     * @param   string    $postvals
      * @return  boolean
      */
     public function regURL($url, $postvals)
@@ -662,7 +662,7 @@ class DoiService extends Obj
      * Run cURL to register DOI on EZID
      *
      * @param   string   $url
-     * @param   array|null    $postvals
+     * @param   string    $postvals
      * @return  bool|string
      */
     public function runCurl($url, $postvals = null)

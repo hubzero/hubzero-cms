@@ -157,7 +157,7 @@ class Attachments extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Ensure we have an ID to work with
-        $pid = strtolower(Request::getInt('pid', 0));
+        $pid = Request::getInt('pid', 0);
         $resourceTitle = Request::getString('resource-title');
         header('Content-Type: application/json');
         $createdHere = false;
@@ -301,7 +301,7 @@ class Attachments extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Ensure we have an ID to work with
-        $pid = strtolower(Request::getInt('pid', 0));
+        $pid = Request::getInt('pid', 0);
         if (!$pid) {
             echo json_encode(['error' => Lang::txt('COM_RESOURCES_NO_ID')]);
             return;

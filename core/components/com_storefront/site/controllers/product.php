@@ -97,7 +97,7 @@ class Product extends \Hubzero\Component\SiteController
             }
 
             if (!empty($errors)) {
-                $this->view->setError($errors);
+                $this->view->setErrors($errors);
             } else {
                 // prevent resubmitting by refresh
                 // If not an ajax call, redirect to cart

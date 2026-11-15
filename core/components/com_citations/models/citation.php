@@ -1045,10 +1045,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
                     //prepare url
                     if ($url && strstr($url, "\r\n")) {
-                        $url = array_filter(array_values(explode("\r\n", $url)));
+                        $url = array_values(array_filter(explode("\r\n", $url)));
                         $url = $url[0];
                     } elseif ($url && strstr($url, ' ')) {
-                        $url = array_filter(array_values(explode(" ", $url)));
+                        $url = array_values(array_filter(explode(" ", $url)));
                         $url = $url[0];
                     }
 
@@ -1392,10 +1392,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
             // check to see if we need to do any special processing to the issn/isbn before outputting
             if (strstr($issn_isbn, "\r\n")) {
-                $issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
+                $issn_isbn = array_values(array_filter(explode("\r\n", $issn_isbn)));
                 $issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
             } elseif (strstr($issn_isbn, ' ')) {
-                $issn_isbn = array_filter(array_values(explode(' ', $issn_isbn)));
+                $issn_isbn = array_values(array_filter(explode(' ', $issn_isbn)));
                 $issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
             }
 

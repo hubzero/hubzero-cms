@@ -71,7 +71,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     {
         $raw  = (string) $this->params->get('allowed_idps', '');
         $idps = preg_split('/[\r\n,]+/', $raw);
-        $idps = array_filter(array_map('trim', $idps), 'strlen');
+        $idps = array_filter(array_map('trim', $idps), static fn ($value) => $value !== '');
 
         return array_values($idps);
     }

@@ -27,7 +27,7 @@ class ClientManager
      * This method will return a client information array if called
      * with no arguments which can be used to add custom application information.
      *
-     * @param   integer|null  $id      A client identifier
+     * @param   integer|string|null  $id  A client identifier, or its name when $byName is true
      * @param   boolean  $byName  If True, find the client by its name
      * @return  mixed    Object describing the client or false if not known
      */

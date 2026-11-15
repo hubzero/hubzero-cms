@@ -326,7 +326,7 @@ class Authors extends Base
         $org        = trim(Request::getString('organization', '', 'post'));
         $orcid      = trim(Request::getString('orcid', '', 'post'));
         $credit     = trim(Request::getString('credit', '', 'post'));
-        $uid        = trim(Request::getInt('uid', 0, 'post'));
+        $uid        = Request::getInt('uid', 0, 'post');
 
         $regex      = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
         $email      = preg_match($regex, $email) ? $email : '';

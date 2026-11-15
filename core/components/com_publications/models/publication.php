@@ -145,7 +145,7 @@ class Publication extends Obj
      * Constructor
      *
      * @param   integer|object|null  $oid      Publication ID or alias
-     * @param   string   $version  Publication version number or alias (dev/default)
+     * @param   string|int|null  $version  Publication version number or alias (dev/default)
      * @param   integer|null  $vid      Publication version ID
      * @return  void
      */

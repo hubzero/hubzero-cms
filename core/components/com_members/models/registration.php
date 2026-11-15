@@ -872,7 +872,7 @@ class Registration
         // available username available
         for ($i = 1; true; $i++) {
             // Make sure login username is no longer than max allowed by DB
-            $numberLen = strlen($i);
+            $numberLen = strlen((string) $i);
 
             $login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
             $logincheck = self::checkusername($login);

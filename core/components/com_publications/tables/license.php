@@ -63,7 +63,7 @@ class License extends Table
 
         if (!$this->title) {
             $this->title = substr($this->text, 0, 70);
-            if (strlen($this->title >= 70)) {
+            if (strlen($this->title) >= 70) {
                 $this->title .= '...';
             }
         }

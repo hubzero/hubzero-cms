@@ -981,13 +981,12 @@ class Items extends AdminController
 
             // Attempt to rename the temp directory
             if (Filesystem::exists($tmppath)) {
-                $result = Filesystem::move($tmppath, $newpath);
-                if ($result !== true) {
-                    $this->setError($result);
+                if (!Filesystem::move($tmppath, $newpath)) {
+                    $this->setError(Lang::txt('JLIB_FILESYSTEM_ERROR_FOLDER_RENAME', $tmppath));
                 }
             }
 
-            $row->set('path', str_replace($tmpid, Str::pad($row->get('id')), $row->get('path', '')));
+            $row->set('path', str_replace((string) $tmpid, Str::pad($row->get('id')), $row->get('path', '')));
             $row->save();
         }
 

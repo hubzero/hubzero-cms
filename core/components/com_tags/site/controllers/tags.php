@@ -286,7 +286,7 @@ class Tags extends SiteController
             ->set('tags', $tags)
             ->set('active', $area)
             ->set('search', implode(', ', $rt))
-            ->setError($this->getErrors())
+            ->setErrors($this->getErrors())
             ->display();
     }
 

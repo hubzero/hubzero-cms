@@ -56,7 +56,7 @@ class Media extends AdminController
         // make sure we have id
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -64,7 +64,7 @@ class Media extends AdminController
         // make sure we have a file
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -73,7 +73,7 @@ class Media extends AdminController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                $this->displayTask($id);
+                $this->displayTask('', $id);
 
                 return;
             }
@@ -82,7 +82,7 @@ class Media extends AdminController
         // make sure file is not empty
         if ($file['size'] == 0) {
             $this->setError(Lang::txt('COM_MEMBERS_FILE_HAS_NO_SIZE'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -92,7 +92,7 @@ class Media extends AdminController
             $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
             $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -103,7 +103,7 @@ class Media extends AdminController
         if (!in_array($ext, $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
             $this->setError(Lang::txt('COM_MEMBERS_FILE_TYPE_NOT_ALLOWED', $these));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -116,7 +116,7 @@ class Media extends AdminController
         // upload image
         if (!Filesystem::upload($file['tmp_name'], $filePath)) {
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -141,7 +141,7 @@ class Media extends AdminController
         unlink($filePath);
 
         // Push through to the image view
-        $this->displayTask($id);
+        $this->displayTask('', $id);
     }
 
     /**
@@ -158,7 +158,7 @@ class Media extends AdminController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -167,7 +167,7 @@ class Media extends AdminController
         $file = basename(Request::getString('file', ''));
         if (!$file) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-            $this->displayTask($id);
+            $this->displayTask('', $id);
 
             return;
         }
@@ -183,7 +183,7 @@ class Media extends AdminController
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
                 $this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
-                $this->displayTask($id);
+                $this->displayTask('', $id);
 
                 return;
             }
@@ -205,7 +205,7 @@ class Media extends AdminController
             }
         }
 
-        $this->displayTask($id);
+        $this->displayTask('', $id);
     }
 
     /**

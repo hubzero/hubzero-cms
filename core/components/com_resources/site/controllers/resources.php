@@ -1318,10 +1318,6 @@ class Resources extends SiteController
             $manifest->presentation->subtitles[] = $sub;
         }
 
-        //reset array of subs and media
-        $manifest->presentation->media     = array_values($manifest->presentation->media);
-        $manifest->presentation->subtitles = array_values($manifest->presentation->subtitles);
-
         return $manifest;
     }
 
@@ -2210,7 +2206,7 @@ class Resources extends SiteController
             if (!$resource->get('id')) {
                 App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
             }
-        } elseif (substr($id, 0, 4) == '9999') { // allow for temp resource uploads
+        } elseif (substr((string) $id, 0, 4) == '9999') { // allow for temp resource uploads
             $resource = Entry::blank();
             $resource->set('id', $id);
             $resource->set('standalone', 1);

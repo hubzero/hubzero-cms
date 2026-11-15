@@ -140,7 +140,7 @@ class Passport implements ProviderInterface
         curl_setopt($request, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($request, CURLOPT_URL, 'https://www.openpassport.org/1.0.0/badges');
         curl_setopt($request, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($request, CURLOPT_POST, 1);
+        curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($request, CURLOPT_VERBOSE, true);
 

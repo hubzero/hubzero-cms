@@ -492,7 +492,7 @@ class IdP
             // the same reason, and because an Attribute carrying no value at
             // all fails schema validation at a strict SP
             $values = is_array($value) ? $value : [$value];
-            $values = array_filter(array_map('strval', $values), 'strlen');
+            $values = array_filter(array_map('strval', $values), static fn ($value) => $value !== '');
 
             if (!$values) {
                 continue;

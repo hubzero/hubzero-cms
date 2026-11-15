@@ -215,7 +215,7 @@ class Assets extends AdminController
         if ($model->parents(['count' => true]) <= 0) {
             // No -- Asset no longer used. Delete it.
             if (!$model->delete()) {
-                $this->setError($model->delete());
+                $this->setError($model->getError());
             }
         }
 

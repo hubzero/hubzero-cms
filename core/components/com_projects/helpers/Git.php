@@ -797,7 +797,7 @@ class Git extends Obj
             $files[$filename] = [
                 'hash'    => $gitData['hash'],
                 'author'  => $gitData['author'],
-                'date'    => date('c', $gitData['date']),
+                'date'    => date('c', (int) $gitData['date']),
                 'size'    => null,
                 'message' => null,
             ];

@@ -1057,11 +1057,11 @@ class Group extends Obj
             $t = implode(",", $types);
 
             //replace group type names with group type id
-            $t = str_replace('hub', 1, $t);
-            $t = str_replace('project', 2, $t);
-            $t = str_replace('super', 3, $t);
-            $t = str_replace('course', 4, $t);
-            $t = str_replace('system', 0, $t);
+            $t = str_replace('hub', '1', $t);
+            $t = str_replace('project', '2', $t);
+            $t = str_replace('super', '3', $t);
+            $t = str_replace('course', '4', $t);
+            $t = str_replace('system', '0', $t);
 
             $where[] = 'type IN (' . $t . ')';
         }

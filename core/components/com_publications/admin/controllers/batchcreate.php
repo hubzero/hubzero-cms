@@ -715,7 +715,7 @@ class Batchcreate extends AdminController
         }
         $element = $elements[0];
 
-        $pubmodel = new \Components\Publications\Models\Publication($pid, $version, $vid);
+        $pubmodel = new \Components\Publications\Models\Publication($pid, null, $vid);
         $pubmodel->project();
 
         // Set configs
@@ -792,8 +792,8 @@ class Batchcreate extends AdminController
      *
      * @param   object   $author
      * @param   integer  $ordering
-     * @param   integer  $uid
-     * @param   object   $item
+     * @param   \SimpleXMLElement|string|int|null  $uid  The author's uid attribute
+     * @param   array    $item
      *
      * @return  void
      */
@@ -803,17 +803,18 @@ class Batchcreate extends AdminController
         $lastName  = null;
         $org       = null;
         $error     = null;
-        $uid = (int) $uid;
+        // The uid attribute as written in the XML, so a bad one can be reported
+        $uid = trim((string) $uid);
 
         // Check that user ID exists
-        if (trim($uid)) {
+        if ($uid !== '') {
             if (!intval($uid)) {
-                $error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID') . ': ' . trim($uid);
+                $error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID') . ': ' . $uid;
                 $item['errors'][] = $error;
             } else {
-                $profile = User::getInstance($uid);
+                $profile = User::getInstance((int) $uid);
                 if (!$profile->get('id')) {
-                    $error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND') . ': ' . trim($uid);
+                    $error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND') . ': ' . $uid;
                     $item['errors'][] = $error;
                 } else {
                     $firstName = $profile->get('givenName');
@@ -824,7 +825,7 @@ class Batchcreate extends AdminController
         }
 
         $pAuthor = new Tables\Author($this->database);
-        $pAuthor->user_id      = trim($uid);
+        $pAuthor->user_id      = (int) $uid;
         $pAuthor->ordering     = $ordering;
         $pAuthor->credit       = '';
         $pAuthor->role         = '';

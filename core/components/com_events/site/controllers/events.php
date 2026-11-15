@@ -1602,9 +1602,9 @@ class Events extends SiteController
                 } else {
                     $offset = $this->offset;
 
-                    $start_publish = date("Y-m-d", time() + ($offset * 60 * 60)); //date("Y-m-d");
-                    $stop_publish = date("Y-m-d", time() + ($offset * 60 * 60));  //date("Y-m-d");
-                    $registerby_date = date("Y-m-d", time() + ($offset * 60 * 60));  //date("Y-m-d");
+                    $start_publish = date("Y-m-d", (int) (time() + ($offset * 60 * 60))); //date("Y-m-d");
+                    $stop_publish = date("Y-m-d", (int) (time() + ($offset * 60 * 60)));  //date("Y-m-d");
+                    $registerby_date = date("Y-m-d", (int) (time() + ($offset * 60 * 60)));  //date("Y-m-d");
                 }
 
                 $start_time = "08:00";
@@ -1911,7 +1911,7 @@ class Events extends SiteController
             $state = 'edit';
 
             // Existing - update modified info
-            $row->modified = date("Y-m-d h:i:s", time() + ($offset * 60 * 60));
+            $row->modified = date("Y-m-d h:i:s", (int) (time() + ($offset * 60 * 60)));
             if (User::get('id')) {
                 $row->modified_by = User::get('id');
             }
@@ -1920,7 +1920,7 @@ class Events extends SiteController
             $state = 'add';
 
             // New - set created info
-            $row->created = date("Y-m-d h:i:s", time() + ($offset * 60 * 60));
+            $row->created = date("Y-m-d h:i:s", (int) (time() + ($offset * 60 * 60)));
             if (User::get('id')) {
                 $row->created_by = User::get('id');
             }

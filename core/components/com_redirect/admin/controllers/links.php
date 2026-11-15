@@ -178,7 +178,7 @@ class Links extends AdminController
         $this->view
             ->set('row', $row)
             ->setLayout('edit')
-            ->setError($this->getErrors())
+            ->setErrors($this->getErrors())
             ->display();
     }
 

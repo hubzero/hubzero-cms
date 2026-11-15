@@ -62,7 +62,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
             $names[] = $item->name;
         }
 
-        return array_values($names);
+        return $names;
     }
 
     /**

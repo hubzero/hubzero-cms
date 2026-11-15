@@ -777,7 +777,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Authorize current user
      *
-     * @param   boolean  $reviewer
+     * @param   string|false  $reviewer
      * @return  boolean
      */
     private function authorize($reviewer = false)

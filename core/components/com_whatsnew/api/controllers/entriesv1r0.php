@@ -83,7 +83,7 @@ class Entriesv1r0 extends ApiController
         // parse our categories
         // make sure we have a category
         $category = ($category == '') ? 'all' : $category;
-        $category = array_filter(array_values(explode(',', $category)));
+        $category = array_filter(explode(',', $category));
 
         // if we have an array of categories lets remove any areas not passed in
         if (!in_array('all', $category)) {

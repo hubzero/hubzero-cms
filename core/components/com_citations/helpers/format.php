@@ -346,10 +346,10 @@ class Format
                     $url = $url ?: '';
 
                     if (strstr($url, "\r\n")) {
-                        $url = array_filter(array_values(explode("\r\n", $url)));
+                        $url = array_values(array_filter(explode("\r\n", $url)));
                         $url = $url[0];
                     } elseif (strstr($url, " ")) {
-                        $url = array_filter(array_values(explode(" ", $url)));
+                        $url = array_values(array_filter(explode(" ", $url)));
                         $url = $url[0];
                     }
 
@@ -590,10 +590,10 @@ class Format
 
             // check to see if we need to do any special processing to the issn/isbn before outputting
             if (strstr($issn_isbn, "\r\n")) {
-                $issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
+                $issn_isbn = array_values(array_filter(explode("\r\n", $issn_isbn)));
                 $issn_isbn = isset($issn_isbn[0]) ? preg_replace("/[^0-9\-]/", '', $issn_isbn[0]) : '';
             } elseif (strstr($issn_isbn, ' ')) {
-                $issn_isbn = array_filter(array_values(explode(' ', $issn_isbn)));
+                $issn_isbn = array_values(array_filter(explode(' ', $issn_isbn)));
                 $issn_isbn = isset($issn_isbn[0]) ? preg_replace("/[^0-9\-]/", '', $issn_isbn[0]) : '';
             }
 

@@ -685,7 +685,7 @@ class Items extends AdminController
 
         // Save publication record
         $this->model->publication->alias    = trim(Request::getString('alias', '', 'post'));
-        $this->model->publication->category = trim(Request::getInt('category', 0, 'post'));
+        $this->model->publication->category = Request::getInt('category', 0, 'post');
         $this->model->publication->access   = Request::getInt('access', 0, 'post');
         $this->model->publication->group_owner = $group_owner;
         $this->model->publication->featured = $featured;

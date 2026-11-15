@@ -700,7 +700,7 @@ class Select
      * @param   string|null   $attribs   HTML tag attributes
      * @param   string|null   $selected  The selected item
      * @param   integer|null  $neworder  1 if new and first, -1 if new and last, 0  or null if existing item
-     * @param   string|null   $chop      The length of the truncated headline
+     * @param   integer|null  $chop      The length of the truncated headline (default 30)
      * @return  string   Html for the select list
      */
     public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null)
@@ -718,7 +718,9 @@ class Select
             if (empty($items)) {
                 $options[] = self::option(1, Lang::txt('JOPTION_ORDER_FIRST'));
             } else {
-                $chop = '30';
+                if (!$chop) {
+                    $chop = 30;
+                }
 
                 $options[] = self::option(0, '0 ' . Lang::txt('JOPTION_ORDER_FIRST'));
                 for ($i = 0, $n = count($items); $i < $n; $i++) {

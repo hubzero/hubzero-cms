@@ -460,7 +460,7 @@ class Publications extends Plugin
         $publicationParams = Component::params('com_publications');
         $typeBlackList = [];
         $typeBlackList = explode(',', $publicationParams->get('sftptypeblacklist'));
-        $typeBlackList = array_filter($typeBlackList, 'trim');
+        $typeBlackList = array_filter($typeBlackList, static fn ($value) => trim($value) !== '');
         foreach ($versions as $version) {
             $publication = new \Components\Publications\Models\Publication(
                 $version->publication_id,

@@ -92,7 +92,8 @@ class View extends AbstractView
      */
     protected static function componentFromPath($path)
     {
-        $segments = array_values(array_filter(preg_split('#[/\\\\]+#', (string) $path), 'strlen'));
+        $segments = preg_split('#[/\\\\]+#', (string) $path);
+        $segments = array_values(array_filter($segments, static fn ($value) => $value !== ''));
 
         // The directory after "components" names the component, with or
         // without the com_ prefix: Component::path() accepts both

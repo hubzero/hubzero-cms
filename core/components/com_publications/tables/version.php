@@ -30,7 +30,7 @@ class Version extends Table
      * Load a record and bind to $this
      *
      * @param   integer|null  $pid      Pub ID
-     * @param   string   $version  Version number or name
+     * @param   string|int|null  $version  Version number or name
      * @return  mixed False if error, Object on success
      */
     public function loadVersion($pid = null, $version = 'dev')

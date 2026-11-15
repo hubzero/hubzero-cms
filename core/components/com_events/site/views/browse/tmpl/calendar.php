@@ -29,7 +29,7 @@ $startday = \Components\Events\Helpers\Html::$startDay;
 $startday = (!$startday || $startday > 1) ? 0 : $startday;
 
 $date = new \Hubzero\Utility\Date('now', Config::get('offset'));
-$timeWithOffset = $date->toLocal('U');
+$timeWithOffset = (int) $date->toLocal('U');
 
 
 $to_day = date("Y-m-d", $timeWithOffset);

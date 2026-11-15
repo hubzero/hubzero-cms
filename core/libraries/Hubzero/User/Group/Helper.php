@@ -80,7 +80,7 @@ class Helper
         $database = App::get('db');
 
         //parse the group list
-        $groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
+        $groupList = array_filter(array_map('trim', explode(',', $groupList)), static fn ($value) => $value !== '');
 
         //make sure we have a list of groups
         if (count($groupList) < 1) {

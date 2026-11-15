@@ -144,7 +144,7 @@ class Date extends DateTime
 
         // If the date is numeric assume a unix timestamp and convert it.
         date_default_timezone_set('UTC');
-        $datetime = is_numeric($datetime) ? date('c', $datetime) : $datetime;
+        $datetime = is_numeric($datetime) ? date('c', (int) $datetime) : $datetime;
 
         // Call the DateTime constructor.
         parent::__construct($datetime == null ? '' : $datetime, $timezone);

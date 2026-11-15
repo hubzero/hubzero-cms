@@ -366,7 +366,7 @@ class Categories extends AdminController
         ) {
             $rules = array_map(
                 function ($item) {
-                    return array_filter($item, 'strlen');
+                    return array_filter($item, static fn ($value) => $value !== '');
                 },
                 $items['rules'],
             );

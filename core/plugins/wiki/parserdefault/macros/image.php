@@ -272,7 +272,7 @@ Examples:
      * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
      *
      * @param   array  $matches  Values matching attr=val pairs
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseAttributeValuePair($matches)
     {
@@ -288,7 +288,7 @@ Examples:
         if (preg_match($size, $val, $matches) && $key != 'border') {
             $this->attr['style']['width'] = $val;
             $this->attr['width'] = intval($val);
-            return;
+            return '';
         }
 
         if (is_numeric($val)) {
@@ -299,7 +299,7 @@ Examples:
         // Links images by default
         if ($key == 'nolink') {
             $this->attr['href'] = 'none';
-            return;
+            return '';
         }
         // Check for a specific link given
         if ($key == 'link') {
@@ -314,7 +314,7 @@ Examples:
                     $this->attr['rel']  = 'external';
                 }
             }
-            return;
+            return '';
         }
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, left)]]
@@ -331,7 +331,7 @@ Examples:
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-            return;
+            return '';
         }
 
         // Look for any other attributes
@@ -353,7 +353,7 @@ Examples:
         } else {
             $this->attr[$key] = $val;
         }
-        return;
+        return '';
     }
 
     /**
@@ -361,7 +361,7 @@ Examples:
      * EX: [[Image(myimage.png, nolink, right)]]
      *
      * @param   array  $matches  Values matching the single attribute pattern
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseSingleAttribute($matches)
     {
@@ -373,7 +373,7 @@ Examples:
         if (preg_match($size, $key, $matches)) {
             $this->attr['style']['width'] = $key;
             $this->attr['width'] = intval($key);
-            return;
+            return '';
         }
 
         if (is_numeric($key)) {
@@ -385,7 +385,7 @@ Examples:
         // Links images by default
         if ($key == 'nolink') {
             $this->attr['href'] = 'none';
-            return;
+            return '';
         }
 
         // Specific call to render the image without the figure wrapper/border
@@ -393,7 +393,7 @@ Examples:
         if ($key == 'nofigure') {
             $this->attr['href'] = 'none';
             $this->attr['nofigure'] = true;
-            return;
+            return '';
         }
 
         // Check for alignment, no key given
@@ -412,10 +412,10 @@ Examples:
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-            return;
+            return '';
         }
 
-        return;
+        return '';
     }
 
     /**
@@ -437,12 +437,14 @@ Examples:
                 foreach ($bits as $bit) {
                     if (is_numeric($bit)) {
                         $nid = $bit;
-                        $id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
                         break;
                     }
                 }
                 if ($nid) {
-                    $this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+                    $this->config->set(
+                        'filepath',
+                        str_replace($nid, (string) intval($nid), $this->config->get('filepath')),
+                    );
                 }
             }
             $path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);

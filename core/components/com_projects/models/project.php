@@ -514,7 +514,7 @@ class Project extends Model
     /**
      * Authorize current user
      *
-     * @param   boolean  $reviewer
+     * @param   string|false  $reviewer
      * @return  void
      */
     private function authorize($reviewer = false)

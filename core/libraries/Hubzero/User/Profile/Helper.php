@@ -241,11 +241,12 @@ class Helper
      * Pad a user ID with zeros
      * ex: 123 -> 00123
      *
-     * @param   integer  $someid
+     * @param   integer|string  $someid
      * @return  string
      */
     public static function niceidformat($someid)
     {
+        $someid = (string) $someid;
         $prfx = '';
         if (substr($someid, 0, 1) == '-') {
             $prfx = 'n';

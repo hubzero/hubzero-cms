@@ -447,7 +447,7 @@ class Notes extends Plugin
     protected function list()
     {
         // Incoming
-        $id = trim(Request::getInt('p', 0));
+        $id = Request::getInt('p', 0);
 
         // Load requested page
         $page = $this->note->page($id);
@@ -488,7 +488,7 @@ class Notes extends Plugin
     protected function share()
     {
         // Incoming
-        $id = trim(Request::getInt('p', 0));
+        $id = Request::getInt('p', 0);
 
         // Load requested page
         $page = $this->note->page($id);

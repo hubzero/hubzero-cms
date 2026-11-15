@@ -79,12 +79,12 @@ class Str
 
         foreach ($tempData as $key => $hashVal) {
             $key = sprintf($format, preg_quote($key, '/'));
-            $str = preg_replace($key, $hashVal, $str);
+            $str = preg_replace($key, (string) $hashVal, $str);
         }
         $dataReplacements = array_combine($hashKeys, array_values($data));
         foreach ($dataReplacements as $tmpHash => $tmpValue) {
             $tmpValue = (is_array($tmpValue)) ? '' : $tmpValue;
-            $str = str_replace($tmpHash, $tmpValue, $str);
+            $str = str_replace((string) $tmpHash, $tmpValue, $str);
         }
 
         if (!isset($options['format']) && isset($options['before'])) {

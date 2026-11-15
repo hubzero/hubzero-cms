@@ -640,7 +640,7 @@ class Helper
         $tmax = 0;
         for ($i = 0; $i < count($arr); $i++) {
             $dateval = self::seldateValue($arr[$i], $date);
-            $len = strlen($dateval);
+            $len = strlen((string) $dateval);
             if ($len > $dmax) {
                 $dmax = $len;
             }

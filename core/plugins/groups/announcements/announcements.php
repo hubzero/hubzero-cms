@@ -135,7 +135,7 @@ class Announcements extends Plugin
             ->set('group', $group)
             ->set('name', $this->pluginName)
             ->set('rows', $rows)
-            ->setError($this->getErrors());
+            ->setErrors($this->getErrors());
 
         // Pass thru permissions for CRUD
         $view->set('isManager', $group->isManager(User::get('id')));
@@ -328,7 +328,7 @@ class Announcements extends Plugin
             ->set('name', $this->pluginName)
             ->set('filters', $filters)
             ->set('rows', $rows)
-            ->setError($this->getErrors());
+            ->setErrors($this->getErrors());
 
         // Display list of announcements
         return $view->loadTemplate();

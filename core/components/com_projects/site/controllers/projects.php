@@ -712,7 +712,7 @@ class Projects extends Base
         // Incoming
         $name    = trim(Request::getString('new-alias', '', 'post'));
         $title   = trim(Request::getString('title', '', 'post'));
-        $confirm = trim(Request::getInt('confirm', 0, 'post'));
+        $confirm = Request::getInt('confirm', 0, 'post');
 
         $name = preg_replace('/ /', '', $name);
         $name = strtolower($name);

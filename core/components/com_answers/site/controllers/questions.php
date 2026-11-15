@@ -459,7 +459,7 @@ class Questions extends SiteController
             $row->set('vote', $vote);
 
             $this->view
-                ->setError($this->getErrors())
+                ->setErrors($this->getErrors())
                 ->set('item', $row)
                 ->set('vote', $row->ballot())
                 ->setLayout('_vote')
@@ -587,7 +587,7 @@ class Questions extends SiteController
 
         // Output HTML
         $this->view
-            ->setError($this->getErrors())
+            ->setErrors($this->getErrors())
             ->set('results', $results)
             ->set('filters', $filters)
             ->set('config', $this->config)
@@ -703,7 +703,7 @@ class Questions extends SiteController
 
         // Render view
         $this->view
-            ->setError($this->getErrors())
+            ->setErrors($this->getErrors())
             ->set('question', $question)
             ->set('config', $this->config)
             ->set('funds', $funds)

@@ -94,9 +94,7 @@ class DiscoveryHelper
         $models = array_filter($allModels, function ($model) {
             $suffix = '.php';
             $suffixLength = strlen($suffix);
-            if (substr($model, - $suffixLength) == $suffix) {
-                return $model;
-            }
+            return substr($model, - $suffixLength) == $suffix;
         });
         $searchableModels = [];
         $searchableFlag = false;

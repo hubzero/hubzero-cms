@@ -306,7 +306,7 @@ class Recipients
      */
     public static function resolveGroups($tokens)
     {
-        $tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
+        $tokens = array_filter(array_map('trim', (array) $tokens), static fn ($value) => $value !== '');
         if (!$tokens) {
             return [];
         }
@@ -346,7 +346,7 @@ class Recipients
      */
     public static function resolveUsers($tokens)
     {
-        $tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
+        $tokens = array_filter(array_map('trim', (array) $tokens), static fn ($value) => $value !== '');
         if (!$tokens) {
             return [];
         }

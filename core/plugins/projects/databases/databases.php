@@ -801,7 +801,7 @@ class Databases extends Plugin
     /**
      * Guess data type
      *
-     * @param   object   $data
+     * @param   string   $data
      * @param   string   $type
      * @param   integer  $max_len
      * @return  string
@@ -952,7 +952,7 @@ class Databases extends Plugin
                 }
 
                 $col_name = strtolower(preg_replace('/\W/', '_', $label));
-                $col_name = substr($col_name, 0, (63 - strlen($i))) . '_' . $i;
+                $col_name = substr($col_name, 0, (63 - strlen((string) $i))) . '_' . $i;
 
                 // dd may be short or not JSON at all
                 $colType = (is_array($d) && isset($d[$i]['type'])) ? $d[$i]['type'] : '';
@@ -1420,7 +1420,7 @@ class Databases extends Plugin
      *
      * @param   integer  $identifier  Database ID or name
      * @param   object|null   $project     Project object
-     * @param   integer|null  $version     Database version
+     * @param   integer|string|null  $version  Database version
      * @return  bool
      */
     public function removeDatabase($identifier = 0, $project = null, $version = null)
@@ -1430,7 +1430,7 @@ class Databases extends Plugin
             return false;
         }
 
-        if ($version === null || trim($version) == '') {
+        if ($version === null || trim((string) $version) == '') {
             $this->setError(Lang::txt('PLG_PROJECTS_DATABASES_ERROR_INVALID_VERSION'));
             return false;
         }

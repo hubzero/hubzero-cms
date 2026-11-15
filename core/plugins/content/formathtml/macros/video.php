@@ -370,13 +370,15 @@ class Video extends Macro
                 foreach ($bits as $bit) {
                     if (is_numeric($bit)) {
                         $nid = $bit;
-                        $id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
                         break;
                     }
                 }
 
                 if ($nid) {
-                    $this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+                    $this->config->set(
+                        'filepath',
+                        str_replace($nid, (string) intval($nid), $this->config->get('filepath')),
+                    );
                 }
             }
             $path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
@@ -392,7 +394,7 @@ class Video extends Macro
      * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
      *
      * @param   array  $matches  Values matching attr=val pairs
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseAttributeValuePair($matches)
     {
@@ -409,7 +411,7 @@ class Video extends Macro
             $at = (isset($this->attr['width'])) ? 'height' : 'width';
             $this->attr['style'][$at] = $val;
             $this->attr[$at] = $val;
-            return;
+            return '';
         }
 
         // Set width if just a numeric size is given
@@ -418,7 +420,7 @@ class Video extends Macro
             $at = (isset($this->attr['width'])) ? 'height' : 'width';
             $this->attr['style'][$at] = $val . 'px';
             $this->attr[$at] = $val;
-            return;
+            return '';
         }
 
         // Check for alignment, no key given
@@ -436,7 +438,7 @@ class Video extends Macro
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-            return;
+            return '';
         }
 
         // Look for any other attributes
@@ -458,6 +460,8 @@ class Video extends Macro
         } else {
             $this->attr[$key] = $val;
         }
+
+        return '';
     }
 
     /**
@@ -465,7 +469,7 @@ class Video extends Macro
      * EX: [[Image(myimage.png, nolink, right)]]
      *
      * @param   array  $matches  Values matching the single attribute pattern
-     * @return  void
+     * @return  string  Empty: the match is removed
      */
     public function parseSingleAttribute($matches)
     {
@@ -477,7 +481,7 @@ class Video extends Macro
             $at = (isset($this->attr['width'])) ? 'height' : 'width';
             $this->attr['style'][$at] = $key;
             $this->attr[$at] = $key;
-            return;
+            return '';
         }
 
         // Set width if just a numeric size is given
@@ -486,7 +490,7 @@ class Video extends Macro
             $at = (isset($this->attr['width'])) ? 'height' : 'width';
             $this->attr['style'][$at] = $key . 'px';
             $this->attr[$at] = $key;
-            return;
+            return '';
         }
 
         // Check for alignment, no key given
@@ -506,6 +510,8 @@ class Video extends Macro
                 }
             }
         }
+
+        return '';
     }
 
     /**

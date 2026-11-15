@@ -98,7 +98,7 @@ class Media extends AdminController
         }
 
         // Ensure we have an ID to work with
-        $listdir = Request::getInt('dir', 0, 'post');
+        $listdir = strtolower(Request::getString('dir', '', 'post'));
         if (!$listdir) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
             $this->displayTask();
@@ -204,7 +204,7 @@ class Media extends AdminController
     protected function ajaxUpload()
     {
         // Ensure we have an ID to work with
-        $listdir = Request::getInt('dir', 0);
+        $listdir = strtolower(Request::getString('dir', ''));
 
         if (!$listdir) {
             echo json_encode(['error' => $listdir . ' ' . Lang::txt('COM_COLLECTIONS_NO_ID')]);

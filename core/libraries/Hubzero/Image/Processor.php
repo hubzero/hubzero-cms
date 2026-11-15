@@ -334,7 +334,7 @@ class Processor extends Obj
     /**
      * Image Resize
      *
-     * @param   integer  $new_dimension  Size to resize image to
+     * @param   int|float|string  $new_dimension  Size in pixels, a fraction below 1, or a percentage ('50%')
      * @param   boolean  $use_height     Use the height as the baseline? (uses width by default)
      * @param   boolean  $squared        Make the image square?
      * @param   boolean  $resample       Resample the image?

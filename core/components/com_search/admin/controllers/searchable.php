@@ -158,7 +158,7 @@ class Searchable extends AdminController
         $searchComponent = is_object($obj) ? $obj : SearchComponent::oneOrFail($id);
         $fields = $searchComponent->getSearchableFields();
         $existingFields = $searchComponent->filters->fieldsByKey('field');
-        $existingFields = array_filter($existingFields, 'strtolower');
+        $existingFields = array_filter($existingFields);
         $availableFields = array_diff($fields, $existingFields);
         $filters = [];
         foreach ($searchComponent->filters()->order('ordering', 'ASC') as $filter) {

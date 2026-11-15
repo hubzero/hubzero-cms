@@ -107,7 +107,7 @@ class EventsCal extends Module
 
         // Get the time in unix format
         $date = new \Hubzero\Utility\Date();
-        $timeWithOffset = $date->toLocal('U');
+        $timeWithOffset = (int) $date->toLocal('U');
 
         // Get the start day
         $startday = $this->params->get('start_day');

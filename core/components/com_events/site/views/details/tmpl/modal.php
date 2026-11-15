@@ -153,9 +153,8 @@ defined('_HZEXEC_') or die();
                 //$ts[0] = intval($ts[0]);
                 if (intval($ts[0]) > 12) {
                     $ts[0] = ((int) $ts[0] - 12);
-                    $ts[0] = (substr($ts[0], 0, 1) == '0') ? substr($ts[0], 1) : $ts[0];
                     $this->row->start_time = implode(':', $ts);
-                    $this->row->start_time .= ' <abbr title="Post Meridian">am</abbr>';
+                    $this->row->start_time .= ' <abbr title="Post Meridian">pm</abbr>';
                 } else {
                     $this->row->start_time = (substr($this->row->start_time, 0, 1) == '0')
                         ? substr($this->row->start_time, 1)
@@ -168,7 +167,6 @@ defined('_HZEXEC_') or die();
                 //$te[0] = intval($te[0]);
                 if (intval($te[0]) > 12) {
                     $te[0] = ((int) $te[0] - 12);
-                    $te[0] = (substr($te[0], 0, 1) == '0') ? substr($te[0], 1) : $te[0];
                     $this->row->stop_time = implode(':', $te);
                     $this->row->stop_time .= ' <abbr title="Post Meridian">pm</abbr>';
                 } else {
