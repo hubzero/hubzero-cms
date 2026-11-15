@@ -25,13 +25,6 @@ class Nogit extends Models\Adapter
     protected $profileAssoc;
 
     /**
-     * Adapter name
-     *
-     * @var  string
-     */
-    private $name = 'nogit';
-
-    /**
      * Full path to repository
      *
      * @var  string|null

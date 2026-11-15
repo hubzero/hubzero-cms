@@ -29,13 +29,6 @@ class Publications extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * Resource areas
-     *
-     * @var array|null
-     */
-    private $areas = null;
-
-    /**
      * Types
      *
      * @var array|null

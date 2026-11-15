@@ -46,13 +46,6 @@ class Comments extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * List of allowed extensions
-     *
-     * @var  array|null
-     */
-    private $allowedExtensions = null;
-
-    /**
      * Display comments on an object
      *
      * @param   object|mixed   $obj

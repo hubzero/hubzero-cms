@@ -18,13 +18,6 @@ use Hubzero\Base\Obj;
 abstract class Base extends Obj
 {
     /**
-     * Varies
-     *
-     * @var object|null
-     */
-    private $obj = null;
-
-    /**
      * File path
      *
      * @var string|null

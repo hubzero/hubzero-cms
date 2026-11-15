@@ -70,8 +70,6 @@ class ResourceMapGenerator
     private $date_published;
 
     // List of children this resource has
-    private $children = [];
-
     // Aggregates which resources; compiled from $children
     private $aggregates = [];
 

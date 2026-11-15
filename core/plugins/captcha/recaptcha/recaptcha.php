@@ -29,15 +29,6 @@ class Recaptcha extends Plugin
     private static $jsUrl = 'https://www.google.com/recaptcha/api.js';
 
     /**
-     * Path to JS fallback library needed for ReCAPTCHA to display when JS is disabled
-     *
-     * [!] Must be served over HTTPS
-     *
-     * @var  string
-     */
-    private static $jsFallbackUrl = 'https://www.google.com/recaptcha/api/fallback?k=';
-
-    /**
      * ReCAPTCHA verification url
      *
      * @var  string

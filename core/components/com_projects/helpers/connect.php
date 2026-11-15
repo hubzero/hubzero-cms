@@ -62,13 +62,6 @@ class Connect extends Obj
     private $connect = [];
 
     /**
-     * Service configuration
-     *
-     * @var array
-     */
-    private $service = [];
-
-    /**
      * Available services
      *
      * @var array

@@ -30,13 +30,6 @@ class PaymentProvider
     private $buttonVars;
 
     /**
-     * Credentials
-     *
-     * @var  array
-     */
-    private $credentials;
-
-    /**
      * Constructor
      *
      * @return  void

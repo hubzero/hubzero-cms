@@ -38,20 +38,6 @@ class Section extends Base
     protected $scope = 'section';
 
     /**
-     * Flag for if authorization checks have been run
-     *
-     * @var mixed
-     */
-    private $authorized = false;
-
-    /**
-     * List of roles
-     *
-     * @var object|null
-     */
-    private $roles = null;
-
-    /**
      * List of members
      *
      * @var array|null

@@ -26,13 +26,6 @@ class Excel implements Adapter
     private $data = [];
 
     /**
-     * Integer to hold count
-     *
-     * @var  int
-     */
-    private $data_count = 0;
-
-    /**
      * Does this adapter respond to a mime type
      *
      * @param   string $mime  Mime type

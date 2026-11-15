@@ -43,20 +43,6 @@ class Tool extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Tool';
 
     /**
-     * Entry
-     *
-     * @var object|null
-     */
-    private $entry = null;
-
-    /**
-     * \Hubzero\Base\ItemList
-     *
-     * @var object|null
-     */
-    private $entries = null;
-
-    /**
      * Registry
      *
      * @var object|null

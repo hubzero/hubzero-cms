@@ -23,13 +23,6 @@ class Image extends File
     protected $type = 'img';
 
     /**
-     * Allowed file extensions
-     *
-     * @var  array
-     */
-    private $handles = ['png', 'gif', 'jpg', 'jpeg', 'jpe'];
-
-    /**
      * File extension
      *
      * @var  string

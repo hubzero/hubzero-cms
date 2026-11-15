@@ -90,13 +90,6 @@ class Course extends Base
     private $pages = null;
 
     /**
-     * List of plugins available for a given event
-     *
-     * @var array
-     */
-    private $plugins = [];
-
-    /**
      * URL to this object
      *
      * @var string|null

@@ -63,8 +63,6 @@ class Oauth
      *
      * @var  string|null
      **/
-    private $state = null;
-
     /**
      * The oauth redirect URI
      *

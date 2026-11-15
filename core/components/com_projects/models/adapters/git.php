@@ -28,13 +28,6 @@ class Git extends Models\Adapter
     protected $profileAssoc;
 
     /**
-     * Adapter name
-     *
-     * @var  string
-     */
-    private $name = 'git';
-
-    /**
      * Full path to repository
      *
      * @var  string|null

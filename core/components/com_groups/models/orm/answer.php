@@ -70,13 +70,6 @@ class Answer extends Relational
     ];
 
     /**
-     * Has external data been loaded?
-     *
-     * @var  bool
-     */
-    private $valuesLoaded = false;
-
-    /**
      * Generates automatic modified field value
      *
      * @param   array   $data  the data being saved

@@ -32,13 +32,6 @@ class Todo extends Model
     private $entry = null;
 
     /**
-     * \Hubzero\Base\ItemList
-     *
-     * @var object|null
-     */
-    private $entries = null;
-
-    /**
      * Registry
      *
      * @var object|null

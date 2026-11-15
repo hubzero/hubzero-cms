@@ -37,13 +37,6 @@ class Entry extends Model
     protected $context = 'com_projects.todo.details';
 
     /**
-     * Comment
-     *
-     * @var object|null
-     */
-    private $comment = null;
-
-    /**
      * \Hubzero\Base\ItemList
      *
      * @var object|null

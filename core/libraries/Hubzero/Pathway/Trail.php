@@ -21,13 +21,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     private $items = [];
 
     /**
-     * Cursor position
-     *
-     * @var  integer
-     */
-    private $position = 0;
-
-    /**
      * Create and add an item to the pathway.
      *
      * @param   string  $name  The name of the item.

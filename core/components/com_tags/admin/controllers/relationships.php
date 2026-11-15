@@ -18,13 +18,6 @@ use Hubzero\Facades\Request;
 class Relationships extends AdminController
 {
     /**
-     * Prelead
-     *
-     * @var string
-     */
-    private $preload;
-
-    /**
      * Show a form for looking up a tag's relationships
      *
      * @return  void

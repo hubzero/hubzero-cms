@@ -28,25 +28,11 @@ class Archive extends Obj
     private $modules = null;
 
     /**
-     * Modules count
-     *
-     * @var integer|null
-     */
-    private $modulesCount = null;
-
-    /**
      * Database
      *
      * @var object|null
      */
     private $db = null;
-
-    /**
-     * Registry
-     *
-     * @var object
-     */
-    private $config;
 
     /**
      * Constructor

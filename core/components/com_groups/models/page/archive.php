@@ -29,13 +29,6 @@ class Archive extends Obj
     private $pages = null;
 
     /**
-     * Page count
-     *
-     * @var integer|null
-     */
-    private $pagesCount = null;
-
-    /**
      * Database
      *
      * @var object|null

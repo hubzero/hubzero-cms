@@ -27,13 +27,6 @@ class AuthorizationCode implements GrantTypeInterface
     private $storage;
 
     /**
-     * Array to hold config
-     *
-     * @var  array
-     */
-    private $config = [];
-
-    /**
      * The authorization code being exchanged, as storage returned it
      *
      * @var  array

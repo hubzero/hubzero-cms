@@ -48,20 +48,6 @@ class Impact extends Plugin
     protected $stats = null;
 
     /**
-     * Publication categories
-     *
-     * @var array|null
-     */
-    private $cats = null;
-
-    /**
-     * Record count
-     *
-     * @var integer|null
-     */
-    private $total = null;
-
-    /**
      * Constructor
      *
      * @param  object &$subject Event observer

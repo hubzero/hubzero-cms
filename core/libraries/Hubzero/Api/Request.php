@@ -79,16 +79,8 @@ class Request
      * @var  string
      */
     private $body = '';
-
-    private $server = [];
     private $get = [];
     private $post = [];
-    private $files = [];
-    private $cookie = [];
-    private $session = [];
-    private $request = [];
-    private $env = [];
-
     /**
      * Short description for 'getHeaderField'
      *
