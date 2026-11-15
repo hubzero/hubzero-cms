@@ -108,8 +108,8 @@ $content .= '  <tr>' . "\n";
 
 // dmcd May 7/04 fix to fill in end days out of month correctly
 $dayOfWeek = $startday;
-$start = (date("w", mktime(0, 0, 0, $cal_month, 1, $cal_year)) - $startday + 7) % 7;
-$d = date("t", mktime(0, 0, 0, $cal_month, 0, $cal_year)) - $start + 1;
+$start = (date("w", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year)) - $startday + 7) % 7;
+$d = date("t", mktime(0, 0, 0, (int) $cal_month, 0, (int) $cal_year)) - $start + 1;
 $kownt = 0;
 
 for ($a = $start; $a > 0; $a--) {
@@ -124,13 +124,13 @@ for ($a = $start; $a > 0; $a--) {
 
 $monthHasEvent = false;
 //$eventCheck = new EventsRepeat;
-$lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
+$lastDayOfMonth = date("t", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year));
 
 // Pre-bucket events by their OWN local date. Times are stored in UTC; convert
 // each event to its time zone so it lands on the day it occurs locally.
 $eventDays  = [];
-$rangeStart = date('Y-m-d H:i:s', mktime(0, 0, 0, $cal_month, 1, $cal_year) - 86400);
-$rangeEnd   = date('Y-m-d H:i:s', mktime(23, 59, 59, $cal_month, $lastDayOfMonth, $cal_year) + 86400);
+$rangeStart = date('Y-m-d H:i:s', mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year) - 86400);
+$rangeEnd   = date('Y-m-d H:i:s', mktime(23, 59, 59, (int) $cal_month, (int) $lastDayOfMonth, (int) $cal_year) + 86400);
 $database->setQuery(
     "SELECT `publish_up`, `publish_down`, `time_zone` FROM `#__events`
 	 WHERE `scope`='event' AND `state`=1 AND `approved`=1

@@ -22,7 +22,7 @@ class Sanitize
     /**
      * Removes any non-alphanumeric characters.
      *
-     * @param   string|array  $string   String to sanitize
+     * @param   string|int|array  $string   String to sanitize
      * @param   array   $allowed  An array of additional characters that are not to be removed.
      * @return  string|array  Sanitized string
      */

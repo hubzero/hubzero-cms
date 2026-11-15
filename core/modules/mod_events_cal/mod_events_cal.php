@@ -141,7 +141,7 @@ class EventsCal extends Module
         // Display last month?
         if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays)) {
             // Build last month calendar
-            $lastMonthTime = mktime(0, 0, 0, date("n") - 1, 1, date("Y"));
+            $lastMonthTime = mktime(0, 0, 0, date("n") - 1, 1, (int) date("Y"));
             $this->content .= $this->calendar(
                 $timeWithOffset,
                 $startday,
@@ -153,7 +153,7 @@ class EventsCal extends Module
         }
 
         // Build this month
-        $thisMonthTime = mktime(0, 0, 0, date("n"), 1, date("Y"));
+        $thisMonthTime = mktime(0, 0, 0, (int) date("n"), 1, (int) date("Y"));
         $this->content .= $this->calendar(
             $timeWithOffset,
             $startday,
@@ -165,7 +165,7 @@ class EventsCal extends Module
         // Display next month?
         if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays)) {
             // Build next month calendar
-            $nextMonthTime = mktime(0, 0, 0, date("n") + 1, 1, date("Y"));
+            $nextMonthTime = mktime(0, 0, 0, date("n") + 1, 1, (int) date("Y"));
             $this->content .= $this->calendar(
                 $timeWithOffset,
                 $startday,
@@ -241,8 +241,8 @@ class EventsCal extends Module
 
         // Fix to fill in end days out of month correctly
         $dayOfWeek = $startday;
-        $start = (date("w", mktime(0, 0, 0, $cal_month, 1, $cal_year)) - $startday + 7) % 7;
-        $d = date("t", mktime(0, 0, 0, $cal_month, 0, $cal_year)) - $start + 1;
+        $start = (date("w", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year)) - $startday + 7) % 7;
+        $d = date("t", mktime(0, 0, 0, (int) $cal_month, 0, (int) $cal_year)) - $start + 1;
         $kownt = 0;
         for ($a = $start; $a > 0; $a--) {
             $content .= '   <td class="daylink">&nbsp;</td>' . "\n";
@@ -251,7 +251,7 @@ class EventsCal extends Module
         }
 
         $monthHasEvent = false;
-        $lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
+        $lastDayOfMonth = date("t", mktime(0, 0, 0, (int) $cal_month, 1, (int) $cal_year));
         $rd = 0;
         for ($d = 1; $d <= $lastDayOfMonth; $d++) {
             $do = ($d < 10) ? "0$d" : "$d";

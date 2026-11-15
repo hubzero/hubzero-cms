@@ -254,7 +254,7 @@ class Link extends Relational
      *
      * @param   string  $type
      * @param   string  $authenticator
-     * @param   string  $domain
+     * @param   string|null  $domain
      * @param   string  $username
      * @return  mixed   Object on success, False on failure
      */

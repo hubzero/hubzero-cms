@@ -190,7 +190,7 @@ class Html extends Obj
     /**
      * Convert file size
      *
-     * @param   int     $file_size
+     * @param   int|float     $file_size
      * @param   string  $from
      * @param   string  $to
      * @param   string|int $round

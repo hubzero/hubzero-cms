@@ -67,7 +67,14 @@ class Notices extends Module
     {
         $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
         if ($stime && preg_match($pattern, $stime, $regs)) {
-            $stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
+            $stime = mktime(
+                (int) $regs[4],
+                (int) $regs[5],
+                (int) $regs[6],
+                (int) $regs[2],
+                (int) $regs[3],
+                (int) $regs[1],
+            );
         }
         return $stime;
     }

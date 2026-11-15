@@ -1950,7 +1950,7 @@ class Publication extends Obj
      * Link will vary depending upon action desired, such as edit, delete, etc.
      *
      * @param   string   $type  The type of link to return
-     * @return  boolean
+     * @return  string
      */
     public function link($type = '')
     {

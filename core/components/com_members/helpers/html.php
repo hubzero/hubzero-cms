@@ -138,7 +138,7 @@ class Html
         list($date, $time) = explode(' ', $datestr);
         list($y, $m, $d) = explode('-', $date);
         list($h, $i, $s) = explode(':', $time);
-        return mktime($h, $i, $s, $m, $d, $y);
+        return mktime((int) $h, (int) $i, (int) $s, (int) $m, (int) $d, (int) $y);
     }
 
     /**

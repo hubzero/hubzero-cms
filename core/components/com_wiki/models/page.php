@@ -474,7 +474,7 @@ class Page extends Relational
      *
      * @param   string   $type    The type of link to return
      * @param   string|null   $params
-     * @return  boolean
+     * @return  string
      */
     public function link($type = '', $params = null)
     {

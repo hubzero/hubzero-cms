@@ -331,7 +331,7 @@ class Select
     /**
      * Create an object that represents an option in an option list.
      *
-     * @param   string   $value    The value of the option
+     * @param   string|int|float   $value    The value of the option
      * @param   string   $text     The text for the option
      * @param   mixed    $optKey   If a string, the returned object property name for
      *                             the value. If an array, options. Valid options are:

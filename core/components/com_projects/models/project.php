@@ -999,7 +999,7 @@ class Project extends Model
      * Save param
      *
      * @param   string  $param
-     * @param   string  $value
+     * @param   string|int|float  $value
      * @return  void
      */
     public function saveParam($param = '', $value = '')

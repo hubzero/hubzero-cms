@@ -167,19 +167,47 @@ class Ticketsv1r0 extends ApiController
             }
             switch ($val) {
                 case 'year':
-                    $val = with(new Date(mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1)))->format("Y-m-d H:i:s");
+                    $val = with(new Date(mktime(
+                        0,
+                        0,
+                        0,
+                        (int) date("m"),
+                        (int) date("d"),
+                        date("Y") - 1,
+                    )))->format("Y-m-d H:i:s");
                     break;
 
                 case 'month':
-                    $val = with(new Date(mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"))))->format("Y-m-d H:i:s");
+                    $val = with(new Date(mktime(
+                        0,
+                        0,
+                        0,
+                        date("m") - 1,
+                        (int) date("d"),
+                        (int) date("Y"),
+                    )))->format("Y-m-d H:i:s");
                     break;
 
                 case 'week':
-                    $val = with(new Date(mktime(0, 0, 0, date("m"), date("d") - 7, date("Y"))))->format("Y-m-d H:i:s");
+                    $val = with(new Date(mktime(
+                        0,
+                        0,
+                        0,
+                        (int) date("m"),
+                        date("d") - 7,
+                        (int) date("Y"),
+                    )))->format("Y-m-d H:i:s");
                     break;
 
                 case 'day':
-                    $val = with(new Date(mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"))))->format("Y-m-d H:i:s");
+                    $val = with(new Date(mktime(
+                        0,
+                        0,
+                        0,
+                        (int) date("m"),
+                        date("d") - 1,
+                        (int) date("Y"),
+                    )))->format("Y-m-d H:i:s");
                     break;
 
                 default:

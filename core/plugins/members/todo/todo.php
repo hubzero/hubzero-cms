@@ -271,7 +271,7 @@ class Todo extends Plugin
                         $month = '0' . $month;
                     }
                     if (checkdate($month, $day, $year)) {
-                        $objTD->duedate = Date::of(mktime(0, 0, 0, $month, $day, $year))->toSql();
+                        $objTD->duedate = Date::of(mktime(0, 0, 0, (int) $month, (int) $day, (int) $year))->toSql();
                     }
                 }
             }

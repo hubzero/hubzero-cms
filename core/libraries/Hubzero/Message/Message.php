@@ -115,8 +115,8 @@ class Message extends Relational
             $entries->whereEquals('created_by', $filters['created_by']);
         }
         if (isset($filters['daily_limit']) && $filters['daily_limit'] != 0) {
-            $start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 00:00:00";
-            $end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . " 23:59:59";
+            $start = date('Y-m-d', mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'))) . " 00:00:00";
+            $end   = date('Y-m-d', mktime(0, 0, 0, (int) date('m'), (int) date('d'), (int) date('Y'))) . " 23:59:59";
 
             $entries->where('created', '>=', $start);
             $entries->where('created', '<=', $end);

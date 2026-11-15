@@ -270,8 +270,8 @@ class Tickets extends SiteController
             }
 
             if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->get('start'), $regs)) {
-                $startmonth = date("m", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
-                $startyear = $first = date("Y", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
+                $startmonth = date("m", mktime(0, 0, 0, (int) $regs[2], 1, (int) $regs[1]));
+                $startyear = $first = date("Y", mktime(0, 0, 0, (int) $regs[2], 1, (int) $regs[1]));
                 //$end = $year . '-' . $month;
             }
         }
@@ -296,8 +296,8 @@ class Tickets extends SiteController
                 $endyear  = intval($regs[1]);
                 $endyear++;
 
-                $month = date("m", mktime(0, 0, 0, ($endmonth + 1), 1, $regs[1]));
-                $year  = date("Y", mktime(0, 0, 0, ($endmonth + 1), 1, $regs[1]));
+                $month = date("m", mktime(0, 0, 0, ($endmonth + 1), 1, (int) $regs[1]));
+                $year  = date("Y", mktime(0, 0, 0, ($endmonth + 1), 1, (int) $regs[1]));
                 $end   = $year . '-' . $month;
             }
         } else {
