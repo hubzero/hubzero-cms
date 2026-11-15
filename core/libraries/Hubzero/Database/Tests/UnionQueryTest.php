@@ -49,7 +49,6 @@ class UnionQueryTest extends AbstractDriverTestCase
         $this->setupTables($driver);
 
         $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'union'));
 
         $query->select('name')->from('union_users');
         $result = $query->union(function ($q) {
@@ -75,7 +74,6 @@ class UnionQueryTest extends AbstractDriverTestCase
         $this->setupTables($driver);
 
         $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'unionAll'));
 
         $query->select('name')->from('union_users');
         $result = $query->unionAll(function ($q) {

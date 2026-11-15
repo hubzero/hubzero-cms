@@ -176,30 +176,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test exists() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testExistsMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'exists'));
-    }
-
-    /**
-     * Test doesntExist() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testDoesntExistMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'doesntExist'));
-    }
-
-    /**
      * Test exists() returns true when rows exist
      */
     #[DataProvider('databaseProvider')]
@@ -317,30 +293,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
     // whereColumn() / orWhereColumn() Tests
     // =========================================================================
-
-    /**
-     * Test whereColumn() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereColumnMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereColumn'));
-    }
-
-    /**
-     * Test orWhereColumn() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testOrWhereColumnMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'orWhereColumn'));
-    }
 
     /**
      * Test whereColumn() returns self for chaining
@@ -507,30 +459,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
     // increment() / decrement() Tests
     // =========================================================================
-
-    /**
-     * Test increment() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testIncrementMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'increment'));
-    }
-
-    /**
-     * Test decrement() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testDecrementMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'decrement'));
-    }
 
     /**
      * Test increment() by default amount (1)
@@ -816,30 +744,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test whereBetween() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereBetweenMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereBetween'));
-    }
-
-    /**
-     * Test whereNotBetween() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereNotBetween'));
-    }
-
-    /**
      * Test whereBetween() filters correctly
      */
     #[DataProvider('databaseProvider')]
@@ -1029,30 +933,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test whereNotLike() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereNotLikeMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereNotLike'));
-    }
-
-    /**
-     * Test orWhereNotLike() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testOrWhereNotLikeMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'orWhereNotLike'));
-    }
-
-    /**
      * Test whereNotLike() filters correctly
      */
     #[DataProvider('databaseProvider')]
@@ -1139,30 +1019,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
     // whereBetweenColumns() Tests
     // =========================================================================
-
-    /**
-     * Test whereBetweenColumns() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereBetweenColumnsMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereBetweenColumns'));
-    }
-
-    /**
-     * Test whereNotBetweenColumns() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereNotBetweenColumnsMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereNotBetweenColumns'));
-    }
 
     /**
      * Test whereBetweenColumns() generates correct SQL
@@ -1311,30 +1167,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test whereNot() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereNotMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereNot'));
-    }
-
-    /**
-     * Test orWhereNot() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testOrWhereNotMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'orWhereNot'));
-    }
-
-    /**
      * Test whereNot() generates SQL with NOT wrapper
      */
     #[DataProvider('databaseProvider')]
@@ -1473,30 +1305,6 @@ class QueryConvenienceMethodsTest extends AbstractDriverTestCase
     // =========================================================================
     // whereFullText() Tests
     // =========================================================================
-
-    /**
-     * Test whereFullText() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testWhereFullTextMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'whereFullText'));
-    }
-
-    /**
-     * Test orWhereFullText() method exists on Query
-     */
-    #[DataProvider('databaseProvider')]
-    public function testOrWhereFullTextMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'orWhereFullText'));
-    }
 
     /**
      * Test whereFullText() with single column executes successfully

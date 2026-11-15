@@ -47,7 +47,6 @@ class UnionQuerySingleTest extends AbstractDriverTestCase
 
         // Test
         $query = new Query($driver);
-        $this->assertTrue(method_exists($query, 'union'));
 
         $query->select('name')->from('union_users');
         $result = $query->union(function ($q) {

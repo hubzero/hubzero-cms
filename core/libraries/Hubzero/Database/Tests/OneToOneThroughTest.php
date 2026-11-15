@@ -199,30 +199,6 @@ class OneToOneThroughTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test oneToOneThrough method exists on Relational
-     */
-    #[DataProvider('databaseProvider')]
-    public function testOneToOneThroughMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $user = new ThroughUser();
-        $this->assertTrue(method_exists($user, 'oneToOneThrough'));
-    }
-
-    /**
-     * Test hasOneThrough alias exists on Relational
-     */
-    #[DataProvider('databaseProvider')]
-    public function testHasOneThroughAliasExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->resetTestState($driver);
-
-        $user = new ThroughUser();
-        $this->assertTrue(method_exists($user, 'hasOneThrough'));
-    }
-
-    /**
      * Test basic oneToOneThrough retrieval
      */
     #[DataProvider('databaseProvider')]

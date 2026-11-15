@@ -138,32 +138,6 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     // =========================================================================
 
     /**
-     * Test load() method exists on Relational
-     */
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testLoadMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->setupTestData($driver);
-
-        $user = new LazyUser();
-        $this->assertTrue(method_exists($user, 'load'));
-    }
-
-    /**
-     * Test loadMissing() method exists on Relational
-     */
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->setupTestData($driver);
-
-        $user = new LazyUser();
-        $this->assertTrue(method_exists($user, 'loadMissing'));
-    }
-
-    /**
      * Test load() loads a simple relationship on a single model
      */
     #[Test]
@@ -265,32 +239,6 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     // =========================================================================
     // Collection Tests (Rows::load)
     // =========================================================================
-
-    /**
-     * Test load() method exists on Rows
-     */
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testRowsLoadMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->setupTestData($driver);
-
-        $rows = new Rows();
-        $this->assertTrue(method_exists($rows, 'load'));
-    }
-
-    /**
-     * Test loadMissing() method exists on Rows
-     */
-    #[Test]
-    #[DataProvider('databaseProvider')]
-    public function testRowsLoadMissingMethodExists(string $dbName, BaseSqlDriver $driver): void
-    {
-        $this->setupTestData($driver);
-
-        $rows = new Rows();
-        $this->assertTrue(method_exists($rows, 'loadMissing'));
-    }
 
     /**
      * Test load() on Rows loads relationships for all models

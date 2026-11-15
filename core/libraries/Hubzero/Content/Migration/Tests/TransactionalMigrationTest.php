@@ -112,11 +112,6 @@ class TransactionalMigrationTest extends TestCase
             public function __construct() {}
         };
 
-        // Test property exists check
-        $this->assertTrue(property_exists($migrationWithDefault, 'useTransaction'));
-        $this->assertTrue(property_exists($migrationOptOut, 'useTransaction'));
-        $this->assertTrue(property_exists($migrationOptIn, 'useTransaction'));
-
         // Test values
         $this->assertTrue($migrationWithDefault->useTransaction);
         $this->assertFalse($migrationOptOut->useTransaction);

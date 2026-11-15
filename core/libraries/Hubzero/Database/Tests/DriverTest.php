@@ -396,9 +396,20 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPreparedStatementWithBind(string $dbName, BaseSqlDriver $driver): void
     {
-        // Note: bind() method has compatibility issues across databases
-        // This test is simplified to just verify the method exists
-        $this->assertTrue(method_exists($driver, 'bind'), 'Driver should have bind() method');
+        $table = self::$testTable;
+
+        // The same path insertObject() takes: prepare with placeholders, bind, execute
+        $driver->prepare(
+            "INSERT INTO " . $driver->quoteName($table)
+            . " (" . $driver->quoteName('name') . ", " . $driver->quoteName('email') . ")"
+            . " VALUES (?, ?)",
+        )->bind(['Bound User', 'bound@example.com']);
+        $driver->execute();
+
+        $driver->setQuery("SELECT " . $driver->quoteName('email') . " FROM " . $driver->quoteName($table)
+            . " WHERE " . $driver->quoteName('name') . " = " . $driver->quote('Bound User'));
+
+        $this->assertSame('bound@example.com', (string) $driver->loadResult());
     }
 
     // =========================================================================

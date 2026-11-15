@@ -316,12 +316,6 @@ class ProgressTest extends Basic
      * Test Output class has getProgressOutput method
      *
      * @return  void
-     **/
-    public function testOutputHasGetProgressOutputMethod()
-    {
-        $output = new Output();
-        $this->assertTrue(method_exists($output, 'getProgressOutput'));
-    }
 
     /**
      * Test getProgressOutput returns Progress instance
@@ -339,12 +333,6 @@ class ProgressTest extends Basic
      * Test Output class has withProgress method
      *
      * @return  void
-     **/
-    public function testOutputHasWithProgressMethod()
-    {
-        $output = new Output();
-        $this->assertTrue(method_exists($output, 'withProgress'));
-    }
 
     /**
      * Test withProgress iterates over items
@@ -434,26 +422,29 @@ class ProgressTest extends Basic
     }
 
     /**
-     * Test Output class has withProgressFinish method
+     * Test withProgressFinish runs the callback for each item and prints the finish message
      *
      * @return  void
      **/
-    public function testOutputHasWithProgressFinishMethod()
+    public function testWithProgressFinishProcessesItemsAndFinishes()
     {
-        $output = new Output();
-        $this->assertTrue(method_exists($output, 'withProgressFinish'));
+        $output  = new Output();
+        $results = null;
+
+        $printed = $this->getBuffered(function () use ($output, &$results) {
+            $results = $output->withProgressFinish(['a' => 1, 'b' => 2], function ($item) {
+                return $item * 10;
+            }, '', 'bar', 'All finished');
+        });
+
+        $this->assertSame(['a' => 10, 'b' => 20], $results);
+        $this->assertStringContainsString('All finished', $printed);
     }
 
     /**
      * Test Output class has withSpinner method
      *
      * @return  void
-     **/
-    public function testOutputHasWithSpinnerMethod()
-    {
-        $output = new Output();
-        $this->assertTrue(method_exists($output, 'withSpinner'));
-    }
 
     /**
      * Test withSpinner executes callback
