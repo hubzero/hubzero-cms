@@ -165,7 +165,7 @@ class Media extends AdminController
             $sizeLimit = $sizeLimit * 1024 * 1024;
 
             // make sure we have a file
-            if (empty($file) || !is_array($file) || empty($file['name'])) {
+            if (empty($file) || empty($file['name'])) {
                 $this->setError(Lang::txt('COM_GROUPS_NO_FILE'));
 
                 $this->displayTask();

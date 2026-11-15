@@ -337,7 +337,6 @@ class Comments extends AdminController
 
         // Incoming
         $ids    = Request::getArray('id', []);
-        $ids    = (!is_array($ids) ? [$ids] : $ids);
         $pageid = Request::getInt('page_id', 0);
 
         // Check for an ID

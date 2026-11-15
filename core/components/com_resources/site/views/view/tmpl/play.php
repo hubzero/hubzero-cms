@@ -37,7 +37,7 @@ $attributes = $attribs->get('attributes', '');
 if ($attributes) {
     $a = explode(',', $attributes);
     $bits = [];
-    if ($a && is_array($a)) {
+    if ($a) {
         foreach ($a as $b) {
             if (strstr($b, ':')) {
                 $b = preg_split('#:#', $b);

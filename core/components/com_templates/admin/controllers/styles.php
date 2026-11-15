@@ -400,7 +400,7 @@ class Styles extends AdminController
     public function setDefaultTask()
     {
         $id = Request::getArray('id', [0]);
-        $id = is_array($id) ? $id[0] : $id;
+        $id = $id[0] ?? null;
 
         if ($id) {
             $style = Style::oneOrFail(intval($id));

@@ -137,7 +137,7 @@ class Answers extends AdminController
 
         if (!is_object($row)) {
             $id = Request::getArray('id', [0]);
-            $id = (is_array($id) && !empty($id)) ? $id[0] : $id;
+            $id = (!empty($id)) ? $id[0] : $id;
 
             $row = Response::oneOrNew($id);
         }
@@ -282,7 +282,6 @@ class Answers extends AdminController
         // Incoming
         $qid = Request::getInt('qid', 0);
         $id  = Request::getArray('id', []);
-        $id  = !is_array($id) ? [$id] : $id;
 
         $publish = ($this->task == 'accept') ? 1 : 0;
 

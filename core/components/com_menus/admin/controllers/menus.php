@@ -220,7 +220,7 @@ class Menus extends AdminController
         // Make sure the item ids are integers
         \Hubzero\Utility\Arr::toInteger($ids);
 
-        if (!is_array($ids) || count($ids) < 1) {
+        if (count($ids) < 1) {
             Notify::error(Lang::txt('COM_MENUS_NO_MENUS_SELECTED'));
         } else {
             $success = 0;

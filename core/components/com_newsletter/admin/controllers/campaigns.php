@@ -108,7 +108,7 @@ class Campaigns extends AdminController
         if (!is_object($row)) {
             // Incoming
             $id = Request::getArray('id', [0]);
-            $id = is_array($id) ? $id[0] : $id;
+            $id = $id[0] ?? null;
 
             $row = Campaign::oneOrNew($id);
 

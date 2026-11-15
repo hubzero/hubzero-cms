@@ -51,7 +51,7 @@ class Registration extends AdminController
 
         $settings = Request::getArray('settings', [], 'post');
 
-        if (!is_array($settings) || empty($settings)) {
+        if (empty($settings)) {
             Notify::error(Lang::txt('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'));
 
             $this->cancelTask();

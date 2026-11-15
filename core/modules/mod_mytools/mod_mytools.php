@@ -64,7 +64,7 @@ class Mytools extends Module
             foreach ($lst as $item) {
                 if (strstr($item, '_r')) {
                     $bits = explode('_r', $item);
-                    $rev  = (is_array($bits) && count($bits) > 1) ? array_pop($bits) : '';
+                    $rev  = (count($bits) > 1) ? array_pop($bits) : '';
                     $item = trim(implode('_r', $bits));
                 }
 

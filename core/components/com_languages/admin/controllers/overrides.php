@@ -247,7 +247,7 @@ class Overrides extends AdminController
         // Get items to dlete from the request
         $cid = Request::getArray('cid', []);
 
-        if (!is_array($cid) || count($cid) < 1) {
+        if (count($cid) < 1) {
             Notify::warning(Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'));
         } else {
             $client_id = User::getState('com_languages.overrides.filter.client', 0);

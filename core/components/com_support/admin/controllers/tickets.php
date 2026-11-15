@@ -1150,7 +1150,7 @@ class Tickets extends AdminController
 
         // Incoming file
         $file = Request::getArray('upload', '', 'files');
-        if (!is_array($file) || !isset($file['name']) || !$file['name']) {
+        if (!isset($file['name']) || !$file['name']) {
             $this->setError(Lang::txt('COM_SUPPORT_ERROR_NO_FILE'));
             return '';
         }

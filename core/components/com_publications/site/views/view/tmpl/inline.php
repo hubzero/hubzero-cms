@@ -58,7 +58,7 @@ $cType      = $mTypeParts[0];
 if ($attributes) {
     $a = explode(',', $attributes);
     $bits = [];
-    if ($a && is_array($a)) {
+    if ($a) {
         foreach ($a as $b) {
             if (strstr($b, ':')) {
                 $b = explode(':', $b);

@@ -131,7 +131,7 @@ class Types extends AdminController
         if (!is_object($row)) {
             // Incoming (expecting an array)
             $id = Request::getArray('id', [0]);
-            $id = (is_array($id)) ? $id[0] : $id;
+            $id = $id[0] ?? null;
 
             // Load the object
             $row = new Type($this->database);

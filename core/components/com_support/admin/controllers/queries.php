@@ -383,7 +383,6 @@ class Queries extends AdminController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (is_array($ids) ? $ids : [$ids]);
 
         $no_html = Request::getInt('no_html', 0);
         $removed = 0;

@@ -117,7 +117,7 @@ class Jobs extends AdminController
 
         // Incoming job ID
         $id = Request::getArray('id', [0]);
-        $id = is_array($id) ? $id[0] : $id;
+        $id = $id[0] ?? null;
 
         // Grab some filters for returning to place after editing
         $this->view->set('return', []);

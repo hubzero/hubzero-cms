@@ -355,7 +355,7 @@ class Imports extends AdminController
     {
         // Get request vars
         $id = Request::getArray('id', [0]);
-        $id = (is_array($id) ? $id[0] : $id);
+        $id = $id[0] ?? null;
 
 
         // Create import model object

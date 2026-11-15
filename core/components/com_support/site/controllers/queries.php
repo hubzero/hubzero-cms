@@ -390,7 +390,6 @@ class Queries extends SiteController
 
         // Incoming
         $ids = Request::getArray('id', []);
-        $ids = (is_array($ids) ? $ids : [$ids]);
 
         $no_html = Request::getInt('no_html', 0);
 

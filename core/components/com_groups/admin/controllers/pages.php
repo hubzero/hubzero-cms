@@ -121,7 +121,7 @@ class Pages extends AdminController
     {
         // get request vars
         $id = Request::getArray('id', [0]);
-        $id = (is_array($id) ? $id[0] : $id);
+        $id = $id[0] ?? null;
 
         // get the page & version objects
         $this->view->set('page', new Page($id));

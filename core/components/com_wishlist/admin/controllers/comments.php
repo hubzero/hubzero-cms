@@ -327,7 +327,6 @@ class Comments extends AdminController
         // Incoming
         $wish = Request::getInt('wish', 0);
         $ids  = Request::getArray('id', []);
-        $ids  = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -392,7 +391,6 @@ class Comments extends AdminController
         // Incoming
         $wish = Request::getInt('wish', 0);
         $ids  = Request::getArray('id', []);
-        $ids  = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
