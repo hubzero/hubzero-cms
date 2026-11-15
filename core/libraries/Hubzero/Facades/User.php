@@ -18,7 +18,7 @@ namespace Hubzero\Facades;
  * @method static mixed    get(string $key, mixed $default = null)
  * @method static object   set(string|array $key, mixed $value = null)
  * @method static bool     isGuest()
- * @method static bool     authorise(string $action, string $assetname = null)
+ * @method static bool|null  authorise(string $action, string $assetname = null)
  * @method static bool     authorize(string $action, string $assetname = null)
  * @method static string   picture(int $anonymous = 0, bool $thumbnail = true, bool $serveFile = true)
  * @method static string   link(string $type = '')

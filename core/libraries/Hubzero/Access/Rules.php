@@ -125,7 +125,7 @@ class Rules
      *
      * @param   string  $action    The name of the action.
      * @param   mixed   $identity  An integer representing the identity, or an array of identities
-     * @return  mixed   Object or null if there is no information about the action.
+     * @return  bool|null  Whether the action is allowed; null if there is no information about the action.
      */
     public function allow($action, $identity)
     {

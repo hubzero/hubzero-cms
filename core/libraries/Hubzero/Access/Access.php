@@ -74,7 +74,7 @@ class Access
      * @param   string   $action  The name of the action to authorise.
      * @param   mixed    $asset   Integer asset id or the name of the asset as a string.  Defaults
      *                            to the global asset node.
-     * @return  boolean  True if authorised.
+     * @return  bool|null  True if authorised, false if denied, null when no rule says either
      */
     public static function check($userId, $action, $asset = null)
     {
@@ -109,7 +109,7 @@ class Access
      * @param   string   $action   The name of the action to authorise.
      * @param   mixed    $asset    Integer asset id or the name of the asset as a string.  Defaults
      *                             to the global asset node.
-     * @return  boolean  True if authorised.
+     * @return  bool|null  True if authorised, false if denied, null when no rule says either
      */
     public static function checkGroup($groupId, $action, $asset = null)
     {
