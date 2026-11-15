@@ -1656,7 +1656,6 @@ class Resources extends SiteController
         if ($this->model->isTool()) {
             $this->view->set('thistool', $this->model->thistool);
             $this->view->set('curtool', $this->model->curtool);
-            $this->view->set('alltools', $this->model->alltools);
             $this->view->set('revision', $this->model->revision);
         }
         $this->view->set('model', $this->model);

@@ -195,6 +195,7 @@ abstract class Model extends Obj
      * Check if the entry exists (i.e., has a database record)
      *
      * @return  boolean  True if record exists, False if not
+     * @phpstan-impure
      */
     public function exists()
     {

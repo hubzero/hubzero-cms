@@ -323,6 +323,7 @@ class Publication extends Obj
      * Check if the version exists
      *
      * @return  bool
+     * @phpstan-impure
      */
     public function exists()
     {

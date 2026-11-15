@@ -31,6 +31,7 @@ trait ErrorBag
      * @param   integer|null  $i         Option error index.
      * @param   boolean  $toString  Indicates if error objects should return their error message.
      * @return  string|false   Error message
+     * @phpstan-impure
      */
     public function getError($i = null, $toString = true)
     {

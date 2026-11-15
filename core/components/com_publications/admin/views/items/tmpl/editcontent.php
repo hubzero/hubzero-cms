@@ -85,8 +85,9 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                 <input type="hidden" name="task" value="savecontent" />
                 <input type="hidden" name="version" value="<?php echo $this->pub->get('version_number'); ?>" />
 
-                <?php if ($this->getError()) {
-                    echo '<p class="error">' . $this->getError() . '</p>';
+                <?php $error = $this->getError(); ?>
+                <?php if ($error) {
+                    echo '<p class="error">' . $error . '</p>';
                 } else { ?>
                     <input type="hidden" name="el" value="<?php echo $this->elementId; ?>" />
                     <?php
@@ -157,6 +158,7 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                 <?php } ?>
             </fieldset>
         </div>
+        <?php if (!$error) { ?>
         <div class="col span5">
             <table class="meta">
                 <tbody>
@@ -191,6 +193,7 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                 </tbody>
             </table>
         </div>
+        <?php } ?>
     </div>
     <?php echo Html::input('token'); ?>
 </form>
