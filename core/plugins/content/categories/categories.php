@@ -66,8 +66,6 @@ class Categories extends Plugin
                     $msg .= Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
 
                     App::abort(403, $msg);
-
-                    $result = false;
                 }
                 // Check for items in any child categories (if it is a leaf, there are no child categories)
                 if (!$data->isLeaf()) {
@@ -80,8 +78,6 @@ class Categories extends Plugin
                         $msg .= Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
 
                         App::abort(403, $msg);
-
-                        $result = false;
                     }
                 }
             }

@@ -259,7 +259,6 @@ class Editor extends Obj
 
             if (!is_file($path)) {
                 throw new \Exception(Lang::txt('Cannot load the editor'), 500);
-                return false;
             }
         }
 

@@ -644,8 +644,6 @@ class Form extends SiteController
         }
 
         App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
-
-        return 0;
     }
 
     /**

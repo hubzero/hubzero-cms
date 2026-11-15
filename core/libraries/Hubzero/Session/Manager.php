@@ -274,7 +274,6 @@ class Manager extends Obj
                     \Route::url('index.php'),
                     \App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'),
                 );
-                \App::close();
             }
         }
 

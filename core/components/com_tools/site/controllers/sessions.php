@@ -1284,7 +1284,6 @@ class Sessions extends SiteController
                 } else {
                     App::redirect($output->redirect_url);
                 }
-                return; // Do no more after this.
             }
         }
 

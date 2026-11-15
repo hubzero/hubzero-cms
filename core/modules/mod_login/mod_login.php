@@ -93,7 +93,6 @@ class Login extends Module
         // Make sure we're using a secure connection
         if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
             App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            die('insecure connection and redirection failed');
         }
 
         // Get and add the js and extra css to the page

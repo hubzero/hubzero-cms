@@ -1132,7 +1132,6 @@ class Calendar extends Plugin
         //force https protocol
         if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
             App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            die(Lang::txt('Calendar subscriptions only support the HTTPS (port 443) protocol.'));
         }
 
         //get the calendar plugin access

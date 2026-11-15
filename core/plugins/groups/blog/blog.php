@@ -587,7 +587,6 @@ class Blog extends Plugin
 
         if (!$row->get('id') || $row->isDeleted()) {
             App::abort(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
-            return; // $this->browse(); Can cause infinite loop
         }
 
         // Check authorization

@@ -338,7 +338,6 @@ class Router extends Base
 
         if (!$category) {
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
-            return $vars;
         }
 
         $categories = $category->getChildren();
