@@ -201,26 +201,21 @@ class Api extends ApiController
             $username = Request::get('username');
             $password = Request::get('password');
 
-            if (true) {
-                // user grants application 'consumer_key' permission to act on their behalf
-                // so record: user_id consumer_key accesstoken #acl
+            // user grants application 'consumer_key' permission to act on their behalf
+            // so record: user_id consumer_key accesstoken #acl
 
-                // $db->setQuery("SELECT access_token FROM `#__user_accesstokens` "
-                //     . "WHERE user_id=" . $db->Quote($useraccount->getUserId())
-                //     . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
+            // $db->setQuery("SELECT access_token FROM `#__user_accesstokens` "
+            //     . "WHERE user_id=" . $db->Quote($useraccount->getUserId())
+            //     . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
 
-                if (!empty($result->callback_url)) {
-                    $redirectUrl = $result->callback_url . "?oauth_token="
-                        . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier;
-                    $this->response->headers->set('Location', $redirectUrl);
-                    $this->send('Redirect', 302);
-                }
-
-                return true;
+            if (!empty($result->callback_url)) {
+                $redirectUrl = $result->callback_url . "?oauth_token="
+                    . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier;
+                $this->response->headers->set('Location', $redirectUrl);
+                $this->send('Redirect', 302);
             }
 
-            $this->send("Invalid Request", 400);
-            return;
+            return true;
         }
 
         $this->send("Internal Server Error", 500);

@@ -27,20 +27,18 @@ class Version
     {
         $db = App::get('db');
 
-        if (true) {
-            $query = "SELECT instance FROM `#__tool_version`;";
+        $query = "SELECT instance FROM `#__tool_version`;";
 
-            $db->setQuery($query);
+        $db->setQuery($query);
 
-            $result = $db->loadColumn();
+        $result = $db->loadColumn();
 
-            if ($result === false) {
-                return false;
-            }
+        if ($result === false) {
+            return false;
+        }
 
-            foreach ($result as $row) {
-                call_user_func($func, $row);
-            }
+        foreach ($result as $row) {
+            call_user_func($func, $row);
         }
 
         return true;

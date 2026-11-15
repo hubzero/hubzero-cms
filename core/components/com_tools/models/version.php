@@ -392,15 +392,13 @@ class Version
     {
         $result = [];
 
-        if (true) {
-            foreach (self::$propertyattrmap as $key => $value) {
-                $current = $this->__get($key);
+        foreach (self::$propertyattrmap as $key => $value) {
+            $current = $this->__get($key);
 
-                $result[$key] = $current;
-            }
-
-            return $result;
+            $result[$key] = $current;
         }
+
+        return $result;
     }
 
     /**
@@ -517,12 +515,10 @@ class Version
      */
     public function create()
     {
-        if (true) {
-            $result = $this->sqlCreate();
+        $result = $this->sqlCreate();
 
-            if ($result === false) {
-                $this->error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
-            }
+        if ($result === false) {
+            $this->error(__FUNCTION__ . ": MySQL create failed", E_USER_WARNING);
         }
 
         return $result;
@@ -618,15 +614,13 @@ class Version
 
         $result = true;
 
-        if (true) {
+        $this->clear();
+        $this->instance = $instance;
+
+        $result = $this->sqlRead();
+
+        if ($result === false) {
             $this->clear();
-            $this->instance = $instance;
-
-            $result = $this->sqlRead();
-
-            if ($result === false) {
-                $this->clear();
-            }
         }
 
         return $result;
@@ -827,12 +821,10 @@ class Version
 
         $result = true;
 
-        if (true) {
-            $result = $this->sqlUpdate($this->updateAll);
+        $result = $this->sqlUpdate($this->updateAll);
 
-            if ($result === false) {
-                $this->error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
-            }
+        if ($result === false) {
+            $this->error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
         }
 
         $this->updateAll = false;
@@ -914,12 +906,10 @@ class Version
     {
         $result = true;
 
-        if (true) {
-            $result = $this->sqlDelete();
+        $result = $this->sqlDelete();
 
-            if ($result === false) {
-                $this->error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
-            }
+        if ($result === false) {
+            $this->error(__FUNCTION__ . ": MySQL deletion failed", E_USER_WARNING);
         }
 
         return $result;

@@ -46,16 +46,8 @@ class RateLimitServiceProvider extends ServiceProvider
         // of this feature is committed, otherwise it just fills memory since
         // there is nothing purging the entries or tracking the timestamps.
 
-        // if (empty($result))
-        if (false) {
-            $db->setQuery('INSERT IGNORE INTO #__ratelimit (ip,count) VALUE (INET6_ATON(' . $db->Quote($ip) . '),1);');
-            $db->execute();
-        } else {
-            $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 '
-                . 'AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
-            $db->execute();
-        }
-
+        // When it is, a missing row ($result empty) gets
+        // 'INSERT IGNORE INTO #__ratelimit (ip,count) VALUE (INET6_ATON(ip),1)'.
         $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 '
             . 'AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
         $db->execute();
