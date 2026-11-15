@@ -100,12 +100,9 @@ class Url extends Rule
             return false;
         }
 
-        // The best we can do for the rest is make sure that the strings are valid UTF-8
-        // and the port is an integer.
+        // The best we can do for the rest is make sure that the strings are valid UTF-8.
+        // (parse_url() already refuses a port that is not a number.)
         if (array_key_exists('host', $urlParts) && !self::valid((string) $urlParts['host'])) {
-            return false;
-        }
-        if (array_key_exists('port', $urlParts) && !is_int((int) $urlParts['port'])) {
             return false;
         }
         if (array_key_exists('path', $urlParts) && !self::valid((string) $urlParts['path'])) {

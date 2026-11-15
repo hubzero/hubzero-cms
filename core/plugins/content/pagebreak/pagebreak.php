@@ -292,7 +292,7 @@ class Pagebreak extends Plugin
     protected function createNavigation(&$row, $page, $n)
     {
         $pnSpace = '';
-        if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_LT')) {
+        if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_GT')) {
             $pnSpace = ' ';
         }
 
