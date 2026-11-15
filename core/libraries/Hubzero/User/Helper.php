@@ -259,7 +259,7 @@ class Helper
     /**
      * Get a list of groups for a user
      *
-     * @param   string  $uid
+     * @param   int|string  $uid
      * @param   string  $type
      * @param   int|string|null  $cat
      * @return  array    Group records, or membership lists keyed by type; empty if there are none

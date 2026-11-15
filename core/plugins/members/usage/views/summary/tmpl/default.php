@@ -140,7 +140,7 @@ $this->css('usage', 'com_usage');
                     <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $row->title ?></a></td>
                     <?php
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12');
-                    $linkText = number_format($user_count_12);
+                    $linkText = number_format((float) $user_count_12);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $linkText ?></a></td>
                     <?php
@@ -152,7 +152,7 @@ $this->css('usage', 'com_usage');
                     $toolsUrl = Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14');
                     ?>
                     <?php
-                    $userCount = number_format($user_count_14);
+                    $userCount = number_format((float) $user_count_14);
                     ?>
                     <td><a href="<?= $toolsUrl ?>"><?= $userCount ?></a></td>
                     <?php
@@ -247,10 +247,10 @@ $this->css('usage', 'com_usage');
 
             foreach ($andmore[0] as $row) {
                 $result = PlgMembersUsage::getUsercount($row->id, 12);
-                $usercount12 = (is_numeric($result)) ? number_format($result) : $result;
+                $usercount12 = (is_numeric($result)) ? number_format((float) $result) : $result;
 
                 $result = PlgMembersUsage::getUsercount($row->id, 14);
-                $usercount14 = (is_numeric($result)) ? number_format($result) : $result;
+                $usercount14 = (is_numeric($result)) ? number_format((float) $result) : $result;
 
                 $cites = PlgMembersUsage::getCitationcount($row->id, 0);
 
@@ -279,10 +279,10 @@ $this->css('usage', 'com_usage');
                 if (isset($andmore[$row->id])) {
                     foreach ($andmore[$row->id] as $rw) {
                         $result = PlgMembersUsage::getUsercount($rw->id, 12);
-                        $usercount12 = (is_numeric($result)) ? number_format($result) : $result;
+                        $usercount12 = (is_numeric($result)) ? number_format((float) $result) : $result;
 
                         $result = PlgMembersUsage::getUsercount($rw->id, 14);
-                        $usercount14 = (is_numeric($result)) ? number_format($result) : $result;
+                        $usercount14 = (is_numeric($result)) ? number_format((float) $result) : $result;
 
                         $cites = PlgMembersUsage::getCitationcount($rw->id, 0);
 

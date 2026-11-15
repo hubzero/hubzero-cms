@@ -91,9 +91,9 @@ class EventsDate
     /**
      * Set the date
      *
-     * @param      integer $year  Year
-     * @param      integer $month Month
-     * @param      integer $day   Day
+     * @param      int|string $year  Year
+     * @param      int|string $month Month
+     * @param      int|string $day   Day
      * @return     void
      */
     public function setDate($year = 0, $month = 0, $day = 0)

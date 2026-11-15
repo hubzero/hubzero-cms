@@ -9,7 +9,6 @@
 namespace Hubzero\Database\Tests;
 
 use Hubzero\Database\Driver;
-use Hubzero\Database\Drivers\Base\BaseSqlDriver;
 use Hubzero\Database\Drivers\Mock\MockDriver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +26,7 @@ class DriverFactoryTest extends TestCase
         Driver::resetTelemetry();
     }
 
-    private function isNativeConnectionOpen(BaseSqlDriver $driver): bool
+    private function isNativeConnectionOpen(Driver $driver): bool
     {
         $ref = new \ReflectionClass(Driver::class);
         $prop = $ref->getProperty('connection');
@@ -41,7 +40,7 @@ class DriverFactoryTest extends TestCase
         return false;
     }
 
-    private function getSignatureForInstance(BaseSqlDriver $driver): ?string
+    private function getSignatureForInstance(Driver $driver): ?string
     {
         $ref = new \ReflectionClass(Driver::class);
         $instances = $ref->getProperty('instances');
@@ -57,7 +56,7 @@ class DriverFactoryTest extends TestCase
         return null;
     }
 
-    private function hasInstance(BaseSqlDriver $driver): bool
+    private function hasInstance(Driver $driver): bool
     {
         return $this->getSignatureForInstance($driver) !== null;
     }

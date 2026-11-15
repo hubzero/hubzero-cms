@@ -169,9 +169,8 @@ class Commentsv2r1 extends ApiController
         if ($created) {
             if (is_array($created) && count($created) > 1) {
                 $comments
-                    ->where('created', '>=', $created[0], 1)
-                    ->orWhere('created', '<', $created[1], 1)
-                    ->resetDepth();
+                    ->where('created', '>=', $created[0])
+                    ->where('created', '<', $created[1]);
             } else {
                 if (is_array($created)) {
                     $created = implode('', $created);

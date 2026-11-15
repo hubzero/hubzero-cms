@@ -393,7 +393,7 @@ class Project extends Table
      * Get records
      *
      * @param   array    $filters
-     * @param   boolean  $admin
+     * @param   bool|string  $admin
      * @param   integer  $uid
      * @param   boolean|int $showall
      * @param   integer  $setup_complete

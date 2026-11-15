@@ -125,7 +125,8 @@ class Date extends DateTime
     /**
      * Constructor.
      *
-     * @param   string  $datetime  String in a format accepted by strtotime(), defaults to "now".
+     * @param   string|int  $datetime  String in a format accepted by strtotime(), or a Unix timestamp;
+     *                                 defaults to "now".
      * @param   mixed   $timezone  Time zone to be used for the date.
      * @param   bool    $ignoreDst
      * @return  void

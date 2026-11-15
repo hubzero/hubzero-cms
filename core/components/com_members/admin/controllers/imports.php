@@ -402,7 +402,7 @@ class Imports extends AdminController
         $id = Request::getInt('id', 0);
 
         // Test mode
-        $dryRun = Request::getBool('dryrun', 0);
+        $dryRun = Request::getBool('dryrun', false);
 
         // Create import model object
         $import = Import::oneOrFail($id);

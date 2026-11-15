@@ -179,7 +179,7 @@ class Manager
             $cookie_domain = $this->app['config']->get('cookie_domain', '');
             $cookie_path   = $this->app['config']->get('cookie_path', '/');
 
-            setcookie($this->app->hash('JLOGIN_REMEMBER'), false, time() - 86400, $cookie_path, $cookie_domain);
+            setcookie($this->app->hash('JLOGIN_REMEMBER'), '', time() - 86400, $cookie_path, $cookie_domain);
 
             return true;
         }

@@ -471,7 +471,7 @@ class Attachments extends SiteController
     /**
      * Check if user has access
      *
-     * @param   integer  $toolid        Tool ID
+     * @param   int|string|false|null  $toolid        Tool ID
      * @param   boolean  $allowAuthors  Allow tool authors?
      * @return  boolean  True if user has access, False if not
      */

@@ -154,9 +154,8 @@ class Categoriesv2r1 extends ApiController
         if ($created) {
             if (is_array($created) && count($created) > 1) {
                 $rows
-                    ->where('created', '>=', $created[0], 1)
-                    ->orWhere('created', '<', $created[1], 1)
-                    ->resetDepth();
+                    ->where('created', '>=', $created[0])
+                    ->where('created', '<', $created[1]);
             } else {
                 if (is_array($created)) {
                     $created = implode('', $created);
@@ -169,9 +168,8 @@ class Categoriesv2r1 extends ApiController
         if ($modified) {
             if (is_array($modified) && count($modified) > 1) {
                 $rows
-                    ->where('modified', '>=', $modified[0], 1)
-                    ->orWhere('modified', '<', $modified[1], 1)
-                    ->resetDepth();
+                    ->where('modified', '>=', $modified[0])
+                    ->where('modified', '<', $modified[1]);
             } else {
                 if (is_array($modified)) {
                     $modified = implode('', $modified);

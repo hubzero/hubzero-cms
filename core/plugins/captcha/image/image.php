@@ -293,10 +293,10 @@ class Image extends Plugin
                     $sx = $sx >= ($width - 1) ? $sx - 1 : $sx;
                     $sy = round($sy);
                     $sy = $sy >= ($height - 1) ? $sy - 1 : $sy;
-                    $color = imagecolorat($img, $sx, $sy) & 0xFF;
-                    $color_x = imagecolorat($img, $sx + 1, $sy) & 0xFF;
-                    $color_y = imagecolorat($img, $sx, $sy + 1) & 0xFF;
-                    $color_xy = imagecolorat($img, $sx + 1, $sy + 1) & 0xFF;
+                    $color = imagecolorat($img, (int) $sx, (int) $sy) & 0xFF;
+                    $color_x = imagecolorat($img, (int) ($sx + 1), (int) $sy) & 0xFF;
+                    $color_y = imagecolorat($img, (int) $sx, (int) ($sy + 1)) & 0xFF;
+                    $color_xy = imagecolorat($img, (int) ($sx + 1), (int) ($sy + 1)) & 0xFF;
                 }
 
                 if ($color == 255 && $color_x == 255 && $color_y == 255 && $color_xy == 255) {
@@ -443,23 +443,5 @@ class Image extends Plugin
         }
 
         return array_values($color);
-    }
-
-    /**
-     * Converts RGB color to HEX
-     *
-     * @param   string  $r  R color to convert
-     * @param   string  $g  G color to convert
-     * @param   string  $b  B color to convert
-     * @return  string
-     */
-    private function rgbToHex($r, $g, $b)
-    {
-        $hex  = '#';
-        $hex .= dechex($r);
-        $hex .= dechex($g);
-        $hex .= dechex($b);
-
-        return $hex;
     }
 }

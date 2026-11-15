@@ -203,13 +203,6 @@ class Passport implements ProviderInterface
             }
 
             $assertion = json_decode($this->request->getLastResponse());
-        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
-            curl_setopt($this->request, CURLOPT_URL, self::PASSPORT_API_ENDPOINT . "assertions/");
-            curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
-            curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-
-            $response  = curl_exec($this->request);
-            $assertion = json_decode($response);
         } else {
             throw new Exception('Unsupported request type');
         }
@@ -283,13 +276,6 @@ class Passport implements ProviderInterface
             }
 
             $response = json_decode($this->request->getLastResponse());
-        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
-            curl_setopt($this->request, CURLOPT_POST, false);
-            curl_setopt($this->request, CURLOPT_URL, $url);
-            curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-
-            $response = curl_exec($this->request);
-            $response = json_decode($response);
         } else {
             throw new Exception('Unsupported request type');
         }

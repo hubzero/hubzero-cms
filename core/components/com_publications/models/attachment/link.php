@@ -156,19 +156,19 @@ class Link extends Base
             $this->name,
         );
 
-        $disabled = 0;
+        $disabled = false;
         $pop      = null;
 
         if ($pub->isUnpublished() || $pub->isDown()) {
             $pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-            $disabled = 1;
+            $disabled = true;
         } elseif (!$authorized) {
             $pop = $pub->access == 1
                 ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
                 : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
-            $disabled = 1;
+            $disabled = true;
         } elseif (!$attachments) {
-            $disabled = 1;
+            $disabled = true;
             $pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
         }
 

@@ -484,7 +484,7 @@ class Profiles extends SiteController
                         }
                         $entries->resetDepth();
                     } else {
-                        $entries->where($a . '.name', ' ' . $q['o'] . ' ', (string) $q['value'], 1);
+                        $entries->where($a . '.name', ' ' . $q['o'] . ' ', (string) $q['value'], 'and', 1);
 
                         foreach ($searches as $searching) {
                             $entries->joinRaw(

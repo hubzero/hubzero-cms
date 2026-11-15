@@ -12,8 +12,8 @@ namespace Hubzero\Facades;
  * Event dispatcher facade
  *
  * @method static array  trigger(mixed $event, array $args = [])
- * @method static object addListener(object|\Closure $listener, array $events = [])
- * @method static object listen(mixed $listener, array $events = [])
+ * @method static object addListener(object|\Closure $listener, array|string $events = [])
+ * @method static object listen(mixed $listener, array|string $events = [])
  * @method static object removeListener(object $listener, mixed $event = null)
  * @method static object forget(object $listener, mixed $event = null)
  * @method static array  getListeners(mixed $event = null)

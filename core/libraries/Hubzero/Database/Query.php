@@ -892,8 +892,8 @@ class Query
      * Defines a table join to be performed for the query
      *
      * @param   string  $table     The table join
-     * @param   string|null  $leftKey   The left side of the join condition
-     * @param   string|null  $rightKey  The right side of the join condition
+     * @param   string|\Closure|null  $leftKey   The left side of the join condition, or a callback given a JoinBuilder
+     * @param   string|null  $rightKey  The right side of the join condition (the join type with a callback)
      * @param   string  $type      The join type to perform
      * @return  $this
      **/
@@ -1038,7 +1038,7 @@ class Query
      * Defines a table LEFT join to be performed for the query
      *
      * @param   string  $table     The table join
-     * @param   string  $leftKey   The left side of the join condition
+     * @param   string|\Closure  $leftKey   The left side of the join condition, or a callback given a JoinBuilder
      * @param   string|null  $rightKey  The right side of the join condition
      * @return  $this
      **/
@@ -2746,7 +2746,7 @@ class Query
     /**
      * Sets the values to be inserted into the database
      *
-     * @param   array  $data  The data to be inserted
+     * @param   array|string  $data  The data to be inserted, or one row of values written as SQL
      * @return  $this
      **/
     public function values($data)

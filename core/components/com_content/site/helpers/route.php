@@ -35,8 +35,8 @@ abstract class Route
     /**
      * Get category route
      *
-     * @param   integer  $id
-     * @param   integer  $catid
+     * @param   int|string  $id
+     * @param   int|string  $catid
      * @param   integer|mixed  $language
      * @return  string
      */

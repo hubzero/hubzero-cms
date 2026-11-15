@@ -73,7 +73,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <button
                         type="button"
                         id="btn-cancel"
-                        <?php echo Request::getBool('refresh', 0) ? 'data-refreah="true"' : ''; ?>
+                        <?php echo Request::getBool('refresh', false) ? 'data-refresh="true"' : ''; ?>
                     ><?php echo Lang::txt('JCANCEL'); ?></button>
                 </div>
 

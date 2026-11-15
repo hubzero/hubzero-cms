@@ -687,8 +687,8 @@ class Html
      *
      * @param      integer $year  Year
      * @param      integer $month Month
-     * @param      integer $day   Day
-     * @param      string  $type  Format type
+     * @param      integer|string $day   Day ('' for the first)
+     * @param      int|string  $type  Format type
      * @return     string
      */
     public static function getDateFormat($year, $month, $day, $type)

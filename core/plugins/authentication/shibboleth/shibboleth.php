@@ -26,7 +26,7 @@ class Shibboleth extends Plugin
      * Logs data to the shibboleth debug log
      *
      * @param   string         $msg   the message to log
-     * @param   string|object  $data  additional data to log
+     * @param   string|array|object  $data  additional data to log
      * @return  void
      **/
     private static function log($msg, $data = '')

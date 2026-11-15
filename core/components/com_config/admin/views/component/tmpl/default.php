@@ -101,7 +101,7 @@ if (document.body && document.body.id === 'component-body') {
                 <button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY'); ?></button>
                 <button type="button" id="btn-save"><?php echo Lang::txt('JSAVE'); ?></button>
                 <?php
-                $dataRefreshAttr = Request::getBool('refresh', 0) ? ' data-refresh="1"' : '';
+                $dataRefreshAttr = Request::getBool('refresh', false) ? ' data-refresh="1"' : '';
                 ?>
                 <button type="button" id="btn-cancel"<?= $dataRefreshAttr ?>><?= Lang::txt('JCANCEL') ?></button>
             </div>

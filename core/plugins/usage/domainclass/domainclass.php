@@ -42,7 +42,7 @@ class Domainclass extends Plugin
      * Build a table for the class list
      *
      * @param   object  &$db      Database
-     * @param   string  $class    Class type
+     * @param   int|string  $class    Class type
      * @param   mixed   $t
      * @param   mixed   $enddate  Timestamp
      * @return  string  HTML

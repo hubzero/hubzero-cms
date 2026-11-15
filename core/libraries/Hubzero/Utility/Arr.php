@@ -185,7 +185,7 @@ class Arr
      * Utility function to return a value from a named array or a specified default
      *
      * @param   array   &$array   A named array
-     * @param   string  $name     The key to search for
+     * @param   string|int  $name     The key to search for
      * @param   mixed   $default  The default value to give if no key found
      * @param   string  $type     Return type for the variable (INT, FLOAT, STRING, WORD, BOOLEAN, ARRAY)
      * @return  mixed   The value from the source array

@@ -194,7 +194,7 @@ class Session extends Table
      *
      * @param   string|null  $username    Username to look for
      * @param   string|null  $appname     App to look for
-     * @param   string|null  $authorized  Admin authorization?
+     * @param   string|false|null  $authorized  Admin authorization?
      * @return  array|false
      */
     public function getRecords($username = null, $appname = null, $authorized = null)

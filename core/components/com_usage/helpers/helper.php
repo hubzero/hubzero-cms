@@ -114,8 +114,8 @@ class Helper
         if ($topname) {
             // Prepare some date ranges...
             $enddate .= '-00';
-            $dtmonth = floor(substr($enddate, 5, 2));
-            $dtyear = floor(substr($enddate, 0, 4));
+            $dtmonth = (int) substr($enddate, 5, 2);
+            $dtyear = (int) substr($enddate, 0, 4);
             $dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
             $dtmonthnext = floor((int) substr($enddate, 5, 2) + 1);
 

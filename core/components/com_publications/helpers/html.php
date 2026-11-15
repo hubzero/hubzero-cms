@@ -27,8 +27,8 @@ class Html
     /**
      * Get publication path
      *
-     * @param   string|null   $pid
-     * @param   string|null   $vid
+     * @param   int|string|null   $pid
+     * @param   int|string|null   $vid
      * @param   string   $base
      * @param   string   $filedir
      * @param   boolean|int $root
@@ -829,7 +829,7 @@ class Html
      * @param   string   $class     Class to add
      * @param   string   $href      Link url
      * @param   string   $msg       Link text
-     * @param   string   $xtra      Extra parameters to add (deprecated)
+     * @param   string|null   $xtra      Extra parameters to add (deprecated)
      * @param   string   $title     Link title
      * @param   string   $action    Link action
      * @param   boolean  $disabled  Is the button disable?
@@ -1393,7 +1393,7 @@ class Html
     /**
      * Get the MIME type for gallery files
      *
-     * @param   object  $publication_id    publication model
+     * @param   int  $publication_id    publication id
      * @param   int  $publication_version_id
      * @param   array  $mimeTypes
      *

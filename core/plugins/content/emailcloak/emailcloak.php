@@ -158,7 +158,7 @@ class Emailcloak extends Plugin
             $mailText = $regs[5][0];
 
             // Check to see if mail text is different from mail addy
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -231,7 +231,7 @@ class Emailcloak extends Plugin
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . addslashes($regs[5][0]) . $regs[6][0];
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -255,7 +255,7 @@ class Emailcloak extends Plugin
             $mail = $regs[2][0];
             $mailText = addslashes($regs[4][0]);
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
@@ -279,7 +279,7 @@ class Emailcloak extends Plugin
             $mail = $regs[2][0];
             $mailText = $regs[4][0];
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -327,7 +327,7 @@ class Emailcloak extends Plugin
             $mail = $regs[2][0];
             $mailText = $regs[4][0] . addslashes($regs[5][0]);
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -382,7 +382,7 @@ class Emailcloak extends Plugin
             // Needed for handling of Body parameter
             $mail = str_replace('&amp;', '&', $mail);
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = $this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -433,7 +433,7 @@ class Emailcloak extends Plugin
             $mail = $regs[2][0] . $regs[3][0];
             $mailText = $regs[4][0] . $regs[5][0] . addslashes($regs[6][0]) . $regs[7][0];
 
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -461,7 +461,7 @@ class Emailcloak extends Plugin
             $mail = str_replace('&amp;', '&', $mail);
 
             // Check to see if mail text is different from mail addy
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
@@ -519,7 +519,7 @@ class Emailcloak extends Plugin
             $mail = str_replace('&amp;', '&', $mail);
 
             // Check to see if mail text is different from mail addy
-            $replacement = $this->cloak($mail, $mode, $mailText, 0);
+            $replacement = $this->cloak($mail, $mode, $mailText, false);
 
             // Ensure that attributes is not stripped out by email cloaking
             $replacement = html_entity_decode($this->addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));

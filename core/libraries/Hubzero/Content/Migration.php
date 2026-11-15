@@ -97,7 +97,7 @@ class Migration
     /**
      * Constructor
      *
-     * @param   object|null  $docroot  Defaults to null, which should then resolve to the hub docroot
+     * @param   string|null  $docroot  Defaults to null, which should then resolve to the hub docroot
      * @param   object|null  $runDb    The db that migrations will actually run against
      * @return  bool
      **/
@@ -1546,7 +1546,7 @@ class Migration
      * Register a callback
      *
      * @param   string   $name      The callback name
-     * @param   \Closure  $callback  The function to run
+     * @param   callable  $callback  The function to run
      * @return  void
      **/
     public function registerCallback($name, $callback)

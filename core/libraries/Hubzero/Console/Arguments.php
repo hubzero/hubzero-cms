@@ -21,7 +21,7 @@ class Arguments
     /**
      * Raw command line arguments (PHP $argv)
      *
-     * @var  object|null
+     * @var  array<int, string>|null
      **/
     private $raw = null;
 
@@ -58,7 +58,7 @@ class Arguments
      *
      * Set raw arguments
      *
-     * @param   object  $arguments  The command arguments
+     * @param   array<int, string>  $arguments  The command arguments ($argv)
      * @return  void
      **/
     public function __construct($arguments)
@@ -109,7 +109,7 @@ class Arguments
     /**
      * Setter for additional options for a given command
      *
-     * @param   string  $key    The argument to set
+     * @param   string|int  $key    The argument to set
      * @param   mixed   $value  The argument value to give it
      * @return  void
      **/

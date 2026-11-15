@@ -129,7 +129,7 @@ class Orcid extends SiteController
     /**
      * Parse an XML tree and pull results
      *
-     * @param   object  $root
+     * @param   \SimpleXMLElement  $root
      * @return  array
      */
     private function parseTree($root)
@@ -193,8 +193,8 @@ class Orcid extends SiteController
      *
      * @param   string  $fname  First name
      * @param   string  $lname  Last name
-     * @param   string  $iname  Institution name
-     * @return  string
+     * @param   string|null  $iname  Institution name
+     * @return  \SimpleXMLElement|false
      */
     private function fetchXml($fname, $lname, $iname)
     {
@@ -248,7 +248,7 @@ class Orcid extends SiteController
         try {
             $root = simplexml_load_string($xmlStr);
         } catch (Exception $e) {
-            $root = '';
+            $root = false;
         }
         return $root;
     }

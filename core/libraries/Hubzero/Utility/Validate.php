@@ -130,7 +130,7 @@ class Validate
      * if $lower and $upper are not set, will return true if
      * $check is a legal finite on this platform
      *
-     * @param   string   $check  Value to check
+     * @param   string|int|float   $check  Value to check
      * @param   integer|null  $lower  Lower limit
      * @param   integer|null  $upper  Upper limit
      * @return  boolean  Success

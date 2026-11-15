@@ -51,9 +51,9 @@ class DayOfWeekField extends AbstractField
         if (strpos($value, 'L')) {
             $weekday = str_replace('7', '0', substr($value, 0, strpos($value, 'L')));
             $tdate = clone($date);
-            $tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
+            $tdate->setDate((int) $currentYear, (int) $currentMonth, $lastDayOfMonth);
             while ($tdate->format('w') != $weekday) {
-                $tdate->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
+                $tdate->setDate((int) $currentYear, (int) $currentMonth, --$lastDayOfMonth);
             }
 
             return $date->format('j') == $lastDayOfMonth;
@@ -75,7 +75,7 @@ class DayOfWeekField extends AbstractField
             }
 
             $tdate = clone($date);
-            $tdate->setDate($currentYear, $currentMonth, 1);
+            $tdate->setDate((int) $currentYear, (int) $currentMonth, 1);
             $dayCount = 0;
             $currentDay = 1;
             while ($currentDay < $lastDayOfMonth + 1) {
@@ -84,7 +84,7 @@ class DayOfWeekField extends AbstractField
                         break;
                     }
                 }
-                $tdate->setDate($currentYear, $currentMonth, ++$currentDay);
+                $tdate->setDate((int) $currentYear, (int) $currentMonth, ++$currentDay);
             }
 
             return $date->format('j') == $currentDay;

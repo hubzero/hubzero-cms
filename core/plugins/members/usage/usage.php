@@ -224,8 +224,8 @@ class Usage extends Plugin
      * Get a count of users
      *
      * @param  string $resid   Resource ID
-     * @param  string $period  Time period
-     * @param  string $restype Resource type
+     * @param  int|string $period  Time period
+     * @param  int|string $restype Resource type
      * @return string
      */
     public static function getUsercount($resid, $period, $restype = '0')
@@ -374,7 +374,7 @@ class Usage extends Plugin
      *
      * @param  string $authorid  User ID
      * @param  string $user_type User type
-     * @param  string $period    Time period
+     * @param  int|string $period    Time period
      * @return integer
      */
     public function getTotalStats($authorid, $user_type, $period)

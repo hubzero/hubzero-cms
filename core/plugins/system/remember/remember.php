@@ -96,7 +96,7 @@ class Remember extends Plugin
                     // Clear the remember me cookie
                     setcookie(
                         App::hash('JLOGIN_REMEMBER'),
-                        false,
+                        '',
                         time() - 86400,
                         $cookie_path,
                         $cookie_domain,

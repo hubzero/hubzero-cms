@@ -172,7 +172,7 @@ class Html
     /**
      * Generate a type select list
      *
-     * @param      array  $arr      Values to populate list
+     * @param      iterable  $arr      Values to populate list
      * @param      string $name     Name of the field
      * @param      mixed  $value    Value to select
      * @param      string $shownone Show a 'none' option?
@@ -871,7 +871,7 @@ class Html
                         '',
                         '',
                         '',
-                        1,
+                        true,
                         $pop,
                     );
                     return $html;
@@ -953,7 +953,7 @@ class Html
                         '',
                         '',
                         '',
-                        1,
+                        true,
                         $pop,
                     );
                 } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) {
@@ -989,7 +989,7 @@ class Html
                             '',
                             Lang::txt('COM_RESOURCES_RESUME_TOOL_TITLE'),
                             '',
-                            0,
+                            false,
                             $pop,
                         );
                         $html .= '<p class="launch-new-instance"><a class="btn btn-secondary" href="'
@@ -1010,7 +1010,7 @@ class Html
                             '',
                             '',
                             $launchPage,
-                            0,
+                            false,
                             $pop,
                         );
                     }
@@ -1024,7 +1024,7 @@ class Html
                         '',
                         '',
                         '',
-                        1,
+                        true,
                         $pop,
                     );
                 }
@@ -1186,7 +1186,7 @@ class Html
                         '',
                         '',
                         '',
-                        '',
+                        false,
                         $pop,
                     );
                 } else {

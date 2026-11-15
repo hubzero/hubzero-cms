@@ -842,7 +842,7 @@ class Auth extends SiteController
             // Use domain and path set in config for cookie if it exists.
             $cookie_domain = Config::get('cookie_domain', '');
             $cookie_path   = Config::get('cookie_path', '/');
-            setcookie(App::hash('JLOGIN_REMEMBER'), false, time() - 86400, $cookie_path, $cookie_domain);
+            setcookie(App::hash('JLOGIN_REMEMBER'), '', time() - 86400, $cookie_path, $cookie_domain);
         } else {
             // Trigger onUserLoginFailure Event.
             Event::trigger('user.onUserLogoutFailure', [$parameters]);

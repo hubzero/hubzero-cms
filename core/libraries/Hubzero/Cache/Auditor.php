@@ -48,7 +48,7 @@ class Auditor
     /**
      * Increase cache items count.
      *
-     * @param   string  $size  Cached item size
+     * @param   int|float|string  $size  Cached item size
      * @return  void
      */
     public function tally($size)

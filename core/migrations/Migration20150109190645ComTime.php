@@ -78,7 +78,7 @@ class Migration20150109190645ComTime extends Base
                         ->getQuery()
                         ->insert('#__time_liaisons')
                         ->columns(['user_id'])
-                        ->values((int) $liaison->user_id)
+                        ->values([(int) $liaison->user_id])
                         ->execute();
                 }
             }

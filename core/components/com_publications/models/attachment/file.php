@@ -584,19 +584,19 @@ class File extends Base
         );
         $attachments = $attachments ? (array) $attachments : [];
 
-        $disabled = 0;
+        $disabled = false;
         $pop = null;
 
         if ($pub->isUnpublished() || $pub->isDown()) {
             $pop = Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-            $disabled = 1;
+            $disabled = true;
         } elseif (!$authorized) {
             $pop = $pub->access == 1
                 ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
                 : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
-            $disabled = 1;
+            $disabled = true;
         } elseif (!$attachments) {
-            $disabled = 1;
+            $disabled = true;
             $pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
         }
 
@@ -704,7 +704,7 @@ class File extends Base
                     $bstate = $this->bundleDisplayState($pub);
                     if ($bstate === 'preparing') {
                         $label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_PREPARING');
-                        $disabled = 1;
+                        $disabled = true;
                         $pop      = '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_PREPARING') . '</p>';
 
                         // Poll build status; when ready, send the browser to the
@@ -725,7 +725,7 @@ class File extends Base
                         );
                     } elseif ($bstate === 'failed') {
                         $label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_UNAVAILABLE');
-                        $disabled = 1;
+                        $disabled = true;
                         $pop      = '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE') . '</p>';
                     }
                 } else {

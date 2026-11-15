@@ -198,7 +198,7 @@ class Dispatcher implements DispatcherInterface
      * Thsi is an alias for addListener()
      *
      * @param   mixed  $listener
-     * @param   array  $events
+     * @param   array|string  $events  Event names as keys, or one event name
      * @throws  InvalidArgumentException
      */
     public function listen($listener, $events = [])

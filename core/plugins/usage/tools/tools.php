@@ -345,8 +345,8 @@ class Tools extends Plugin
             "12" => "Dec",
         ];
         $monthsReverse = array_reverse($months, true);
-        $cur_year = floor(date("Y"));
-        $cur_month = floor(date("n"));
+        $cur_year = (int) date("Y");
+        $cur_month = (int) date("n");
         $year_data_start = 2000;
 
         $html = '<label class="sr-only" for="usage-dthis">'
@@ -540,7 +540,7 @@ class Tools extends Plugin
      * for the date passed to it, false otherwise.
      *
      * @param   string $yearmonth  YYYY-MM
-     * @param   string $period     Time period
+     * @param   int|string $period     Time period
      * @return  boolean
      */
     private function checkForData($yearmonth, $period)
@@ -671,8 +671,8 @@ class Tools extends Plugin
         }
 
         if (!$dthis) {
-            $cur_year  = floor(date("Y"));
-            $cur_month = floor(date("n"));
+            $cur_year  = (int) date("Y");
+            $cur_month = (int) date("n");
             $year_data_start = 2000;
             $months = [
                 "01" => "Jan",
