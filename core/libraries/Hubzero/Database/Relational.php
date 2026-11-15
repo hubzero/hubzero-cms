@@ -4096,7 +4096,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves one row by primary key value provided
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
-     * @return  static
+     * @return  static|false  False when no row has that key
      **/
     public static function one($id)
     {
