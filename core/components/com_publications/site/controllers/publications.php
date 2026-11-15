@@ -983,7 +983,7 @@ class Publications extends SiteController
     {
         $versionId = (int) $this->model->get('version_id');
         $bq        = \Components\Publications\Models\BundleQueue::forVersion($versionId);
-        $status    = ($bq && $bq->get('id')) ? $bq->get('status') : null;
+        $status    = ($bq->get('id')) ? $bq->get('status') : null;
 
         if (
             $status == \Components\Publications\Models\BundleQueue::STATUS_READY
@@ -1068,7 +1068,7 @@ class Publications extends SiteController
             $vid = (int) $this->model->get('version_id');
             $bq  = \Components\Publications\Models\BundleQueue::forVersion($vid);
 
-            $out['status'] = ($bq && $bq->get('id')) ? $bq->get('status') : 'none';
+            $out['status'] = ($bq->get('id')) ? $bq->get('status') : 'none';
             $out['ready']  = ($out['status'] === \Components\Publications\Models\BundleQueue::STATUS_READY);
 
             if ($out['ready']) {

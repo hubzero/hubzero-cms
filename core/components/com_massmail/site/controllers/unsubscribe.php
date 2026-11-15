@@ -55,7 +55,7 @@ class Unsubscribe extends SiteController
         if ($valid && Request::method() == 'POST') {
             $user = \Hubzero\User\User::oneByEmail($email);
 
-            if ($user && $user->get('id')) {
+            if ($user->get('id')) {
                 $db = App::get('db');
                 $db->setQuery(
                     "UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id'),

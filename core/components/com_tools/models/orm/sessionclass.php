@@ -65,7 +65,7 @@ class SessionClass extends Relational
         $this->addRule('jobs', function ($data) {
             $record = self::oneByJobs($data['jobs']);
 
-            if ($record && $record->get('id')) {
+            if ($record->get('id')) {
                 return Lang::txt('COM_TOOLS_SESSIONS_CLASS_NON_UNIQUE_VALUE');
             }
 

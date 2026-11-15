@@ -61,7 +61,7 @@ class Projects extends Obj
 
                 $project = new Project($pid);
 
-                if (!$project || !$project->get('id')) {
+                if (!$project->get('id')) {
                     $this->setError(Lang::txt('COM_MEMBERS_IMPORT_ERROR_PROJECT_NOT_FOUND', $pid));
                     continue;
                 }
@@ -115,7 +115,7 @@ class Projects extends Obj
         foreach ($record->projects as $pid) {
             $project = new Project($pid);
 
-            if (!$project || !$project->get('id')) {
+            if (!$project->get('id')) {
                 $this->setError(Lang::txt('COM_MEMBERS_IMPORT_ERROR_PROJECT_NOT_FOUND', $pid));
                 continue;
             }
@@ -144,7 +144,7 @@ class Projects extends Obj
 
             $project = new Project($pid);
 
-            if (!$project || !$project->get('id')) {
+            if (!$project->get('id')) {
                 continue;
             }
 

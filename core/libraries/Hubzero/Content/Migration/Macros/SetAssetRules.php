@@ -29,7 +29,7 @@ class SetAssetRules extends Macro
         if ($this->db->tableExists('#__assets')) {
             $asset = Asset::oneByName($element);
 
-            if (!$asset || !$asset->get('id')) {
+            if (!$asset->get('id')) {
                 return false;
             }
 

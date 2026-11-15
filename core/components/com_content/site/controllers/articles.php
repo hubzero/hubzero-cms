@@ -55,7 +55,7 @@ class Articles extends SiteController
 
         $data = Article::oneByFilters($filters);
 
-        if (!$data || !$data->get('id')) {
+        if (!$data->get('id')) {
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
         }
 

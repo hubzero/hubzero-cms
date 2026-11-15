@@ -172,7 +172,7 @@ class Applications extends AdminController
                 }
 
                 // swap usernames for uidnumbers
-                if ($profile && $profile->get('id')) {
+                if ($profile->get('id')) {
                     $team[$k] = $profile->get('id');
                 } else {
                     unset($team[$k]);

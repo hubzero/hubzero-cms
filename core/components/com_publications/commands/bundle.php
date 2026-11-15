@@ -59,7 +59,7 @@ class Bundle extends Base implements CommandInterface
         if ($queued) {
             $entry = BundleQueue::forVersion($versionId);
 
-            if (!$entry || !$entry->get('id') || !$entry->claim()) {
+            if (!$entry->get('id') || !$entry->claim()) {
                 // Not queued, or another worker won the claim. Nothing to do.
                 $this->output->addLine(
                     'Nothing to build for version ' . $versionId . ' (not queued or already building).',
@@ -159,7 +159,7 @@ class Bundle extends Base implements CommandInterface
 
         $row = BundleQueue::forVersion($versionId);
 
-        if (!$row || !$row->get('id')) {
+        if (!$row->get('id')) {
             $this->output->addLine('No bundle queue entry for version ' . $versionId . '.');
             return;
         }

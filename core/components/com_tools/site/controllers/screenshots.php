@@ -104,7 +104,7 @@ class Screenshots extends SiteController
         $shot2 = Screenshot::oneByFilename($file_toleft, $pid, $vid);
 
         // Do we have information stored?
-        if (!$shot1 || !$shot1->get('id')) {
+        if (!$shot1->get('id')) {
             $shot1->set('filename', $file_toright);
             $shot1->set('resourceid', $pid);
             $shot1->set('versionid', $vid);
@@ -112,7 +112,7 @@ class Screenshots extends SiteController
         $shot1->set('ordering', $neworder_toright);
         $shot1->save();
 
-        if (!$shot2 || !$shot2->get('id')) {
+        if (!$shot2->get('id')) {
             $shot2->set('filename', $file_toleft);
             $shot2->set('resourceid', $pid);
             $shot2->set('versionid', $vid);

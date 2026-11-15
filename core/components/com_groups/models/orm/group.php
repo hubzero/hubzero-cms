@@ -528,7 +528,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             $row = self::oneByCn($this->get('cn'));
         }
 
-        if (!$row || !$row->get('gidNumber')) {
+        if (!$row->get('gidNumber')) {
             return false;
         }
 

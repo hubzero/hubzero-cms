@@ -729,7 +729,7 @@ class Resources extends SiteController
 
             // ...and it must be one of this resource's children, not any row
             $assoc = \Components\Resources\Models\Association::oneByRelationship($id, $this->resid);
-            if (!$assoc || !$assoc->get('id')) {
+            if (!$assoc->get('id')) {
                 App::abort(404);
             }
         }

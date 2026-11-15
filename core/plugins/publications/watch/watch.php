@@ -309,8 +309,8 @@ class Watch extends Plugin
         // Get profile information
         if ($subscriber->created_by) {
             $user  = User::getInstance($subscriber->created_by);
-            $name  = $user ? $user->get('name') : $name;
-            $email = $user ? $user->get('email') : $email;
+            $name  = $user->get('id') ? $user->get('name') : $name;
+            $email = $user->get('id') ? $user->get('email') : $email;
         }
 
         $plain = $eview->loadTemplate(false);

@@ -258,7 +258,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             if (!$hzal->user_id) {
                 $existing = \Hubzero\User\User::oneByUsername(self::suggestUsername($username));
 
-                if ($existing && $existing->get('id')) {
+                if ($existing->get('id')) {
                     $hzal->set('user_id', $existing->get('id'));
                 }
             }

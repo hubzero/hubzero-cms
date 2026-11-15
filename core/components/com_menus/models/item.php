@@ -1743,7 +1743,7 @@ class Item extends Nested
         if (!$parent) {
             $parent = self::rootNode();
 
-            if (!$parent || !$parent->get('id')) {
+            if (!$parent->get('id')) {
                 $this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
                 return false;
             }
@@ -1923,7 +1923,7 @@ class Item extends Nested
         // child of its new parent, in the order selected (the root's rgt is
         // the highest value in the tree)
         $root  = self::rootNode();
-        $order = (int) ($root ? $root->get('rgt') : 0) + 2;
+        $order = (int) $root->get('rgt') + 2;
         $moved = false;
 
         foreach (array_unique(array_map('intval', (array) $pks)) as $pk) {

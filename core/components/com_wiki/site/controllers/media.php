@@ -553,7 +553,7 @@ class Media extends SiteController
         $attachment = Attachment::oneByFilename($file, $listdir);
 
         // Delete the file
-        if (!$attachment || !$attachment->get('id')) {
+        if (!$attachment->get('id')) {
             // No database record for some reason
             // Set some data so the model can still remove the file
             $attachment->set('page_id', $listdir);

@@ -510,7 +510,7 @@ class Idp extends SiteController
                 break;
         }
 
-        if (!$user || !$user->get('id')) {
+        if (!$user->get('id')) {
             return null;
         }
 

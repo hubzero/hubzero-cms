@@ -89,7 +89,7 @@ class Media extends AdminController
         // Incoming file to delete
         $file = Attachment::oneOrFail(Request::getInt('attachment'));
 
-        if (!$file || !$file->get('id')) {
+        if (!$file->get('id')) {
             $this->setError(Lang::txt('COM_FORUM_ERROR_NO_FILE'));
 
             $this->displayTask();

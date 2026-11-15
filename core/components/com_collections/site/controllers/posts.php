@@ -326,7 +326,7 @@ class Posts extends SiteController
             $__mine   = false;
             if ($__pid) {
                 $__p = Post::getInstance($__pid);
-                $__mine = ($__p && $__p->get('created_by') == User::get('id') && (int) $__p->get('item_id') === $__iid);
+                $__mine = ($__p->get('created_by') == User::get('id') && (int) $__p->get('item_id') === $__iid);
             }
 
             if ($__existing->exists() && $__existing->get('created_by') != User::get('id') && !$__mine) {

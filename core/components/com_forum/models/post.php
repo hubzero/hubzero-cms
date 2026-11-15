@@ -446,7 +446,7 @@ class Post extends Relational
     /**
      * Get parent entry
      *
-     * @return  object
+     * @return  static|false  False when the post has no parent row
      */
     public function parent()
     {

@@ -337,7 +337,7 @@ class Mysql implements
         $result = \Hubzero\User\User::oneByEmail($enteredUsername);
 
         // no results or too many
-        if (!$result || !$result->get('id')) {
+        if (!$result->get('id')) {
             return null;
         }
 

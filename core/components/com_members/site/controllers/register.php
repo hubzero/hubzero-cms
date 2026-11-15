@@ -1286,7 +1286,7 @@ class Register extends SiteController
             if ($identifier) {
                 $user = User::oneByEmail($identifier);
                 if (
-                    $user && $user->get('id')
+                    $user->get('id')
                     && $user->get('activation') < 0
                     && !$user->get('block')
                 ) {
@@ -1593,7 +1593,7 @@ class Register extends SiteController
                 $pending = User::oneByActivationToken(-$code);
 
                 if (
-                    $pending && $pending->get('id')
+                    $pending->get('id')
                     && $pending->get('activation') < 0
                     && (int) $pending->get('activation') === -(int) $code
                 ) {

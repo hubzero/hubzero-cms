@@ -469,7 +469,7 @@ class Threads extends SiteController
                     continue;
                 }
                 $user = User::getInstance((int) $userId);
-                $email = $user ? $user->get('email') : null;
+                $email = $user->get('email');
                 if ($email && !in_array($email, $mentionEmailList)) {
                     $mentionEmailList[] = $email;
                 }

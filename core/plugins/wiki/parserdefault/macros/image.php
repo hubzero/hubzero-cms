@@ -240,7 +240,7 @@ Examples:
                 }
 
                 $page = \Components\Wiki\Models\Page::oneByTitle($bits[0], $scope, $scope_id);
-                if (!$page || !$page->get('id')) {
+                if (!$page->get('id')) {
                     return '(Image failed - Wiki page not found)';
                 }
                 $this->pageid = $page->get('id');

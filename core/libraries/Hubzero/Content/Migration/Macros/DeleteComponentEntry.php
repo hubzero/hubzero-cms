@@ -54,7 +54,7 @@ class DeleteComponentEntry extends Macro
 
             // Remove the component container in the assets table
             $asset = Asset::oneByName($name);
-            if ($asset && $asset->get('id')) {
+            if ($asset->get('id')) {
                 $asset->destroy();
             }
 

@@ -883,7 +883,7 @@ class Attachments extends SiteController
         // must be able to edit that parent (any of its editors, not only the
         // uploader) to remove the attachment
         $association = Association::oneByRelationship($pid, $id);
-        if (!$association || !$association->get('id')) {
+        if (!$association->get('id')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
         $parentAuth = Entry::oneOrFail($pid);
@@ -971,7 +971,7 @@ class Attachments extends SiteController
         // must be able to edit that parent (any of its editors, not only the
         // uploader) to change the attachment's access
         $assoc = Association::oneByRelationship($pid, $id);
-        if (!$assoc || !$assoc->get('id')) {
+        if (!$assoc->get('id')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
         $parentAuth = Entry::oneOrFail($pid);
