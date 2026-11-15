@@ -106,7 +106,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     private function requiresMariadb(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Mariadb)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

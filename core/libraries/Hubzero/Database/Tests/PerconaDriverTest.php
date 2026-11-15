@@ -106,7 +106,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     private function requiresPercona(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Percona)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

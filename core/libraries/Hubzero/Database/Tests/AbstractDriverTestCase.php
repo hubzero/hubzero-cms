@@ -395,7 +395,7 @@ abstract class AbstractDriverTestCase extends TestCase
         $attempted = static::$attemptedBackends[static::class] ?? [];
 
         if (empty($attempted)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return;
         }
 
@@ -416,7 +416,7 @@ abstract class AbstractDriverTestCase extends TestCase
             );
         }
 
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 
     /**

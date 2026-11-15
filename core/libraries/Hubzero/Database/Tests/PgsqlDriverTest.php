@@ -109,7 +109,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
     private function requiresPgsql(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Pgsql)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

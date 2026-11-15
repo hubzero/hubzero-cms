@@ -58,7 +58,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
     private function requiresSqlite(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof SqliteDriver)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

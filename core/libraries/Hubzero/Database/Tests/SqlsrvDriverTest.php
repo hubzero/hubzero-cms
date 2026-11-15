@@ -113,7 +113,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     private function requiresSqlsrv(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Sqlsrv)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

@@ -116,7 +116,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     private function requiresMysql(BaseSqlDriver $driver): bool
     {
         if (!self::isMysqlOnly($driver)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

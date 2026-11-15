@@ -133,7 +133,7 @@ class MockDriverTest extends AbstractDriverTestCase
     private function requiresMock(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof MockDriver)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

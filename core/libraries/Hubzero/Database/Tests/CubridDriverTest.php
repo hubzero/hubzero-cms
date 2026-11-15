@@ -110,7 +110,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     private function requiresCubrid(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Cubrid)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

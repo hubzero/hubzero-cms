@@ -381,7 +381,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
         // Should not throw
         $relationship->join();
 
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -398,7 +398,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
         // Should not throw
         $relationship->mediate();
 
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 
     /**

@@ -112,7 +112,7 @@ class OciDriverTest extends AbstractDriverTestCase
     private function requiresOracle(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Oci)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

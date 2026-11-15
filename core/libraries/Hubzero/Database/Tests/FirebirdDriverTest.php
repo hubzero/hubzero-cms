@@ -110,7 +110,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
     private function requiresFirebird(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Firebird)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

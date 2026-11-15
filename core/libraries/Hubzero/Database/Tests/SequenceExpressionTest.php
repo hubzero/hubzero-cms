@@ -294,7 +294,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         BaseSqlDriver $driver,
     ): void {
         if (!$driver->usesSequenceEmulation()) {
-            $this->assertTrue(true, "$dbName: native sequences, no emulation table");
+            $this->addToAssertionCount(1); // native sequences, no emulation table
             return;
         }
 

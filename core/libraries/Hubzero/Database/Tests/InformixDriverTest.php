@@ -110,7 +110,7 @@ class InformixDriverTest extends AbstractDriverTestCase
     private function requiresInformix(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Informix)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;

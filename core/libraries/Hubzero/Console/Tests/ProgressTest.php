@@ -511,14 +511,14 @@ class ProgressTest extends Basic
     {
         $progress = new Progress();
 
-        // Should not throw any errors
+        // Running through to done() without an error is the test
         $this->getBuffered(function () use ($progress) {
             $progress->init('Test: ', 'bar', 100);
             $progress->setProgress(50, 100);
             $progress->done();
         });
 
-        $this->assertTrue(true); // If we got here without error, test passes
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -547,14 +547,13 @@ class ProgressTest extends Basic
     {
         $progress = new Progress();
 
-        // Should not throw any errors
-        $this->getBuffered(function () use ($progress) {
+        $printed = $this->getBuffered(function () use ($progress) {
             $progress->init('Test: ', 'bar', 100);
             $progress->setProgress(100, 100);
             $progress->finish('All done!');
         });
 
-        $this->assertTrue(true); // If we got here without error, test passes
+        $this->assertStringContainsString('All done!', $printed);
     }
 
     /**

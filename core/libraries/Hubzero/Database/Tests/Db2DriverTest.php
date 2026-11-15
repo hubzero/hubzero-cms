@@ -123,7 +123,7 @@ class Db2DriverTest extends AbstractDriverTestCase
     private function requiresDb2(BaseSqlDriver $driver): bool
     {
         if (!($driver instanceof Db2)) {
-            $this->assertTrue(true);
+            $this->addToAssertionCount(1);
             return false;
         }
         return true;
@@ -1133,7 +1133,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         } catch (\PDOException $e) {
             // Expected pdo_ibm limitation with empty whereIn and DECIMAL columns
             if (strpos($e->getMessage(), 'SQL0420N') !== false || strpos($e->getMessage(), 'DECFLOAT') !== false) {
-                $this->assertTrue(true, 'Empty whereIn with DECIMAL columns triggers known pdo_ibm limitation');
+                $this->addToAssertionCount(1); // Empty whereIn with DECIMAL columns triggers known pdo_ibm limitation
             } else {
                 throw $e;
             }
