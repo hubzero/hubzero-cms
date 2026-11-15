@@ -477,11 +477,6 @@ class Projects extends Base
             } else {
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
-            $this->view->pub       = $pub;
-            $this->view->team      = $this->model->tblOwner->getOwnerNames($this->model->get('id'));
-            $this->view->suggested = Helpers\Html::suggestAlias($pub->title);
-            $this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);
-            $this->view->suggested = $this->view->verified ? $this->view->suggested : '';
         }
 
         // Check if they are a reviewer

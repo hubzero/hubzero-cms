@@ -383,15 +383,8 @@ class Api extends ApiController
 
             return;
         } else {
-            $this->send('Internal Server Error', 503);
-            return;
-
             // @FIXME: we don't support 3-legged auth yet
-            // lookup request token to access token, give out access token
-            // check verifier
-            // check used flag
-            $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-            $this->send("oauth_token=" . $token . "&oauth_token_secret=" . $token_secret, 200);
+            $this->send('Internal Server Error', 503);
             return;
         }
     }

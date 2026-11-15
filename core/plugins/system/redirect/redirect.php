@@ -56,11 +56,6 @@ class Redirect extends Plugin
             // Call Hubzero global exception handler instead of trying to render an error page
             App::get('error')->handleException($error);
             exit();
-
-            // Render the error page.
-            $renderer->render($error);
-
-            return;
         }
 
         // Get the full current URI.

@@ -345,14 +345,6 @@ class Query extends Relational
             $prfx = 'f';
             if (strtolower($expr->fldval) == 'tag') {
                 continue;
-
-                $prfx = 't';
-
-                if (count($tags) > 1 && strtoupper($condition->operator) == 'AND') {
-                    // Skip adding multiple tags for AND conditions
-                    // We need to do an IN () later
-                    continue;
-                }
             }
 
             if ($expr->fldval == 'group') {

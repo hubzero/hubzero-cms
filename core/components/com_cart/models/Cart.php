@@ -108,10 +108,6 @@ abstract class Cart
     {
         // Not sure if it is still in use
         throw new \Exception('I thought it was not in use anymore...');
-        $this->doItem($sId, 'set', 0);
-
-        // Update session
-        $this->syncSessionCart();
     }
 
     /**

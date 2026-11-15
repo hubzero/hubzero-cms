@@ -1090,44 +1090,6 @@ class Citations extends SiteController
         // and nothing links here. Refused until that feature returns with a
         // fixed, configured icon URL.
         App::abort(404, Lang::txt('JERROR_LAYOUT_PAGE_NOT_FOUND'));
-
-        // get the image we want to serve
-        $image = Request::getString('image', '');
-
-        // if we dont have an image were done
-        if ($image == '') {
-            return;
-        }
-
-        // file details
-        $image_details = pathinfo($image);
-
-        // make sure we have an image
-        $image_headers = @get_headers($image);
-        if (!is_array($image_headers) || strstr($image_headers[0], '200') === false) {
-            exit();
-        }
-
-        //ouput image based on type
-        switch ($image_details['extension']) {
-            case 'gif':
-                $image_resource = imagecreatefromgif($image);
-                header('Content-Type: image/gif');
-                imagegif($image_resource);
-                break;
-            case 'jpg':
-            case 'jpeg':
-                $image_resource = imagecreatefromjpeg($image);
-                header('Content-Type: image/jpeg');
-                imagejpeg($image_resource);
-                break;
-            case 'png':
-                $image_resource = imagecreatefrompng($image);
-                header('Content-Type: image/png');
-                imagepng($image_resource);
-                break;
-        }
-        exit();
     }
 
     /**

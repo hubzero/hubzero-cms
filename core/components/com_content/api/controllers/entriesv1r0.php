@@ -63,45 +63,10 @@ class Entriesv1r0 extends ApiController
             $query = 'SELECT * FROM `#__content` LIMIT ' . $filters['start'] . ', ' . $filters['limit'] . ';';
             $db->setQuery($query);
             $pages = $db->loadObjectList();
+
+            // The listing has answered false, and nothing else, for as long as
+            // this file has had history.
             return false;
-
-            foreach ($pages as &$page) {
-                // Build the path
-                $sql1 = "SELECT path FROM `#__categories` WHERE id={$page->catid};";
-                $path = $db->setQuery($sql1)->query()->loadResult();
-
-                if (strpos($path, 'uncategorized') === false && strpos($path, 'uncategorised') === false) {
-                    $url = $path . '/' . $page->alias;
-                } else {
-                    $url = '/' . $page->alias;
-                }
-
-                $page->url = $url;
-
-                if ($page->state == 1 && $page->access == 1) {
-                    $access_level = 'public';
-                } elseif ($page->state == 1 && $page->access == 2) {
-                    // Registered condition
-                    $access_level = 'registered';
-                } else {
-                    // Default private
-                    $access_level = 'private';
-                }
-
-                $page->access_level = $access_level;
-                $page->owner_type = 'user';
-                $page->owner = $page->created_by;
-                $page->id = 'content-' . $page->id;
-                $page->hubtype = 'content';
-                $page->description = \Hubzero\Utility\Sanitize::stripAll($page->introtext);
-                $page->raw_content = $page->introtext . ' ' . $page->fulltext;
-            }
-
-            $response = new stdClass();
-            $response->content = $pages;
-            $response->total = $total;
-            $response->success = true;
-            $this->send($response);
         } else {
             $response = new stdClass();
             $response->success = false;

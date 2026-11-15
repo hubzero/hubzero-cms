@@ -94,56 +94,6 @@ class Handlers extends Obj
         } elseif ($handlers) {
             // TEMP
             return '';
-
-            // Load needed objects
-            $obj = new \Components\Publications\Tables\Handler($this->db);
-
-            // Get all available handlers
-            $all = $obj->getHandlers($pub->version_id, $elementid);
-
-            // Get applicable handlers
-            if (!$all) {
-                return;
-            }
-            $i = 0;
-
-            // Header
-            $view = new \Hubzero\Component\View([
-                'base_path' => Component::path('com_publications') . DS . 'site',
-                'name'      => 'handlers',
-                'layout'    => '_header',
-            ]);
-            $html = $view->loadTemplate();
-
-            // Go through available handlers and find those that apply
-            foreach ($all as $item) {
-                $handler  = $this->ini($item->name);
-                if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned) {
-                    $hview = new \Hubzero\Component\View([
-                        'base_path' => Component::path('com_publications') . DS . 'site',
-                        'name'      => 'handlers',
-                        'layout'    => '_choice',
-                    ]);
-                    $configs = $handler->get('_configs');
-                    if (!$configs) {
-                        $saved = $obj->getConfig($item->name, $item);
-                        $configs = $handler->getConfig($saved);
-                    }
-                    $hview->handler     = $handler;
-                    $hview->configs     = $configs;
-                    $hview->item        = $item;
-                    $hview->publication = $pub;
-                    $hview->props       = $props;
-                    $hview->relevant    = $relevant;
-                    $html .= $hview->loadTemplate();
-                    $i++;
-                }
-            }
-
-            // No applicable hanlders?
-            if ($i == 0) {
-                return;
-            }
         }
 
         return $html;
