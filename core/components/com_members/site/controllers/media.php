@@ -602,10 +602,10 @@ class Media extends SiteController
         }
 
         //Load member profile
-        $member = Member::oneOrFail($id);
+        $member = Member::oneOrNew($id);
 
         // check to make sure we have member profile
-        if (!$member) {
+        if ($member->isNew()) {
             return;
         }
 

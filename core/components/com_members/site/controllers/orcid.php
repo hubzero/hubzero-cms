@@ -311,13 +311,15 @@ class Orcid extends SiteController
     private function save($orcid)
     {
         // Instantiate a new profile object
-        $profile = Member::oneOrFail(User::get('id'));
+        $profile = Member::oneOrNew(User::get('id'));
 
-        if ($profile) {
+        if (!$profile->isNew()) {
             $profile->set('orcid', $orcid);
 
             return $profile->save();
         }
+
+        return false;
     }
 
     /**

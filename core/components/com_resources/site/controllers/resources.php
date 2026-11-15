@@ -2549,10 +2549,6 @@ class Resources extends SiteController
         }
 
         // Output HTML
-        if (!$row) {
-            App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
-        }
-
         // Set the page title
         $title = stripslashes($row->title ?: '') . ': ' . Lang::txt('COM_RESOURCES_LICENSE');
 

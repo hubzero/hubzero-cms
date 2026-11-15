@@ -602,9 +602,9 @@ class Curation extends SiteController
         $authors = $this->pub->authors();
         foreach ($authors as $author) {
             if (!empty($author->user_id)) {
-                $profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+                $profile = \Components\Members\Models\Member::oneOrNew($author->user_id);
 
-                if ($profile) {
+                if (!$profile->isNew()) {
                     $orcidID = $profile->get('orcid');
                     $accessToken = $profile->get('access_token');
 

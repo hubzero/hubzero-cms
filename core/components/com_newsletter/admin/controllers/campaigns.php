@@ -227,8 +227,8 @@ class Campaigns extends AdminController
         if (count($ids) > 0) {
             foreach ($ids as $id) {
                 // instantiate mailing list object
-                $row = Campaign::oneOrFail($id);
-                if (!$row) {
+                $row = Campaign::oneOrNew($id);
+                if ($row->isNew()) {
                     Notify::error(Lang::txt('COM_NEWSLETTER_CAMPAIGN_NOT_FOUND'));
                     continue;
                 }
