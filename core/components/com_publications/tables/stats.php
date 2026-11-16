@@ -46,7 +46,7 @@ class Stats extends Table
      *
      * @param   integer|null  $publication_id  Pub ID
      * @param   integer|null  $period          Period
-     * @param   integer|null  $dthis
+     * @param   int|string|null  $dthis
      * @return  mixed    False if error, Object on success
      */
     public function loadStats($publication_id = null, $period = null, $dthis = null)

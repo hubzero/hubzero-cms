@@ -165,7 +165,7 @@ class Format
      * Function to format citation based on template
      *
      * @param   object   $citation       Citation object
-     * @param   string|false   $highlight      String that we want to highlight
+     * @param   string|false|null   $highlight      String that we want to highlight
      * @param   boolean  $include_coins  Include COINs?
      * @param   object   $config         Registry
      * @param   boolean  $coins_only     Only output COINs?

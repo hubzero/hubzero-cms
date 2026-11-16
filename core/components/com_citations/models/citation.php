@@ -909,7 +909,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                             $coins_data[] = $coins_keys[$k] . '=' . htmlentities($this->$k);
                             break;
                         case 'journaltitle':
-                            $jt = html_entity_decode($this->$k);
+                            $jt = html_entity_decode((string) $this->$k);
                             if (function_exists('mbstring')) {
                                 $jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
                             }
@@ -1009,7 +1009,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                                 }
                             } else {
                                 //new ORM method
-                                $a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
+                                $a[] = htmlspecialchars((string) $author, ENT_QUOTES, 'UTF-8');
                             }
                         }
                         $replace_values[$v] = implode(", ", array_filter($a));

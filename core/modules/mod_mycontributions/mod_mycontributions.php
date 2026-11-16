@@ -57,7 +57,7 @@ class Mycontributions extends Module
      * @param   integer  $show_questions  Show question count for tool
      * @param   integer  $show_wishes     Show wish count for tool
      * @param   integer  $show_tickets    Show ticket count for tool
-     * @param   string   $limit_tools     Number of records to pull
+     * @param   int|string   $limit_tools     Number of records to pull
      * @return  mixed    False if error, otherwise array
      */
     private function getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools = '40')

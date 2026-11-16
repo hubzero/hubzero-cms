@@ -209,7 +209,7 @@ class Download extends ComponentController
      * Display landing page
      *
      * @param   integer  $tId
-     * @param   integer  $sId
+     * @param   int|string  $sId
      * @return  void
      */
     public function landingTask($tId, $sId)

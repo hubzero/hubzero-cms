@@ -24,7 +24,7 @@ class Logout extends Plugin
      * Object Constructor.
      *
      * @param   object  $subject  The object to observe -- event dispatcher.
-     * @param   object  $config   The configuration object for the plugin.
+     * @param   array  $config   The configuration object for the plugin.
      * @return  void
      */
     public function __construct(&$subject, $config)

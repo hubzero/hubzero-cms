@@ -145,7 +145,8 @@ class Post extends Base
     /**
      * Get the item for this post
      *
-     * @param   integer|Item|null  $oid  An item's ID, or the item itself to use in place of the stored one
+     * @param   integer|Item|object|null  $oid  An item's ID, the item itself to use in place of the stored
+     *                                          one, or its fields
      * @return  object
      */
     public function item($oid = null)

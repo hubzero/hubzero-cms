@@ -216,8 +216,8 @@ class Storefront extends Plugin
     /**
      * Handles the actual sending of emails
      *
-     * @param  boolean  $skusInfo     [description]
-     * @param  boolean  $productsInfo [description]
+     * @param  array    $skusInfo     SKUs about to be unpublished
+     * @param  array    $productsInfo Products about to be unpublished
      * @return boolean|null
      **/
     private function sendNotifications($skusInfo, $productsInfo)

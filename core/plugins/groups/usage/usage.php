@@ -377,7 +377,7 @@ class Usage extends Plugin
      * Get a list of all page views over a time period
      *
      * @param      string  $gid     Group ID
-     * @param      string  $pageid  Page ID
+     * @param      string|int  $pageid  Page ID
      * @param      string  $start   Start date
      * @param      string  $end     End date
      * @return     array
@@ -441,7 +441,7 @@ class Usage extends Plugin
     /**
      * Draw a chart of page views over time for a specific page
      *
-     * @param   integer  $pid    Page ID
+     * @param   integer|string  $pid    Page ID
      * @param   string   $start  Start date
      * @param   string   $end    End date
      * @return  string

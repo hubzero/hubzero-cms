@@ -647,7 +647,7 @@ class Product
     /**
      * Remove image
      *
-     * @param   int   $imgId  Image ID
+     * @param   int|string   $imgId  Image ID
      * @return  bool  Succes of Failure
      */
     public function removeImage($imgId)

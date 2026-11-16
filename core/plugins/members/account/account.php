@@ -945,7 +945,7 @@ class Account extends Plugin
     /**
      * Save password change token to the database
      *
-     * @param   string  $token
+     * @param   int|string  $token
      * @return  bool    true if token save successful
      */
     private function setToken($token)
@@ -997,7 +997,7 @@ class Account extends Plugin
     /**
      * Send token email
      *
-     * @param   string  $token
+     * @param   int|string  $token
      * @return  bool    true if email send successfully
      */
     private function sendEmail($token)

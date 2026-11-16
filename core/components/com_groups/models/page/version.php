@@ -70,7 +70,7 @@ class Version extends Model
      * Overload Store method so we can run some purifying before save
      *
      * @param   boolean  $check           Run the Table Check Method
-     * @param   boolean  $trustedContent  Is content trusted
+     * @param   bool|int  $trustedContent  Is content trusted
      * @return  bool
      */
     public function store($check = true, $trustedContent = false)

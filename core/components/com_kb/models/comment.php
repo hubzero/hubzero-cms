@@ -255,7 +255,7 @@ class Comment extends Relational
     /**
      * Vote for the entry
      *
-     * @param   integer  $vote     The vote [-1, 1, like, dislike, yes, no, positive, negative]
+     * @param   int|string  $vote     The vote [-1, 1, like, dislike, yes, no, positive, negative]
      * @param   integer  $user_id  Optinal user ID to set as voter
      * @return  boolean  False if error, True on success
      */

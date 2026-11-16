@@ -264,7 +264,7 @@ class Ckeditor extends Plugin
      * @param   string  $name
      * @param   array|mixed   $buttons
      * @param   string  $asset
-     * @param   string  $author
+     * @param   string|object|null  $author
      * @return  string
      */
     private function displayButtons($name, $buttons, $asset, $author)

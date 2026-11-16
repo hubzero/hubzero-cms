@@ -225,7 +225,7 @@ class Detector implements DetectorInterface
      * Learn what is spam or not
      *
      * @param   string   $text
-     * @param   string   $isSpam
+     * @param   bool   $isSpam
      * @return  boolean
      */
     public function learn($text, $isSpam)
@@ -314,7 +314,7 @@ class Detector implements DetectorInterface
     /**
      * Calculate token probability
      *
-     * @param   object   $token
+     * @param   string   $token
      * @param   integer  $good_count
      * @param   integer  $bad_count
      * @param   object   $tokens_count

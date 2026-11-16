@@ -15,7 +15,7 @@ namespace Hubzero\Facades;
  * @method static object|null byName(string $name, string $title = null)
  * @method static array  byPosition(string $position)
  * @method static bool   isEnabled(string $module)
- * @method static string position(string $position, string $style = 'none')
+ * @method static string position(string $position, string|array $style = 'none')
  * @method static string name(string $name, string $style = 'none')
  * @method static string render(object $module, array $attribs = [])
  * @method static string getLayoutPath(string $module, string $layout = 'default')

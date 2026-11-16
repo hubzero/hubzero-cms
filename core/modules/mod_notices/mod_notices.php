@@ -29,9 +29,9 @@ class Notices extends Module
      * Calculate the time left from a date time
      *
      * @param   integer  $year    Year
-     * @param   integer  $month   Month
-     * @param   integer  $day     Day
-     * @param   integer  $hour    Hour
+     * @param   int|string  $month   Month
+     * @param   int|string  $day     Day
+     * @param   int|string  $hour    Hour
      * @param   integer  $minute  Minute
      * @return  array
      */

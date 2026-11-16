@@ -301,7 +301,7 @@ class Comment extends Relational
     /**
      * Vote for the entry
      *
-     * @param   integer  $vote     The vote [0, 1]
+     * @param   int|string  $vote     The vote [0, 1]
      * @param   integer  $user_id  Optinal user ID to set as voter
      * @param   string|null   $ip       Optional IP address
      * @return  boolean  False if error, True on success

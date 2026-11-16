@@ -115,7 +115,7 @@ class Campaign extends Relational
     /**
      * Generates new secret value
      *
-     * @param   array   $data  the data being saved
+     * @param   array|null   $data  the data being saved
      * @return  string
      */
     public static function generateSecret($data)

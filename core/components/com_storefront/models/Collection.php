@@ -185,7 +185,7 @@ class Collection
     /**
      * Set product collection status
      *
-     * @param   bool $activeStatus        collection status
+     * @param   bool|int $activeStatus        collection status
      * @return  bool        true
      */
     public function setActiveStatus($activeStatus)
@@ -400,7 +400,7 @@ class Collection
     /**
      * Set collection image
      *
-     * @param   array|object $img       Product images
+     * @param   string|object $img      The image, or its file name
      * @return  bool        true
      */
     public function setImage($img)
@@ -418,7 +418,7 @@ class Collection
     /**
      * Remove image
      *
-     * @param   int $imgId         Image ID
+     * @param   int|string $imgId         Image ID
      * @return  bool        Success of Failure
      */
     public function removeImage($imgId)

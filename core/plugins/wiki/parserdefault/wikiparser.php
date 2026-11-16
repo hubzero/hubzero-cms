@@ -2399,8 +2399,8 @@ class WikiParser
      * Returns the length of the longest common substring
      * of both arguments, starting at the beginning of both.
      *
-     * @param   string  $st1
-     * @param   string  $st2
+     * @param   string|int  $st1
+     * @param   string|int  $st2
      * @return  integer
      */
     private function getCommon($st1, $st2)
@@ -3119,7 +3119,7 @@ class WikiParser
      * @param   string  $anchor     Link anchor #anchor
      * @param   string  $tocLine    TOC item Text
      * @param   string  $tocnumber  TOC item number
-     * @param   string  $level      TOC level
+     * @param   string|int  $level      TOC level
      * @return  string
      */
     private function tocLine($anchor, $tocLine, $tocnumber, $level)

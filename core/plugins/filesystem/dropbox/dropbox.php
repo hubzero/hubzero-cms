@@ -65,7 +65,7 @@ class Dropbox extends Plugin
     /**
      * Sets OAuth-relevant data in local user session
      *
-     * @param   array   $state  OAuth state
+     * @param   string  $state  OAuth state
      * @return  void
      **/
     protected static function setLocalOauthData($state)

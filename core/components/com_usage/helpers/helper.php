@@ -664,19 +664,6 @@ class Helper
     }
 
     /**
-     * Short description for 'seldate_valuedescsort'
-     *
-     * Long description (if any) ...
-     *
-     * @param   mixed  &$arr  Parameter description (if any) ...
-     * @return  mixed    Return description (if any) ...
-     */
-    public static function seldateValuedescsort(&$arr)
-    {
-        return usort($arr, "arraykeyeddesccmp");
-    }
-
-    /**
      * Short description for 'valformat'
      *
      * Long description (if any) ...
@@ -722,7 +709,7 @@ class Helper
      *
      * @param   object   $db             Database
      * @param   string   $enddate        Parameter description (if any) ...
-     * @param   integer  $thisyear       Current year
+     * @param   int|string  $thisyear       Current year
      * @param   array    $monthsReverse  List of months (Dec -> Jan)
      * @param   string   $func           Function to perform
      * @return  string   HTML

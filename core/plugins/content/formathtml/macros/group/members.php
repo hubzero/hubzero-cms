@@ -129,7 +129,7 @@ class Members extends GroupMacro
     /**
      * Render the events
      *
-     * @param   array $group  Array of group events
+     * @param   \Hubzero\User\Group $group  The group
      * @param   array  $members  Array of members
      * @return  string
      */

@@ -17,6 +17,7 @@ use Hubzero\Facades\Document;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Dashboard extends Plugin
 {
@@ -53,7 +54,7 @@ class Dashboard extends Plugin
             return $response;
         }
 
-        $nonadmin = Request::getState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
+        $nonadmin = User::getState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
         if (!($active = Request::getString('active')) && !$nonadmin) {
             Request::setVar('active', ($active = $this->pluginName));
         }

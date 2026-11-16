@@ -204,7 +204,7 @@ class Profile extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param  array  $fields  Fields filled in
+     * @param  array|\Hubzero\Database\Rows  $fields  Fields filled in
      * @param  object $profile Profile
      * @return integer
      */

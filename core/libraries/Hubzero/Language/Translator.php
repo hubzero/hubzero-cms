@@ -1416,10 +1416,10 @@ class Translator extends Obj
     /**
      * Builds a list of the system languages which can be used in a select option
      *
-     * @param   string   $actualLanguage  Client key for the area
+     * @param   string|null  $actualLanguage  The language to mark selected
      * @param   string   $basePath        Base path to use
      * @param   boolean  $caching         True if caching is used
-     * @param   array|false $installed       An array of arrays (text, value, selected)
+     * @param   boolean  $installed       True to list only the languages installed for the client
      * @param   integer|null  $client          Client ID
      * @return  array    List of system languages
      */

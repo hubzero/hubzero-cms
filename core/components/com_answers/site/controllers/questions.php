@@ -840,7 +840,7 @@ class Questions extends SiteController
         if ($fields['reward'] && $this->config->get('banking')) {
             $BTL = new Teller(User::get('id'));
             $BTL->hold(
-                $fields['reward'],
+                (int) $fields['reward'],
                 Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'),
                 'answers',
                 $row->get('id'),

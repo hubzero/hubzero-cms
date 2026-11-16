@@ -251,7 +251,7 @@ class Miner extends Obj implements Provider
     /**
      * Process a single record
      *
-     * @param   integer  $id
+     * @param   integer|string  $id  ID, or ID:revision
      * @return  object
      */
     public function record($id)
@@ -394,7 +394,7 @@ class Miner extends Obj implements Provider
             foreach ($parents as $parent) {
                 $record->relation[] = [
                     'type'  => 'isPartOf',
-                    'value' => $this->identifier($parent->parent_id, 0),
+                    'value' => $this->identifier($parent->parent_id, ''),
                 ];
             }
         }

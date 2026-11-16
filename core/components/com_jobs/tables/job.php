@@ -324,10 +324,10 @@ class Job extends Table
     /**
      * Get job opening
      *
-     * @param   integer|null  $jid      Job ID
-     * @param   integer  $uid      User ID
-     * @param   integer  $admin    Admin access?
-     * @param   string   $jobcode  Job code
+     * @param   int|null  $jid      Job ID
+     * @param   int|null  $uid      User ID
+     * @param   int|null  $admin    Admin access?
+     * @param   string|int   $jobcode  Job code
      * @return  mixed    False if errors, array if records found, null if not
      */
     public function getOpening($jid = 0, $uid = 0, $admin = 0, $jobcode = '')

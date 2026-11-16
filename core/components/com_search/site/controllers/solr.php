@@ -306,7 +306,7 @@ class Solr extends SiteController
      * Format the results
      *
      * @param   array  $results
-     * @param   array  $terms
+     * @param   string  $terms
      * @return  array
      */
     private function formatResults($results, $terms)

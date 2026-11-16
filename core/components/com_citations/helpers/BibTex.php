@@ -924,7 +924,7 @@ class BibTex
      * @access private
      * @param  string  $type       The type of the warning
      * @param  string  $entry      The line of the entry where the warning occurred
-     * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
+     * @param  string|array  $wholeentry OPTIONAL The whole entry where the warning occurred
      *
      * @return  void
      */

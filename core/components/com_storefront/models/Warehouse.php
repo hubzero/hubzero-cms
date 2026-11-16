@@ -955,7 +955,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   $pId                        Product ID
      * @param   $options                    Selected options (optional for products with no options)
      * @param   $throwExceptionOnNomatch    Should the exception be thrown if no match found (default: true)
-     * @return  SKU|false ID
+     * @return  int|string|false  SKU ID
      */
     public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
     {
@@ -1144,7 +1144,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all info for SKU provided, including options
      *
-     * @param   int         $sId  SKU ID
+     * @param   int|string         $sId  SKU ID
      * @return  array|false       info
      */
     public function getSkuInfo($sId, $showInactive = true)
@@ -1294,7 +1294,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get course by alias
      *
-     * @param   int $alias                         course ID
+     * @param   string $alias                         course ID
      * @return  string|null  The id of the SKU for that course, null if there is none
      */
     public function getCourseByAlias($alias)

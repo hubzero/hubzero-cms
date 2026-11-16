@@ -271,8 +271,8 @@ class Media extends AdminController
             // File was uploaded
             $fle = $path . DS . $filename;
 
-            if (!Filesystem::isSafe($file)) {
-                if (Filesystem::delete($file)) {
+            if (!Filesystem::isSafe($fle)) {
+                if (Filesystem::delete($fle)) {
                     $this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
                     echo $this->getError();
                     return;

@@ -209,7 +209,7 @@ class Courses extends Macro
      * Get Arg by search
      *
      * @param  string $arg     Argument to search for
-     * @param  string $default Default value if no match is found
+     * @param  string|int|null $default Default value if no match is found
      * @return string
      */
     private function getArg($arg, $default = '')

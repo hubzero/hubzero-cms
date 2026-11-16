@@ -93,7 +93,7 @@ class Math extends Plugin
     /**
      * Generate an answer key
      *
-     * @param   string  $input  CAPTCHA answer
+     * @param   string|int  $input  CAPTCHA answer
      * @param   string  $day    Current day
      * @return  string
      */

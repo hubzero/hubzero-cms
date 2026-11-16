@@ -91,7 +91,7 @@ class Support extends Plugin
                 continue;
             }
 
-            if (abs($name) < $old) {
+            if (abs((int) $name) < $old) {
                 Filesystem::delete($file->getPathname());
             }
         }

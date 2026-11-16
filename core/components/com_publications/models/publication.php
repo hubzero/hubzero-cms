@@ -1892,7 +1892,7 @@ class Publication extends Obj
      * Check if this entry has an image
      *
      * @param   string  $type  The type of image
-     * @return  boolean
+     * @return  string|false  The image path, or false when there is none
      */
     public function hasImage($type = 'thumb')
     {

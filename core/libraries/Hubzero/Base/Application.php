@@ -296,7 +296,7 @@ class Application extends Container
      *
      * @param   string  $url      Url to redirect to
      * @param   string|null  $message  Message to display on redirect.
-     * @param   array|string $type     Message type.
+     * @param   array|string|null $type  Message type.
      * @return  never
      */
     public function redirect($url, $message = null, $type = 'success')

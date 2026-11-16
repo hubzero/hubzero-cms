@@ -696,8 +696,8 @@ class Wish extends Relational
     /**
      * Rank an entry
      *
-     * @param   integer  $effort
-     * @param   integer  $importance
+     * @param   int|string  $effort
+     * @param   int|string  $importance
      * @return  boolean
      */
     public function rank($effort, $importance)

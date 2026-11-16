@@ -244,18 +244,22 @@ class Latest extends Module
 
         if ($excluded_articles = $params->get('excluded_articles', '')) {
             $excluded_articles = array_map('intval', explode("\r\n", $excluded_articles));
-            $query->whereRaw('id', 'NOT IN(' . implode(',', $excluded_articles) . ')');
+            $query->whereRaw('id NOT IN(' . implode(',', $excluded_articles) . ')');
         }
 
+        // As mod_articles_category does it: a date range, or a number of days back
         $date_filtering = $params->get('date_filtering', 'off');
-        if ($date_filtering !== 'off') {
+        if ($date_filtering == 'range') {
             $fld = str_replace('a.', '', $params->get('date_field', 'a.created'));
 
             $query->where($fld, '>=', $params->get('start_date_range', '1000-01-01 00:00:00'));
             $query->where($fld, '<', $params->get('end_date_range', '9999-12-31 23:59:59'));
+        } elseif ($date_filtering == 'relative') {
+            $fld = str_replace('a.', '`#__content`.`', $params->get('date_field', 'a.created')) . '`';
             if ($relativeDate = $params->get('relative_date', 30)) {
                 $db = App::get('db');
-                $query->whereRaw($fld, '>= ' . $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY'));
+                $dateSub = $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY');
+                $query->whereRaw($fld . " >= " . $dateSub);
             }
         }
 

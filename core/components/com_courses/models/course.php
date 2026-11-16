@@ -106,7 +106,7 @@ class Course extends Base
     /**
      * Constructor
      *
-     * @param      int|string|null $oid Course ID or alias
+     * @param      int|string|object|array|null $oid Course ID, alias, or record
      * @return     void
      */
     public function __construct($oid)

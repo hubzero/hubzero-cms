@@ -172,7 +172,7 @@ class Subscription extends Relational
         }
 
         for ($j = 0; $j < count($limits); $j++) {
-            if (strtotime($current_time) < strtotime($limits[$j])) {
+            if ($current_time < strtotime($limits[$j])) {
                 $lastunit = $j + 1;
 
                 if ($type == 'unit') {

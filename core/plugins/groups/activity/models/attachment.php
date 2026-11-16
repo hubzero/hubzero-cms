@@ -23,7 +23,7 @@ class Attachment extends Obj
     /**
      * File size
      *
-     * @var  int|false|null
+     * @var  int|null
      */
     protected $size = null;
 
@@ -252,9 +252,9 @@ class Attachment extends Obj
     }
 
     /**
-     * Is the file an image?
+     * File size in bytes
      *
-     * @return  boolean
+     * @return  int  0 when the file is missing or unreadable
      */
     public function size()
     {
@@ -264,7 +264,7 @@ class Attachment extends Obj
             $path = $this->path();
 
             if (file_exists($path)) {
-                $this->size = filesize($path);
+                $this->size = (int) filesize($path);
             }
         }
 

@@ -6,6 +6,7 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Auth\Factor;
 use OTPHP\TOTP;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
 
@@ -20,6 +21,13 @@ use Hubzero\Facades\Request;
  */
 class Google extends Plugin
 {
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    protected $autoloadLanguage = true;
+
     protected $view;
 
     /**
@@ -108,7 +116,7 @@ class Google extends Plugin
         if ($verification) {
             App::get('session')->set('authfactors.status', true);
         } else {
-            Notify::error($verification);
+            Notify::error(Lang::txt('PLG_AUTHFACTORS_GOOGLE_INVALID_CODE'));
         }
 
         App::redirect(Request::current());

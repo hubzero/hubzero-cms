@@ -241,7 +241,7 @@ class CronExpression
             $currentTime = strtotime($currentDate);
         } else {
             $currentTime = new DateTime($currentTime);
-            $currentTime->setTime($currentTime->format('H'), $currentTime->format('i'), 0);
+            $currentTime->setTime((int) $currentTime->format('H'), (int) $currentTime->format('i'), 0);
             $currentDate = $currentTime->format('Y-m-d H:i');
             $currentTime = $currentTime->getTimeStamp();
         }
@@ -267,7 +267,7 @@ class CronExpression
             ? $currentTime
             : new DateTime($currentTime ?: 'now', new \DateTimeZone('GMT'));
 
-        $currentDate->setTime($currentDate->format('H'), $currentDate->format('i'), 0);
+        $currentDate->setTime((int) $currentDate->format('H'), (int) $currentDate->format('i'), 0);
         $nextRun = clone($currentDate);
         $nth = (int) $nth;
 

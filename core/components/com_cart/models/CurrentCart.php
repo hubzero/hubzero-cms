@@ -112,7 +112,7 @@ class CurrentCart extends Cart
     /**
      * Add SKU to cart
      *
-     * @param int $sId SKU ID
+     * @param int|string $sId SKU ID
      * @param int $qty Quantity
      * @return void
      */

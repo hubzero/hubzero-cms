@@ -600,7 +600,7 @@ class Html
     /**
      * Get the month name from the numerical value
      *
-     * @param      string $month Numerical month value (01-12)
+     * @param      int|string $month Numerical month value (01-12)
      * @return     string
      */
     public static function getMonthName($month)

@@ -83,7 +83,7 @@ class Browse extends \Hubzero\Component\SiteController
     /**
      * Display collection
      *
-     * @param   integer  $cId
+     * @param   int|string  $cId
      * @return  void
      */
     private function browseCollection($cId)

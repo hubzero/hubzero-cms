@@ -812,7 +812,7 @@ class Request extends BaseRequest
      *
      * Use in conjunction with Html::input('token').
      *
-     * @param   string   $method  The request method in which to look for the token key.
+     * @param   string|array  $method  The request method, or methods, in which to look for the token key.
      * @return  boolean  True if found and valid, false otherwise.
      */
     public function checkToken($method = 'post')

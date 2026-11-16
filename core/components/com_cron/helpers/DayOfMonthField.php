@@ -59,15 +59,15 @@ class DayOfMonthField extends AbstractField
     /**
      * Get the nearest day of the week for a given day in a month
      *
-     * @param int $currentYear Current year
-     * @param int $currentYear Current month
-     * @param int $targetDay Target day of the month
+     * @param int|string $currentYear Current year
+     * @param int|string $currentMonth Current month
+     * @param int|string $targetDay Target day of the month
      *
      * @return DateTime|null Returns the nearest date
      */
     private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
     {
-        $tday = str_pad($targetDay, 2, '0', STR_PAD_LEFT);
+        $tday = str_pad((string) $targetDay, 2, '0', STR_PAD_LEFT);
         $target = DateTime::createFromFormat('Y-m-d', "$currentYear-$currentMonth-$tday");
         $currentWeekday = (int) $target->format('N');
 

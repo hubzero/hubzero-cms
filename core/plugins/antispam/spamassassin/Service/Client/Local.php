@@ -73,7 +73,7 @@ class Local
         if (!empty($this->socketPath)) {
             $socket = fsockopen('unix://' . $this->socketPath, -1, $errno, $errstr);
         } else {
-            $socket = fsockopen($this->hostname, $this->port, $errno, $errstr);
+            $socket = fsockopen($this->hostname, (int) $this->port, $errno, $errstr);
         }
 
         if (!$socket) {

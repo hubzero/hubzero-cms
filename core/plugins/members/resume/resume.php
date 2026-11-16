@@ -700,7 +700,7 @@ class Resume extends Plugin
         $periods = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade'];
         $lengths = ['60', '60', '24', '7', '4.35', '12', '10'];
 
-        $now = strtotime(Date::getRoot());
+        $now = strtotime((string) Date::getRoot());
         $unix_date = strtotime($date);
 
         // check validity of date

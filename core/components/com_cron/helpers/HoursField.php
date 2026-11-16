@@ -27,10 +27,10 @@ class HoursField extends AbstractField
     {
         if ($invert) {
             $date->sub(new DateInterval('PT1H'));
-            $date->setTime($date->format('H'), 59, 0);
+            $date->setTime((int) $date->format('H'), 59, 0);
         } else {
             $date->add(new DateInterval('PT1H'));
-            $date->setTime($date->format('H'), 0, 0);
+            $date->setTime((int) $date->format('H'), 0, 0);
         }
 
         return $this;

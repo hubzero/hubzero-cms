@@ -172,10 +172,12 @@ class Articles extends AdminController
             ),
             'level' => Request::getState(
                 $this->option . '.' . $this->controller . '.level',
+                'filter_level',
                 0,
             ),
             'language' => Request::getState(
                 $this->option . '.' . $this->controller . '.language',
+                'filter_language',
                 '',
             ),
             'sort' => Request::getState(
@@ -310,10 +312,12 @@ class Articles extends AdminController
             ),
             'level' => Request::getState(
                 $this->option . '.featured.level',
+                'filter_level',
                 0,
             ),
             'language' => Request::getState(
                 $this->option . '.featured.language',
+                'filter_language',
                 '',
             ),
             'sort' => Request::getState(

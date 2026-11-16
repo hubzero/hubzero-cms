@@ -276,7 +276,7 @@ class Usage extends Plugin
      * Get overview data
      *
      * @param   integer  $id      Resource ID
-     * @param   integer  $period  Resource period
+     * @param   int|string  $period  Resource period
      * @return  array
      */
     public static function getOverview($id, $period = 1)
@@ -297,7 +297,7 @@ class Usage extends Plugin
      *
      * @param   integer  $id        Resource ID
      * @param   integer  $top       Value type (1 = country, 2 = domain, 3 = org)
-     * @param   integer  $tid       Stats ID for that tool
+     * @param   int|string|null  $tid       Stats ID for that tool
      * @param   string   $datetime  Timestamp YYYY-MM-DD
      * @return  array
      */
@@ -330,7 +330,7 @@ class Usage extends Plugin
      * @param   integer  $id        Resource ID
      * @param   string   $datetime  Timestamp YYYY-MM-DD
      * @param   integer  $period    Resource period
-     * @return  array
+     * @return  int|string|null  The stats ID, or null when there is none
      */
     public static function getTid($id, $datetime, $period = 14)
     {
@@ -352,7 +352,7 @@ class Usage extends Plugin
      * (1 = country, 2 = domain, 3 = org)
      *
      * @param   integer  $id        Resource ID
-     * @param   string   $period  Timestamp YYYY-MM-DD
+     * @param   string|int   $period  Timestamp YYYY-MM-DD
      * @return  void
      */
     public function getValues($id, $period)

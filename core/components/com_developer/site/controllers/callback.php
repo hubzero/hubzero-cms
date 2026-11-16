@@ -52,7 +52,7 @@ class Callback extends SiteController
         //if this is a new connection, we can save the token on the server to ensure that it is used next time
         if ($connectionId) {
             $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
-            $connectionParams = json_decode($config);
+            $connectionParams = json_decode($config->toString());
             $connectionParams->app_token = $accessToken;
             $connection->set('params', json_encode($connectionParams));
             $connection->save();
@@ -107,7 +107,7 @@ class Callback extends SiteController
 
         if ($new_connection && $data) {
             $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-            $connection_params = json_decode($pparams);
+            $connection_params = json_decode($pparams->toString());
             $connection_params->access_token = $data->access_token;
             $connection_params->repository = $repo;
             $connection->set('params', json_encode($connection_params));

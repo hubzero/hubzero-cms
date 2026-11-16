@@ -214,7 +214,7 @@ class Module extends Model
     /**
      * Reorder Module for position
      *
-     * @param   string  $move      Direction and Magnitude
+     * @param   int|string  $move      Direction and Magnitude
      * @param   string  $position  Module Position
      * @return  void
      */

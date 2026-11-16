@@ -598,7 +598,7 @@ class Media extends SiteController
      * creator, the owner of the collection it belongs to, or a component
      * administrator may delete it.
      *
-     * @param   object   $itemId
+     * @param   int|string   $itemId
      * @return  boolean
      */
     protected function userOwnsItem($itemId)

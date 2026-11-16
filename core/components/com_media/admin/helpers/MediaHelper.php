@@ -72,7 +72,7 @@ class MediaHelper
      * Checks if the file can be uploaded
      *
      * @param   array    $file  File information
-     * @param   string   $err   An error message to be returned
+     * @param   string|null   $err   An error message to be returned
      * @return  boolean
      */
     public static function canUpload($file, &$err)

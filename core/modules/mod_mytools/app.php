@@ -92,7 +92,7 @@ class App
      * @param   string   $d    Description
      * @param   string   $m    sessionid of application
      * @param   integer  $s    sessionid of application
-     * @param   integer  $o    Parameter description (if any) ...
+     * @param   integer|string  $o    Parameter description (if any) ...
      * @param   integer  $num  Nth occurrence of this application in a list
      * @param   integer  $p    is this tool public?
      * @param   string   $r    what license is in use?

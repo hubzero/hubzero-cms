@@ -2164,7 +2164,7 @@ class Forum extends Plugin
      * Note: filters out blocked and unapproved accounts
      *
      * @param   integer  $userId
-     * @param   object   $memberoptions
+     * @param   object|false   $memberoptions
      * @param   bool     $categorySubscriptionsEnabled
      * @param   object   $category
      * @return  mixed  1 when the user is to be mailed

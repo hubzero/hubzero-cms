@@ -201,7 +201,7 @@ class Usage extends Plugin
      * Get simulation count
      *
      * @param  integer $resid  Resource ID
-     * @param  string  $period Time period to find data for
+     * @param  string|int  $period Time period to find data for
      * @return integer
      */
     public static function getSimcount($resid, $period)
@@ -293,7 +293,7 @@ class Usage extends Plugin
     /**
      * Get a count of citations
      *
-     * @param  string $resid    Resource ID
+     * @param  string|null $resid    Resource ID
      * @param  mixed  $authorid User ID
      * @return string
      */

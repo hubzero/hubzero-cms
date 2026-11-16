@@ -476,7 +476,7 @@ class Resources extends Plugin
      * Retrieve records for items associated with this group
      *
      * @param   object   $group       Group that owns the records
-     * @param   bool     $authorized  Authorization level
+     * @param   bool|string     $authorized  Authorization level
      * @param   mixed    $limit       SQL record limit
      * @param   integer  $limitstart  SQL record limit start
      * @param   string   $sort        The field to sort records by

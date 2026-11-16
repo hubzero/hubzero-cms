@@ -142,7 +142,7 @@ class Share extends Plugin
      * @param   string  $url
      * @param   string  $mediaUrl
      * @param   object  $publication
-     * @param   object  $version
+     * @param   string|int  $version
      *
      * @return  void
      */

@@ -213,7 +213,7 @@ class SolrIndexAdapter implements IndexInterface
     /**
      * deleteById - Removes a single document from the search index
      *
-     * @param string $query
+     * @param string|array $query
      * @access public
      * @return mixed string if error caught
      */

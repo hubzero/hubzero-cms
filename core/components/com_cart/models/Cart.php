@@ -568,7 +568,7 @@ abstract class Cart
      * Verify security token
      *
      * @param   string  $token  string token
-     * @param   int     $tId    Transaction ID
+     * @param   int|string|false     $tId    Transaction ID
      * @return  bool
      */
     public static function verifySecurityToken($token, $tId)

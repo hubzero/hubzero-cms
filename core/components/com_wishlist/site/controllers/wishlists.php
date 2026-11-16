@@ -1315,7 +1315,7 @@ class Wishlists extends SiteController
             // put the  amount on hold
             $BTL = new Teller(User::get('id'));
             $BTL->hold(
-                $reward,
+                (int) $reward,
                 Lang::txt('COM_WISHLIST_BANKING_HOLD')
                     . ' #'
                     . $row->get('id')
@@ -2622,7 +2622,7 @@ class Wishlists extends SiteController
     /**
      * Get an array of filters from the request
      *
-     * @param   integer  $admin
+     * @param   int|bool  $admin
      * @return  array
      */
     public function getFilters($admin = 0)

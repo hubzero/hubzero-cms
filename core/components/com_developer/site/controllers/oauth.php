@@ -142,7 +142,7 @@ class Oauth extends SiteController
         $tokenDetails = $storage->getAccessToken($token);
 
         // return token details
-        echo json_encode($tokenDetails, true);
+        echo json_encode($tokenDetails);
 
         exit();
     }
