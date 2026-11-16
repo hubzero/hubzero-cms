@@ -10,11 +10,25 @@ namespace Hubzero\Tests;
 
 class DebugSmokeRequestStub
 {
+    /**
+     * @var  array<string, string>
+     */
     private array $headers = [];
     private string $method;
+    /**
+     * @var  array<string, mixed>
+     */
     private array $query;
+    /**
+     * @var  array<string, mixed>
+     */
     private array $server;
 
+    /**
+     * @param   array<string, mixed>  $headers
+     * @param   array<string, mixed>  $query
+     * @param   array<string, mixed>  $server
+     */
     public function __construct(array $headers = [], string $method = 'GET', array $query = [], array $server = [])
     {
         foreach ($headers as $key => $value) {

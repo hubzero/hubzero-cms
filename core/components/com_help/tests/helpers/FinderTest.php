@@ -74,12 +74,19 @@ class FinderTest extends Basic
 
         $app['component'] = function () use ($root) {
             return new class ($root) {
+                /**
+                 * @var  string
+                 */
                 private $root;
+                /**
+                 * @param   string  $root
+                 */
                 public function __construct($root)
                 {
                     $this->root = $root;
                 }
                 /**
+                 * @param   string  $option
                  * @return  string
                  */
                 public function path($option)
@@ -91,12 +98,20 @@ class FinderTest extends Basic
 
         $app['plugin'] = function () use ($root) {
             return new class ($root) {
+                /**
+                 * @var  string
+                 */
                 private $root;
+                /**
+                 * @param   string  $root
+                 */
                 public function __construct($root)
                 {
                     $this->root = $root;
                 }
                 /**
+                 * @param   string  $type
+                 * @param   string|null  $plugin
                  * @return  string
                  */
                 public function path($type, $plugin = null)
@@ -130,7 +145,13 @@ class FinderTest extends Basic
         // answer that, so front it with something that does.
         $app['app'] = function () use ($app) {
             return new class ($app) {
+                /**
+                 * @var  \Hubzero\Container\Container
+                 */
                 private $container;
+                /**
+                 * @param   \Hubzero\Container\Container  $container
+                 */
                 public function __construct($container)
                 {
                     $this->container = $container;
@@ -143,6 +164,7 @@ class FinderTest extends Basic
                     return false;
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function get($id)
@@ -150,6 +172,7 @@ class FinderTest extends Basic
                     return $this->container->get($id);
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function has($id)

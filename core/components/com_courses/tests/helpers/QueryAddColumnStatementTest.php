@@ -89,6 +89,9 @@ class QueryAddColumnStatementTest extends Basic
         ];
     }
 
+    /**
+     * @param   array<string, mixed>  $columnData
+     */
     #[DataProvider('seedColumnData')]
     public function testToStringReturnsCorrectSql(array $columnData, string $expected): void
     {

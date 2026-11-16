@@ -43,6 +43,9 @@ namespace Hubzero\Language\Tests {
             rmdir($dir);
         }
 
+        /**
+         * @param   array<string, string>  $entries
+         */
         private function writeIni(string $relativePath, array $entries): string
         {
             $path = $this->fixtureDir . '/' . $relativePath;

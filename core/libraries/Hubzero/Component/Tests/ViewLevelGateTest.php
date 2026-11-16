@@ -54,8 +54,18 @@ class ViewLevelGateTest extends Basic
 
         $app['user'] = function () use ($guest, $levels) {
             return new class ($guest, $levels) {
+                /**
+                 * @var  bool
+                 */
                 private $guest;
+                /**
+                 * @var  array<mixed>
+                 */
                 private $levels;
+                /**
+                 * @param   bool  $guest
+                 * @param   array<mixed>  $levels
+                 */
                 public function __construct($guest, $levels)
                 {
                     $this->guest = $guest;
@@ -81,6 +91,8 @@ class ViewLevelGateTest extends Basic
         $app['router'] = function () {
             return new class {
                 /**
+                 * @param   string  $url
+                 * @param   bool  $xhtml
                  * @return  mixed
                  */
                 public function url($url, $xhtml = true)
@@ -93,6 +105,7 @@ class ViewLevelGateTest extends Basic
         $app['request'] = function () {
             return new class {
                 /**
+                 * @param   bool  $query
                  * @return  string
                  */
                 public function current($query = false)
@@ -105,6 +118,7 @@ class ViewLevelGateTest extends Basic
         $app['language'] = function () {
             return new class {
                 /**
+                 * @param   string  $key
                  * @return  mixed
                  */
                 public function txt($key)
@@ -116,14 +130,25 @@ class ViewLevelGateTest extends Basic
 
         $app['app'] = function () use ($app, $test) {
             return new class ($app, $test) {
+                /**
+                 * @var  Container
+                 */
                 private $container;
+                /**
+                 * @var  ViewLevelGateTest
+                 */
                 private $test;
+                /**
+                 * @param   Container  $container
+                 * @param   ViewLevelGateTest  $test
+                 */
                 public function __construct($container, $test)
                 {
                     $this->container = $container;
                     $this->test = $test;
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function get($id)
@@ -131,6 +156,7 @@ class ViewLevelGateTest extends Basic
                     return $this->container->get($id);
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function has($id)
@@ -138,6 +164,9 @@ class ViewLevelGateTest extends Basic
                     return $this->container->has($id);
                 }
                 /**
+                 * @param   string  $url
+                 * @param   string|null  $message
+                 * @param   string  $type
                  * @return  never
                  */
                 public function redirect($url, $message = null, $type = 'message')
@@ -147,6 +176,8 @@ class ViewLevelGateTest extends Basic
                     throw new \Hubzero\Test\Halted('redirect');
                 }
                 /**
+                 * @param   int  $code
+                 * @param   string  $message
                  * @return  never
                  */
                 public function abort($code, $message = '')

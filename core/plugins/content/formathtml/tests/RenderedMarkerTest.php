@@ -35,6 +35,9 @@ class RenderedMarkerTest extends TestCase
         $app = Facade::getApplication();
         $app['router'] = fn() => new class {
             /**
+             * @param   string  $url
+             * @param   bool  $xhtml
+             * @param   bool|null  $ssl
              * @return  string
              */
             public function url($url, $xhtml = true, $ssl = null)
@@ -52,6 +55,8 @@ class RenderedMarkerTest extends TestCase
             }
 
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  mixed
              */
             public function __call($method, $args)
@@ -61,6 +66,8 @@ class RenderedMarkerTest extends TestCase
         };
         $app['html.builder'] = fn() => new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  string
              */
             public function __call($method, $args)
@@ -73,6 +80,7 @@ class RenderedMarkerTest extends TestCase
         $app['client'] = fn() => (object) ['name' => 'site', 'alias' => 'site'];
         $app['filesystem'] = fn() => new class {
             /**
+             * @param   string  $path
              * @return  false
              */
             public function makeDirectory($path)

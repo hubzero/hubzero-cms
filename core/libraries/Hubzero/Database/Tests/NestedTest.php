@@ -57,6 +57,8 @@ class NestedTest extends AbstractDriverTestCase
      *     +-- id=5 "Another Reply" (lft=3, rgt=4)
      *     +-- id=3 "Testing Stuff" (lft=5, rgt=8)
      *          +-- id=4 "More Testing" (lft=6, rgt=7)
+     *
+     * @return  array<int, array<string, mixed>>
      */
     private static function getSeedData(): array
     {

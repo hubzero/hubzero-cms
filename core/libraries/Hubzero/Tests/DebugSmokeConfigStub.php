@@ -10,8 +10,14 @@ namespace Hubzero\Tests;
 
 class DebugSmokeConfigStub
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private array $values;
 
+    /**
+     * @param   array<string, mixed>  $values
+     */
     public function __construct(array $values = [])
     {
         $this->values = $values;

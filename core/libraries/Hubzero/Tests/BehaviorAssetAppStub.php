@@ -10,6 +10,9 @@ namespace Hubzero\Tests;
 
 class BehaviorAssetAppStub
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private static array $state = [];
 
     public static function reset(): void

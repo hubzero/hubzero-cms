@@ -10,6 +10,9 @@ namespace Hubzero\Component\Tests;
 
 class HtmxHeaderBagStub
 {
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
 
     public function set(string $name, string $value): void

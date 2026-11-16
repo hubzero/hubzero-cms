@@ -14,6 +14,9 @@ class InertiaFlowController extends SiteController
 {
     public function __construct() {}
 
+    /**
+     * @return  array<mixed>|null
+     */
     public function renderTask(): ?array
     {
         return $this->inertiaRender('Test/Page', ['ok' => true]);

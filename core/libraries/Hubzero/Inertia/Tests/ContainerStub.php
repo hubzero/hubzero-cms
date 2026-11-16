@@ -16,7 +16,13 @@ use Closure;
  */
 class ContainerStub implements ArrayAccess
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private array $values = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $resolved = [];
 
     public function has(string $key): bool

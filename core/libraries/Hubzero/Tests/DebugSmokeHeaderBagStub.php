@@ -10,6 +10,9 @@ namespace Hubzero\Tests;
 
 class DebugSmokeHeaderBagStub
 {
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
 
     public function set(string $name, string $value): void

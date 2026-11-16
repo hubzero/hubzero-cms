@@ -13,6 +13,9 @@ use Hubzero\Facades\Component;
 
 trait CanMock
 {
+    /**
+     * @var  mixed
+     */
     public $mock;
 
     /**
@@ -22,6 +25,10 @@ trait CanMock
      */
     protected $mockClass;
 
+    /**
+     * @param   array<string, mixed>  $args
+     * @return  mixed
+     */
     public function mock($args = [])
     {
         $this->mockClass = $this->resolveClass($args['class']);
@@ -39,7 +46,7 @@ trait CanMock
      * Each entry is [fully qualified class, file to require relative to the
      * component root, or null when the class is autoloaded].
      *
-     * @var  array<mixed>
+     * @var  array<string, array{0: string, 1: string|null}>
      */
     protected static $mockClassMap = [
         'App'                => ['Components\\Search\\Tests\\Doubles\\AppDouble', 'tests/doubles/AppDouble.php'],
@@ -101,6 +108,9 @@ trait CanMock
         return $class;
     }
 
+    /**
+     * @param   array<string, mixed>  $args
+     */
     protected function setProps($args): void
     {
         $props = $this->extractMockInstantiationData($args, 'props');
@@ -108,6 +118,9 @@ trait CanMock
         $this->setPropNamesAndValues($props);
     }
 
+    /**
+     * @param   array<string, mixed>  $props
+     */
     protected function setPropNamesAndValues($props): void
     {
         foreach ($props as $name => $value) {
@@ -115,6 +128,9 @@ trait CanMock
         }
     }
 
+    /**
+     * @param   array<string, mixed>  $args
+     */
     protected function setMethods($args): void
     {
         $methods = $this->extractMockInstantiationData($args, 'methods');
@@ -123,6 +139,11 @@ trait CanMock
         $this->setMethodReturnValues($methods);
     }
 
+    /**
+     * @param   array<string, mixed>  $args
+     * @param   string  $key
+     * @return  array<mixed>
+     */
     protected function extractMockInstantiationData($args, $key)
     {
         $instantiationData = Arr::getValue($args, $key, []);
@@ -132,6 +153,10 @@ trait CanMock
         return $instantiationData;
     }
 
+    /**
+     * @param   array<int|string, mixed>  $instantiationData
+     * @return  array<mixed>
+     */
     protected function mapInstantiationData($instantiationData)
     {
         $mappedInstantiationData = [];
@@ -143,6 +168,11 @@ trait CanMock
         return $mappedInstantiationData;
     }
 
+    /**
+     * @param   array<mixed>  $mappedInstantiationData
+     * @param   int|string  $name
+     * @param   mixed  $value
+     */
     protected function mapNameAndValue(&$mappedInstantiationData, $name, $value): void
     {
         if (!is_string($name)) {
@@ -152,6 +182,9 @@ trait CanMock
         }
     }
 
+    /**
+     * @param   array<string, mixed>  $methods
+     */
     protected function setMethodNames($methods): void
     {
         // Only declared methods can be stubbed: MockBuilder::addMethods(),
@@ -172,6 +205,9 @@ trait CanMock
         $this->mock = $this->mock->getMock();
     }
 
+    /**
+     * @param   array<string, mixed>  $methods
+     */
     protected function setMethodReturnValues($methods): void
     {
         foreach ($methods as $name => $returnValue) {

@@ -13,6 +13,9 @@ use Hubzero\Inertia\InertiaService;
 class TestableInertiaFlowService extends InertiaService
 {
     public ?int $status = null;
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
     public ?string $body = null;
     public bool $terminated = false;

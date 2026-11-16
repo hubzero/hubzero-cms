@@ -37,6 +37,10 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
 
     /**
      * Create a TableInfo for testing
+     *
+     * @param   array<mixed>  $columns
+     * @param   array<mixed>  $indexes
+     * @param   array<mixed>  $foreignKeys
      */
     protected function createTableInfo(
         string $name,
@@ -71,6 +75,8 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
 
     /**
      * Create a DatabaseInfo for testing
+     *
+     * @param   array<mixed>  $tables
      */
     protected function createDatabaseInfo(array $tables): DatabaseInfo
     {

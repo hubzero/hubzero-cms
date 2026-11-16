@@ -30,6 +30,9 @@ class GitlabClient
         $this->requests[] = [$method, $url];
 
         return new class {
+            /**
+             * @return  string
+             */
             public function getBody()
             {
                 return '{}';

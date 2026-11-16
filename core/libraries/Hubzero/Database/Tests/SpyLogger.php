@@ -13,10 +13,10 @@ namespace Hubzero\Database\Tests;
  */
 class SpyLogger extends \Psr\Log\AbstractLogger
 {
-    /** @var array */
+    /** @var array<int, array{message: mixed, context: array<mixed>}> */
     public array $notices = [];
 
-    /** @var array */
+    /** @var array<int, array{level: mixed, message: mixed, context: array<mixed>}> */
     public array $allLogs = [];
 
     /**

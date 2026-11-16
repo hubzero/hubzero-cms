@@ -16,7 +16,13 @@ use Closure;
  */
 class HtmxFlowContainerStub implements ArrayAccess
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private array $values = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $resolved = [];
 
     public function has(string $key): bool

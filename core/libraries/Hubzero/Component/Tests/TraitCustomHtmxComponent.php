@@ -16,6 +16,9 @@ class TraitCustomHtmxComponent extends AbstractComponent implements HtmxComponen
 {
     use UsesHtmxComponent;
 
+    /**
+     * @return  array<string, mixed>
+     */
     protected function htmxSecurityConfig(): array
     {
         return [

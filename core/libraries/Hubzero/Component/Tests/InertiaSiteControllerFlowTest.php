@@ -21,6 +21,9 @@ namespace Hubzero\Component\Tests {
     #[PreserveGlobalState(false)]
     class InertiaSiteControllerFlowTest extends TestCase
     {
+        /**
+         * @param   array<string, mixed>  $headers
+         */
         private function bootstrap(
             array $headers,
             string $method,

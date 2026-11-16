@@ -57,6 +57,8 @@ class MigrationSquasherTest extends AbstractDriverTestCase
 
     /**
      * Introspect specific tables and return a DatabaseInfo
+     *
+     * @param   array<int, string>  $tableNames
      */
     protected function introspectSchema(BaseSqlDriver $driver, array $tableNames): DatabaseInfo
     {

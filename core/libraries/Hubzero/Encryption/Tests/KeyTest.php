@@ -129,6 +129,7 @@ class KeyTest extends Basic
     }
 
     /**
+     * @param   int|float  $type
      */
     #[DataProvider('seedTypeCasting')]
     public function testTypeCastToString($type, string $expectedType): void
@@ -168,6 +169,8 @@ class KeyTest extends Basic
     }
 
     /**
+     * @param   int|float  $private
+     * @param   int|float  $public
      */
     #[DataProvider('seedKeyCasting')]
     public function testKeysCastToString($private, $public, string $expectedPrivate, string $expectedPublic): void

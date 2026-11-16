@@ -10,7 +10,13 @@ namespace Hubzero\Tests;
 
 class BehaviorAssetDocumentStub
 {
+    /**
+     * @var  array<int, string>
+     */
     public array $scripts = [];
+    /**
+     * @var  array<int, array<string, mixed>>
+     */
     public array $stylesheets = [];
 
     public function addScript(
@@ -22,6 +28,9 @@ class BehaviorAssetDocumentStub
         $this->scripts[] = $url;
     }
 
+    /**
+     * @param   array<string, mixed>  $attribs
+     */
     public function addStylesheet(
         string $url,
         string $type = 'text/css',

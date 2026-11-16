@@ -47,16 +47,25 @@ class TestableTranslator extends Translator
         return $instance;
     }
 
+    /**
+     * @param   array<mixed>  $strings
+     */
     public function setStrings(array $strings): void
     {
         $this->strings = $strings;
     }
 
+    /**
+     * @return  array<mixed>
+     */
     public function getStrings(): array
     {
         return $this->strings;
     }
 
+    /**
+     * @param   array<mixed>  $override
+     */
     public function setOverrideStrings(array $override): void
     {
         $this->override = $override;

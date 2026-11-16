@@ -13,7 +13,13 @@ use Hubzero\Inertia\InertiaService;
 class TestableInertiaService extends InertiaService
 {
     public ?int $status = null;
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
+    /**
+     * @var  array<mixed>|null
+     */
     public ?array $jsonPayload = null;
     public ?string $body = null;
     public ?string $locationTarget = null;

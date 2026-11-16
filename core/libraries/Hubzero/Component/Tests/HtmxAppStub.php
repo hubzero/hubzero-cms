@@ -10,6 +10,9 @@ namespace Hubzero\Component\Tests;
 
 class HtmxAppStub
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private static array $state = [];
 
     public static function reset(): void

@@ -82,6 +82,9 @@ class RenderTest extends TestCase
         $app = Facade::getApplication();
         $app['router'] = fn() => new class {
             /**
+             * @param   string  $url
+             * @param   bool  $xhtml
+             * @param   bool|null  $ssl
              * @return  string
              */
             public function url($url, $xhtml = true, $ssl = null)
@@ -91,6 +94,8 @@ class RenderTest extends TestCase
         };
         $app['request'] = fn() => new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  mixed
              */
             public function __call($method, $args)
@@ -100,6 +105,8 @@ class RenderTest extends TestCase
         };
         $app['html.builder'] = fn() => new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  string
              */
             public function __call($method, $args)

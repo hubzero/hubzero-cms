@@ -10,11 +10,25 @@ namespace Hubzero\Component\Tests;
 
 class InertiaFlowRequestStub
 {
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
     public string $method = 'GET';
+    /**
+     * @var  array<string, mixed>
+     */
     public array $server = [];
+    /**
+     * @var  array<string, mixed>
+     */
     public array $query = [];
 
+    /**
+     * @param   array<string, mixed>  $headers
+     * @param   array<string, mixed>  $server
+     * @param   array<string, mixed>  $query
+     */
     public function __construct(array $headers = [], string $method = 'GET', array $server = [], array $query = [])
     {
         $this->headers = $headers;

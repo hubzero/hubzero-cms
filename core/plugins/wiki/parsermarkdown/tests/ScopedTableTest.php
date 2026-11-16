@@ -77,6 +77,8 @@ class ScopedTableTest extends TestCase
 
         Html::swap(new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  string
              */
             public function __call($method, $args)

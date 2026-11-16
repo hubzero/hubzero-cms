@@ -13,7 +13,13 @@ namespace Hubzero\Database\Tests;
  */
 class TestContainer implements \ArrayAccess
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private array $values = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $frozen = [];
 
     public function offsetExists(mixed $offset): bool

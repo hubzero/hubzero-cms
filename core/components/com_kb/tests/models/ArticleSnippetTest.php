@@ -50,6 +50,7 @@ class ArticleSnippetTest extends Basic
         $app['component'] = function () {
             return new class {
                 /**
+                 * @param   string  $option
                  * @return  \Hubzero\Config\Registry
                  */
                 public function params($option)
@@ -60,12 +61,19 @@ class ArticleSnippetTest extends Basic
         };
         $app['app'] = function () use ($app) {
             return new class ($app) {
+                /**
+                 * @var  \Hubzero\Container\Container
+                 */
                 private $container;
+                /**
+                 * @param   \Hubzero\Container\Container  $container
+                 */
                 public function __construct($container)
                 {
                     $this->container = $container;
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function get($id)
@@ -73,6 +81,7 @@ class ArticleSnippetTest extends Basic
                     return $this->container->get($id);
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function has($id)

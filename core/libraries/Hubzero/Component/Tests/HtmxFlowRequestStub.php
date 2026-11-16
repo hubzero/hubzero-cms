@@ -10,8 +10,14 @@ namespace Hubzero\Component\Tests;
 
 class HtmxFlowRequestStub
 {
+    /**
+     * @var  array<string, string>
+     */
     public array $headers = [];
 
+    /**
+     * @param   array<string, mixed>  $headers
+     */
     public function __construct(array $headers = [])
     {
         $this->headers = $headers;

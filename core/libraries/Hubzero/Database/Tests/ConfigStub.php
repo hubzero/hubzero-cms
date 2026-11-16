@@ -13,6 +13,9 @@ namespace Hubzero\Database\Tests;
  */
 class ConfigStub
 {
+    /**
+     * @var  array<string, mixed>
+     */
     public static array $values = [];
 
     /**

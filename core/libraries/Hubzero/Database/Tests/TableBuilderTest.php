@@ -26,12 +26,20 @@ class TableBuilderTest extends AbstractDriverTestCase
 {
     /**
      * Build a schema grammar stub that returns a fixed create-definition payload.
+     *
+     * @param   array<mixed>  $compiled
      */
     private function createStubGrammar(BaseSqlDriver $driver, array $compiled): Grammar
     {
         return new class ($driver, $compiled) extends Grammar {
+            /**
+             * @var  array<mixed>
+             */
             private array $compiled;
 
+            /**
+             * @param   array<mixed>  $compiled
+             */
             public function __construct(BaseSqlDriver $driver, array $compiled)
             {
                 parent::__construct($driver);

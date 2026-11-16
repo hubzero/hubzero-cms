@@ -207,6 +207,9 @@ class EntryTest extends Basic
     private function cachingModule(array $params)
     {
         return new class (new Registry($params), (object) ['id' => 7]) extends Module {
+            /**
+             * @var  int
+             */
             public $runs = 0;
 
             public function run()

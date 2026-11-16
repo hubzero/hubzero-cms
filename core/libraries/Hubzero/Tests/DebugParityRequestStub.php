@@ -10,11 +10,25 @@ namespace Hubzero\Tests;
 
 class DebugParityRequestStub
 {
+    /**
+     * @var  array<string, string>
+     */
     private array $headers = [];
     private string $method = 'GET';
+    /**
+     * @var  array<string, mixed>
+     */
     private array $server = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $query = [];
 
+    /**
+     * @param   array<string, mixed>  $headers
+     * @param   array<string, mixed>  $query
+     * @param   array<string, mixed>  $server
+     */
     public function __construct(array $headers = [], array $query = [], array $server = [], string $method = 'GET')
     {
         foreach ($headers as $key => $value) {

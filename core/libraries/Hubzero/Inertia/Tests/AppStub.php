@@ -10,6 +10,9 @@ namespace Hubzero\Inertia\Tests;
 
 class AppStub
 {
+    /**
+     * @var  array<string, mixed>
+     */
     private static array $state = [];
 
     public static function reset(): void

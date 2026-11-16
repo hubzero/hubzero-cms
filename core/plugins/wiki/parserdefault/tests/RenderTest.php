@@ -188,6 +188,9 @@ end',
         $app = Facade::getApplication();
         $app['router'] = fn() => new class {
             /**
+             * @param   string  $url
+             * @param   bool  $xhtml
+             * @param   bool|null  $ssl
              * @return  string
              */
             public function url($url, $xhtml = true, $ssl = null)
@@ -197,6 +200,8 @@ end',
         };
         $app['request'] = fn() => new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  mixed
              */
             public function __call($method, $args)
@@ -206,6 +211,8 @@ end',
         };
         $app['html.builder'] = fn() => new class {
             /**
+             * @param   string  $method
+             * @param   array<int, mixed>  $args
              * @return  string
              */
             public function __call($method, $args)

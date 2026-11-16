@@ -94,6 +94,8 @@ class Environment
         $app['request'] = function () {
             return new class {
                 /**
+                 * @param   string  $name
+                 * @param   mixed  $default
                  * @return  mixed
                  */
                 public function getCmd($name, $default = '')
@@ -101,6 +103,7 @@ class Environment
                     return $default;
                 }
                 /**
+                 * @param   bool  $pathonly
                  * @return  string
                  */
                 public function base($pathonly = false)
@@ -108,6 +111,8 @@ class Environment
                     return '';
                 }
                 /**
+                 * @param   string  $name
+                 * @param   array<int, mixed>  $arguments
                  * @return  mixed
                  */
                 public function __call($name, $arguments)
@@ -119,7 +124,13 @@ class Environment
 
         $app['app'] = function () use ($app) {
             return new class ($app) {
+                /**
+                 * @var  \Hubzero\Container\Container
+                 */
                 private $container;
+                /**
+                 * @param   \Hubzero\Container\Container  $container
+                 */
                 public function __construct($container)
                 {
                     $this->container = $container;
@@ -132,6 +143,7 @@ class Environment
                     return false;
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function get($id)
@@ -139,6 +151,7 @@ class Environment
                     return $this->container->get($id);
                 }
                 /**
+                 * @param   string  $id
                  * @return  mixed
                  */
                 public function has($id)
@@ -169,7 +182,13 @@ class Environment
         $base = str_repeat('/..', count(array_filter(explode('/', PATH_APP)))) . $this->groupBase;
 
         Overrides::setSuperGroup(new class ($base) extends \Hubzero\User\Group {
+            /**
+             * @var  string
+             */
             private $base;
+            /**
+             * @param   string  $base
+             */
             public function __construct($base)
             {
                 $this->base = $base;

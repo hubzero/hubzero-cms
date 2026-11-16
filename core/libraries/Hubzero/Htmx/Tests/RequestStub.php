@@ -10,10 +10,24 @@ namespace Hubzero\Htmx\Tests;
 
 class RequestStub
 {
+    /**
+     * @var  array<string, string>
+     */
     private array $headers = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $server = [];
+    /**
+     * @var  array<string, mixed>
+     */
     private array $query = [];
 
+    /**
+     * @param   array<string, mixed>  $headers
+     * @param   array<string, mixed>  $server
+     * @param   array<string, mixed>  $query
+     */
     public function __construct(array $headers = [], array $server = [], array $query = [])
     {
         foreach ($headers as $key => $value) {

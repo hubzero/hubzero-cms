@@ -23,6 +23,8 @@ class TableInternalsTest extends TestCase
     {
         return new class {
             /**
+             * @param   string  $table
+             * @param   bool  $typeOnly
              * @return  array<mixed>
              */
             public function getTableColumns($table, $typeOnly = true)
