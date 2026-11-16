@@ -46,7 +46,7 @@ class Awards
     /**
      * Get the database connection
      *
-     * @return  object
+     * @return  \Hubzero\Database\Driver
      */
     private static function getDbh()
     {

@@ -111,7 +111,7 @@ class PdfForm
     /**
      * Get database handle
      *
-     * @return  object  database object
+     * @return  \Hubzero\Database\Driver  database object
      **/
     private static function getDbh()
     {
@@ -322,7 +322,7 @@ class PdfForm
             $dbh = self::getDbh();
             $fid = $this->getId();
             $dbh->setQuery('SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid);
-            $version = $dbh->loadResult();
+            $version = (int) $dbh->loadResult();
 
             $path = $this->base . $fid . (($version) ? DS . ($version + 1) : '');
             if (!is_dir($path)) {
@@ -673,7 +673,7 @@ class PdfForm
             . 'AND ' . $answersSubquery,
         );
 
-        return $dbh->loadResult();
+        return (int) $dbh->loadResult();
     }
 
     /**

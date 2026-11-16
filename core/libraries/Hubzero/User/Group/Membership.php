@@ -43,7 +43,7 @@ class Membership
     /**
      * Database driver
      *
-     * @return  object
+     * @return  \Hubzero\Database\Driver
      */
     protected static function db()
     {
@@ -307,9 +307,9 @@ class Membership
 			    AND `uidNumber`=" . $db->quote($uid),
         );
 
-        if (!$db->query()) {
-            return false;
-        }
+        // A failed query throws
+
+        $db->query();
 
         self::log(
             $gid,
@@ -382,9 +382,9 @@ class Membership
 			    AND `expires` IS NULL",
         );
 
-        if (!$db->query()) {
-            return 0;
-        }
+        // A failed query throws
+
+        $db->query();
 
         return (int) $db->getAffectedRows();
     }
@@ -574,9 +574,9 @@ class Membership
 			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
 
-        if (!$db->query()) {
-            return false;
-        }
+        // A failed query throws
+
+        $db->query();
 
         // 2. a manager row without a membership row is a phantom manager
         $db->setQuery(
@@ -690,9 +690,9 @@ class Membership
 			  WHERE m.`gidNumber`=" . $db->quote((int) $gidNumber),
         );
 
-        if (!$db->query()) {
-            return 0;
-        }
+        // A failed query throws
+
+        $db->query();
 
         return (int) $db->getAffectedRows();
     }
@@ -747,9 +747,9 @@ class Membership
 			    AND m.`uidNumber` IN (" . implode(',', $ids) . ")",
         );
 
-        if (!$db->query()) {
-            return 0;
-        }
+        // A failed query throws
+
+        $db->query();
 
         return (int) $db->getAffectedRows();
     }
@@ -783,9 +783,9 @@ class Membership
 			  WHERE m.`uidNumber`=" . $db->quote((int) $uidNumber),
         );
 
-        if (!$db->query()) {
-            return 0;
-        }
+        // A failed query throws
+
+        $db->query();
 
         return (int) $db->getAffectedRows();
     }

@@ -594,7 +594,7 @@ class PdfFormDeployment
     /**
      * Get a database handle
      *
-     * @return object
+     * @return \Hubzero\Database\Driver
      **/
     private static function getDbh()
     {
