@@ -51,8 +51,6 @@ class Entriesv1r0 extends ApiController
             'start'  => Request::getInt('limitstart', 0),
         ];
 
-        $filters['limit'] = \Hubzero\Utility\Sanitize::paranoid($filters['limit']);
-        $filters['start'] = \Hubzero\Utility\Sanitize::paranoid($filters['start']);
 
         if (User::authorise('core.admin', 'com_content')) {
             $db = App::get('db');
