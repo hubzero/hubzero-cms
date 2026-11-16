@@ -39,6 +39,7 @@ class Rss extends Renderer
     public function render($name = null, $params = null, $content = null)
     {
         $now  = new Date('now');
+        /** @var \Hubzero\Document\Type\Feed $data A feed renderer is made by the feed document */
         $data = $this->doc;
 
         $url = rtrim(App::get('request')->root(), '/') . '/';

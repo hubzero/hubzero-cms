@@ -34,9 +34,10 @@ class Record extends Obj
     public $raw;
 
     /**
-     * Record data
+     * Record data: the entry, its errors and notices, and what the
+     * component adds
      *
-     * @var  object
+     * @var  \stdClass
      */
     public $record;
 

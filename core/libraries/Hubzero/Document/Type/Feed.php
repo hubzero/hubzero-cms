@@ -106,7 +106,7 @@ class Feed extends Base
      *
      * optional
      *
-     * @var  string
+     * @var  string|array<int, string>  One category or several
      */
     public $category = '';
 
@@ -170,14 +170,14 @@ class Feed extends Base
     /**
      * iTunes subcategories
      *
-     * @var  string|null
+     * @var  array<int, string>|null
      */
     public $itunes_subcategories = null;
 
     /**
      * iTunes feed owner
      *
-     * @var  string|null
+     * @var  object|null  With name and email
      */
     public $itunes_owner = null;
 
@@ -205,7 +205,7 @@ class Feed extends Base
     /**
      * iTunes image
      *
-     * @var  string|null
+     * @var  object|null  With url
      */
     public $itunes_image = null;
 

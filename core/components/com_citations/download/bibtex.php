@@ -32,7 +32,7 @@ class Bibtex extends Downloadable
     /**
      * Format the file
      *
-     * @param      object $row Record to format
+     * @param      \Components\Citations\Models\Citation $row Record to format
      * @return     string
      */
     public function format($row)
@@ -65,7 +65,7 @@ class Bibtex extends Downloadable
 
         if (!$row->cite) {
             $author = $row->relatedAuthors()->order('ordering', 'asc')->limit(1)->row();
-            $row->cite .= strtolower($author->surname == null ? '' : $author->surname);
+            $row->cite .= strtolower((string) $author->get('surname'));
             $row->cite .= $row->year;
             $t = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($row->title));
             $row->cite .= (strlen($t) > 10 ? substr($t, 0, 10) : $t);

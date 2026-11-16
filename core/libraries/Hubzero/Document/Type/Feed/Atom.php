@@ -43,6 +43,7 @@ class Atom extends Renderer
     public function render($name = '', $params = null, $content = null)
     {
         $now  = new Date('now');
+        /** @var \Hubzero\Document\Type\Feed $data A feed renderer is made by the feed document */
         $data = $this->doc;
 
         $url = App::get('request')->root();

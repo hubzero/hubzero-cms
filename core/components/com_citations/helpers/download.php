@@ -34,7 +34,7 @@ class Download
     /**
      * Citation object
      *
-     * @var object|null
+     * @var \Components\Citations\Models\Citation|null
      */
     protected $reference = null;
 
@@ -96,7 +96,7 @@ class Download
     /**
      * Set the reference
      *
-     * @param   object  $reference
+     * @param   \Components\Citations\Models\Citation  $reference
      * @return  void
      */
     public function setReference($reference)
@@ -107,7 +107,7 @@ class Download
     /**
      * Get the reference
      *
-     * @return  object|null  Null until one is set
+     * @return  \Components\Citations\Models\Citation|null  Null until one is set
      */
     public function getReference()
     {
@@ -186,7 +186,7 @@ class Download
     /**
      * Format a record
      *
-     * @param   object|null  $reference  Record to format
+     * @param   \Components\Citations\Models\Citation|false|null  $reference  Record to format
      * @return  string
      */
     public function formatReference($reference = null)

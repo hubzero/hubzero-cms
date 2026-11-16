@@ -32,7 +32,7 @@ class Endnote extends Downloadable
     /**
      * Format the file
      *
-     * @param      object $row Record to format
+     * @param      \Components\Citations\Models\Citation $row Record to format
      * @return     string
      */
     public function format($row)

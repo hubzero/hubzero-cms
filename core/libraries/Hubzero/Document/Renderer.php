@@ -20,7 +20,7 @@ class Renderer extends Obj
     /**
      * Reference to the Document object that instantiated the renderer
      *
-     * @var  object|null
+     * @var  \Hubzero\Document\Base|null
      */
     protected $doc = null;
 
