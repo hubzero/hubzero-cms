@@ -375,7 +375,7 @@ class Db2Driver extends BaseSqlDriver
     /**
      * @param   mixed  $name
      * @param   mixed  $as
-     * @return  mixed
+     * @return  string
      */
     public function quoteName($name, $as = null)
     {

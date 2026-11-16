@@ -397,7 +397,7 @@ class OciDriver extends BaseSqlDriver
      *
      * @param   string|array<mixed>  $name  The identifier name
      * @param   string|null   $as    An optional alias
-     * @return  string|array<mixed>
+     * @return  ($name is array ? array<mixed> : string)
      */
     public function quoteName($name, $as = null)
     {

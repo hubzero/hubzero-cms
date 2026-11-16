@@ -900,7 +900,7 @@ class InformixDriver extends BaseSqlDriver
      *
      * @param   mixed  $name  The identifier name
      * @param   mixed  $as    The alias (optional)
-     * @return  string|array<mixed>
+     * @return  ($name is array ? array<mixed> : string)
      */
     public function quoteName($name, $as = null)
     {
