@@ -33,7 +33,7 @@ class Writer
     /**
      * The Monolog logger instance.
      *
-     * @var  object|null
+     * @var  \Monolog\Logger|null
      */
     protected $monolog = null;
 

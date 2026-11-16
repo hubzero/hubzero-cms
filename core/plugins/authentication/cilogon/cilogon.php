@@ -32,7 +32,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     /**
      * Stores the initialized CILogon object.
      *
-     * @var  object|null  CILogon
+     * @var  \CILogon\OAuth2\Client\Provider\CILogon|null  CILogon
      */
     private $cilogon = null;
 

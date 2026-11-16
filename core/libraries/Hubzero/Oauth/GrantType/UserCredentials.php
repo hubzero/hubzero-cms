@@ -22,7 +22,7 @@ class UserCredentials implements GrantTypeInterface
     /**
      * Store object
      *
-     * @var  object
+     * @var  \OAuth2\Storage\UserCredentialsInterface
      */
     private $storage;
 

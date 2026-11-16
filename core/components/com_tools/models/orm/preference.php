@@ -37,7 +37,7 @@ class Preference extends Relational
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $params = null;
 

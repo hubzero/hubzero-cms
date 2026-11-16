@@ -48,7 +48,7 @@ class Connections
     /**
      * the plugin that spawned this object
      *
-     * @var object
+     * @var \Plugins\Projects\Files\Files
      */
     public $plugin;
 

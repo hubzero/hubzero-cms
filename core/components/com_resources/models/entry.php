@@ -150,14 +150,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Params Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $paramsRegistry = null;
 
     /**
      * Attribs Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $attribsRegistry = null;
 

@@ -26,7 +26,7 @@ class Parserdefault extends Plugin
     /**
      * Holds the parser for re-use, once made
      *
-     * @var  object|null
+     * @var  \Plugins\Wiki\Parserdefault\WikiParser|null
      */
     public $parser;
 

@@ -32,7 +32,7 @@ class Video extends Macro
     /**
      * Hubzero\Config\Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $config = null;
 

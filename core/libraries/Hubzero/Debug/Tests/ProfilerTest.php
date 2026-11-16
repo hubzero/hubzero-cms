@@ -19,7 +19,7 @@ class ProfilerTest extends Basic
     /**
      * Hubzero\Debug\Profiler
      *
-     * @var  object
+     * @var  \Hubzero\Debug\Profiler|null
      */
     private $instance;
 
@@ -68,7 +68,6 @@ class ProfilerTest extends Basic
         // Assert the first point has a time and memory = 0
         $marks = $this->instance->marks();
 
-        $this->assertTrue(is_array($marks), 'marks() should return an array');
         $this->assertEquals(count($marks), 3);
     }
 
@@ -242,7 +241,6 @@ class ProfilerTest extends Basic
     {
         $summary = $this->instance->summary();
 
-        $this->assertTrue(is_array($summary));
         $this->assertTrue(array_key_exists('start', $summary));
         $this->assertTrue(array_key_exists('end', $summary));
         $this->assertTrue(array_key_exists('total', $summary));

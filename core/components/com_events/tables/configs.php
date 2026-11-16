@@ -28,7 +28,7 @@ class Configs
     /**
      * Database connection
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     private $db = null;
 
@@ -86,7 +86,7 @@ class Configs
         $this->db->setQuery("SELECT * FROM $this->tbl");
         $configs = $this->db->loadObjectList();
 
-        if (empty($configs) || count($configs) <= 0) {
+        if (empty($configs)) {
             if ($this->loadDefaults()) {
                 $this->db->setQuery("SELECT * FROM $this->tbl");
                 $configs = $this->db->loadObjectList();
@@ -139,9 +139,8 @@ class Configs
                 "INSERT INTO $this->tbl (param, value) VALUES ("
                 . $this->db->quote($p) . ", " . $this->db->quote($v) . ")",
             );
-            if (!$this->db->query()) {
-                return false;
-            }
+            // A failed insert throws
+            $this->db->query();
         }
         return true;
     }

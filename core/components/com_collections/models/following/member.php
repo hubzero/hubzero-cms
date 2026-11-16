@@ -16,7 +16,7 @@ class Member extends Base
     /**
      * \Hubzero\User\User
      *
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     private $obj = null;
 

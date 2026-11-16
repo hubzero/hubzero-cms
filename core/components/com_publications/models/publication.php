@@ -38,6 +38,10 @@ use Hubzero\Facades\Request;
  * @property  string                               $base                     The master type's alias
  * @property  string                               $curatorgroup             The master type's curator group
  * @property  string                               $versionAlias             Set by versionAlias()
+ * @property-read  string|null                     $doi                      Copied from the version
+ * @property-read  int|string|null                 $license_type             Copied from the version
+ * @property-read  string|null                     $license_text             Copied from the version
+ * @property-read  string|null                     $curation                 Copied from the version (JSON)
  * @property  Tables\MasterType                    $type                     The master type, by masterType()
  * @property  Curation                             $_curationModel           By setCuration()
  * @property  \Hubzero\Config\Registry             $_config                  The component's parameters, by config()

@@ -52,7 +52,7 @@ class Service extends Obj
     /**
      * XML Response
      *
-     * @var  object|null
+     * @var  \Components\Oaipmh\Models\Xml\Response|null
      */
     protected $response = null;
 
@@ -66,7 +66,7 @@ class Service extends Obj
     /**
      * Database connection
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database = null;
 
@@ -451,8 +451,8 @@ class Service extends Obj
 
             $this->response
                 ->element('resumptionToken', $resumption)
-                ->attr('completeListSize', $total)
-                ->attr('cursor', ($start + $limit))
+                ->attr('completeListSize', (string) $total)
+                ->attr('cursor', (string) ((int) $start + (int) $limit))
                 ->end();
         }
 
@@ -544,8 +544,8 @@ class Service extends Obj
 
             $this->response
                 ->element('resumptionToken', $resumption)
-                ->attr('completeListSize', $total)
-                ->attr('cursor', ($start + $limit))
+                ->attr('completeListSize', (string) $total)
+                ->attr('cursor', (string) ((int) $start + (int) $limit))
                 ->end();
         }
 

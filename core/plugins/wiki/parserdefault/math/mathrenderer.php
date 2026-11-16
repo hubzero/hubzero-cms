@@ -33,7 +33,7 @@ class MathRenderer
     /**
      * Component configuration
      *
-     * @var  object
+     * @var  \Hubzero\Config\Registry
      */
     protected $config;
 

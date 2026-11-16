@@ -56,7 +56,7 @@ class Manager extends Obj
     /**
      * Pagination object
      *
-     * @var  object|null
+     * @var  \Hubzero\Pagination\Paginator|null
      */
     protected $pagination = null;
 

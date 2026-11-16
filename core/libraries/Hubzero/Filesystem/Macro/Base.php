@@ -19,7 +19,7 @@ abstract class Base implements MacroInterface
     /**
      * Filesystem
      *
-     * @var  object
+     * @var  \Hubzero\Filesystem\Filesystem|null
      */
     protected $filesystem;
 

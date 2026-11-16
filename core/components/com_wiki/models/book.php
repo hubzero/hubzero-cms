@@ -25,14 +25,14 @@ class Book extends Obj
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     private $config = null;
 
     /**
      * Container for cached data
      *
-     * @var  object|null
+     * @var  \Components\Wiki\Models\Page|null
      */
     private $page = null;
 

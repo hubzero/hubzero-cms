@@ -64,7 +64,7 @@ class Record extends Obj
     /**
      * User
      *
-     * @var  object
+     * @var  \Hubzero\User\User
      */
     protected $user;
 

@@ -61,7 +61,7 @@ class Discussions extends Plugin
     protected $offering = null;
 
     /**
-     * @var object|null
+     * @var \Components\Forum\Models\Manager|null
      */
     protected $forum = null;
 
@@ -81,7 +81,7 @@ class Discussions extends Plugin
     protected $unit = null;
 
     /**
-     * @var object|null  The lecture being discussed
+     * @var \Components\Courses\Models\Assetgroup|null  The lecture being discussed
      */
     protected $lecture = null;
 

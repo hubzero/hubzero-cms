@@ -23,7 +23,7 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\Model
      *
-     * @var object|null
+     * @var \Hubzero\Base\Model\ItemList|null
      */
     private $pages = null;
 

@@ -37,7 +37,7 @@ class Form
     /**
      * The Registry data store for form fields during display.
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     protected $data;
 

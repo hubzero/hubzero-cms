@@ -36,7 +36,7 @@ class Reader implements Iterator
     /**
      * File reader
      *
-     * @var  object
+     * @var  \XMLReader
      */
     private $reader;
 

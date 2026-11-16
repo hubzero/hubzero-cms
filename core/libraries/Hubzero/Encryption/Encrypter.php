@@ -18,14 +18,14 @@ class Encrypter
     /**
      * The encryption cipher object.
      *
-     * @var  object
+     * @var  \Hubzero\Encryption\Cipher
      */
     private $cipher;
 
     /**
      * The encryption key[/pair)].
      *
-     * @var  object
+     * @var  \Hubzero\Encryption\Key|null
      */
     private $key;
 

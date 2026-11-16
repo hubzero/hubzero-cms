@@ -19,7 +19,7 @@ class View extends AbstractView
     /**
      * Mail template object
      *
-     * @var  object  Hubzero\Mail\Template
+     * @var  \Hubzero\Mail\Template  Hubzero\Mail\Template
      */
     private $mailTemplate;
 

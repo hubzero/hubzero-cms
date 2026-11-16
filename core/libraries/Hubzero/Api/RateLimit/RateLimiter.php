@@ -20,7 +20,7 @@ class RateLimiter
     /**
      * Storage object
      *
-     * @var  object
+     * @var  \Hubzero\Api\RateLimit\Storage\StorageInterface
      */
     private $storage;
 
@@ -58,7 +58,7 @@ class RateLimiter
      *
      * @param   int    $applicationId  Application identifier
      * @param   int    $userId         User identifier
-     * @return  array<mixed>  Array of rate limit data
+     * @return  \stdClass|null  The rate limit record, with exceeded_short and exceeded_long set
      */
     public function rateLimit($applicationId, $userId)
     {
@@ -104,7 +104,7 @@ class RateLimiter
      *
      * @param   int    $applicationId  Application identifier
      * @param   int    $userId         User identifier
-     * @return  array<mixed>  Array of rate limit data
+     * @return  \stdClass|null  The new rate limit record
      */
     private function createRateLimitData($applicationId, $userId)
     {

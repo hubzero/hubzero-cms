@@ -45,7 +45,7 @@ class Pagination
     /**
      * The HUBzero paginator
      *
-     * @var  object|null
+     * @var  \Hubzero\Pagination\Paginator|null
      **/
     private $paginator;
 

@@ -45,7 +45,7 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $collections = null;
 
@@ -59,14 +59,14 @@ class Archive extends Obj
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $followers = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $following = null;
 

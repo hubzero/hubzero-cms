@@ -141,7 +141,7 @@ abstract class Driver implements LoggerAwareInterface
      * For PDO-based drivers, this will be a PdoConnection instance.
      * For other drivers, this may be a different implementation.
      *
-     * @var ConnectionInterface|object|null
+     * @var ConnectionInterface|\Hubzero\Database\Connection\PdoConnection|\PDO|null
      */
     protected $connection;
 
@@ -2844,8 +2844,8 @@ abstract class Driver implements LoggerAwareInterface
             return $this->connection->lastInsertId();
         }
 
-        // Backward compatibility: raw PDO
-        return $this->connection->lastInsertId();
+        // Backward compatibility: raw PDO, which gives the id as a string
+        return (int) $this->connection->lastInsertId();
     }
 
     /**
@@ -3361,16 +3361,12 @@ abstract class Driver implements LoggerAwareInterface
         }
 
         // Backward compatibility: raw PDO
-        if ($this->connection instanceof \PDO) {
-            try {
-                $this->connection->query('SELECT 1');
-                return true;
-            } catch (\PDOException $e) {
-                return false;
-            }
+        try {
+            $this->connection->query('SELECT 1');
+            return true;
+        } catch (\PDOException $e) {
+            return false;
         }
-
-        return false;
     }
 
     /**

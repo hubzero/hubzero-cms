@@ -26,7 +26,7 @@ class Admin
     /**
      * A cache for the available actions.
      *
-     * @var  object|null
+     * @var  \Hubzero\Base\Obj|null
      */
     protected static $actions;
 

@@ -21,7 +21,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
     /**
      * Cache manager
      *
-     * @var  object
+     * @var  \Hubzero\Cache\Manager|null
      */
     protected $cache;
 

@@ -35,7 +35,7 @@ class Conditions extends Obj
     /**
      * Registry
      *
-     * @var object
+     * @var \Hubzero\Config\Registry
      */
     public $config;
 

@@ -38,7 +38,7 @@ class Checker
     /**
      * StringProcessorInterface
      *
-     * @var  object|null
+     * @var  \Hubzero\Spam\StringProcessor\StringProcessorInterface|null
      */
     protected $stringProcessor = null;
 

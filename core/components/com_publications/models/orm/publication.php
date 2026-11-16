@@ -68,7 +68,7 @@ class Publication extends Relational
     /**
      * Component configuration
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $config = null;
 

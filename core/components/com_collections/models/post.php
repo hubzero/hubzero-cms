@@ -41,14 +41,14 @@ class Post extends Base
     /**
      * Post
      *
-     * @var object|null
+     * @var \Components\Collections\Models\Item|null
      */
     private $data = null;
 
     /**
      * CollectionsModelCollection
      *
-     * @var object|null
+     * @var \Components\Collections\Models\Collection|null
      */
     private $collectionItem = null;
 

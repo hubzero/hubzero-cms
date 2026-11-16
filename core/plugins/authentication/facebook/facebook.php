@@ -33,7 +33,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     /**
      * Stores the initialized OAuth2 provider object.
      *
-     * @var  object|null  Oauth2\Client\Provider
+     * @var  \League\OAuth2\Client\Provider\Facebook|null  Oauth2\Client\Provider
      */
     private $provider = null;
 
@@ -220,7 +220,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 // We got an access token, let's now get the user's details
                 $owner = $this->provider->getResourceOwner($token);
@@ -336,7 +336,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
                 $id       = $owner->getId();

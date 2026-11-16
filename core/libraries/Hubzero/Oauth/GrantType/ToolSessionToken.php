@@ -28,7 +28,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
     /**
      * Store object
      *
-     * @var  object
+     * @var  \Hubzero\Oauth\Storage\ToolSessionTokenInterface
      */
     private $storage;
 

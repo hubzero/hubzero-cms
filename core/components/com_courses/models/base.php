@@ -36,7 +36,7 @@ abstract class Base extends Model
     /**
      * Entry creator
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     protected $creator = null;
 
@@ -55,7 +55,7 @@ abstract class Base extends Model
     /**
      * Registry
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     protected $config = null;
 

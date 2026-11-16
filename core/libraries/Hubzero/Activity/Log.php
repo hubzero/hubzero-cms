@@ -76,7 +76,7 @@ class Log extends Relational
     /**
      * Container for details
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     public $entryDetails = null;
 

@@ -21,7 +21,7 @@ class NoneTest extends Basic
     /**
      * Cache manager
      *
-     * @var  object
+     * @var  \Hubzero\Cache\Manager|null
      */
     protected $cache;
 

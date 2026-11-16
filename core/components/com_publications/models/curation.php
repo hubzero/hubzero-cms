@@ -46,7 +46,7 @@ class Curation extends Obj
     /**
      * Publication
      *
-     * @var  object|null
+     * @var  \Components\Publications\Models\Publication|null
      */
     public $pub = null;
 
@@ -102,7 +102,7 @@ class Curation extends Obj
     /**
      * Progress
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     public $progress = null;
 
@@ -2069,9 +2069,6 @@ class Curation extends Obj
         }
 
         $repo = $this->pub->_project->repo();
-        if (!$repo) {
-            return [];
-        }
 
         $repoPath = $repo->get('path');
         if (!$repoPath || !is_dir($repoPath)) {

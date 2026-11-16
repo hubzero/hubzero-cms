@@ -45,7 +45,7 @@ class Gitlab
     /**
      * HTTP Client used for API requests
      *
-     * @var  object
+     * @var  \GuzzleHttp\Client
      */
     private $client;
 

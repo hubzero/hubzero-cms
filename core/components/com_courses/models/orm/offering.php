@@ -69,7 +69,7 @@ class Offering extends Relational
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     public $params = null;
 

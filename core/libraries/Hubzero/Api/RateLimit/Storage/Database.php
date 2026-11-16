@@ -36,7 +36,7 @@ class Database implements StorageInterface
      *
      * @param   int   $applicationId  Application id
      * @param   int   $userId         User identifier
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function getRateLimitData($applicationId, $userId)
     {
@@ -61,7 +61,7 @@ class Database implements StorageInterface
      * @param   string  $expiresShort   Short expiration date string
      * @param   string  $expiresLong    Long expiration date string
      * @param   string  $created        Created date string
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function createRateLimitData(
         $applicationId,

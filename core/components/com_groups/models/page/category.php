@@ -37,7 +37,7 @@ class Category extends Model
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\Model\ItemList|null
      */
     private $pages = null;
 

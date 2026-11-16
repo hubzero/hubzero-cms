@@ -20,14 +20,14 @@ class JsonTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Processor\Json|null
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     private $obj = null;
 
@@ -98,7 +98,7 @@ class JsonTest extends TestCase
     {
         $extensions = $this->processor->getSupportedExtensions();
 
-        $this->assertTrue(is_array($extensions));
+        $this->assertSame(['json'], $extensions);
         $this->assertCount(1, $extensions);
         $this->assertTrue(in_array('json', $extensions));
     }

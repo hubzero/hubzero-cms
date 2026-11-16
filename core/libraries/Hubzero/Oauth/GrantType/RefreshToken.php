@@ -22,7 +22,7 @@ class RefreshToken implements GrantTypeInterface
     /**
      * Store object
      *
-     * @var  object
+     * @var  \OAuth2\Storage\RefreshTokenInterface
      */
     private $storage;
 

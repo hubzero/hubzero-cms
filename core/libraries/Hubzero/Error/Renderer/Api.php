@@ -20,7 +20,7 @@ class Api implements RendererInterface
     /**
      * Response object
      *
-     * @var  object
+     * @var  \Hubzero\Api\Response
      */
     protected $response;
 
@@ -34,7 +34,7 @@ class Api implements RendererInterface
     /**
      * Create a new exception renderer.
      *
-     * @param   \Hubzero\Http\Response $response
+     * @param   \Hubzero\Api\Response $response  The API client's response, which formats objects
      * @param   bool    $debug
      * @return  void
      */

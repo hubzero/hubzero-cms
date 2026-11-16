@@ -20,14 +20,14 @@ class IniTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Processor\Ini|null
      */
     private $processor = null;
 
     /**
      * Expected data as an object
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     private $obj = null;
 
@@ -112,7 +112,7 @@ sitename_pagetitles=0';
     {
         $extensions = $this->processor->getSupportedExtensions();
 
-        $this->assertTrue(is_array($extensions));
+        $this->assertSame(['ini'], $extensions);
         $this->assertCount(1, $extensions);
         $this->assertTrue(in_array('ini', $extensions));
     }

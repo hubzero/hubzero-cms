@@ -27,7 +27,7 @@ class Permissions extends Obj
     /**
      * Config
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     private $config = null;
 

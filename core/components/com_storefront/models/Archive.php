@@ -29,7 +29,7 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Products
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $products = null;
 

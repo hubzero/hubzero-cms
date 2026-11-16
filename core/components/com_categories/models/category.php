@@ -102,7 +102,7 @@ class Category extends Nested
     /**
      * Asset rules
      *
-     * @var  object|null
+     * @var  \Hubzero\Access\Rules|null
      */
     public $assetRules;
 

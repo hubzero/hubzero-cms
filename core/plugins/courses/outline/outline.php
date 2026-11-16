@@ -29,7 +29,7 @@ class Outline extends Plugin
     /**
      * View object
      *
-     * @var object|null
+     * @var \Hubzero\Plugin\View|null
      */
     public $view = null;
 
@@ -134,8 +134,8 @@ class Outline extends Plugin
             $this->view->setLayout('lecture');
         }
 
-        $this->view->unit = $unit;
-        $this->view->group = $group;
+        $this->view->set('unit', $unit);
+        $this->view->set('group', $group);
     }
 
     /**
@@ -162,9 +162,9 @@ class Outline extends Plugin
             $this->js('jquery.iframe-transport', 'system');
             $this->js('jquery.fileupload', 'system');
 
-            $this->view->title = "Edit {$scope}";
-            $this->view->scope = $scope;
-            $this->view->scope_id = Request::getInt('scope_id');
+            $this->view->set('title', "Edit {$scope}");
+            $this->view->set('scope', $scope);
+            $this->view->set('scope_id', Request::getInt('scope_id'));
 
             return;
         }
@@ -193,6 +193,6 @@ class Outline extends Plugin
         // Setup view
         $this->view->setLayout('build');
 
-        $this->view->title = 'Edit Outline';
+        $this->view->set('title', 'Edit Outline');
     }
 }

@@ -45,7 +45,7 @@ class Page extends Relational
     /**
      * Component config
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $config = null;
 

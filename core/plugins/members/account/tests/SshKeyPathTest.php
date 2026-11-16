@@ -49,7 +49,7 @@ class SshKeyPathTest extends Basic
     /**
      * The plugin under test
      *
-     * @var  object|null
+     * @var  \Plugins\Members\Account\Tests\TestPlugin|null
      */
     private $plugin = null;
 

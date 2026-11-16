@@ -54,7 +54,7 @@ class Import extends Relational
     /**
      * Current run object
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Relational|null
      */
     protected $currentRun = null;
 

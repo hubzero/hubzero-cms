@@ -42,7 +42,7 @@ class Detector implements DetectorInterface
     /**
      * Model for retrieving list of words
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Relational|null
      */
     protected $model = null;
 

@@ -38,7 +38,7 @@ class GradeBook extends Base
     /**
      * Course object
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Course|null
      */
     protected $course = null;
 
@@ -886,7 +886,7 @@ class GradeBook extends Base
             $asset_ids = [];
             $units_map = [];
 
-            if ($this->course->offering()->assets() && count($this->course->offering()->assets()) > 0) {
+            if (count($this->course->offering()->assets()) > 0) {
                 foreach ($this->course->offering()->assets() as $a) {
                     $asset_ids[] = $a->get('id');
                 }

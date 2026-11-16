@@ -34,7 +34,7 @@ class Pages extends Plugin
     /**
      * View object
      *
-     * @var object|null
+     * @var \Hubzero\Plugin\View|null
      */
     public $view = null;
 
@@ -178,19 +178,19 @@ class Pages extends Plugin
         $active = Request::getString('unit', '');
 
         // Section specific pages
-        $spages = $this->view->offering->pages([
-            'section_id'  => $this->view->offering->section()->get('id'),
+        $spages = $this->view->get('offering')->pages([
+            'section_id'  => $this->view->get('offering')->section()->get('id'),
             'active'      => 1,
         ], true);
 
         // Offering specific pages
-        $opages = $this->view->offering->pages([
+        $opages = $this->view->get('offering')->pages([
             'section_id'  => 0,
             'active'      => 1,
         ], true);
 
         // All course pages
-        $gpages = $this->view->offering->pages([
+        $gpages = $this->view->get('offering')->pages([
             'course_id'   => 0,
             'offering_id' => 0,
             'active'      => 1,
@@ -212,13 +212,13 @@ class Pages extends Plugin
         if (!$active) {
             $page = $pages[0] ?? null;
         }
-        if (!$this->view->offering->access('manage', 'section') && (!$page || !$page->exists())) {
+        if (!$this->view->get('offering')->access('manage', 'section') && (!$page || !$page->exists())) {
             if ($active) {
                 App::abort(404, Lang::txt('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
             }
         }
-        $this->view->pages = $pages;
-        $this->view->page  = $page;
+        $this->view->set('pages', $pages);
+        $this->view->set('page', $page);
 
         return null;
     }
@@ -232,48 +232,48 @@ class Pages extends Plugin
     public function edit($model = null)
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
+            $return = Route::url($this->view->get('offering')->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
         }
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             return $this->list();
         }
 
         $this->view->setLayout('edit');
 
+        $page = Request::getString('unit', '');
+
         if (is_object($model)) {
-            $this->view->model = $model;
+            $this->view->set('model', $model);
         } else {
-            $page = Request::getString('unit', '');
-
-            $this->view->model = $this->view->offering->page($page);
+            $this->view->set('model', $this->view->get('offering')->page($page));
         }
-        if (!$this->view->model) {
-            $this->view->model =  new \Components\Courses\Models\Page($page);
+        if (!$this->view->get('model')) {
+            $this->view->set('model', new \Components\Courses\Models\Page($page));
         }
-        $this->view->notifications = [];
+        $this->view->set('notifications', []);
 
-        if ($this->view->model->exists()) {
+        if ($this->view->get('model')->exists()) {
             // Ensure section managers can only edit section pages
-            if (!$this->view->model->get('section_id') && !$this->view->offering->access('manage')) {
+            if (!$this->view->get('model')->get('section_id') && !$this->view->get('offering')->access('manage')) {
                 return $this->list();
             }
         }
 
         // Section specific pages
-        $spages = $this->view->offering->pages([
-            'section_id' => $this->view->offering->section()->get('id'),
+        $spages = $this->view->get('offering')->pages([
+            'section_id' => $this->view->get('offering')->section()->get('id'),
         ], true);
 
         // Offering specific pages
-        $opages = $this->view->offering->pages([
+        $opages = $this->view->get('offering')->pages([
             'section_id' => 0,
         ], true);
 
         // All course pages
-        $gpages = $this->view->offering->pages([
+        $gpages = $this->view->get('offering')->pages([
             'course_id'   => 0,
             'offering_id' => 0,
         ], true);
@@ -281,7 +281,7 @@ class Pages extends Plugin
         $pages = array_merge($spages, $opages);
         $pages = array_merge($pages, $gpages);
 
-        $this->view->pages = $pages;
+        $this->view->set('pages', $pages);
     }
 
     /**
@@ -292,12 +292,12 @@ class Pages extends Plugin
     public function save()
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
+            $return = Route::url($this->view->get('offering')->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
         }
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             return $this->list();
         }
 
@@ -307,7 +307,7 @@ class Pages extends Plugin
         $page = Request::getArray('fields', [], 'post');
 
         $pageId    = isset($page['id']) ? (int) $page['id'] : 0;
-        $offering  = $this->view->offering;
+        $offering  = $this->view->get('offering');
         $sectionId = (int) $offering->section()->get('id');
 
         $model = new \Components\Courses\Models\Page($pageId);
@@ -348,7 +348,9 @@ class Pages extends Plugin
         }
 
         App::redirect(
-            Route::url($this->view->offering->link() . '&active=' . $this->pluginName . '&unit=' . $model->get('url')),
+            Route::url(
+                $this->view->get('offering')->link() . '&active=' . $this->pluginName . '&unit=' . $model->get('url'),
+            ),
         );
     }
 
@@ -360,19 +362,19 @@ class Pages extends Plugin
     public function delete()
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
+            $return = Route::url($this->view->get('offering')->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
         }
-        if (!$this->view->offering->access('manage')) {
+        if (!$this->view->get('offering')->access('manage')) {
             return $this->list();
         }
 
         // Check for request forgeries
         Request::checkToken();
 
-        $model = $this->view->offering->page(Request::getString('unit', ''));
+        $model = $this->view->get('offering')->page(Request::getString('unit', ''));
 
         if ($model->exists()) {
             $model->set('active', 0);
@@ -383,7 +385,7 @@ class Pages extends Plugin
         }
 
         App::redirect(
-            Route::url($this->view->offering->link() . '&active=pages'),
+            Route::url($this->view->get('offering')->link() . '&active=pages'),
         );
     }
 
@@ -403,7 +405,7 @@ class Pages extends Plugin
         }
 
         // Only a section manager may upload page files
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             ob_clean();
             header('Content-type: text/plain');
             echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')]);
@@ -562,7 +564,7 @@ class Pages extends Plugin
         Request::checkToken();
 
         // Only a section manager may upload page files
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE'));
             $this->files();
 
@@ -656,26 +658,29 @@ class Pages extends Plugin
      */
     private function path($page = null)
     {
-        $path = PATH_APP . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS;
+        $offering = $this->view->get('offering');
+        $course   = $this->view->get('course');
+
+        $path = PATH_APP . DS . trim($this->view->get('config')->get('filepath', '/site/courses'), DS) . DS;
         if (is_object($page)) {
             if (!$page->get('offering_id')) {
                 $path .= 'pagefiles';
             } else {
-                $path .= $this->view->course->get('id') . DS;
+                $path .= $course->get('id') . DS;
 
                 if ($page->get('section_id')) {
                     $path .= 'sections' . DS . $page->get('section_id') . DS . 'pagefiles';
                 } else {
-                    $path .= 'pagefiles' . DS . $this->view->offering->get('id');
+                    $path .= 'pagefiles' . DS . $offering->get('id');
                 }
             }
         } else {
-            if (!$this->view->offering->access('manage') && $this->view->offering->access('manage', 'section')) {
-                $path .= $this->view->course->get('id')
+            if (!$offering->access('manage') && $offering->access('manage', 'section')) {
+                $path .= $course->get('id')
                     . DS
                     . 'sections'
                     . DS
-                    . $this->view->offering->section()->get('id')
+                    . $offering->section()->get('id')
                     . DS
                     . 'pagefiles';
             } else {
@@ -683,16 +688,16 @@ class Pages extends Plugin
 
                 // A plain viewer only reaches the files of their own section
                 if (
-                    $section && !$this->view->offering->access('manage')
-                    && $section != $this->view->offering->section()->get('id')
+                    $section && !$offering->access('manage')
+                    && $section != $offering->section()->get('id')
                 ) {
                     $section = 0;
                 }
 
                 if ($section) {
-                    $path .= $this->view->course->get('id') . DS . 'sections' . DS . $section . DS . 'pagefiles';
+                    $path .= $course->get('id') . DS . 'sections' . DS . $section . DS . 'pagefiles';
                 } else {
-                    $path .= $this->view->course->get('id') . DS . 'pagefiles' . DS . $this->view->offering->get('id');
+                    $path .= $course->get('id') . DS . 'pagefiles' . DS . $offering->get('id');
                 }
             }
         }
@@ -737,7 +742,7 @@ class Pages extends Plugin
         }
 
         // Only a section manager may delete page files
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
             $this->files();
 
@@ -802,7 +807,7 @@ class Pages extends Plugin
             $this->view->setError($error);
         }
 
-        $this->view->page = new \Components\Courses\Models\Page(Request::getInt('page', 0));
+        $this->view->set('page', new \Components\Courses\Models\Page(Request::getInt('page', 0)));
     }
 
     /**
@@ -813,13 +818,13 @@ class Pages extends Plugin
     public function fileList()
     {
         // The file manager is part of the page editor, a section manager tool
-        if (!$this->view->offering->access('manage', 'section')) {
+        if (!$this->view->get('offering')->access('manage', 'section')) {
             return App::abort(403, Lang::txt('ALERTNOTAUTH'));
         }
 
         $page = new \Components\Courses\Models\Page(Request::getInt('page', 0));
         if (!$page->exists()) {
-            $page->set('offering_id', $this->view->offering->get('id'));
+            $page->set('offering_id', $this->view->get('offering')->get('id'));
             $page->set('section_id', Request::getInt('section_id', 0));
         }
 
@@ -859,8 +864,8 @@ class Pages extends Plugin
             ksort($docs);
         }
 
-        $this->view->docs    = $docs;
-        $this->view->folders = $folders;
+        $this->view->set('docs', $docs);
+        $this->view->set('folders', $folders);
 
         foreach ($this->getErrors() as $error) {
             $this->view->setError($error);
@@ -878,7 +883,7 @@ class Pages extends Plugin
      */
     public function fileDownload()
     {
-        if (!$this->view->course->access('view')) {
+        if (!$this->view->get('course')->access('view')) {
             App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
         }
 
@@ -899,12 +904,12 @@ class Pages extends Plugin
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
         }
 
-        $page = $this->view->offering->page(Request::getString('unit', ''));
+        $page = $this->view->get('offering')->page(Request::getString('unit', ''));
         if (!$page->exists()) {
-            $pages = $this->view->offering->pages([
+            $pages = $this->view->get('offering')->pages([
                 'url'         => Request::getString('unit', ''),
-                'offering_id' => [0, $this->view->offering->get('id')],
-                'section_id'  => [0, $this->view->offering->section()->get('id')],
+                'offering_id' => [0, $this->view->get('offering')->get('id')],
+                'section_id'  => [0, $this->view->get('offering')->section()->get('id')],
                 'limit'       => 1,
                 'start'       => 0,
             ], true);
@@ -918,7 +923,7 @@ class Pages extends Plugin
         $found = true;
         if (!file_exists($filepath)) {
             if (!$page) {
-                Request::setVar('section_id', $this->view->offering->section()->get('id'));
+                Request::setVar('section_id', $this->view->get('offering')->section()->get('id'));
                 $filepath = $this->path($page) . DS . ltrim($filename, DS);
                 if (!file_exists($filepath)) {
                     $found = false;

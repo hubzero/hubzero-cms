@@ -22,14 +22,14 @@ class PhpTest extends TestCase
     /**
      * Format processor
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Processor\Php|null
      */
     private $processor = null;
 
     /**
      * Expected datain object form
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     private $obj = null;
 
@@ -132,7 +132,7 @@ class PhpTest extends TestCase
     {
         $extensions = $this->processor->getSupportedExtensions();
 
-        $this->assertTrue(is_array($extensions));
+        $this->assertSame(['php'], $extensions);
         $this->assertCount(1, $extensions);
         $this->assertTrue(in_array('php', $extensions));
     }

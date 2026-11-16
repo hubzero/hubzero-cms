@@ -22,7 +22,7 @@ class AuthorizationCode implements GrantTypeInterface
     /**
      * Store object
      *
-     * @var  object
+     * @var  \OAuth2\Storage\AuthorizationCodeInterface
      */
     private $storage;
 

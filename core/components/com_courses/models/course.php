@@ -43,7 +43,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $offerings = null;
 

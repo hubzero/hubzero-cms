@@ -31,7 +31,7 @@ class Miner extends Obj implements Provider
     /**
      * Database connection
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database = null;
 
@@ -326,7 +326,7 @@ class Miner extends Obj implements Provider
 
             if ($masterType == 1) {
                 $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
-                    $masterType,
+                    (int) $masterType,
                     $record->publication_id,
                     $record->version_id,
                     $record->secret,
@@ -340,7 +340,7 @@ class Miner extends Obj implements Provider
                 );
 
                 $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
-                    $masterType,
+                    (int) $masterType,
                     $record->publication_id,
                     $record->version_id,
                     $record->secret,

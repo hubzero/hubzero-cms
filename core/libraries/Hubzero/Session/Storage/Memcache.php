@@ -28,7 +28,7 @@ class Memcache extends Store
     /**
      * Resource for the current memcached connection.
      *
-     * @var  object
+     * @var  \Memcache|null
      */
     private $engine;
 
@@ -200,17 +200,30 @@ class Memcache extends Store
      */
     public function all($filters = [])
     {
-        // load all session keys
-        $data = $this->engine->getAllKeys();
+        // The memcache extension has no getAllKeys(), which this called and
+        // failed on; it lists keys through each slab's cachedump statistics
+        $names = [];
+        foreach ((array) $this->engine->getExtendedStats('slabs') as $slabs) {
+            foreach (array_keys((array) $slabs) as $slabId) {
+                if (!is_int($slabId)) {
+                    continue;
+                }
+                foreach ((array) $this->engine->getExtendedStats('cachedump', $slabId, 0) as $entries) {
+                    foreach (array_keys((array) $entries) as $name) {
+                        $names[(string) $name] = true;
+                    }
+                }
+            }
+        }
 
         $sessions = [];
 
-        // loop through all session keys and get data
-        foreach ($data as $key => $value) {
-            if (strpos($value->name, $this->prefix) === 0) {
+        // loop through the session keys and get their data
+        foreach (array_keys($names) as $name) {
+            if (strpos($name, $this->prefix) === 0) {
                 $session = new Obj();
-                $session->set('session_id', $value->name);
-                $session->set('data', $value);
+                $session->set('session_id', $name);
+                $session->set('data', $this->engine->get($name));
 
                 $sessions[] = $session;
             }

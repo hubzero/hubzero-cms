@@ -111,7 +111,7 @@ class ApiController implements ControllerInterface
     /**
      * Response object
      *
-     * @var  object|null
+     * @var  \Hubzero\Http\Response|null
      */
     public $response = null;
 

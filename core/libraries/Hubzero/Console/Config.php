@@ -19,7 +19,7 @@ class Config
     /**
      * Parsed config vars
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      **/
     private $config = null;
 

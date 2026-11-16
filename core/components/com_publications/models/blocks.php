@@ -27,7 +27,7 @@ class Blocks extends Obj
     /**
      * Table class
      *
-     * @var  object|null
+     * @var  \Components\Publications\Tables\Block|null
      */
     public $objBlock = null;
 

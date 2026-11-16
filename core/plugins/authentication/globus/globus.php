@@ -32,7 +32,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
     /**
      * Stores the initialized Globus object.
      *
-     * @var  object|null  Globus
+     * @var  \Plugins\Authentication\Globus\Provider\Globus|null  Globus
      */
     private $globus = null;
 

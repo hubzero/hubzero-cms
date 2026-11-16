@@ -304,8 +304,9 @@ class Html extends Base
     /**
      * Set the contents a document includes
      *
-     * @param   string  $content  The content to be set in the buffer.
-     * @param   array<mixed>   $options  Array of optional elements.
+     * @param   string|null  $content  The content to be set in the buffer; null empties it.
+     * @param   array<mixed>|string   $options  Array of optional elements, or (the older form) the buffer type,
+     *                                          with the name as a third argument.
      * @return  $this  instance of $this to allow chaining
      */
     public function setBuffer($content, $options = [])

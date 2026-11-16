@@ -42,14 +42,14 @@ class Review extends \Hubzero\Base\Model
     /**
      * User
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     private $creator = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Database\Rows|null
      */
     private $comments = null;
 

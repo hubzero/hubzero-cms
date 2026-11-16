@@ -25,7 +25,7 @@ class Doi extends Obj
     /**
      * DOI Configs
      *
-     * @var  object|null
+     * @var  \stdClass|null
      */
     public $configs = null;
 

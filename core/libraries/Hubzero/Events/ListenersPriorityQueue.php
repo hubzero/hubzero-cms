@@ -26,7 +26,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
     /**
      * The inner priority queue.
      *
-     * @var  object  SplPriorityQueue
+     * @var  \SplPriorityQueue<array<int, int>, object>  Priorities are [priority, insertion counter]
      */
     protected $queue;
 
@@ -36,7 +36,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      * recreate the queue or to see if the queue contains
      * a given listener.
      *
-     * @var  object  SplObjectStorage
+     * @var  \SplObjectStorage<object, array<int, int>>  Each listener with its [priority, counter]
      */
     protected $storage;
 

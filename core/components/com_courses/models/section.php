@@ -57,7 +57,7 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $codes = null;
 
@@ -71,7 +71,7 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $dates = null;
 
@@ -85,14 +85,14 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Section\Badge
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Section\Badge|null
      */
     private $badge = null;
 
     /**
      * Registry
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     private $params = null;
 

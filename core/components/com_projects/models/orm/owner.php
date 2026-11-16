@@ -53,7 +53,7 @@ class Owner extends Relational
     /**
      * Params
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $paramsRegistry = null;
 

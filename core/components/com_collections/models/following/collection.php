@@ -24,7 +24,7 @@ class Collection extends Base
     /**
      * Collection
      *
-     * @var object|null
+     * @var \Components\Collections\Models\Collection|null
      */
     private $obj = null;
 

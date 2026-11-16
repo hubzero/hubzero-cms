@@ -41,6 +41,13 @@ class Calendar extends Plugin
     protected $authorized;
     /** @var int|null */
     protected $calendar;
+    /**
+     * The calendar event being shown. Kept apart from $event, which the
+     * dispatcher sets to the event it is triggering.
+     *
+     * @var \Components\Events\Models\Event|null
+     */
+    private $calendarEvent = null;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
@@ -194,7 +201,7 @@ class Calendar extends Plugin
         $this->option     = $option;
         $this->action     = $action;
         $this->access     = $access;
-        $this->event = null;
+        $this->calendarEvent = null;
 
         //if we want to return content
         if ($returnhtml) {
@@ -684,8 +691,8 @@ class Calendar extends Plugin
         }
 
         //are we passing an events array back from save
-        if (isset($this->event)) {
-            $view->set('event', $this->event);
+        if (isset($this->calendarEvent)) {
+            $view->set('event', $this->calendarEvent);
         }
 
         $timezone = $view->get('event')->get('time_zone');
@@ -874,7 +881,7 @@ class Calendar extends Plugin
         // attempt to bind
         if (!$eventsModelEvent->bind($event)) {
             $this->setError($eventsModelEvent->getError());
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 
@@ -888,14 +895,14 @@ class Calendar extends Plugin
             && ! \Hubzero\Utility\Validate::url($event['extra_info'])
         ) {
             $this->setError('Website entered does not appear to be a valid URL.');
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 
         //make sure we have both start and end time
         if ($event['publish_up'] == '') {
             $this->setError('You must enter an event start, an end date is optional.');
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 
@@ -912,7 +919,7 @@ class Calendar extends Plugin
             // when all day event up can equal down
             if (($up >= $down && !$allday) || ($allday && $up > $down)) {
                 $this->setError('You must an event end date greater than the start date.');
-                $this->event = $eventsModelEvent;
+                $this->calendarEvent = $eventsModelEvent;
                 return $this->edit();
             }
         }
@@ -925,7 +932,7 @@ class Calendar extends Plugin
             && !filter_var($event['email'], FILTER_VALIDATE_EMAIL)
         ) {
             $this->setError('You must enter a valid email address for the events registration admin email.');
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 
@@ -933,14 +940,14 @@ class Calendar extends Plugin
         if ($registration && (!isset($event['registerby']) || $event['registerby'] == '')) {
             $this->setError('You must enter a valid event registration deadline to require registration.');
             Request::setVar('includeRegistration', 1);
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 
         //check to make sure we have valid info
         if (!$eventsModelEvent->store(true)) {
             $this->setError('An error occurred when trying to edit the event. Please try again.');
-            $this->event = $eventsModelEvent;
+            $this->calendarEvent = $eventsModelEvent;
             return $this->edit();
         }
 

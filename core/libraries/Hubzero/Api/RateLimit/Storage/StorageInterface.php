@@ -18,7 +18,7 @@ interface StorageInterface
      *
      * @param   int   $applicationId  Application id
      * @param   int   $userId         User identifier
-     * @return  void
+     * @return  \stdClass|null  The limit record
      */
     public function getRateLimitData($applicationId, $userId);
 
@@ -35,7 +35,7 @@ interface StorageInterface
      * @param   string  $expiresShort   Short expiration date string
      * @param   string  $expiresLong    Long expiration date string
      * @param   string  $created        Created date string
-     * @return  void
+     * @return  \stdClass|null  The limit record
      */
     public function createRateLimitData(
         $applicationId,

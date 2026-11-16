@@ -1202,9 +1202,16 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         try {
             // Get the underlying PDO connection to call cubrid_schema()
-            $pdo = $this->connection->getPdo();
+            $pdo = $this->connection instanceof \Hubzero\Database\Connection\PdoConnection
+                ? $this->connection->getPdo()
+                : $this->connection;
 
-            // Use CUBRID's native schema introspection method
+            // Use CUBRID's native schema introspection method, which the
+            // pdo_cubrid extension adds to PDO
+            if (!method_exists($pdo, 'cubrid_schema')) {
+                return [];
+            }
+
             // PDO::CUBRID_SCH_IMPORTED_KEYS = 2 (imported foreign keys)
             $rows = $pdo->cubrid_schema(2, $tableName); // CUBRID_SCH_IMPORTED_KEYS
 
@@ -2406,7 +2413,9 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $name = $this->normalizeSequenceName($name);
 
         // Check PDO's actual transaction state
-        $pdo = $this->connection->getPdo();
+        $pdo = $this->connection instanceof \Hubzero\Database\Connection\PdoConnection
+            ? $this->connection->getPdo()
+            : $this->connection;
         $wasInTransaction = $pdo->inTransaction();
 
         if (!$wasInTransaction) {

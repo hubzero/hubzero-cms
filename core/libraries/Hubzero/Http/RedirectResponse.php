@@ -30,7 +30,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * The session store implementation.
      *
-     * @var  object
+     * @var  \Hubzero\Session\Manager|null
      */
     protected $session;
 

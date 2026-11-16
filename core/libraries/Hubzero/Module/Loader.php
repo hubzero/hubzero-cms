@@ -25,7 +25,7 @@ class Loader
     /**
      * The application implementation.
      *
-     * @var  object
+     * @var  \Hubzero\Base\Application
      */
     protected $app;
 
@@ -39,7 +39,7 @@ class Loader
     /**
      * Constructor
      *
-     * @param   \Hubzero\Container\Container $app
+     * @param   \Hubzero\Base\Application $app
      * @param   mixed  $profiler
      * @return  void
      */

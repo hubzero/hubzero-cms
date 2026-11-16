@@ -115,7 +115,7 @@ class Item extends Nested
     /**
      * Asset rules
      *
-     * @var  object
+     * @var  \Hubzero\Config\Registry|null
      */
     public $paramsRegistry;
 

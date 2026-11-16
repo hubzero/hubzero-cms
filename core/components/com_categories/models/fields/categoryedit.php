@@ -37,7 +37,9 @@ class CategoryEdit extends Select
     {
         // Initialise variables.
         $options = [];
-        $published = $this->element['published'] ? $this->element['published'] : [0,1];
+        // A list such as "0,1"; the attribute is a SimpleXMLElement, which
+        // is_numeric() never took for a number, so it used to be ignored
+        $published = $this->element['published'] ? explode(',', (string) $this->element['published']) : [0, 1];
         $name = (string) $this->element['name'];
 
         // Let's get the id for the current item, either category or content item.
@@ -46,13 +48,13 @@ class CategoryEdit extends Select
         // For categories the old category is the category id or 0 for new category.
         if ($this->element['parent'] || Request::getCmd('option') == 'com_categories') {
             $oldCat = Request::getInt('id', 0);
-            $oldParent = $this->form->getValue($name, 0);
+            $oldParent = $this->form->getValue($name, null, 0);
             $extElement = $this->element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('extension', 'com_content');
         } else {
             // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
-            $oldCat = $this->form->getValue($name, 0);
+            $oldCat = $this->form->getValue($name, null, 0);
             $extElement = $this->element['extension'];
             $extension = $extElement ? (string) $extElement : (string) Request::getCmd('option', 'com_content');
         }
@@ -98,12 +100,8 @@ class CategoryEdit extends Select
         }
 
         // Filter on the published state
-        if (is_numeric($published)) {
-            $query->whereEquals('a.published', (int) $published);
-        } elseif (is_array($published)) {
-            \Hubzero\Utility\Arr::toInteger($published);
-            $query->whereIn('a.published', $published);
-        }
+        \Hubzero\Utility\Arr::toInteger($published);
+        $query->whereIn('a.published', $published);
 
         $query
             ->group('a.id')

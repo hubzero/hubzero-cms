@@ -27,7 +27,7 @@ class Memcached extends Store
     /**
      * Resource for the current memcached connection.
      *
-     * @var  object
+     * @var  \Memcached|null
      */
     private $engine;
 
@@ -219,17 +219,18 @@ class Memcached extends Store
      */
     public function all($filters = [])
     {
-        // load all session keys
-        $data = $this->engine->getAllKeys();
+        // Load all keys: getAllKeys() gives their names (or false), which
+        // this read as objects with a "name" before
+        $keys = $this->engine->getAllKeys();
 
         $sessions = [];
 
-        // loop through all session keys and get data
-        foreach ($data as $key => $value) {
-            if (strpos($value->name, $this->prefix) === 0) {
+        // loop through the session keys and get their data
+        foreach ((array) $keys as $name) {
+            if (is_string($name) && strpos($name, $this->prefix) === 0) {
                 $session = new \stdClass();
-                $session->session_id = $value->name;
-                $session->data       = $value;
+                $session->session_id = $name;
+                $session->data       = $this->engine->get($name);
 
                 $sessions[] = $session;
             }

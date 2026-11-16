@@ -40,7 +40,7 @@ class Member extends Base
     /**
      * \Components\Courses\Models\Prerequisites
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Prerequisite|null
      **/
     private $prerequisites = null;
 

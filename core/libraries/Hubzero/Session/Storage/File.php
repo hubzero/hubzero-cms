@@ -24,7 +24,7 @@ class File extends Store
     /**
      * The filesystem instance.
      *
-     * @var  object
+     * @var  \Hubzero\Filesystem\Filesystem
      */
     protected $files;
 
@@ -91,7 +91,7 @@ class File extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        $this->files->write($this->path . DS . $id, $data, true);
+        $this->files->write($this->path . DS . $id, $data);
         return true;
     }
 

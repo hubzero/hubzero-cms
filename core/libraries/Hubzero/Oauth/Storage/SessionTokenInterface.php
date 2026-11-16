@@ -16,7 +16,7 @@ interface SessionTokenInterface
     /**
      * Get session id from cookie
      *
-     * @return  bool  Result of test
+     * @return  string|null  The session id from its cookie, or null when there is none
      */
     public function getSessionIdFromCookie();
 

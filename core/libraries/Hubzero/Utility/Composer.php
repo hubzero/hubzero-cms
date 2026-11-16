@@ -31,7 +31,7 @@ class Composer
     /**
      * Composer\Factory object
      *
-     * @var object|null
+     * @var \Composer\Factory|null
      */
     private static $factory = null;
 
@@ -59,14 +59,14 @@ class Composer
     /**
      * Composer\IO\BaseIO object needed to interact with composer
      *
-     * @var object|null
+     * @var \Composer\IO\NullIO|null
      */
     private static $io = null;
 
     /**
      * Composer\Installer object to perform installation operations
      *
-     * @var object|null
+     * @var \Composer\Installer|null
      */
     private static $installer = null;
 
@@ -80,7 +80,7 @@ class Composer
     /**
      * Composer\Json\JsonFile object to hold a few pieces of information about the composer.json file
      *
-     * @var object|null
+     * @var \Composer\Json\JsonFile|null
      */
     private static $json = null;
 

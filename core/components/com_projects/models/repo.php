@@ -37,7 +37,7 @@ class Repo extends Obj
     /**
      * Tables\Repo
      *
-     * @var  object|null
+     * @var  \Components\Projects\Tables\Repo|null
      */
     private $tbl = null;
 
@@ -51,7 +51,7 @@ class Repo extends Obj
     /**
      * Data management adapter
      *
-     * @var  object|null
+     * @var  \Components\Projects\Models\Adapters\Git|\Components\Projects\Models\Adapters\Nogit|null
      */
     private $adapter;
 

@@ -30,7 +30,7 @@ class Notes extends Plugin
     /**
      * View object
      *
-     * @var object|null
+     * @var \Hubzero\Plugin\View|null
      */
     public $view = null;
 
@@ -178,7 +178,7 @@ class Notes extends Plugin
      */
     public function list()
     {
-        if (!$this->view->no_html) {
+        if (!$this->view->get('no_html')) {
             $this->view->setLayout('default');
         }
 
@@ -228,7 +228,7 @@ class Notes extends Plugin
 
         $this->view->set('model', $model);
 
-        if (!$this->view->no_html) {
+        if (!$this->view->get('no_html')) {
             $this->view->setLayout('edit');
         }
 
@@ -292,20 +292,20 @@ class Notes extends Plugin
         }
         // Sharing a note with the lecture is for course managers
         if (!is_null($access = Request::getInt('access', null))) {
-            $model->set('access', ($access && $this->view->course->access('manage')) ? 1 : 0);
+            $model->set('access', ($access && $this->view->get('course')->access('manage')) ? 1 : 0);
         }
-        $model->set('section_id', $this->view->offering->section()->get('id'));
+        $model->set('section_id', $this->view->get('offering')->section()->get('id'));
 
         if (!$model->save()) {
             $this->setError($model->getError());
-            if (!$this->view->no_html) {
+            if (!$this->view->get('no_html')) {
                 $this->edit($model);
 
                 return;
             }
         }
 
-        if (!$this->view->no_html) {
+        if (!$this->view->get('no_html')) {
             return $this->list();
         }
 
@@ -340,7 +340,7 @@ class Notes extends Plugin
             $this->setError($model->getError());
         }
 
-        if (!$this->view->no_html) {
+        if (!$this->view->get('no_html')) {
             return $this->list();
         }
         return $note_id;

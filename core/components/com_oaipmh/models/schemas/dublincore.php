@@ -45,14 +45,14 @@ class DublinCore implements Schema
     /**
      * Parent service
      *
-     * @var  object|null
+     * @var  \Components\Oaipmh\Models\Service|null
      */
     protected $service = null;
 
     /**
      * XML Response
      *
-     * @var  object|null
+     * @var  \Components\Oaipmh\Models\Xml\Response|null
      */
     protected $response = null;
 

@@ -430,7 +430,7 @@ class Mysql implements
      *
      * [!] This will determine if the user has an active session via browser
      *
-     * @return  mixed  Result of test
+     * @return  string|null  The session id from its cookie, or null when there is none
      */
     public function getSessionIdFromCookie()
     {

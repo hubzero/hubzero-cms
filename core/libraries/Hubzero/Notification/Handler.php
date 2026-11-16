@@ -16,7 +16,7 @@ class Handler
     /**
      * The storage handler.
      *
-     * @var  object
+     * @var  \Hubzero\Notification\MessageStore
      */
     private $storage;
 

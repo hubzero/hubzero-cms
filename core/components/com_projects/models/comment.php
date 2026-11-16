@@ -34,14 +34,14 @@ class Comment extends Model
     /**
      * User
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     private $creator = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $comments = null;
 

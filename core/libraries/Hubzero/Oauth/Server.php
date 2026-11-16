@@ -29,7 +29,7 @@ class Server
     /**
      * Internal var to hold true Oauth Server
      *
-     * @var  object|null
+     * @var  \OAuth2\Server|null
      */
     private $server = null;
 

@@ -61,7 +61,7 @@ class Collections extends Plugin
     /**
      * Custom params
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $customParams = null;
 

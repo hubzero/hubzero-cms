@@ -48,7 +48,7 @@ class Assetgroup extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     public $children = null;
 
@@ -62,14 +62,14 @@ class Assetgroup extends Base
     /**
      * Container for properties
      *
-     * @var object|null
+     * @var Iterator|null
      */
     public $siblings = null;
 
     /**
      * Registry
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     private $params = null;
 
@@ -261,12 +261,12 @@ class Assetgroup extends Base
     /**
      * Set siblings
      *
-     * @param   mixed $siblings Array or Iterator object
+     * @param   array<mixed>|Iterator $siblings Array or Iterator object
      * @return  void
      */
     public function siblings(&$siblings)
     {
-        if (!($siblings instanceof \Traversable)) {
+        if (!($siblings instanceof Iterator)) {
             $siblings = new Iterator($siblings);
         }
         $this->siblings = $siblings;

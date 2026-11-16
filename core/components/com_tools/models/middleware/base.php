@@ -21,7 +21,7 @@ class Base extends Model
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     private $config = null;
 

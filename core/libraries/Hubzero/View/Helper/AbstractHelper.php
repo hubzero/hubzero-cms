@@ -18,7 +18,7 @@ abstract class AbstractHelper implements HelperInterface
     /**
      * View object instance
      *
-     * @var  object|null
+     * @var  \Hubzero\View\View|null
      */
     protected $view = null;
 

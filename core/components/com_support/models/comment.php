@@ -77,7 +77,7 @@ class Comment extends Relational
     /**
      * Changelog
      *
-     * @var  object|null
+     * @var  \Components\Support\Models\Changelog|null
      */
     private $changeLog = null;
 

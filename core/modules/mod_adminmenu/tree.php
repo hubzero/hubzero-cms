@@ -25,7 +25,7 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * Root node
      *
-     * @var  object|null
+     * @var  \Modules\Adminmenu\Node|null
      */
     protected $root = null;
 

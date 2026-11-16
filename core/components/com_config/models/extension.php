@@ -49,7 +49,7 @@ class Extension extends Relational
     /**
      * Configuration registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $paramsRegistry = null;
 

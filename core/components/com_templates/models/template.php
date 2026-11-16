@@ -75,14 +75,14 @@ class Template extends Relational
     /**
      * Config registry for params
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $registry = null;
 
     /**
      * Xml data
      *
-     * @var  object|null
+     * @var  \Hubzero\Base\Obj|null
      */
     protected $xmldata = null;
 

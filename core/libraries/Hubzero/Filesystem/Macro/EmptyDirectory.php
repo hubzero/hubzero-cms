@@ -31,7 +31,7 @@ class EmptyDirectory extends Base
      */
     public function handle($dirname)
     {
-        $listing = $this->filesystem->listContents($dirname, false);
+        $listing = $this->filesystem->listContents($dirname);
         $success = true;
 
         foreach ($listing as $item) {

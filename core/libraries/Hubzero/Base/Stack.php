@@ -35,7 +35,7 @@ class Stack
     /**
      * Object to pass through layers
      *
-     * @var  object
+     * @var  \Hubzero\Http\Request|null
      */
     protected $request;
 

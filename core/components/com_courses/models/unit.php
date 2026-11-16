@@ -73,7 +73,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $siblings = null;
 
@@ -280,12 +280,12 @@ class Unit extends Base
     /**
      * Set seblings
      *
-     * @param   mixed $siblings Array or Iterator object
+     * @param   array<mixed>|Iterator $siblings Array or Iterator object
      * @return  void
      */
     public function siblings(&$siblings)
     {
-        if ($siblings instanceof \Traversable) {
+        if ($siblings instanceof Iterator) {
             $this->siblings = $siblings;
         } else {
             $this->siblings = new Iterator($siblings);

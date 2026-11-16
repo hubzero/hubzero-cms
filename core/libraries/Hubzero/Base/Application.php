@@ -23,6 +23,16 @@ use Hubzero\Http\Response;
  *
  * Heavily influenced by Laravel's Application class
  * http://laravel.com
+ *
+ * __call() answers is<Client>() by the current client's alias or name:
+ *
+ * @method bool isSite()
+ * @method bool isAdmin()
+ * @method bool isApi()
+ * @method bool isCli()
+ * @method bool isFiles()
+ * @method bool isInstall()
+ * @method bool isTesting()
  */
 class Application extends Container
 {

@@ -26,14 +26,14 @@ class Job extends Relational
     /**
      * Cron expression
      *
-     * @var  object|null
+     * @var  \Components\Cron\Helpers\CronExpression|null
      */
     protected $expression = null;
 
     /**
      * Profiler
      *
-     * @var  object|null
+     * @var  \Hubzero\Debug\Profiler|null
      */
     protected $profiler = null;
 
@@ -347,7 +347,7 @@ class Job extends Relational
      * Mark a time
      *
      * @param   string   $label
-     * @return  boolean
+     * @return  \Hubzero\Debug\Profiler
      */
     public function mark($label)
     {

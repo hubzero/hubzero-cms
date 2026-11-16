@@ -26,7 +26,7 @@ class ACL extends Obj
     /**
      * Current user
      *
-     * @var object
+     * @var \Hubzero\User\User
      */
     private $user;
 

@@ -50,7 +50,7 @@ class Item extends Base
     /**
      * Modifier
      *
-     * @var object|null
+     * @var \Components\Members\Models\Member|null
      */
     private $modifier = null;
 
@@ -64,7 +64,7 @@ class Item extends Base
     /**
      * Tag Cloud model
      *
-     * @var object|null
+     * @var \Components\Collections\Models\Tags|null
      */
     private $tags = null;
 

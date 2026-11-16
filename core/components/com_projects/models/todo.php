@@ -34,7 +34,7 @@ class Todo extends Model
     /**
      * Registry
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     public $config = null;
 

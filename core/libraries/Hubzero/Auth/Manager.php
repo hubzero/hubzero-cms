@@ -22,14 +22,14 @@ class Manager
     /**
      * The application implementation.
      *
-     * @var  object
+     * @var  \Hubzero\Base\Application
      */
     protected $app;
 
     /**
      * Constructor
      *
-     * @param   \Hubzero\Container\Container $app
+     * @param   \Hubzero\Base\Application $app
      * @return  void
      */
     public function __construct(Container $app)

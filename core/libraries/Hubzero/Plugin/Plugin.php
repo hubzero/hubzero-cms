@@ -65,9 +65,9 @@ class Plugin
     protected $autoloadLanguage = false;
 
     /**
-     * The triggered event
+     * The triggered event, set by the dispatcher's WrappedListener
      *
-     * @var object|null
+     * @var \Hubzero\Events\Event|null
      */
     public $event;
 

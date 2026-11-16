@@ -36,7 +36,7 @@ class Job extends Model
     /**
      * User
      *
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     private $creator = null;
 

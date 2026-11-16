@@ -20,7 +20,7 @@ class Notification implements RendererInterface
     /**
      * Notification handler
      *
-     * @var  object
+     * @var  \Hubzero\Notification\Handler
      */
     protected $notifier;
 

@@ -29,7 +29,7 @@ class Handler
     /**
      * The exception renderer.
      *
-     * @var  object
+     * @var  \Hubzero\Error\RendererInterface
      */
     protected $renderer;
 
@@ -207,7 +207,7 @@ class Handler
      * Handle an uncaught exception.
      *
      * @param   \Throwable  $exception
-     * @return  mixed
+     * @return  void
      */
     public function handleException($exception)
     {
@@ -244,7 +244,7 @@ class Handler
             }
         }
 
-        return $this->renderer->render($exception);
+        $this->renderer->render($exception);
     }
 
     /**

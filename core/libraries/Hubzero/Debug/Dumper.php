@@ -17,7 +17,7 @@ class Dumper
     /**
      * Renderable
      *
-     * @var  object|null
+     * @var  \Hubzero\Debug\Dumper\Renderable|null
      */
     protected $renderer = null;
 

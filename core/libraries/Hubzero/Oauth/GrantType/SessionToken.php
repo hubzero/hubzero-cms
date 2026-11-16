@@ -28,7 +28,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
     /**
      * Store object
      *
-     * @var  object
+     * @var  \Hubzero\Oauth\Storage\SessionTokenInterface
      */
     private $storage;
 

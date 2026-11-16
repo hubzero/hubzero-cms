@@ -18,7 +18,7 @@ class PaymentProvider
     /**
      * Payment options
      *
-     * @var  object
+     * @var  \stdClass
      */
     private $options;
 

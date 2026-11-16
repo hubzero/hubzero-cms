@@ -20,7 +20,7 @@ class Bundle
     /**
      * Publication
      *
-     * @var object|null
+     * @var \Components\Publications\Models\Publication|null
      */
     protected $publication;
 

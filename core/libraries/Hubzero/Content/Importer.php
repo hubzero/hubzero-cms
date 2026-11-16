@@ -22,7 +22,7 @@ class Importer
     /**
      * Import reader
      *
-     * @var object|null
+     * @var \Hubzero\Content\Import\Adapter|null
      */
     private $adapter;
 

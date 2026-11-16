@@ -21,7 +21,8 @@ class Filesystem
     /**
      * AdapterInterface
      *
-     * @var object|null
+     * @var Adapter\Local|Adapter\Ftp|Adapter\None|null
+     *      The adapters there are; Ftp lacks upload(), name(), size() and others the methods below call
      */
     protected $adapter;
 
@@ -35,7 +36,7 @@ class Filesystem
     /**
      * Constructor.
      *
-     * @param   \Hubzero\Filesystem\AdapterInterface $adapter  AdapterInterface
+     * @param   Adapter\Local|Adapter\Ftp|Adapter\None $adapter
      * @return  void
      */
     public function __construct(AdapterInterface $adapter)
@@ -56,7 +57,7 @@ class Filesystem
     /**
      * Set the Adapter.
      *
-     * @param   \Hubzero\Filesystem\AdapterInterface $adapter  AdapterInterface
+     * @param   Adapter\Local|Adapter\Ftp|Adapter\None $adapter
      * @return  $this
      */
     public function setAdapter(AdapterInterface $adapter)

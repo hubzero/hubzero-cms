@@ -159,14 +159,14 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Registry params object
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $paramsRegistry = null;
 
     /**
      * Registry params object
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $metadataRegistry = null;
 

@@ -115,7 +115,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     public $params = null;
 

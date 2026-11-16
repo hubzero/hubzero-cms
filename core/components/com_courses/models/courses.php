@@ -20,7 +20,7 @@ class Courses extends Obj
     /**
      * Tables\Course
      *
-     * @var object|null
+     * @var \Components\Courses\Tables\Course|null
      */
     private $tbl = null;
 
@@ -34,7 +34,7 @@ class Courses extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $courses = null;
 

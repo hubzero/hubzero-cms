@@ -37,7 +37,7 @@ class Helper extends \Hubzero\Base\Obj
      */
     public $loggedin;
     /**
-     * @var  object|null
+     * @var  \Components\Resources\Models\Review|null
      */
     public $myreview;
     /**

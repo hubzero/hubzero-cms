@@ -24,7 +24,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * Logger
      *
-     * @var  object
+     * @var  \Hubzero\Log\Writer|null
      */
     protected $logger;
 
@@ -45,14 +45,14 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * The event dispatcher to be traced
      *
-     * @var  object
+     * @var  \Hubzero\Events\Dispatcher
      */
     private $dispatcher;
 
     /**
      * Constructor.
      *
-     * @param   \Hubzero\Events\DispatcherInterface $dispatcher An EventDispatcherInterface instance
+     * @param   \Hubzero\Events\Dispatcher $dispatcher The dispatcher to trace
      * @param   object|null              $stopwatch  A Stopwatch instance
      * @param   \Hubzero\Log\Writer|null $logger     A LoggerInterface instance
      * @return  void

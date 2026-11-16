@@ -67,7 +67,7 @@ class Type extends Relational
     /**
      * Params Registry
      *
-     * @var  object|null
+     * @var  \Hubzero\Config\Registry|null
      */
     protected $paramsRegistry = null;
 

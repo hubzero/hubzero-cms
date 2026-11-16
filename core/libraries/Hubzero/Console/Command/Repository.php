@@ -23,7 +23,7 @@ class Repository extends Base implements CommandInterface
     /**
      * Repository management mechanism (i.e. git, packages, etc...)
      *
-     * @var  object
+     * @var  \Hubzero\Console\Command\Utilities\Git
      **/
     private $mechanism;
 
@@ -325,7 +325,7 @@ class Repository extends Base implements CommandInterface
             $this->output->error('There are no rollback points currently available');
         }
 
-        $date = date('M jS, Y \a\t g:i:sa', $rollbackPoint);
+        $date = date('M jS, Y \a\t g:i:sa', (int) $rollbackPoint);
 
         if ($this->output->isInteractive()) {
             $proceed = $this->output->getResponse(

@@ -26,7 +26,7 @@ class Oauth extends SiteController
     /**
      * OAuth Server Object
      *
-     * @var  object|null
+     * @var  \Hubzero\Oauth\Server|null
      */
     private $server = null;
 
@@ -119,9 +119,14 @@ class Oauth extends SiteController
     public function tokenTask()
     {
         // Handle a request for an OAuth2.0 Access Token and send the response to the client
-        $this->server->handleTokenRequest(
+        $response = $this->server->handleTokenRequest(
             OAuth2\Request::createFromGlobals(),
-        )->send();
+        );
+        // The interface it is declared to return has no send(); the library's
+        // own Response, which it gives back, does
+        if ($response instanceof OAuth2\Response) {
+            $response->send();
+        }
 
         exit();
     }

@@ -18,7 +18,7 @@ use Hubzero\Facades\Component;
 class Polltitle extends Module
 {
     /**
-     * @var  object|null
+     * @var  \Components\Poll\Models\Poll|null
      */
     protected $poll;
 

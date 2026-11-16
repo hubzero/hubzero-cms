@@ -34,7 +34,7 @@ class History extends SiteController
     /**
      * Book model
      *
-     * @var  object|null
+     * @var  \Components\Wiki\Models\Book|null
      */
     public $book = null;
 

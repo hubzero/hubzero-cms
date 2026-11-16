@@ -42,7 +42,7 @@ class Entry extends Model
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $comments = null;
 
@@ -56,21 +56,21 @@ class Entry extends Model
     /**
      * User
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     private $creator = null;
 
     /**
      * Hubzero\User\User
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     private $owner = null;
 
     /**
      * Hubzero\User\User
      *
-     * @var object|null
+     * @var \Hubzero\User\User|null
      */
     private $closer = null;
 

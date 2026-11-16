@@ -56,7 +56,7 @@ abstract class Table extends \stdClass
     /**
      * The rules associated with this record.
      *
-     * @var object|null  A Access Rules object.
+     * @var \Hubzero\Access\Rules|null  A Access Rules object.
      */
     protected $assetRules;
 

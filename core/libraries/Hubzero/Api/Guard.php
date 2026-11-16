@@ -32,7 +32,7 @@ class Guard
     /**
      * The application implementation
      *
-     * @var  object
+     * @var  \Hubzero\Container\Container
      */
     protected $app;
 

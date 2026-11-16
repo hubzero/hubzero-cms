@@ -47,7 +47,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $units = null;
 
@@ -75,7 +75,7 @@ class Offering extends Base
     /**
      * Iterator
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Iterator|null
      */
     private $announcements = null;
 
@@ -124,7 +124,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Gradebook
      *
-     * @var object|null
+     * @var \Components\Courses\Models\GradeBook|null
      */
     private $gradebook = null;
 
@@ -166,7 +166,7 @@ class Offering extends Base
     /**
      * Registry
      *
-     * @var object|null
+     * @var \Hubzero\Config\Registry|null
      */
     private $params = null;
 
@@ -630,7 +630,7 @@ class Offering extends Base
      *
      * @param   array<mixed>  $filters
      * @param   bool  $clear
-     * @return     boolean
+     * @return     mixed  What members() gives for students
      */
     public function students($filters = [], $clear = false)
     {

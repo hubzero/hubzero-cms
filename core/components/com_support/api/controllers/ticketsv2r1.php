@@ -33,7 +33,7 @@ class Ticketsv2r1 extends ApiController
     protected $acl;
 
     /**
-     * @var  object  Component config
+     * @var  \Hubzero\Config\Registry|null  Component config
      */
     protected $config;
 

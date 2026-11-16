@@ -22,7 +22,7 @@ class DropboxOauthClient
      * $redirectUri    Dropbox Application redirect URI   @var string
      * $state          OAuth state                        @var string
      *
-     * @var  \Stevenmaguire\OAuth2\Client\Provider\Dropbox|null
+     * @var  \Stevenmaguire\OAuth2\Client\Provider\Dropbox
      **/
     protected $client;
     /**

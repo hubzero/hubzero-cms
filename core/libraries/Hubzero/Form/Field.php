@@ -32,14 +32,14 @@ abstract class Field
     /**
      * The SimpleXMLElement object of the <field /> XML element that describes the form field.
      *
-     * @var  object
+     * @var  \SimpleXMLElement|null
      */
     protected $element;
 
     /**
      * The Form object of the form attached to the form field.
      *
-     * @var  object
+     * @var  \Hubzero\Form\Form|null  Null when the field was made without one
      */
     protected $form;
 

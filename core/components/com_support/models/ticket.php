@@ -82,7 +82,7 @@ class Ticket extends Relational
     /**
      * Tag cloud
      *
-     * @var  object|null
+     * @var  \Components\Support\Models\Tags|null
      */
     protected $tags = null;
 

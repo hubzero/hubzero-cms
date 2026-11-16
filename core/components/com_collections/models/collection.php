@@ -52,7 +52,7 @@ class Collection extends Base
     /**
      * ItemList
      *
-     * @var object|null
+     * @var \Hubzero\Base\ItemList|null
      */
     private $posts = null;
 
@@ -66,7 +66,7 @@ class Collection extends Base
     /**
      * Item
      *
-     * @var object|null
+     * @var \Components\Collections\Models\Item|null
      */
     private $item = null;
 
@@ -282,7 +282,7 @@ class Collection extends Base
             $this->post = null;
 
             // If the list of all posts is available ...
-            if (isset($this->posts) && $this->posts instanceof ItemList) {
+            if (isset($this->posts)) {
                 // Find a post in the list that matches the ID passed
                 foreach ($this->posts() as $key => $post) {
                     if ((int) $post->get('id') == $id) {
@@ -334,7 +334,7 @@ class Collection extends Base
             return $tbl->getCount($filters);
         }
 
-        if (!isset($this->posts) || !($this->posts instanceof ItemList)) {
+        if (!isset($this->posts)) {
             $tbl = new Tables\Post($this->db);
 
             if ($results = $tbl->getRecords($filters)) {
