@@ -155,7 +155,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['view_count' => 42]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertSame(42, $item->get('view_count'));
         $this->assertIsInt($item->get('view_count'));
@@ -189,7 +189,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['price' => 29.99]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertSame(29.99, $item->get('price'));
         $this->assertIsFloat($item->get('price'));
@@ -222,7 +222,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['amount' => '19.99']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $amount = $item->get('amount');
         $this->assertIsString($amount);
@@ -238,7 +238,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['amount' => '19.999']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // Should round to 2 decimal places
         $amount = $item->get('amount');
@@ -254,7 +254,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['amount' => '19']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // Should add decimal places
         $this->assertEquals('19.00', $item->get('amount'));
@@ -269,7 +269,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['tax_rate' => '0.0825']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $taxRate = $item->get('tax_rate');
         $this->assertEquals('0.0825', $taxRate);
@@ -320,7 +320,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['is_active' => 1]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertTrue($item->get('is_active'));
         $this->assertIsBool($item->get('is_active'));
@@ -371,7 +371,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => '{"theme":"light","volume":80}']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $settings = $item->get('settings');
         $this->assertIsArray($settings);
@@ -407,7 +407,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => '[]']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertIsArray($item->get('settings'));
         $this->assertEmpty($item->get('settings'));
@@ -422,7 +422,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => 'not valid json']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertIsArray($item->get('settings'));
         $this->assertEmpty($item->get('settings'));
@@ -441,7 +441,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['metadata' => '{"author":"Jane","version":2}']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $metadata = $item->get('metadata');
         $this->assertIsObject($metadata);
@@ -482,7 +482,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['tags' => '["laravel","php","testing"]']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $tags = $item->get('tags');
         $this->assertInstanceOf(\ArrayObject::class, $tags);
@@ -503,7 +503,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['published_at' => '2024-03-15 10:30:00']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $publishedAt = $item->get('published_at');
         $this->assertInstanceOf(\DateTime::class, $publishedAt);
@@ -556,7 +556,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['created_date' => '2024-05-20']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $createdDate = $item->get('created_date');
         $this->assertInstanceOf(\DateTime::class, $createdDate);
@@ -593,7 +593,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['expires_at' => '2024-01-01 00:00:00']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $expiresAt = $item->get('expires_at');
         $this->assertIsInt($expiresAt);
@@ -646,7 +646,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => '{"key":"value"}']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // First get - casts and caches
         $first = $item->get('settings');
@@ -666,7 +666,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => '{"key":"original"}']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // Get to populate cache
         $original = $item->get('settings');
@@ -689,7 +689,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['settings' => '{"key":"value"}']);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // Populate cache
         $item->get('settings');
@@ -760,7 +760,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['is_active' => 1]);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         // get() returns boolean
         $this->assertIsBool($item->get('is_active'));
@@ -783,7 +783,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, ['is_active' => 1, 'settings' => '{"key":"value"}']);
 
-        $item = NoCastItem::one($id);
+        $item = NoCastItem::oneOrFail($id);
 
         // Should return raw database values (string/int depending on driver)
         $this->assertNotInstanceOf(\DateTime::class, $item->get('published_at'));
@@ -816,7 +816,7 @@ class AttributeCastingTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver);
 
-        $item = CastTestItem::one($id);
+        $item = CastTestItem::oneOrFail($id);
 
         $this->assertIsBool($item->get('is_active'));
         $this->assertIsInt($item->get('view_count'));

@@ -149,7 +149,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Original Title');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $this->assertEquals('Original Title', $item->get('title'));
 
         // Simulate external change
@@ -197,7 +197,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test Item');
         $this->insertComment($driver, $id, 'Original Comment');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Access relationship to cache it
         $comments = $item->comments;
@@ -240,7 +240,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $this->resetRefreshState($driver);
 
         $id = $this->insertTestRecord($driver, 'Test Item');
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Delete the record externally
         $driver->setQuery("DELETE FROM refresh_test_items WHERE id = $id");
@@ -289,7 +289,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $fresh = $item->fresh();
 
         $this->assertNotSame($item, $fresh);
@@ -307,7 +307,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Original Title');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $item->set('title', 'Local Change');
 
         // Simulate external change
@@ -349,7 +349,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $this->resetRefreshState($driver);
 
         $id = $this->insertTestRecord($driver, 'Test Item');
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Delete the record externally
         $driver->setQuery("DELETE FROM refresh_test_items WHERE id = $id");
@@ -373,7 +373,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $this->insertComment($driver, $id, 'Comment 1');
         $this->insertComment($driver, $id, 'Comment 2');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Get fresh with eager loaded comments
         $fresh = $item->fresh(['comments']);
@@ -394,7 +394,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test Item');
         $this->insertComment($driver, $id, 'Comment');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Get fresh with string (not array)
         $fresh = $item->fresh('comments');
@@ -413,7 +413,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $fresh = $item->fresh();
 
         $this->assertFalse($fresh->isDirty());
@@ -433,7 +433,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item', 'Content', 100);
 
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
         $item->set('view_count', 999);
 
         // External change
@@ -454,7 +454,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $this->resetRefreshState($driver);
 
         $id = $this->insertTestRecord($driver, 'Title 1');
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         $this->updateRecordDirectly($driver, $id, 'title', 'Title 2');
         Query::purgeCache();
@@ -476,7 +476,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
         $this->resetRefreshState($driver);
 
         $id = $this->insertTestRecord($driver, 'Test Item');
-        $item = RefreshTestItem::one($id);
+        $item = RefreshTestItem::oneOrFail($id);
 
         // Should be able to chain after refresh
         $title = $item->refresh()->get('title');

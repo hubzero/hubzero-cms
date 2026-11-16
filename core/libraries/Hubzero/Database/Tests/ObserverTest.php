@@ -174,7 +174,7 @@ class ObserverTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Original');
         ObserverTestItem::observe(TestObserver::class);
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $item->set('title', 'Updated');
         $item->save();
 
@@ -192,7 +192,7 @@ class ObserverTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Original');
         ObserverTestItem::observe(TestObserver::class);
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $item->set('title', 'Updated');
         $item->save();
 
@@ -258,7 +258,7 @@ class ObserverTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test');
         ObserverTestItem::observe(TestObserver::class);
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $item->destroy();
 
         $this->assertTrue(TestObserver::wasCalled('deleting'));
@@ -275,7 +275,7 @@ class ObserverTest extends AbstractDriverTestCase
         $id = $this->insertTestRecord($driver, 'Test');
         ObserverTestItem::observe(TestObserver::class);
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $item->destroy();
 
         $this->assertTrue(TestObserver::wasCalled('deleted'));
@@ -321,7 +321,7 @@ class ObserverTest extends AbstractDriverTestCase
         ObserverTestItem::observe(CancelingObserver::class);
         CancelingObserver::cancelEvent('updating');
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $item->set('title', 'Updated');
         $result = $item->save();
 
@@ -329,7 +329,7 @@ class ObserverTest extends AbstractDriverTestCase
 
         // Verify original title unchanged
         Query::purgeCache();
-        $reloaded = ObserverTestItem::one($id);
+        $reloaded = ObserverTestItem::oneOrFail($id);
         $this->assertEquals('Original', $reloaded->get('title'));
     }
 
@@ -363,7 +363,7 @@ class ObserverTest extends AbstractDriverTestCase
         ObserverTestItem::observe(CancelingObserver::class);
         CancelingObserver::cancelEvent('deleting');
 
-        $item = ObserverTestItem::one($id);
+        $item = ObserverTestItem::oneOrFail($id);
         $result = $item->destroy();
 
         $this->assertFalse($result);

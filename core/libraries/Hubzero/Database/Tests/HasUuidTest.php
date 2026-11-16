@@ -274,7 +274,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('uuid_articles', [['title' => 'Test Article', 'uuid' => $uuid]]);
 
-        $article = UuidArticle::one(1);
+        $article = UuidArticle::oneOrFail(1);
         $this->assertEquals($uuid, $article->getUuid());
     }
 
@@ -309,7 +309,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('uuid_articles', [['title' => 'Without UUID', 'uuid' => null]]);
 
-        $withUuid = UuidArticle::one(1);
+        $withUuid = UuidArticle::oneOrFail(1);
         $withoutUuid = UuidArticle::one(2);
 
         $this->assertTrue($withUuid->hasUuid());
@@ -525,7 +525,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('uuid_articles', [['title' => 'Test Article', 'uuid' => $uuid]]);
 
-        $article = UuidArticle::one(1);
+        $article = UuidArticle::oneOrFail(1);
         $oldUuid = $article->get('uuid');
 
         $newUuid = $article->regenerateUuid();

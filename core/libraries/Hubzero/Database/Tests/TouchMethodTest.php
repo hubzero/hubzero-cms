@@ -67,7 +67,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $originalModified = $item->get('modified');
 
         // Small delay to ensure timestamp differs
@@ -80,7 +80,7 @@ class TouchMethodTest extends AbstractDriverTestCase
         // Purge query cache and reload from database to verify
         Query::purgeCache();
         TouchTestItem::$columns = []; // Clear column cache again
-        $reloaded = TouchTestItem::one($id);
+        $reloaded = TouchTestItem::oneOrFail($id);
         $this->assertNotEquals($originalModified, $reloaded->get('modified'));
 
         // Cleanup
@@ -130,7 +130,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $result = $item->touch('nonexistent_column');
 
         $this->assertFalse($result);
@@ -174,7 +174,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Original Title');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $originalTitle = $item->get('title');
         $originalContent = $item->get('content');
 
@@ -183,7 +183,7 @@ class TouchMethodTest extends AbstractDriverTestCase
         // Purge query cache and reload from database
         Query::purgeCache();
         TouchTestItem::$columns = [];
-        $reloaded = TouchTestItem::one($id);
+        $reloaded = TouchTestItem::oneOrFail($id);
 
         $this->assertEquals($originalTitle, $reloaded->get('title'));
         $this->assertEquals($originalContent, $reloaded->get('content'));
@@ -205,7 +205,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $originalModified = $item->get('modified');
 
         usleep(10000); // 10ms
@@ -232,7 +232,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
         $item->touch();
 
         // The touched column should not be marked as dirty
@@ -256,7 +256,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
 
         $timestamps = [];
         for ($i = 0; $i < 3; $i++) {
@@ -286,7 +286,7 @@ class TouchMethodTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Item');
 
-        $item = TouchTestItem::one($id);
+        $item = TouchTestItem::oneOrFail($id);
 
         $item->touch('modified');
         $item->touch('last_viewed_at');

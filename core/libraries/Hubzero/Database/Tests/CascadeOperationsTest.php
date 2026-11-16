@@ -470,7 +470,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $comment2->save();
 
         // Reload post and track orphans
-        $post = CascadePostWithOrphanRemoval::one($postId);
+        $post = CascadePostWithOrphanRemoval::oneOrFail($postId);
         $post->trackOrphansFor('comments');
 
         // Original IDs should be stored - property is on base Relational class

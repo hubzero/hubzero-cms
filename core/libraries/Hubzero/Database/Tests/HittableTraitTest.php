@@ -98,7 +98,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 42, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
 
         $this->assertEquals(42, $article->getHits());
     }
@@ -116,7 +116,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 0, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
 
         $this->assertEquals(0, $article->getHits());
     }
@@ -134,14 +134,14 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 10, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $result = $article->hit();
 
         $this->assertTrue($result);
         $this->assertEquals(11, $article->getHits());
 
         // Verify in database by reloading
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(11, $reloaded->getHits());
     }
 
@@ -158,14 +158,14 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 10, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $result = $article->hit(5);
 
         $this->assertTrue($result);
         $this->assertEquals(15, $article->getHits());
 
         // Verify in database by reloading
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(15, $reloaded->getHits());
     }
 
@@ -182,7 +182,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 10, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
 
         $this->assertTrue($article->hit(0));
         $this->assertEquals(10, $article->getHits());
@@ -204,13 +204,13 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 0, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $article->hit();
         $article->hit();
         $article->hit();
 
         $this->assertEquals(3, $article->getHits());
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(3, $reloaded->getHits());
     }
 
@@ -231,12 +231,12 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 10, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $result = $article->setHits(100);
 
         $this->assertTrue($result);
         $this->assertEquals(100, $article->getHits());
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(100, $reloaded->getHits());
     }
 
@@ -253,7 +253,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 10, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $result = $article->setHits(-5);
 
         $this->assertTrue($result);
@@ -273,12 +273,12 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [['title' => 'Test Article', 'hits' => 100, 'state' => 1]]);
         $id = 1;
 
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
         $result = $article->resetHits();
 
         $this->assertTrue($result);
         $this->assertEquals(0, $article->getHits());
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(0, $reloaded->getHits());
     }
 
@@ -303,7 +303,7 @@ class HittableTraitTest extends AbstractDriverTestCase
 
         $this->assertTrue($result);
         // Verify in database by reloading
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(11, $reloaded->getHits());
     }
 
@@ -324,7 +324,7 @@ class HittableTraitTest extends AbstractDriverTestCase
 
         $this->assertTrue($result);
         // Verify in database by reloading
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(15, $reloaded->getHits());
     }
 
@@ -494,7 +494,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_custom_articles', [['title' => 'Custom Article', 'view_count' => 25]]);
         $id = 1;
 
-        $article = CustomHittableArticle::one($id);
+        $article = CustomHittableArticle::oneOrFail($id);
 
         $this->assertEquals(25, $article->getHits());
 
@@ -502,7 +502,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $this->assertEquals(26, $article->getHits());
 
         // Verify in database by reloading
-        $reloaded = CustomHittableArticle::one($id);
+        $reloaded = CustomHittableArticle::oneOrFail($id);
         $this->assertEquals(26, $reloaded->getHits());
     }
 
@@ -530,7 +530,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         new Query($driver)->update('hittable_articles')->set(['hits' => 50])->where('id', '=', $id)->execute();
 
         // Load article (has old value in memory)
-        $article = HittableArticle::one($id);
+        $article = HittableArticle::oneOrFail($id);
 
         // Simulate another process updating hits
         new Query($driver)->update('hittable_articles')->set(['hits' => 55])->where('id', '=', $id)->execute();
@@ -539,7 +539,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $article->hit();
 
         // Database should have 56 (55 + 1), not 51 (50 + 1)
-        $reloaded = HittableArticle::one($id);
+        $reloaded = HittableArticle::oneOrFail($id);
         $this->assertEquals(56, $reloaded->getHits());
     }
 }

@@ -264,7 +264,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::one(1);
+        $user = User::oneOrFail(1);
 
         $this->assertEquals(1, $user->get('id'), "[$dbName] Should find user with ID 1");
         $this->assertEquals('Test User', $user->get('name'), "[$dbName] User name should match");
@@ -485,7 +485,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::one(1);
+        $user = User::oneOrFail(1);
         $user->set('name', 'Updated Name');
 
         $result = $user->save();
@@ -494,7 +494,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->assertNotFalse($result, "[$dbName] Save should not return false");
 
         // Reload and verify
-        $reloaded = User::one(1);
+        $reloaded = User::oneOrFail(1);
         $this->assertEquals('Updated Name', $reloaded->get('name'), "[$dbName] Name should be updated");
 
         $this->cleanupTestData($driver, $dbName);

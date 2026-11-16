@@ -141,7 +141,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testOnConditionWithSimpleEquality(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(1);
+        $post = OnCondPost::oneOrFail(1);
 
         // activeComments uses onCondition('status', 1)
         $comments = $post->activeComments()->rows();
@@ -187,7 +187,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testOnConditionWithClosure(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(1);
+        $post = OnCondPost::oneOrFail(1);
 
         // complexComments uses closure
         $comments = $post->complexComments()->rows();
@@ -207,7 +207,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testMultipleOnConditions(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(1);
+        $post = OnCondPost::oneOrFail(1);
 
         // activeFeatured uses two onCondition calls
         $comments = $post->activeFeatured()->rows();
@@ -379,7 +379,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testRelationshipsWithoutOnConditionUnchanged(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(1);
+        $post = OnCondPost::oneOrFail(1);
 
         // allComments has no onCondition
         $comments = $post->allComments()->rows();
@@ -398,7 +398,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testChainingAdditionalWhereClauses(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(1);
+        $post = OnCondPost::oneOrFail(1);
 
         // Start with activeComments (status=1), then add more conditions
         $comments = $post
@@ -425,7 +425,7 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testOnConditionWithRelationshipMethods(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post = OnCondPost::one(2);
+        $post = OnCondPost::oneOrFail(2);
 
         // activeComments should only return 1 comment for post 2
         $comments = $post->activeComments()->rows();
@@ -444,8 +444,8 @@ class OnConditionTest extends AbstractDriverTestCase
     public function testDifferentPostsGetCorrectResults(string $dbName, BaseSqlDriver $driver)
     {
         $this->setupTestData($driver);
-        $post1 = OnCondPost::one(1);
-        $post2 = OnCondPost::one(2);
+        $post1 = OnCondPost::oneOrFail(1);
+        $post2 = OnCondPost::oneOrFail(2);
 
         $post1Active = $post1->activeComments()->rows();
         $post2Active = $post2->activeComments()->rows();

@@ -257,7 +257,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
         $result = $post->restore();
 
         $this->assertFalse($result);
@@ -279,7 +279,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $this->insertTestRecord($driver, 'Test Post');
 
-        $post = SoftDeletePost::one($id);
+        $post = SoftDeletePost::oneOrFail($id);
         $result = $post->forceDelete();
 
         $this->assertTrue($result);
@@ -500,7 +500,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
 
         $id = $driver->insertid();
 
-        $post = NonSoftDeletePost::one($id);
+        $post = NonSoftDeletePost::oneOrFail($id);
         $result = $post->destroy();
 
         // Base Relational::destroy() returns driver object (truthy on success)

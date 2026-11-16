@@ -109,7 +109,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('options', $testData);
         $instance->save();
 
-        $retrieved = CastTestModelJson::one($instance->get('id'));
+        $retrieved = CastTestModelJson::oneOrFail($instance->get('id'));
         $this->assertIsArray($retrieved->get('options'), "[$dbName]");
         $this->assertEquals('Test', $retrieved->get('options')['name'], "[$dbName]");
         $this->assertEquals(42, $retrieved->get('options')['count'], "[$dbName]");
@@ -141,7 +141,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('options', $testData);
         $instance->save();
 
-        $retrieved = CastTestModelJson::one($instance->get('id'));
+        $retrieved = CastTestModelJson::oneOrFail($instance->get('id'));
         $this->assertEquals('Caf\u{e9}', $retrieved->get('options')['name'], "[$dbName]");
         $this->assertEquals('S\u{e3}o Paulo', $retrieved->get('options')['city'], "[$dbName]");
     }
@@ -203,7 +203,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('expires', $testDate);
         $instance->save();
 
-        $retrieved = CastTestModelDateTime::one($instance->get('id'));
+        $retrieved = CastTestModelDateTime::oneOrFail($instance->get('id'));
         $this->assertInstanceOf(DateTime::class, $retrieved->get('expires'), "[$dbName]");
         $this->assertEquals('2025-06-15', $retrieved->get('expires')->format('Y-m-d'), "[$dbName]");
     }
@@ -233,7 +233,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('expires', $timestamp);
         $instance->save();
 
-        $retrieved = CastTestModelDateTime::one($instance->get('id'));
+        $retrieved = CastTestModelDateTime::oneOrFail($instance->get('id'));
         $this->assertInstanceOf(DateTime::class, $retrieved->get('expires'), "[$dbName]");
     }
 
@@ -247,7 +247,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('expires', '2025-12-25 10:00:00');
         $instance->save();
 
-        $retrieved = CastTestModelDateTime::one($instance->get('id'));
+        $retrieved = CastTestModelDateTime::oneOrFail($instance->get('id'));
         $this->assertInstanceOf(DateTime::class, $retrieved->get('expires'), "[$dbName]");
         $this->assertEquals('2025-12-25', $retrieved->get('expires')->format('Y-m-d'), "[$dbName]");
     }
@@ -320,7 +320,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('tags', $testTags);
         $instance->save();
 
-        $retrieved = CastTestModelCollection::one($instance->get('id'));
+        $retrieved = CastTestModelCollection::oneOrFail($instance->get('id'));
         $this->assertInstanceOf(ArrayObject::class, $retrieved->get('tags'), "[$dbName]");
         $this->assertEquals(3, $retrieved->get('tags')->count(), "[$dbName]");
         $this->assertContains('php', iterator_to_array($retrieved->get('tags')), "[$dbName]");
@@ -352,7 +352,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->set('tags', $list);
         $instance->save();
 
-        $retrieved = CastTestModelCollection::one($instance->get('id'));
+        $retrieved = CastTestModelCollection::oneOrFail($instance->get('id'));
         $this->assertInstanceOf(ArrayObject::class, $retrieved->get('tags'), "[$dbName]");
         $this->assertEquals(3, $retrieved->get('tags')->count(), "[$dbName]");
     }

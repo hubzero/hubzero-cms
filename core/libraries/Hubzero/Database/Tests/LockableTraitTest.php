@@ -96,7 +96,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         $this->assertNotNull($article->get('checked_out_time'));
 
         // Verify in database by reloading
-        $reloaded = LockableArticle::one($id);
+        $reloaded = LockableArticle::oneOrFail($id);
         $this->assertEquals(42, $reloaded->get('checked_out'));
         $this->assertNotEmpty($reloaded->get('checked_out_time'));
     }
@@ -152,7 +152,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
         $result = $article->checkin();
 
         $this->assertTrue($result);
@@ -253,7 +253,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         // Different user (99) should be blocked
         $this->assertTrue($article->isCheckedOut(99));
@@ -303,7 +303,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
         $oldTime = $article->get('checked_out_time');
 
         // Same user can re-checkout
@@ -377,7 +377,7 @@ class LockableTraitTest extends AbstractDriverTestCase
             'checked_out_time' => $time,
         ]]);
         $id2 = 2; // Second insert gets ID=2
-        $article2 = LockableArticle::one($id2);
+        $article2 = LockableArticle::oneOrFail($id2);
         $this->assertTrue($article2->isLockExpired());
     }
 
@@ -404,7 +404,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         $this->assertEquals(42, $article->getCheckedOutUserId());
     }
@@ -451,7 +451,7 @@ class LockableTraitTest extends AbstractDriverTestCase
         ]]);
         $id = 1;
 
-        $article = LockableArticle::one($id);
+        $article = LockableArticle::oneOrFail($id);
 
         $this->assertEquals($time, $article->getCheckedOutTime());
     }

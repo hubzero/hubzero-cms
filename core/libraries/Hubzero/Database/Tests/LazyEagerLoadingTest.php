@@ -189,7 +189,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         $result = $user->load('posts');
 
@@ -230,7 +230,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
         $result = $user->load();
 
         $this->assertSame($user, $result);
@@ -331,7 +331,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         $user->load('posts.comments');
 
@@ -358,7 +358,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         $user->load(['posts', function ($query) {
             $query->whereEquals('published', 1);
@@ -378,7 +378,7 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
     {
         $this->setupTestData($driver);
 
-        $user = LazyUser::one(1);
+        $user = LazyUser::oneOrFail(1);
 
         $user->load([
             'posts' => [

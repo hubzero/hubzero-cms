@@ -112,7 +112,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
 
@@ -129,7 +129,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $this->assertEquals($id, $original->get('id'));
 
@@ -153,7 +153,7 @@ class ReplicateTest extends AbstractDriverTestCase
             'view_count' => 500,
         ]);
 
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
         $copy = $original->replicate();
 
         $this->assertEquals('Original Title', $copy->get('title'));
@@ -171,7 +171,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
 
@@ -196,7 +196,7 @@ class ReplicateTest extends AbstractDriverTestCase
             'created_by' => 99,
         ]);
 
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
         $copy = $original->replicate();
 
         // These should NOT be excluded by default
@@ -221,7 +221,7 @@ class ReplicateTest extends AbstractDriverTestCase
             'published_at' => '2024-06-01 00:00:00',
         ]);
 
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
         $copy = $original->replicate(['slug', 'published_at']);
 
         // Custom exclusions should be null
@@ -242,7 +242,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate(['slug']);
 
@@ -263,7 +263,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate([]);
 
@@ -285,7 +285,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['title' => 'Original']);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
         $copy->set('title', 'Copy of Original');
@@ -306,7 +306,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['title' => 'Original', 'content' => 'Content']);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
         $copy->set('title', 'Copy');
@@ -319,8 +319,8 @@ class ReplicateTest extends AbstractDriverTestCase
 
         // Verify both exist with correct titles
         Query::purgeCache();
-        $reloadedOriginal = ReplicateTestItem::one($original->get('id'));
-        $reloadedCopy = ReplicateTestItem::one($copy->get('id'));
+        $reloadedOriginal = ReplicateTestItem::oneOrFail($original->get('id'));
+        $reloadedCopy = ReplicateTestItem::oneOrFail($copy->get('id'));
 
         $this->assertEquals('Original', $reloadedOriginal->get('title'));
         $this->assertEquals('Copy', $reloadedCopy->get('title'));
@@ -395,7 +395,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['view_count' => 0, 'status' => 0]);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
 
@@ -412,7 +412,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['title' => 'Original']);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy1 = $original->replicate();
         $copy2 = $original->replicate();
@@ -452,7 +452,7 @@ class ReplicateTest extends AbstractDriverTestCase
         $this->resetReplicateState($driver);
 
         $id = $this->insertTestRecord($driver, ['title' => 'Original Title']);
-        $original = ReplicateTestItem::one($id);
+        $original = ReplicateTestItem::oneOrFail($id);
 
         $copy = $original->replicate();
         $copy->set('title', 'Modified Copy Title');

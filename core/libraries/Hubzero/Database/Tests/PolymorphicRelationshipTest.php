@@ -409,7 +409,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the video and access its activities
         PolyVideo::clearBootedModels();
-        $loaded = PolyVideo::one($videoId);
+        $loaded = PolyVideo::oneOrFail($videoId);
         $activities = $loaded->activities;
 
         $this->assertCount(2, $activities, "[$dbName] Should only get activities for this video");
@@ -448,7 +448,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the image and resolve its parent
         PolyImage::clearBootedModels();
-        $loaded = PolyImage::one($imageId);
+        $loaded = PolyImage::oneOrFail($imageId);
         $parent = $loaded->imageable;
 
         $this->assertInstanceOf(PolyVideo::class, $parent, "[$dbName] Should resolve to PolyVideo");
@@ -477,7 +477,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the image and resolve its parent
         PolyImage::clearBootedModels();
-        $loaded = PolyImage::one($imageId);
+        $loaded = PolyImage::oneOrFail($imageId);
         $parent = $loaded->imageable;
 
         $this->assertInstanceOf(PolyPostModel::class, $parent, "[$dbName] Should resolve to PolyPostModel");
@@ -500,7 +500,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $imageId = $image->get('id');
 
         PolyImage::clearBootedModels();
-        $loaded = PolyImage::one($imageId);
+        $loaded = PolyImage::oneOrFail($imageId);
         $parent = $loaded->imageable;
 
         $this->assertNull($parent, "[$dbName] Should return null for empty morph columns");
@@ -540,7 +540,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the video and its tags
         PolyVideo::clearBootedModels();
-        $loaded = PolyVideo::one($videoId);
+        $loaded = PolyVideo::oneOrFail($videoId);
         $tags = $loaded->tags;
 
         $this->assertCount(2, $tags, "[$dbName] Should get 2 tags for this video");
@@ -588,7 +588,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the tag and its videos
         PolyTagModel::clearBootedModels();
-        $loaded = PolyTagModel::one($tagId);
+        $loaded = PolyTagModel::oneOrFail($tagId);
         $videos = $loaded->videos;
 
         $this->assertCount(2, $videos, "[$dbName] Should get 2 videos for this tag");
@@ -628,7 +628,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
 
         // Load the tag - videos() should only return the video, not the post
         PolyTagModel::clearBootedModels();
-        $loaded = PolyTagModel::one($tag->get('id'));
+        $loaded = PolyTagModel::oneOrFail($tag->get('id'));
 
         $videos = $loaded->videos;
         $this->assertCount(1, $videos, "[$dbName] Should only get videos, not posts");

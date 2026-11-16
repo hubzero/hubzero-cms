@@ -132,7 +132,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Verify slug was set by callback
         Query::purgeCache();
-        $reloaded = HookTestItem::one($item->get('id'));
+        $reloaded = HookTestItem::oneOrFail($item->get('id'));
         $this->assertEquals('test-title', $reloaded->get('slug'));
     }
 
@@ -206,7 +206,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             self::logCallback('updating', $model);
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->set('title', 'Updated Title');
         $item->save();
 
@@ -230,7 +230,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             return false; // Cancel
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->set('title', 'Should Not Update');
         $result = $item->save();
 
@@ -238,7 +238,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
         // Verify title was not changed
         Query::purgeCache();
-        $reloaded = HookTestItem::one($id);
+        $reloaded = HookTestItem::oneOrFail($id);
         $this->assertEquals('Original Title', $reloaded->get('title'));
     }
 
@@ -257,7 +257,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             self::logCallback('updated', $model);
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->set('title', 'Updated Title');
         $item->save();
 
@@ -363,7 +363,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             self::logCallback('deleting', $model);
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->destroy();
 
         // Verify deleting was called
@@ -386,7 +386,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             return false; // Cancel
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $result = $item->destroy();
 
         $this->assertFalse($result);
@@ -412,7 +412,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
             self::logCallback('deleted', $model);
         });
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->destroy();
 
         // Verify deleted was called
@@ -461,7 +461,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
         HookTestItem::updated(fn($m) => self::logCallback('updated', $m));
         HookTestItem::saved(fn($m) => self::logCallback('saved', $m));
 
-        $item = HookTestItem::one($id);
+        $item = HookTestItem::oneOrFail($id);
         $item->set('title', 'Updated');
         $item->save();
 
@@ -546,7 +546,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
         HookTestItemWithSoftDeletes::deleting(fn($m) => self::logCallback('deleting', $m));
         HookTestItemWithSoftDeletes::deleted(fn($m) => self::logCallback('deleted', $m));
 
-        $item = HookTestItemWithSoftDeletes::one($id);
+        $item = HookTestItemWithSoftDeletes::oneOrFail($id);
         $item->destroy();
 
         // Verify lifecycle hooks were called

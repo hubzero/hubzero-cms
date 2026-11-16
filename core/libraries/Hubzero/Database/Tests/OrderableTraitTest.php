@@ -90,7 +90,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Test Item', 'ordering' => 5]]);
         $id = 1;
 
-        $item = OrderableItem::one($id);
+        $item = OrderableItem::oneOrFail($id);
 
         $this->assertEquals(5, $item->getOrdering());
     }
@@ -108,7 +108,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Test Item', 'ordering' => 1]]);
         $id = 1;
 
-        $item = OrderableItem::one($id);
+        $item = OrderableItem::oneOrFail($id);
         $item->setOrdering(10);
 
         $this->assertEquals(10, $item->getOrdering());
@@ -177,7 +177,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
 
-        $item = OrderableItem::one($id2);
+        $item = OrderableItem::oneOrFail($id2);
         $result = $item->moveUp();
 
         $this->assertTrue($result);
@@ -202,7 +202,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
 
-        $item = OrderableItem::one($id2);
+        $item = OrderableItem::oneOrFail($id2);
         $result = $item->moveDown();
 
         $this->assertTrue($result);
@@ -227,7 +227,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
 
-        $item = OrderableItem::one($id1);
+        $item = OrderableItem::oneOrFail($id1);
         $result = $item->move(2);
 
         $this->assertTrue($result);
@@ -252,7 +252,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
         $id3 = 3;
 
-        $item = OrderableItem::one($id3);
+        $item = OrderableItem::oneOrFail($id3);
         $result = $item->move(-2);
 
         $this->assertTrue($result);
@@ -273,7 +273,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Item', 'ordering' => 2]]);
         $id = 1;
 
-        $item = OrderableItem::one($id);
+        $item = OrderableItem::oneOrFail($id);
         $result = $item->move(0);
 
         $this->assertTrue($result);
@@ -297,7 +297,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
         $id3 = 3;
 
-        $item = OrderableItem::one($id3);
+        $item = OrderableItem::oneOrFail($id3);
         $result = $item->moveFirst();
 
         $this->assertTrue($result);
@@ -321,7 +321,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 3', 'ordering' => 3]]);
 
-        $item = OrderableItem::one($id1);
+        $item = OrderableItem::oneOrFail($id1);
         $result = $item->moveLast();
 
         $this->assertTrue($result);
@@ -347,7 +347,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 4', 'ordering' => 4]]);
 
-        $item = OrderableItem::one($id3);
+        $item = OrderableItem::oneOrFail($id3);
         $result = $item->moveTo(1);
 
         $this->assertTrue($result);
@@ -367,7 +367,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Item', 'ordering' => 2]]);
         $id = 1;
 
-        $item = OrderableItem::one($id);
+        $item = OrderableItem::oneOrFail($id);
         $result = $item->moveTo(2);
 
         $this->assertTrue($result);
@@ -393,7 +393,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('orderable_items', [['title' => 'Item 2', 'ordering' => 2]]);
 
-        $item = OrderableItem::one($id1);
+        $item = OrderableItem::oneOrFail($id1);
         $result = $item->moveUp();
 
         $this->assertTrue($result); // Returns true even when at edge
@@ -415,7 +415,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_items', [['title' => 'Item 2', 'ordering' => 2]]);
         $id2 = 2;
 
-        $item = OrderableItem::one($id2);
+        $item = OrderableItem::oneOrFail($id2);
         $result = $item->moveDown();
 
         $this->assertTrue($result); // Returns true even when at edge
@@ -514,7 +514,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $id4 = 4;
 
         // Get max ordering for menu 1
-        $item = OrderableMenuItem::one($id1);
+        $item = OrderableMenuItem::oneOrFail($id1);
         $maxOrdering = $item->getMaxOrdering();
 
         // Should only be 2 (items in menu 1), not 4 (all items)
@@ -542,7 +542,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_menu_items', [['title' => 'Menu2 Item1', 'menu_id' => 2, 'ordering' => 1]]);
         $id3 = 3;
 
-        $item = OrderableMenuItem::one($id2);
+        $item = OrderableMenuItem::oneOrFail($id2);
         $item->moveUp();
 
         // Menu 1 Item 2 moved up
@@ -569,7 +569,7 @@ class OrderableTraitTest extends AbstractDriverTestCase
         $query->insertMany('orderable_custom_items', [['title' => 'Custom Item', 'sort_order' => 5]]);
         $id = 1;
 
-        $item = CustomOrderableItem::one($id);
+        $item = CustomOrderableItem::oneOrFail($id);
 
         $this->assertEquals(5, $item->getOrdering());
         $this->assertEquals('sort_order', $item->getOrderingColumn());

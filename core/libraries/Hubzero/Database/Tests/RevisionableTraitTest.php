@@ -127,7 +127,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $result = $article->createRevision();
 
         $this->assertTrue($result);
@@ -158,7 +158,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $result = $article->createRevision('Updated the title');
 
         $this->assertTrue($result);
@@ -199,7 +199,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $article->createRevision('Version 1');
 
         $article->set('content', 'Content v2');
@@ -265,7 +265,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $revisions = $article->revisions();
 
         $this->assertCount(3, $revisions);
@@ -311,7 +311,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $revisions = $article->revisions('asc');
 
         $this->assertEquals(1, $revisions[0]->revision_number);
@@ -353,7 +353,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $revision = $article->findRevision(1);
 
         $this->assertNotNull($revision);
@@ -376,7 +376,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $revision = $article->findRevision(999);
 
         $this->assertNull($revision);
@@ -425,7 +425,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $latest = $article->latestRevision();
 
         $this->assertNotNull($latest);
@@ -448,7 +448,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $latest = $article->latestRevision();
 
         $this->assertNull($latest);
@@ -489,7 +489,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
 
         $this->assertEquals(2, $article->getRevisionCount());
     }
@@ -509,7 +509,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
 
         $this->assertEquals(0, $article->getRevisionCount());
     }
@@ -545,13 +545,13 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $result = $article->restoreRevision(1);
 
         $this->assertTrue($result);
 
         // Reload and verify
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $this->assertEquals('Old Title', $article->get('title'));
         $this->assertEquals('Old Content', $article->get('content'));
     }
@@ -583,7 +583,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $article->restoreRevision(1, true);
 
         // Should now have 2 revisions (original + pre-restore snapshot)
@@ -617,7 +617,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $article->restoreRevision(1, false);
 
         // Should still have just 1 revision
@@ -639,7 +639,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $result = $article->restoreRevision(999);
 
         $this->assertFalse($result);
@@ -684,7 +684,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $diff = $article->diffRevisions(1, 2);
 
         $this->assertArrayHasKey('title', $diff);
@@ -714,7 +714,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $diff = $article->diffRevisions(1, 2);
 
         $this->assertEmpty($diff);
@@ -747,7 +747,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $diff = $article->diffFromRevision(1);
 
         $this->assertArrayHasKey('title', $diff);
@@ -811,7 +811,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
 
         $this->assertTrue($article->hasChangedSinceLastRevision());
     }
@@ -863,7 +863,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $result = $article->deleteRevisions();
 
         $this->assertTrue($result);
@@ -929,7 +929,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $deleted = $article->pruneOldRevisions(2);
 
         $this->assertEquals(3, $deleted);
@@ -976,7 +976,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
             ],
         ]);
 
-        $article = RevisionableArticle::one($id);
+        $article = RevisionableArticle::oneOrFail($id);
         $deleted = $article->pruneOldRevisions(5);
 
         $this->assertEquals(0, $deleted);
@@ -1069,8 +1069,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         $this->assertEquals(3, $deleted);
 
         // Verify counts
-        $article1 = RevisionableArticle::one($id1);
-        $article2 = RevisionableArticle::one($id2);
+        $article1 = RevisionableArticle::oneOrFail($id1);
+        $article2 = RevisionableArticle::oneOrFail($id2);
 
         $this->assertEquals(2, $article1->getRevisionCount());
         $this->assertEquals(2, $article2->getRevisionCount());
@@ -1148,7 +1148,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $post = CustomRevisionablePost::one($id);
+        $post = CustomRevisionablePost::oneOrFail($id);
         $result = $post->createRevision('Initial version');
 
         $this->assertTrue($result);
@@ -1199,7 +1199,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         ]);
         $id = 1;
 
-        $post = CustomRevisionablePost::one($id);
+        $post = CustomRevisionablePost::oneOrFail($id);
 
         // Create 7 revisions (max is 5)
         for ($i = 1; $i <= 7; $i++) {
