@@ -2006,7 +2006,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     /**
      * Resolve next AUTO_INCREMENT value from db_serial row payload.
      *
-     * @param   object|mixed  $row
+     * @param   \stdClass|mixed  $row
      * @return  int|false
      */
     protected function resolveNextAutoIncrementFromSerialRow($row)

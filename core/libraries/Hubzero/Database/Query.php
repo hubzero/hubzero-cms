@@ -4603,7 +4603,7 @@ class Query
      * The primary key field is used for the WHERE clause and is not updated.
      *
      * @param   string  $table   The name of the database table to update
-     * @param   object  &$object A reference to an object whose public properties match table fields
+     * @param   \stdClass  &$object A reference to an object whose public properties match table fields
      * @param   string  $key     The name of the primary key field
      * @param   bool    $nulls   True to update null fields, false to ignore them
      * @return  bool

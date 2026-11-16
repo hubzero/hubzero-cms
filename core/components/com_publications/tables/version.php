@@ -336,7 +336,7 @@ class Version extends Table
      * Get last public release
      *
      * @param   integer|null  $pid  Pub ID
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getLastPubRelease($pid = null)
     {
@@ -355,7 +355,7 @@ class Version extends Table
      *
      * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getPrevPublication($pid, $version_number)
     {
@@ -374,7 +374,7 @@ class Version extends Table
      *
      * @param   integer|null $pid    Pub ID
      * @param   integer $version_number version number
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getNextPublication($pid, $version_number)
     {
@@ -640,7 +640,7 @@ class Version extends Table
      * Get publication version by ID
      *
      * @param   integer|null $vid    Publication Version ID
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getPubVersion($vid = null)
     {

@@ -214,7 +214,7 @@ class Profile extends Plugin
      * Event call to determine if this plugin should return data
      *
      * @param  array<mixed>|\Hubzero\Database\Rows  $fields  Fields filled in
-     * @param  object $profile Profile
+     * @param  \Components\Members\Models\Member|null $profile Profile
      * @return integer
      */
     public function getProfileCompleteness($fields, $profile)

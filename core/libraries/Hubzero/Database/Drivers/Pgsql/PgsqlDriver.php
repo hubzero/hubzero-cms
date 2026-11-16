@@ -200,7 +200,7 @@ class PgsqlDriver extends BaseSqlDriver
      * like 'character varying' and 'timestamp without time zone'. This
      * converts them to the short forms expected by ColumnInfo.
      *
-     * @param  object $field Row from information_schema.columns
+     * @param  \stdClass $field Row from information_schema.columns
      * @return string Normalized type with length (e.g. 'varchar(255)')
      */
     protected function normalizePgType(object $field): string

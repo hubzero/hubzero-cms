@@ -113,7 +113,7 @@ class Manager
      * Create a new user instance.
      *
      * @param   mixed  $id
-     * @return  object
+     * @return  \Hubzero\User\User
      */
     protected function resolveUser($id)
     {

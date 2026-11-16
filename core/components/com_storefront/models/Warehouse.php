@@ -178,7 +178,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   int $cId         Collection ID
      * @param   bool $showInactive        Flag whether to show inactive collection info
-     * @return  object      Collection info
+     * @return  \stdClass      Collection info
      */
     public function getCollectionInfo($cId, $showInactive = false)
     {

@@ -246,7 +246,7 @@ class Migration20151001185523ComKb extends Base
     /**
      * Make a #__categories entry
      *
-     * @param   object  $category
+     * @param   \stdClass  $category
      * @return  integer
      */
     public function category($category)
@@ -285,7 +285,7 @@ class Migration20151001185523ComKb extends Base
     /**
      * Make a #__faq_categories entry
      *
-     * @param   object  $tbl
+     * @param   \stdClass  $tbl
      * @return  integer
      */
     public function section($tbl)

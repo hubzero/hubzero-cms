@@ -31,7 +31,7 @@ class Status extends Table
     /**
      * Get a count of current sessions
      *
-     * @return object|null
+     * @return \stdClass|null
      */
     public function getLastSession()
     {

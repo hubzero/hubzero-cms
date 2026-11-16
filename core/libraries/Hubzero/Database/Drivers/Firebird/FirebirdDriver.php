@@ -4242,7 +4242,7 @@ END';
      *
      * @param   string  $table   Table name
      * @param   string  $column  Column name
-     * @return  object|null  Column type info or null if column doesn't exist
+     * @return  \stdClass|null  Column type info or null if column doesn't exist
      */
     public function getColumnTypeInfo(string $table, string $column): ?object
     {

@@ -1172,7 +1172,7 @@ class Html extends Obj
      * Send hub message
      *
      * @param   string  $option
-     * @param   object  $project    Models\Project
+     * @param   \Components\Projects\Models\Project|null  $project    Models\Project
      * @param   array<mixed>   $addressees
      * @param   string  $subject
      * @param   string  $component

@@ -59,7 +59,7 @@ class Migration20260708160000ComEvents extends Base
     /**
      * Load the com_events asset and its decoded rules.
      *
-     * @return  object|null  {id, rules(array)} or null when unavailable
+     * @return  \stdClass|null  {id, rules(array)} or null when unavailable
      */
     protected function eventsAsset()
     {

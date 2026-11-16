@@ -465,7 +465,7 @@ class Publication extends Table
      * @param   string   $version
      * @param   integer|null  $project_id
      * @param   string|null   $alias
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getPublication($pid = null, $version = 'default', $project_id = null, $alias = null)
     {

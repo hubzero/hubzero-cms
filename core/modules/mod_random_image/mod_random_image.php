@@ -47,7 +47,7 @@ class RandomImage extends Module
     /**
      * Get a random image from a list
      *
-     * @param   object  $params  Registry
+     * @param   \Hubzero\Config\Registry|null  $params  Registry
      * @param   array<mixed>   $images  List of images in a directory
      * @return  string
      */

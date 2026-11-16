@@ -324,7 +324,7 @@ class Resume extends Plugin
      *
      * @param   \Hubzero\Database\Driver   $database   Database
      * @param   string   $option     Component name
-     * @param   object   $member     Profile
+     * @param   \Components\Members\Models\Member   $member     Profile
      * @param   integer  $emp        Is user employer?
      * @param   integer  $edittitle  Parameter description (if any) ...
      * @param   integer  $editpref   Parameter description (if any) ...

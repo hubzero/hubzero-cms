@@ -38,7 +38,7 @@ class Composer
     /**
      * Composer\Repository\RepositoryManager object
      *
-     * @var object|null
+     * @var \Composer\Repository\RepositoryManager|null
      */
     private static $repositoryManager = null;
 
@@ -73,7 +73,7 @@ class Composer
     /**
      * Composer\EventDispatcher\EventDispatcher object to dispatch messages to composer
      *
-     * @var object|null
+     * @var \Composer\EventDispatcher\EventDispatcher|null
      */
     private static $dispatcher = null;
 
@@ -131,7 +131,7 @@ class Composer
     /**
      * Return composer object, ensuring it has been set up
      *
-     * @return  object  Composer\Composer object representing this composer instance
+     * @return  \Composer\Composer  Composer\Composer object representing this composer instance
      */
     private static function getComposer()
     {
@@ -351,7 +351,7 @@ class Composer
     /**
      * Return Composer's configuration
      *
-     * @return  object  Composer\Config object in use by composer
+     * @return  \Composer\Config  Composer\Config object in use by composer
      */
     private static function getConfig()
     {

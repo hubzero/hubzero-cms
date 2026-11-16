@@ -32,7 +32,7 @@ class Watch extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $project;
     /** @var \Hubzero\Item\Watch|null */
@@ -372,7 +372,7 @@ class Watch extends Plugin
     /**
      * Handles the actual sending of emails
      *
-     * @param   object  $project
+     * @param   \Components\Projects\Models\Project|null  $project
      * @param   object  $subscriber
      * @param   array<mixed>|\Hubzero\Database\Rows   $activities
      * @param   string  $subject

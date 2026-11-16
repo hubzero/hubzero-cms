@@ -319,7 +319,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     public function trash($database, $option, $member)

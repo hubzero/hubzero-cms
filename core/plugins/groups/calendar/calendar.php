@@ -1230,7 +1230,7 @@ class Calendar extends Plugin
     /**
      * Authenticate Subscription Requests
      *
-     * @return  object
+     * @return  \stdClass
      */
     private function authenticateSubscriptionRequest()
     {

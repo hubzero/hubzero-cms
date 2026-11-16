@@ -468,7 +468,7 @@ class Service extends Obj
      * @param   string  $from   Timestamp
      * @param   string  $until  Timestamp
      * @param   string|null  $set    Set to filter by
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function identifiers($from, $until, $set = null)
     {
