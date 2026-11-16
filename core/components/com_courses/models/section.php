@@ -34,6 +34,13 @@ class Section extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Section';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Section|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

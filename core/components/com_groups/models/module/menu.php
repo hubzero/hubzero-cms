@@ -27,6 +27,13 @@ class Menu extends Model
     protected $tableClass = '\\Components\\Groups\\Tables\\ModuleMenu';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Groups\Tables\ModuleMenu|null
+     */
+    protected $table = null;
+
+    /**
      * Constructor
      *
      * @param   mixed $oid

@@ -105,6 +105,13 @@ class Project extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Project';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\Project|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var  string

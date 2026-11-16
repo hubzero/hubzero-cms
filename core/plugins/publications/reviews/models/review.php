@@ -33,6 +33,13 @@ class Review extends \Hubzero\Base\Model
     protected $tableClass = '\\Components\\Publications\\Tables\\Review';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Publications\Tables\Review|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

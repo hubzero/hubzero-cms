@@ -23,6 +23,13 @@ class Date extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionDate';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\SectionDate|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

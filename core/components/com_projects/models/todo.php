@@ -25,6 +25,13 @@ class Todo extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\Todo|null
+     */
+    protected $table = null;
+
+    /**
      * Entry
      *
      * @var object|null

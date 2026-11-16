@@ -21,6 +21,13 @@ class Location extends Base
     protected $tableClass = '\\Components\\Tools\\Tables\\ZoneLocations';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Tools\Tables\ZoneLocations|null
+     */
+    protected $table = null;
+
+    /**
      * Returns a reference to a zone location model
      *
      * @param      mixed $oid Location ID or array or object

@@ -27,6 +27,13 @@ class Course extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Course';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Course|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

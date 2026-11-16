@@ -26,6 +26,13 @@ class Code extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionCode';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\SectionCode|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

@@ -23,7 +23,7 @@ class Page extends Model
     /**
      * Table
      *
-     * @var object|null
+     * @var \Components\Groups\Tables\Page|null
      */
     protected $table = null;
 

@@ -26,6 +26,13 @@ class Zone extends Base
     protected $tableClass = '\\Components\\Tools\\Tables\\Zones';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Tools\Tables\Zones|null
+     */
+    protected $table = null;
+
+    /**
      * \Hubzero\ItemList
      *
      * @var array<mixed>

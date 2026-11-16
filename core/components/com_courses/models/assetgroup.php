@@ -25,6 +25,13 @@ class Assetgroup extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\AssetGroup';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\AssetGroup|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

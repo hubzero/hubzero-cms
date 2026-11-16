@@ -35,7 +35,7 @@ class Hubzero extends Plugin
      *
      * @param   array<mixed>    $credentials  Array holding the user credentials
      * @param   array<mixed>    $options      Array of extra options
-     * @param   object   $response     Authentication response object
+     * @param   \Hubzero\Auth\Response   $response     Authentication response object
      *
      * @return  void
      */
@@ -49,7 +49,7 @@ class Hubzero extends Plugin
      *
      * @param   array<mixed>    $credentials  Array holding the user credentials
      * @param   array<mixed>    $options      Array of extra options
-     * @param   object   $response     Authentication response object
+     * @param   \Hubzero\Auth\Response   $response     Authentication response object
      * @return  boolean
      */
     public function onUserAuthenticate($credentials, $options, &$response)
@@ -220,7 +220,7 @@ class Hubzero extends Plugin
     /**
      * hasExceededLoginLimit
      *
-     * @param   object  $response
+     * @param   \Hubzero\Auth\Response  $response
      * @return  bool
      */
     private function hasExceededBlockLimit($response)

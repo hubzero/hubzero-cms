@@ -27,6 +27,13 @@ class Badge extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\SectionBadge';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\SectionBadge|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

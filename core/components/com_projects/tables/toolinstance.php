@@ -174,7 +174,7 @@ class ToolInstance extends Table
     /**
      * Update Parent Name
      *
-     * @param   string|null  $parent_id
+     * @param   int|string|null  $parent_id
      * @param   string|null  $newname
      * @return  mixed
      */

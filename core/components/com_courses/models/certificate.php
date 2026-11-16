@@ -32,6 +32,13 @@ class Certificate extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Certificate';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Certificate|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

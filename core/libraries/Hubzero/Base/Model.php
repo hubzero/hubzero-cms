@@ -58,7 +58,7 @@ abstract class Model extends Obj
     /**
      * Table
      *
-     * @var object|null
+     * @var \Hubzero\Database\Table|null  An instance of $tableClass, checked by the constructor
      */
     protected $table = null;
 
@@ -553,7 +553,7 @@ abstract class Model extends Obj
         $output = $this->table->getProperties();
 
         if ($verbose) {
-            foreach ($this->table as $key => $value) {
+            foreach (get_object_vars($this->table) as $key => $value) {
                 if (substr($key, 0, 2) == '__') {
                     $output[substr($key, 2)] = $value;
                 }

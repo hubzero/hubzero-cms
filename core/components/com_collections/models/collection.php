@@ -43,6 +43,13 @@ class Collection extends Base
     protected $tableClass = '\\Components\\Collections\\Tables\\Collection';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Collections\Tables\Collection|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

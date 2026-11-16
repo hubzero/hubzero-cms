@@ -27,6 +27,13 @@ class Announcement extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Announcement';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Announcement|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

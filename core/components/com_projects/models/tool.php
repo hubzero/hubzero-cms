@@ -73,6 +73,13 @@ class Tool extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Tool';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\Tool|null
+     */
+    protected $table = null;
+
+    /**
      * Registry
      *
      * @var object|null

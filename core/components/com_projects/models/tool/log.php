@@ -36,6 +36,13 @@ class Log extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolLog';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\ToolLog|null
+     */
+    protected $table = null;
+
+    /**
      * Registry
      *
      * @var  object|null

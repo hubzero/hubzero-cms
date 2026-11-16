@@ -26,6 +26,13 @@ class Log extends Model
     protected $tableClass = '\\Components\\Publications\\Tables\\Log';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Publications\Tables\Log|null
+     */
+    protected $table = null;
+
+    /**
      * Registry
      *
      * @var  \Hubzero\Config\Registry|null

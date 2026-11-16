@@ -37,6 +37,13 @@ class Asset extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Asset';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Asset|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string
@@ -480,7 +487,7 @@ class Asset extends Base
         }
 
         $assets = $this->table->find(['w' => ['asset_id' => $this->get('id')]]);
-        if ($assets && count($assets) > 0) {
+        if ($assets) {
             foreach ($assets as $asset) {
                 if (isset($asset->unit_id)) {
                     if (!isset($this->units[$asset->unit_id])) {

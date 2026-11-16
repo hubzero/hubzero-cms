@@ -30,6 +30,13 @@ class Instance extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolInstance';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\ToolInstance|null
+     */
+    protected $table = null;
+
+    /**
      * Registry
      *
      * @var object|null

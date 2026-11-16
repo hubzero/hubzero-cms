@@ -29,6 +29,13 @@ class Module extends Model
     protected $tableClass = '\\Components\\Groups\\Tables\\Module';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Groups\Tables\Module|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

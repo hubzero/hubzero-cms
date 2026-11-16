@@ -23,7 +23,7 @@ class Category extends Model
     /**
      * Table object
      *
-     * @var object|null
+     * @var \Components\Groups\Tables\PageCategory|null
      */
     protected $table = null;
 

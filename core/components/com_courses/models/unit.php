@@ -36,6 +36,13 @@ class Unit extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Unit';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Unit|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

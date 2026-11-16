@@ -27,6 +27,13 @@ class Session extends Base
     protected $tableClass = '\\Components\\Tools\\Tables\\Session';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Tools\Tables\Session|null
+     */
+    protected $table = null;
+
+    /**
      * \Hubzero\ItemList
      *
      * @var  array<mixed>

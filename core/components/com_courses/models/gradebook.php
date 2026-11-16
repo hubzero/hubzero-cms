@@ -29,6 +29,13 @@ class GradeBook extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\GradeBook';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\GradeBook|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string
@@ -910,7 +917,7 @@ class GradeBook extends Base
 
             $results = $this->table->find($filters);
 
-            if ($results && count($results) > 0) {
+            if ($results) {
                 foreach ($results as $grade) {
                     $grade->unit_id = isset($units_map[$grade->scope_id]) ? $units_map[$grade->scope_id] : 0;
                 }

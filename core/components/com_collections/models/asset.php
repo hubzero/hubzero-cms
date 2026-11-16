@@ -27,6 +27,13 @@ class Asset extends Base
     public $tableClass = '\\Components\\Collections\\Tables\\Asset';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Collections\Tables\Asset|null
+     */
+    protected $table = null;
+
+    /**
      * File size
      *
      * @var  int|false|null
@@ -340,24 +347,6 @@ class Asset extends Base
             $this->setError($this->table->getError());
             return false;
         }
-        return true;
-    }
-
-    /**
-     * Update content
-     *
-     * @param   string   $field   Field name
-     * @param   string   $before  Old value
-     * @param   string   $after   New value
-     * @return  boolean  True on success, false if errors
-     */
-    public function update($field, $before, $after)
-    {
-        if (!$this->table->updateField($field, $before, $after)) {
-            $this->setError($this->table->getError());
-            return false;
-        }
-
         return true;
     }
 

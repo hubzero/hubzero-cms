@@ -24,6 +24,13 @@ class Prerequisite extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Prerequisites';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Prerequisites|null
+     */
+    protected $table = null;
+
+    /**
      * Object scope
      *
      * @var string

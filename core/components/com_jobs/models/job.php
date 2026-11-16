@@ -27,6 +27,13 @@ class Job extends Model
     protected $tableClass = '\\Components\\Jobs\\Tables\\Job';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Jobs\Tables\Job|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var  string

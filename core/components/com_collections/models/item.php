@@ -41,6 +41,13 @@ class Item extends Base
     protected $tableClass = '\\Components\\Collections\\Tables\\Item';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Collections\Tables\Item|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

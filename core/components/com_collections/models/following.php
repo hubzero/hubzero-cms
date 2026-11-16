@@ -25,6 +25,13 @@ class Following extends Model
     protected $tableClass = '\\Components\\Collections\\Tables\\Following';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Collections\Tables\Following|null
+     */
+    protected $table = null;
+
+    /**
      * Following
      *
      * @var object|null

@@ -25,6 +25,13 @@ class Comment extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Comment';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\Comment|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string
@@ -221,11 +228,9 @@ class Comment extends Model
             case 'results':
             default:
                 if (!($this->comments instanceof \Hubzero\Base\ItemList) || $clear) {
-                    if ($this->get('replies', null) !== null) {
-                        $results = $this->get('replies');
-                    } else {
-                        $results = $this->table->getAllComments($this->get('entry_id'), $this->get('id'));
-                    }
+                    // Replies are set by whoever loads the comments; the
+                    // getAllComments() this fell back on does not exist
+                    $results = $this->get('replies', []);
 
                     if ($results) {
                         foreach ($results as $key => $result) {

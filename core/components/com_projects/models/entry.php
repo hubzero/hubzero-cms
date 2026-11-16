@@ -33,6 +33,13 @@ class Entry extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\Todo';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\Todo|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

@@ -25,6 +25,13 @@ class View extends Model
     protected $tableClass = '\\Components\\Projects\\Tables\\ToolView';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Projects\Tables\ToolView|null
+     */
+    protected $table = null;
+
+    /**
      * Registry
      *
      * @var  object|null

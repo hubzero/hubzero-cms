@@ -111,7 +111,7 @@ class Certificate extends Plugin
      *
      * @param   array<mixed>   $credentials  the user credentials
      * @param   array<mixed>   $options      any extra options
-     * @param   object  $response     authentication response object
+     * @param   \Hubzero\Auth\Response  $response     authentication response object
      * @return  void
      * @deprecated  1.3.1
      */
@@ -125,7 +125,7 @@ class Certificate extends Plugin
      *
      * @param   array<mixed>   $credentials  the user credentials
      * @param   array<mixed>   $options      any extra options
-     * @param   object  $response     authentication response object
+     * @param   \Hubzero\Auth\Response  $response     authentication response object
      *
      * @return  void
      */

@@ -33,7 +33,7 @@ class Calendar extends Model
     /**
      * Table
      *
-     * @var object|null
+     * @var \Components\Events\Tables\Calendar|null
      */
     protected $table = null;
 

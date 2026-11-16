@@ -591,7 +591,7 @@ class Shibboleth extends Plugin
      * @access  public
      * @param   array<mixed>    $credentials  Array holding the user credentials
      * @param   array<mixed>    $options      Array of extra options
-     * @param   object   $response     Authentication response object
+     * @param   \Hubzero\Auth\Response   $response     Authentication response object
      *
      * @return  void
      */
@@ -606,7 +606,7 @@ class Shibboleth extends Plugin
      * @access  public
      * @param   array<mixed>    $credentials  Array holding the user credentials
      * @param   array<mixed>    $options      Array of extra options
-     * @param   object   $response     Authentication response object
+     * @param   \Hubzero\Auth\Response   $response     Authentication response object
      * @since   1.5
      *
      * @return  void

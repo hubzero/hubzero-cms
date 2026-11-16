@@ -25,6 +25,13 @@ class Post extends Base
     protected $tableClass = '\\Components\\Collections\\Tables\\Post';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Collections\Tables\Post|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

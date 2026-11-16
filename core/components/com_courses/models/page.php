@@ -27,6 +27,13 @@ class Page extends Base
     protected $tableClass = '\\Components\\Courses\\Tables\\Page';
 
     /**
+     * Table, an instance of $tableClass
+     *
+     * @var \Components\Courses\Tables\Page|null
+     */
+    protected $table = null;
+
+    /**
      * Model context
      *
      * @var string

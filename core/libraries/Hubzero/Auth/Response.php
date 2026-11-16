@@ -12,6 +12,22 @@ use Hubzero\Base\Obj;
 
 /**
  * Authentication response class, provides an object for storing user and error details
+ *
+ * Authentication plugins add what the login needs from them:
+ *
+ * @property  \Hubzero\Auth\Link|false|null  $auth_link      The account link at the provider
+ * @property  int|string|null              $auth_link_id   Its id
+ * @property  bool|string|null             $authoritative  Whether the provider's data overrides the profile's
+ * @property  mixed                        $entitlement    CILogon entitlements
+ * @property  string|null                  $idp_name       CILogon identity provider
+ * @property  string|null                  $orcid          The ORCID iD
+ * @property  string|null                  $salutation
+ * @property  string|null                  $firstName
+ * @property  string|null                  $middleName
+ * @property  string|null                  $lastName
+ * @property  string|null                  $nickName
+ * @property  string|null                  $initials
+ * @property  string|null                  $suffix
  */
 class Response extends Obj
 {
