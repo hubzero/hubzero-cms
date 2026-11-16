@@ -434,6 +434,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @param   string  $path
+     * @param   resource|false  $resource
      * @return  bool
      */
     public function writeStream($path, $resource)
@@ -585,6 +587,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   bool  $preserve
      */
     public function deleteDirectory($dirname, $preserve = false)
     {
@@ -611,6 +615,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  mixed
      */
     public function mimetype($path)
@@ -625,6 +630,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   string  $directory
      * @return  bool
      */
     public function isDirectory($directory)
@@ -638,6 +644,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  bool
      */
     public function isWritable($path)
@@ -648,6 +655,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   string  $file
      * @return  bool
      */
     public function isFile($file)
@@ -660,6 +668,7 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @param   mixed  $file
      * @return  bool
      */
     public function isSafe($file)
@@ -686,6 +695,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   string  $path
      * @return  false|array<string, mixed>
      */
     public function readStream($path)
@@ -760,6 +770,8 @@ class Ftp implements AdapterInterface
      *
      * @param   array<mixed>   $listing
      * @param   string  $prefix
+     * @param   string  $filter
+     * @param   array<mixed>  $exclude
      * @return  array<mixed>   Directory listing
      */
     protected function normalizeListing(

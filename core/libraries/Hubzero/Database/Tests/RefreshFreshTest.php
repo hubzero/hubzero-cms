@@ -79,6 +79,9 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      *
+     * @param   string  $title
+     * @param   string  $content
+     * @param   int  $viewCount
      * @return  int
      */
     protected function insertTestRecord(
@@ -103,6 +106,8 @@ class RefreshFreshTest extends AbstractDriverTestCase
     /**
      * Insert a comment for an item
      *
+     * @param   int  $itemId
+     * @param   string  $body
      * @return  int
      */
     protected function insertComment(BaseSqlDriver $driver, $itemId, $body = 'Test comment')
@@ -116,6 +121,10 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
     /**
      * Update a record directly in the database (simulating external change)
+     *
+     * @param   int  $id
+     * @param   string  $field
+     * @param   int|string  $value
      */
     protected function updateRecordDirectly(BaseSqlDriver $driver, $id, $field, $value): void
     {

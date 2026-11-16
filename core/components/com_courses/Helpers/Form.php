@@ -16,6 +16,7 @@ class Form
     /**
      * Time remaining (in human readable language)
      *
+     * @param   float|int  $secs
      * @return  string
      */
     public static function timeDiff($secs)
@@ -49,6 +50,7 @@ class Form
     /**
      * Convert integer to ordinal number
      *
+     * @param   mixed  $int
      * @return  string
      */
     public static function toOrdinal($int)

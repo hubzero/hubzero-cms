@@ -126,6 +126,7 @@ class Pages extends AdminController
     /**
      * Edit a course page
      *
+     * @param   \Components\Courses\Models\Page|null  $model
      * @return  void
      */
     public function editTask($model = null)
@@ -291,6 +292,7 @@ class Pages extends AdminController
     /**
      * Build file path
      *
+     * @param   int  $listdir
      * @return  string
      */
     private function buildUploadPath($listdir = 0)

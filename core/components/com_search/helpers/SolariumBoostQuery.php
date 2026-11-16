@@ -13,6 +13,9 @@ class SolariumBoostQuery
     protected $boost;
     protected $query;
 
+    /**
+     * @param   mixed  $args
+     */
     public function __construct($args = [])
     {
         $this->query = null;
@@ -54,6 +57,7 @@ class SolariumBoostQuery
     }
 
     /**
+     * @param   array<string, mixed>  $args
      * @return  \Components\Search\Helpers\SolariumBoostQuery
      */
     public static function one($args)

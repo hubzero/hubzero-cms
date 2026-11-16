@@ -50,6 +50,10 @@ class Content extends Base
     /**
      * Display block content
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   string  $viewname
+     * @param   int  $blockId
      * @return  string  HTML
      */
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
@@ -116,6 +120,11 @@ class Content extends Base
     /**
      * Save block content
      *
+     * @param   mixed  $manifest
+     * @param   int  $blockId
+     * @param   mixed  $pub
+     * @param   int  $actor
+     * @param   int  $elementId
      * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
@@ -172,6 +181,10 @@ class Content extends Base
     /**
      * Transfer data from one version to another
      *
+     * @param   mixed  $manifest
+     * @param   mixed  $pub
+     * @param   mixed  $oldVersion
+     * @param   mixed  $newVersion
      * @return  void
      */
     public function transferData($manifest, $pub, $oldVersion, $newVersion)
@@ -199,6 +212,10 @@ class Content extends Base
     /**
      * Build panel content
      *
+     * @param   mixed  $pub
+     * @param   mixed  $viewname
+     * @param   mixed  $status
+     * @param   \stdClass  $master
      * @return  string  HTML
      */
     public function buildContent($pub, $viewname, $status, $master)
@@ -236,6 +253,9 @@ class Content extends Base
     /**
      * Check completion status
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   mixed  $elementId
      * @return  object
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
@@ -294,6 +314,9 @@ class Content extends Base
     /**
      * Check element status
      *
+     * @param   mixed  $elementId
+     * @param   mixed  $elementparams
+     * @param   mixed  $attachments
      * @return  object
      */
     public function getElementStatus($elementId, $elementparams, $attachments = null)
@@ -308,6 +331,10 @@ class Content extends Base
     /**
      * Save element
      *
+     * @param   mixed  $elementId
+     * @param   mixed  $elementparams
+     * @param   mixed  $pub
+     * @param   mixed  $params
      * @return  object|bool
      */
     public function saveElement($elementId, $elementparams, $pub = null, $params = null)
@@ -340,6 +367,12 @@ class Content extends Base
     /**
      * Update attachment record
      *
+     * @param   mixed  $manifest
+     * @param   mixed  $blockId
+     * @param   mixed  $pub
+     * @param   int  $actor
+     * @param   int  $elementId
+     * @param   int  $aid
      * @return  bool
      */
     public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
@@ -388,6 +421,12 @@ class Content extends Base
     /**
      * Delete attachment record
      *
+     * @param   mixed  $manifest
+     * @param   mixed  $blockId
+     * @param   mixed  $pub
+     * @param   int  $actor
+     * @param   int  $elementId
+     * @param   int  $aid
      * @return  bool
      */
     public function deleteItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
@@ -472,6 +511,7 @@ class Content extends Base
     /**
      * Get default manifest for the block
      *
+     * @param   bool  $new
      * @return  object
      */
     public function getManifest($new = false)

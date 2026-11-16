@@ -37,6 +37,7 @@ class Application implements \ArrayAccess
     /**
      * Get a value
      *
+     * @param   mixed  $key
      * @return  mixed
      */
     public function get($key)

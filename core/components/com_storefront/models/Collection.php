@@ -371,6 +371,7 @@ class Collection
     /**
      * Get collection image
      *
+     * @param   bool  $forceReload
      * @return  object|false|null  Collection image, or false or null when there is none
      */
     public function getImage($forceReload = false)
@@ -450,6 +451,7 @@ class Collection
     /**
      * Delete the collection
      *
+     * @param   mixed  $cAlias
      * @return  bool    true on success, exception otherwise
      */
     public static function findActiveCollectionByAlias($cAlias)

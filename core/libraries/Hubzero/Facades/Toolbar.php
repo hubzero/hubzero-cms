@@ -117,6 +117,9 @@ class Toolbar extends Facade
     /**
      * Writes a preview button for a given option (opens a popup window).
      *
+     * @param   string  $url
+     * @param   int|true  $width
+     * @param   int  $height
      * @return  void
      */
     public static function help($url, $width = 700, $height = 500)

@@ -98,6 +98,8 @@ class Writer
      * @param   string  $path
      * @param   string  $level
      * @param   string  $format
+     * @param   mixed  $dateFormat
+     * @param   mixed  $permissions
      * @return  void
      */
     public function useFiles($path, $level = 'debug', $format = '', $dateFormat = 'Y-m-d H:i:s', $permissions = null)
@@ -119,6 +121,8 @@ class Writer
      * @param   int     $days
      * @param   string  $level
      * @param   string  $format
+     * @param   string  $dateFormat
+     * @param   mixed  $permissions
      * @return  void
      */
     public function useDailyFiles(

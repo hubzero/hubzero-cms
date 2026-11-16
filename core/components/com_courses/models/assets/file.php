@@ -71,6 +71,7 @@ class File extends Handler
     /**
      * Create method for this handler
      *
+     * @param   mixed  $localPath
      * @return  array<string, mixed>  of assets created
      **/
     public function create($localPath = null)

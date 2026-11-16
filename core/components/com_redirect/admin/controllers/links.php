@@ -152,6 +152,7 @@ class Links extends AdminController
     /**
      * Display edit form
      *
+     * @param   \Components\Redirect\Models\Link|null  $row
      * @return  void
      */
     public function editTask($row = null)

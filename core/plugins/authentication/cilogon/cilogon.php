@@ -39,6 +39,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
     /**
      * Get the CILogon object, instantiating it if need be
      *
+     * @param   mixed  $redirect
      * @return  object
      */
     protected function cilogon($redirect = null)

@@ -273,6 +273,7 @@ class Orders extends AdminController
     /**
      * Save the order info
      *
+     * @param   bool  $redirect
      * @return  void
      */
     public function saveTask($redirect = true)

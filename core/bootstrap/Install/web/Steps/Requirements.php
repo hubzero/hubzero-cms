@@ -23,6 +23,9 @@ class Requirements implements StepInterface
      */
     private $passed = true;
 
+    /**
+     * @param   \Bootstrap\Install\Web\Installer  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;

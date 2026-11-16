@@ -26,6 +26,8 @@ class RecordingDriver
     public function __construct(private array $columns) {}
 
     /**
+     * @param   mixed  $table
+     * @param   bool  $typeOnly
      * @return  array<object>
      */
     public function getTableColumns($table, $typeOnly = true)
@@ -38,6 +40,7 @@ class RecordingDriver
     }
 
     /**
+     * @param   mixed  $name
      * @return  string
      */
     public function quoteName($name)
@@ -46,6 +49,7 @@ class RecordingDriver
     }
 
     /**
+     * @param   mixed  $value
      * @return  string
      */
     public function quote($value)
@@ -54,6 +58,7 @@ class RecordingDriver
     }
 
     /**
+     * @param   mixed  $query
      * @return  $this
      */
     public function setQuery($query)

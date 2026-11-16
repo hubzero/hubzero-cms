@@ -77,6 +77,9 @@ class Handler
     /**
      * Constructor - sets the database object and initializes the file types
      *
+     * @param   mixed  $db
+     * @param   string|null  $fileType
+     * @param   bool  $scanHandlers
      * @return void
      **/
     public function __construct(&$db, $fileType = null, $scanHandlers = true)
@@ -93,6 +96,7 @@ class Handler
     /**
      * Constructs a new object without scanning for handlers
      *
+     * @param   mixed  $db
      * @return static
      **/
     public static function newWithoutHandlers($db)
@@ -103,6 +107,7 @@ class Handler
     /**
      * Runs initialization type things
      *
+     * @param   mixed  $fileType
      * @return void
      **/
     private function initialize($fileType)
@@ -114,6 +119,7 @@ class Handler
     /**
      * Takes the incoming file type (extension), and checks to see if we have any handlers for that file type
      *
+     * @param   mixed  $fileType
      * @return void
      **/
     private function getHandlersThatRespondToType($fileType)
@@ -176,6 +182,7 @@ class Handler
     /**
      * Shortcut to add handlers to the class handlers variable
      *
+     * @param   string  $class
      * @return void
      **/
     public function addHandler($class)
@@ -203,6 +210,7 @@ class Handler
     /**
      * Create a new asset
      *
+     * @param   string|null  $class
      * @return array<mixed> - message and status code from individual handlers
      **/
     public function doCreate($class = null)
@@ -238,6 +246,7 @@ class Handler
     /**
      * Edit an asset
      *
+     * @param   mixed  $id
      * @return array<mixed>
      **/
     public function doEdit($id)
@@ -266,6 +275,7 @@ class Handler
     /**
      * Preview an asset
      *
+     * @param   mixed  $id
      * @return array<mixed>
      **/
     public function preview($id)

@@ -29,6 +29,7 @@ class Mygroups extends Module
      *
      * @param   integer  $uid   User ID
      * @param   string   $type  Membership type to return groups for
+     * @param   array<mixed>  $groups
      * @return  array<int, \stdClass>
      */
     private function getGroups($uid, $type = 'all', $groups = [])

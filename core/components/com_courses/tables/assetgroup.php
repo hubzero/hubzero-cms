@@ -77,6 +77,8 @@ class AssetGroup extends Table
     /**
      * Get the last page in the ordering
      *
+     * @param   mixed  $unit_id
+     * @param   mixed  $parent
      * @return     string|null
      */
     public function getHighestOrder($unit_id, $parent = 0)

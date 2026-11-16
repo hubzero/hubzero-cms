@@ -1316,6 +1316,7 @@ class Citations extends Plugin
     /**
      * Applies filters to Citations model and returns applied filters
      * @param array<mixed>  $filters array of POST values
+     * @param   mixed  $scope_id
      * @return  array<string, mixed> sanitized and validated filter values
      */
     private function filterHandler($filters = [], $scope_id = 0)

@@ -11,6 +11,9 @@ namespace Components\Dataviewer\Site\Filter;
 class Csv
 {
     /**
+     * @param   array<string, mixed>  $res
+     * @param   mixed  $dd
+     * @param   bool  $ob_mode
      * @return  string|null
      */
     public static function filter($res, &$dd, $ob_mode = false)
@@ -82,6 +85,7 @@ class Csv
     }
 
     /**
+     * @param   mixed  $dd
      * @return  string
      */
     public static function columnsMetadata($dd)
@@ -101,6 +105,7 @@ class Csv
     }
 
     /**
+     * @param   mixed  $metadata
      * @return  string
      */
     public static function columnMetadata($metadata)

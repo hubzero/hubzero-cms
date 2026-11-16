@@ -152,6 +152,7 @@ class Serials
     }
 
     /**
+     * @param   array<int>  $ids
      * @return  \stdClass
      */
     public static function delete($ids)
@@ -197,6 +198,8 @@ class Serials
     }
 
     /**
+     * @param   string  $serial
+     * @param   mixed  $sId
      * @return  mixed
      */
     public static function add($serial, $sId)

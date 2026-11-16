@@ -1133,6 +1133,7 @@ class Detector
     /**
      * Retrieve the current browser's version.
      *
+     * @param   string  $for
      * @return  string|int  The current browser's version.
      */
     public function version($for = '')

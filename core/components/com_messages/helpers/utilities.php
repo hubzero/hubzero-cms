@@ -23,6 +23,7 @@ class Utilities
     /**
      * @param   int $value  The state value
      * @param   int $i
+     * @param   bool|null  $canChange
      * @return   string
      */
     public static function state($value, $i, $canChange)

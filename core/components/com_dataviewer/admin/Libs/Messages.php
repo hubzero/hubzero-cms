@@ -18,7 +18,11 @@ class Messages
         }
     }
 
-    /** @return void */
+    /**
+     * @param   string  $msg
+     * @param   string  $type
+     * @return void
+     */
     public static function dbMsg($msg, $type = 'error')
     {
         self::init();

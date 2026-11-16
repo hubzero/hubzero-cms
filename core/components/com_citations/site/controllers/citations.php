@@ -546,6 +546,7 @@ class Citations extends SiteController
     /**
      * Show a form for editing an entry
      *
+     * @param   \Components\Citations\Models\Citation|null  $citation
      * @return  void
      */
     public function editTask($citation = null)

@@ -493,6 +493,9 @@ class Relationships extends AdminController
     /**
      * Get data for a tag
      *
+     * @param   mixed  $tag_str
+     * @param   bool  $detailed
+     * @param   bool  $create
      * @return  array<string, mixed>
      */
     public function getTag($tag_str, $detailed = true, $create = true)

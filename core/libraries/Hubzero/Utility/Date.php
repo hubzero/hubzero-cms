@@ -278,6 +278,7 @@ class Date extends DateTime
      *
      * @param   string  $date  String in a format accepted by strtotime(), defaults to "now".
      * @param   mixed   $tz    Time zone to be used for the date.
+     * @param   bool  $ignoreDst
      * @return  object
      */
     public static function of($date = 'now', $tz = null, $ignoreDst = false)
@@ -502,6 +503,7 @@ class Date extends DateTime
      * Gets the date as UNIX time stamp.
      *
      * @param   string  $format  The date format specification string (see {@link PHP_MANUAL#date})
+     * @param   bool  $ignoreDst
      * @return  string
      */
     public function toLocal($format = '', $ignoreDst = false)
@@ -520,6 +522,7 @@ class Date extends DateTime
      * @param   mixed  $timeZone The numeric key on the Date static offsets array (a short list of common timezones)
      *      or a timezone string accepted by the TimeZone PHP object (see {@link PHP_MANUAL#timezones})
      * @param   string|null  $format  The date format specification string (see {@link PHP_MANUAL#date})
+     * @param   mixed  $ignoreDst
      * @return  string
      */
     public function toTimeZone($timeZone, $format = null, $ignoreDst = false)
@@ -611,6 +614,7 @@ class Date extends DateTime
      * Calculate how long ago a date was
      *
      * @param   int|float  $timestamp  Date to convert
+     * @param   mixed  $current_time
      * @return  string
      */
     protected function ago($timestamp, $current_time = null)

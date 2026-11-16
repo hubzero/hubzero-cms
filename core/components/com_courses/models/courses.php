@@ -142,6 +142,10 @@ class Courses extends Obj
      * Get a list of courses
      *   Accepts an array of filters to build query from
      *
+     * @param   mixed  $uid
+     * @param   string  $type
+     * @param   mixed  $limit
+     * @param   int  $start
      * @return     mixed
      */
     public function userCourses($uid, $type = 'all', $limit = null, $start = 0)
@@ -163,7 +167,9 @@ class Courses extends Obj
      * Get a list of courses
      *   Accepts an array of filters to build query from
      *
+     * @param   string  $what
      * @param      array<mixed> $filters Filters to build query from
+     * @param   bool  $clear
      * @return     mixed
      */
     public function tags($what = 'cloud', $filters = [], $clear = false)
@@ -177,6 +183,7 @@ class Courses extends Obj
      * Turn a string of tags to an array
      *
      * @param      string $tag Tag string
+     * @param   string  $remove
      * @return     mixed
      */
     public function parseTags($tag, $remove = '')

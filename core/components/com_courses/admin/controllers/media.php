@@ -23,6 +23,8 @@ class Media extends AdminController
     /**
      * Build file path
      *
+     * @param   mixed  $listdir
+     * @param   string  $subdir
      * @return  string
      */
     private function buildUploadPath($listdir, $subdir = '')

@@ -961,6 +961,8 @@ class Tags extends SiteController
     /**
      * Method to check admin access permission
      *
+     * @param   string  $assetType
+     * @param   mixed  $assetId
      * @return  void
      */
     protected function authorize($assetType = 'tag', $assetId = null)

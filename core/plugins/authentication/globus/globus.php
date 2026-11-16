@@ -39,6 +39,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
     /**
      * Get the Globus object, instantiating it if need be
      *
+     * @param   mixed  $redirect
      * @return  object
      */
     protected function globus($redirect = null)

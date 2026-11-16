@@ -18,6 +18,11 @@ class BaseAuditor
     public $response;
     public $sId;
 
+    /**
+     * @param   mixed  $type
+     * @param   int|null  $pId
+     * @param   int|null  $crtId
+     */
     public function __construct($type, $pId = null, $crtId = null)
     {
         $this->type = $type;
@@ -35,7 +40,10 @@ class BaseAuditor
         $this->response->errors = [];
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $sId
+     * @return void
+     */
     public function setSku($sId)
     {
         $this->sId = $sId;
@@ -60,26 +68,38 @@ class BaseAuditor
         return $this->getResponse();
     }
 
-    /** @return void */
+    /**
+     * @param   string  $status
+     * @return void
+     */
     protected function setResponseStatus($status)
     {
         $this->response->status = $status;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $msg
+     * @return void
+     */
     protected function setResponseMessage($msg)
     {
         $this->response->messages[] = $msg;
     }
 
-    /** @return void */
+    /**
+     * @param   string  $msg
+     * @return void
+     */
     protected function setResponseNotice($msg)
     {
         $this->response->notices[] = $msg;
     }
 
     // ok, notice, error
-    /** @return void */
+    /**
+     * @param   string  $msg
+     * @return void
+     */
     protected function setResponseError($msg)
     {
         $this->response->errors[] = $msg;

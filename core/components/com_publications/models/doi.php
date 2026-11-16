@@ -1066,6 +1066,8 @@ class Doi extends Obj
     /**
      * Register the DOI name and associated URL. This is the second step to finish the DOI registration on DataCite.
      *
+     * @param   string  $doi
+     * @param   string  $resURL
      * @return boolean
      */
     public function registerURL($doi, $resURL = "")

@@ -1983,6 +1983,7 @@ class Pipeline extends SiteController
      * @param   integer  $access
      * @param   integer  $email
      * @param   integer  $action
+     * @param   array<mixed>  $toolinfo
      * @return  boolean  False if errors, True on success
      */
     protected function updateTicket(

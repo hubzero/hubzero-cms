@@ -107,6 +107,7 @@ class Recipient extends Relational
     /**
      * Builds a query string based on filters passed
      *
+     * @param   int  $uid
      * @param   array<mixed>   $filters  Filters to build query from
      * @return  static  SQL
      */

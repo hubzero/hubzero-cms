@@ -1067,6 +1067,7 @@ class Html
      * Get disk space
      *
      * @param   array<mixed>    $rows  Publications objet array
+     * @param   bool  $simple
      * @return  integer
      */
     public static function getDiskUsage($rows = [], $simple = false)
@@ -1297,6 +1298,7 @@ class Html
      * @param   int  $publication_version_id    publication version id
      * @param   string  $secret publication secret
      * @param   array|mixed  $attachments  publication attachments
+     * @param   bool  $fast
      *
      * @return  array<mixed>
      */
@@ -1344,9 +1346,13 @@ class Html
     /**
      * Get the MIME types for primary file and support file
      *
+     * @param   int  $publication_id
+     * @param   int  $publication_version_id
+     * @param   string  $secret
      * @param   int  $role
      * @param   array<mixed>|false  $attachments  False when there are none
      * @param   array<mixed>  $mimeTypes
+     * @param   mixed  $fast
      *
      * @return  null|false or false
      */
@@ -1397,6 +1403,7 @@ class Html
      * @param   int  $publication_id    publication id
      * @param   int  $publication_version_id
      * @param   array<mixed>  $mimeTypes
+     * @param   mixed  $fast
      *
      * @return  null|false or false
      */

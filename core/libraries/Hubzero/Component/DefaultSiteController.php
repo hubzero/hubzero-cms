@@ -21,7 +21,11 @@ class DefaultSiteController extends SiteController
         parent::execute();
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $name
+     * @param   mixed  $arguments
+     * @return void
+     */
     public function __call($name, $arguments)
     {
         if (substr_compare($name, 'Task', -4, 4, true) === 0) {

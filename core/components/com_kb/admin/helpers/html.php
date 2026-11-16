@@ -19,7 +19,10 @@ class Html
      * Outputs a <select> element with a specific value chosen
      *
      * @param   array<mixed>   $categories  Data to populate list with
+     * @param   mixed  $val
      * @param   string  $name        Field name
+     * @param   string|null  $id
+     * @param   string|null  $atts
      * @return  string  HTML <select>
      */
     public static function categories($categories, $val, $name, $id = null, $atts = null)

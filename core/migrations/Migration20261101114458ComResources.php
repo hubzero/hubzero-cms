@@ -22,6 +22,9 @@ use Hubzero\Content\Migration\Base;
 class Migration20261101114458ComResources extends Base
 {
     /**
+     * @param   string  $table
+     * @param   string  $key
+     * @param   mixed  $fields
      * @return  void
      */
     private function addIndex($table, $key, $fields)
@@ -46,6 +49,8 @@ class Migration20261101114458ComResources extends Base
     }
 
     /**
+     * @param   string  $table
+     * @param   string  $key
      * @return  void
      */
     private function dropIndex($table, $key)

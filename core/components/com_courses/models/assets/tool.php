@@ -224,6 +224,7 @@ class Tool extends Content
     /**
      * Check if selecteditemed is from a remote connection
      *
+     * @param   string  $identifier
      * @return mixed  File object or false if not remote
      */
     private function checkForRemoteConnection($identifier)

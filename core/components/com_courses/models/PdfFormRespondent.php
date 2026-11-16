@@ -59,6 +59,9 @@ class PdfFormRespondent
     /**
      * Construtor
      *
+     * @param   int  $depId
+     * @param   mixed  $member_id
+     * @param   mixed  $attempt
      * @return void
      **/
     public function __construct($depId, $member_id, $attempt = 1)
@@ -103,6 +106,7 @@ class PdfFormRespondent
     /**
      * Get confirmation code
      *
+     * @param   mixed  $crumb
      * @return string hash of confirmation code
      **/
     public function getConfirmationCode($crumb)
@@ -113,6 +117,7 @@ class PdfFormRespondent
     /**
      * Save answers
      *
+     * @param   mixed  $answers
      * @return object
      **/
     public function saveAnswers($answers)
@@ -270,6 +275,8 @@ class PdfFormRespondent
     /**
      * Save current progress in form
      *
+     * @param   mixed  $qid
+     * @param   mixed  $aid
      * @return object
      **/
     public function saveProgress($qid, $aid)

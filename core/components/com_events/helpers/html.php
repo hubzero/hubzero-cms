@@ -326,8 +326,8 @@ class Html
     /**
      * Build a time zone select list for events
      *
-     * @param      $tzselected - currently selected time zone
-     * @param      $args - styles for field
+     * @param      mixed  $tzselected - currently selected time zone
+     * @param      string  $args - styles for field
      * @return     string  select list of time zones, with current time zone selected (if applicable)
      */
     public static function buildTimeZoneSelect($tzselected, $args)

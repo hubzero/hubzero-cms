@@ -28,6 +28,7 @@ class EagerComment extends Relational
     /**
      * Scope: only approved comments
      *
+     * @param   mixed  $query
      * @return  void
      */
     public function scopeApproved($query)
@@ -38,6 +39,8 @@ class EagerComment extends Relational
     /**
      * Scope: comments for a specific post
      *
+     * @param   mixed  $query
+     * @param   mixed  $postId
      * @return  void
      */
     public function scopeByPost($query, $postId)

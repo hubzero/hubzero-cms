@@ -40,6 +40,7 @@ class Loader
      * Constructor
      *
      * @param   \Hubzero\Container\Container $app
+     * @param   mixed  $profiler
      * @return  void
      */
     public function __construct(Container $app, $profiler = null)

@@ -29,6 +29,7 @@ class RequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function server(string $key, $default = null)
@@ -37,6 +38,7 @@ class RequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get(string $key, $default = null)

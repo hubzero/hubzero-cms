@@ -227,6 +227,7 @@ class Pagedown extends Plugin
      * @param   string   $name     Control name
      * @param   int      $columns  Number of columns for the textarea
      * @param   int      $rows     Number of rows for the textarea
+     * @param   string  $idPostfix
      * @return  string
      */
     protected function buildTextarea($content, $name, $columns, $rows, $idPostfix)

@@ -80,6 +80,7 @@ class Offline extends Plugin
     /**
      * Return a list of filters that can be applied
      *
+     * @param   mixed  $postData
      * @return  bool|array<mixed>
      */
     public function onPostback($postData)

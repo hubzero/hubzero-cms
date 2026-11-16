@@ -110,6 +110,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  array<string>|string|null
      */
     public function name($path)
@@ -120,6 +121,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  string
      */
     public function extension($path)
@@ -131,6 +133,7 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @param   mixed  $path
      * @return  string
      */
     public function type($path)
@@ -141,6 +144,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  int
      */
     public function size($path)
@@ -151,6 +155,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  int
      */
     public function lastModified($path)
@@ -161,6 +166,7 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  null
      */
     public function mimetype($path)
@@ -203,6 +209,7 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @param   mixed  $file
      * @return  bool
      */
     public function isSafe($file)
@@ -247,6 +254,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   bool  $preserve
      */
     public function deleteDirectory($directory, $preserve = false)
     {

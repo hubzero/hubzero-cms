@@ -18,6 +18,7 @@ use Hubzero\Facades\User;
 class ModeDb
 {
     /**
+     * @param   mixed  $db_id
      * @return  array<mixed>
      */
     public static function getConf($db_id)
@@ -64,6 +65,7 @@ class ModeDb
     }
 
     /**
+     * @param   mixed  $db_id
      * @return  mixed
      */
     public static function getDd($db_id)
@@ -161,6 +163,7 @@ class ModeDb
     }
 
     /**
+     * @param   mixed  $dd
      * @return  mixed
      */
     public static function ddPost($dd)
@@ -250,7 +253,10 @@ class ModeDb
         return $dd;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $dd
+     * @return void
+     */
     public static function pathway($dd)
     {
         $document = App::get('document');

@@ -26,11 +26,17 @@ class HtmxContainerStub implements \ArrayAccess
         return $this->offsetGet($key);
     }
 
+    /**
+     * @param   mixed  $value
+     */
     public function set(string $key, $value): void
     {
         $this->offsetSet($key, $value);
     }
 
+    /**
+     * @param   mixed  $provider
+     */
     public function register($provider): void
     {
         $provider->register();

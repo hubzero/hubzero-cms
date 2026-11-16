@@ -456,6 +456,7 @@ class Project extends Model
     /**
      * Get provisioned project
      *
+     * @param   int|null  $pid
      * @return  boolean
      */
     public function loadProvisioned($pid = null)
@@ -895,6 +896,8 @@ class Project extends Model
      * Check alias name
      *
      * @param   string   $name  Alias name
+     * @param   mixed  $pid
+     * @param   mixed  $ajax
      * @return  boolean  False if error, True on success
      */
     public function check($name = '', $pid = 0, $ajax = 0)

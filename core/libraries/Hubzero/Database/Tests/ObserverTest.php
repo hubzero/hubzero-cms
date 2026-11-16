@@ -65,6 +65,7 @@ class ObserverTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      *
+     * @param   string  $title
      * @return  int
      */
     protected function insertTestRecord(BaseSqlDriver $driver, $title = 'Test Item')

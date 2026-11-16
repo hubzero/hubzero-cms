@@ -140,7 +140,10 @@ class Ldap extends Plugin
         \Hubzero\Utility\Ldap::syncGroup($group->cn);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $user_id
+     * @return void
+     */
     public function onUserDeidentify($user_id)
     {
         \Hubzero\Utility\Ldap::syncUser($user_id);

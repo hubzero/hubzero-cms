@@ -12,12 +12,17 @@ class MockProxy
 {
     protected $class;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->class = $args['class'];
     }
 
     /**
+     * @param   mixed  $name
+     * @param   mixed  $args
      * @return  mixed
      */
     public function __call($name, $args)

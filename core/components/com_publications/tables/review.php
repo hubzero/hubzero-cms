@@ -222,6 +222,7 @@ class Review extends Table
      * @param   integer  $id        Reference ID
      * @param   string   $category  Category
      * @param   integer|null  $uid       User ID
+     * @param   string  $select
      * @return  mixed    False if error, Object on success
      */
     public function getVote($id, $category = 'pubreview', $uid = null, $select = 'v.helpful')

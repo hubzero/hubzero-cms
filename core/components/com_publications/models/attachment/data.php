@@ -463,6 +463,7 @@ class Data extends Base
     /**
      * Add/edit attachment
      *
+     * @param   mixed  $database_name
      * @param   object   $pub
      * @param   object   $configs
      * @param   integer  $uid

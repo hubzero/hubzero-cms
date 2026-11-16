@@ -73,6 +73,7 @@ class ToolInstance extends Table
      * Load from parent
      *
      * @param   string|null  $parent  Parent tool ID or name
+     * @param   string  $version
      * @return  mixed   object or false
      */
     public function loadFromParent($parent = null, $version = 'dev')

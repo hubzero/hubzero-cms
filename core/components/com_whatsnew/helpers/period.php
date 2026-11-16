@@ -79,6 +79,7 @@ class Period
     /**
      * Processes the _period text into actual dates
      *
+     * @param   string|null  $period
      * @return  static
      */
     public function setPeriod($period)

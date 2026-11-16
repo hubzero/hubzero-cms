@@ -130,6 +130,7 @@ class Handler
     }
 
     /**
+     * @param   int  $error_level
      * @return  string|null
      */
     private function loglevel($error_level)

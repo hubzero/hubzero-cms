@@ -153,6 +153,7 @@ class Badge extends Base
     /**
      * Get url
      *
+     * @param   string  $type
      * @return     string
      */
     private function getUrl($type = 'Claim')

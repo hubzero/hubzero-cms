@@ -3148,6 +3148,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Checks to see if the requested attribute is set on the model
      *
+     * @param   mixed  $key
      * @return  bool
      **/
     public function hasAttribute($key)
@@ -3502,6 +3503,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Creates the fully qualified field name by prepending the table name
      *
+     * @param   mixed  $field
      * @return  string
      **/
     public function getQualifiedFieldName($field)

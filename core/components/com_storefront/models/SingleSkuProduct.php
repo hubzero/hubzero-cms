@@ -73,6 +73,7 @@ class SingleSkuProduct extends Product
     /*
      * Set time to live
      *
+     * @param   mixed  $ttl
      * @param   strng       expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
      * @return  bool        SKU status
     */

@@ -24,6 +24,7 @@ class Response extends BaseResponse
     public $original;
 
     /**
+     * @param   string  $content
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
     public function __construct($content = '', int $status = 200, array $headers = [])

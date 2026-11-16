@@ -62,6 +62,7 @@ class Conditions extends Obj
     /**
      * Create a new record
      *
+     * @param   mixed  $record
      * @return  static
      */
     public function setRecord($record)

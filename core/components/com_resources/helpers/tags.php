@@ -487,6 +487,7 @@ class Tags extends Cloud
      * Build a tag cloud
      *
      * @param   array|mixed    $tags       List of tags
+     * @param   string  $sort
      * @param   integer  $showsizes  Show tag size based on use?
      * @param   string|mixed   $tagstring
      * @return  string   HTML

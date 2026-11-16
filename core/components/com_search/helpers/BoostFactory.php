@@ -21,6 +21,9 @@ class BoostFactory
 
     protected $userHelper = null;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->map = Arr::getValue($args, 'map', new Map());
@@ -32,6 +35,7 @@ class BoostFactory
     }
 
     /**
+     * @param   array<string, mixed>  $boostData
      * @return  \Components\Search\Models\Solr\Boost
      */
     public function one($boostData)
@@ -45,6 +49,7 @@ class BoostFactory
     }
 
     /**
+     * @param   mixed  $boostData
      * @return  array<mixed>
      */
     protected function formData($boostData)

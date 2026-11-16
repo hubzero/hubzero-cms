@@ -167,6 +167,13 @@ class Admin
     /**
      * Method to get the user field input markup.
      *
+     * @param   string  $name
+     * @param   string  $id
+     * @param   mixed  $value
+     * @param   mixed  $class
+     * @param   mixed  $size
+     * @param   mixed  $onchange
+     * @param   bool  $readonly
      * @return  string  The field input markup.
      */
     public static function getUserInput(

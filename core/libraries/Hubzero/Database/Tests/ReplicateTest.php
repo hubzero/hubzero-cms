@@ -74,6 +74,7 @@ class ReplicateTest extends AbstractDriverTestCase
     /**
      * Insert a test record and return its ID
      *
+     * @param   array<mixed>  $data
      * @return  int
      */
     protected function insertTestRecord(BaseSqlDriver $driver, $data = [])

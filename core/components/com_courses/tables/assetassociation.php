@@ -90,6 +90,8 @@ class AssetAssociation extends Table
     /**
      * Get the last page in the ordering
      *
+     * @param   int  $scope_id
+     * @param   string  $scope
      * @return     string|null
      */
     public function getHighestOrdering($scope_id, $scope)

@@ -359,6 +359,7 @@ class Dispatcher implements DispatcherInterface
      * Trigger an event.
      *
      * @param   mixed  $event  The event object or name.
+     * @param   array<mixed>  $args
      * @return  array<mixed>  The event after being passed through all listeners.
      */
     public function trigger($event, $args = [])

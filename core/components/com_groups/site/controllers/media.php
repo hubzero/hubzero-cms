@@ -132,6 +132,7 @@ class Media extends Base
     /**
      * Show File Browser method
      *
+     * @param   string  $rel
      * @return  string
      */
     protected function containRelativePath($rel)

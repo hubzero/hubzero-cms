@@ -84,6 +84,9 @@ class Index
      * index - Stores a document within an index
      *
      * @param mixed $document
+     * @param   mixed  $overwrite
+     * @param   int  $commitWithin
+     * @param   int  $buffer
      * @access public
      * @return mixed
      */
@@ -96,6 +99,7 @@ class Index
      * updateIndex - Update existing index item
      *
      * @param mixed $document
+     * @param   mixed  $commitWithin
      * @access public
      * @return mixed
      */

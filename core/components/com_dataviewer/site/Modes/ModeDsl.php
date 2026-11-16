@@ -20,6 +20,7 @@ use Hubzero\Facades\User;
 class ModeDsl
 {
     /**
+     * @param   mixed  $db_id
      * @return  mixed
      */
     public static function getConf($db_id)
@@ -34,6 +35,9 @@ class ModeDsl
     }
 
     /**
+     * @param   mixed  $db_id
+     * @param   bool|string  $dv_id
+     * @param   bool|string  $version
      * @return  mixed
      */
     public static function getDd($db_id, $dv_id = false, $version = false)
@@ -179,6 +183,7 @@ class ModeDsl
     }
 
     /**
+     * @param   mixed  $dd
      * @return  mixed
      */
     public static function ddPost($dd)
@@ -264,7 +269,10 @@ class ModeDsl
         return $dd;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $dd
+     * @return void
+     */
     public static function pathway($dd)
     {
         $db_id = $dd['db_id'];

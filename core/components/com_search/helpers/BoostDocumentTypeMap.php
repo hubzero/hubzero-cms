@@ -16,6 +16,9 @@ class BoostDocumentTypeMap
 {
     protected $lang;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->lang = Arr::getValue(
@@ -26,6 +29,7 @@ class BoostDocumentTypeMap
     }
 
     /**
+     * @param   string  $documentType
      * @return  array<string, mixed>
      */
     public function documentTypeToFieldData($documentType)
@@ -48,6 +52,7 @@ class BoostDocumentTypeMap
     }
 
     /**
+     * @param   string  $fieldValue
      * @return  mixed
      */
     public function getFormattedFieldValue($fieldValue)

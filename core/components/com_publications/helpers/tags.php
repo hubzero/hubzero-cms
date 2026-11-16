@@ -75,6 +75,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param  integer|null  $tagger_id  Tagger ID (set this if you want to restrict tags only added by a specific user)
      * @param      integer $strength  Tag strength (set this if you want to restrict tags by strength)
      * @param      integer $admin     Has admin access?
+     * @param   string  $label
      * @return     array<mixed>
      */
     public function getTagsOnObject(
@@ -104,6 +105,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer|null $object_id Object ID
      * @param      string|null  $tag       Tag
      * @param      integer $strength  Tag strength
+     * @param   string  $label
      * @return     boolean True on success, false if errors
      */
     public function safeTag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
@@ -246,6 +248,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string  $tag_string String of comma-separated tags
      * @param      integer $strength   Tag strength
      * @param      bool|int $admin      Has admin access?
+     * @param   string  $label
      * @return     boolean True on success, false if errors
      */
     public function tagObject($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
@@ -365,6 +368,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer|null $tagger_id Tagger ID
      * @param      integer $strength  Tag strength
      * @param      integer $admin     Admin tags?
+     * @param   string  $label
      * @return     string
      */
     public function getTagString(
@@ -788,6 +792,7 @@ class Tags extends \Hubzero\Base\Obj
      * Turn a string of tags to an array
      *
      * @param      string|array<mixed> $tag Tag string
+     * @param   mixed  $remove
      * @return     mixed
      */
     public function parseTopTags($tag, $remove = '')
@@ -819,6 +824,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      array|mixed   $tags      List of tags
      * @param      string  $sort      How to sort tags?
      * @param      integer $showsizes Show tag size based on use?
+     * @param   mixed  $tagstring
      * @return     string HTML
      */
     public function buildTopCloud($tags, $sort = 'alpha', $showsizes = 0, $tagstring = '')

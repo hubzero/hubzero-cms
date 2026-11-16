@@ -50,6 +50,10 @@ class Description extends Base
     /**
      * Display block content
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   string  $viewname
+     * @param   int  $blockId
      * @return  string  HTML
      */
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
@@ -113,6 +117,11 @@ class Description extends Base
     /**
      * Save block
      *
+     * @param   mixed  $manifest
+     * @param   int  $blockId
+     * @param   mixed  $pub
+     * @param   int  $actor
+     * @param   int  $elementId
      * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
@@ -247,6 +256,10 @@ class Description extends Base
      * Build panel content
      * Draw each manifested element
      *
+     * @param   mixed  $pub
+     * @param   mixed  $viewname
+     * @param   mixed  $status
+     * @param   \stdClass  $master
      * @return  string  HTML
      */
     public function buildContent($pub, $viewname, $status, $master)
@@ -279,6 +292,9 @@ class Description extends Base
     /**
      * Check completion status
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   mixed  $elementId
      * @return  object
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
@@ -327,6 +343,8 @@ class Description extends Base
     /**
      * Check element status
      *
+     * @param   mixed  $element
+     * @param   mixed  $pub
      * @return  object
      */
     public function getElementStatus($element, $pub = null)
@@ -369,6 +387,7 @@ class Description extends Base
     /**
      * Get default manifest for the block
      *
+     * @param   bool  $new
      * @return  object
      */
     public function getManifest($new = false)

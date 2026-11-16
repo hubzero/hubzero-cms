@@ -24,6 +24,7 @@ class InertiaFlowRequestStub
     }
 
     /**
+     * @param   string  $default
      * @return  mixed
      */
     public function header(string $name, $default = '')
@@ -43,6 +44,7 @@ class InertiaFlowRequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function server(string $key, $default = null)
@@ -51,6 +53,7 @@ class InertiaFlowRequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get(string $key, $default = null)

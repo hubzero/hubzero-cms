@@ -482,6 +482,7 @@ class Resources extends Plugin
      * @param   string   $sort        The field to sort records by
      * @param   string   $access      Access level
      * @param   mixed    $areas       An array or string of areas that should retrieve records
+     * @param   string  $sortdir
      * @return  mixed    Returns integer when counting records, array when retrieving records
      */
     public function getResources(

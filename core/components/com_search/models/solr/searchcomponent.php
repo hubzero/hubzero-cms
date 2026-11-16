@@ -254,6 +254,7 @@ class SearchComponent extends Relational
     /**
      * Get search query
      *
+     * @param   string  $prefix
      * @return  string  search query
      */
     public function getSearchQuery($prefix = '')
@@ -273,6 +274,7 @@ class SearchComponent extends Relational
      * @param   int|null     $activeType  id of currently selected facet
      * @param   string|null  $terms       search terms currently applied ot the search
      * @param   string|null  $childTerms  any currently applied filters
+     * @param   array<mixed>  $selectedOptions
      * @return  string  HTML list with links to apply a facet with currently selected searchTerms
      */
     public function formatWithCounts(

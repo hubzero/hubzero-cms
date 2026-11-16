@@ -245,6 +245,7 @@ class Pages extends Base
     /**
      * Save group page
      *
+     * @param   bool  $apply
      * @return  void
      */
     public function saveTask($apply = false)

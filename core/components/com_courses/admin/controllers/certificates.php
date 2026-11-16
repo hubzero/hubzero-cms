@@ -75,6 +75,7 @@ class Certificates extends AdminController
     /**
      * Saves changes
      *
+     * @param   bool  $redirect
      * @return void
      */
     public function saveTask($redirect = true)
@@ -138,6 +139,7 @@ class Certificates extends AdminController
     /**
      * Create a new course
      *
+     * @param   mixed  $model
      * @return  void
      */
     public function addTask($model = null)
@@ -148,6 +150,7 @@ class Certificates extends AdminController
     /**
      * Displays an edit form
      *
+     * @param   mixed  $model
      * @return  void
      */
     public function editTask($model = null)

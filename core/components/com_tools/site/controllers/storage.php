@@ -108,6 +108,7 @@ class Storage extends SiteController
     /**
      * Show a login form
      *
+     * @param   mixed  $rtrn
      * @return  void
      */
     protected function login($rtrn = null)

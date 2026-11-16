@@ -149,6 +149,7 @@ class Offering extends SiteController
     /**
      * Redirect to login page
      *
+     * @param   string  $message
      * @return     void
      */
     public function loginTask($message = '')

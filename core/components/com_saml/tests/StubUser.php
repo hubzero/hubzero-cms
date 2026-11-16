@@ -15,12 +15,17 @@ class StubUser
 {
     private $id;
 
+    /**
+     * @param   int  $id
+     */
     public function __construct($id)
     {
         $this->id = $id;
     }
 
     /**
+     * @param   mixed  $key
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get($key, $default = null)

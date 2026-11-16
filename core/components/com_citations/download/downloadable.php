@@ -72,6 +72,7 @@ abstract class Downloadable
     /**
      * Format the file
      *
+     * @param   mixed  $row
      * @return     string
      */
     public function format($row)

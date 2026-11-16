@@ -29,6 +29,7 @@ class ModuleMenu extends Table
     /**
      * Get pages of module menu
      *
+     * @param   mixed  $filters
      * @return  array<mixed>|null
      */
     public function getMenu($filters = [])

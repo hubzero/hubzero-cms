@@ -77,6 +77,12 @@ class Node extends Obj
     /**
      * Constructor
      *
+     * @param   mixed  $title
+     * @param   mixed  $link
+     * @param   mixed  $class
+     * @param   bool|null  $active
+     * @param   string|null  $target
+     * @param   string|null  $titleicon
      * @return  void
      */
     public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)

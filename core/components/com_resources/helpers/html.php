@@ -175,6 +175,7 @@ class Html
      * @param      iterable  $arr      Values to populate list
      * @param      string $name     Name of the field
      * @param      mixed  $value    Value to select
+     * @param   string  $id
      * @param      string $shownone Show a 'none' option?
      * @param      string $class    Class name of field
      * @param      string $js       Scripts to add to field

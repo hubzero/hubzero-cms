@@ -26,6 +26,7 @@ class Base extends ApiController
     /**
      * Checks to ensure appropriate authorization
      *
+     * @param   string  $action
      * @return  bool
      * @throws  \Exception
      */

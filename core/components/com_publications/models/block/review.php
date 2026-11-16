@@ -52,6 +52,10 @@ class Review extends Base
     /**
      * Display block content
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   string  $viewname
+     * @param   int  $blockId
      * @return  string|null  HTML
      */
     public function display($pub = null, $manifest = null, $viewname = 'review', $blockId = 0)
@@ -95,6 +99,8 @@ class Review extends Base
     /**
      * Build panel content
      *
+     * @param   mixed  $pub
+     * @param   mixed  $viewname
      * @return  string  HTML
      */
     public function buildContent($pub = null, $viewname = 'edit')
@@ -124,6 +130,11 @@ class Review extends Base
     /**
      * Save block content
      *
+     * @param   mixed  $manifest
+     * @param   int  $blockId
+     * @param   mixed  $pub
+     * @param   int  $actor
+     * @param   int  $elementId
      * @return  string|bool  HTML
      */
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
@@ -139,6 +150,9 @@ class Review extends Base
     /**
      * Check completion status
      *
+     * @param   mixed  $pub
+     * @param   mixed  $manifest
+     * @param   mixed  $elementId
      * @return  object
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
@@ -152,6 +166,7 @@ class Review extends Base
     /**
      * Get default manifest for the block
      *
+     * @param   bool  $new
      * @return  object
      */
     public function getManifest($new = false)

@@ -15,6 +15,8 @@ interface Searchable
 {
     /*
      * The hubtype of the searchable item.
+     * @param   mixed  $limit
+     * @param   mixed  $offset
      * @return string
      */
     public static function searchNamespace();

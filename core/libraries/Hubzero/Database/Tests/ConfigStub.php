@@ -16,6 +16,8 @@ class ConfigStub
     public static array $values = [];
 
     /**
+     * @param   mixed  $key
+     * @param   mixed  $default
      * @return  mixed
      */
     public static function get($key, $default = null)

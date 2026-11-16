@@ -441,6 +441,8 @@ class Course extends Relational implements \Hubzero\Search\Searchable
 
     /**
      * Get records to be included in solr index
+     * @param   mixed  $limit
+     * @param   int  $offset
      * @return \Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)

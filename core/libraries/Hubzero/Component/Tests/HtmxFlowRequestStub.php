@@ -18,6 +18,7 @@ class HtmxFlowRequestStub
     }
 
     /**
+     * @param   string  $default
      * @return  mixed
      */
     public function header(string $name, $default = '')

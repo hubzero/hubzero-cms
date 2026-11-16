@@ -73,6 +73,7 @@ class Util
      * Normalize path.
      *
      * @param   mixed   $path  The path: a string, or nothing. Anything else is refused.
+     * @param   mixed  $ds
      * @return  string
      * @throws  \InvalidArgumentException
      */

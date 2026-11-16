@@ -412,6 +412,7 @@ class CurrentCart extends Cart
     /**
      * Check if transaction is still valid and get transaction details and items
      *
+     * @param   bool|string  $resetStatus
      * @return bool|\stdClass of items in the transaction or false on failed attempt
      */
     public function liftTransaction($resetStatus = false)
@@ -801,6 +802,7 @@ class CurrentCart extends Cart
      * Verify security token
      *
      * @param       string  $token  token
+     * @param   bool  $tId
      * @return      bool
      */
     public function verifyToken($token, $tId = false)
@@ -1626,7 +1628,7 @@ class CurrentCart extends Cart
 
     /**
      * Find a cart in the DB for a given user and lift it
-     * @param $uId User ID
+     * @param int|string|null  $uId User ID
      * @return bool True if cart exists and can be lifted, false if no user cart exists or cart cannot be lifted
      */
     private function liftUserCart($uId)

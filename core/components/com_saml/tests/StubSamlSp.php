@@ -16,6 +16,10 @@ class StubSamlSp
     private $data;
     private $map;
 
+    /**
+     * @param   array<string, mixed>  $data
+     * @param   array<int, array<string, string>>|null  $map  Attribute map, one entry per attribute
+     */
     public function __construct($data, $map = null)
     {
         $this->data = $data;
@@ -23,6 +27,8 @@ class StubSamlSp
     }
 
     /**
+     * @param   mixed  $key
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get($key, $default = null)

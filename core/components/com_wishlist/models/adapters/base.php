@@ -59,6 +59,7 @@ abstract class Base extends Obj
     /**
      * Can this adapter handle the provided scope?
      *
+     * @param   mixed  $scope
      * @return  bool
      */
     public function handles($scope)

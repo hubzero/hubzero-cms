@@ -18,6 +18,10 @@ class CodeHelper
 {
     // Validate that the user-supplied URL and code are valid:
     /**
+     * @param   mixed  $username
+     * @param   mixed  $campaignId
+     * @param   int  $pageId
+     * @param   mixed  $code
      * @return  bool
      */
     public static function validateCode($username, $campaignId, $pageId, $code)
@@ -51,6 +55,9 @@ class CodeHelper
 
     // Validate code obtained from user's URL, using email subscription page id
     /**
+     * @param   mixed  $username
+     * @param   int  $campaignId
+     * @param   string|null  $code
      * @return  mixed
      */
     public static function validateEmailSubscriptionsCode($username, $campaignId, $code)

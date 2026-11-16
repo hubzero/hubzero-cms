@@ -17,6 +17,9 @@ class TypeOptionsHelper
 {
     protected $typeHelper = null;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->typeHelper = Arr::getValue(

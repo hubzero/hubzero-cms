@@ -37,6 +37,7 @@ class TestObserver
     }
 
     /**
+     * @param   string  $event
      * @return  bool
      */
     public static function wasCalled($event)
@@ -45,6 +46,7 @@ class TestObserver
     }
 
     /**
+     * @param   string  $event
      * @return  mixed
      */
     public static function getModel($event)
@@ -53,6 +55,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $event
      * @return  mixed
      */
     public static function getCallTime($event)
@@ -61,6 +64,7 @@ class TestObserver
     }
 
     /**
+     * @param   string  $event
      * @return  mixed
      */
     public static function getCallOrder($event)
@@ -69,6 +73,7 @@ class TestObserver
     }
 
     /**
+     * @param   string  $event
      * @return  mixed
      */
     public static function getCallCount($event)
@@ -77,6 +82,8 @@ class TestObserver
     }
 
     /**
+     * @param   string  $event
+     * @param   mixed  $model
      * @return  void
      */
     protected function recordCall($event, $model)
@@ -90,6 +97,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function creating($model)
@@ -98,6 +106,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function created($model)
@@ -106,6 +115,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function updating($model)
@@ -114,6 +124,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function updated($model)
@@ -122,6 +133,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function saving($model)
@@ -130,6 +142,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function saved($model)
@@ -138,6 +151,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function deleting($model)
@@ -146,6 +160,7 @@ class TestObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function deleted($model)

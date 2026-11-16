@@ -101,6 +101,10 @@ class Migration20180820101435ComPublications extends Base
     /**
      * Generate link for publication package
      *
+     * @param   mixed  $pubId
+     * @param   mixed  $versionId
+     * @param   mixed  $versionNum
+     * @param   mixed  $doi
      * @return boolean
      */
     protected function createLink($pubId, $versionId, $versionNum, $doi = '')
@@ -148,6 +152,10 @@ class Migration20180820101435ComPublications extends Base
     /**
      * Remove link for publication package
      *
+     * @param   mixed  $pubId
+     * @param   mixed  $versionId
+     * @param   mixed  $versionNum
+     * @param   mixed  $doi
      * @return boolean
      */
     protected function removeLink($pubId, $versionId, $versionNum, $doi = '')

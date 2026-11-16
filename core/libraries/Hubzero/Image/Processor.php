@@ -58,6 +58,7 @@ class Processor extends Obj
      *
      * @param   string|null  $image_source  Path to image
      * @param   array<mixed>   $config        Optional configurations
+     * @param   bool  $isRemoteImage
      * @return  void
      */
     public function __construct($image_source = null, $config = [], $isRemoteImage = false)

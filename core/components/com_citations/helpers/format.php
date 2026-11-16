@@ -758,6 +758,7 @@ class Format
     /**
      * Output a tagcloud of badges associated with a citation
      *
+     * @param   mixed  $cite
      * @param   boolean  $includeHtml
      * @return  string|array<mixed>   HTML, or the raw tags when $includeHtml is false
      */

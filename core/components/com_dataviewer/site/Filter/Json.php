@@ -13,6 +13,8 @@ use Components\Dataviewer\Site\DvConfig;
 class Json
 {
     /**
+     * @param   array<string, mixed>  $res
+     * @param   mixed  $dd
      * @return  string|false
      */
     public static function filter($res, $dd)
@@ -726,6 +728,11 @@ class Json
     }
 
     /**
+     * @param   mixed  $rec
+     * @param   mixed  $key
+     * @param   mixed  $dd
+     * @param   mixed  $val
+     * @param   string  $preview
      * @return  string
      */
     public static function dvToLink($rec, $key, $dd, $val, $preview)
@@ -851,6 +858,7 @@ class Json
 
     // HTML data output modifires
     /**
+     * @param   mixed  $param
      * @return  string
      */
     public static function dvOpmodSetColor($param)

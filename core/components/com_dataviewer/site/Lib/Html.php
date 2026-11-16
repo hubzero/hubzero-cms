@@ -13,7 +13,11 @@ use Hubzero\Facades\App;
 
 class Html
 {
-    /** @return void */
+    /**
+     * @param   string  $script
+     * @param   bool  $local
+     * @return void
+     */
     public static function dvAddScript($script, $local = true)
     {
         $document = App::get('document');
@@ -42,7 +46,11 @@ class Html
         }
     }
 
-    /** @return void */
+    /**
+     * @param   string  $css
+     * @param   bool  $local
+     * @return void
+     */
     public static function dvAddCss($css, $local = true)
     {
         $document = App::get('document');

@@ -290,6 +290,7 @@ class Domainrestriction extends Plugin
     }
 
     /**
+     * @param   mixed  $val
      * @return  string
      */
     private static function clean($val)

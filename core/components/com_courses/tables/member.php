@@ -91,6 +91,7 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
+     * @param   mixed  $uid
      * @param      string|null $oid Record alias
      * @return     boolean True on success
      */
@@ -128,6 +129,7 @@ class Member extends Table
     /**
      * Load a record and bind to $this
      *
+     * @param   mixed  $uid
      * @param      string|null $oid Record alias
      * @return     boolean True on success
      */

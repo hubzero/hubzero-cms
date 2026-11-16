@@ -49,6 +49,8 @@ namespace Components\Tools\Helpers;
 class Vnc
 {
     /**
+     * @param   mixed  $data
+     * @param   bool  $return_string
      * @return  mixed
      */
     public static function encrypt($data, $return_string = true)
@@ -79,6 +81,8 @@ class Vnc
     }
 
     /**
+     * @param   mixed  $data
+     * @param   bool  $return_string
      * @return  mixed
      */
     public static function decrypt($data, $return_string = true)
@@ -109,6 +113,9 @@ class Vnc
     }
 
     /**
+     * @param   mixed  $block
+     * @param   array<int, mixed>  $key
+     * @param   bool  $edf
      * @return  array<int, mixed>
      */
     private static function crypt($block, $key, $edf)

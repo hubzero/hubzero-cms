@@ -105,6 +105,12 @@ class PostfixCollector
     /**
      * Unix timestamp of a wall-clock time in the log's timezone.
      *
+     * @param   int  $y
+     * @param   mixed  $m
+     * @param   int  $d
+     * @param   int  $h
+     * @param   int  $i
+     * @param   int  $s
      * @return  integer
      */
     protected static function localTs(\DateTimeZone $tz, $y, $m, $d, $h, $i, $s)
@@ -118,6 +124,11 @@ class PostfixCollector
     /**
      * Count external sends in an open stream, adding to hour/day buckets.
      *
+     * @param   resource  $fh
+     * @param   int  $refTime
+     * @param   mixed  $hours
+     * @param   mixed  $days
+     * @param   bool  $gz
      * @return  integer  messages counted
      * @phpstan-impure
      */

@@ -307,6 +307,8 @@ class Asset
      * @param   boolean  $path_only       return the path to the file only
      * @param   boolean  $detect_browser  detect browser to include specific browser js files
      * @param   boolean  $detect_debug    detect debug to search for compressed files if debug is on
+     * @param   bool  $defer
+     * @param   bool  $async
      * @return  mixed  nothing if $path_only is false, null, path or array of path if specific js
      * browser files were detected
      */

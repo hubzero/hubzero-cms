@@ -30,6 +30,9 @@ class Admin implements StepInterface
     private const ADMIN_USERNAME = 'admin';
     private const SESSION_ERRORS_KEY = 'admin_step_errors';
 
+    /**
+     * @param   mixed  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;
@@ -82,6 +85,7 @@ class Admin implements StepInterface
     /**
      * Process existing admin - update name, email, and optionally password
      *
+     * @param   mixed  $data
      * @return  bool
      */
     private function processExistingAdmin($data)
@@ -167,6 +171,7 @@ class Admin implements StepInterface
     /**
      * Process new admin creation
      *
+     * @param   array<mixed>  $data
      * @return  bool
      */
     private function processNewAdmin($data)

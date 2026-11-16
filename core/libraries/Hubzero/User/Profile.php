@@ -1568,6 +1568,7 @@ class Profile extends Obj
      *
      * @param   integer  $anonymous  Is user anonymous?
      * @param   boolean  $thumbit    Show thumbnail or full picture?
+     * @param   bool  $serveFile
      * @return  string
      */
     public function getPicture($anonymous = 0, $thumbit = true, $serveFile = true)

@@ -20,6 +20,9 @@ class Schema implements StepInterface
     private $installer;
     private $status = [];
 
+    /**
+     * @param   mixed  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;
@@ -189,6 +192,7 @@ class Schema implements StepInterface
     /**
      * Check migration status
      *
+     * @param   mixed  $prefix
      * @return  void
      */
     private function checkMigrationStatus(ConnectionInterface $connection, $prefix)
@@ -389,6 +393,8 @@ class Schema implements StepInterface
 
     /**
      * Execute a SQL file
+     * @param   string  $path
+     * @param   mixed  $prefix
      * @return  bool
      */
     private function executeSqlFile(ConnectionInterface $connection, $path, $prefix)

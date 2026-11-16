@@ -98,6 +98,7 @@ class Manager
     /**
      * Get the current type
      *
+     * @param   mixed  $type
      * @return  static
      */
     public function setType($type)

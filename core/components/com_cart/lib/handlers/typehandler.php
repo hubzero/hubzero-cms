@@ -25,6 +25,8 @@ class TypeHandler
     /**
      * Constructor
      *
+     * @param   object  $item
+     * @param   int  $crtId
      */
     public function __construct($item, $crtId)
     {

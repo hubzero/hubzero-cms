@@ -189,6 +189,7 @@ class Utility
      *
      * @param   object  $user
      * @param   object|null  $xregistration
+     * @param   bool  $new
      * @return  bool
      */
     public static function sendConfirmEmail($user, $xregistration, $new = true)

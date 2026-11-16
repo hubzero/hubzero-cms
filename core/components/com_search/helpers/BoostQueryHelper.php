@@ -20,6 +20,9 @@ class BoostQueryHelper
 
     protected $boosts;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->boostOrm = Arr::getValue(

@@ -80,6 +80,7 @@ class Component extends Relational
     /**
      * Defines a belongs to one relationship between newsletter and story
      *
+     * @param   array<mixed>  $filters
      * @return  object
      */
     public function getRecords($filters = [])

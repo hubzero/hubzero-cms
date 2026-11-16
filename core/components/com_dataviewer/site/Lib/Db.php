@@ -14,6 +14,7 @@ use Hubzero\Facades\Request;
 class Db
 {
     /**
+     * @param   mixed  $db
      * @return  \Hubzero\Database\Driver
      */
     public static function getDb($db = false)
@@ -42,6 +43,8 @@ class Db
     }
 
     /**
+     * @param   string  $sql
+     * @param   mixed  $dd
      * @return  array<string, mixed>
      */
     public static function getResults($sql, &$dd)
@@ -77,6 +80,7 @@ class Db
     }
 
     /**
+     * @param   mixed  $dd
      * @return  string
      */
     public static function queryGen(&$dd)
@@ -736,6 +740,7 @@ class Db
     }
 
     /**
+     * @param   mixed  $dd
      * @return  string
      */
     public static function queryGenTotal($dd)

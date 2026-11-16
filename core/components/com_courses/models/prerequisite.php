@@ -127,6 +127,8 @@ class Prerequisite extends Base
      * whether or not different types of items have been fulfilled.
      * Eventually this should be abstracted out elsewhere.
      *
+     * @param   mixed  $scope
+     * @param   mixed  $scope_id
      * @return bool
      **/
     public function hasMet($scope, $scope_id)

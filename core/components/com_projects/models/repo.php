@@ -315,6 +315,9 @@ class Repo extends Obj
     /**
      * Build file metadata object
      *
+     * @param   mixed  $item
+     * @param   mixed  $type
+     * @param   mixed  $params
      * @return  object|false
      */
     public function getMetadata($item = null, $type = 'file', $params = [])
@@ -360,6 +363,7 @@ class Repo extends Obj
     /**
      * Delete a file or a directory within repo
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function deleteItem($params = [])
@@ -393,6 +397,7 @@ class Repo extends Obj
     /**
      * Delete a directory within repo
      *
+     * @param   mixed  $params
      * @return  boolean
      */
     public function deleteDirectory($params = [])
@@ -428,6 +433,7 @@ class Repo extends Obj
     /**
      * Create a new directory within repo
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function makeDirectory($params = [])
@@ -531,6 +537,7 @@ class Repo extends Obj
     /**
      * Restore version
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function restore($params = [])
@@ -569,6 +576,7 @@ class Repo extends Obj
     /**
      * Diff revisions
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function diff($params = [])
@@ -619,6 +627,7 @@ class Repo extends Obj
     /**
      * Move a file or folder within repo
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function moveItem($params = [])
@@ -697,6 +706,7 @@ class Repo extends Obj
     /**
      * Get last file revision
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function getLastRevision($params = [])
@@ -711,6 +721,7 @@ class Repo extends Obj
     /**
      * Rename a file or folder within repo
      *
+     * @param   array<mixed>  $params
      * @return  boolean
      */
     public function rename($params = [])
@@ -924,6 +935,10 @@ class Repo extends Obj
     /**
      * Insert/update remote file
      *
+     * @param   mixed  $dataPath
+     * @param   string  $target
+     * @param   int  $available
+     * @param   mixed  $params
      * @return  mixed
      */
     protected function insertPath($dataPath, $target, &$available, $params)
@@ -1044,6 +1059,12 @@ class Repo extends Obj
     /**
      * Perform Upload
      *
+     * @param   mixed  $file
+     * @param   mixed  $tmp_name
+     * @param   string  $target
+     * @param   mixed  $size
+     * @param   mixed  $available
+     * @param   array<mixed>  $params
      * @return  mixed
      */
     protected function upload($file, $tmp_name, $target, $size, &$available, $params)
@@ -1094,6 +1115,12 @@ class Repo extends Obj
     /**
      * Expand archive
      *
+     * @param   string  $file
+     * @param   mixed  $tmp_name
+     * @param   mixed  $target
+     * @param   mixed  $size
+     * @param   mixed  $available
+     * @param   mixed  $params
      * @return  boolean
      */
     protected function expand($file, $tmp_name, $target, $size, &$available, $params)
@@ -1163,6 +1190,11 @@ class Repo extends Obj
     /**
      * Add files to repo from extracted archive
      *
+     * @param   string  $extractPath
+     * @param   mixed  $zipName
+     * @param   mixed  $target
+     * @param   mixed  $params
+     * @param   mixed  $available
      * @return  bool|int
      */
     protected function addFromExtracted($extractPath, $zipName, $target, $params, &$available)
@@ -1308,6 +1340,11 @@ class Repo extends Obj
     /**
      * Pre-insert checks
      *
+     * @param   mixed  $file
+     * @param   mixed  $tmp_name
+     * @param   mixed  $size
+     * @param   mixed  $available
+     * @param   bool  $virusChecked
      * @return  boolean
      */
     protected function check($file, $tmp_name, $size, &$available, $virusChecked = false)

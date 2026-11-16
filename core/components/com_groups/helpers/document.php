@@ -149,6 +149,10 @@ class Document extends Obj
     /**
      * Get Template Buffer
      *
+     * @param   int|string  $tag
+     * @param   mixed  $type
+     * @param   mixed  $name
+     * @param   mixed  $params
      * @return  string|null
      */
     private function getBuffer($tag, $type = null, $name = null, $params = [])

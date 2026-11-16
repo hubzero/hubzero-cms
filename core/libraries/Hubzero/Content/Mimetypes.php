@@ -739,6 +739,7 @@ class Mimetypes
      *
      * @param   string|null  $file  File Name (relative location such as "image_test.jpg" or
      *                         full "http://site.com/path/to/image_test.jpg")
+     * @param   bool  $fast
      * @return  string  The type of the file passed in the argument
      */
     public function getMimeType($file = null, $fast = false)

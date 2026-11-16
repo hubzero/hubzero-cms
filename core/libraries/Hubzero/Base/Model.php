@@ -330,6 +330,7 @@ abstract class Model extends Obj
     /**
      * Log an error message
      *
+     * @param   string  $type
      * @param   string  $message  Message type to log
      * @param   string  $message  Message to log
      *
@@ -434,6 +435,7 @@ abstract class Model extends Obj
     /**
      * Import a set of plugins
      *
+     * @param   string  $type
      * @return  object
      */
     public function importPlugin($type = '')
@@ -446,6 +448,8 @@ abstract class Model extends Obj
     /**
      * Import a set of plugins
      *
+     * @param   string  $event
+     * @param   array<mixed>  $params
      * @return  array<mixed>
      */
     public function trigger($event = '', $params = [])
@@ -466,6 +470,7 @@ abstract class Model extends Obj
     /**
      * Turn the object into a string
      *
+     * @param   array<mixed>  $ignore
      * @return  string
      */
     public function toString($ignore = ['db'])

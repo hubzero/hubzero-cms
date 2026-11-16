@@ -269,6 +269,7 @@ class Auditor
     /**
      * Log results of the check
      *
+     * @param   array<int, array<string, mixed>>  $report
      * @return  void
      */
     protected function log($report)

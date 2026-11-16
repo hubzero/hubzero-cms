@@ -18,6 +18,7 @@ use Hubzero\Facades\User;
 class ModeDs
 {
     /**
+     * @param   mixed  $db_id
      * @return  mixed
      */
     public static function getConf($db_id)
@@ -41,6 +42,7 @@ class ModeDs
     }
 
     /**
+     * @param   mixed  $db_id
      * @return  mixed
      */
     public static function getDd($db_id)
@@ -244,6 +246,7 @@ class ModeDs
     }
 
     /**
+     * @param   mixed  $dd
      * @return  mixed
      */
     public static function ddPost($dd)
@@ -333,7 +336,10 @@ class ModeDs
         return $dd;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $dd
+     * @return void
+     */
     public static function pathway($dd)
     {
         $db_id = $dd['db_id'];

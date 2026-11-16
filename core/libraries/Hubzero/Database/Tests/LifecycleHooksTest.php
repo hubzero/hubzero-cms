@@ -70,6 +70,9 @@ class LifecycleHooksTest extends AbstractDriverTestCase
 
     /**
      * Helper to log callback execution
+     *
+     * @param   string  $event
+     * @param   mixed  $model
      */
     public static function logCallback($event, $model = null): void
     {

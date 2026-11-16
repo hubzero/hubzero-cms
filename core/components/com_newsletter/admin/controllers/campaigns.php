@@ -91,6 +91,7 @@ class Campaigns extends AdminController
      * Display a form for adding or editing an entry
      * (swiped from admin/controllers/newsletters.php)
      *
+     * @param   \Components\Newsletter\Models\Campaign|null  $row
      * @return  void
      */
     public function editTask($row = null)

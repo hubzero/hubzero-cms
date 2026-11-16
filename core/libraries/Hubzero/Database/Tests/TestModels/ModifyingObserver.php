@@ -14,6 +14,7 @@ namespace Hubzero\Database\Tests\TestModels;
 class ModifyingObserver
 {
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function creating($model)

@@ -15,6 +15,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Model class for a message
+ *
+ * @property int                 $id
+ * @property \Hubzero\User\User  $from  The sender (relationship)
+ * @property \Hubzero\User\User  $to    The recipient (relationship)
  */
 class Message extends Relational
 {
@@ -78,6 +82,7 @@ class Message extends Relational
     /**
      * Generates automatic created field value
      *
+     * @param   array<mixed>  $data
      * @return  string
      */
     public function automaticDateTime($data = [])

@@ -16,8 +16,8 @@ class ItemList extends \Hubzero\Base\ItemList
     /**
      * Fetch Item with key equal to value
      *
-     * @param   $key    Object Key
-     * @param   $value  Object Value
+     * @param   string  $key    Object Key
+     * @param   string|int  $value  Object Value
      * @return  mixed
      */
     public function fetch($key, $value)

@@ -1046,6 +1046,7 @@ class Item extends Nested
     /**
      * @param   \Hubzero\Form\Form $form  A form object.
      * @param   mixed   $data  The data expected for the form.
+     * @param   string  $group
      * @return   \Hubzero\Form\Form
      * @throws  \Exception if there is an error in the form event.
      */

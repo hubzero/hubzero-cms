@@ -1286,6 +1286,7 @@ class Tool
      * @param   array<mixed>    &$tool
      * @param   array<mixed>    &$err
      * @param   integer  $id
+     * @param   string  $group_prefix
      * @return  boolean
      */
     public static function validate(&$tool, &$err, $id, $group_prefix = 'app-')

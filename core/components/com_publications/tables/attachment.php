@@ -520,6 +520,7 @@ class Attachment extends Table
      *
      * @param   integer|null  $vid         pub version id
      * @param   string|null   $identifier  content path or object id/name
+     * @param   string  $type
      * @return  boolean
      */
     public function deleteAttachment($vid = null, $identifier = null, $type = 'file')

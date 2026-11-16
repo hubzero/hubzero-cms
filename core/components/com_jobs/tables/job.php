@@ -116,6 +116,7 @@ class Job extends Table
      * @param   integer  $uid           User ID
      * @param   integer  $admin         Admin access?
      * @param   string   $subscription  Subscription code
+     * @param   int  $count
      * @return  array<int, \stdClass>|string|null
      */
     public function getOpenings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)

@@ -975,7 +975,12 @@ class Team extends Plugin
         }
     }
 
-    /** @return void */
+    /**
+     * @param   array<int, mixed>  $email
+     * @param   string  $subject
+     * @param   mixed  $message
+     * @return void
+     */
     private function sendMemberRequestEmail($email, $subject, $message)
     {
         \Components\Projects\Helpers\Html::sendHUBMessage(

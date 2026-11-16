@@ -47,6 +47,7 @@ class Extras extends Base
     /**
      * Get default manifest for the block
      *
+     * @param   bool  $new
      * @return  mixed
      */
     public function getManifest($new = false)

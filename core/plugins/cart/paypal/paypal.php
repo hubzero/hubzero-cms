@@ -47,6 +47,8 @@ class Paypal extends Plugin
     /**
      * Return a list of filters that can be applied
      *
+     * @param   mixed  $transaction
+     * @param   mixed  $user
      * @return  array<mixed>|bool
      */
     public function onProcessPayment($transaction, $user)

@@ -19,6 +19,9 @@ class SpyLogger extends \Psr\Log\AbstractLogger
     /** @var array */
     public array $allLogs = [];
 
+    /**
+     * @param   mixed  $message
+     */
     public function log(
         $level,
         $message,

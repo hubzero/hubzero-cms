@@ -271,6 +271,7 @@ class Service extends Obj
      *
      * @param   string  $error
      * @param   string|null  $message
+     * @param   string|null  $verb
      * @return  object
      */
     public function error($error = '', $message = null, $verb = null)

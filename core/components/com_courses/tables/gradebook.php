@@ -112,6 +112,7 @@ class GradeBook extends Table
      * Get grade records
      *
      * @param      array<mixed> $filters Filters to construct query from
+     * @param   mixed  $key
      * @return     array<\stdClass>
      */
     public function find($filters = [], $key = null)
@@ -126,6 +127,7 @@ class GradeBook extends Table
      * Get passing info
      *
      * @param      array<mixed> $filters Filters to construct query from
+     * @param   mixed  $key
      * @return     array<\stdClass>
      */
     public function passing($filters = [], $key = null)

@@ -19,6 +19,8 @@ use Hubzero\Facades\User;
 class D1 extends Plugin
 {
     /**
+     * @param   mixed  $user
+     * @param   array<mixed>  $options
      * @return  bool
      */
     public function onLoginUser($user, $options = [])
@@ -86,7 +88,12 @@ class D1 extends Plugin
         return true;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $user
+     * @param   mixed  $success
+     * @param   mixed  $msg
+     * @return void
+     */
     public function onAfterDeleteUser($user, $success, $msg)
     {
         $this->onUserAfterDelete($user, $success, $msg);

@@ -446,6 +446,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for checking in required for compatibility
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function checkin($params = [])
@@ -455,6 +456,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for optimizing, required for compatibility
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function optimize($params = [])
@@ -464,6 +466,7 @@ class Nogit extends Models\Adapter
 
     /**
      * Stub for erasing, required for compatibility
+     * @param   array<mixed>  $params
      * @return  bool
      */
     public function erase($params = [])

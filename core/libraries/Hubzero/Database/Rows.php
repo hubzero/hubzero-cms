@@ -21,6 +21,9 @@ class Rows implements Iterator, Countable
      **/
     use Traits\ErrorBag;
 
+    /**
+     * @param   mixed  $rows
+     */
     public function __construct($rows = [])
     {
         // While arrays are traversable with foreach,
@@ -163,6 +166,7 @@ class Rows implements Iterator, Countable
     /**
      * Outputs rows as given type
      *
+     * @param   string  $type
      * @return  array<int, mixed>
      **/
     public function to($type = 'array')

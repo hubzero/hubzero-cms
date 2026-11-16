@@ -12,7 +12,10 @@ use Components\Dataviewer\Site\DvConfig;
 
 class Gallery
 {
-    /** @return void */
+    /**
+     * @param   mixed  $hash
+     * @return void
+     */
     public static function render($hash)
     {
         if (!isset($_SESSION['dv'])) {

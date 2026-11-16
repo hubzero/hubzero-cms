@@ -2222,6 +2222,8 @@ class InformixDriver extends BaseSqlDriver
     }
 
     /**
+     * @param   string  $table
+     * @param   string  $constraint
      * @return  bool
      */
     public function dropForeignKey($table, $constraint)

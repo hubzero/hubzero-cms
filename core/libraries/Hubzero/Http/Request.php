@@ -368,6 +368,7 @@ class Request extends BaseRequest
     /**
      * Get the URL (no query string) for the request.
      *
+     * @param   bool  $query
      * @return  string
      */
     public function current($query = false)
@@ -556,6 +557,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   string|null  $type
      * @return  string
      */
     public function request($key = null, $default = null, $type = null)
@@ -568,6 +570,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   string|null  $type
      * @return  string
      */
     public function query($key = null, $default = null, $type = null)
@@ -580,6 +583,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   string|null  $type
      * @return  string
      */
     public function cookie($key = null, $default = null, $type = null)
@@ -614,6 +618,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   mixed  $type
      * @return  string
      */
     public function header($key = null, $default = null, $type = null)
@@ -626,6 +631,7 @@ class Request extends BaseRequest
      *
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   string|null  $type
      * @return  string
      */
     public function server($key = null, $default = null, $type = null)
@@ -639,6 +645,7 @@ class Request extends BaseRequest
      * @param   string  $source
      * @param   string|null  $key
      * @param   mixed   $default
+     * @param   mixed  $type
      * @return  string
      */
     protected function retrieveItem($source, $key, $default, $type = null)

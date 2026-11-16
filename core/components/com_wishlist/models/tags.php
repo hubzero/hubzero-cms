@@ -27,6 +27,7 @@ class Tags extends Cloud
      * Turn a string of tags to an array
      *
      * @param   string|array<mixed> $tag Tag string
+     * @param   mixed  $remove
      * @return  mixed
      */
     public function parseTags($tag, $remove = '')

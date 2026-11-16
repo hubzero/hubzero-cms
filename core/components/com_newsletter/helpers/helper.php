@@ -140,6 +140,7 @@ class Helper
     /**
      * Parse Confirmation Email & Token to make sure its was a valid combination
      *
+     * @param   mixed  $confirmationToken
      * @return  object|false|null  The mailing list email row; false or null when the token does not match
      */
     public static function parseConfirmationToken($confirmationToken)

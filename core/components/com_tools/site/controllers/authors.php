@@ -388,6 +388,7 @@ class Authors extends SiteController
      * Display a list of authors
      *
      * @param   integer|null  $id  Resource ID
+     * @param   string  $version
      *
      * @return  void
      */

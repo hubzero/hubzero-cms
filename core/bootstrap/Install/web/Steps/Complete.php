@@ -14,6 +14,9 @@ class Complete implements StepInterface
 {
     private $installer;
 
+    /**
+     * @param   mixed  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;

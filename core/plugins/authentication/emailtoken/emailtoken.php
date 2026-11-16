@@ -35,6 +35,7 @@ class Emailtoken extends Plugin
      * This method returns the HTML for display on the login page
      *
      * @param   string  $returnQueryString  String containing return query hash
+     * @param   string  $title
      * @return  string
      */
     public static function onRenderOption($returnQueryString = '', $title = '')
@@ -56,7 +57,11 @@ class Emailtoken extends Plugin
         $this->onUserAuthenticate($credentials, $options, $response);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $credentials
+     * @param   mixed  $options
+     * @return void
+     */
     public function login(&$credentials, &$options)
     {
         $return = base64_decode(Request::getString('return', ''));
@@ -151,7 +156,7 @@ class Emailtoken extends Plugin
      * Checks to see if the current user has exceeded the site
      * login attempt limit for a given time period
      *
-     * @param       $user \Hubzero\User\User
+     * @param       object  $user \Hubzero\User\User
      *
      * @return  bool
      */

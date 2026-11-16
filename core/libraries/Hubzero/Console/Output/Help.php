@@ -41,6 +41,7 @@ class Help extends Output
     /**
      * Add help output overview section
      *
+     * @param   string  $text
      * @return  $this
      **/
     public function addOverview($text)
@@ -174,6 +175,7 @@ class Help extends Output
     /**
      * Helper method for adding a new section header to helper doc
      *
+     * @param   string  $text
      * @return  $this
      **/
     public function addSection($text)

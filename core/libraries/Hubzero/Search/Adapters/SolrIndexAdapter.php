@@ -146,6 +146,9 @@ class SolrIndexAdapter implements IndexInterface
      * index - Stores a document within an index
      *
      * @param mixed $document
+     * @param   true|null  $overwrite
+     * @param   mixed  $commitWithin
+     * @param   int  $buffer
      * @access public
      * @return void
      */
@@ -195,7 +198,10 @@ class SolrIndexAdapter implements IndexInterface
         return $this->bufferAdd;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $document
+     * @return void
+     */
     public function addDocument($document)
     {
         $update = $this->connection->createUpdate();

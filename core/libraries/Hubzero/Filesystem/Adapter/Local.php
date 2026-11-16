@@ -220,6 +220,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  array<string>|string|null
      */
     public function name($path)
@@ -231,6 +232,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  string|null
      */
     public function extension($path)
@@ -244,6 +246,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  string|false
      */
     public function type($path)
@@ -254,6 +257,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   string  $path
      * @return  int|false|float
      */
     public function size($path)
@@ -272,6 +276,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  int|false
      */
     public function lastModified($path)
@@ -282,6 +287,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  mixed
      */
     public function mimetype($path)
@@ -311,6 +317,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   string  $directory
      * @return  bool
      */
     public function isDirectory($directory)
@@ -321,6 +328,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $path
      * @return  bool
      */
     public function isWritable($path)
@@ -331,6 +339,7 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      *
+     * @param   mixed  $file
      * @return  bool
      */
     public function isFile($file)
@@ -350,6 +359,7 @@ class Local implements AdapterInterface
      * Previously this method only failed on exit code 1 (virus
      * found per clamscan's convention), which meant an unreachable
      * clamd (clamdscan exit 2) silently passed every upload.
+     * @param   mixed  $file
      * @return  bool
      */
     public function isSafe($file)
@@ -432,6 +442,7 @@ class Local implements AdapterInterface
      * Normalize the file info.
      *
      * @param   \SplFileInfo $file  SplFileInfo
+     * @param   string|null  $base
      * @return  array<mixed>
      */
     protected function normalizeFileInfo(SplFileInfo $file, $base = null)
@@ -531,6 +542,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   bool  $preserve
      */
     public function deleteDirectory($directory, $preserve = false)
     {

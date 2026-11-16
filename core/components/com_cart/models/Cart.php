@@ -681,6 +681,7 @@ abstract class Cart
      *
      * @param   int    $tId  transaction ID
      * @param   bool   $verifySkuInfo  a flag wheretr the sku info should be verified for availability
+     * @param   bool  $returnSimpleInfo
      * @return  mixed  List of items in the transaction, false if no items in transaction
      */
     public static function getTransactionItems($tId, $verifySkuInfo = true, $returnSimpleInfo = false)
@@ -766,6 +767,7 @@ abstract class Cart
      * Complete the transaction, mark it as completed, done, success...
      *
      * @param   object  $tInfo  Transaction info
+     * @param   mixed  $paymentInfo
      * @return  void
      */
     public static function completeTransaction($tInfo, $paymentInfo = false)

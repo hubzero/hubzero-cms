@@ -204,6 +204,7 @@ class CustomExtensions extends Relational
     /**
      * Generates automatic modified by field value
      *
+     * @param   mixed  $data
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -214,6 +215,7 @@ class CustomExtensions extends Relational
     /**
      * Generates automatic modified by field value
      *
+     * @param   mixed  $data
      * @return  int
      */
     public function automaticPath($data)

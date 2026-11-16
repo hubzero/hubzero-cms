@@ -417,6 +417,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of authors
      *
+     * @param   bool  $solr
      * @return  string
      */
     public function authorsList($solr = false)

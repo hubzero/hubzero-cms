@@ -89,6 +89,7 @@ class Blacklist extends Relational
      * Check if a username is in the blacklist
      *
      * @param   string  $word
+     * @param   mixed  $username
      * @return  bool
      */
     public static function usernameInBlacklist($word, $username)
@@ -113,6 +114,9 @@ class Blacklist extends Relational
      * Check if a name is in the blacklist
      *
      * @param   string  $word
+     * @param   mixed  $givenName
+     * @param   mixed  $middleName
+     * @param   mixed  $surname
      * @return  bool
      */
     public static function nameInBlacklist($word, $givenName, $middleName, $surname)

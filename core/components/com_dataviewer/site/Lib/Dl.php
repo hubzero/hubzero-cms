@@ -11,6 +11,8 @@ namespace Components\Dataviewer\Site\Lib;
 class Dl
 {
     /**
+     * @param   mixed  $path
+     * @param   string  $type
      * @return  string
      */
     public static function getDlHash($path, $type = 'file_download')
@@ -27,7 +29,10 @@ class Dl
         return $hash;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $hash
+     * @return void
+     */
     public static function streamFile($hash)
     {
         $fullpath = '';
@@ -56,7 +61,10 @@ class Dl
         print "Invalid (or Missing) file : $fullpath";
     }
 
-    /** @return void */
+    /**
+     * @param   string  $hash_list
+     * @return void
+     */
     public static function zipFiles($hash_list)
     {
         $hash_list = explode(',', $hash_list);

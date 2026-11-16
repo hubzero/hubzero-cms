@@ -113,6 +113,7 @@ class Categories extends AdminController
     /**
      * Edit a category
      *
+     * @param   \Components\Jobs\Tables\Category|null  $row
      * @return  void
      */
     public function editTask($row = null)

@@ -56,6 +56,7 @@ class Nested extends Relational
      * Resolves the trailing left and right values for the new model
      *
      * @param   int    $base  The base level after which values should be changed
+     * @param   bool  $add
      * @return  $this
      **/
     private function resolveTrailing($base, $add = true)

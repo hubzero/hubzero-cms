@@ -40,6 +40,8 @@ class Message extends \Symfony\Component\Mime\Email
      * Check if message needs to be sent as multipart
      * MIME message or if it has only one part.
      *
+     * @param   mixed  $headerFieldNameOrLine
+     * @param   mixed  $fieldValue
      * @return  static
      */
     public function addHeader($headerFieldNameOrLine, $fieldValue = null)
@@ -156,6 +158,8 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Send the message
      *
+     * @param   mixed  $transport
+     * @param   array<mixed>  $options
      * @return  boolean  Whether the message was handed to the transport
      */
     public function send($transport = '', $options = [])
@@ -275,6 +279,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Set the body of this entity, as a string. (compatability function)
      *
      *
+     * @param   mixed  $params
      * @return $this
      */
     public function setBody(...$params): static

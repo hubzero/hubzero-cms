@@ -58,6 +58,7 @@ class Elements
      * Constructor
      *
      * @param   mixed  $data  The data to bind to the new Registry object.
+     * @param   mixed  $setup
      * @return  void
      */
     public function __construct($data = null, $setup = null)
@@ -273,6 +274,7 @@ class Elements
      * Loads an XML setup file and parses it.
      *
      * @param   string  $setup  A path to the XML setup file.
+     * @param   string  $group
      * @return  object|bool
      */
     public function loadSetup($setup, $group = '_default')

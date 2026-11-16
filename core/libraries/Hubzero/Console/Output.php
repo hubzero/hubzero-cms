@@ -251,6 +251,7 @@ class Output
      * Helper method to add an associative array to the output buffer.
      *
      * @param array<mixed> $lines The lines to add
+     * @param   float|int  $indentation
      * @return void
      **/
     public function addRawFromAssocArray($lines, $indentation = 0)
@@ -658,6 +659,7 @@ class Output
     /**
      * Set the output mode
      *
+     * @param   string  $mode
      * @return  void
      **/
     public function setMode($mode)

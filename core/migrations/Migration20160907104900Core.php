@@ -17,6 +17,8 @@ use Hubzero\Content\Migration\Base;
 class Migration20160907104900Core extends Base
 {
     /**
+     * @param   string  $table
+     * @param   string  $engine
      * @return  void
      */
     private function changeEngine($table, $engine)

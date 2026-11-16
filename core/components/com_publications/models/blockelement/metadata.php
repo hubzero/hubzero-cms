@@ -27,6 +27,8 @@ class Metadata extends Base
     /**
      * Check completion status
      *
+     * @param   mixed  $manifest
+     * @param   mixed  $pub
      * @return  object
      */
     public function getStatus($manifest, $pub = null)
@@ -82,6 +84,13 @@ class Metadata extends Base
     /**
      * Render
      *
+     * @param   mixed  $elementid
+     * @param   mixed  $manifest
+     * @param   mixed  $pub
+     * @param   string  $viewname
+     * @param   mixed  $status
+     * @param   mixed  $master
+     * @param   int  $order
      * @return  string
      */
     public function render(
@@ -133,6 +142,12 @@ class Metadata extends Base
     /**
      * Draw element with no editing capabilities
      *
+     * @param   mixed  $elementId
+     * @param   mixed  $manifest
+     * @param   mixed  $pub
+     * @param   mixed  $status
+     * @param   mixed  $master
+     * @param   mixed  $viewname
      * @return  string
      */
     public function drawItem(
@@ -163,6 +178,15 @@ class Metadata extends Base
     /**
      * Draw element
      *
+     * @param   mixed  $elementId
+     * @param   mixed  $manifest
+     * @param   mixed  $pub
+     * @param   mixed  $status
+     * @param   mixed  $active
+     * @param   int  $collapse
+     * @param   mixed  $total
+     * @param   mixed  $master
+     * @param   mixed  $order
      * @return  string
      */
     public function drawFormField(

@@ -156,6 +156,7 @@ class Translator extends Obj
      *
      * @param   string|null   $lang   The language
      * @param   boolean  $debug  Indicates if language debugging is enabled.
+     * @param   string  $client
      * @return  void
      */
     public function __construct($lang = null, $debug = false, $client = 'site')
@@ -572,6 +573,7 @@ class Translator extends Obj
      *
      * @param   string|null   $lang      Language to check.
      * @param   string   $basePath  Optional path to check.
+     * @param   mixed  $client
      * @return  boolean  True if the language exists.
      */
     public static function exists($lang, $basePath = PATH_APP, $client = null)
@@ -1094,6 +1096,7 @@ class Translator extends Obj
      * Returns a list of known languages for an area
      *
      * @param   string  $basePath  The basepath to use
+     * @param   mixed  $client
      * @return  array<mixed>   key/value pair with the language file and real name.
      */
     public static function getKnownLanguages($basePath = PATH_APP, $client = null)
@@ -1128,6 +1131,7 @@ class Translator extends Obj
      *
      * @param   string  $basePath  The basepath to use.
      * @param   string|null  $language  The language tag.
+     * @param   mixed  $client
      * @return  string  language related path or null.
      */
     public static function getLanguagePath($basePath = PATH_APP, $language = null, $client = null)

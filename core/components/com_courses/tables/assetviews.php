@@ -100,6 +100,7 @@ class AssetViews extends Table
      * Get asset view records
      *
      * @param      array<mixed> $filters Filters to construct query from
+     * @param   mixed  $key
      * @return     array<\stdClass>
      */
     public function find($filters = [], $key = null)

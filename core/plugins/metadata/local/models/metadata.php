@@ -50,6 +50,7 @@ class Metadata extends Relational
      * Retrieves one row by path, returning an empty row if not found
      *
      * @param   string  $path  The path to the file being loaded
+     * @param   int|string  $key
      * @return  static
      * @since   2.0.0
      **/

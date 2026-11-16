@@ -96,6 +96,7 @@ class Section extends Base
     /**
      * Constructor
      *
+     * @param   mixed  $offering_id
      * @return     void
      */
     public function __construct($oid = null, $offering_id = null)
@@ -125,6 +126,7 @@ class Section extends Base
      *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
      *
      * @param      mixed $oid ID (int) or alias (string)
+     * @param   mixed  $offering_id
      * @return     object \Components\Courses\Models\Offering
      */
     public static function &getInstance($oid = null, $offering_id = null)
@@ -247,6 +249,7 @@ class Section extends Base
      * Check if the current user has manager access
      * This is just a shortcut for the access check
      *
+     * @param   mixed  $id
      * @return     boolean
      */
     public function isMember($id = null)
@@ -287,6 +290,7 @@ class Section extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $user_id
      * @return     Member  the user's membership, empty if they have none
      */
     public function member($user_id = null)
@@ -351,6 +355,8 @@ class Section extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $scope
+     * @param   mixed  $scope_id
      * @return     boolean
      */
     public function date($scope = null, $scope_id = null)
@@ -418,6 +424,8 @@ class Section extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
+     * @param   mixed  $data
+     * @param   mixed  $role_id
      * @return    void
      */
     public function add($data = [], $role_id = 'student')
@@ -588,6 +596,7 @@ class Section extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $code
      * @return     boolean
      */
     public function code($code = null)

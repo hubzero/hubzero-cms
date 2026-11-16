@@ -22,6 +22,9 @@ class ModelHandler
     /**
      * Constructor
      *
+     * @param   object  $item
+     * @param   int  $crtId
+     * @param   int  $tId
      */
     public function __construct($item, $crtId, $tId)
     {

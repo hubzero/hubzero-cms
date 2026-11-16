@@ -28,6 +28,7 @@ class Logger extends Obj
     /**
      * Constructs a new user logger class
      *
+     * @param   \Hubzero\User\User  $user
      * @return  void
      * @since   2.0.0
      */

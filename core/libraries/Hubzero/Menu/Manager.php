@@ -44,6 +44,7 @@ class Manager
      * Get a menu instance.
      *
      * @param   string|null  $menu
+     * @param   array<mixed>  $options
      * @return  mixed
      */
     public function menu($menu = null, $options = [])
@@ -64,6 +65,7 @@ class Manager
      * Create a new menu instance.
      *
      * @param   string  $menu
+     * @param   mixed  $options
      * @return  mixed
      * @throws  \InvalidArgumentException
      */

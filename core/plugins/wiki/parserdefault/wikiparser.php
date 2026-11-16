@@ -2793,6 +2793,8 @@ class WikiParser
      * Builds a Table of Contents and links to headings
      *
      * @param   string  $text  Text to build TOC from
+     * @param   bool  $standalone
+     * @param   int  $depth
      * @return  string
      */
     public function toc($text, $standalone = false, $depth = 0)
@@ -3095,6 +3097,7 @@ class WikiParser
     /**
      * Start a sub-list
      *
+     * @param   int  $toclevel
      * @return  string
      */
     private function tocIndent($toclevel)

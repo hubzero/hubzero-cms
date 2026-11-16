@@ -91,6 +91,8 @@ class Slack extends Plugin
     /**
      * Send notification
      *
+     * @param   mixed  $endpoint
+     * @param   mixed  $username
      * @param   string  $channel
      * @param   array<mixed>   $data
      * @return  bool

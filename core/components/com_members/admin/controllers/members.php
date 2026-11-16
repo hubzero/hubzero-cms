@@ -1108,6 +1108,7 @@ class Members extends AdminController
     /**
      * Different SQL functions
      *
+     * @param   mixed  $query
      * @return  mixed
      */
     public function runSelectQuery($query)
@@ -1123,6 +1124,8 @@ class Members extends AdminController
     }
 
     /**
+     * @param   string  $query
+     * @param   array<int, mixed>  $vars
      * @return  mixed
      */
     public function runInsertQuery($query, $vars)
@@ -1134,6 +1137,7 @@ class Members extends AdminController
     }
 
     /**
+     * @param   string  $query
      * @return  mixed
      */
     public function runUpdateOrDeleteQuery($query)

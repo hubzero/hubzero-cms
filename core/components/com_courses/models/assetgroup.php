@@ -478,7 +478,14 @@ class Assetgroup extends Base
         return true;
     }
 
-    /** @return bool */
+    /**
+     * @param   string|null  $courseId
+     * @param   string|null  $offeringId
+     * @param   string|null  $unitId
+     * @param   string|null  $assetGroupParent
+     * @param   bool  $deep
+     * @return bool
+     */
     public function copyToSelectedAssetGroup(
         $courseId = null,
         $offeringId = null,

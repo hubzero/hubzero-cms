@@ -1392,6 +1392,8 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * @param   mixed  $name
+     * @param   mixed  $as
      * @return  string
      */
     public function quoteName($name, $as = null)

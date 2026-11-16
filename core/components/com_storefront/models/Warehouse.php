@@ -82,7 +82,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Add a collection to the instance lookup scope
      *
-     * @param  $cId Collection ID
+     * @param  int|string  $cId Collection ID
      * @return void
      */
     public function addLookupCollection($cId)
@@ -202,6 +202,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all root (no parents) product 'category' collections
      *
+     * @param   string  $rtrn
+     * @param   mixed  $filters
      * @return array<mixed>|int
      */
     public function getCategories($rtrn = 'list', $filters = [])
@@ -211,6 +213,8 @@ class Warehouse extends \Hubzero\Base\Obj
     }
 
     /**
+     * @param   string  $rtrn
+     * @param   mixed  $filters
      * @return  array<mixed>|int
      */
     public function getCollections($rtrn = 'list', $filters = [])
@@ -222,6 +226,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if collection exists
      *
      * @param   mixed   $cId  collection ID or alias
+     * @param   bool  $showInactive
      * @return  string|null     cId on success, null if no match found
      */
     public function collectionExists($cId, $showInactive = false)
@@ -332,6 +337,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if product exists
      *
      * @param   int|string  $product  product ID or alias
+     * @param   bool  $showInactive
      * @return  string|null     pId on success, null if no match found
      */
     public function productExists($product, $showInactive = false)
@@ -359,6 +365,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Check if product exists and can be viewed by the current user
      *
      * @param   int|string  $product  product ID or alias
+     * @param   bool  $showInactive
      * @return  \stdClass     pId on success, null if no match found
      */
     public function checkProduct($product, $showInactive = false)
@@ -485,6 +492,9 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get the products within the given scope
      *
+     * @param   string  $return
+     * @param   bool  $showOnlyActive
+     * @param   mixed  $filters
      * @return array<mixed>|int
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
@@ -705,7 +715,7 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get product option groups and options
      *
-     * @param  $pId Product ID
+     * @param  mixed  $pId Product ID
      * @return \stdClass
      */
     public function getProductOptions($pId)
@@ -849,6 +859,8 @@ class Warehouse extends \Hubzero\Base\Obj
 
     // Get all option groups (for admin)
     /**
+     * @param   string  $rtrn
+     * @param   mixed  $filters
      * @return  int|array<mixed>
      */
     public function getOptionGroups($rtrn = 'list', $filters = [])
@@ -908,6 +920,9 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all options for the option group (for admin)
      *
      * @param   int         $ogId  option group ID
+     * @param   string  $return
+     * @param   bool  $showOnlyActive
+     * @param   mixed  $filters
      * @return  array<mixed>       options IDs
      */
     public function getOptionGroupOptions($ogId, $return = 'rows', $showOnlyActive = true, $filters = false)
@@ -958,9 +973,9 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get SKU mapping to the provided options
      *
-     * @param   $pId                        Product ID
-     * @param   $options                    Selected options (optional for products with no options)
-     * @param   $throwExceptionOnNomatch    Should the exception be thrown if no match found (default: true)
+     * @param   mixed  $pId                        Product ID
+     * @param   mixed  $options                    Selected options (optional for products with no options)
+     * @param   bool  $throwExceptionOnNomatch    Should the exception be thrown if no match found (default: true)
      * @return  int|string|false  SKU ID
      */
     public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
@@ -1025,6 +1040,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   array|object|mixed  $skus  SKU IDs
      * @param   bool        $showInactive  Flag whether to show inactive SKU and product info
+     * @param   mixed  $filters
      * @return  array<mixed>       info
      */
     public function getSkusInfo($skus, $showInactive = false, $filters = false)
@@ -1151,6 +1167,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all info for SKU provided, including options
      *
      * @param   int|string         $sId  SKU ID
+     * @param   bool  $showInactive
      * @return  array<mixed>|false       info
      */
     public function getSkuInfo($sId, $showInactive = true)
@@ -1183,6 +1200,9 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get product SKU IDs
      *
      * @param   int         $pId  product id
+     * @param   string  $return
+     * @param   bool  $showOnlyActive
+     * @param   mixed  $filters
      * @return  array<mixed>       SKU IDs
      */
     public function getProductSkus($pId, $return = 'rows', $showOnlyActive = true, $filters = false)
@@ -1328,7 +1348,10 @@ class Warehouse extends \Hubzero\Base\Obj
         return $this->doCoupon($coupon, 'add');
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $coupon
+     * @return void
+     */
     public function updateCoupon($coupon)
     {
         $this->doCoupon($coupon, 'update');
@@ -1379,6 +1402,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Handle product coupon (add, update)
      *
      * @param   Coupon|mixed   $coupon  Instance of a coupon
+     * @param   string  $action
      * @return  \stdClass                         coupon ID
      */
     private function doCoupon($coupon, $action)
@@ -1513,7 +1537,8 @@ class Warehouse extends \Hubzero\Base\Obj
     /**
      * Get all non-empty (those that have at least one active product) root (no parents) collections
      *
-     * @param  $collectionType -- type of collection, category by default
+     * @param  string  $collectionType -- type of collection, category by default
+     * @param   bool|array<mixed>  $filters
      * @return array<mixed>
      */
     private function rootCollections($collectionType = 'category', $filters = false)
@@ -1539,6 +1564,8 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all including empty root (no parents) collections
      * TODO: implement subcategories
      *
+     * @param   mixed  $return
+     * @param   mixed  $filters
      * @param  $collectionType -- type of collection, category by default
      * @return array<mixed>|int
      */

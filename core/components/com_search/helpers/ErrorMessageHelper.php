@@ -19,6 +19,7 @@ class ErrorMessageHelper
     }
 
     /**
+     * @param   array<int, mixed>  $errors
      * @return  string
      */
     public function generateErrorMessage($errors)

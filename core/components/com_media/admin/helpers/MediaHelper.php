@@ -459,6 +459,7 @@ class MediaHelper
      * Build a folder tree
      *
      * @param   array<mixed>   $folders
+     * @param   mixed  $parent_id
      * @param   string  $path
      * @return  array<int, mixed>
      */

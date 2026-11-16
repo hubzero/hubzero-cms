@@ -176,6 +176,10 @@ class None extends Plugin
     }
 
     /**
+     * @param   string  $name
+     * @param   mixed  $buttons
+     * @param   string|null  $asset
+     * @param   object|null  $author
      * @return  string
      */
     protected function displayButtons($name, $buttons, $asset, $author)

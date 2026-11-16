@@ -573,6 +573,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     /**
      * Check if a username exists
      *
+     * @param   string|false|null  $username
      * @return  integer
      */
     private function usernameExists($username)

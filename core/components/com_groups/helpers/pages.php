@@ -171,7 +171,8 @@ class Pages
      * php pages, group login, or group components, this allows us to get the true active tab
      * for use with displaying the correct content
      *
-     * @param    $group    \Hubzero\User\Group Object
+     * @param    mixed  $group    \Hubzero\User\Group Object
+     * @param   mixed  $pages
      * @return   object|null  The page
      */
     public static function getActivePage($group, $pages = [])
@@ -223,6 +224,7 @@ class Pages
     /**
      * Is Current User a Page Approver?
      *
+     * @param   mixed  $username
      * @return bool
      */
     public static function isPageApprover($username = null)
@@ -266,8 +268,8 @@ class Pages
     /**
      * Send mail to page approvers
      *
-     * @param     $type      type of object needing approval
-     * @param     $object    object needing approval
+     * @param     string  $type      type of object needing approval
+     * @param     \Components\Groups\Models\Module|\Components\Groups\Models\Page  $object    object needing approval
      * @return    void
      */
     public static function sendApproveNotification($type, $object)
@@ -327,8 +329,8 @@ class Pages
     /**
      * Send mail that page has been approved
      *
-     * @param     $type      type of object just approved
-     * @param     $object    object approved
+     * @param     string  $type      type of object just approved
+     * @param     \Components\Groups\Models\Module|\Components\Groups\Models\Page  $object    object approved
      * @return    void
      */
     public static function sendApprovedNotification($type, $object)
@@ -478,7 +480,7 @@ class Pages
     /**
      * Get page checkout details
      *
-     * @param    $pageid    Id of page to get info
+     * @param    mixed  $pageid    Id of page to get info
      * @return   object
      */
     public static function getCheckout($pageid)
@@ -497,7 +499,7 @@ class Pages
     /**
      * Checkout Page
      *
-     * @param    $pageid    Id of page to get info
+     * @param    mixed  $pageid    Id of page to get info
      *
      * @return  void
      */
@@ -521,7 +523,7 @@ class Pages
     /**
      * Checkin Page
      *
-     * @param    $pageid    Id of page to get info
+     * @param    mixed  $pageid    Id of page to get info
      *
      * @return  void
      */
@@ -570,6 +572,7 @@ class Pages
      *
      * @param    Object    $group    \Hubzero\User\Group Object
      * @param    Object|null    $page     \Components\Groups\Models\Page Object
+     * @param   bool  $markHit
      * @return   String
      */
     public static function displayPage($group, $page, $markHit = true)
@@ -732,6 +735,9 @@ class Pages
     /**
      *  Parse Page Includes & php
      *
+     * @param   object  $group
+     * @param   object  $page
+     * @param   mixed  $document
      * @return      string
      */
     private static function parse($group, $page, $document)
@@ -794,7 +800,9 @@ class Pages
     /**
      * Generate Group Page Preview
      *
-     * @param    $page   Group page object
+     * @param    mixed  $page   Group page object
+     * @param   mixed  $version
+     * @param   bool  $contentOnly
      * @return   string
      */
     public static function generatePreview($page, $version = 0, $contentOnly = false)

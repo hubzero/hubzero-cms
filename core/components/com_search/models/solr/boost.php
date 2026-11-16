@@ -39,6 +39,9 @@ class Boost extends Relational
     protected $map;
     protected $userHelper;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->map = Arr::getValue($args, 'map', new Map());

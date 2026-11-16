@@ -47,6 +47,7 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $userId
      * @return  array<mixed>
      */
     public function loadSubscriptions($userId)
@@ -67,6 +68,7 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $sub
      * @return  array<mixed>
      */
     private function subToMap($sub)
@@ -81,6 +83,9 @@ class SubscriptionsHelper
     }
 
     // Added exception handling to provide feedback if database has not been set up correctly for com_reply features:
+    /**
+     * @param   mixed  $profileFieldId
+     */
     private function loadSubscriptionOptions($profileFieldId)
     {
         // If empty profileFieldId passed, we were unable to look up the subscription:
@@ -100,7 +105,11 @@ class SubscriptionsHelper
         }
     }
 
-    /** @return void */
+    /**
+     * @param   int  $userId
+     * @param   array<array<mixed>>  $updatedSubscriptions
+     * @return void
+     */
     public function updateSubscriptions($userId, $updatedSubscriptions)
     {
         $userId = (int) $userId;
@@ -110,7 +119,11 @@ class SubscriptionsHelper
         }
     }
 
-    /** @return void */
+    /**
+     * @param   int  $userId
+     * @param   mixed  $updatedSubscription
+     * @return void
+     */
     private function updateSubscription($userId, $updatedSubscription)
     {
         $updateQuery = $this->buildUpdateQuery($userId, $updatedSubscription);
@@ -121,6 +134,8 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $userId
+     * @param   mixed  $updatedSubscription
      * @return  mixed
      */
     private function buildUpdateQuery($userId, $updatedSubscription)
@@ -140,6 +155,8 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $userId
+     * @param   mixed  $subscription
      * @return  bool
      */
     private function subscriptionExists($userId, $subscription)
@@ -158,6 +175,8 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $userId
+     * @param   mixed  $subscription
      * @return  string
      */
     private function generateUpdateQuery($userId, $subscription)
@@ -171,6 +190,8 @@ class SubscriptionsHelper
     }
 
     /**
+     * @param   mixed  $userId
+     * @param   mixed  $subscription
      * @return  string
      */
     private function generateInsertQuery($userId, $subscription)
@@ -183,14 +204,21 @@ class SubscriptionsHelper
 		        values($userId, " . $this->db->quote($profileFieldFk) . ", " . $this->db->quote($preference) . ");";
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $profileFieldFk
+     * @param   mixed  $preference
+     * @return void
+     */
     private function validateSubmittedSubscription($profileFieldFk, $preference)
     {
         $this->validateProfileFieldFk($profileFieldFk);
         $this->validatePreference($preference);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $profileFieldFk
+     * @return void
+     */
     private function validateProfileFieldFk($profileFieldFk)
     {
         $validProfileFieldFks = $this->loadProfileFieldFks();
@@ -210,7 +238,10 @@ class SubscriptionsHelper
         return $this->db->loadColumn();
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $preference
+     * @return void
+     */
     private function validatePreference($preference)
     {
         $validPreferences = $this->loadProfileOptionValues();

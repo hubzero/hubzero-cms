@@ -208,6 +208,8 @@ class Loader implements LoaderInterface
      * Loads the plugin file.
      *
      * @param   object   $plugin  The plugin data.
+     * @param   bool  $autocreate
+     * @param   mixed  $dispatcher
      * @return  object|null  True on success.
      */
     protected function init($plugin, $autocreate = true, $dispatcher = null)

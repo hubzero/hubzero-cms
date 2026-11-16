@@ -62,6 +62,7 @@ class Zone extends Base
      *
      * @param      string $rtrn    Data type to return [count, list]
      * @param      array<mixed>  $filters Filters to apply to query
+     * @param   bool  $clear
      * @return     mixed Returns an integer or array depending upon format chosen
      */
     public function locations($rtrn = 'list', $filters = [], $clear = false)

@@ -110,6 +110,7 @@ class Request
      *
      * Long description (if any) ...
      *
+     * @param   array<mixed>  $options
      * @return     void
      */
     public function __construct($options = [])
@@ -158,6 +159,8 @@ class Request
     }
 
     /**
+     * @param   array<mixed>  $what
+     * @param   string  $where
      * @return  false|null
      */
     public function import($what = ['all'], $where = '_SYSTEM')
@@ -228,6 +231,8 @@ class Request
     }
 
     /**
+     * @param   string  $what
+     * @param   string  $where
      * @return  false|null
      */
     public function export($what = 'all', $where = '_SYSTEM')
@@ -410,6 +415,8 @@ class Request
     }
 
     /**
+     * @param   string  $key
+     * @param   string  $default
      * @return  mixed
      */
     public function get($key, $default = '')
@@ -486,7 +493,11 @@ class Request
         }
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $key
+     * @param   mixed  $value
+     * @return void
+     */
     public function setHeader($key, $value)
     {
         if (empty($value)) {
@@ -497,6 +508,8 @@ class Request
     }
 
     /**
+     * @param   mixed  $key
+     * @param   string  $default
      * @return  mixed
      */
     public function getHeader($key, $default = '')
@@ -508,7 +521,12 @@ class Request
         return $default;
     }
 
-    /** @return void */
+    /**
+     * @param   string  $property
+     * @param   string  $key
+     * @param   mixed  $value
+     * @return void
+     */
     public function add($property, $key, $value)
     {
         switch ($property) {
@@ -531,7 +549,11 @@ class Request
         }
     }
 
-    /** @return void */
+    /**
+     * @param   string  $key
+     * @param   mixed  $value
+     * @return void
+     */
     public function set($key, $value = null)
     {
         switch ($key) {
@@ -617,6 +639,11 @@ class Request
     }
 
     /**
+     * @param   string  $type
+     * @param   string  $key
+     * @param   string  $secret1
+     * @param   string  $secret2
+     * @param   string  $method
      * @return  false|null
      */
     public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '', $method = '')

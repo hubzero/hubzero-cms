@@ -25,6 +25,8 @@ class Security
     }
 
     /**
+     * @param   string  $value
+     * @param   string  $label
      * @return  string
      */
     public static function dvIdentifier($value, $label = 'identifier')

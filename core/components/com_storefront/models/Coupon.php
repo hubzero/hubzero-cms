@@ -25,6 +25,7 @@ class Coupon
     /**
      * Contructor
      *
+     * @param   mixed  $code
      * @return void
      */
     public function __construct($code = false)
@@ -228,6 +229,7 @@ class Coupon
      * Set code action
      *
      * @param   string      $action  object action
+     * @param   string  $actionValue
      * @return  bool        true on success
      */
     public function setAction($action, $actionValue)

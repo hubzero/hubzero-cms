@@ -20,6 +20,9 @@ class RecordProcessingHelper
     protected $app;
     protected $notify;
 
+    /**
+     * @param   array<mixed>  $args
+     */
     public function __construct($args = [])
     {
         $this->controller = $args['controller'];
@@ -40,13 +43,20 @@ class RecordProcessingHelper
         );
     }
 
-    /** @return void */
+    /**
+     * @param   string  $message
+     * @param   string  $url
+     * @return void
+     */
     public function handleSaveSuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $record
+     * @return void
+     */
     public function handleSaveFail($record)
     {
         $this->generateErrorNotification($record);
@@ -54,13 +64,20 @@ class RecordProcessingHelper
         $this->controller->newTask($record);
     }
 
-    /** @return void */
+    /**
+     * @param   string  $message
+     * @param   string  $url
+     * @return void
+     */
     public function handleUpdateSuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $record
+     * @return void
+     */
     public function handleUpdateFail($record)
     {
         $this->generateErrorNotification($record);
@@ -68,39 +85,60 @@ class RecordProcessingHelper
         $this->controller->editTask($record);
     }
 
-    /** @return void */
+    /**
+     * @param   string  $message
+     * @param   string  $url
+     * @return void
+     */
     public function handleDestroySuccess($message, $url)
     {
         $this->handleSuccess($message, $url);
     }
 
-    /** @return void */
+    /**
+     * @param   string  $message
+     * @param   string  $url
+     * @return void
+     */
     public function handleDestroyFail($message, $url)
     {
         $this->notifyOfError($message);
         $this->redirectTo($url);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $message
+     * @param   mixed  $url
+     * @return void
+     */
     protected function handleSuccess($message, $url)
     {
         $this->notifyOfSuccess($message);
         $this->redirectTo($url);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $message
+     * @return void
+     */
     protected function notifyOfSuccess($message)
     {
         $this->notify->success($message);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $url
+     * @return void
+     */
     protected function redirectTo($url)
     {
         $this->app->redirect($url);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $record
+     * @return void
+     */
     protected function generateErrorNotification($record)
     {
         $errors = $record->getErrors();
@@ -108,7 +146,10 @@ class RecordProcessingHelper
         $this->notifyOfError($message);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $message
+     * @return void
+     */
     protected function notifyOfError($message)
     {
         $this->notify->error($message);

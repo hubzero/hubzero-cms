@@ -279,6 +279,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     /**
      * {@inheritDoc}
      *
+     * @param   string  $address
      * @return  mixed
      */
     public function getGeocodedData($address)

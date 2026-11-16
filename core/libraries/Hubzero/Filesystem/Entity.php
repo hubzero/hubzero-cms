@@ -157,6 +157,7 @@ class Entity extends Obj
     /**
      * Sets the adapter on the entity
      *
+     * @param   mixed  $adapter
      * @return  $this
      **/
     public function setAdapter($adapter)

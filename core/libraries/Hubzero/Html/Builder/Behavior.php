@@ -306,6 +306,8 @@ class Behavior
     /**
      * Add htmx javascript support
      *
+     * @param   mixed  $version
+     * @param   mixed  $debug
      * @return  void
      */
     public static function htmx($version = null, $debug = null)
@@ -339,6 +341,8 @@ class Behavior
     /**
      * Add Alpine.js javascript support
      *
+     * @param   mixed  $version
+     * @param   mixed  $debug
      * @return  void
      */
     public static function alpinejs($version = null, $debug = null)
@@ -370,6 +374,8 @@ class Behavior
     /**
      * Add Bootstrap javascript/css support
      *
+     * @param   mixed  $version
+     * @param   mixed  $debug
      * @return  void
      */
     public static function bootstrap($version = null, $debug = null)
@@ -403,6 +409,7 @@ class Behavior
     /**
      * Add unobtrusive javascript support for charts
      *
+     * @param   string  $type
      * @return  void
      */
     public static function chart($type = 'core')
@@ -433,6 +440,7 @@ class Behavior
      * Add unobtrusive javascript support for submenu switcher support in
      * Global Configuration and System Information.
      *
+     * @param   string  $toggler
      * @return  void
      */
     public static function switcher($toggler = 'tabs')
@@ -1197,6 +1205,9 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
      * This enables both libraries for views that pair HTMX transport
      * with Alpine local interactivity.
      *
+     * @param   mixed  $htmxVersion
+     * @param   mixed  $alpineVersion
+     * @param   mixed  $debug
      * @return  void
      */
     public static function htmxalpine($htmxVersion = null, $alpineVersion = null, $debug = null)

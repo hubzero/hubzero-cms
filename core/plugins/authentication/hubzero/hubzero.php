@@ -184,7 +184,7 @@ class Hubzero extends Plugin
      * Checks to see if the current user has exceeded the site
      * login attempt limit for a given time period
      *
-     * @param       $user \Hubzero\User\User
+     * @param       \Hubzero\User\User  $user \Hubzero\User\User
      *
      * @return  bool
      */

@@ -113,6 +113,7 @@ class Locations extends AdminController
     /**
      * Edit a record
      *
+     * @param   \Components\Tools\Models\Middleware\Location|null  $row
      * @return  void
      */
     public function editTask($row = null)

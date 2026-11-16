@@ -122,6 +122,7 @@ class Page extends Relational
     /**
      * Generates automatic created by field value
      *
+     * @param   mixed  $data
      * @return  int
      */
     public function automaticModifiedBy($data)

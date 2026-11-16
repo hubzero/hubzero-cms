@@ -426,6 +426,8 @@ class Images extends AdminController
     }
 
     /**
+     * @param   string  $type
+     * @param   int  $id
      * @return  string
      */
     protected function path($type, $id)

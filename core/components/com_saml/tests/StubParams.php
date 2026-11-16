@@ -15,12 +15,17 @@ class StubParams
 {
     private $data;
 
+    /**
+     * @param   array<string, mixed>  $data
+     */
     public function __construct($data)
     {
         $this->data = $data;
     }
 
     /**
+     * @param   mixed  $key
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get($key, $default = null)

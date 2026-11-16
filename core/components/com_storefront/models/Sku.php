@@ -106,7 +106,10 @@ class Sku
         return $this->data->price;
     }
 
-    /** @return bool */
+    /**
+     * @param   mixed  $skuName
+     * @return bool
+     */
     public function setName($skuName)
     {
         $this->data->name = $skuName;
@@ -124,7 +127,10 @@ class Sku
         return $this->data->name;
     }
 
-    /** @return bool */
+    /**
+     * @param   mixed  $weight
+     * @return bool
+     */
     public function setWeight($weight)
     {
         if (!is_numeric($weight)) {
@@ -181,7 +187,10 @@ class Sku
         return $this->data->publishTime;
     }
 
-    /** @return bool */
+    /**
+     * @param   mixed  $checkoutNotes
+     * @return bool
+     */
     public function setCheckoutNotes($checkoutNotes)
     {
         $this->data->checkoutNotes = $checkoutNotes;
@@ -199,7 +208,10 @@ class Sku
         return $this->data->checkoutNotes;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $checkoutNotesRequired
+     * @return void
+     */
     public function setCheckoutNotesRequired($checkoutNotesRequired)
     {
         if (!$checkoutNotesRequired) {
@@ -247,7 +259,10 @@ class Sku
         return $this->data->id;
     }
 
-    /** @return bool */
+    /**
+     * @param   mixed  $pId
+     * @return bool
+     */
     public function setProductId($pId)
     {
         if (!is_numeric($pId)) {
@@ -511,6 +526,7 @@ class Sku
     }
 
     /**
+     * @param   mixed  $allowMultiple
      * @return  int
      */
     public function setAllowMultiple($allowMultiple)
@@ -535,7 +551,10 @@ class Sku
         return $this->data->allowMultiple;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $trackInventory
+     * @return void
+     */
     public function setTrackInventory($trackInventory)
     {
         if (!$trackInventory) {
@@ -558,7 +577,10 @@ class Sku
         return $this->data->trackInventory;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $qty
+     * @return void
+     */
     public function reserveInventory($qty)
     {
         if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT') {
@@ -579,7 +601,10 @@ class Sku
         $this->saveBase();
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $qty
+     * @return void
+     */
     public function releaseInventory($qty)
     {
         if (!$this->getTrackInventory() || $this->getTrackInventory() == 'DEFAULT') {
@@ -596,7 +621,10 @@ class Sku
         $this->saveBase();
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $inventoryLevel
+     * @return void
+     */
     public function setInventoryLevel($inventoryLevel)
     {
         if (!is_numeric($inventoryLevel) && $inventoryLevel != 'DEFAULT') {
@@ -618,7 +646,10 @@ class Sku
         return $this->data->inventoryLevel;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $enumerable
+     * @return void
+     */
     public function setEnumerable($enumerable)
     {
         if (!$enumerable) {
@@ -706,13 +737,18 @@ class Sku
         return $this->data->restricted;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $key
+     * @param   mixed  $val
+     * @return void
+     */
     public function addMeta($key, $val)
     {
         $this->data->meta[$key] = $val;
     }
 
     /**
+     * @param   bool|string  $key
      * @return  mixed
      */
     public function getMeta($key = false)
@@ -732,6 +768,7 @@ class Sku
     /*
      * Set time to live
      *
+     * @param   mixed  $ttl
      * @param   string      expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
      * @return  bool        SKU status
     */
@@ -770,7 +807,10 @@ class Sku
     }
 
     // Overwrites all options
-    /** @return void */
+    /**
+     * @param   mixed  $options
+     * @return void
+     */
     public function setOptions($options)
     {
         $this->data->options = $options;
@@ -779,6 +819,7 @@ class Sku
     // Static ----------------------------
 
     /**
+     * @param   mixed  $sId
      * @return  mixed
      */
     public static function getInstance($sId)
@@ -798,6 +839,7 @@ class Sku
     }
 
     /**
+     * @param   int  $pId
      * @return  mixed
      */
     public static function newInstance($pId)
@@ -813,6 +855,8 @@ class Sku
     }
 
     /**
+     * @param   mixed  $productType
+     * @param   mixed  $sId
      * @return  CourseOffering|Sku|SoftwareSku
      */
     private static function getProperInstance($productType, $sId = false)
@@ -831,7 +875,10 @@ class Sku
 
     // Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to
     // speed
-    /** @return void */
+    /**
+     * @param   mixed  $pId
+     * @return void
+     */
     public static function updateReferences($pId)
     {
         $product = new Product($pId);
@@ -839,7 +886,10 @@ class Sku
         self::updateOptions($product);
     }
 
-    /** @return void */
+    /**
+     * @param   \Components\Storefront\Models\Product  $product
+     * @return void
+     */
     private static function updateOptions($product)
     {
         $db = App::get('db');

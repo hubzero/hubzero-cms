@@ -112,6 +112,9 @@ class PrunableTest extends AbstractDriverTestCase
 
     /**
      * Log event for testing
+     *
+     * @param   string  $event
+     * @param   mixed  $model
      */
     public static function logEvent($event, $model): void
     {

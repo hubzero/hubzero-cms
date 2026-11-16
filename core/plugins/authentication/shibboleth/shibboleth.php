@@ -231,7 +231,7 @@ class Shibboleth extends Plugin
      * We want to show a button with the name of the previously-used ID
      * provider on it instead of something generic like "Shibboleth"
      *
-     * @param   $return
+     * @param   mixed  $return
      * @return  string|void
      */
     public static function onGetSubsequentLoginDescription($return)
@@ -270,6 +270,8 @@ class Shibboleth extends Plugin
     }
 
     /**
+     * @param   mixed  $return
+     * @param   string  $title
      * @return  string|array<string>
      */
     public static function onRenderOption($return = null, $title = 'With Institutional Credentials')

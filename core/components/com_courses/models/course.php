@@ -149,6 +149,7 @@ class Course extends Base
      * Check if the current user has manager access
      * This is just a shortcut for the access check
      *
+     * @param   int  $user_id
      * @return     boolean
      */
     public function isManager($user_id = 0)
@@ -163,6 +164,7 @@ class Course extends Base
      * Check if the current user has manager access
      * This is just a shortcut for the access check
      *
+     * @param   int  $user_id
      * @return     boolean
      */
     public function isStudent($user_id = 0)
@@ -176,6 +178,7 @@ class Course extends Base
     /**
      * Set and get a specific offering
      *
+     * @param   mixed  $id
      * @return     \Components\Courses\Models\Offering
      */
     public function offering($id = null)
@@ -221,6 +224,7 @@ class Course extends Base
      *   Accepts an array of filters to build query from
      *
      * @param      array<mixed> $filters Filters to build query from
+     * @param   bool  $clear
      * @return     mixed
      */
     public function offerings($filters = [], $clear = false)
@@ -274,6 +278,7 @@ class Course extends Base
     /**
      * Retrieve a specific manager record by user ID
      *
+     * @param   mixed  $user_id
      * @return     boolean
      */
     public function manager($user_id = null)
@@ -405,6 +410,8 @@ class Course extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
+     * @param   mixed  $data
+     * @param   int  $role_id
      * @return    void
      */
     public function add($data = null, $role_id = 0)
@@ -593,6 +600,7 @@ class Course extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   string|null  $url
      * @return     object
      */
     public function page($url = null)
@@ -659,6 +667,8 @@ class Course extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   string  $as
+     * @param   int  $admin
      * @return     array<mixed>|string
      */
     public function tags($as = 'cloud', $admin = 0)
@@ -684,6 +694,9 @@ class Course extends Base
     /**
      * Tag the entry
      *
+     * @param   string|null  $tags
+     * @param   mixed  $user_id
+     * @param   int  $admin
      * @return  boolean
      */
     public function tag($tags = null, $user_id = 0, $admin = 0)

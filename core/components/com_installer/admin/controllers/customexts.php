@@ -206,6 +206,7 @@ class Customexts extends AdminController
     /**
      * Edit or create
      *
+     * @param   \Components\Installer\Admin\Models\CustomExtensions|null  $row
      * @return  void
      */
     public function editTask($row = null)

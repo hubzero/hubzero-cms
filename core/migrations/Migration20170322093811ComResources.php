@@ -17,6 +17,7 @@ use Hubzero\Content\Migration\Base;
 class Migration20170322093811ComResources extends Base
 {
     /**
+     * @param   mixed  $txt
      * @return  string|null
      */
     public function normalize($txt)

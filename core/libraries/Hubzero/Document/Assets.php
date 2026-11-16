@@ -95,6 +95,8 @@ class Assets
      * Adds a linked script to the page
      *
      * @param   string  $script  Script name (optional, uses module name if left blank)
+     * @param   bool  $defer
+     * @param   bool  $async
      * @return  void
      */
     public static function addScript($script, $defer = false, $async = false)

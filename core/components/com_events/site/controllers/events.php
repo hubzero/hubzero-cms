@@ -2302,6 +2302,7 @@ class Events extends SiteController
     /**
      * Authorize
      *
+     * @param   string  $action
      * @param   string|int $id
      * @return  boolean
      */

@@ -293,6 +293,7 @@ class PdfForm
     /**
      * Set tmp filename/path
      *
+     * @param   mixed  $name
      * @return void
      **/
     public function setFname($name)

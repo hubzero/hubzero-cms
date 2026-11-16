@@ -17,6 +17,7 @@ use Hubzero\Facades\Route;
 class Converter
 {
     /**
+     * @param   mixed  $html
      * @return  array<string>|string|null
      */
     public static function convert($html)
@@ -63,6 +64,7 @@ class Converter
     }
 
     /**
+     * @param   mixed  $originalUrl
      * @return  string
      */
     public static function encode($originalUrl)

@@ -71,6 +71,9 @@ class Curation extends Table
      *
      * @param   integer|null  $pid  Publication ID
      * @param   integer|null  $vid  Publication Version ID
+     * @param   mixed  $block
+     * @param   int  $step
+     * @param   mixed  $element
      * @return  mixed    False if error, Object on success
      */
     public function getRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)
@@ -95,6 +98,9 @@ class Curation extends Table
      *
      * @param   integer|null  $pid  Publication ID
      * @param   integer|null  $vid  Publication Version ID
+     * @param   mixed  $block
+     * @param   int  $step
+     * @param   mixed  $element
      * @return  mixed    False if error, Object on success
      */
     public function loadRecord($pid = null, $vid = null, $block = null, $step = 0, $element = null)

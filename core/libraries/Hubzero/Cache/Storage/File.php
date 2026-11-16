@@ -379,6 +379,8 @@ class File extends None
     /**
      * Get the full path for the given cache key.
      *
+     * @param   string  $filename
+     * @param   array<string, mixed>  $data
      * @return  string|bool
      */
     protected function writeCacheFile($filename, $data)

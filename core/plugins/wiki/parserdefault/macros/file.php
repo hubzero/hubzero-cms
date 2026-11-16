@@ -379,7 +379,7 @@ class File extends WikiMacro
      * Generate an absolute path to a file stored on the system
      * Assumes $file is relative path but, if $file starts with / then assumes absolute
      *
-     * @param      $file    Filename
+     * @param      mixed  $file    Filename
      * @param      boolean  $alt  Switches between relative and absolute path
      * @return     string
      */
@@ -417,7 +417,7 @@ class File extends WikiMacro
      * Generate a link to a file
      * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
      *
-     * @param      $file  Filename
+     * @param      mixed  $file  Filename
      * @return     string
      */
     private function link($file)

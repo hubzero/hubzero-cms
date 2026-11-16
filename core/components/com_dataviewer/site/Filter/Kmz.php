@@ -10,7 +10,11 @@ namespace Components\Dataviewer\Site\Filter;
 
 class Kmz
 {
-    /** @return void */
+    /**
+     * @param   mixed  $res
+     * @param   mixed  $dd
+     * @return void
+     */
     public static function filter($res, &$dd)
     {
         $data = $res['data'];
@@ -83,6 +87,7 @@ class Kmz
     }
 
     /**
+     * @param   mixed  $cood
      * @return  float
      */
     public static function dms2dc($cood)

@@ -83,6 +83,7 @@ class Inertia
     }
 
     /**
+     * @param   string|null  $resolver
      * @return  string
      */
     public static function version($resolver = null): string

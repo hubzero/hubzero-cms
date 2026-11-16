@@ -26,6 +26,7 @@ class Migration20190430000000ComProjects extends Base
      * Get view level ID for a title
      *
      * @param   string   $title
+     * @param   int  $default
      * @return  integer
      **/
     private function getViewLevel($title, $default = 0)

@@ -585,8 +585,8 @@ class GradeBook extends Base
     /**
      * Determine whether or not a student or group of students is passing
      *
-     * @param      int|null|mixed $member_id (optional)
      * @param      bool $section only (optional)
+     * @param      int|null|mixed $member_id (optional)
      * @return     array<mixed>|false
      **/
     public function passing($section = true, $member_id = null)
@@ -874,6 +874,7 @@ class GradeBook extends Base
     /**
      * Get grades for this course
      *
+     * @param   array<mixed>  $filters
      * @return array<mixed>
      **/
     private function fetchGrades($filters = [])

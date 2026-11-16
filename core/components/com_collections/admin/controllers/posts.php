@@ -140,6 +140,7 @@ class Posts extends AdminController
     /**
      * Edit a post
      *
+     * @param   \Components\Collections\Models\Orm\Post|null  $row
      * @return  void
      */
     public function editTask($row = null)

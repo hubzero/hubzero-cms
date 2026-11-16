@@ -243,6 +243,7 @@ class Assets extends AdminController
     /**
      * Edit a course page
      *
+     * @param   \Components\Courses\Tables\Asset|null  $model
      * @return void
      */
     public function editTask($model = null)

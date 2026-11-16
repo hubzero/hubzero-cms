@@ -73,6 +73,7 @@ class Helper
      * @param   mixed    $member     Member to get picture for
      * @param   integer  $anonymous  Anonymous user?
      * @param   boolean  $thumbit    Display thumbnail (default) or full image?
+     * @param   mixed  $serveFile
      * @return  string   Image URL
      */
     public static function getMemberPhoto($member, $anonymous = 0, $thumbit = true, $serveFile = true)

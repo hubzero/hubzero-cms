@@ -138,6 +138,7 @@ class Nogit extends Obj
      * Lists files in the repository
      *
      * @param   string  $subdir  Local directory path
+     * @param   bool  $recursive
      * @return  array<int, mixed>
      */
     public function getFiles($subdir = '', $recursive = false)
@@ -154,6 +155,7 @@ class Nogit extends Obj
      * Lists the directories in the repository
      *
      * @param   string  $subdir  Local directory path
+     * @param   bool  $recursive
      * @return  array<int, mixed>
      */
     public function getDirectories($subdir = '', $recursive = false)

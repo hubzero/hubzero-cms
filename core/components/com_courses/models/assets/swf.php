@@ -29,6 +29,7 @@ class Swf extends File
     /**
      * Create method for this handler
      *
+     * @param   mixed  $localPath
      * @return array<mixed> of assets created
      **/
     public function create($localPath = null)

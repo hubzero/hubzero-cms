@@ -201,6 +201,7 @@ class Owner extends Table
      *
      * @param   integer|null  $projectid
      * @param   integer  $uid
+     * @param   mixed  $name
      * @return  mixed    integer or null
      */
     public function getOwnerId($projectid = null, $uid = 0, $name = null)
@@ -275,7 +276,9 @@ class Owner extends Table
      *
      * @param   integer|null  $projectid
      * @param   integer  $limit
+     * @param   string  $role
      * @param   integer  $show_uid
+     * @param   bool  $withUsername
      * @return  string
      */
     public function getOwnerNames($projectid = null, $limit = 5, $role = 'all', $show_uid = 0, $withUsername = false)

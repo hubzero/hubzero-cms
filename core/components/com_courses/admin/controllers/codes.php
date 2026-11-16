@@ -119,6 +119,7 @@ class Codes extends AdminController
     /**
      * Displays an edit form
      *
+     * @param   \Components\Courses\Models\Section\Code|null  $model
      * @return  void
      */
     public function editTask($model = null)

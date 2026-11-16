@@ -732,6 +732,7 @@ class Connect extends Obj
      * @param   string   $service    Service name (google or dropbox)
      * @param   integer  $uid        User ID
      * @param   object|null   $file       Models\File
+     * @param   int|false  $parentId
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  bool|string|null
      */
@@ -1790,6 +1791,8 @@ class Connect extends Obj
      * Download remote content via cURL
      *
      * @param   string|mixed  $service  Service name (google or dropbox)
+     * @param   mixed  $uid
+     * @param   mixed  $url
      * @param   string  $path     Project repo path
      * @return  string|bool or boolean
      */

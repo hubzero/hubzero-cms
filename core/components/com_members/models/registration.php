@@ -361,6 +361,7 @@ class Registration
      *
      * @param   string   $task
      * @param   integer  $id
+     * @param   array<mixed>  $field_to_check
      * @return  boolean
      */
     public function check($task = 'create', $id = 0, $field_to_check = [])

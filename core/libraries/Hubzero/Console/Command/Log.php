@@ -418,6 +418,7 @@ class Log extends Base implements CommandInterface
     /**
      * Map date format keyword to php date format string
      *
+     * @param   mixed  $name
      * @return  string
      **/
     private function mapDateFormat($name)

@@ -30,6 +30,7 @@ class Link extends Button
      * @param   string  $name  Name to be used as apart of the id
      * @param   string  $text  Button text
      * @param   string|null  $url   The link url
+     * @param   mixed  $target
      * @return  string  HTML string for the button
      */
     public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null, $target = null)

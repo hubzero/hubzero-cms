@@ -250,9 +250,9 @@ class Utils
     /**
      * Return a path to resource
      *
-     * @param   $createdDate    Resource creation date
-     * @param   $resourceId     Resource ID
-     * @param   $versionId      Resource Version ID
+     * @param   mixed  $createdDate    Resource creation date
+     * @param   mixed  $resourceId     Resource ID
+     * @param   mixed  $versionId      Resource Version ID
      *
      * @return     string
      */
@@ -278,8 +278,8 @@ class Utils
     /**
      * Return tool access
      *
-     * @param   $tool   Tool name we are getting access rights to
-     * @param   $login  User Login name
+     * @param   string  $tool   Tool name we are getting access rights to
+     * @param   mixed  $login  User Login name
      *
      * @return     \stdClass
      */
@@ -427,7 +427,7 @@ class Utils
     /**
      * Return a tool export access
      *
-     * @param   $export_control     Export control level for tool
+     * @param   mixed  $export_control     Export control level for tool
      *
      * @return     \stdClass
      */
@@ -499,8 +499,8 @@ class Utils
     /**
      * Record Tool Usage
      *
-     * @param       $tool       Alias of tool
-     * @param       $userid     User ID
+     * @param       string  $tool       Alias of tool
+     * @param       mixed  $userid     User ID
      *
      * @return      BOOL
      */
@@ -572,8 +572,8 @@ class Utils
     /**
      * Run Middleware Scripts
      *
-     * @param   $comm       Command to run on middleware
-     * @param   $output     Output to be returned from middleware
+     * @param   string  $comm       Command to run on middleware
+     * @param   mixed  $output     Output to be returned from middleware
      *
      * @return     mixed
      */

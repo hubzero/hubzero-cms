@@ -218,6 +218,7 @@ class Middleware extends Plugin
     }
 
     /**
+     * @param   string  $query
      * @return  mixed
      */
     public function runSelectQuery($query)
@@ -233,6 +234,7 @@ class Middleware extends Plugin
     }
 
     /**
+     * @param   string  $query
      * @return  mixed
      */
     public function runUpdateOrDeleteQueryMiddlewareDb($query)

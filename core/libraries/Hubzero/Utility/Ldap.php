@@ -643,6 +643,8 @@ class Ldap
      * Makes changes to a group
      *
      * @param   mixed   $group
+     * @param   array<mixed>  $add
+     * @param   array<mixed>  $delete
      * @return  bool|null
      */
     public static function changeGroupMemberships($group, $add, $delete)
@@ -711,11 +713,9 @@ class Ldap
             $add = array_map([$db, "Quote"], $add);
             $addin = implode(",", $add);
 
-            if (!empty($addin)) {
-                $query = "SELECT username FROM `#__users` WHERE id IN ($addin) OR username IN ($addin);";
-                $db->setQuery($query);
-                $add = $db->loadColumn();
-            }
+            $query = "SELECT username FROM `#__users` WHERE id IN ($addin) OR username IN ($addin);";
+            $db->setQuery($query);
+            $add = $db->loadColumn();
 
             $adds = [];
 
@@ -735,11 +735,9 @@ class Ldap
             $delete = array_map([$db, "Quote"], $delete);
             $deletein = implode(",", $delete);
 
-            if (!empty($deletein)) {
-                $query = "SELECT username FROM `#__users` WHERE id IN ($deletein) OR username IN ($deletein);";
-                $db->setQuery($query);
-                $delete = $db->loadColumn();
-            }
+            $query = "SELECT username FROM `#__users` WHERE id IN ($deletein) OR username IN ($deletein);";
+            $db->setQuery($query);
+            $delete = $db->loadColumn();
 
             $deletes = [];
 

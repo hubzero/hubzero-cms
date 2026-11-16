@@ -161,6 +161,7 @@ class InertiaService
     }
 
     /**
+     * @param   mixed  $resolver
      * @return  string
      */
     public function version($resolver = null): string

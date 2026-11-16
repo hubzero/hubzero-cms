@@ -25,6 +25,7 @@ class OptionGroup
     /**
      * Constructor
      *
+     * @param   mixed  $ogId
      * @return void
      */
     public function __construct($ogId = false)
@@ -261,13 +262,19 @@ class OptionGroup
         return $this->data->options;
     }
 
-    /** @return void */
+    /**
+     * @param   \Components\Storefront\Models\Option  $option
+     * @return void
+     */
     public function addOption($option)
     {
         $this->data->options[$option->getId()] = $option;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $msg
+     * @return void
+     */
     private function addMessage($msg)
     {
         $this->data->messages[] = $msg;

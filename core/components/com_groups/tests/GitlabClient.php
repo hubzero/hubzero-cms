@@ -20,6 +20,9 @@ class GitlabClient
     public $requests = [];
 
     /**
+     * @param   mixed  $method
+     * @param   mixed  $url
+     * @param   array<mixed>  $options
      * @return  object
      */
     public function request($method, $url, $options = [])

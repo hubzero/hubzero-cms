@@ -1466,7 +1466,9 @@ class Group extends Obj
     /**
      * Return serve up path
      *
+     * @param   string  $base
      * @param   string  $path
+     * @param   string  $type
      * @return  string
      */
     public function downloadLinkForPath($base = 'uploads', $path = '', $type = 'file')

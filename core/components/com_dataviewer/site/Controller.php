@@ -64,7 +64,10 @@ class Controller
         }
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $db_id
+     * @return void
+     */
     public static function taskView($db_id)
     {
         $view = 'spreadsheet';
@@ -92,7 +95,10 @@ class Controller
         $viewClass::render($dd);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $db_id
+     * @return void
+     */
     public static function taskData($db_id)
     {
         $modeClass = DvConfig::$dv_conf['settings']['mode_class'];
@@ -126,6 +132,7 @@ class Controller
     }
 
     /**
+     * @param   mixed  $dd
      * @return  bool|null
      */
     public static function authorize($dd)

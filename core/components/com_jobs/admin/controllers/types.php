@@ -122,6 +122,7 @@ class Types extends AdminController
     /**
      * Edit a type
      *
+     * @param   \Components\Jobs\Tables\Type|null  $row
      * @return  void
      */
     public function editTask($row = null)

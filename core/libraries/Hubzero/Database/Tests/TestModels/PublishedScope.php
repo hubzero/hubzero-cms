@@ -14,6 +14,8 @@ namespace Hubzero\Database\Tests\TestModels;
 class PublishedScope
 {
     /**
+     * @param   mixed  $query
+     * @param   mixed  $model
      * @return  void
      */
     public function apply($query, $model)

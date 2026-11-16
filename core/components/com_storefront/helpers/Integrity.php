@@ -14,6 +14,7 @@ namespace Components\Storefront\Helpers;
 class Integrity
 {
     /**
+     * @param   \Components\Storefront\Models\Sku  $sku
      * @return  \stdClass
      */
     public static function skuIntegrityCheck($sku)
@@ -55,6 +56,7 @@ class Integrity
     }
 
     /**
+     * @param   \Components\Storefront\Models\Collection|object  $collection
      * @return  \stdClass
      */
     public static function collectionIntegrityCheck($collection)

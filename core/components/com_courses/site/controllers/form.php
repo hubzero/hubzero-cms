@@ -108,6 +108,7 @@ class Form extends SiteController
     /**
      * Method to build and set the document title
      *
+     * @param   string  $append
      * @return  void
      */
     public function buildTitle($append = '')
@@ -249,6 +250,7 @@ class Form extends SiteController
     /**
      * Deploy form view
      *
+     * @param   object|null  $dep
      * @return  void
      */
     public function deployTask($dep = null)
@@ -359,6 +361,7 @@ class Form extends SiteController
     /**
      * Show deployment
      *
+     * @param   object|null  $dep
      * @return  void
      */
     public function showDeploymentTask($dep = null)

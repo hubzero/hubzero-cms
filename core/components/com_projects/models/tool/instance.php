@@ -36,6 +36,7 @@ class Instance extends Model
     /**
      * Constructor
      *
+     * @param   mixed  $parent
      * @return     void
      */
     public function __construct($oid, $parent = null)
@@ -64,6 +65,7 @@ class Instance extends Model
      * Returns a reference to the model
      *
      * @param      mixed $oid object ID
+     * @param   int|null  $parent
      * @return     object Todo
      */
     public static function &getInstance($oid = null, $parent = null)

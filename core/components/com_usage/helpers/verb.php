@@ -25,6 +25,9 @@ class Verb
      * @return  void
      */
 
+    /**
+     * @param   mixed  $params
+     */
     public static function celerySubmit($params)
     {
         /**
@@ -86,6 +89,7 @@ class Verb
     }
 
     /**
+     * @param   mixed  $params
      * @return  mixed
      */
     public static function metricsVerb($params)
@@ -190,6 +194,7 @@ class Verb
     }
 
     /**
+     * @param   mixed  $verbName
      * @return  int|array<int, mixed>
      */
     public static function getDateRange($verbName)

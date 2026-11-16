@@ -86,6 +86,7 @@ class Mailings extends AdminController
      * Compose / edit a draft mailing
      *
      * @param   object|null  $row
+     * @param   array<mixed>  $invalid
      * @return  void
      */
     public function editTask($row = null, $invalid = [])

@@ -18,6 +18,7 @@ class HtmxFlowHeaderBagStub
     }
 
     /**
+     * @param   string  $default
      * @return  mixed
      */
     public function get(string $name, $default = '')

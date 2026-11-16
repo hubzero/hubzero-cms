@@ -30,6 +30,7 @@ class CurationHistory extends Table
      * Get history records
      *
      * @param   integer|null  $vid  Publication Version ID
+     * @param   array<mixed>  $filters
      * @return  mixed    False if error, Object on success
      */
     public function getRecords($vid = null, $filters = [])
@@ -60,6 +61,7 @@ class CurationHistory extends Table
      * Get last history record
      *
      * @param   integer|null  $vid  Publication Version ID
+     * @param   int  $curator
      * @return  mixed    False if error, Object on success
      */
     public function getLastRecord($vid = null, $curator = 0)

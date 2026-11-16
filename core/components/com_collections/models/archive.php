@@ -571,6 +571,8 @@ class Archive extends Obj
     /**
      * Unfollow this collection
      *
+     * @param   mixed  $id
+     * @param   string  $what
      * @param   integer  $follower_id    ID of the follower
      * @param   string   $follower_type  Type of the follower [member, group]
      * @return  boolean

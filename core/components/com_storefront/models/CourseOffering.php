@@ -25,14 +25,20 @@ class CourseOffering extends Sku
         $this->setTrackInventory(0);
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $courseId
+     * @return void
+     */
     public function setCourseId($courseId)
     {
         $this->data->courseId = $courseId;
         $this->data->meta['courseId'] = $courseId;
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $offeringId
+     * @return void
+     */
     public function setOfferingId($offeringId)
     {
         $this->data->offeringId = $offeringId;

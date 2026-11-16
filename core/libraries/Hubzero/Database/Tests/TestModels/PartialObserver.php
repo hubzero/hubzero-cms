@@ -24,6 +24,7 @@ class PartialObserver
     }
 
     /**
+     * @param   string  $event
      * @return  bool
      */
     public static function wasCalled($event)
@@ -33,6 +34,7 @@ class PartialObserver
 
     // Only implementing creating - other events should not cause errors
     /**
+     * @param   mixed  $model
      * @return  void
      */
     public function creating($model)

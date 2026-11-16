@@ -129,6 +129,7 @@ class Extension extends Relational
     /**
      * Generates automatic modified by field value
      *
+     * @param   mixed  $data
      * @return  int
      */
     public function automaticModifiedBy($data)
@@ -176,6 +177,7 @@ class Extension extends Relational
     /**
      * Get language path
      *
+     * @param   mixed  $client_id
      * @return  string
      */
     public function path($client_id = 0)

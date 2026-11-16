@@ -349,6 +349,7 @@ class Messages extends AdminController
     /**
      * Delete one or more entries
      *
+     * @param   \Components\Messages\Models\Message  $message
      * @return  void
      */
     protected function mail($message)

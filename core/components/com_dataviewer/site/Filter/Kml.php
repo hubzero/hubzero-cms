@@ -10,7 +10,11 @@ namespace Components\Dataviewer\Site\Filter;
 
 class Kml
 {
-    /** @return void */
+    /**
+     * @param   mixed  $res
+     * @param   mixed  $dd
+     * @return void
+     */
     public static function filter($res, &$dd)
     {
         $data = $res['data'];
@@ -79,6 +83,7 @@ class Kml
     }
 
     /**
+     * @param   mixed  $cood
      * @return  float
      */
     public static function dms2dc($cood)

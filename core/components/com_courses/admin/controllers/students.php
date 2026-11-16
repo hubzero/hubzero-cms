@@ -171,6 +171,7 @@ class Students extends AdminController
     /**
      * Displays an edit form
      *
+     * @param   object|null  $model
      * @return  void
      */
     public function editTask($model = null)
@@ -225,6 +226,7 @@ class Students extends AdminController
     /**
      * Saves data to the database
      *
+     * @param   bool  $redirect
      * @return void
      */
     public function saveTask($redirect = true)

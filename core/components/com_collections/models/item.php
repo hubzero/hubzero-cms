@@ -356,6 +356,7 @@ class Item extends Base
      * Get tags on an item
      *
      * @param   string $as How to return data
+     * @param   int  $admin
      * @return  mixed Returns an array of tags by default
      */
     public function tags($as = 'array', $admin = 0)
@@ -383,6 +384,9 @@ class Item extends Base
     /**
      * Tag the entry
      *
+     * @param   mixed  $tags
+     * @param   mixed  $user_id
+     * @param   int  $admin
      * @return  boolean
      */
     public function tag($tags = null, $user_id = 0, $admin = 0)
@@ -399,6 +403,8 @@ class Item extends Base
      * Add a tag to the list
      *
      * @param   object|null $tag
+     * @param   int  $user_id
+     * @param   int  $admin
      * @return  mixed
      */
     public function addTag($tag = null, $user_id = 0, $admin = 0)

@@ -151,6 +151,7 @@ class Page extends Table
     /**
      * Get pages for a course
      *
+     * @param   mixed  $filters
      * @return     array<int, \stdClass>
      */
     public function find($filters = [])
@@ -182,6 +183,7 @@ class Page extends Table
     /**
      * Get the last page in the ordering
      *
+     * @param   int  $course_id
      * @param      int|string  $offering_id    Course alias (cn)
      * @return     string|null
      */
@@ -196,6 +198,7 @@ class Page extends Table
     /**
      * Record a page hit
      *
+     * @param   mixed  $page_id
      * @return     bool
      */
     public function hit($offering_id = null, $page_id = null)

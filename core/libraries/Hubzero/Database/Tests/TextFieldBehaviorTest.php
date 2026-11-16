@@ -73,6 +73,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
     /**
      * Retrieve a row property with case-insensitive fallback.
      *
+     * @param   mixed  $row
      * @return  mixed
      */
     private function rowValue($row, string $field)

@@ -223,6 +223,7 @@ class Post extends Base
     /**
      * Move a post
      *
+     * @param   mixed  $collection_id
      * @return  boolean True on success, false on error
      */
     public function move($collection_id)

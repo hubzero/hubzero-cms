@@ -381,6 +381,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Add users to the group
      *
+     * @param   mixed  $role
+     * @param   array<mixed>  $users
      * @return  bool
      **/
     public function add($role, $users = [])
@@ -443,6 +445,8 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Remove users form the group
      *
+     * @param   mixed  $role
+     * @param   array<mixed>  $users
      * @return  bool
      **/
     public function remove($role, $users = [])

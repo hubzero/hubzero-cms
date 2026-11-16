@@ -725,6 +725,7 @@ class Tickets extends SiteController
     /**
      * Displays a form for creating a new support ticket
      *
+     * @param   \Components\Support\Models\Ticket|null  $row
      * @return  void
      */
     public function newTask($row = null)
@@ -2487,11 +2488,11 @@ class Tickets extends SiteController
     /**
      * Generates a select list of names based off group membership
      *
-     * @param  $name        Select element 'name' attribute
-     * @param  $active      Selected option
-     * @param  $nouser      Flag to set first option to 'No user'
-     * @param  $javascript  Any inline JS to attach to the element
-     * @param  $group       The group to pull member names from
+     * @param  string  $name        Select element 'name' attribute
+     * @param  mixed  $active      Selected option
+     * @param  int  $nouser      Flag to set first option to 'No user'
+     * @param  string|null  $javascript  Any inline JS to attach to the element
+     * @param  mixed  $group       The group to pull member names from
      * @return string       HTML select list
      */
     private function userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')

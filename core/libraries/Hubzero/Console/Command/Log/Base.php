@@ -30,6 +30,7 @@ class Base
     /**
      * Check if given field is valid
      *
+     * @param   mixed  $field
      * @return  bool
      **/
     public static function isField($field)
@@ -97,6 +98,8 @@ class Base
     /**
      * Toggle field visibility
      *
+     * @param   mixed  $field
+     * @param   mixed  $status
      * @return  string|bool
      **/
     public static function toggle($field, $status = null)

@@ -180,6 +180,7 @@ class Assetgroups extends AdminController
     /**
      * Displays an edit form
      *
+     * @param   \Components\Courses\Models\Assetgroup|null  $model
      * @return  void
      */
     public function editTask($model = null)

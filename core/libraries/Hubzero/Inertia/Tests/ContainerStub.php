@@ -29,6 +29,9 @@ class ContainerStub implements ArrayAccess
         return $this->offsetGet($key);
     }
 
+    /**
+     * @param   \Hubzero\Inertia\InertiaService  $value
+     */
     public function set(string $key, $value): void
     {
         $this->offsetSet($key, $value);

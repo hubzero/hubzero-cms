@@ -56,6 +56,7 @@ class Certificate extends Base
      * Constructor
      *
      * @param   mixed $oid Integer (ID), string (alias), object or array
+     * @param   mixed  $course_id
      * @return  void
      */
     public function __construct($oid = null, $course_id = null)
@@ -93,6 +94,7 @@ class Certificate extends Base
      * Returns a reference to a certificate model
      *
      * @param   mixed  $oid ID (int) or alias (string)
+     * @param   mixed  $course_id
      * @return  object \Components\Courses\Models\Certificate
      */
     public static function &getInstance($oid = 0, $course_id = 0)

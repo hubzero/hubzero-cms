@@ -16,6 +16,8 @@ class Html
     /**
      * Sortable table header in "scripts for this host" view
      *
+     * @param   mixed  $MYREQUEST
+     * @param   mixed  $MY_SELF_WO_SORT
      * @param  string  $key    Sort key
      * @param  string  $name   Link name
      * @param  string  $extra  Extra data to append to URL

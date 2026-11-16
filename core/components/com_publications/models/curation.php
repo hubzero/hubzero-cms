@@ -481,6 +481,7 @@ class Curation extends Obj
     /**
      * Parse block
      *
+     * @param   string  $viewer
      * @param   string|null   $name     Who is viewing block content?
      * @param   string   $name     Block name
      * @param   integer  $blockId  Numeric block ID
@@ -2105,6 +2106,7 @@ class Curation extends Obj
     /**
      * Produce publication package
      *
+     * @param   bool  $bundleOverwrite
      * @return  boolean
      */
     public function package($bundleOverwrite = false)
@@ -2444,6 +2446,7 @@ class Curation extends Obj
     /**
      * Transfer content from one version to another
      *
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $old  Transfer from version record
      * @param   object   $new  Transfer to version record
      * @return  boolean

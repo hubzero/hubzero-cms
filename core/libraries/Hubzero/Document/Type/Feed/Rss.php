@@ -294,6 +294,7 @@ class Rss extends Renderer
     /**
      * Convert links in a text from relative to absolute
      *
+     * @param   mixed  $text
      * @return  string
      */
     private function relToAbs($text)

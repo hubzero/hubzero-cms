@@ -42,6 +42,7 @@ class Code extends Base
     /**
      * Constructor
      *
+     * @param   mixed  $section_id
      * @return     void
      */
     public function __construct($oid = null, $section_id = null)
@@ -67,6 +68,7 @@ class Code extends Base
      *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
      *
      * @param      mixed $oid ID (int) or alias (string)
+     * @param   mixed  $section_id
      * @return     object \Components\Courses\Models\Offering
      */
     public static function &getInstance($oid = null, $section_id = null)

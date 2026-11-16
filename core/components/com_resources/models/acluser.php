@@ -88,6 +88,7 @@ class AclUser extends Relational
     }
 
     /**
+     * @param   mixed  $resource_id
      * @return  mixed
      */
     public static function listUsers($resource_id)
@@ -102,7 +103,11 @@ class AclUser extends Relational
         return $aclusers;
     }
 
-    /** @return void */
+    /**
+     * @param   int  $resource_id
+     * @param   array<int, string>  $list
+     * @return void
+     */
     public static function removeUsers($resource_id, $list)
     {
         $database = App::get('db');
@@ -138,7 +143,11 @@ class AclUser extends Relational
         return;
     }
 
-    /** @return void */
+    /**
+     * @param   int  $resource_id
+     * @param   array<int, string>  $list
+     * @return void
+     */
     public static function addUsers($resource_id, $list)
     {
         $database = App::get('db');

@@ -406,6 +406,7 @@ class Html extends Obj
      * @param   boolean|int $usespecial
      * @param   boolean|int $usenumbers
      * @param   boolean|int $useletters
+     * @param   bool  $mixedcaps
      * @return  string   HTML
      */
     public static function generateCode(
@@ -902,6 +903,7 @@ class Html extends Obj
     /**
      * Get suggestions for new project members
      *
+     * @param   object  $model
      * @return  array<int, mixed>
      */
     public static function getSuggestions($model)
@@ -988,6 +990,7 @@ class Html extends Obj
      * Suggest alias name from title
      *
      * @param   string  $title
+     * @param   int  $maxLength
      * @return  string|false
      */
     public static function suggestAlias($title = '', $maxLength = 30)
@@ -1043,6 +1046,7 @@ class Html extends Obj
     /**
      * Get tabs
      *
+     * @param   mixed  $plugins
      * @return  array<mixed>
      */
     public static function getPluginNames(&$plugins)
@@ -1063,6 +1067,7 @@ class Html extends Obj
     /**
      * Get active tabs
      *
+     * @param   array<mixed>  $plugins
      * @return  array<int, mixed>
      */
     public static function getTabs(&$plugins)
@@ -1090,6 +1095,7 @@ class Html extends Obj
      *
      * @param   string|null  $projectAlias
      * @param   string       $case
+     * @param   bool  $exists
      * @return  string|false
      */
     public static function getProjectRepoPath($projectAlias = '', $case = 'files', $exists = true)

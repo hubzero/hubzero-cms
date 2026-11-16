@@ -167,6 +167,7 @@ class Offering extends Base
     /**
      * Constructor
      *
+     * @param   mixed  $course_id
      * @return     void
      */
     public function __construct($oid, $course_id = null)
@@ -202,6 +203,7 @@ class Offering extends Base
      *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
      *
      * @param   mixed  $oid  ID (int) or alias (string)
+     * @param   mixed  $course_id
      * @return  object
      */
     public static function &getInstance($oid = null, $course_id = null)
@@ -374,6 +376,8 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
+     * @param   array<mixed>  $filters
+     * @param   bool  $clear
      * @return     mixed
      */
     public function units($filters = [], $clear = false)
@@ -425,6 +429,7 @@ class Offering extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $user_id
      * @return     boolean
      */
     public function manager($user_id = null)
@@ -523,6 +528,7 @@ class Offering extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $user_id
      * @return     boolean
      */
     public function student($user_id = null)
@@ -564,6 +570,7 @@ class Offering extends Base
     /**
      * Get offering gradebook
      *
+     * @param   mixed  $oid
      * @return     object
      */
     public function gradebook($oid = null)
@@ -615,6 +622,8 @@ class Offering extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   array<mixed>  $filters
+     * @param   bool  $clear
      * @return     boolean
      */
     public function students($filters = [], $clear = false)
@@ -627,6 +636,7 @@ class Offering extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $user_id
      * @return     Member  the user's membership, empty if they have none
      */
     public function member($user_id = null)
@@ -802,6 +812,7 @@ class Offering extends Base
     /**
      * Check if the current user is enrolled
      *
+     * @param   mixed  $url
      * @return     boolean
      */
     public function page($url = null)
@@ -834,6 +845,8 @@ class Offering extends Base
      *   If index, it'll return the entry matching that index in the list
      *   If string, it'll return either a list of IDs or names
      *
+     * @param   array<mixed>  $filters
+     * @param   bool  $reload
      * @return     array<mixed>|string|null
      */
     public function pages($filters = [], $reload = false)
@@ -955,6 +968,8 @@ class Offering extends Base
     /**
      * Add one or more user IDs or usernames to the managers list
      *
+     * @param   mixed  $data
+     * @param   mixed  $role_id
      * @return    void
      */
     public function add($data = [], $role_id = 'student')
@@ -1045,6 +1060,8 @@ class Offering extends Base
     /**
      * Create a section linked to this offering
      *
+     * @param   string  $alias
+     * @param   int  $is_default
      * @return  boolean True on success, False on error
      */
     public function makeSection($alias = '__default', $is_default = 1)

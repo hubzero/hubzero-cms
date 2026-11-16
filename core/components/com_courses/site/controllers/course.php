@@ -409,6 +409,7 @@ class Course extends SiteController
     /**
      * Show a form for editing a course
      *
+     * @param   object|null  $offering
      * @return  void
      */
     public function newofferingTask($offering = null)

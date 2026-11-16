@@ -31,6 +31,7 @@ class DebugParityRequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function get(string $name, $default = null)
@@ -39,6 +40,7 @@ class DebugParityRequestStub
     }
 
     /**
+     * @param   mixed  $default
      * @return  mixed
      */
     public function server(string $name, $default = null)

@@ -65,7 +65,10 @@ class Boosts extends AdminController
             ->display();
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $boost
+     * @return void
+     */
     public function newTask($boost = null)
     {
         $boost = $boost ? $boost : Boost::blank();
@@ -92,7 +95,10 @@ class Boosts extends AdminController
         }
     }
 
-    /** @return void */
+    /**
+     * @param   mixed  $boost
+     * @return void
+     */
     public function editTask($boost = null)
     {
         $id = Request::getInt('id');

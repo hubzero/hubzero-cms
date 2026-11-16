@@ -14,6 +14,7 @@ use Hubzero\Facades\Lang;
 class ActivityLogPresenter
 {
     /**
+     * @param   mixed  $log
      * @return  \stdClass
      */
     public function parse($log)

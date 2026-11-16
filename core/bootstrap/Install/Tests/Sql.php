@@ -197,6 +197,7 @@ class Sql
      * @param   string  $table    Where it goes
      * @param   string  $named    The column list, if the statement gave one
      * @param   string  $payload  What is between the brackets
+     * @param   bool  $replace
      * @return  void
      */
     protected function insert($table, $named, $payload, $replace = false)

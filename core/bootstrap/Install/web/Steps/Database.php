@@ -19,6 +19,9 @@ class Database implements StepInterface
     private $errors = [];
     private $existingConfig = [];
 
+    /**
+     * @param   mixed  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;
@@ -160,6 +163,7 @@ class Database implements StepInterface
     /**
      * Test database connection
      *
+     * @param   array<string, mixed>  $config
      * @return  mixed
      */
     private function testConnection($config)
@@ -231,6 +235,7 @@ class Database implements StepInterface
     /**
      * Save database configuration
      *
+     * @param   array<string, mixed>  $config
      * @return  bool
      */
     private function saveConfig($config)

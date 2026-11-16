@@ -115,6 +115,7 @@ class PdfFormDeployment
     /**
      * Process form
      *
+     * @param   mixed  $formId
      * @return array<mixed>
      **/
     public static function forForm($formId)
@@ -188,6 +189,8 @@ class PdfFormDeployment
     /**
      * Get deployment results
      *
+     * @param   mixed  $key
+     * @param   mixed  $members
      * @return array<mixed>
      **/
     public function getResults($key = null, $members = null)
@@ -238,6 +241,8 @@ class PdfFormDeployment
     /**
      * Get respondent object
      *
+     * @param   mixed  $member_id
+     * @param   int  $attempt
      * @return object|false
      **/
     public function getRespondent($member_id, $attempt = 1)
@@ -259,6 +264,8 @@ class PdfFormDeployment
     /**
      * Load by ID
      *
+     * @param   mixed  $id
+     * @param   mixed  $section_id
      * @return object
      **/
     public static function load($id, $section_id = null)
@@ -269,6 +276,8 @@ class PdfFormDeployment
     /**
      * Load by Crumb
      *
+     * @param   mixed  $crumb
+     * @param   mixed  $section_id
      * @return object
      **/
     public static function fromCrumb($crumb, $section_id = null)
@@ -279,6 +288,8 @@ class PdfFormDeployment
     /**
      * Load by form id
      *
+     * @param   int  $formId
+     * @param   mixed  $section_id
      * @return object
      **/
     public static function latestFromFormId($formId, $section_id = null)
@@ -289,6 +300,8 @@ class PdfFormDeployment
     /**
      * Load deployment
      *
+     * @param   string  $where
+     * @param   mixed  $section_id
      * @return object
      **/
     private static function find($where, $section_id = null)
@@ -356,6 +369,7 @@ class PdfFormDeployment
     /**
      * Set ID
      *
+     * @param   mixed  $id
      * @return void
      **/
     public function setId($id)
@@ -366,6 +380,7 @@ class PdfFormDeployment
     /**
      * Sets the form id
      *
+     * @param   mixed  $formId
      * @return void
      **/
     public function setFormId($formId)
@@ -496,6 +511,8 @@ class PdfFormDeployment
     /**
      * Check if there are errors
      *
+     * @param   mixed  $col
+     * @param   bool  $update
      * @return bool
      **/
     public function hasErrors($col = null, $update = false)
@@ -542,6 +559,7 @@ class PdfFormDeployment
     /**
      * Get errors
      *
+     * @param   mixed  $field
      * @return array<mixed>
      **/
     public function getErrors($field)
@@ -552,6 +570,8 @@ class PdfFormDeployment
     /**
      * Create a deployment object from incomming form data
      *
+     * @param   mixed  $fid
+     * @param   array<mixed>  $data
      * @return object
      **/
     public static function fromFormData($fid, $data)
@@ -590,6 +610,7 @@ class PdfFormDeployment
     /**
      * Save a deployment
      *
+     * @param   mixed  $id
      * @return int
      **/
     public function save($id = null)

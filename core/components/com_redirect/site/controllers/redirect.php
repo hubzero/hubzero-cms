@@ -28,7 +28,8 @@ use Hubzero\Facades\App;
 class Redirect extends SiteController
 {
     /**
-     * @return  string|array<string>|null
+     * @param   string  $host
+     * @return  string|null
      */
     private function extractBaseDomain($host)
     {
@@ -50,6 +51,7 @@ class Redirect extends SiteController
      * PHP 8 an empty needle matches everything, so compare host names
      * exactly, ignoring case and any port in the Host header.
      *
+     * @param   string  $host
      * @return  bool
      */
     private function isHubHost($host)

@@ -2031,6 +2031,12 @@ class Forum extends Plugin
     /**
      * Email the mentioned users with a PHP html template
      *
+     * @param   array<int, mixed>  $emails
+     * @param   mixed  $comment
+     * @param   string  $url
+     * @param   mixed  $postAuthor
+     * @param   mixed  $groupAlias
+     * @param   mixed  $groupTitle
      * @return  bool|null
      */
     public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle)

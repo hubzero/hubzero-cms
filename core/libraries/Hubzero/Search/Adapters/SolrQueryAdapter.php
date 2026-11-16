@@ -100,6 +100,7 @@ class SolrQueryAdapter implements QueryInterface
      * Get MoreLikeThis
      *
      * @access public
+     * @param   mixed  $terms
      * @return object  the result set
      */
     public function getMoreLikeThis($terms)
@@ -313,6 +314,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param mixed $name
      * @param mixed $query
+     * @param   string  $tag
      * @access public
      * @return static
      */

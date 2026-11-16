@@ -317,8 +317,8 @@ class Video extends WikiMacro
      * Generate an absolute path to a file stored on the system
      * Assumes $file is relative path but, if $file starts with / then assumes absolute
      *
-     * @param      $file    Filename
-     * @param      $alt  Switches between relative and absolute path?
+     * @param      string  $file    Filename
+     * @param      bool  $alt  Switches between relative and absolute path?
      * @return     string
      */
     private function path($file, $alt = false)
@@ -478,7 +478,7 @@ class Video extends WikiMacro
      * Generate a link to a file
      * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
      *
-     * @param      $file  Filename
+     * @param      string  $file  Filename
      * @return     string
      */
     private function link($file)

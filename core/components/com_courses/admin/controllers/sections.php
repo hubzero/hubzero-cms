@@ -136,6 +136,7 @@ class Sections extends AdminController
     /**
      * Displays an edit form
      *
+     * @param   object|null  $model
      * @return  void
      */
     public function editTask($model = null)
@@ -202,6 +203,7 @@ class Sections extends AdminController
     /**
      * Saves changes to a course or saves a new entry if creating
      *
+     * @param   bool  $redirect
      * @return void
      */
     public function saveTask($redirect = true)
@@ -651,6 +653,7 @@ class Sections extends AdminController
     /**
      * Set the state of a course
      *
+     * @param   int  $state
      * @return void
      */
     public function stateTask($state = 0)

@@ -12,6 +12,7 @@ namespace Components\Dataviewer\Admin\Libs;
 class JsonFormat
 {
     /**
+     * @param   string|false  $json
      * @return  false|string
      */
     public static function jsonFormat($json)

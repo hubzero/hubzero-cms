@@ -62,6 +62,7 @@ class Middleware extends Obj
      * Get a session model
      *
      * @param   integer|null $sessnum
+     * @param   mixed  $permissions
      * @return  object
      */
     public function session($sessnum = null, $permissions = null)
@@ -79,6 +80,7 @@ class Middleware extends Obj
     /**
      * Set and get a specific zone
      *
+     * @param   int|null  $id
      * @return     mixed
      */
     public function zone($id = null)
@@ -175,6 +177,7 @@ class Middleware extends Obj
      *
      * @param      string $rtrn    Data type to return [count, list]
      * @param      array<mixed>  $filters Filters to apply to query
+     * @param   bool  $clear
      * @return     mixed Returns an integer or array depending upon format chosen
      */
     public function zones($rtrn = 'list', $filters = [], $clear = false)

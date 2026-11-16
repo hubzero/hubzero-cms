@@ -35,6 +35,9 @@ class HtmxAppStub
         return ($app && isset($app[$key])) ? $app[$key] : null;
     }
 
+    /**
+     * @param   mixed  $value
+     */
     public static function set(string $key, $value): void
     {
         self::$state[$key] = $value;

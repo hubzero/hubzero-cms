@@ -299,6 +299,7 @@ class Usage extends Plugin
      * @param   integer  $top       Value type (1 = country, 2 = domain, 3 = org)
      * @param   int|string|null  $tid       Stats ID for that tool
      * @param   string   $datetime  Timestamp YYYY-MM-DD
+     * @param   int  $prd
      * @return  array<int, \stdClass>
      */
     public static function getTopValue($id, $top, $tid, $datetime, $prd = 14)

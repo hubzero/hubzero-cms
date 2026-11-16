@@ -66,6 +66,7 @@ class Handler extends Relational
     /**
      * Returns the known handlers for a given file
      *
+     * @param   array<string>|string  $filename
      * @return  array<mixed>|bool
      **/
     public static function getLaunchUrlsForFile($filename)

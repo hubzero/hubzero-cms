@@ -55,6 +55,7 @@ class PaymentProvider
     /**
      * Set transaction details
      *
+     * @param   mixed  $transactionDetails
      * @return  void
      */
     public function setTransactionDetails($transactionDetails)

@@ -324,6 +324,7 @@ class Job extends Relational
     /**
      * Get the last run timestamp
      *
+     * @param   string  $format
      * @return  mixed
      */
     public function lastRun($format = 'Y-m-d H:i:s')
@@ -334,6 +335,7 @@ class Job extends Relational
     /**
      * Get the next run timestamp
      *
+     * @param   string  $format
      * @return  string
      */
     public function nextRun($format = 'Y-m-d H:i:s')

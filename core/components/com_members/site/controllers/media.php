@@ -567,6 +567,8 @@ class Media extends SiteController
     }
 
     /**
+     * @param   string  $assetType
+     * @param   mixed  $assetId
      * @return  false|string
      */
     protected function authorize($assetType = 'component', $assetId = null)

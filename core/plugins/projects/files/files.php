@@ -103,6 +103,7 @@ class Files extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
+     * @param   mixed  $alias
      * @return  array<mixed>  Plugin name and title
      */
     public function &onProjectAreas($alias = null)
@@ -182,6 +183,7 @@ class Files extends Plugin
      * @param   object  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string|array<mixed>|null  $areas   Plugins to return data
+     * @param   array<mixed>  $params
      * @return  array<mixed>|null   Return array of html
      */
     public function onProject($model, $action = '', $areas = null, $params = [])

@@ -24,6 +24,11 @@ class RecommendedTags
     public const ENDORSED_TAG = 2;
     public const REGULAR_TAG  = 1;
 
+    /**
+     * @param   mixed  $rid
+     * @param   mixed  $existing
+     * @param   array<mixed>  $opts
+     */
     public function __construct($rid, $existing, $opts = [])
     {
         $opts = array_merge([
@@ -149,6 +154,8 @@ class RecommendedTags
     }
 
     /**
+     * @param   string  $word
+     * @param   mixed  $word_min_len
      * @return  bool
      */
     private static function isStopWord($word, $word_min_len)

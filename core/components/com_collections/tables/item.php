@@ -107,6 +107,8 @@ class Item extends Table
     /**
      * Load a record by its alias and bind data to $this
      *
+     * @param   mixed  $object_id
+     * @param   string|null  $object_type
      * @return  boolean  True upon success, False if errors
      */
     public function loadType($object_id = null, $object_type = null)

@@ -36,6 +36,9 @@ class Settings implements StepInterface
         'Australia/Sydney' => 'Sydney',
     ];
 
+    /**
+     * @param   mixed  $installer
+     */
     public function __construct($installer)
     {
         $this->installer = $installer;
@@ -184,6 +187,7 @@ class Settings implements StepInterface
     /**
      * Save application config
      *
+     * @param   array<string, mixed>  $settings
      * @return  bool
      */
     private function saveAppConfig($settings)
@@ -268,6 +272,7 @@ class Settings implements StepInterface
     /**
      * Save mail config
      *
+     * @param   array<string, mixed>  $settings
      * @return  bool
      */
     private function saveMailConfig($settings)
@@ -298,6 +303,7 @@ class Settings implements StepInterface
     /**
      * Save meta config
      *
+     * @param   array<string, mixed>  $settings
      * @return  bool
      */
     private function saveMetaConfig($settings)

@@ -95,6 +95,7 @@ class Roles extends AdminController
     /**
      * Edit a role
      *
+     * @param   \Components\Courses\Tables\Role|null  $row
      * @return     void
      */
     public function editTask($row = null)

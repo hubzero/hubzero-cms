@@ -77,6 +77,9 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   mixed  $listener
+     * @param   mixed  $event
      */
     public function removeListener($listener, $event = null)
     {
@@ -85,6 +88,8 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   mixed  $event
      */
     public function getListeners($event = null)
     {
@@ -93,6 +98,9 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   mixed  $listener
+     * @param   mixed  $event
      */
     public function hasListener($listener, $event)
     {
@@ -101,6 +109,8 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param   array<mixed>  $args
      */
     public function trigger($event, $args = [])
     {

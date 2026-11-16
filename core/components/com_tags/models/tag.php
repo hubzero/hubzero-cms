@@ -432,6 +432,7 @@ class Tag extends Relational
      * Return a formatted timestamp
      *
      * @param   string  $as  What data to return
+     * @param   string  $key
      * @return  string
      */
     private function datetime($as = '', $key = 'created')

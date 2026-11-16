@@ -160,7 +160,9 @@ class Google extends Obj
      * Insert new file in remote (SYNC)
      *
      * @param   object|null   $apiService  Drive API service instance
+     * @param   mixed  $client
      * @param   string   $title       File title
+     * @param   mixed  $localPath
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
      * @param   array<mixed>    &$metadata   Collector array
@@ -276,8 +278,10 @@ class Google extends Obj
      * Update remote file with local change (SYNC)
      *
      * @param   object|null   $apiService  Drive API service instance
+     * @param   mixed  $client
      * @param   string   $id          Remote id
      * @param   string   $title       File title
+     * @param   mixed  $localPath
      * @param   string   $mimeType    MIME type
      * @param   string   $parentId    Parent id
      * @param   array<mixed>    &$metadata   Collector array
@@ -408,6 +412,7 @@ class Google extends Obj
      *
      * @param   object|null   $apiService  Drive API service instance
      * @param   string|int $id          Remote id
+     * @param   int  $folderId
      * @return  boolean
      */
     public static function deleteParent($apiService, $id = 0, $folderId = 0)
@@ -918,6 +923,7 @@ class Google extends Obj
      * @param   string  $folderID     Folder ID
      * @param   array<mixed>   $remotes      Array of remote items
      * @param   string  $path         Path
+     * @param   mixed  $since
      * @param   array<mixed>   $connections  Array of local-remote connections
      * @param   array<mixed>   &$duplicates  Collector array for duplicates
      * @return  mixed

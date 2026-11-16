@@ -114,6 +114,7 @@ class Gitlab
     /**
      * Search List of groups on Gitlab
      *
+     * @param   string  $groupName
      * @return  array<mixed>
      */
     public function groups($groupName)
@@ -151,6 +152,7 @@ class Gitlab
     /**
      * Search list of projects on gitlab
      *
+     * @param   string  $projectName
      * @return  array<mixed>
      */
     public function projects($projectName)
@@ -201,6 +203,8 @@ class Gitlab
     /**
      * Generic Get Request
      *
+     * @param   mixed  $resource
+     * @param   mixed  $ResourceName
      * @return  string
      */
     private function getRequest($resource, $ResourceName)
@@ -248,6 +252,9 @@ class Gitlab
     }
 
     /**
+     * @param   string  $method
+     * @param   string  $resource
+     * @param   mixed  $params
      * @return  array<mixed>
      */
     public function request($method, $resource, $params = [])

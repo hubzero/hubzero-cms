@@ -25,6 +25,7 @@ class Option
     /**
      * Constructor
      *
+     * @param   mixed  $oId
      * @return void
      */
     public function __construct($oId = false)
@@ -266,7 +267,10 @@ class Option
         }
     }
 
-    /** @return void */
+    /**
+     * @param   string  $msg
+     * @return void
+     */
     private function addMessage($msg)
     {
         $this->data->messages[] = $msg;

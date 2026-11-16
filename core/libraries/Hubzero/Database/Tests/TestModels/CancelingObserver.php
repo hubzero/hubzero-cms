@@ -26,6 +26,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   string  $event
      * @return  void
      */
     public static function cancelEvent($event)
@@ -34,6 +35,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   mixed  $event
      * @return  bool
      */
     public static function wasCalled($event)
@@ -42,6 +44,8 @@ class CancelingObserver
     }
 
     /**
+     * @param   string  $event
+     * @param   mixed  $model
      * @return  false|null
      */
     protected function handleEvent($event, $model)
@@ -56,6 +60,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  mixed
      */
     public function creating($model)
@@ -64,6 +69,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  mixed
      */
     public function updating($model)
@@ -72,6 +78,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  mixed
      */
     public function saving($model)
@@ -80,6 +87,7 @@ class CancelingObserver
     }
 
     /**
+     * @param   mixed  $model
      * @return  mixed
      */
     public function deleting($model)

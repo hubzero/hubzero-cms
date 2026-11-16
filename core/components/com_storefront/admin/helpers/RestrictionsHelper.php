@@ -175,6 +175,7 @@ class RestrictionsHelper
      *
      * @param   int  $uId  user ID
      * @param   int  $sId  SKU ID
+     * @param   string|null  $username
      * @return  int
      */
     public static function addPermittedSkuUser($uId, $sId, $username = null)
@@ -187,6 +188,7 @@ class RestrictionsHelper
      *
      * @param   int  $uId  user ID
      * @param   int  $sId  SKU ID
+     * @param   string|null  $username
      * @return  int
      */
     public static function addWhitelistedSkuUser($uId, $sId, $username = null)
@@ -200,6 +202,7 @@ class RestrictionsHelper
      * @param   string  $scope
      * @param   int     $uId      user ID
      * @param   int     $scopeId
+     * @param   mixed  $username
      * @return  int
      */
     private static function addUser($scope, $uId, $scopeId, $username = null)

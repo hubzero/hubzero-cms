@@ -26,6 +26,9 @@ class ContainerStub implements \ArrayAccess
         return $this->offsetGet($key);
     }
 
+    /**
+     * @param   \Hubzero\Htmx\HtmxService  $value
+     */
     public function set(string $key, $value): void
     {
         $this->offsetSet($key, $value);

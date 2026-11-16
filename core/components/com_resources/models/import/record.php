@@ -43,6 +43,7 @@ class Record extends Obj
      *
      * @param   mixed  $raw      Raw Resource data
      * @param   array<mixed>  $options  Import options
+     * @param   mixed  $mode
      * @return  void
      */
     public function __construct($raw, $options = [], $mode = 'UPDATE')

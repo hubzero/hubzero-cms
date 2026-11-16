@@ -69,6 +69,8 @@ class Role extends Relational
     /**
      * Member profile
      *
+     * @param   int  $uidNumber
+     * @param   int  $roleid
      * @return  object
      */
     public static function oneByUserAndRole($uidNumber, $roleid)
