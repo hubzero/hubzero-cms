@@ -33,7 +33,7 @@ class Share extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object   $publication
+     * @param   \Components\Publications\Models\Publication   $publication
      * @param   string   $version
      * @param   boolean  $extended
      * @return  array<mixed>
@@ -47,7 +47,7 @@ class Share extends Plugin
     /**
      * Return data on a publication view (this will be some form of HTML)
      *
-     * @param   object   $publication
+     * @param   \Components\Publications\Models\Publication   $publication
      * @param   string   $option
      * @param   array<mixed>    $areas
      * @param   string   $rtrn

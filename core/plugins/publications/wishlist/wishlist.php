@@ -35,7 +35,7 @@ class Wishlist extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object   $publication  Current publication
+     * @param   \Components\Publications\Models\Publication   $publication  Current publication
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
      * @return  array<string, mixed>
@@ -54,7 +54,7 @@ class Wishlist extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object   $publication  Current publication
+     * @param   \Components\Publications\Models\Publication   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   array|mixed    $areas        Active area(s)
      * @param   string   $rtrn         Data to be returned

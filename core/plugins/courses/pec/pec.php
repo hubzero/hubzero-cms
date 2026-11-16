@@ -41,8 +41,8 @@ class Pec extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param      object  $course
-     * @param      object  $offering
+     * @param      \Components\Courses\Models\Course  $course
+     * @param      \Components\Courses\Models\Offering  $offering
      * @param      object  $section
      * @return     string|null
      */

@@ -34,8 +34,8 @@ class Messages extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param  object $user   User
-     * @param  object $member Profile
+     * @param  \Hubzero\User\User $user   User
+     * @param  \Components\Members\Models\Member $member Profile
      * @return array<string, mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
@@ -57,8 +57,8 @@ class Messages extends Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param  object $user   User
-     * @param  object $member Profile
+     * @param  \Hubzero\User\User $user   User
+     * @param  \Components\Members\Models\Member $member Profile
      * @param  string $option Component name
      * @param  string|array<mixed> $areas  Plugins to return data
      * @return array<mixed>   Return array of html

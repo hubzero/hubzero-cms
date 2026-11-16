@@ -20,7 +20,7 @@ class Publications extends Plugin
      * Instantiate and registers a provider with the
      * OAI-PMH service
      *
-     * @param   object  $service
+     * @param   \Components\Oaipmh\Models\Service  $service
      * @return  void
      */
     public function onOaipmhProvider(&$service)

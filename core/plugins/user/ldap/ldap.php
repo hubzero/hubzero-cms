@@ -77,7 +77,7 @@ class Ldap extends Plugin
     /**
      * Method is called after user data is stored in the database
      *
-     * @param   object  $user  holds the new profile data (\Hubzero\User\User)
+     * @param   \Components\Members\Models\Member|\Hubzero\User\Profile  $user  The stored profile
      * @return  void
      */
     public function onAfterStoreProfile($user)
@@ -88,7 +88,7 @@ class Ldap extends Plugin
     /**
      * Method is called after user data is deleted from the database
      *
-     * @param   object  $user  holds the new profile data (\Hubzero\User\User)
+     * @param   \Hubzero\User\Profile  $user  holds the new profile data (\Hubzero\User\User)
      * @return  void
      */
     public function onAfterDeleteProfile($user)
@@ -99,29 +99,29 @@ class Ldap extends Plugin
     /**
      * Method is called after password data is stored in the database
      *
-     * @param   object  $user  holds the new password data (\Hubzero\User\Password)
+     * @param   \Hubzero\User\Password  $user  holds the new password data (\Hubzero\User\Password)
      * @return  void
      */
     public function onAfterStorePassword($user)
     {
-        \Hubzero\Utility\Ldap::syncUser($user->user_id);
+        \Hubzero\Utility\Ldap::syncUser($user->get('user_id'));
     }
 
     /**
      * Method is called after password data is deleted from the database
      *
-     * @param   object  $user  holds the new password data (\Hubzero\User\Password)
+     * @param   \Hubzero\User\Password  $user  holds the new password data (\Hubzero\User\Password)
      * @return  void
      */
     public function onAfterDeletePassword($user)
     {
-        \Hubzero\Utility\Ldap::syncUser($user->user_id);
+        \Hubzero\Utility\Ldap::syncUser($user->get('user_id'));
     }
 
     /**
      * Method is called after group data is stored in the database
      *
-     * @param   object  $group  holds the new group data (\Hubzero\User\Group)
+     * @param   \Components\Groups\Models\Orm\Group|\Hubzero\User\Group  $group  The stored group
      * @return  void
      */
     public function onAfterStoreGroup($group)

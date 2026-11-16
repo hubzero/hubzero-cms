@@ -34,7 +34,7 @@ class Markdown extends Plugin
      * Turns MarkDown to HTML
      *
      * @param   string  $context
-     * @param   object  $comment
+     * @param   \Components\Support\Models\Comment  $comment
      * @return  mixed
      */
     public function onCommentPrepare($context, &$comment)

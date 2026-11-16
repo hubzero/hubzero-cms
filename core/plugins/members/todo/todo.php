@@ -57,8 +57,8 @@ class Todo extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param  object $user   User
-     * @param  object $member Profile
+     * @param  \Hubzero\User\User $user   User
+     * @param  \Components\Members\Models\Member $member Profile
      * @return array<mixed>   Plugin name
      */
     public function &onMembersAreas($user, $member)
@@ -81,8 +81,8 @@ class Todo extends Plugin
     /**
      * Perform actions when viewing a member profile
      *
-     * @param  object $user   Current user
-     * @param  object $member Current member page
+     * @param  \Hubzero\User\User $user   Current user
+     * @param  \Components\Members\Models\Member $member Current member page
      * @param  string $option Start of records to pull
      * @param  array|mixed  $areas  Active area(s)
      * @return array<mixed>

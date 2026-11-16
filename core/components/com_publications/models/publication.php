@@ -42,6 +42,12 @@ use Hubzero\Facades\Request;
  * @property-read  int|string|null                 $license_type             Copied from the version
  * @property-read  string|null                     $license_text             Copied from the version
  * @property-read  string|null                     $curation                 Copied from the version (JSON)
+ * @property-read  string|null                     $published_up             Copied from the version
+ * @property-read  string|null                     $submitted                Copied from the version
+ * @property-read  string|null                     $accepted                 Copied from the version
+ * @property-read  string|null                     $modified                 Copied from the version
+ * @property-read  string                          $secret                   Copied from the version
+ * @property-read  string                          $alias                    Copied from the publication
  * @property  Tables\MasterType                    $type                     The master type, by masterType()
  * @property  Curation                             $_curationModel           By setCuration()
  * @property  \Hubzero\Config\Registry             $_config                  The component's parameters, by config()

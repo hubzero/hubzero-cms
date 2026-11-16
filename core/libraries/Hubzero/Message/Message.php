@@ -13,6 +13,10 @@ use Hubzero\Utility\Str;
 
 /**
  * Model class for a message
+ *
+ * @property  string|null  $component
+ * @property  string|null  $subject
+ * @property  string|null  $type
  */
 class Message extends Relational
 {

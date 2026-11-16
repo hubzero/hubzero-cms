@@ -90,7 +90,7 @@ class Languagecode extends Plugin
     /**
      * Injects language selection into a form
      *
-     * @param   object   $form  The form to be altered.
+     * @param   \Hubzero\Form\Form|mixed   $form  The form to be altered.
      * @param   object|array<mixed>  $data  The associated data for the form: an object, or empty
      * @return  boolean
      */

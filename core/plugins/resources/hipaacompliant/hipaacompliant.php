@@ -21,7 +21,7 @@ class Hipaacompliant extends Plugin
     /**
      * Event call before a resource is submitted
      *
-     * @param   object  $resource
+     * @param   \Components\Resources\Models\Entry  $resource
      * @return  string|null
      */
     public function onResourceBeforeSubmit(&$resource)
@@ -42,7 +42,9 @@ class Hipaacompliant extends Plugin
         }
 
         if ($compliant == 2) {
-            if (!$resource->group_owner || !in_array($resource->access, [4, 5])) {
+            // The raw column: group_owner itself goes through a transformer that
+            // always gives a Group object, so this check never failed
+            if (!$resource->get('group_owner') || !in_array($resource->get('access'), [4, 5])) {
                 return Lang::txt(
                     'If materials are marked as containing potentially sensitive data, the Resource must be private to '
                         . 'a group.',
@@ -50,10 +52,11 @@ class Hipaacompliant extends Plugin
             }
         }
 
-        $params = new \Hubzero\Config\Registry($resource->params);
+        // The stored parameters, not the transformed ones merged with the component's
+        $params = new \Hubzero\Config\Registry($resource->get('params'));
         $params->set('hipaacompliant', $compliant);
 
-        $resource->params = $params->toString();
+        $resource->set('params', $params->toString());
 
         return null;
     }

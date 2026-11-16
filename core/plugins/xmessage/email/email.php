@@ -30,8 +30,8 @@ class Email extends Plugin
      * Send a message to a user
      *
      * @param      array<mixed>   $from     Message 'from' data (e.g., name, address)
-     * @param      object  $xmessage The message to send
-     * @param      object  $user     User to send the message to
+     * @param      \Hubzero\Message\Message  $xmessage The message to send
+     * @param      \Hubzero\User\User  $user     User to send the message to
      * @param      string  $action   Messaging method (e.g., email, smstxt, etc.)
      * @return     boolean True if message was sent
      */

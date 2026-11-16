@@ -56,7 +56,7 @@ class Reviews extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object  $course
+     * @param   \Components\Courses\Models\Course  $course
      * @param   string|null  $active
      * @return  array<mixed>
      */

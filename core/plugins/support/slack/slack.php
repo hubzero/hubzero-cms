@@ -129,7 +129,7 @@ class Slack extends Plugin
     /**
      * Called after creating a ticket
      *
-     * @param   object  $ticket
+     * @param   \Components\Support\Models\Ticket  $ticket
      * @return  void
      */
     public function onTicketSubmission($ticket)
@@ -198,8 +198,8 @@ class Slack extends Plugin
     /**
      * Called after updating a ticket
      *
-     * @param   object  $ticket
-     * @param   object  $comment
+     * @param   \Components\Support\Models\Ticket  $ticket
+     * @param   \Components\Support\Models\Comment  $comment
      * @return  void
      */
     public function onTicketUpdate($ticket, $comment)

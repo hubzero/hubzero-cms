@@ -62,8 +62,8 @@ class Blog extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object  $user
-     * @param   object  $member
+     * @param   \Hubzero\User\User  $user
+     * @param   \Components\Members\Models\Member  $member
      * @return  array<mixed>
      */
     public function &onMembersAreas($user, $member)
@@ -80,8 +80,8 @@ class Blog extends Plugin
     /**
      * Perform actions when viewing a member profile
      *
-     * @param   object  $user    Current user
-     * @param   object  $member  Current member page
+     * @param   \Hubzero\User\User  $user    Current user
+     * @param   \Components\Members\Models\Member  $member  Current member page
      * @param   string  $option  Start of records to pull
      * @param   array|mixed   $areas   Active area(s)
      * @return  array<mixed>

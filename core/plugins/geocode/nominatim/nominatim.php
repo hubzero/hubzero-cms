@@ -24,7 +24,7 @@ class Nominatim extends Plugin
      * Return a geocode provider
      *
      * @param  string  $context
-     * @param  object  $adapter
+     * @param  \Http\Discovery\Psr18Client  $adapter
      * @param  boolean $ip
      * @return \Geocoder\Provider\Nominatim\Nominatim|null
      */

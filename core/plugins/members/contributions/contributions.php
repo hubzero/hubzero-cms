@@ -31,8 +31,8 @@ class Contributions extends Plugin
     /**
      * Perform actions when viewing a member profile
      *
-     * @param   object  $user    Current user
-     * @param   object  $member  Current member page
+     * @param   \Hubzero\User\User  $user    Current user
+     * @param   \Components\Members\Models\Member  $member  Current member page
      * @return  array<mixed>
      */
     public function &onMembersAreas($user, $member)
@@ -49,8 +49,8 @@ class Contributions extends Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  MembersProfile
+     * @param   \Hubzero\User\User  $user    User
+     * @param   \Components\Members\Models\Member  $member  MembersProfile
      * @param   string  $option  Component name
      * @param   string|array<mixed>  $areas   Plugins to return data
      * @return  array<mixed>   Return array of html

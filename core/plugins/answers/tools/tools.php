@@ -58,7 +58,7 @@ class Tools extends Plugin
     /**
      * Return a list of users to be notified of changes
      *
-     * @param   object  $row
+     * @param   \Components\Answers\Models\Question  $row
      * @return  array<mixed>|null
      */
     public function onQuestionNotify($row)

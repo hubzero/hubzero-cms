@@ -101,7 +101,7 @@ class Constantcontact extends Plugin
      * - Re-subscribes if user opts in (sendEmail == 2) and contact is unsubscribed
      * - Opts out if user opts out (sendEmail == 0) and contact is active
      *
-     * @param  object $user  The user profile (\Hubzero\User\User)
+     * @param  \Components\Members\Models\Member|\Hubzero\User\Profile $user  The user profile (\Hubzero\User\User)
      * @return void
      */
     public function onAfterStoreProfile($user)
@@ -161,7 +161,7 @@ class Constantcontact extends Plugin
      *
      * Removes the contact from Constant Contact (opts them out).
      *
-     * @param  object $user  The user profile (\Hubzero\User\User)
+     * @param  \Hubzero\User\Profile $user  The user profile (\Hubzero\User\User)
      * @return void
      */
     public function onAfterDeleteProfile($user)

@@ -200,8 +200,10 @@ class Tags extends \Hubzero\Base\Obj
 				AND t.admin=0
 				AND o.objectid=V.id
 				AND V.state=1
-				AND (V.publish_up IS NULL OR V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
-				AND (V.publish_down IS NULL OR V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
+				AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00'
+					OR V.published_up <= '$now')
+				AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00'
+					OR V.published_down >= '$now') ";
         if ($category) {
             $sql .= "AND r.category=" . $this->db->quote($category) . " ";
         }

@@ -93,7 +93,7 @@ class Feed extends Plugin
     /**
      * Event call to return count of items
      *
-     * @param   object  $model  Project
+     * @param   \Components\Projects\Models\Project  $model  Project
      * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
@@ -107,7 +107,7 @@ class Feed extends Plugin
     /**
      * Event call to return data for a specific project
      *
-     * @param   object  $model   Project model
+     * @param   \Components\Projects\Models\Project  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string|array<mixed>|null  $areas   Plugins to return data
      * @return  array<mixed>|null   Return array of html
@@ -745,7 +745,7 @@ class Feed extends Plugin
     /**
      * Event call to post an activity
      *
-     * @param   object|mixed   $model      Project to post to
+     * @param   \Components\Projects\Models\Project|mixed   $model      Project to post to
      * @param   string   $entry      Content to post
      * @param   integer  $managers   Manager sonly?
      * @param   integer  $posted_by  Who's posting? If not set, uses current user ID

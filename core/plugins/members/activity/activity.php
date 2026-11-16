@@ -38,8 +38,8 @@ class Activity extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param  object $user   Current user
-     * @param  object $member Member profile
+     * @param  \Hubzero\User\User $user   Current user
+     * @param  \Components\Members\Models\Member $member Member profile
      * @return array<string, mixed>
      */
     public function &onMembersAreas($user, $member)
@@ -59,8 +59,8 @@ class Activity extends Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param  object $user   User
-     * @param  object $member Members Profile
+     * @param  \Hubzero\User\User $user   User
+     * @param  \Components\Members\Models\Member $member Members Profile
      * @param  string $option Component name
      * @param  string|array<mixed> $areas  Plugins to return data
      * @return array<mixed>

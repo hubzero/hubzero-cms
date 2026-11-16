@@ -92,7 +92,7 @@ class Team extends Plugin
     /**
      * Event call to return count of items
      *
-     * @param   object  $model   Project
+     * @param   \Components\Projects\Models\Project  $model   Project
      * @return  array<mixed>   integer
      */
     public function &onProjectCount($model)
@@ -107,7 +107,7 @@ class Team extends Plugin
     /**
      * Event call to return data for a specific project
      *
-     * @param   object  $model   Project model
+     * @param   \Components\Projects\Models\Project  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string|array<mixed>|null  $areas   Plugins to return data
      * @return  array<mixed>|null   Return array of html

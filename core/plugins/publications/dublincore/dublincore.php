@@ -23,7 +23,7 @@ class Dublincore extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object   $publication  Current publication
+     * @param   \Components\Publications\Models\Publication   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   array<mixed>    $areas        Active area(s)
      * @param   string   $rtrn         Data to be returned
@@ -51,8 +51,8 @@ class Dublincore extends Plugin
 
         $nullDate = '0000-00-00 00:00:00';
 
-        if ($publication->publish_up && $publication->publish_up != $nullDate) {
-            Document::setMetaData('dc.date', Date::of($publication->publish_up)->toLocal('Y-m-d'));
+        if ($publication->published_up && $publication->published_up != $nullDate) {
+            Document::setMetaData('dc.date', Date::of($publication->published_up)->toLocal('Y-m-d'));
         }
         if ($publication->submitted && $publication->submitted != $nullDate) {
             Document::setMetaData('dc.date.submitted', Date::of($publication->submitted)->toLocal('Y-m-d'));

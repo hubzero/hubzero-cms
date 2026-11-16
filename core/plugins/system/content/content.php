@@ -34,7 +34,7 @@ class Content extends Plugin
      * Hook for after parsing route
      *
      * @param   object  $table
-     * @param   object  $model
+     * @param   \Hubzero\Database\Relational  $model
      * @return  void
      */
     public function onContentDestroy($table, $model)

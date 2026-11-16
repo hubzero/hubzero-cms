@@ -82,7 +82,7 @@ class Store extends Plugin
      * Return data on a resource view (this will be some form of HTML)
      *
      * @param   object   $course    Current resource
-     * @param   object   $offering
+     * @param   \Components\Courses\Models\Offering   $offering
      * @param   object   $section
      * @return  string|null
      */
@@ -116,7 +116,7 @@ class Store extends Plugin
     /**
      * Actions to perform after saving a course
      *
-     * @param      object  $model \Components\Courses\Models\Course
+     * @param      \Components\Courses\Models\Offering  $model \Components\Courses\Models\Course
      * @return     void
      */
     public function onOfferingSave($model)
@@ -187,7 +187,7 @@ class Store extends Plugin
     /**
      * Actions to perform after deleting a course
      *
-     * @param      object  $model \Components\Courses\Models\Course
+     * @param      \Components\Courses\Models\Offering  $model \Components\Courses\Models\Course
      * @return     void
      */
     public function onOfferingDelete($model)
@@ -208,7 +208,7 @@ class Store extends Plugin
     /**
      * Actions to perform after saving an offering
      *
-     * @param      object  $model \Components\Courses\Models\Offering
+     * @param      \Components\Courses\Models\Orm\Course|\Components\Courses\Models\Course  $model  The course
      * @return     void
      */
     public function onCourseSave($model)
@@ -221,7 +221,7 @@ class Store extends Plugin
     /**
      * Actions to perform after deleting an offering
      *
-     * @param      object  $model \Components\Courses\Models\Offering
+     * @param      \Components\Courses\Models\Orm\Course|\Components\Courses\Models\Course  $model  The course
      * @return     void
      */
     public function onCourseDelete($model)

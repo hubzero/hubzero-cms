@@ -141,7 +141,7 @@ class Discussions extends Plugin
     /**
      * Update any category associated with the assetgroup
      *
-     * @param   object  $assetgroup  \Components\Courses\Models\Assetgroup
+     * @param   \Components\Courses\Models\Assetgroup  $assetgroup  \Components\Courses\Models\Assetgroup
      * @return  mixed
      */
     public function onAssetgroupSave($assetgroup)
@@ -202,7 +202,7 @@ class Discussions extends Plugin
         $category->set('title', $assetgroup->get('title'));
 
         if ($assetgroup->get('title') == '--') {
-            $ag = ($assetgroup->assets() ? $assetgroup->assets()->fetch('first') : null);
+            $ag = $assetgroup->assets()->fetch('first');
 
             if ($ag) {
                 $category->set('title', $ag->get('title'));
@@ -225,7 +225,7 @@ class Discussions extends Plugin
     /**
      * Actions to perform after deleting an assetgroup
      *
-     * @param   object  $assetgroup  \Components\Courses\Models\Assetgroup
+     * @param   \Components\Courses\Models\Assetgroup  $assetgroup  \Components\Courses\Models\Assetgroup
      * @return  void
      */
     public function onAssetgroupDelete($assetgroup)
@@ -263,7 +263,7 @@ class Discussions extends Plugin
     /**
      * Update any section associated with the unit
      *
-     * @param   object  $unit  \Components\Courses\Models\Unit
+     * @param   \Components\Courses\Models\Unit  $unit  \Components\Courses\Models\Unit
      * @return  mixed
      */
     public function onUnitSave($unit)
@@ -293,7 +293,7 @@ class Discussions extends Plugin
     /**
      * Actions to perform after deleting a unit
      *
-     * @param   object  $unit  \Components\Courses\Models\Unit
+     * @param   \Components\Courses\Models\Unit  $unit  \Components\Courses\Models\Unit
      * @return  void
      */
     public function onUnitDelete($unit)
@@ -2935,7 +2935,7 @@ class Discussions extends Plugin
     /**
      * Remove all items associated with the gorup being deleted
      *
-     * @param   object  $course  Course being deleted
+     * @param   \Components\Courses\Models\Orm\Course|\Components\Courses\Models\Course  $course  Course being deleted
      * @return  string  Log of items removed
      */
     public function onCourseDelete($course)

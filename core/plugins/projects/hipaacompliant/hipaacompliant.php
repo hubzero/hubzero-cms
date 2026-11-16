@@ -22,7 +22,7 @@ class Hipaacompliant extends Plugin
     /**
      * Event call to return data for a specific project
      *
-     * @param   object  $model   Project model
+     * @param   \Components\Projects\Models\Project  $model   Project model
      * @param   string  $action  Plugin task
      * @param   string|null  $areas   Plugins to return data
      * @return  void

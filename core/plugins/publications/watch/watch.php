@@ -236,7 +236,7 @@ class Watch extends Plugin
     /**
      * Notify subscribers of new activity
      *
-     * @param   object  $publication  Publication model
+     * @param   \Components\Publications\Models\Publication|null  $publication  Publication model
      * @param   string  $activity
      * @return  void
      */

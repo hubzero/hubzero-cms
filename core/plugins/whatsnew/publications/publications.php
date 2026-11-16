@@ -55,7 +55,7 @@ class Publications extends Plugin
     /**
      * Pull a list of records that were created within the time frame ($period)
      *
-     * @param   object|mixed   $period      Time period to pull results for
+     * @param   \Components\Whatsnew\Helpers\Period|mixed   $period      Time period to pull results for
      * @param   mixed    $limit       Number of records to pull
      * @param   integer  $limitstart  Start of records to pull
      * @param   array<mixed>|null    $areas       Active area(s)

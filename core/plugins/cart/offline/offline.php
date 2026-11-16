@@ -49,7 +49,7 @@ class Offline extends Plugin
      * On selected payment
      *
      * @param   object  $transaction
-     * @param   object  $user
+     * @param   \Hubzero\User\User  $user
      * @return  bool|array<mixed>
      */
     public function onSelectedPayment($transaction, $user)

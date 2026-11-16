@@ -37,9 +37,9 @@ $this->css('compare.css');
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->lft->isPublished()) {
-                                $dt = $this->lft->get('publish_up');
+                                $dt = $this->lft->get('published_up');
                                 if (!$dt || $dt == '0000-00-00 00:00:00') {
-                                    $dt = $this->lft->get('approved');
+                                    $dt = $this->lft->get('accepted');
                                     if (!$dt || $dt == '0000-00-00 00:00:00') {
                                         $dt = $this->lft->get('submitted');
                                         if (!$dt || $dt == '0000-00-00 00:00:00') {
@@ -69,9 +69,9 @@ $this->css('compare.css');
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->rgt->isPublished()) {
-                                $dt = $this->rgt->get('publish_up');
+                                $dt = $this->rgt->get('published_up');
                                 if (!$dt || $dt == '0000-00-00 00:00:00') {
-                                    $dt = $this->rgt->get('approved');
+                                    $dt = $this->rgt->get('accepted');
                                     if (!$dt || $dt == '0000-00-00 00:00:00') {
                                         $dt = $this->rgt->get('submitted');
                                         if (!$dt || $dt == '0000-00-00 00:00:00') {
