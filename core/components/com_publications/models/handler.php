@@ -28,14 +28,14 @@ class Handler extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object|null
+     * @var  Handlers|null
      */
     protected $parent = null;
 
     /**
      * Constructor
      *
-     * @param   object|null  $parent
+     * @param   Handlers|null  $parent
      * @return  void
      */
     public function __construct($parent = null)

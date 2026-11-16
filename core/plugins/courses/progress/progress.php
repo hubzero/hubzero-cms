@@ -28,7 +28,7 @@ class Progress extends Plugin
      */
     protected $base;
     /**
-     * @var  object|null
+     * @var  \Components\Courses\Models\Course|null
      */
     protected $course;
     /** @var \Hubzero\Database\Driver|null */
@@ -52,8 +52,8 @@ class Progress extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */
@@ -266,7 +266,9 @@ class Progress extends Plugin
             // Get the grades
             $grades = $this->course->offering()->gradebook()->grades(['unit', 'course']);
             $progress = $this->course->offering()->gradebook()->progress($member_ids);
-            $passing = $this->course->offering()->gradebook()->passing($member_ids);
+            // passing() reads only a single member id, so the list was taken as its
+            // "section only" flag; the section's results are what it gave
+            $passing = $this->course->offering()->gradebook()->passing();
             $recognitions = $this->course->offering()->gradebook()->isEligibleForRecognition($member_ids);
         }
 

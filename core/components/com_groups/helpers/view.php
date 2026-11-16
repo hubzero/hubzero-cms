@@ -46,7 +46,7 @@ class View
     /**
      * Get Active Group Tab
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  string
      */
     public static function getTab($group)
@@ -103,7 +103,7 @@ class View
     /**
      * Get "Before" group content
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  array<mixed>
      */
     public static function getBeforeSectionsContent($group)
@@ -125,7 +125,7 @@ class View
     /**
      * Get group plugins sections
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  array<mixed>
      */
     public static function getSectionsContent($group)
@@ -177,7 +177,7 @@ class View
     /**
      * Display Active Tab Title, next to group name
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  string
      */
     public static function displayTab($group)
@@ -219,7 +219,7 @@ class View
     /**
      * Display group menu
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   string  $classOrId
      * @return  string
      */
@@ -258,7 +258,7 @@ class View
     /**
      * Output menu
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   array<mixed>   $pageArray
      * @return  string
      */
@@ -308,7 +308,7 @@ class View
     /**
      * Display "Before" group content
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return   void
      */
     public static function displayBeforeSectionsContent($group)
@@ -325,7 +325,7 @@ class View
     /**
      * Display group content based on sections and active tab
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   string|null  $overviewSection
      * @return  string
      */
@@ -405,7 +405,7 @@ class View
     /**
      * Display group toolbar
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $classOrId
      * @param   boolean  $displayLogoutLink
      * @return  string
@@ -482,7 +482,7 @@ class View
     /**
      * Get list of stylesheets for page
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  array<mixed>
      */
     public static function getPageCss($group)
@@ -564,7 +564,7 @@ class View
     /**
      * Check User Authorization
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   boolean  $checkOnlyMembership
      * @return  mixed
      */
@@ -592,7 +592,7 @@ class View
     /**
      * Attach Custom Error Handler/Page if we can
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  void
      */
     public static function attachCustomErrorHandler($group)
@@ -670,7 +670,7 @@ class View
     /**
      * Display Super Group Login
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  string
      */
     public static function superGroupLogin($group)
@@ -704,7 +704,7 @@ class View
     /**
      * Display Super Group Components
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   string  $tab
      * @return  string|null
      */
@@ -760,10 +760,8 @@ class View
 
         // if super group add super group folder
         // to available paths
-        if ($group->isSuperGroup()) {
-            $base = $group->getBasePath();
-            $view->addTemplatePath(PATH_APP . $base . DS . 'template');
-        }
+        $base = $group->getBasePath();
+        $view->addTemplatePath(PATH_APP . $base . DS . 'template');
 
         $view->set('content', $componentContent);
         return $view->loadTemplate();
@@ -772,7 +770,7 @@ class View
     /**
      * Display Super Group Pages
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  string|null
      */
     public static function superGroupPhpPages($group)
@@ -864,10 +862,8 @@ class View
 
         // if super group add super group folder
         // to available paths
-        if ($group->isSuperGroup()) {
-            $base = $group->getBasePath();
-            $view->addTemplatePath(PATH_APP . $base . DS . 'template');
-        }
+        $base = $group->getBasePath();
+        $view->addTemplatePath(PATH_APP . $base . DS . 'template');
 
         $view->set('content', $phpPageContent);
         return $view->loadTemplate();

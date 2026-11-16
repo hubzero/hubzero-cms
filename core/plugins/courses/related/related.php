@@ -28,7 +28,7 @@ class Related extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param      object  $course Current course
+     * @param      \Components\Courses\Models\Course  $course Current course
      * @return     string
      */
     public function onCourseViewAfter($course)

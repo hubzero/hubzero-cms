@@ -31,8 +31,8 @@ class Dashboard extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object|null
      */

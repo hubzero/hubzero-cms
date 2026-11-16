@@ -28,12 +28,12 @@ class Search extends Plugin
      * Trigger onAddIndex to update search index.
      *
      * @param   object  $before  group object before any changes
-     * @param   object  $group   group object including changes made during most recent save.
+     * @param   \Hubzero\User\Group  $group   group object including changes made during most recent save.
      * @return  void
      */
     public function onGroupAfterSave($before, $group)
     {
-        $groupId = $group->gidNumber;
+        $groupId = $group->get('gidNumber');
 
         $ormGroup = \Components\Groups\Models\Orm\Group::one($groupId);
         $attributes = $ormGroup->getAttributes();

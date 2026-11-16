@@ -45,7 +45,7 @@ class Projects extends Plugin
      */
     protected $authorized;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -121,7 +121,7 @@ class Projects extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -255,7 +255,7 @@ class Projects extends Plugin
     /**
      * On after group membership changes - re-sync with projects
      *
-     * @param   object  $group  Current group
+     * @param   \Hubzero\User\Group  $group  Current group
      * @return  void
      */
     public function onAfterStoreGroup($group)

@@ -33,7 +33,7 @@ class Collections extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -104,7 +104,7 @@ class Collections extends Plugin
     /**
      * Remove any associated data when group is deleted
      *
-     * @param   object  $group  Group being deleted
+     * @param   \Hubzero\User\Group  $group  Group being deleted
      * @return  string  Log of items removed
      */
     public function onGroupDelete($group)
@@ -158,7 +158,7 @@ class Collections extends Plugin
     /**
      * Return a count of items that will be removed when group is deleted
      *
-     * @param   object  $group  Group to delete
+     * @param   \Hubzero\User\Group  $group  Group to delete
      * @return  string
      */
     public function onGroupDeleteCount($group)
@@ -195,7 +195,7 @@ class Collections extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull

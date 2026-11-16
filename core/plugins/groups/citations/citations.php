@@ -61,7 +61,7 @@ class Citations extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -147,7 +147,7 @@ class Citations extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -1564,7 +1564,7 @@ class Citations extends Plugin
 
         // see if we have members too
         $config = json_decode($this->group->get('params'));
-        $members = $this->group->members;
+        $members = $this->group->get('members');
 
         // get the ones for this group
         if (isset($config->display) && $config->display == 'member') {
@@ -1736,7 +1736,7 @@ class Citations extends Plugin
     /**
      * Return a list of citations for a specific user
      *
-     * @param   object  $group    Current group
+     * @param   \Hubzero\User\Group  $group    Current group
      * @param   object  $profile  USer profile
      * @return  string|null
      */

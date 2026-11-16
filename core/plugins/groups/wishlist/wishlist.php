@@ -39,7 +39,7 @@ class Wishlist extends Plugin
      */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -100,7 +100,7 @@ class Wishlist extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -453,7 +453,7 @@ class Wishlist extends Plugin
     /**
      * Return count of items that will be deleted when group is deleted
      *
-     * @param   object  $group  Group being deleted
+     * @param   \Hubzero\User\Group  $group  Group being deleted
      * @return  string
      */
     public function onGroupDeleteCount($group)
@@ -481,7 +481,7 @@ class Wishlist extends Plugin
     /**
      * Delete any associated wishes & lists when group is deleted
      *
-     * @param   object  $group  Group being deleted
+     * @param   \Hubzero\User\Group  $group  Group being deleted
      * @return  string  Log of items removed
      */
     public function onGroupDelete($group)

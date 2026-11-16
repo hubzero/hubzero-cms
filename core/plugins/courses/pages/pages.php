@@ -41,8 +41,8 @@ class Pages extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component'
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component'
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */
@@ -50,8 +50,8 @@ class Pages extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component'
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component'
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */
@@ -74,21 +74,22 @@ class Pages extends Plugin
         }
 
         // Section specific pages
-        $total = $offering->pages([
+        // Each call with 'count' gives a number
+        $total = (int) $offering->pages([
             'count'       => true,
             'section_id'  => $offering->section()->get('id'),
             'active'      => 1,
         ], true);
 
         // Offering specific pages
-        $total += $offering->pages([
+        $total += (int) $offering->pages([
             'count'       => true,
             'section_id'  => 0,
             'active'      => 1,
         ], true);
 
         // All course pages
-        $total += $offering->pages([
+        $total += (int) $offering->pages([
             'count'       => true,
             'course_id'   => 0,
             'offering_id' => 0,

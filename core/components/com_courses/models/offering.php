@@ -853,7 +853,7 @@ class Offering extends Base
      *
      * @param   array<mixed>  $filters
      * @param   bool  $reload
-     * @return     array<mixed>|string|null
+     * @return     array<mixed>|int|null  The pages, or their number when the filters ask for a count
      */
     public function pages($filters = [], $reload = false)
     {
@@ -870,7 +870,7 @@ class Offering extends Base
         if (isset($filters['count']) && $filters['count']) {
             $tbl = new Tables\Page($this->db);
 
-            return $tbl->count($filters);
+            return (int) $tbl->count($filters);
         }
 
         if (!isset($this->pages) || $reload) {

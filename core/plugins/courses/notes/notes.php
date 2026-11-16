@@ -37,22 +37,22 @@ class Notes extends Plugin
     /**
      * Course object
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Course|null
      */
     protected $course = null;
 
     /**
      * Offering object
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Offering|null
      */
     protected $offering = null;
 
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */
@@ -60,8 +60,8 @@ class Notes extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object|null
      */
@@ -150,7 +150,7 @@ class Notes extends Plugin
     /**
      * After lecture event
      *
-     * @param   object  $course
+     * @param   \Components\Courses\Models\Course  $course
      * @param   object  $unit
      * @param   object  $lecture
      * @return  string|null

@@ -22,7 +22,7 @@ use Hubzero\Facades\User;
 class Memberoptions extends Plugin
 {
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
 
@@ -54,7 +54,7 @@ class Memberoptions extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -99,7 +99,7 @@ class Memberoptions extends Plugin
     /**
      * Edit settings
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   \Hubzero\User\User   $user
      * @param   integer  $recvEmailOptionID
      * @param   integer  $recvEmailOptionValue
@@ -128,7 +128,7 @@ class Memberoptions extends Plugin
     /**
      * Save settings
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   \Hubzero\User\User   $user
      * @param   integer  $recvEmailOptionID
      * @param   integer  $recvEmailOptionValue

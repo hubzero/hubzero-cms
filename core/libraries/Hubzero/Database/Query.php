@@ -103,7 +103,7 @@ class Query
     /**
      * The query syntax
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Drivers\Base\BaseSqlSyntax|null
      **/
     protected $syntax = null;
 
@@ -5192,7 +5192,7 @@ class Query
      * Resolve and validate the concrete syntax class for the current connection.
      *
      * @param   string  $syntaxName
-     * @return  string
+     * @return  class-string<\Hubzero\Database\Drivers\Base\BaseSqlSyntax>
      */
     private function resolveSyntaxClass(string $syntaxName): string
     {
@@ -5229,7 +5229,7 @@ class Query
      *
      * @param   string  $syntaxClass
      * @param   string  $originalName
-     * @return  string
+     * @return  class-string<\Hubzero\Database\Drivers\Base\BaseSqlSyntax>
      */
     private function validateSyntaxClass(string $syntaxClass, string $originalName): string
     {

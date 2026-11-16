@@ -37,7 +37,7 @@ class Announcements extends Plugin
      */
     protected $authorized;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -112,7 +112,7 @@ class Announcements extends Plugin
     /**
      * Return content that is to be displayed before group main area
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   string  $authorized
      * @return  string
      */
@@ -165,7 +165,7 @@ class Announcements extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -657,7 +657,7 @@ class Announcements extends Plugin
      * Email Announcement
      *
      * @param   object  $announcement
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @return  boolean
      */
     public static function send($announcement, $group)
@@ -746,7 +746,7 @@ class Announcements extends Plugin
     /**
      * Display a list of all announcements
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $active
      * @param   integer  $start
      * @param   integer  $limit
@@ -798,7 +798,7 @@ class Announcements extends Plugin
     /**
      * Create a new record
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $active
      * @return  \stdClass|null
      */
@@ -875,7 +875,7 @@ class Announcements extends Plugin
     /**
      * Read a single record
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $active
      * @param   integer  $id
      * @return  \stdClass|null
@@ -901,7 +901,7 @@ class Announcements extends Plugin
     /**
      * Update a record
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $active
      * @param   integer  $id
      * @return  \stdClass|null
@@ -988,7 +988,7 @@ class Announcements extends Plugin
     /**
      * Delete a single record
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $active
      * @param   integer  $id
      * @return  object|null|bool

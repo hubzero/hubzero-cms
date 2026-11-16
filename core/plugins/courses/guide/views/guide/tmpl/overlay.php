@@ -17,7 +17,11 @@ defined('_HZEXEC_') or die();
 /**
  * What this template is given.
  *
- * @var \Hubzero\Plugin\View&object{course: mixed, offering: mixed, plugin: mixed} $this
+ * @var \Hubzero\Plugin\View&object{
+ *     course: \Components\Courses\Models\Course,
+ *     offering: \Components\Courses\Models\Offering,
+ *     plugin: mixed,
+ * } $this
  */
 
 $plugins = Event::trigger('courses.onCourse', [

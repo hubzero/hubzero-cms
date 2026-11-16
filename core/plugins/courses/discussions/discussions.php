@@ -51,12 +51,12 @@ class Discussions extends Plugin
     protected $autoloadLanguage = true;
 
     /**
-     * @var object|null
+     * @var \Components\Courses\Models\Course|null
      */
     protected $course = null;
 
     /**
-     * @var object|null
+     * @var \Components\Courses\Models\Offering|null
      */
     protected $offering = null;
 
@@ -321,8 +321,8 @@ class Discussions extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */
@@ -522,7 +522,7 @@ class Discussions extends Plugin
     /**
      * Set redirect and message
      *
-     * @param   object  $course
+     * @param   \Components\Courses\Models\Course  $course
      * @param   object  $unit
      * @param   \Components\Courses\Models\Assetgroup  $lecture
      * @return  string
@@ -1476,8 +1476,8 @@ class Discussions extends Plugin
     /**
      * Display content for dashboard
      *
-     * @param   object  $course    \Components\Courses\Models\Course
-     * @param   object  $offering  \Components\Courses\Models\Offering
+     * @param   \Components\Courses\Models\Course  $course    \Components\Courses\Models\Course
+     * @param   \Components\Courses\Models\Offering  $offering  \Components\Courses\Models\Offering
      * @return  string
      */
     public function onCourseDashboard($course, $offering)

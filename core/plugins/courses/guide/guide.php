@@ -36,8 +36,8 @@ class Guide extends Plugin
     /**
      * Event call after course outline
      *
-     * @param   object  $course    Current course
-     * @param   object  $offering  Current offering
+     * @param   \Components\Courses\Models\Course  $course    Current course
+     * @param   \Components\Courses\Models\Offering  $offering  Current offering
      * @return  string|null
      */
     public function onCourseAfterOutline($course, $offering)
@@ -66,8 +66,8 @@ class Guide extends Plugin
     /**
      * Return data on a course view (this will be some form of HTML)
      *
-     * @param   object   $course    Current course
-     * @param   object   $offering  Name of the component
+     * @param   \Components\Courses\Models\Course   $course    Current course
+     * @param   \Components\Courses\Models\Offering   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
      * @return  object
      */

@@ -36,7 +36,7 @@ class Blog extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
     /**
@@ -109,7 +109,7 @@ class Blog extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param   object   $group       Current group
+     * @param   \Hubzero\User\Group   $group       Current group
      * @param   string   $option      Name of the component
      * @param   string   $authorized  User's authorization level
      * @param   integer  $limit       Number of records to pull
@@ -199,7 +199,7 @@ class Blog extends Plugin
             $this->database   = App::get('db');
 
             //get the plugins params
-            $this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->pluginName);
+            $this->params = \Hubzero\Plugin\Params::getParams($group->get('gidNumber'), 'groups', $this->pluginName);
 
             if ($authorized == 'manager' || $authorized == 'admin') {
                 $this->params->set('access-edit-comment', true);
@@ -278,7 +278,7 @@ class Blog extends Plugin
     /**
      * Remove any associated data when group is deleted
      *
-     * @param   object  $group  Group being deleted
+     * @param   \Hubzero\User\Group  $group  Group being deleted
      * @return  string  Log of items removed
      */
     public function onGroupDelete($group)
@@ -313,7 +313,7 @@ class Blog extends Plugin
     /**
      * Return a count of items that will be removed when group is deleted
      *
-     * @param   object  $group  Group to delete
+     * @param   \Hubzero\User\Group  $group  Group to delete
      * @return  string
      */
     public function onGroupDeleteCount($group)

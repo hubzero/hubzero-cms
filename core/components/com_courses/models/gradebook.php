@@ -164,7 +164,7 @@ class GradeBook extends Base
      * criteria on assets where it can be tracked (ex: videos, where we can track an
      * entire view, or an exam, where we know when they've actually finished it).
      *
-     * @param      int|null $member_id
+     * @param      int|array<mixed>|null $member_id
      * @return     array<mixed> $progress
      */
     public function progress($member_id = null)
@@ -571,7 +571,7 @@ class GradeBook extends Base
     /**
      * Method to check for expired exams that students did not take and add 0's to the gradebook as appropriate
      *
-     * @param      int|null $member_id (optional)
+     * @param      int|array<mixed>|null $member_id (optional)
      * @return     void
      **/
     public function refresh($member_id = null)

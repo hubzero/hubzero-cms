@@ -25,7 +25,7 @@ use Hubzero\Facades\User;
 class Resources extends Plugin
 {
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\Group|null
      */
     protected $group;
 
@@ -114,7 +114,7 @@ class Resources extends Plugin
     /**
      * Return data on a group view (this will be some form of HTML)
      *
-     * @param      object  $group      Current group
+     * @param      \Hubzero\User\Group  $group      Current group
      * @param      string  $option     Name of the component
      * @param      string  $authorized User's authorization level
      * @param      integer $limit      Number of records to pull
@@ -306,7 +306,7 @@ class Resources extends Plugin
         switch ($return) {
             case 'html':
                 // If we have a specific ID and we're a supergroup, serve a resource page inside supergroup template
-                if (Request::getString('id', Request::getString('alias', null)) && $this->group->type == 3) {
+                if (Request::getString('id', Request::getString('alias', null)) && $this->group->get('type') == 3) {
                     // Load neccesities for com_resources controller
                     $lang = App::get('language');
                     $lang->load('com_resources', Component::path('com_resources') . DS . 'site');
@@ -376,7 +376,7 @@ class Resources extends Plugin
     /**
      * Remove any associated resources when group is deleted
      *
-     * @param      object $group Group being deleted
+     * @param      \Hubzero\User\Group $group Group being deleted
      * @return     string Log of items removed
      */
     public function onGroupDelete($group)
@@ -411,7 +411,7 @@ class Resources extends Plugin
     /**
      * Return a count of items that will be removed when group is deleted
      *
-     * @param      object $group Group to delete
+     * @param      \Hubzero\User\Group $group Group to delete
      * @return     string
      */
     public function onGroupDeleteCount($group)
@@ -478,7 +478,7 @@ class Resources extends Plugin
     /**
      * Retrieve records for items associated with this group
      *
-     * @param   object   $group       Group that owns the records
+     * @param   \Hubzero\User\Group   $group       Group that owns the records
      * @param   bool|string     $authorized  Authorization level
      * @param   mixed    $limit       SQL record limit
      * @param   integer  $limitstart  SQL record limit start
@@ -601,7 +601,7 @@ class Resources extends Plugin
 
             // Loop through the results and set each item's HREF
             foreach ($rows as $key => $row) {
-                if ($this->group->type == '3') {
+                if ($this->group->get('type') == '3') {
                     if ($row->alias) {
                         $href = Route::url(
                             'index.php?option=com_groups&cn='

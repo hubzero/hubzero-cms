@@ -38,14 +38,14 @@ class Block extends Obj
     /**
      * Reference to the object that instantiated the element
      *
-     * @var  object|null
+     * @var  Blocks|null
      */
     protected $parent = null;
 
     /**
      * Constructor
      *
-     * @param   object|null  $parent
+     * @param   Blocks|null  $parent
      * @return  void
      */
     public function __construct($parent = null)

@@ -81,7 +81,7 @@ class Store extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object   $course    Current resource
+     * @param   \Components\Courses\Models\Course   $course    Current resource
      * @param   \Components\Courses\Models\Offering   $offering
      * @param   object   $section
      * @return  string|null
