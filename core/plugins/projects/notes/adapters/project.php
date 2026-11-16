@@ -137,7 +137,7 @@ class Project extends Base
     /**
      * Get permissions for a user
      *
-     * @param   object  $page
+     * @param   \Components\Wiki\Models\Page  $page
      * @return  boolean
      */
     public function authorise($page)

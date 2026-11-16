@@ -127,8 +127,8 @@ trait AssetAware
     /**
      * Modify paths if in a super group
      *
-     * @param   object  $asset  Asset
-     * @return  object
+     * @param   \Hubzero\Document\Asset\File  $asset  Asset
+     * @return  \Hubzero\Document\Asset\File
      */
     protected function isSuperGroupAsset($asset)
     {

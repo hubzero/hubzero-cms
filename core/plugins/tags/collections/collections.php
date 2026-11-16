@@ -121,7 +121,7 @@ class Collections extends Plugin
     /**
      * Static method for formatting results
      *
-     * @param   object  $row  Database row
+     * @param   \stdClass  $row  Database row
      * @return  string  HTML
      */
     public static function out($row)

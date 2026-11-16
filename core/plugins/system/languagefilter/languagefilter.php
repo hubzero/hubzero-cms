@@ -211,7 +211,7 @@ class Languagefilter extends Plugin
     /**
      * Build rule
      *
-     * @param   object  $uri
+     * @param   \Hubzero\Utility\Uri  $uri
      * @return  object
      */
     public function buildRule($uri)
@@ -283,7 +283,7 @@ class Languagefilter extends Plugin
     /**
      * Parse rule
      *
-     * @param   object  $uri
+     * @param   \Hubzero\Utility\Uri  $uri
      * @return  void
      */
     public function parseRule($uri)

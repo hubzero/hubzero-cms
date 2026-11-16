@@ -19,6 +19,7 @@ use Hubzero\Config\Registry;
  *
  * @property  string|null  $alias
  * @property  string|null  $customFields
+ * @property-read  \Hubzero\Config\Registry  $params  Through transformParams()
  * @property  int|string|null  $id
  * @property-read  mixed  $roles  What roles() gives
  * @property  string|null  $type

@@ -755,7 +755,7 @@ class Html
      * Determine the final URL for the primary resource child
      *
      * @param   string   $option  Component name
-     * @param   object   $item    Child resource
+     * @param   \Components\Resources\Models\Entry|\stdClass   $item    Child resource, or its row
      * @param   integer  $pid     Parent resource ID
      * @param   int|string  $action  Action
      * @return  string
@@ -841,8 +841,8 @@ class Html
      * Tools are the only exception in which case the button launches a tool session
      *
      * @param   string  $option      Component name
-     * @param   object  $resource    Resource
-     * @param   object  $firstChild  First resource child
+     * @param   \Components\Resources\Models\Entry  $resource    Resource
+     * @param   \Components\Resources\Models\Entry  $firstChild  First resource child
      * @param   string  $xact        Extra parameters to add
      * @return  string
      */
@@ -1087,7 +1087,10 @@ class Html
 
                 $tparams = $firstChild->type->params;
 
-                if ($firstChild->logicaltype) {
+                // logicaltype is always a Type (a blank one when there is none),
+                // so test the column: without a logical type, the type's own
+                // linkAction used to be ignored
+                if ($firstChild->get('logical_type')) {
                     $rtLinkAction = $ltparams->get('linkAction', 'extension');
                 } else {
                     $rtLinkAction = $tparams->get('linkAction', 'extension');
