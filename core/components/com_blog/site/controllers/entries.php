@@ -481,7 +481,7 @@ class Entries extends SiteController
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
         $doc->link = Route::url('index.php?option=' . $this->option);
 
         // Incoming
@@ -788,7 +788,7 @@ class Entries extends SiteController
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
         $doc->link = Route::url('index.php?option=' . $this->option);
 
         // Incoming

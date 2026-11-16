@@ -44,7 +44,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                 $group = \Hubzero\User\Group::getInstance($list->referenceid);
 
                 // if group doesnt exist we need to remove the list and wishes
-                if (!$group || !is_object($group)) {
+                if (!$group) {
                     if ($schema->tableExists('#__wishlist_item')) {
                         $wishes = $this->db
                             ->getQuery()

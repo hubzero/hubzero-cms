@@ -47,7 +47,7 @@ class Zone extends Base
      * Returns a reference to a zone model
      *
      * @param      mixed  $oid Zone ID or name
-     * @return     object
+     * @return     self
      */
     public static function &getInstance($oid = null)
     {

@@ -50,7 +50,9 @@ class Login extends Module
         if (!$url) {
             // stay on the same page
             $uri = clone(Uri::getInstance());
-            $vars = $uri->parse($uri->toString());
+            // Uri::parse() only says whether the URI parsed; the variables
+            // are the ones the router parsed from this request
+            $vars = App::get('router')->vars();
             unset($vars['lang']);
 
             if (isset($vars['Itemid'])) {

@@ -1189,7 +1189,8 @@ class Groups extends Base
 
         // Delete group
         if (!$group->delete()) {
-            $this->setNotification($group->error, 'error');
+            // Group has no $error; reading one would stop the page
+            $this->setNotification($group->getError() ?: Lang::txt('COM_GROUPS_ERROR_DELETE_FAILED'), 'error');
             $this->deleteTask();
 
             return;

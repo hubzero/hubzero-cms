@@ -491,12 +491,12 @@ class Articles extends SiteController
 
         Document::setTitle($title);
 
-        Document::instance()->description = Lang::txt(
+        Document::instance('feed')->description = Lang::txt(
             'COM_KB_COMMENTS_RSS_DESCRIPTION',
             Config::get('sitename'),
             stripslashes($article->get('title')),
         );
-        Document::instance()->copyright   = Lang::txt(
+        Document::instance('feed')->copyright   = Lang::txt(
             'COM_KB_COMMENTS_RSS_COPYRIGHT',
             gmdate("Y"),
             Config::get('sitename'),

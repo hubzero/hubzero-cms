@@ -35,14 +35,14 @@ namespace Hubzero\Facades;
  * @method static mixed    setParam(string $key, mixed $value)
  * @method static bool     setLastVisit(string $timestamp = 'now')
  * @method static string   getTableName()
- * @method static object   one(int $id)
- * @method static object   oneOrNew(int $id)
- * @method static object   oneOrFail(int $id)
- * @method static object   oneByUsername(string $username)
- * @method static object   oneByEmail(string $email)
- * @method static object   oneByActivationToken(string|int $token)
- * @method static object   blank()
- * @method static object   all(mixed $columns = null)
+ * @method static \Hubzero\User\User|false one(int $id)
+ * @method static \Hubzero\User\User oneOrNew(int $id)
+ * @method static \Hubzero\User\User oneOrFail(int $id)
+ * @method static \Hubzero\User\User oneByUsername(string $username)
+ * @method static \Hubzero\User\User oneByEmail(string $email)
+ * @method static \Hubzero\User\User oneByActivationToken(string|int $token)
+ * @method static \Hubzero\User\User blank()
+ * @method static \Hubzero\User\User all(mixed $columns = null)
  *
  * @codeCoverageIgnore
  */

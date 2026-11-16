@@ -549,7 +549,7 @@ class Tags extends SiteController
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
         $doc->link        = Route::url('index.php?option=' . $this->option);
         $doc->title       = Config::get('sitename') . ' - ' . $title;
         $doc->description = Lang::txt('COM_TAGS_RSS_DESCRIPTION', Config::get('sitename'), $title);

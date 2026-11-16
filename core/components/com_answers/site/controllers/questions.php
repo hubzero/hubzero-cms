@@ -1420,7 +1420,7 @@ class Questions extends SiteController
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
 
         //set rss feed attribs
         $doc->link        = Route::url('index.php?option=com_answers');

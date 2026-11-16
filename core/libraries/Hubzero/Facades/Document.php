@@ -8,10 +8,13 @@
 
 namespace Hubzero\Facades;
 
+use Hubzero\Document\Base;
+use Hubzero\Document\Type\Feed;
+
 /**
  * Document facade
  *
- * @method static object instance(string $type = null, array<mixed> $options = [])
+ * @method static ($type is 'feed' ? Feed : Base) instance(string $type = null, array<mixed> $options = [])
  * @method static object setType(string $type)
  * @method static string getType()
  * @method static array<mixed>  getTypes()

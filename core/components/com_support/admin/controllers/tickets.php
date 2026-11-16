@@ -1039,7 +1039,7 @@ class Tickets extends AdminController
                     $members = $hzg->get('members');
 
                     //$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
-                    $users[] = Html::select('optgroup', stripslashes($hzg->description));
+                    $users[] = Html::select('optgroup', stripslashes($hzg->get('description')));
                     foreach ($members as $member) {
                         $u = User::getInstance($member);
                         if (!$u->get('id')) {

@@ -50,7 +50,7 @@ class Manager
      *
      * @param   string|null  $type
      * @param   array<mixed>   $options  Associative array of options
-     * @return  mixed
+     * @return  ($type is 'feed' ? Type\Feed : Base)
      */
     public function instance($type = null, $options = [])
     {
@@ -79,7 +79,7 @@ class Manager
      *
      * @param   string  $type
      * @param   array<mixed>   $options  Associative array of options
-     * @return  object
+     * @return  Base
      * @throws  InvalidArgumentException
      */
     protected function createType($type, $options = [])

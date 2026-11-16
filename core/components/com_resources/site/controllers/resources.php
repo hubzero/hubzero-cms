@@ -1683,7 +1683,7 @@ class Resources extends SiteController
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
 
         // Incoming
         $id    = Request::getInt('id', 0);

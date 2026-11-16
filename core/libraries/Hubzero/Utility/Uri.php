@@ -133,7 +133,7 @@ class Uri
      * if it doesn't already exist.
      *
      * @param   string  $uri  The URI to parse.  [optional: if null uses script URI]
-     * @return  object  The URI object.
+     * @return  self  The URI object.
      */
     public static function getInstance($uri = 'SERVER')
     {

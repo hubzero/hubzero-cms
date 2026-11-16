@@ -2507,7 +2507,7 @@ class Tickets extends SiteController
                 if ($hzg->get('gidNumber')) {
                     $members = $hzg->get('members');
 
-                    $users[] = Html::select('optgroup', stripslashes($hzg->description));
+                    $users[] = Html::select('optgroup', stripslashes($hzg->get('description')));
                     foreach ($members as $member) {
                         $u = User::getInstance($member);
                         if (!($u->get('block') == '0')) {

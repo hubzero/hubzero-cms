@@ -96,14 +96,14 @@ class Groups extends Plugin
             }
 
             $group = new \stdClass();
-            $group->gidNumber = $g->gidNumber;
+            $group->gidNumber = $g->get('gidNumber');
             $group->published = $g->published;
-            $group->approved = $g->approved;
+            $group->approved = $g->get('approved');
             $group->cn = $g->cn;
-            $group->description = $g->description;
-            $group->logo = $g->logo;
-            $group->created = $g->created;
-            $group->join_policy = $g->join_policy;
+            $group->description = $g->get('description');
+            $group->logo = $g->get('logo');
+            $group->created = $g->get('created');
+            $group->join_policy = $g->get('join_policy');
             $group->registered = 0;
             $group->regconfirmed = 1;
             $group->manager = 0;

@@ -1729,7 +1729,7 @@ class Items extends AdminController
                 ->row();
         }
 
-        if (is_object($profile) && $profile->get('id')) {
+        if ($profile->get('id')) {
             $name = $profile->name;
             $org  = $profile->get('organization');
             $id   = $profile->get('id');
@@ -1792,7 +1792,7 @@ class Items extends AdminController
                 ->row();
         }
 
-        if (is_object($profile) && $profile->get('id')) {
+        if ($profile->get('id')) {
             $name = $profile->name;
             $id   = $profile->get('id');
         }

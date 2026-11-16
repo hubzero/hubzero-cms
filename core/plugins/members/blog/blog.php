@@ -379,7 +379,7 @@ class Blog extends Plugin
         Document::setType('feed');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
         $doc->link = Route::url($this->member->link() . '&active=' . $this->pluginName);
 
         // Build some basic RSS document information

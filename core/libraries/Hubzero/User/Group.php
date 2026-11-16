@@ -237,7 +237,7 @@ class Group extends Obj
      * Returns a reference to a group object
      *
      * @param   mixed  $group  A string (cn) or integer (ID)
-     * @return  mixed  Object if instance found, false if not
+     * @return  self|false  The group, or false when there is no such group
      */
     public static function getInstance($group)
     {

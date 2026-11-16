@@ -222,7 +222,7 @@ class Ticketsv2r1 extends ApiController
                 $group_id = 0;
 
                 if ($group) {
-                    $group_id = $group->gidNumber;
+                    $group_id = $group->get('gidNumber');
                 }
             }
 

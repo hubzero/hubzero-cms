@@ -81,7 +81,9 @@ class Collection extends Base
         switch ($this->obj->get('object_type')) {
             case 'group':
                 if (!isset($this->creator) || !is_object($this->creator)) {
-                    $this->creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'));
+                    // A blank group when it no longer exists, as a blank user is below
+                    $this->creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'))
+                        ?: new \Hubzero\User\Group();
                 }
                 if ($property) {
                     switch ($property) {

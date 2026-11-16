@@ -56,7 +56,7 @@ $this->css('
                             }
                         } elseif ($document['owner_type'] == 'group') {
                             $group = \Hubzero\User\Group::getInstance($document['owner'][0]);
-                            if (isset($group) && is_object($group)) {
+                            if ($group) {
                                 echo $this->escape($group->get('description'));
                             } else {
                                 echo Lang::txt('UNKNOWN');

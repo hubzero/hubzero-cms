@@ -593,7 +593,7 @@ class Comments extends Plugin
         $title = $this->obj->get('title');
 
         // Start a new feed object
-        $doc = Document::instance();
+        $doc = Document::instance('feed');
         $doc->link = Route::url($this->url);
 
         $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->componentOption));
