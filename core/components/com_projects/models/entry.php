@@ -20,6 +20,9 @@ use Hubzero\Facades\User;
  */
 class Entry extends Model
 {
+    /**
+     * @var  \Components\Projects\Models\Project|null
+     */
     protected $project;
 
     /**

@@ -21,7 +21,13 @@ use Hubzero\Facades\Request;
  */
 class Offering extends Base
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $membership;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $plugins;
 
     /**
@@ -930,7 +936,7 @@ class Offering extends Base
      */
     public function plugins($name = null)
     {
-        if (!isset($this->plugins) || !is_array($this->plugins)) {
+        if (!isset($this->plugins)) {
             $this->importPlugin('courses');
 
             $course = Course::getInstance($this->get('course_id'));

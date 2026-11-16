@@ -23,6 +23,9 @@ use Hubzero\Facades\Component;
  */
 class Collection extends Base
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $counts;
 
     /**
@@ -388,7 +391,7 @@ class Collection extends Base
      */
     public function count($what = '')
     {
-        if (!isset($this->counts) || !is_array($this->counts)) {
+        if (!isset($this->counts)) {
             $this->counts = [];
         }
         $what = strtolower(trim($what));

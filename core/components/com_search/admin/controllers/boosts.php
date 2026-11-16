@@ -19,9 +19,15 @@ use Hubzero\Facades\Component;
 
 class Boosts extends AdminController
 {
+    /**
+     * @var  \Components\Search\Helpers\RecordProcessingHelper|null
+     */
     protected $crudHelper;
     /** @var \Components\Search\Helpers\BoostFactory|null */
     protected $factory;
+    /**
+     * @var  \Components\Search\Helpers\TypeOptionsHelper|null
+     */
     protected $typeHelper;
 
     protected $taskMap = [

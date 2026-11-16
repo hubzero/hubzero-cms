@@ -16,9 +16,21 @@ use Hubzero\Facades\User;
  */
 class Newsletter extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $database;
+    /**
+     * @var  mixed
+     */
     protected $mailinglist;
+    /**
+     * @var  mixed
+     */
     protected $subscription;
+    /**
+     * @var  mixed
+     */
     protected $subscriptionId;
 
     /**

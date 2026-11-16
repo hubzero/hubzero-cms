@@ -32,6 +32,8 @@ class Tinymce extends Plugin
 
     /**
      * Base path for editor files
+     *
+     * @var  string
      */
     protected $basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 

@@ -25,11 +25,23 @@ use Hubzero\Facades\User;
 
 class Blog extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $members;
     /** @var \Components\Blog\Models\Archive|null */
     protected $model;

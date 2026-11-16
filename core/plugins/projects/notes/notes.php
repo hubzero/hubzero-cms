@@ -27,13 +27,31 @@ use Hubzero\Facades\User;
  */
 class Notes extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  \Components\Projects\Models\Project|object|null
+     */
     protected $model;
+    /**
+     * @var  \Components\Projects\Models\Note|null
+     */
     protected $note;
 
     /**

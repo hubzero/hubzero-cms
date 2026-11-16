@@ -23,6 +23,9 @@ use Hubzero\Facades\User;
  */
 class Projectsv1r1 extends ApiController
 {
+    /**
+     * @var  \Components\Projects\Models\Project|null
+     */
     protected $model;
 
     /**

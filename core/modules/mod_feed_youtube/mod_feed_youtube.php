@@ -18,6 +18,9 @@ use Hubzero\Facades\Lang;
  */
 class FeedYoutube extends Module
 {
+    /**
+     * @var  \stdclass|false|null
+     */
     protected $feed;
 
     /**

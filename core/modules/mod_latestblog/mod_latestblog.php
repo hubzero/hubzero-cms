@@ -20,9 +20,21 @@ use Hubzero\Facades\Component;
  */
 class Latestblog extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $feedlink;
+    /**
+     * @var  mixed
+     */
     protected $limit;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $posts;
+    /**
+     * @var  mixed
+     */
     protected $pullout;
 
     /**

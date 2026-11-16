@@ -21,13 +21,25 @@ use Closure;
  */
 class Container implements ArrayAccess
 {
+    /**
+     * @var  array<mixed>
+     */
     private $values = [];
     /** @var \SplObjectStorage|null */
     private $factories;
     /** @var \SplObjectStorage|null */
     private $protected;
+    /**
+     * @var  array<mixed>
+     */
     private $frozen = [];
+    /**
+     * @var  array<mixed>
+     */
     private $raw = [];
+    /**
+     * @var  array<mixed>
+     */
     private $keys = [];
 
     /**

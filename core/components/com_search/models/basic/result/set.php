@@ -23,6 +23,9 @@ class Set extends Obj implements Iterator
 {
     /** @var \Hubzero\Database\Driver|null */
     protected $db;
+    /**
+     * @var  object|null
+     */
     protected $terms;
 
     /**

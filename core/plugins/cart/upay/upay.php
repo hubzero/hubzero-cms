@@ -22,6 +22,9 @@ class Upay extends Plugin
 {
     /** @var \stdClass|null */
     protected $options;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $transactionDetails;
 
     /**

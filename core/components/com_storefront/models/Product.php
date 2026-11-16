@@ -22,8 +22,14 @@ use Hubzero\Facades\App;
 class Product
 {
     // Product data container
+    /**
+     * @var  \stdClass|null
+     */
     public $data;
     // SKUs container
+    /**
+     * @var  array<mixed>|null
+     */
     public $skus;
 
     /**

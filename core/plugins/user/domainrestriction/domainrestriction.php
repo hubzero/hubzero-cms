@@ -21,16 +21,43 @@ use Hubzero\Utility\Network;
  */
 class Domainrestriction extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     private $tlds;
+    /**
+     * @var  mixed
+     */
     private $domains;
+    /**
+     * @var  mixed
+     */
     private $emails;
+    /**
+     * @var  mixed
+     */
     private $badtlds;
+    /**
+     * @var  mixed
+     */
     private $baddomains;
+    /**
+     * @var  mixed
+     */
     private $bademails;
     /** @var string|null */
     private $email;
+    /**
+     * @var  string|null
+     */
     private $domain;
+    /**
+     * @var  string|null
+     */
     private $tld;
+    /**
+     * @var  bool|null
+     */
     private $allowed;
 
     /**

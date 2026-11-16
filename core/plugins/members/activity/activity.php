@@ -23,6 +23,9 @@ use Hubzero\Facades\User;
  */
 class Activity extends Plugin
 {
+    /**
+     * @var  object|null
+     */
     protected $member;
 
     /**

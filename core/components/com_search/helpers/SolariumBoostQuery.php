@@ -10,7 +10,13 @@ namespace Components\Search\Helpers;
 
 class SolariumBoostQuery
 {
+    /**
+     * @var  mixed
+     */
     protected $boost;
+    /**
+     * @var  string|null
+     */
     protected $query;
 
     /**

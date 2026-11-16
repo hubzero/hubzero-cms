@@ -22,16 +22,43 @@ use Hubzero\Facades\User;
  */
 class Whatsnew extends Module
 {
+    /**
+     * @var  int|string|null
+     */
     public $area;
+    /**
+     * @var  mixed
+     */
     public $cssId;
+    /**
+     * @var  mixed
+     */
     public $feed;
+    /**
+     * @var  string|null
+     */
     public $feedlink;
+    /**
+     * @var  mixed
+     */
     public $period;
+    /**
+     * @var  array<mixed>|\Countable|null
+     */
     public $rows;
+    /**
+     * @var  array<mixed>|null
+     */
     public $rows2;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $searchareas;
     /** @var int|null */
     public $tagged;
+    /**
+     * @var  mixed
+     */
     public $tags;
 
     /**

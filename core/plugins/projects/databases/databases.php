@@ -24,17 +24,41 @@ use Exception;
  */
 class Databases extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
+    /**
+     * @var  bool|null
+     */
     protected $configured;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  mixed
+     */
     protected $path;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  mixed
+     */
     protected $gitpath;
+    /**
+     * @var  object|null
+     */
     protected $model;
     /** @var \Components\Projects\Models\Repo|null */
     protected $repo;
+    /**
+     * @var  string|null
+     */
     protected $subdir;
 
     /**

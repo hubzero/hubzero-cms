@@ -16,6 +16,9 @@ use Hubzero\Facades\App;
  */
 class Users extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $unapproved;
 
     /**

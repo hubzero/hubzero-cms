@@ -20,26 +20,89 @@ use Hubzero\Facades\Lang;
  */
 class RapidContact extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $anti_spam_a;
+    /**
+     * @var  mixed
+     */
     protected $anti_spam_q;
+    /**
+     * @var  mixed
+     */
     protected $button_text;
+    /**
+     * @var  mixed
+     */
     protected $email_label;
+    /**
+     * @var  mixed
+     */
     protected $enable_anti_spam;
+    /**
+     * @var  mixed
+     */
     protected $error_text;
+    /**
+     * @var  mixed
+     */
     protected $from_email;
+    /**
+     * @var  mixed
+     */
     protected $from_name;
+    /**
+     * @var  mixed
+     */
     protected $invalid_email;
+    /**
+     * @var  mixed
+     */
     protected $message_label;
+    /**
+     * @var  mixed
+     */
     protected $mod_class_suffix;
+    /**
+     * @var  mixed
+     */
     protected $name_label;
+    /**
+     * @var  mixed
+     */
     protected $no_email;
+    /**
+     * @var  mixed
+     */
     protected $page_text;
+    /**
+     * @var  mixed
+     */
     protected $pre_text;
+    /**
+     * @var  mixed
+     */
     protected $subject_label;
+    /**
+     * @var  mixed
+     */
     protected $error;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $posted;
+    /**
+     * @var  mixed
+     */
     protected $recipient;
+    /**
+     * @var  mixed
+     */
     protected $replacement;
+    /**
+     * @var  mixed
+     */
     protected $url;
 
     /**

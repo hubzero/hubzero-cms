@@ -24,12 +24,33 @@ use Hubzero\Facades\User;
  */
 class Projects extends Plugin
 {
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $config;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  mixed
+     */
     protected $projects;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $members;
     /** @var \Components\Projects\Models\Project|null */
     protected $model;

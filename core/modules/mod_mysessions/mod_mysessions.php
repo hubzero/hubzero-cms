@@ -17,9 +17,21 @@ use Hubzero\Facades\User;
  */
 class Mysessions extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $database;
+    /**
+     * @var  bool|null
+     */
     protected $error;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $sessions;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $toolsConfig;
 
     /**

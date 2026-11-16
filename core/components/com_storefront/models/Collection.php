@@ -22,6 +22,9 @@ use Hubzero\Facades\Lang;
 class Collection
 {
     // Collection data container
+    /**
+     * @var  \stdClass|null
+     */
     public $data;
 
     /**

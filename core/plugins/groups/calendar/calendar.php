@@ -23,23 +23,65 @@ use Hubzero\Facades\User;
  */
 class Calendar extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $access;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $arrival;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
     /** @var int|null */
     protected $calendar;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $departure;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $dietary;
+    /**
+     * @var  string|null
+     */
     protected $dinner;
+    /**
+     * @var  string|null
+     */
     protected $disability;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $members;
+    /**
+     * @var  mixed
+     */
     protected $month;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $race;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $register;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $user;
     /** @var int|null */
     protected $year;

@@ -43,6 +43,9 @@ class EventsLatest extends Module
 {
     /** @var string|null */
     protected $error;
+    /**
+     * @var  mixed
+     */
     protected $events;
 
     /**

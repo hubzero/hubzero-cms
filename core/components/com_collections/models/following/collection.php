@@ -16,6 +16,9 @@ use Hubzero\Facades\User;
  */
 class Collection extends Base
 {
+    /**
+     * @var  mixed
+     */
     protected $creator;
 
     /**

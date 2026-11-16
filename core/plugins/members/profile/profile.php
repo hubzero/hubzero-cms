@@ -20,10 +20,19 @@ use Hubzero\Facades\User;
  */
 class Profile extends Plugin
 {
+    /**
+     * @var  array<mixed>|string|null
+     */
     protected $areas;
+    /**
+     * @var  object|null
+     */
     protected $member;
     /** @var string|null */
     protected $task;
+    /**
+     * @var  object|null
+     */
     protected $user;
 
     /**

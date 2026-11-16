@@ -28,9 +28,21 @@ use User;
  */
 class Filesv1r0 extends ApiController
 {
+    /**
+     * @var  string|null
+     */
     protected $cid;
+    /**
+     * @var  \Components\Projects\Models\Project|null
+     */
     protected $model;
+    /**
+     * @var  \Components\Projects\Models\Orm\Connection|null
+     */
     protected $ormconn;
+    /**
+     * @var  \Components\Projects\Models\Orm\Project|null
+     */
     protected $ormproj;
 
     /**
@@ -1390,7 +1402,7 @@ class Filesv1r0 extends ApiController
     public function connectionsTask()
     {
         $response = new stdClass();
-        $connections = $this->ormproj->connections()->thatICanView()->rows();
+        $connections = $this->ormproj->connectionsICanView()->rows();
         $response->count = count($connections);
         $response->connections = [];
 

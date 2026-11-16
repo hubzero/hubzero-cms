@@ -17,8 +17,17 @@ use Hubzero\Facades\Event;
  */
 class Resourcemenu extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $html;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  mixed
+     */
     protected $moduleid;
 
     /**

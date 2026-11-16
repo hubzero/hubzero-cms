@@ -36,17 +36,47 @@ use Hubzero\Facades\User;
  */
 class Publications extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $activity;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $imageExt;
+    /**
+     * @var  mixed
+     */
     protected $pid;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $pubconfig;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $videoExt;
+    /**
+     * @var  object|null
+     */
     protected $model;
 
     /**

@@ -13,7 +13,13 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class CancelingObserver
 {
+    /**
+     * @var  array<mixed>
+     */
     protected static $eventsToCancel = [];
+    /**
+     * @var  array<mixed>
+     */
     protected static $called = [];
 
     /**

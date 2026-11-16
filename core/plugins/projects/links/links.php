@@ -26,13 +26,31 @@ use voku\helper\HtmlDomParser;
  */
 class Links extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $pubconfig;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  object|null
+     */
     protected $model;
 
     /**

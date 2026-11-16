@@ -13,6 +13,9 @@ namespace Components\Saml\Tests;
  */
 class StubUser
 {
+    /**
+     * @var  int|null
+     */
     private $id;
 
     /**

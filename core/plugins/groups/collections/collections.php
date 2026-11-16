@@ -22,15 +22,33 @@ use Hubzero\Facades\User;
  */
 class Collections extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $member;
+    /**
+     * @var  mixed
+     */
     protected $members;
     /** @var \Components\Collections\Models\Archive|null */
     protected $model;
+    /**
+     * @var  string|null
+     */
     protected $name;
 
     /**

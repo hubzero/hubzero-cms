@@ -19,7 +19,13 @@ use Hubzero\Facades\User;
  */
 class Log extends Model
 {
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $actor;
+    /**
+     * @var  mixed
+     */
     protected $creator;
 
     /**

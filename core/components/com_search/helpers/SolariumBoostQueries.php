@@ -14,8 +14,17 @@ use Component;
 
 class SolariumBoostQueries
 {
+    /**
+     * @var  mixed
+     */
     protected $boosts;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $queries;
+    /**
+     * @var  mixed
+     */
     protected $queryFactory;
 
     /**

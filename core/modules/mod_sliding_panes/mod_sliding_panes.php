@@ -23,6 +23,9 @@ class SlidingPanes extends Module
      * @var  integer
      */
     protected $container;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $content;
 
     /**

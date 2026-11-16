@@ -38,18 +38,45 @@ use Components\Forum\Models\Attachment;
  */
 class Forum extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $authorized;
+    /**
+     * @var  string|null
+     */
     protected $base;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  mixed
+     */
     protected $filters;
     /** @var \Components\Forum\Models\Manager|null */
     protected $forum;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $group_plugin_acl;
+    /**
+     * @var  int|null
+     */
     protected $limit;
+    /**
+     * @var  int|null
+     */
     protected $limitstart;
+    /**
+     * @var  mixed
+     */
     protected $members;
+    /**
+     * @var  \Hubzero\Plugin\View|null
+     */
     protected $view;
 
     /**

@@ -17,7 +17,13 @@ use PDOException;
 
 class Schema implements StepInterface
 {
+    /**
+     * @var  mixed
+     */
     private $installer;
+    /**
+     * @var  array<mixed>
+     */
     private $status = [];
 
     /**

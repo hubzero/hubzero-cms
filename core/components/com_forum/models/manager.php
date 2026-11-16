@@ -20,6 +20,9 @@ use Hubzero\Facades\App;
  */
 class Manager extends Obj
 {
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $config;
 
     /**

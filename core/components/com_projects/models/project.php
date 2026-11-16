@@ -25,16 +25,43 @@ use Hubzero\Facades\Request;
  */
 class Project extends Model
 {
+    /**
+     * @var  string|null
+     */
     protected $base;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $creator;
+    /**
+     * @var  mixed
+     */
     protected $groupOwner;
+    /**
+     * @var  \Components\Projects\Tables\Owner|false|null
+     */
     protected $member;
+    /**
+     * @var  int|null
+     */
     protected $newCount;
     /** @var \Components\Publications\Tables\Publication|null */
     protected $objPub;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $owner;
+    /**
+     * @var  mixed
+     */
     protected $project;
+    /**
+     * @var  mixed
+     */
     protected $publication;
+    /**
+     * @var  \Components\Projects\Models\Repo|null
+     */
     protected $repo;
     /** @var \Components\Projects\Tables\Activity|null */
     protected $tblActivity;
@@ -50,12 +77,24 @@ class Project extends Model
     protected $tblTodo;
     /** @var \Components\Projects\Tables\Type|null */
     protected $tblType;
+    /**
+     * @var  array<mixed>|false|null
+     */
     protected $team;
+    /**
+     * @var  \Components\Projects\Tables\Type|null
+     */
     protected $type;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $userGroups;
 
     // Read from outside the class throughout the setup and project views,
     // as $this->model->params->get(...).
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     public $params;
 
     /**
@@ -591,7 +630,7 @@ class Project extends Model
             }
 
             $authorized = false;
-            if ($this->userGroups && count($this->userGroups) > 0) {
+            if ($this->userGroups) {
                 foreach ($this->userGroups as $cn) {
                     if ($group && $cn == $group->get('cn')) {
                         $authorized = true;
@@ -738,7 +777,7 @@ class Project extends Model
      */
     public function owner($property = null)
     {
-        if (!isset($this->owner) || !($this->owner instanceof \Hubzero\User\User)) {
+        if (!isset($this->owner)) {
             $this->owner = User::getInstance($this->get('owned_by_user'));
         }
         if ($property) {
@@ -759,7 +798,7 @@ class Project extends Model
      */
     public function creator($property = null)
     {
-        if (!isset($this->creator) || !($this->creator instanceof \Hubzero\User\User)) {
+        if (!isset($this->creator)) {
             $this->creator = User::getInstance($this->get('created_by_user'));
         }
         if ($property) {

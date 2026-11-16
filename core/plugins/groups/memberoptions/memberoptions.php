@@ -21,6 +21,9 @@ use Hubzero\Facades\User;
  */
 class Memberoptions extends Plugin
 {
+    /**
+     * @var  object|null
+     */
     protected $group;
 
     /**

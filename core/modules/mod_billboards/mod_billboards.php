@@ -17,8 +17,17 @@ use Components\Billboards\Models\Billboard;
  */
 class Billboards extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $collection;
+    /**
+     * @var  mixed
+     */
     protected $pager;
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $slides;
 
     /**

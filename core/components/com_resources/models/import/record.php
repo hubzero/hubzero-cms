@@ -31,11 +31,29 @@ class Record extends Obj
 {
     public const TITLE_MATCH = 10;
 
+    /**
+     * @var  mixed
+     */
     public $raw;
+    /**
+     * @var  \stdClass|null
+     */
     public $record;
+    /**
+     * @var  mixed
+     */
     private $mode;
+    /**
+     * @var  array<mixed>|null
+     */
     private $options;
+    /**
+     * @var  mixed
+     */
     private $database;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     private $user;
 
     /**

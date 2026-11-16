@@ -17,7 +17,13 @@ use Hubzero\Facades\Component;
  */
 class Findresources extends Module
 {
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $categories;
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $tags;
 
     /**

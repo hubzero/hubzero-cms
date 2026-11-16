@@ -17,12 +17,33 @@ use Hubzero\Facades\Component;
  */
 class Wishlist extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $accepted;
+    /**
+     * @var  mixed
+     */
     protected $granted;
+    /**
+     * @var  mixed
+     */
     protected $pending;
+    /**
+     * @var  mixed
+     */
     protected $rejected;
+    /**
+     * @var  mixed
+     */
     protected $removed;
+    /**
+     * @var  mixed
+     */
     protected $wishlist;
+    /**
+     * @var  mixed
+     */
     protected $withdrawn;
 
     /**

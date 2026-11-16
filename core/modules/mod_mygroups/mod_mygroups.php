@@ -18,10 +18,19 @@ use Hubzero\Facades\User;
  */
 class Mygroups extends Module
 {
+    /**
+     * @var  array<int, \stdClass>|null
+     */
     public $allgroups;
     /** @var int|null */
     public $limit;
+    /**
+     * @var  mixed
+     */
     public $moduleclass;
+    /**
+     * @var  array<mixed>|null
+     */
     public $recentgroups;
 
     /**

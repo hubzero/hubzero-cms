@@ -31,6 +31,9 @@ class Warehouse extends \Hubzero\Base\Obj
     protected $database;
 
     // Product categories to look at (to define scope)
+    /**
+     * @var  array<mixed>|null
+     */
     public $lookupCollections = null;
 
     // Access levels scope (what is allowed to display)
@@ -40,6 +43,9 @@ class Warehouse extends \Hubzero\Base\Obj
     public $accessLevelsScope = false;
 
     // Access groups scope (what is allowed to display)
+    /**
+     * @var  array<mixed>
+     */
     public $accessGroupsScope = [];
 
     // User scope (what user is trying to get the info)
@@ -61,6 +67,9 @@ class Warehouse extends \Hubzero\Base\Obj
     public $userCannotAccessProduct = false;
 
     // Database instance
+    /**
+     * @var  mixed
+     */
     public $db = null;
 
     /**

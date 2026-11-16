@@ -15,8 +15,17 @@ use PDOException;
 
 class Database implements StepInterface
 {
+    /**
+     * @var  mixed
+     */
     private $installer;
+    /**
+     * @var  array<mixed>
+     */
     private $errors = [];
+    /**
+     * @var  array<mixed>
+     */
     private $existingConfig = [];
 
     /**

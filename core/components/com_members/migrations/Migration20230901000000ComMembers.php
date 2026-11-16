@@ -27,6 +27,9 @@ class Migration20230901000000ComMembers extends Base
     public static $tableName = '#__users';
 
     // specify column to create
+    /**
+     * @var  array<mixed>
+     */
     public static $columnData = [
         [
             'name' => 'secret',

@@ -23,7 +23,13 @@ use Hubzero\Facades\User;
  */
 class Activity extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $base;
+    /**
+     * @var  object|null
+     */
     protected $group;
     /**
      * @var  bool

@@ -24,11 +24,23 @@ use Hubzero\Facades\User;
 
 class Feed extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var string|null */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  object|null
+     */
     protected $model;
 
     /**

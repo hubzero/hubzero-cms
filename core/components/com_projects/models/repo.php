@@ -25,7 +25,13 @@ use Hubzero\Facades\Component;
  */
 class Repo extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $quota;
+    /**
+     * @var  mixed
+     */
     protected $sizeLimit;
 
     /**
@@ -318,7 +324,7 @@ class Repo extends Obj
      * @param   mixed  $item
      * @param   mixed  $type
      * @param   mixed  $params
-     * @return  object|false
+     * @return  ($item is null ? false : Models\File)
      */
     public function getMetadata($item = null, $type = 'file', $params = [])
     {
@@ -434,7 +440,7 @@ class Repo extends Obj
      * Create a new directory within repo
      *
      * @param   array<mixed>  $params
-     * @return  boolean
+     * @return  Models\File|false  The new folder, or false when it could not be made
      */
     public function makeDirectory($params = [])
     {

@@ -20,10 +20,25 @@ use Hubzero\Facades\User;
  */
 class Latestdiscussions extends Module
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $categories;
+    /**
+     * @var  mixed
+     */
     protected $charlimit;
+    /**
+     * @var  mixed
+     */
     protected $limit;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $posts;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $threads;
 
     /**

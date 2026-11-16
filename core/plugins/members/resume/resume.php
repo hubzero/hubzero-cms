@@ -22,6 +22,9 @@ use Hubzero\Facades\User;
  */
 class Resume extends Plugin
 {
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $config;
 
     /**

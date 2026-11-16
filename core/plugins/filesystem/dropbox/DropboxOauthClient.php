@@ -21,11 +21,25 @@ class DropboxOauthClient
      * $clientSecret   Dropbox Application secret         @var string
      * $redirectUri    Dropbox Application redirect URI   @var string
      * $state          OAuth state                        @var string
+     *
+     * @var  \Stevenmaguire\OAuth2\Client\Provider\Dropbox|null
      **/
     protected $client;
+    /**
+     * @var  mixed
+     */
     protected $clientId;
+    /**
+     * @var  mixed
+     */
     protected $clientSecret;
+    /**
+     * @var  string|null
+     */
     protected $redirectUri;
+    /**
+     * @var  mixed
+     */
     protected $state;
 
     /**

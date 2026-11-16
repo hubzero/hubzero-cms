@@ -19,6 +19,9 @@ class HashtableReplacer extends Replacer
      * @var array<mixed>
      */
     public $table;
+    /**
+     * @var  int|null
+     */
     public $index;
 
     /**

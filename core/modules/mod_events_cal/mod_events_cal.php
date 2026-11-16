@@ -19,6 +19,9 @@ use Hubzero\Facades\App;
  */
 class EventsCal extends Module
 {
+    /**
+     * @var  string|null
+     */
     protected $content;
 
     /**

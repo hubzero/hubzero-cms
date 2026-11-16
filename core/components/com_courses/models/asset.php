@@ -24,6 +24,9 @@ use Hubzero\Facades\Log;
  */
 class Asset extends Base
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $units;
 
     /**

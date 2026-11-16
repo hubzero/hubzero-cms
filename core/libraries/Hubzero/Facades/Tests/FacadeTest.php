@@ -21,6 +21,9 @@ use Hubzero\Facades\Tests\Mock\BadFacade;
  */
 class FacadeTest extends Basic
 {
+    /**
+     * @var  \Hubzero\Base\Application|null
+     */
     public $app;
 
     public function setUp(): void

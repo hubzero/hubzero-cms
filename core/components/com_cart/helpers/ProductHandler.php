@@ -16,14 +16,23 @@ use Components\Storefront\Models\Warehouse;
 class ProductHandler
 {
     // Item info
+    /**
+     * @var  array<string, mixed>|null
+     */
     public $item;
+    /**
+     * @var  int|null
+     */
     public $crtId;
+    /**
+     * @var  int|null
+     */
     public $tId;
 
     /**
      * Constructor
      *
-     * @param   object  $item   item info
+     * @param   array<string, mixed>  $item   item info
      * @param   int     $crtId  cart ID
      * @param   int     $tId    transaction ID
      * @return  void

@@ -14,18 +14,27 @@ namespace Components\Cart\Lib\Handlers;
 class CustomHandler
 {
     // Database instance
+    /**
+     * @var  mixed
+     */
     public $db = null;
 
     // Item info
+    /**
+     * @var  array<string, mixed>|null
+     */
     public $item;
 
     // Cart ID
+    /**
+     * @var  int|null
+     */
     public $crtId;
 
     /**
      * Constructor
      *
-     * @param   object  $item
+     * @param   array<string, mixed>  $item
      * @param   int  $crtId
      */
     public function __construct($item, $crtId)

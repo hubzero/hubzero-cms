@@ -24,15 +24,27 @@ class Todo extends Plugin
 {
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  array<string, mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  object|null
+     */
     protected $member;
     /** @var \Components\Projects\Models\Project|null */
     protected $model;
+    /**
+     * @var  mixed
+     */
     protected $projects;
     /** @var string|null */
     protected $task;
     /** @var \Components\Projects\Models\Todo|null */
     protected $todo;
+    /**
+     * @var  object|null
+     */
     protected $user;
 
     /**

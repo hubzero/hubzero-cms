@@ -19,7 +19,13 @@ use Hubzero\Facades\App;
  */
 class Entity extends Obj
 {
+    /**
+     * @var  string|null
+     */
     protected $path;
+    /**
+     * @var  mixed
+     */
     protected $timestamp;
 
     /**

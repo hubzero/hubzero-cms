@@ -17,11 +17,29 @@ use Hubzero\Facades\User;
  */
 class Latestgroups extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $charlimit;
+    /**
+     * @var  mixed
+     */
     protected $cls;
+    /**
+     * @var  mixed
+     */
     protected $feedlink;
+    /**
+     * @var  array<int, \stdClass>|null
+     */
     protected $groups;
+    /**
+     * @var  mixed
+     */
     protected $limit;
+    /**
+     * @var  mixed
+     */
     protected $morelink;
 
     /**

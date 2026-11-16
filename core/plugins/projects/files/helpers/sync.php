@@ -28,10 +28,25 @@ class Sync extends \Hubzero\Base\Obj
     protected $connect;
     /** @var \Hubzero\Database\Driver|null */
     protected $db;
+    /**
+     * @var  string|false|null
+     */
     protected $logPath;
+    /**
+     * @var  mixed
+     */
     protected $path;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  mixed
+     */
     protected $model;
+    /**
+     * @var  object|null
+     */
     protected $params;
 
     /**
@@ -928,6 +943,7 @@ class Sync extends \Hubzero\Base\Obj
 
         // Is there time lock?
         $timeLock = $this->params->get('sync_lock', 0);
+        $timecheck = null;
         if ($timeLock) {
             $timecheck = date('c', time() - (1 * $timeLock * 60));
         }

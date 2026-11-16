@@ -31,7 +31,13 @@ use Hubzero\Facades\User;
 
 class Account extends Plugin
 {
+    /**
+     * @var  object|null
+     */
     protected $member;
+    /**
+     * @var  object|null
+     */
     protected $user;
 
     /**

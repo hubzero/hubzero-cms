@@ -41,15 +41,27 @@ class Files extends Plugin
      */
     public $area;
 
+    /**
+     * @var  \Components\Projects\Helpers\Connect|null
+     */
     protected $connect;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  int|null
+     */
     protected $publishing;
     /** @var \Plugins\Projects\Files\Helpers\Sync|null */
     protected $rSync;
     /** @var string|null */
     protected $remoteService;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
     /** @var int|null */
     protected $forceSync;
@@ -63,6 +75,9 @@ class Files extends Plugin
 
     /** @var int|null */
     protected $publication;
+    /**
+     * @var  \Components\Projects\Models\Repo|null
+     */
     protected $repo;
 
     /**
@@ -1856,7 +1871,7 @@ class Files extends Plugin
                 'name'    => 'preview',
             ]);
 
-            $view->set('file', isset($collector[0]) ? $collector[0] : null);
+            $view->set('file', $collector[0]);
 
             // Get last revision
             if (!$view->get('file')->get('converted') && !$hash) {
@@ -1875,7 +1890,7 @@ class Files extends Plugin
 
         // Other rendering?
         if ($render == 'thumb' || $render == 'inline' || $render == 'medium') {
-            $file = isset($collector[0]) ? $collector[0] : null;
+            $file = $collector[0];
             if (!($file instanceof \Components\Projects\Models\File)) {
                 App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
             }
@@ -1909,7 +1924,7 @@ class Files extends Plugin
                 $serveas        = 'Project Files ' . Date::toSql() . '.zip';
             }
         } else {
-            $file = isset($collector[0]) ? $collector[0] : null;
+            $file = $collector[0];
             if (!($file instanceof \Components\Projects\Models\File)) {
                 App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
             }

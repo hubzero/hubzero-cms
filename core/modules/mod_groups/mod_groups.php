@@ -17,16 +17,43 @@ use Hubzero\Facades\App;
  */
 class Groups extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $approved;
+    /**
+     * @var  mixed
+     */
     protected $closed;
+    /**
+     * @var  mixed
+     */
     protected $hidden;
+    /**
+     * @var  mixed
+     */
     protected $invite;
+    /**
+     * @var  mixed
+     */
     protected $open;
+    /**
+     * @var  mixed
+     */
     protected $pastDay;
+    /**
+     * @var  mixed
+     */
     protected $pending;
+    /**
+     * @var  mixed
+     */
     protected $restricted;
     /** @var string|null */
     protected $type;
+    /**
+     * @var  mixed
+     */
     protected $visible;
 
     /**

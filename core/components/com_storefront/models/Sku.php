@@ -24,6 +24,9 @@ defined('_HZEXEC_') or die();
  */
 class Sku
 {
+    /**
+     * @var  \stdClass|null
+     */
     public $data;
 
     /**

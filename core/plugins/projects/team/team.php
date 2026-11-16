@@ -26,12 +26,27 @@ use Hubzero\Facades\User;
 
 class Team extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  \Components\Projects\Models\Project|null
+     */
     protected $model;
 
     /**
@@ -1254,12 +1269,18 @@ class Team extends Plugin
      * @param   string   $email
      * @param   string   $code
      * @param   integer  $role
-     * @param   object|string $model
+     * @param   \Components\Projects\Models\Project|null $model  The project; this plugin's when null
      * @param   string   $option
      * @return  boolean  True on success
      */
-    public function sendInviteEmail($uid = 0, $email = '', $code = '', $role = 0, $model = '', $option = 'com_projects')
-    {
+    public function sendInviteEmail(
+        $uid = 0,
+        $email = '',
+        $code = '',
+        $role = 0,
+        $model = null,
+        $option = 'com_projects',
+    ) {
         $uid   = $uid ? $uid : 0;
         if (!$email && $uid) {
             $email = User::getInstance($uid)->get('email');

@@ -15,6 +15,9 @@ use Hubzero\Base\Obj;
  */
 class Attachment extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $connector;
 
     /**

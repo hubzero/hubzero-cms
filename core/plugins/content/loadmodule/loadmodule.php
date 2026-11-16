@@ -21,11 +21,15 @@ class Loadmodule extends Plugin
 {
     /**
      * List of modules by position
+     *
+     * @var  array<mixed>
      */
     protected static $modules = [];
 
     /**
      * List of modules by name
+     *
+     * @var  array<mixed>
      */
     protected static $mods = [];
 

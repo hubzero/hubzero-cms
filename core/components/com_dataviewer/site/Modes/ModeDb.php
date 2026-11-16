@@ -80,7 +80,7 @@ class ModeDb
 
         $dd_json_file = false;
         $jsonPath = DvConfig::$dv_conf['dd_json'] . DS . $dv_id . '.json';
-        if (isset(DvConfig::$dv_conf['dd_json']) && file_exists($jsonPath)) {
+        if (file_exists($jsonPath)) {
             $dd_json_file = $jsonPath;
         }
 

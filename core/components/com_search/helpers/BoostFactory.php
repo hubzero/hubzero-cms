@@ -17,8 +17,14 @@ use Hubzero\Facades\Component;
 
 class BoostFactory
 {
+    /**
+     * @var  mixed
+     */
     protected $map = null;
 
+    /**
+     * @var  mixed
+     */
     protected $userHelper = null;
 
     /**

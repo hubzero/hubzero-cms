@@ -10,12 +10,27 @@ namespace Components\Cart\Lib\Auditors;
 
 class BaseAuditor
 {
+    /**
+     * @var  mixed
+     */
     public $type;
+    /**
+     * @var  int|null
+     */
     public $pId;
+    /**
+     * @var  int|null
+     */
     public $crtId;
+    /**
+     * @var  int|false|null
+     */
     public $uId;
     /** @var \stdClass|null */
     public $response;
+    /**
+     * @var  mixed
+     */
     public $sId;
 
     /**

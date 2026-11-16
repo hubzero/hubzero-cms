@@ -22,8 +22,17 @@ class Request
      * @var object
      */
     private $terms;
+    /**
+     * @var  array<string, mixed>|null
+     */
     private $term_ar;
+    /**
+     * @var  \Components\Search\Models\Basic\Result\AssocList|null
+     */
     private $tags;
+    /**
+     * @var  array<mixed>
+     */
     private $object_tags = [];
 
     /**

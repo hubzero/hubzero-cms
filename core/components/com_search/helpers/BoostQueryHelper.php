@@ -14,10 +14,19 @@ use Component;
 
 class BoostQueryHelper
 {
+    /**
+     * @var  mixed
+     */
     protected $boostOrm;
 
+    /**
+     * @var  mixed
+     */
     protected $queriesFactory;
 
+    /**
+     * @var  mixed
+     */
     protected $boosts;
 
     /**

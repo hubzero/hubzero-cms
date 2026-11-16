@@ -19,6 +19,9 @@ use Hubzero\Facades\Lang;
  */
 class Wishvoters extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $rows;
 
     /**

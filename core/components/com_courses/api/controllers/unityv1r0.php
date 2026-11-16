@@ -21,6 +21,9 @@ use Hubzero\Facades\Date;
  */
 class Unityv1r0 extends Base
 {
+    /**
+     * @var  mixed
+     */
     protected $db;
 
     /**

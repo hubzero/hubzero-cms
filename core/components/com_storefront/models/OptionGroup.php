@@ -19,7 +19,13 @@ use Hubzero\Facades\Lang;
 class OptionGroup
 {
     // Data container
+    /**
+     * @var  \stdClass|null
+     */
     public $data;
+    /**
+     * @var  mixed
+     */
     private $db;
 
     /**

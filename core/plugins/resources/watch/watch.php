@@ -24,7 +24,13 @@ class Watch extends Plugin
 {
     /** @var string|null */
     protected $action;
+    /**
+     * @var  mixed
+     */
     protected $link;
+    /**
+     * @var  object|null
+     */
     protected $resource;
 
     /**

@@ -19,7 +19,13 @@ use Date;
  */
 class Quotes extends Module
 {
+    /**
+     * @var  array<string, mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $quotes;
 
     /**

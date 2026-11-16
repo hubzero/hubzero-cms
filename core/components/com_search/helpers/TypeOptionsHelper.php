@@ -15,6 +15,9 @@ use Hubzero\Facades\Component;
 
 class TypeOptionsHelper
 {
+    /**
+     * @var  mixed
+     */
     protected $typeHelper = null;
 
     /**

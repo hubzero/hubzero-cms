@@ -23,12 +23,27 @@ class Reviews extends Plugin
 {
     /** @var string|null */
     protected $controller;
+    /**
+     * @var  mixed
+     */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $obj;
+    /**
+     * @var  string|null
+     */
     protected $obj_type;
     /** @var string|null */
     protected $task;
+    /**
+     * @var  string|null
+     */
     protected $url;
+    /**
+     * @var  \Hubzero\Plugin\View|null
+     */
     protected $view;
 
     /**
@@ -87,8 +102,9 @@ class Reviews extends Plugin
 
             $this->authorize();
 
-            $this->view->params   = $this->params;
-            $this->view->task     = $this->task    = Request::getString('action', '');
+            $this->task = Request::getString('action', '');
+            $this->view->set('params', $this->params);
+            $this->view->set('task', $this->task);
 
             switch ($this->task) {
                 // Entries
@@ -347,7 +363,7 @@ class Reviews extends Plugin
     protected function renderView()
     {
         // Get comments on this article
-        $comments = $this->view->tbl
+        $comments = $this->view->get('tbl')
             ->whereEquals('item_type', $this->obj_type)
             ->whereEquals('item_id', $this->obj->get('id'))
             ->whereEquals('parent', 0)

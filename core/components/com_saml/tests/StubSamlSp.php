@@ -13,7 +13,13 @@ namespace Components\Saml\Tests;
  */
 class StubSamlSp
 {
+    /**
+     * @var  array<string, mixed>|null
+     */
     private $data;
+    /**
+     * @var  array<int, array<string, string>>|null
+     */
     private $map;
 
     /**

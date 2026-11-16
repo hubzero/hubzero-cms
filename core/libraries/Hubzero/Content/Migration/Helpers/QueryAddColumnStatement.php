@@ -12,10 +12,25 @@ use Hubzero\Utility\Arr;
 
 class QueryAddColumnStatement
 {
+    /**
+     * @var  string|null
+     */
     protected $asString;
+    /**
+     * @var  mixed
+     */
     protected $defaultValue;
+    /**
+     * @var  mixed
+     */
     protected $name;
+    /**
+     * @var  mixed
+     */
     protected $restriction;
+    /**
+     * @var  mixed
+     */
     protected $type;
 
     /**

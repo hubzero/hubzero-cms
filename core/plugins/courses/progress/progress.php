@@ -23,11 +23,23 @@ use Hubzero\Facades\User;
  */
 class Progress extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $base;
+    /**
+     * @var  object|null
+     */
     protected $course;
     /** @var \Hubzero\Database\Driver|null */
     protected $db;
+    /**
+     * @var  mixed
+     */
     protected $member;
+    /**
+     * @var  \Hubzero\Plugin\View|null
+     */
     protected $view;
 
     /**
@@ -160,7 +172,7 @@ class Progress extends Plugin
         if ($layout == 'instructor') {
             if ($student_id = Request::getInt('id', false)) {
                 $layout = 'student';
-                $this->view->member = $this->course->offering()->section()->member($student_id);
+                $this->view->set('member', $this->course->offering()->section()->member($student_id));
             }
         }
 
@@ -186,11 +198,11 @@ class Progress extends Plugin
 
         $asset_id = Request::getInt('asset_id', false);
 
-        $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
+        $this->view->set('details', \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
             $this->db,
             $asset_id,
             $this->course->offering()->section()->get('id'),
-        );
+        ));
 
         $this->css('assessmentdetails.css');
         $this->js('assessmentdetails');

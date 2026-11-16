@@ -12,6 +12,9 @@ use Hubzero\Facades\Component;
 
 class DvConfig
 {
+    /**
+     * @var  array<mixed>
+     */
     public static $dv_conf = [];
     /**
      * @var  string

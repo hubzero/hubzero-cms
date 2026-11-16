@@ -23,6 +23,8 @@ class CustomDeleteColumnPost extends Relational
 
     /**
      * Custom column name for soft deletes
+     *
+     * @var  string
      */
     protected $deletedAtColumn = 'removed_at';
 }

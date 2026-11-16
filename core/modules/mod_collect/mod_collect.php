@@ -22,11 +22,23 @@ use stdClass;
  */
 class Collect extends Module
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $collections;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $groupboards;
+    /**
+     * @var  object|null
+     */
     protected $item;
     /** @var \Components\Collections\Models\Archive|null */
     protected $model;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $myboards;
 
     /**

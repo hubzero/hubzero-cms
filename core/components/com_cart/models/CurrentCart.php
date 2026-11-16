@@ -25,6 +25,9 @@ use Hubzero\Facades\Route;
 class CurrentCart extends Cart
 {
     // Session cart
+    /**
+     * @var  mixed
+     */
     public $cart = null;
 
     // Syncing enabled?
@@ -39,7 +42,13 @@ class CurrentCart extends Cart
      */
     public $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
 
+    /**
+     * @var  array<mixed>|null
+     */
     public $cartCoupons;
+    /**
+     * @var  object|null
+     */
     public $tInfo;
 
     /**

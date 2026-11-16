@@ -54,6 +54,8 @@ abstract class BaseSqlSyntax
 
     /**
      * The syntax element containers
+     *
+     * @var  array<mixed>
      */
     protected $select = [];
     /**
@@ -76,7 +78,13 @@ abstract class BaseSqlSyntax
      * @var  string
      */
     protected $delete = '';
+    /**
+     * @var  array<mixed>
+     */
     protected $set    = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $values = [];
 
     /**
@@ -85,11 +93,29 @@ abstract class BaseSqlSyntax
      * @var  array<mixed>
      **/
     protected $rawValues = [];
+    /**
+     * @var  mixed
+     */
     protected $from   = [];
+    /**
+     * @var  mixed
+     */
     protected $join   = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $where  = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $group  = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $having = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $order  = [];
     /**
      * @var  string|int
@@ -116,14 +142,25 @@ abstract class BaseSqlSyntax
      *
      * Note: $upsert is used by build() to check if upsert is configured.
      * The actual data is stored in $upsertTable, $upsertValues, etc.
+     *
+     * @var  bool
      */
     protected $upsert = false;
     /**
      * @var  string
      */
     protected $upsertTable = '';
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertValues = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertUpdateColumns = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertConflictColumns = [];
 
     /**
@@ -131,14 +168,25 @@ abstract class BaseSqlSyntax
      *
      * Note: $upsertMany is used by build() to check if bulk upsert is
      * configured. The actual data is in $upsertMany* properties below.
+     *
+     * @var  bool
      */
     protected $upsertMany = false;
     /**
      * @var  string
      */
     protected $upsertManyTable = '';
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertManyRows = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertManyUpdateColumns = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $upsertManyConflictColumns = [];
 
     /**
@@ -146,6 +194,8 @@ abstract class BaseSqlSyntax
      *
      * Note: $insertMany is used by the build() method to check if bulk insert is configured.
      * The actual data is stored in $insertManyTable, $insertManyRows, and $insertManyIgnore.
+     *
+     * @var  bool
      */
     protected $insertMany = false;
     /**
@@ -173,6 +223,9 @@ abstract class BaseSqlSyntax
      * @var  array<mixed>
      **/
     protected $insertSelectBindings = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $insertManyRows = [];
     /**
      * @var  bool
@@ -1692,9 +1745,6 @@ abstract class BaseSqlSyntax
     public function setSet($data)
     {
         // Merge with existing SET clauses instead of overwriting
-        if (!is_array($this->set)) {
-            $this->set = [];
-        }
         $this->set = array_merge($this->set, $data);
     }
 
@@ -3204,11 +3254,11 @@ abstract class BaseSqlSyntax
         // Standard INSERT VALUES
         $fields = [];
         $values = [];
-        $data   = is_array($this->values) ? $this->values : [];
+        $data   = $this->values;
 
         // An insert written with set() names its fields the same way an
         // update does, and reads no differently at the call site.
-        if (empty($data) && !empty($this->set) && is_array($this->set)) {
+        if (empty($data) && !empty($this->set)) {
             $data = $this->set;
         }
 

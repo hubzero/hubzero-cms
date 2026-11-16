@@ -17,7 +17,13 @@ use Hubzero\Facades\Component;
  */
 class Grouppages extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $unapprovedModules;
+    /**
+     * @var  mixed
+     */
     protected $unapprovedPages;
 
     /**

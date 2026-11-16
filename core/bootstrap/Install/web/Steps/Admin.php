@@ -20,8 +20,17 @@ use Hubzero\Facades\App;
 
 class Admin implements StepInterface
 {
+    /**
+     * @var  mixed
+     */
     private $installer;
+    /**
+     * @var  mixed
+     */
     private $errors = [];
+    /**
+     * @var  mixed
+     */
     private $existingAdmin = null;
 
     private const SUPER_USERS_GROUP_ID = 8;

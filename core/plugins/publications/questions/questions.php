@@ -21,8 +21,17 @@ use Hubzero\Facades\User;
  */
 class Questions extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $count;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  object|null
+     */
     protected $publication;
 
     /**

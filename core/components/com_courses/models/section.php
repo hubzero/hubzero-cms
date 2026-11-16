@@ -21,6 +21,9 @@ use Hubzero\Facades\User;
  */
 class Section extends Base
 {
+    /**
+     * @var  object|null
+     */
     protected $permissions;
 
     /**

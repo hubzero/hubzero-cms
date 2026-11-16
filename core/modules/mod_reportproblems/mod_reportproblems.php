@@ -19,13 +19,37 @@ use Hubzero\Facades\Request;
  */
 class Reportproblems extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $allowed;
+    /**
+     * @var  string|null
+     */
     protected $browser;
+    /**
+     * @var  int|string|null
+     */
     protected $browser_ver;
+    /**
+     * @var  bool|null
+     */
     protected $guestOrTmpAccount;
+    /**
+     * @var  string|null
+     */
     protected $os;
+    /**
+     * @var  string|null
+     */
     protected $os_version;
+    /**
+     * @var  string|null
+     */
     protected $referrer;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $supportParams;
     /** @var int|null */
     protected $verified;

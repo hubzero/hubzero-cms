@@ -12,7 +12,13 @@ use Hubzero\Utility\Arr;
 
 class QueryDropColumnStatement
 {
+    /**
+     * @var  string|null
+     */
     protected $asString;
+    /**
+     * @var  mixed
+     */
     protected $name;
 
     /**

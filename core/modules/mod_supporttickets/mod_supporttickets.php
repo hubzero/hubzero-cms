@@ -22,12 +22,33 @@ use Hubzero\Facades\App;
  */
 class Supporttickets extends Module
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $closed;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $closedTickets;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $closedmonths;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $opened;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $openedmonths;
+    /**
+     * @var  mixed
+     */
     protected $topened;
+    /**
+     * @var  string|null
+     */
     protected $year;
 
     /**

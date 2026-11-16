@@ -20,7 +20,13 @@ class Featuredresource extends Module
 {
     /** @var string|null */
     protected $cls;
+    /**
+     * @var  string|\Components\Resources\Models\Entry|null
+     */
     protected $row;
+    /**
+     * @var  string|null
+     */
     protected $thumb;
     /** @var string|null */
     protected $txt_length;

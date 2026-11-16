@@ -16,6 +16,9 @@ use Hubzero\Search\Adapters;
  */
 class Index
 {
+    /**
+     * @var  object|null
+     */
     public $adapter = null;
 
     /**

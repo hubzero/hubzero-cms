@@ -24,11 +24,23 @@ use Hubzero\Facades\User;
 
 class Questions extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $banking;
+    /**
+     * @var  mixed
+     */
     protected $count;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  object|null
+     */
     protected $model;
 
     /**

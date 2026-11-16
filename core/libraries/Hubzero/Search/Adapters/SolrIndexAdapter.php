@@ -20,18 +20,39 @@ use Hubzero\Facades\Filesystem;
  */
 class SolrIndexAdapter implements IndexInterface
 {
+    /**
+     * @var  mixed
+     */
     public $logPath = null;
 
+    /**
+     * @var  \Solarium\Client|null
+     */
     public $connection = null;
 
+    /**
+     * @var  \Solarium\QueryType\Select\Query\Query|null
+     */
     public $query = null;
 
+    /**
+     * @var  mixed
+     */
     public $bufferAdd = null;
 
+    /**
+     * @var  int|null
+     */
     public $commitWithin = null;
 
+    /**
+     * @var  bool|null
+     */
     public $overwrite = null;
 
+    /**
+     * @var  array<int, string>|null
+     */
     public $logs = null;
 
     /**
@@ -109,7 +130,7 @@ class SolrIndexAdapter implements IndexInterface
         $query->setRows(1);
         $query->setStart(0);
 
-        $results = $this->connection->execute($query);
+        $results = $this->connection->select($query);
         foreach ($results as $document) {
             foreach ($document as $field => $value) {
                 $result = $value;
@@ -181,7 +202,11 @@ class SolrIndexAdapter implements IndexInterface
     public function initBufferAdd($overwrite = null, $commitWithin = null, $buffer = null)
     {
         if (!isset($this->bufferAdd)) {
-            $this->bufferAdd = $this->connection->getPlugin('bufferedadd');
+            $plugin = $this->connection->getPlugin('bufferedadd');
+            if (!($plugin instanceof \Solarium\Plugin\BufferedAdd\BufferedAdd)) {
+                throw new \RuntimeException('Solarium did not supply its buffered add plugin.');
+            }
+            $this->bufferAdd = $plugin;
 
             if ($commitWithin !== null) {
                 $this->bufferAdd->setCommitWithin($commitWithin);
@@ -206,6 +231,9 @@ class SolrIndexAdapter implements IndexInterface
     {
         $update = $this->connection->createUpdate();
         $newDoc = $update->createDocument();
+        if (!($newDoc instanceof \Solarium\QueryType\Update\Query\Document)) {
+            throw new \RuntimeException('Solarium did not supply an update document.');
+        }
         foreach ($document as $field => $value) {
             if (!is_string($value)) {
                 $newDoc->$field = json_decode(json_encode($value), true);

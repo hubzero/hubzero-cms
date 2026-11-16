@@ -38,6 +38,9 @@ class Awards
     private $uid;
 
 
+    /**
+     * @var  mixed
+     */
     public $profile;
 
     /**

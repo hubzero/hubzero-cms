@@ -73,12 +73,18 @@ class Request
      */
     private $version = 'HTTP/1.0';
 
+    /**
+     * @var  mixed
+     */
     private $headers = [];
 
     /**
      * @var  string
      */
     private $body = '';
+    /**
+     * @var  mixed
+     */
     private $post = [];
     /**
      * Short description for 'getHeaderField'

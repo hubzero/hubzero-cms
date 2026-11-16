@@ -16,7 +16,13 @@ use Hubzero\System\Requirements as SystemRequirements;
 
 class Requirements implements StepInterface
 {
+    /**
+     * @var  \Bootstrap\Install\Web\Installer|null
+     */
     private $installer;
+    /**
+     * @var  array<mixed>
+     */
     private $requirements = [];
     /**
      * @var  bool

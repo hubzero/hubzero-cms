@@ -21,8 +21,17 @@ class Mymessages extends Module
 {
     /** @var int|null */
     protected $limit;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  mixed
+     */
     protected $rows;
+    /**
+     * @var  int|null
+     */
     protected $total;
 
     /**

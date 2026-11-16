@@ -22,11 +22,23 @@ use Hubzero\Facades\Route;
  */
 class Projects extends Plugin
 {
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $config;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  mixed
+     */
     protected $total;
+    /**
+     * @var  object|null
+     */
     protected $user;
     /** @var \Components\Projects\Models\Project|null */
     protected $model;

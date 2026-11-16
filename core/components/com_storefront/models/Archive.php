@@ -17,7 +17,13 @@ use Hubzero\Facades\App;
  */
 class Archive extends \Hubzero\Base\Obj
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $count;
+    /**
+     * @var  mixed
+     */
     protected $db;
 
     /**

@@ -31,6 +31,9 @@ class Connect extends Obj
 {
     // Read from outside the class: the project files plugin asks the
     // connection which services are active.
+    /**
+     * @var  array<mixed>|null
+     */
     public $active;
 
     /**
@@ -304,7 +307,7 @@ class Connect extends Obj
      * Establish connection
      *
      * @param   string   $service  Service name (google or dropbox)
-     * @param   boolean  $reauth   Re-authenticate user?
+     * @param   bool|int  $reauth   Re-authenticate user?
      * @param   string   $return   URL to return to after authorization
      * @return  bool|void
      */
@@ -700,7 +703,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid      User ID
      * @param   string|int $id       Remote ID
-     * @return  string|false
+     * @return  mixed  The Drive file (array-accessible), false when there is none, or null
      */
     public function loadRemoteResource($service = 'google', $uid = 0, $id = 0)
     {
@@ -2248,7 +2251,7 @@ class Connect extends Obj
      * Disconnect user from service
      *
      * @param   string   $service     Service name (google or dropbox)
-     * @param   boolean  $removeData  Remove remote data (when project creator)
+     * @param   bool|int  $removeData  Remove remote data (when project creator)
      * @return  mixed    JSON string or false
      */
     public function disconnect($service, $removeData = false)

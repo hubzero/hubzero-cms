@@ -18,6 +18,9 @@ use Hubzero\Facades\Lang;
  */
 class Nogit extends Obj
 {
+    /**
+     * @var  object|null
+     */
     protected $adapter;
 
     /**

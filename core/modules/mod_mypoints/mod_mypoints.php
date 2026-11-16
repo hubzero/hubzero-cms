@@ -18,11 +18,23 @@ use Hubzero\Facades\User;
  */
 class Mypoints extends Module
 {
+    /**
+     * @var  bool|null
+     */
     protected $error;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $history;
     /** @var int|null */
     protected $limit;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  int|null
+     */
     protected $summary;
 
     /**

@@ -23,6 +23,9 @@ class Courses extends Plugin
 {
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $member;
 
     /**

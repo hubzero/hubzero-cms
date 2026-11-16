@@ -20,9 +20,21 @@ use Hubzero\Facades\Config;
  */
 class Eprivacy extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $duration;
+    /**
+     * @var  mixed
+     */
     protected $message;
+    /**
+     * @var  mixed
+     */
     protected $moduleid;
+    /**
+     * @var  string|null
+     */
     protected $uri;
 
     /**

@@ -13,6 +13,9 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class PartialObserver
 {
+    /**
+     * @var  array<mixed>
+     */
     protected static $called = [];
 
     /**

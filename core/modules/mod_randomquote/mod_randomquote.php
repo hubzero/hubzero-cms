@@ -18,10 +18,25 @@ use Hubzero\Facades\App;
  */
 class Randomquote extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $charlimit;
+    /**
+     * @var  mixed
+     */
     protected $quote;
+    /**
+     * @var  string|null
+     */
     protected $quote_to_show;
+    /**
+     * @var  mixed
+     */
     protected $showall;
+    /**
+     * @var  mixed
+     */
     protected $showauthor;
 
     /**

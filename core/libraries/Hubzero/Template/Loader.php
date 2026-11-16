@@ -146,7 +146,7 @@ class Loader
     /**
      * Set style
      *
-     * @param   integer  $style
+     * @param   int|string  $style
      * @return  object
      */
     public function setStyle($style)

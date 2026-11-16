@@ -20,6 +20,8 @@ class ClientDetector
 {
     /**
      * Request URI
+     *
+     * @var  \Hubzero\Http\Request|null
      */
     private $request = null;
 

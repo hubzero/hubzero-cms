@@ -29,15 +29,39 @@ use Components\Groups\Tables\Reason;
  */
 class Members extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $componentOption;
+    /**
+     * @var  string|null
+     */
     protected $output;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  mixed
+     */
     protected $display_system_users;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $membership_control;
+    /**
+     * @var  string|null
+     */
     protected $name;
 
     /**

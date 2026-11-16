@@ -18,6 +18,9 @@ use Hubzero\Facades\Date;
  */
 class Quicktips extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $rows;
 
     /**

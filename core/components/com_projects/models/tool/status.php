@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class Status extends Model
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $statuses;
 
     /**

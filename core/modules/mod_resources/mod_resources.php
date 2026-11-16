@@ -16,12 +16,33 @@ use Hubzero\Facades\App;
  */
 class Resources extends Module
 {
+    /**
+     * @var  mixed
+     */
     public $draftInternal;
+    /**
+     * @var  mixed
+     */
     public $draftUser;
+    /**
+     * @var  mixed
+     */
     public $pending;
+    /**
+     * @var  mixed
+     */
     public $published;
+    /**
+     * @var  mixed
+     */
     public $removed;
+    /**
+     * @var  mixed
+     */
     public $unpublished;
+    /**
+     * @var  array<mixed>|float|int|null
+     */
     public $draft;
 
     /**

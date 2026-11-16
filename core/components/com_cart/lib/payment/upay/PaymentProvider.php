@@ -20,10 +20,19 @@ use Hubzero\Facades\Request;
  */
 class PaymentProvider
 {
+    /**
+     * @var  \stdClass|null
+     */
     private $options;
     /** @var \stdClass|null */
     private $siteDetails;
+    /**
+     * @var  array<mixed>|null
+     */
     private $transactionDetails;
+    /**
+     * @var  array<mixed>|null
+     */
     private $postBack;
     /** @var \stdClass|null */
     private $error;

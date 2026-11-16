@@ -18,11 +18,29 @@ use Hubzero\Facades\User;
  */
 class Myprojects extends Module
 {
+    /**
+     * @var  array<string, mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  int|null
+     */
     protected $limit;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $pconfig;
+    /**
+     * @var  array<int, \stdClass>|null
+     */
     protected $rows;
+    /**
+     * @var  string|null
+     */
     protected $total;
 
     /**

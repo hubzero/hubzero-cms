@@ -18,7 +18,13 @@ use Hubzero\Facades\User;
  */
 class Popularfaq extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $cssClass;
+    /**
+     * @var  mixed
+     */
     protected $cssId;
 
     /**

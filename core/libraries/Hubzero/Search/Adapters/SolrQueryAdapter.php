@@ -24,29 +24,59 @@ use Hubzero\Facades\User;
  */
 class SolrQueryAdapter implements QueryInterface
 {
+    /**
+     * @var  mixed
+     */
     public $logPath = null;
 
+    /**
+     * @var  \Solarium\Client|null
+     */
     public $connection = null;
 
+    /**
+     * @var  array<string, mixed>|null
+     */
     public $config = null;
 
+    /**
+     * @var  \Solarium\QueryType\Select\Query\Query|null
+     */
     public $query = null;
 
+    /**
+     * @var  mixed
+     */
     public $adapter = null;
 
+    /**
+     * @var  mixed
+     */
     public $resultset = null;
 
+    /**
+     * @var  mixed
+     */
     public $numFound = null;
 
+    /**
+     * @var  array<mixed>|null
+     */
     public $results = null;
 
+    /**
+     * @var  mixed
+     */
     public $resultsFacetSet = null;
 
     /**
-     * @var  bool
+     * @var  \Solarium\Component\Debug|bool  The query's debug component once run; false before
      */
     public $debug = false;
 
+    /**
+     * @var  mixed
+     */
     public $facetSet = null;
 
     /**
@@ -134,7 +164,7 @@ class SolrQueryAdapter implements QueryInterface
             ->setRows(0)
             ->getSpellcheck()
             ->setQuery($terms)
-            ->setCount('5');
+            ->setCount(5);
         // This executes the query and returns the result
         $spellcheckResults = $this->connection->select($scQuery)->getSpellcheck();
 
@@ -500,7 +530,7 @@ class SolrQueryAdapter implements QueryInterface
         $query->setRows(1);
         $query->setStart(0);
 
-        $results = $this->connection->execute($query);
+        $results = $this->connection->select($query);
         foreach ($results as $document) {
             foreach ($document as $field => $value) {
                 $result = $value;

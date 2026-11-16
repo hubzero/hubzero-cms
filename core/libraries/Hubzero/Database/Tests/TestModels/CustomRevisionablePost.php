@@ -33,6 +33,9 @@ class CustomRevisionablePost extends Relational
     protected $revisionForeignKey = 'post_id';
 
     // Only track these fields
+    /**
+     * @var  array<int, mixed>
+     */
     protected $revisionable = ['title', 'body'];
 
     // Keep max 5 revisions

@@ -23,10 +23,25 @@ use Hubzero\Facades\User;
  */
 class Messages extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $componentOption;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $members;
 
     /**

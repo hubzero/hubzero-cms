@@ -13,6 +13,9 @@ namespace Components\Saml\Tests;
  */
 class StubParams
 {
+    /**
+     * @var  array<string, mixed>|null
+     */
     private $data;
 
     /**

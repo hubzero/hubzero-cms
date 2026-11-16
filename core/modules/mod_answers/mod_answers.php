@@ -17,11 +17,29 @@ use Hubzero\Facades\App;
  */
 class Answers extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $closed;
+    /**
+     * @var  mixed
+     */
     protected $myclosed;
+    /**
+     * @var  mixed
+     */
     protected $myopen;
+    /**
+     * @var  mixed
+     */
     protected $open;
+    /**
+     * @var  mixed
+     */
     protected $pastDay;
+    /**
+     * @var  mixed
+     */
     protected $username;
 
     /**

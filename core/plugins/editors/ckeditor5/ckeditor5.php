@@ -25,6 +25,8 @@ class Ckeditor5 extends Plugin
 {
     /**
      * Base path for editor files
+     *
+     * @var  string
      */
     protected $basePath = 'core/plugins/editors/ckeditor5/assets/';
 

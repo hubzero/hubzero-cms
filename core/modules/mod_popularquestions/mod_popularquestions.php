@@ -20,8 +20,17 @@ use Date;
  */
 class Popularquestions extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $cssClass;
+    /**
+     * @var  mixed
+     */
     protected $cssId;
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $rows;
     /** @var string|null */
     protected $style;

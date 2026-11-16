@@ -21,8 +21,17 @@ use Hubzero\Facades\Route;
  */
 class Sponsors extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $controller;
+    /**
+     * @var  string|null
+     */
     protected $componentOption;
+    /**
+     * @var  string|null
+     */
     protected $task;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;

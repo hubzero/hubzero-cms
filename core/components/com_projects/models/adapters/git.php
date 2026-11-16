@@ -20,11 +20,23 @@ use Hubzero\Facades\User;
  */
 class Git extends Models\Adapter
 {
+    /**
+     * @var  mixed
+     */
     protected $fileLog;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $files;
     /** @var \Components\Projects\Helpers\Git|null */
     protected $git;
+    /**
+     * @var  mixed
+     */
     protected $gitpath;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $profileAssoc;
 
     /**

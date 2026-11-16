@@ -15,5 +15,8 @@ namespace Hubzero\Container\Tests\Mock;
  */
 class Service
 {
+    /**
+     * @var  mixed
+     */
     public $value;
 }

@@ -40,6 +40,9 @@ class View extends Obj
 {
     use \Hubzero\Base\Traits\Escapable;
 
+    /**
+     * @var  mixed
+     */
     protected $baseurl;
 
     /**

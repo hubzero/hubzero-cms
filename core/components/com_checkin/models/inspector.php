@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class Inspector extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $items;
 
     /**

@@ -17,15 +17,33 @@ use Hubzero\Facades\User;
  */
 class Mycontributions extends Module
 {
+    /**
+     * @var  array<int, \stdClass>|null
+     */
     public $contributions;
     /** @var int|null */
     public $limit_other;
+    /**
+     * @var  int|null
+     */
     public $limit_tools;
+    /**
+     * @var  int|null
+     */
     public $show_questions;
+    /**
+     * @var  int|null
+     */
     public $show_tickets;
     /** @var int|null */
     public $show_tools;
+    /**
+     * @var  int|null
+     */
     public $show_wishes;
+    /**
+     * @var  mixed
+     */
     public $tools;
 
     /**

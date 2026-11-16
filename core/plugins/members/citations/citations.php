@@ -41,8 +41,17 @@ class Citations extends Plugin
     protected $action;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  int|null
+     */
     protected $grand_total;
+    /**
+     * @var  \Components\Citations\Models\Importer|null
+     */
     protected $importer;
+    /**
+     * @var  object|null
+     */
     protected $member;
 
     /**

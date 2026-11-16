@@ -35,14 +35,41 @@ class DiffEngine
      * Description for 'AX_XREF_LENGTH'
      */
     public const MAX_XREF_LENGTH = 10000;
+    /**
+     * @var  array<mixed>|null
+     */
     public $xchanged = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $ychanged = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $yv = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $xv = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $yind = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $xind = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $in_seq = null;
+    /**
+     * @var  array<mixed>|null
+     */
     public $seq = null;
+    /**
+     * @var  int|null
+     */
     public $lcs = null;
 
     /**

@@ -22,6 +22,9 @@ defined('_HZEXEC_') or die();
  */
 class SingleSkuProduct extends Product
 {
+    /**
+     * @var  mixed
+     */
     protected $defaultSku;
 
     /**

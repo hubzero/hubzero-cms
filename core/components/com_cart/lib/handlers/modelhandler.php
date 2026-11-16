@@ -11,18 +11,30 @@ namespace Components\Cart\Lib\Handlers;
 class ModelHandler
 {
     // Database instance
+    /**
+     * @var  mixed
+     */
     public $db = null;
 
     // Item info
+    /**
+     * @var  array<string, mixed>|null
+     */
     public $item;
 
+    /**
+     * @var  int|null
+     */
     public $crtId;
+    /**
+     * @var  int|null
+     */
     public $tId;
 
     /**
      * Constructor
      *
-     * @param   object  $item
+     * @param   array<string, mixed>  $item
      * @param   int  $crtId
      * @param   int  $tId
      */

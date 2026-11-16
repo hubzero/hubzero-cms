@@ -19,6 +19,9 @@ use PHPUnit\Framework\TestCase;
  */
 class LoaderTest extends TestCase
 {
+    /**
+     * @var  \Hubzero\Template\Loader|null
+     */
     private $loader;
 
     /**
@@ -94,7 +97,7 @@ class LoaderTest extends TestCase
     {
         $template = $this->loader->getSystemTemplate();
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'system');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 0);
@@ -179,7 +182,7 @@ class LoaderTest extends TestCase
     {
         $template = $this->loader->getTemplate(0);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'sitefoo');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 3);
@@ -191,7 +194,7 @@ class LoaderTest extends TestCase
 
         $template = $this->loader->getTemplate(1);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'adminfoo');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 1);
@@ -203,7 +206,7 @@ class LoaderTest extends TestCase
 
         $template = $this->loader->getTemplate(0, 4);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'sitebar');
         $this->assertEquals($template->protected, 0);
         $this->assertEquals($template->id, 4);
@@ -213,7 +216,7 @@ class LoaderTest extends TestCase
 
         $template = $this->loader->getTemplate(1, 2);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'adminbar');
         $this->assertEquals($template->protected, 0);
         $this->assertEquals($template->id, 2);
@@ -223,7 +226,7 @@ class LoaderTest extends TestCase
 
         $template = $this->loader->getTemplate(1, 7);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'system');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 0);
@@ -235,7 +238,7 @@ class LoaderTest extends TestCase
 
         $template = $this->loader->getTemplate(0, 8);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'system');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 0);
@@ -256,7 +259,7 @@ class LoaderTest extends TestCase
         // Load template by current client (site)
         $template = $this->loader->load();
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'sitefoo');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 3);
@@ -269,7 +272,7 @@ class LoaderTest extends TestCase
         // Load site tmeplate by client ID
         $template = $this->loader->load(0);
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'sitefoo');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 3);
@@ -282,7 +285,7 @@ class LoaderTest extends TestCase
         // Load admin template by client name
         $template = $this->loader->load('administrator');
 
-        $this->assertTrue(is_object($template));
+        $this->assertInstanceOf(\stdClass::class, $template);
         $this->assertEquals($template->template, 'adminfoo');
         $this->assertEquals($template->protected, 1);
         $this->assertEquals($template->id, 1);

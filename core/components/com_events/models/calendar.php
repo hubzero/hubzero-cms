@@ -25,6 +25,9 @@ use Hubzero\Facades\Plugin;
  */
 class Calendar extends Model
 {
+    /**
+     * @var  mixed
+     */
     protected $id;
 
     /**

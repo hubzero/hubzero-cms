@@ -18,6 +18,9 @@ class Router extends Base
 {
     // Accommodate specific controllers used by com_reply
     // so is there a dash or not?
+    /**
+     * @var  array<int, mixed>
+     */
     private $replyControllers = ['email-subscriptions', 'emailsubscriptions', 'pages', 'replies'];
     /**
      * Build the route for the component.

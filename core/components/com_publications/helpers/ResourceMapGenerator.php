@@ -24,6 +24,9 @@ use Hubzero\Facades\User;
 class ResourceMapGenerator
 {
     // Add namespaces as needed
+    /**
+     * @var  array<string, mixed>
+     */
     private $xmlNamespace = [
         'xmlns:dc'      => 'http://purl.org/dc/elements/1.1/',
         'xmlns:dcterms' => 'http://purl.org/dc/terms/',
@@ -60,23 +63,56 @@ class ResourceMapGenerator
      * @var  int
      */
     private $version_id = -1;
+    /**
+     * @var  mixed
+     */
     private $author_id;
+    /**
+     * @var  mixed
+     */
     private $type;
+    /**
+     * @var  mixed
+     */
     private $title;
+    /**
+     * @var  mixed
+     */
     private $intro;
+    /**
+     * @var  string|null
+     */
     private $created_by;
+    /**
+     * @var  string|null
+     */
     private $date_created;
+    /**
+     * @var  string|null
+     */
     private $date_modified;
+    /**
+     * @var  string|null
+     */
     private $date_published;
 
     // List of children this resource has
     // Aggregates which resources; compiled from $children
+    /**
+     * @var  array<mixed>
+     */
     private $aggregates = [];
 
     // Parents of this resources
+    /**
+     * @var  array<mixed>
+     */
     private $aggregatedBy = [];
 
     // List of all types of the resource
+    /**
+     * @var  array<mixed>|null
+     */
     private $types;
 
     /**

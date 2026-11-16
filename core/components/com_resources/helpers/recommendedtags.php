@@ -13,12 +13,33 @@ use Hubzero\Facades\App;
 
 class RecommendedTags
 {
+    /**
+     * @var  array<mixed>
+     */
     private $tags = [];
+    /**
+     * @var  array<mixed>
+     */
     private $existing_tags = [];
+    /**
+     * @var  array<mixed>
+     */
     private $existing_map = [];
+    /**
+     * @var  array<mixed>
+     */
     private $focus_areas = [];
+    /**
+     * @var  array<mixed>
+     */
     private $focus_areas_map = [];
+    /**
+     * @var  mixed
+     */
     private $fa_properties = [];
+    /**
+     * @var  array<mixed>
+     */
     private $existing_fa_map = [];
 
     public const ENDORSED_TAG = 2;

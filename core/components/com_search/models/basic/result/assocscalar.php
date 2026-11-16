@@ -120,7 +120,7 @@ class AssocScalar extends SearchResult
             )
             : [];
 
-        if ($this->date && $this->date != '0000-00-00 00:00:00') {
+        if (!empty($row['date']) && $row['date'] != '0000-00-00 00:00:00') {
             $this->date = strtotime($row['date']);
         } else {
             $this->date = null;

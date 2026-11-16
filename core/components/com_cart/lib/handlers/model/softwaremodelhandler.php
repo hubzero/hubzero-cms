@@ -15,7 +15,7 @@ class SoftwareModelHandler extends ModelHandler
     /**
      * Constructor
      *
-     * @param   object   $item
+     * @param   array<string, mixed>   $item
      * @param   integer  $crtId
      * @param   integer  $tId
      * @return  void

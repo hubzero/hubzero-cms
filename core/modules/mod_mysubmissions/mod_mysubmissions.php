@@ -19,7 +19,13 @@ use App;
  */
 class Mysubmissions extends Module
 {
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $rows;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $steps;
 
     /**

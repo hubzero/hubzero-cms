@@ -29,6 +29,9 @@ class Curation extends Obj
 {
     /** @var \Components\Publications\Tables\CurationVersion|null */
     protected $curationVersion;
+    /**
+     * @var  \Components\Publications\Tables\Curation|null
+     */
     protected $tbl;
     /** @var \Components\Publications\Tables\CurationHistory|null */
     protected $tblHistory;

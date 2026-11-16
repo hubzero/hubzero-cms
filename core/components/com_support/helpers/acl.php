@@ -18,6 +18,9 @@ use Hubzero\Facades\App;
  */
 class ACL extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $user_groups;
 
     /**

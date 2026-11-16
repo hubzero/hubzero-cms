@@ -18,6 +18,9 @@ class Supportactivity extends Module
 {
     /** @var int|null */
     protected $feed;
+    /**
+     * @var  mixed
+     */
     protected $results;
 
     /**

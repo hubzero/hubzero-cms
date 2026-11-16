@@ -37,10 +37,19 @@ class Blog extends Plugin
 {
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $member;
     /** @var \Components\Blog\Models\Archive|null */
     protected $model;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  object|null
+     */
     protected $user;
 
     /**

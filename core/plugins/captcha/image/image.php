@@ -21,7 +21,13 @@ use Hubzero\Facades\Request;
  */
 class Image extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $keystring;
+    /**
+     * @var  int|null
+     */
     protected $ly;
 
     /**

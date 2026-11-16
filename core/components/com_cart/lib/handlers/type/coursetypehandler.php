@@ -15,7 +15,7 @@ class CourseTypeHandler extends TypeHandler
     /**
      * Constructor
      *
-     * @param   object   $item
+     * @param   array<string, mixed>   $item
      * @param   integer  $crtId
      * @return  void
      */

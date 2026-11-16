@@ -12,6 +12,9 @@ use Hubzero\Facades\Lang;
 
 class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider implements \Geocoder\Provider\Provider
 {
+    /**
+     * @var  array<mixed>
+     */
     public static $countries = [
         ['code' => 'AF', 'name' => 'Afghanistan', 'continent' => 'Asia'],
         ['code' => 'AX', 'name' => 'Aland Islands', 'continent' => 'Europe'],

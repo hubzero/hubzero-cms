@@ -24,11 +24,29 @@ class Helper extends \Hubzero\Base\Obj
     // Set and read from outside the class: the plugin hands the helper the
     // resource and the option it is working on, and the views read the
     // reviewer's own review back off it.
+    /**
+     * @var  string|null
+     */
     public $componentOption;
+    /**
+     * @var  bool|null
+     */
     public $isAuthor;
+    /**
+     * @var  bool|null
+     */
     public $loggedin;
+    /**
+     * @var  object|null
+     */
     public $myreview;
+    /**
+     * @var  \Components\Resources\Models\Entry|object|null
+     */
     public $resource;
+    /**
+     * @var  string|null
+     */
     public $option;
 
     /**

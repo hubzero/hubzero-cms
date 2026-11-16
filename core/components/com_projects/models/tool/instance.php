@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class Instance extends Model
 {
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $params;
 
     /**

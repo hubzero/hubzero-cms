@@ -22,6 +22,9 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
      */
     public static $assetsTable = '#__courses_assets';
 
+    /**
+     * @var  array<mixed>
+     */
     public static $assetsColumns = [
         ['name' => 'grade_weight', 'type' => 'varchar(255)'],
         ['name' => 'graded', 'type' => 'tinyint(2)'],
@@ -33,6 +36,9 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
      */
     public static $offeringSectionsTable = '#__courses_offering_sections';
 
+    /**
+     * @var  array<mixed>
+     */
     public static $offeringSectionsColumns = [
         ['name' => 'enrollment', 'type' => 'tinyint(2)'],
         ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
@@ -43,6 +49,9 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
      */
     public static $pagesTable = '#__courses_pages';
 
+    /**
+     * @var  array<mixed>
+     */
     public static $pagesColumns = [
         ['name' => 'section_id', 'type' => 'int(11)'],
     ];

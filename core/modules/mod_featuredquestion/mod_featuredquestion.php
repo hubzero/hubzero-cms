@@ -19,7 +19,13 @@ class Featuredquestion extends Module
 {
     /** @var string|null */
     protected $cls;
+    /**
+     * @var  \Components\Answers\Models\Question|null
+     */
     protected $row;
+    /**
+     * @var  string|null
+     */
     protected $thumb;
     /** @var string|null */
     protected $txt_length;

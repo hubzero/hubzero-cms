@@ -19,10 +19,25 @@ use Hubzero\Facades\Date;
  */
 class Notices extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $alertlevel;
+    /**
+     * @var  float|int|null
+     */
     protected $days_left;
+    /**
+     * @var  array<string>|string|null
+     */
     protected $message;
+    /**
+     * @var  mixed
+     */
     protected $moduleid;
+    /**
+     * @var  bool|null
+     */
     protected $publish;
 
     /**

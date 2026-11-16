@@ -17,9 +17,21 @@ class Latestusage extends Module
 {
     /** @var string|null */
     protected $cls;
+    /**
+     * @var  mixed
+     */
     protected $resources;
+    /**
+     * @var  mixed
+     */
     protected $sims;
+    /**
+     * @var  mixed
+     */
     protected $tools;
+    /**
+     * @var  mixed
+     */
     protected $users;
 
     /**

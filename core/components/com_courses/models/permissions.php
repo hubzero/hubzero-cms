@@ -19,6 +19,9 @@ use Hubzero\Facades\User;
  */
 class Permissions extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $db;
 
     /**

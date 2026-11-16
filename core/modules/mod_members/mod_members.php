@@ -16,11 +16,29 @@ use Hubzero\Facades\App;
  */
 class Members extends Module
 {
+    /**
+     * @var  mixed
+     */
     public $approved;
+    /**
+     * @var  mixed
+     */
     public $confirmed;
+    /**
+     * @var  mixed
+     */
     public $domains;
+    /**
+     * @var  mixed
+     */
     public $pastDay;
+    /**
+     * @var  mixed
+     */
     public $unapproved;
+    /**
+     * @var  mixed
+     */
     public $unconfirmed;
 
     /**

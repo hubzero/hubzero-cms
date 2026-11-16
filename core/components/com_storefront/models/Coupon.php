@@ -19,7 +19,13 @@ use Hubzero\Facades\Lang;
 class Coupon
 {
     // Database instance
+    /**
+     * @var  mixed
+     */
     public $db = null;
+    /**
+     * @var  mixed
+     */
     public $data;
 
     /**

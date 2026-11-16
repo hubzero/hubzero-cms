@@ -26,6 +26,9 @@ class Authorization
      * @var  bool
      */
     private $super_admin = false;
+    /**
+     * @var  array<mixed>|null
+     */
     private $groups = null;
 
     /**

@@ -13,14 +13,29 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class TestObserver
 {
+    /**
+     * @var  array<mixed>
+     */
     protected static $called = [];
+    /**
+     * @var  array<mixed>
+     */
     protected static $models = [];
+    /**
+     * @var  array<mixed>
+     */
     protected static $callTimes = [];
+    /**
+     * @var  array<mixed>
+     */
     protected static $callCounts = [];
     /**
      * @var  int
      */
     protected static $callSequence = 0;
+    /**
+     * @var  array<mixed>
+     */
     protected static $callOrder = [];
 
     /**

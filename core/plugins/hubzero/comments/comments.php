@@ -25,17 +25,35 @@ use Hubzero\Facades\User;
 
 class Comments extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $componentOption;
     /** @var string|null */
     protected $action;
     /** @var \Plugins\Hubzero\Comments\Models\Comment|null */
     protected $comment;
+    /**
+     * @var  object|null
+     */
     protected $obj;
+    /**
+     * @var  mixed
+     */
     protected $obj_id;
+    /**
+     * @var  string|null
+     */
     protected $obj_type;
     /** @var string|null */
     protected $task;
+    /**
+     * @var  string|null
+     */
     protected $url;
+    /**
+     * @var  \Hubzero\Plugin\View|null
+     */
     protected $view;
 
     /**
@@ -81,8 +99,9 @@ class Comments extends Plugin
 
         $this->comment = new \Plugins\Hubzero\Comments\Models\Comment();
 
-        $this->view->params   = $this->params;
-        $this->view->task     = $this->task    = Request::getCmd('action', '');
+        $this->task = Request::getCmd('action', '');
+        $this->view->set('params', $this->params);
+        $this->view->set('task', $this->task);
 
         switch ($this->task) {
             // Feeds

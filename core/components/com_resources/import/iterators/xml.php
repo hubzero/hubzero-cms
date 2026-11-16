@@ -13,9 +13,21 @@ namespace Components\Resources\Import\Iterators;
  */
 class Xml implements \Iterator
 {
+    /**
+     * @var  string|null
+     */
     private $file;
+    /**
+     * @var  string|null
+     */
     private $key;
+    /**
+     * @var  \XMLReader|null
+     */
     private $reader;
+    /**
+     * @var  int|null
+     */
     private $position;
 
     /**

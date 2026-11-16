@@ -15,9 +15,21 @@ class Csv implements \Iterator
 {
     public const ROW_LENGTH = 0;
 
+    /**
+     * @var  resource|false|null
+     */
     private $file;
+    /**
+     * @var  string|null
+     */
     private $delimiter;
+    /**
+     * @var  int|null
+     */
     private $position;
+    /**
+     * @var  array<int, string|null>|false|null
+     */
     private $headers;
 
     /**

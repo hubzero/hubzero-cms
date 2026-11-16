@@ -17,10 +17,25 @@ use Hubzero\Facades\App;
  */
 class Courses extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $archived;
+    /**
+     * @var  mixed
+     */
     protected $draft;
+    /**
+     * @var  mixed
+     */
     protected $published;
+    /**
+     * @var  array<array<int, mixed>>|null
+     */
     protected $totals;
+    /**
+     * @var  mixed
+     */
     protected $unpublished;
 
     /**

@@ -16,6 +16,9 @@ use Hubzero\Facades\App;
  */
 class Title extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $title;
 
     /**

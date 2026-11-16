@@ -41,13 +41,25 @@ class Ftp implements AdapterInterface
         'transferMode',
     ];
 
+    /**
+     * @var  \FTP\Connection|false|null
+     */
     protected $connection;
+    /**
+     * @var  string|null
+     */
     protected $host;
     /**
      * @var  int
      */
     protected $port = 21;
+    /**
+     * @var  string|null
+     */
     protected $username;
+    /**
+     * @var  string|null
+     */
     protected $password;
     /**
      * @var  bool
@@ -65,6 +77,9 @@ class Ftp implements AdapterInterface
      * @var  string
      */
     protected $separator = '/';
+    /**
+     * @var  string|false|null
+     */
     protected $root;
 
     /**

@@ -13,6 +13,9 @@ namespace Components\Saml\Tests;
  */
 class StubSamlUser
 {
+    /**
+     * @var  array<string, mixed>|null
+     */
     private $data;
 
     /**

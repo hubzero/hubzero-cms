@@ -19,8 +19,17 @@ use Hubzero\Facades\Request;
  */
 class Note extends \Components\Wiki\Models\Book
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $cache;
+    /**
+     * @var  mixed
+     */
     protected $db;
+    /**
+     * @var  string|null
+     */
     protected $scope;
 
     /**
@@ -66,7 +75,7 @@ class Note extends \Components\Wiki\Models\Book
      *
      * @param   integer  $id
      * @param   boolean  $register
-     * @param   boolean|null  $listed
+     * @param   bool|int|null  $listed
      * @return  mixed
      */
     public function getPublicStamp($id = 0, $register = false, $listed = null)

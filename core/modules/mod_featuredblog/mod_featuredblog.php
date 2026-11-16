@@ -19,6 +19,9 @@ class Featuredblog extends Module
 {
     /** @var string|null */
     protected $cls;
+    /**
+     * @var  \Components\Blog\Models\Entry|null
+     */
     protected $row;
     /** @var string|null */
     protected $txt_length;

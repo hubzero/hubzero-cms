@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class Mytodos extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $rows;
 
     /**

@@ -19,5 +19,8 @@ class OrderableMenuItem extends Relational
     use Orderable;
 
     protected $table = 'orderable_menu_items';
+    /**
+     * @var  array<int, mixed>
+     */
     protected $orderingGroup = ['menu_id'];
 }

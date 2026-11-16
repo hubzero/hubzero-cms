@@ -28,6 +28,9 @@ use Hubzero\Facades\User;
  */
 class Discussions extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $config;
     /** @var int|null */
     protected $limit;
@@ -35,6 +38,9 @@ class Discussions extends Plugin
     protected $limitstart;
     /** @var string|null */
     protected $name;
+    /**
+     * @var  \Hubzero\Database\Rows|null
+     */
     protected $sections;
 
     /**

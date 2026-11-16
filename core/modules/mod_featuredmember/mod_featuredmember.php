@@ -21,6 +21,9 @@ class Featuredmember extends Module
 {
     /** @var string|null */
     protected $cls;
+    /**
+     * @var  object|null
+     */
     protected $row;
     /** @var string|null */
     protected $txt_length;

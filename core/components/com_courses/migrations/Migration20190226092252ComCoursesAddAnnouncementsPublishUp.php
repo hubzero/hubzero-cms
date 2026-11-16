@@ -22,6 +22,9 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
      */
     public static $announcementsTable = '#__courses_announcements';
 
+    /**
+     * @var  array<mixed>
+     */
     public static $announcementsColumns = [
         ['name' => 'publish_down', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],
         ['name' => 'publish_up', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],

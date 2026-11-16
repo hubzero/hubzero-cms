@@ -15,9 +15,21 @@ use Notify;
 
 class RecordProcessingHelper
 {
+    /**
+     * @var  mixed
+     */
     protected $controller;
+    /**
+     * @var  mixed
+     */
     protected $errorMessageHelper;
+    /**
+     * @var  mixed
+     */
     protected $app;
+    /**
+     * @var  mixed
+     */
     protected $notify;
 
     /**

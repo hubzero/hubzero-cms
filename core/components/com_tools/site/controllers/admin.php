@@ -30,6 +30,9 @@ class Admin extends SiteController
      * @var  int
      */
     private $toolid = 0;
+    /**
+     * @var  array<mixed>
+     */
     private $messages = [];
 
     /**

@@ -15,9 +15,21 @@ use Hubzero\Filesystem\Util\MimeType;
  */
 class File extends Entity
 {
+    /**
+     * @var  mixed
+     */
     protected $contents;
+    /**
+     * @var  string|null
+     */
     protected $extension;
+    /**
+     * @var  mixed
+     */
     protected $mimetype;
+    /**
+     * @var  mixed
+     */
     protected $size;
 
     /**

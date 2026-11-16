@@ -24,11 +24,29 @@ use Hubzero\Facades\User;
 
 class Announcements extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $access;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  mixed
+     */
     protected $members;
+    /**
+     * @var  int|null
+     */
     protected $total;
 
     /**

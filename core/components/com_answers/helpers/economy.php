@@ -23,6 +23,9 @@ use Hubzero\Facades\User;
  */
 class Economy extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $qid;
 
     /**

@@ -10,6 +10,9 @@ namespace Components\Search\Helpers;
 
 class MockProxy
 {
+    /**
+     * @var  mixed
+     */
     protected $class;
 
     /**

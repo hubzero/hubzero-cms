@@ -28,6 +28,9 @@ class Google extends Plugin
      */
     protected $autoloadLanguage = true;
 
+    /**
+     * @var  \Hubzero\Plugin\View|null
+     */
     protected $view;
 
     /**

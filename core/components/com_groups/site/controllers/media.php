@@ -31,6 +31,8 @@ class Media extends Base
 {
     /**
      * Plugin acccess
+     *
+     * @var  mixed
      */
     protected $pluginAccess;
 

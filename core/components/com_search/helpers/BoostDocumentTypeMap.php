@@ -14,6 +14,9 @@ use Component;
 
 class BoostDocumentTypeMap
 {
+    /**
+     * @var  mixed
+     */
     protected $lang;
 
     /**

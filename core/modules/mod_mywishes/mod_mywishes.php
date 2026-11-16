@@ -16,8 +16,17 @@ use Hubzero\Facades\User;
  */
 class Mywishes extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $rows;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $rows1;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $rows2;
 
     /**

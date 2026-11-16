@@ -23,11 +23,17 @@ use Hubzero\Facades\User;
  */
 class Watch extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
     /** @var string|null */
     protected $action;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $project;
     /** @var \Hubzero\Item\Watch|null */
     protected $watch;

@@ -21,6 +21,9 @@ use Hubzero\Facades\User;
 
 class Transfer extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $banking;
 
     /**

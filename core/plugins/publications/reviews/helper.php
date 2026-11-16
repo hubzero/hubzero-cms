@@ -26,10 +26,25 @@ class Helper extends \Hubzero\Base\Obj
     // publication and the option it is working on, and the views read the
     // reviewer's own review back off it. The same is true of the resources
     // reviews helper, which is the same class under a different name.
+    /**
+     * @var  string|null
+     */
     public $componentOption;
+    /**
+     * @var  bool|null
+     */
     public $loggedin;
+    /**
+     * @var  \Components\Publications\Tables\Review|null
+     */
     public $myreview;
+    /**
+     * @var  object|null
+     */
     public $publication;
+    /**
+     * @var  string|null
+     */
     public $option;
 
     /**

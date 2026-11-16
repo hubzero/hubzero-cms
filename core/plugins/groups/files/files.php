@@ -23,11 +23,29 @@ use Hubzero\Facades\User;
 
 class Files extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $componentOption;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  false|string|null
+     */
     protected $authorized;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  string|null
+     */
     protected $name;
+    /**
+     * @var  string|null
+     */
     protected $path;
 
     /**

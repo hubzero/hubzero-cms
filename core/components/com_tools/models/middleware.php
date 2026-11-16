@@ -21,6 +21,9 @@ use Hubzero\Facades\Component;
  */
 class Middleware extends Obj
 {
+    /**
+     * @var  mixed
+     */
     protected $db;
 
     /**

@@ -18,9 +18,21 @@ use Hubzero\Facades\Lang;
  */
 class Slideshow extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $height;
+    /**
+     * @var  string|null
+     */
     protected $noflash_file;
+    /**
+     * @var  mixed
+     */
     protected $noflash_link;
+    /**
+     * @var  mixed
+     */
     protected $width;
 
     /**

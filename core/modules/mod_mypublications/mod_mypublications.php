@@ -22,9 +22,21 @@ use Hubzero\Facades\App;
  */
 class Mypublications extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $drafts;
+    /**
+     * @var  array<string, mixed>|null
+     */
     protected $filters;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  mixed
+     */
     protected $published;
 
     /**

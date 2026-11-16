@@ -17,7 +17,13 @@ use Hubzero\Facades\Component;
  */
 class Mycuration extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  array<int, \stdClass>|null
+     */
     protected $rows;
 
     /**

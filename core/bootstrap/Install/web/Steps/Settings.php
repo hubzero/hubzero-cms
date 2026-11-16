@@ -12,12 +12,23 @@ namespace Bootstrap\Install\Web\Steps;
 
 class Settings implements StepInterface
 {
+    /**
+     * @var  mixed
+     */
     private $installer;
+    /**
+     * @var  array<mixed>
+     */
     private $errors = [];
+    /**
+     * @var  array<mixed>
+     */
     private $existingConfig = [];
 
     /**
      * Common timezones for dropdown
+     *
+     * @var  array<string, mixed>
      */
     private $timezones = [
         'UTC' => 'UTC (Coordinated Universal Time)',

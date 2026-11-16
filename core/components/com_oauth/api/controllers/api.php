@@ -21,8 +21,17 @@ use OAuthProvider;
  */
 class Api extends ApiController
 {
+    /**
+     * @var  mixed
+     */
     protected $provider;
+    /**
+     * @var  mixed
+     */
     protected $segments;
+    /**
+     * @var  \Hubzero\Component\View|null
+     */
     protected $view;
 
     /**

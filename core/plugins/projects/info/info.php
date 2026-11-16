@@ -16,6 +16,9 @@ use Hubzero\Facades\Lang;
  */
 class Info extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
 
     /**

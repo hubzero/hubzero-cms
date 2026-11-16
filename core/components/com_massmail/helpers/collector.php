@@ -21,9 +21,16 @@ namespace Components\Massmail\Helpers;
  */
 class PostfixCollector
 {
-    /** Newest external-send timestamp seen during the current pass. */
+    /**
+     * Newest external-send timestamp seen during the current pass.
+     *
+     * @var  int
+     */
     protected static $maxTs = 0;
 
+    /**
+     * @var  array<string, mixed>
+     */
     protected static $months = [
         'Jan' => 1,
         'Feb' => 2,

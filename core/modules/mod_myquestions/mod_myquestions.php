@@ -20,16 +20,49 @@ use Hubzero\Facades\User;
  */
 class Myquestions extends Module
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $assigned;
+    /**
+     * @var  mixed
+     */
     protected $banking;
+    /**
+     * @var  string|null
+     */
     protected $interests;
+    /**
+     * @var  string|null
+     */
     protected $intext;
+    /**
+     * @var  float|int|null
+     */
     protected $limit_assigned;
+    /**
+     * @var  float|int|null
+     */
     protected $limit_interest;
+    /**
+     * @var  float|int|null
+     */
     protected $limit_mine;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $openquestions;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $otherquestions;
+    /**
+     * @var  int|null
+     */
     protected $show_assigned;
+    /**
+     * @var  int|null
+     */
     protected $show_interests;
 
     /**

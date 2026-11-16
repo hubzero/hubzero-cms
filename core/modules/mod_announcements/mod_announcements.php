@@ -19,7 +19,13 @@ class Announcements extends Module
 {
     /** @var int|null */
     protected $cid;
+    /**
+     * @var  mixed
+     */
     protected $container;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $content;
 
     /**

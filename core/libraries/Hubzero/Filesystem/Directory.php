@@ -15,6 +15,9 @@ use StdClass;
  */
 class Directory extends Entity
 {
+    /**
+     * @var  mixed
+     */
     public $subDirs;
     /**
      * Grabs the entity extension

@@ -20,6 +20,9 @@ use Hubzero\Facades\Request;
  */
 class View extends AbstractView
 {
+    /**
+     * @var  string|null
+     */
     protected $baseurl;
 
     /**

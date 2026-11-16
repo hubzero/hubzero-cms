@@ -21,6 +21,9 @@ use Hubzero\Facades\Log;
 
 class Members extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $message;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;

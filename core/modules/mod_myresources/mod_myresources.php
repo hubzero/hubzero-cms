@@ -17,10 +17,19 @@ use Hubzero\Facades\User;
  */
 class Myresources extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $contributions;
+    /**
+     * @var  int|null
+     */
     protected $limit;
     /** @var int|null */
     protected $no_html;
+    /**
+     * @var  mixed
+     */
     protected $sort;
 
     /**

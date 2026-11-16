@@ -41,8 +41,17 @@ abstract class Result
      * @var mixed
      */
     private $excerpt;
+    /**
+     * @var  mixed
+     */
     private $plugin;
+    /**
+     * @var  string|null
+     */
     private $canonicalized_link;
+    /**
+     * @var  mixed
+     */
     private $highlight_regex;
 
     /**
@@ -51,16 +60,49 @@ abstract class Result
      * @var mixed
      */
     protected $id;
+    /**
+     * @var  mixed
+     */
     protected $title;
+    /**
+     * @var  mixed
+     */
     protected $description;
+    /**
+     * @var  mixed
+     */
     protected $tag_count;
+    /**
+     * @var  mixed
+     */
     protected $author;
+    /**
+     * @var  float|int|null
+     */
     protected $weight;
+    /**
+     * @var  mixed
+     */
     protected $section;
+    /**
+     * @var  int|false|null
+     */
     protected $date;
+    /**
+     * @var  mixed
+     */
     protected $contributors;
+    /**
+     * @var  mixed
+     */
     protected $contributor_ids;
+    /**
+     * @var  array<mixed>
+     */
     protected $children = [];
+    /**
+     * @var  array<mixed>
+     */
     protected $weight_log = [];
 
     /**
@@ -76,9 +118,21 @@ abstract class Result
      * @var  string
      */
     public $link;
+    /**
+     * @var  mixed
+     */
     protected $description_highlighted;
+    /**
+     * @var  mixed
+     */
     protected $title_highlighted;
+    /**
+     * @var  mixed
+     */
     protected $author_highlighted;
+    /**
+     * @var  mixed
+     */
     protected $excerpt_highlighted;
 
     /**
@@ -473,7 +527,7 @@ abstract class Result
      *
      * Long description (if any) ...
      *
-     * @param      string $weight Parameter description (if any) ...
+     * @param      float|int $weight Parameter description (if any) ...
      * @param      string $reason Parameter description (if any) ...
      * @return     void
      */

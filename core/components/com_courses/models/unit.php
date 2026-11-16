@@ -18,6 +18,9 @@ use Hubzero\Facades\App;
  */
 class Unit extends Base
 {
+    /**
+     * @var  \Components\Courses\Models\Iterator|null
+     */
     protected $assetgroupsBackup;
 
     /**

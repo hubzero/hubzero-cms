@@ -88,6 +88,9 @@ class Migration20150626141512Core extends Base
         // Nothing really to do here
     }
 
+    /**
+     * @var  array<int, mixed>
+     */
     protected static $components = [
         'com_admin',
         'com_answers',
@@ -154,6 +157,9 @@ class Migration20150626141512Core extends Base
         'com_wishlist',
     ];
 
+    /**
+     * @var  array<int, mixed>
+     */
     protected static $modules = [
         'mod_adminlogin',
         'mod_adminmenu',
@@ -256,6 +262,9 @@ class Migration20150626141512Core extends Base
         'mod_youtube',
     ];
 
+    /**
+     * @var  array<int, mixed>
+     */
     protected static $templates = [
         'baselayer',
         'hubbasic2012',
@@ -265,6 +274,9 @@ class Migration20150626141512Core extends Base
         'welcome',
     ];
 
+    /**
+     * @var  array<string, mixed>
+     */
     protected static $plugins = [
         'antispam' => [
             'akismet',

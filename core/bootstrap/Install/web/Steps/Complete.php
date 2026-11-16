@@ -12,6 +12,9 @@ namespace Bootstrap\Install\Web\Steps;
 
 class Complete implements StepInterface
 {
+    /**
+     * @var  mixed
+     */
     private $installer;
 
     /**

@@ -42,15 +42,39 @@ use Components\Citations\Models\Importer;
  */
 class Citations extends Plugin
 {
+    /**
+     * @var  mixed
+     */
     protected $componentOption;
+    /**
+     * @var  array<mixed>|null
+     */
     protected $access;
+    /**
+     * @var  string|null
+     */
     protected $action;
+    /**
+     * @var  string|null
+     */
     protected $authorized;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  object|null
+     */
     protected $group;
+    /**
+     * @var  \Components\Citations\Models\Importer|null
+     */
     protected $importer;
+    /**
+     * @var  mixed
+     */
     protected $members;
+    /**
+     * @var  string|null
+     */
     protected $path;
 
     /**

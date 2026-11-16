@@ -16,10 +16,25 @@ use Hubzero\Facades\User;
  */
 class Mytickets extends Module
 {
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
+    /**
+     * @var  mixed
+     */
     protected $rows;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $rows1;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $rows2;
+    /**
+     * @var  mixed
+     */
     protected $rows3;
 
     /**

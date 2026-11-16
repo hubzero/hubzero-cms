@@ -17,6 +17,9 @@ use Hubzero\Utility\Inflector;
 class InflectorTest extends Basic
 {
     // Words that should not be inflected.
+    /**
+     * @var  array<int, mixed>
+     */
     protected static $uncountable_words = [
         'equipment',
         'information',
@@ -35,6 +38,9 @@ class InflectorTest extends Basic
         'headquarters',
     ];
 
+    /**
+     * @var  array<mixed>
+     */
     protected static $strings = [
         // -en
         'ox' => 'oxen',

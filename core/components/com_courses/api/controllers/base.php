@@ -18,9 +18,21 @@ use Hubzero\Facades\App;
  */
 class Base extends ApiController
 {
+    /**
+     * @var  int|null
+     */
     protected $course_id = null;
+    /**
+     * @var  string|null
+     */
     protected $offering_alias  = null;
+    /**
+     * @var  mixed
+     */
     protected $section_id = null;
+    /**
+     * @var  object|null
+     */
     protected $course;
 
     /**

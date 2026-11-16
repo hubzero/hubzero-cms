@@ -25,6 +25,9 @@ class Boost extends Relational
 {
     use IsUnique;
 
+    /**
+     * @var  array<int, mixed>
+     */
     protected static $uniqueKeys = [['field', 'field_value']];
 
     public $initiate = ['created'];
@@ -36,7 +39,13 @@ class Boost extends Relational
 
     protected $table = '#__solr_search_boosts';
 
+    /**
+     * @var  mixed
+     */
     protected $map;
+    /**
+     * @var  mixed
+     */
     protected $userHelper;
 
     /**

@@ -23,6 +23,9 @@ use Hubzero\Facades\Lang;
  */
 class Teamv1r0 extends ApiController
 {
+    /**
+     * @var  \Components\Projects\Models\Project|null
+     */
     protected $model;
 
     /**

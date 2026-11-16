@@ -24,6 +24,9 @@ use Hubzero\Facades\User;
  */
 class Resources extends Plugin
 {
+    /**
+     * @var  object|null
+     */
     protected $group;
 
     /**

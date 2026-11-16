@@ -17,9 +17,15 @@ use Hubzero\Facades\Date;
  */
 class Mycourses extends Module
 {
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $courses;
     /** @var int|null */
     protected $limit;
+    /**
+     * @var  mixed
+     */
     protected $moduleclass;
 
     /**

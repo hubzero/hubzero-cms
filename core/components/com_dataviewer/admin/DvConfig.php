@@ -14,6 +14,9 @@ use Hubzero\Facades\Request;
 
 class DvConfig
 {
+    /**
+     * @var  array<mixed>|null
+     */
     public static $conf;
     /**
      * @var  string

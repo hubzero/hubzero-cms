@@ -20,20 +20,41 @@ use Hubzero\Facades\User;
  */
 class Mytools extends Module
 {
+    /**
+     * @var  array<mixed>|null
+     */
     public $alltools;
+    /**
+     * @var  bool|null
+     */
     protected $can_launch;
     /** @var string|null */
     public $fav;
+    /**
+     * @var  array<int, string>|null
+     */
     public $favs;
+    /**
+     * @var  array<mixed>|null
+     */
     public $favtools;
     /** @var bool|null */
     protected $launch_page;
     /** @var int|null */
     public $no_html;
+    /**
+     * @var  array<mixed>|null
+     */
     public $rectools;
     /** @var \Components\Resources\Helpers\Tags|null */
     protected $rt;
+    /**
+     * @var  mixed
+     */
     protected $supportedtag;
+    /**
+     * @var  array<int, mixed>|null
+     */
     protected $supportedtagusage;
 
     /**

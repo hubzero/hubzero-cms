@@ -20,6 +20,9 @@ use Hubzero\Facades\Request;
  */
 class Review extends \Hubzero\Base\Model
 {
+    /**
+     * @var  string|null
+     */
     protected $base;
 
     /**

@@ -23,6 +23,9 @@ class Local
     public const LEARN_HAM = 1;
     public const LEARN_FORGET = 2;
 
+    /**
+     * @var  array<int, mixed>
+     */
     protected $learnTypes = [
         self::LEARN_SPAM,
         self::LEARN_HAM,
@@ -38,12 +41,21 @@ class Local
      */
     protected $port = '783';
 
+    /**
+     * @var  mixed
+     */
     protected $socketPath;
+    /**
+     * @var  mixed
+     */
     protected $socket;
     /**
      * @var  string
      */
     protected $protocolVersion = '1.5';
+    /**
+     * @var  mixed
+     */
     protected $enableZlib;
 
     /**

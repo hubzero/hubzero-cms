@@ -24,15 +24,45 @@ use Hubzero\Facades\User;
  */
 class Tool extends Model
 {
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $actor;
+    /**
+     * @var  \Hubzero\Config\Registry|null
+     */
     protected $componentConfig;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $creator;
+    /**
+     * @var  mixed
+     */
     protected $lastUpdate;
+    /**
+     * @var  mixed
+     */
     protected $lastView;
+    /**
+     * @var  \Components\Projects\Models\Tool\Log|null
+     */
     protected $log;
+    /**
+     * @var  \Components\Projects\Models\Tool\Status|null
+     */
     protected $status;
+    /**
+     * @var  \Hubzero\User\User|null
+     */
     protected $statusChanger;
+    /**
+     * @var  object|null
+     */
     protected $version;
+    /**
+     * @var  \Components\Projects\Models\Tool\View|null
+     */
     protected $viewLog;
 
     /**
@@ -229,7 +259,7 @@ class Tool extends Model
                 return $this->date('recorded', $as);
             }
             if ($property == 'actor') {
-                if (!isset($this->actor) || !($this->actor instanceof \Hubzero\User\User)) {
+                if (!isset($this->actor)) {
                     $this->actor = User::getInstance($this->lastUpdate->actor);
                 }
                 if ($as) {
@@ -501,7 +531,7 @@ class Tool extends Model
      */
     public function creator($property = null)
     {
-        if (!isset($this->creator) || !($this->creator instanceof \Hubzero\User\User)) {
+        if (!isset($this->creator)) {
             $this->creator = User::getInstance($this->get('created_by'));
         }
         if ($property) {
@@ -522,7 +552,7 @@ class Tool extends Model
      */
     public function statusChanger($property = null)
     {
-        if (!isset($this->statusChanger) || !($this->statusChanger instanceof \Hubzero\User\User)) {
+        if (!isset($this->statusChanger)) {
             $this->statusChanger = User::getInstance($this->get('status_changed_by'));
         }
         if ($property) {

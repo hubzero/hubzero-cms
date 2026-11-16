@@ -31,13 +31,31 @@ use Exception;
  */
 class Todo extends Plugin
 {
+    /**
+     * @var  array<mixed>|null
+     */
     protected $area;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  int|null
+     */
     protected $mine;
+    /**
+     * @var  string|null
+     */
     protected $task;
+    /**
+     * @var  int|null
+     */
     protected $todoid;
+    /**
+     * @var  mixed
+     */
     protected $uid;
+    /**
+     * @var  object|null
+     */
     protected $model;
     /** @var \Components\Projects\Models\Todo|null */
     protected $todo;

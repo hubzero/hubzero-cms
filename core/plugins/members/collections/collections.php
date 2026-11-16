@@ -24,10 +24,19 @@ use Hubzero\Facades\User;
 
 class Collections extends Plugin
 {
+    /**
+     * @var  string|null
+     */
     protected $action;
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
+    /**
+     * @var  mixed
+     */
     protected $group;
+    /**
+     * @var  object|null
+     */
     protected $member;
     /** @var \Components\Collections\Models\Archive|null */
     protected $model;

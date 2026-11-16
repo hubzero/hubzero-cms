@@ -34,7 +34,13 @@ class Pucas extends Plugin
      */
     protected $autoloadLanguage = true;
 
+    /**
+     * @var  \Monolog\Handler\StreamHandler|null
+     */
     protected $stream_handler = null;
+    /**
+     * @var  \Monolog\Logger|null
+     */
     protected $logger = null;
 
     /**

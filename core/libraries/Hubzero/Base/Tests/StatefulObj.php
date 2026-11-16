@@ -20,6 +20,9 @@ class StatefulObj extends Obj
      */
     public $title = 'declared';
 
+    /**
+     * @var  array<string, mixed>
+     */
     protected $cache = ['kept' => true];
 
     /**
