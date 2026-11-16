@@ -62,7 +62,7 @@ class Threads extends SiteController
      *
      * @param   \Components\Forum\Models\Section|null  $section
      * @param   \Components\Forum\Models\Category|null  $category
-     * @param   object|null  $thread
+     * @param   \Components\Forum\Models\Post|null  $thread
      * @return  void
      */
     protected function buildPathway($section = null, $category = null, $thread = null)
@@ -113,7 +113,7 @@ class Threads extends SiteController
      *
      * @param   \Components\Forum\Models\Section|null  $section
      * @param   \Components\Forum\Models\Category|null  $category
-     * @param   object|null  $thread
+     * @param   \Components\Forum\Models\Post|null  $thread
      * @return  void
      */
     protected function buildTitle($section = null, $category = null, $thread = null)

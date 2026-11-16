@@ -1518,7 +1518,7 @@ class Pipeline extends SiteController
             if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned')) {
                 $r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
-                if ($r && $r->id) {
+                if ($r->id) {
                     $rstatus = 2;
                     if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published')) {
                         $rstatus = 1;

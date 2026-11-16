@@ -729,7 +729,7 @@ class Html
      * file has to be one of the formats the manifest builder collects, and it
      * has to live in the resource's own filespace.
      *
-     * @param   object   $item  Child resource
+     * @param   \Components\Resources\Models\Entry|\stdClass   $item  Child resource
      * @return  boolean
      */
     public static function isLegacyPlayableVideo($item)
@@ -1330,7 +1330,7 @@ class Html
      * this tool resource (any version). Returns the most recently accessed one,
      * or null when none exist / middleware is unavailable.
      *
-     * @param   object  $resource  Tool resource
+     * @param   \Components\Resources\Models\Entry  $resource  Tool resource
      * @return  object|null
      */
     protected static function findExistingToolSession($resource)

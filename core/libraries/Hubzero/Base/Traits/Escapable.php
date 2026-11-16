@@ -64,7 +64,7 @@ trait Escapable
      * Sets the _escape() callback.
      *
      * @param   mixed   $spec  The callback for _escape() to use.
-     * @return  object  Chainable
+     * @return  static  Chainable
      */
     public function setEscape($spec)
     {

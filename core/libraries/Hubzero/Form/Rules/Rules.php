@@ -70,7 +70,7 @@ class Rules extends Rule
     /**
      * Method to get the list of possible permission action names for the form field.
      *
-     * @param   object  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
+     * @param   \SimpleXMLElement  $element  The <field /> tag for the form field object.
      * @return  array<int, mixed>   A list of permission action names from the form field element definition.
      */
     protected function getFieldActions($element)

@@ -913,7 +913,7 @@ class Format
     /**
      * Formatting Resources
      *
-     * @param   object  &$row       Record to format
+     * @param   \stdClass|\Components\Citations\Models\Citation  &$row  Record to format
      * @param   string  $link       Parameter description (if any) ...
      * @param   string  $highlight  String to highlight
      * @return  string

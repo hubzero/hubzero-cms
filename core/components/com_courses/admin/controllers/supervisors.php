@@ -175,7 +175,7 @@ class Supervisors extends AdminController
     /**
      * Display a list of 'manager' for a specific section
      *
-     * @param   object|null  $model  \Components\Courses\Models\Offering
+     * @param   \Components\Courses\Models\Offering|null  $model  \Components\Courses\Models\Offering
      * @return  void
      */
     public function displayTask($model = null)

@@ -234,7 +234,7 @@ class Application extends Container
      * Resolve a service provider instance from the class name.
      *
      * @param   string  $provider
-     * @return  object  \Hubzero\Base\ServiceProvider
+     * @return  \Hubzero\Base\ServiceProvider
      */
     protected function resolveProviderClass($provider)
     {
@@ -244,7 +244,7 @@ class Application extends Container
     /**
      * Mark the given provider as registered.
      *
-     * @param   object $provider  \Hubzero\Base\ServiceProvider
+     * @param   \Hubzero\Base\ServiceProvider  $provider
      * @return  void
      */
     protected function markAsRegistered($provider)

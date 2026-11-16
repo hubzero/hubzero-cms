@@ -143,7 +143,7 @@ class Template extends Document
     /**
      * Does the group have a specified template?
      *
-     * @param   object   $group
+     * @param   \Hubzero\User\Group   $group
      * @param   string   $template
      * @return  boolean
      */

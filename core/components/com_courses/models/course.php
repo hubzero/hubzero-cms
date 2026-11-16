@@ -57,7 +57,7 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Permissions
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Permissions|null
      */
     private $permissions = null;
 
@@ -106,7 +106,7 @@ class Course extends Base
     /**
      * Certificate
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Certificate|null
      */
     private $certificate = null;
 
@@ -135,7 +135,7 @@ class Course extends Base
      *     $offering = \Components\Courses\Models\Course::getInstance($alias);
      *
      * @param      mixed $oid Course ID (int) or alias (string)
-     * @return     object \Components\Courses\Models\Course
+     * @return     self
      */
     public static function &getInstance($oid = 0)
     {
@@ -156,14 +156,11 @@ class Course extends Base
      * Check if the current user has manager access
      * This is just a shortcut for the access check
      *
-     * @param   int  $user_id
+     * @param   int  $user_id  Unused: the check is always for the current user
      * @return     boolean
      */
     public function isManager($user_id = 0)
     {
-        if ((int) $user_id) {
-            $this->permissions->isManager($user_id);
-        }
         return $this->permissions->isManager();
     }
 
@@ -171,14 +168,11 @@ class Course extends Base
      * Check if the current user has manager access
      * This is just a shortcut for the access check
      *
-     * @param   int  $user_id
+     * @param   int  $user_id  Unused: the check is always for the current user
      * @return     boolean
      */
     public function isStudent($user_id = 0)
     {
-        if ((int) $user_id) {
-            $this->permissions->isStudent($user_id);
-        }
         return $this->permissions->isStudent();
     }
 

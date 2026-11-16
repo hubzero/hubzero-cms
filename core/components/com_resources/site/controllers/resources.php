@@ -712,6 +712,7 @@ class Resources extends SiteController
         if (!$this->resid) {
             // No ID, default to the first child
             //$helper->getFirstChild();
+            /** @var Entry $activechild The children relationship holds Entry rows */
             $activechild = $resource
                 ->children()
                 ->whereEquals('published', Entry::STATE_PUBLISHED)
@@ -1405,7 +1406,7 @@ class Resources extends SiteController
         // Build the pathway
         if ($this->model->inGroup()) {
             // Alter the pathway to reflect a group owned resource
-            $group = $this->model->group;
+            $group = \Hubzero\User\Group::getInstance($this->model->get('group_owner'));
 
             if ($group) {
                 Pathway::clear();
@@ -2820,7 +2821,7 @@ class Resources extends SiteController
      * Check if a user has access to a group-owned resource
      * Uses current user session if no user object is supplied
      *
-     * @param   object   $resource  Resource
+     * @param   \Components\Resources\Models\Entry   $resource  Resource
      * @param   \Hubzero\User\User|null   $user      User (optional)
      * @return  boolean  True if user has access to a group-owned resource
      */
@@ -2891,9 +2892,6 @@ class Resources extends SiteController
         }
 
         if (!$resource->standalone) {
-            if (!isset($p) && isset($parents) && count($parents) == 1) {
-                $p = Entry::oneOrFail($parents->first()->id);
-            }
             if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1) {
                 $restricted = true;
             }

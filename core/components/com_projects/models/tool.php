@@ -138,7 +138,7 @@ class Tool extends Model
     /**
      * Returns a reference to a tool model
      *
-     * @param   object|mixed  $result
+     * @param   \stdClass|mixed  $result
      * @return  object|false
      */
     public static function mapInstance($result)

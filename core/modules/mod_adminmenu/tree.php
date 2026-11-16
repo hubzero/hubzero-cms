@@ -32,7 +32,7 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * Current working node
      *
-     * @var  object|null
+     * @var  \Modules\Adminmenu\Node|null
      */
     protected $current = null;
 
@@ -178,7 +178,7 @@ class Tree extends \Hubzero\Base\Obj
             if ($this->current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';
             }
-        } elseif ($this->current->link != null && $this->current->target == null) {
+        } elseif ($this->current->link != null) {
             echo '<a' . $linkClass . ' href="' . $this->current->link . '">' . $this->current->title . '</a>';
             if ($this->current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';

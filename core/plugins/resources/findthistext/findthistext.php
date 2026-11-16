@@ -27,7 +27,7 @@ class Findthistext extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object  $model  Current model
+     * @param   \Components\Resources\Models\Entry  $model  Current model
      * @return  array<string, mixed>
      */
     public function &onResourcesAreas($model)
@@ -47,7 +47,7 @@ class Findthistext extends Plugin
     /**
      * Return data on a resource sub view (this will be some form of HTML)
      *
-     * @param   object  $model   Current model
+     * @param   \Components\Resources\Models\Entry  $model   Current model
      * @param   string  $option  Name of the component
      * @param   array|mixed   $areas   Active area(s)
      * @param   string  $rtrn    Data to be returned

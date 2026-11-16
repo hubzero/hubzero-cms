@@ -4170,7 +4170,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Retrieves one row loaded by an alias field
      *
      * @param   string  $alias  The alias to load by
-     * @return  mixed
+     * @return  static
      **/
     public static function oneByAlias($alias)
     {

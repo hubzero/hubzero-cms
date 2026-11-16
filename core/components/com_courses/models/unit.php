@@ -66,7 +66,7 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Asset
      *
-     * @var object|null
+     * @var Asset|null
      */
     private $asset = null;
 
@@ -359,7 +359,7 @@ class Unit extends Base
      * Get a specific asset
      *
      * @param   integer|null $id Asset ID
-     * @return  object  \Components\Courses\Models\Asset
+     * @return  Asset|null
      */
     public function asset($id = null)
     {

@@ -2391,7 +2391,7 @@ class Publication extends Obj
     /**
      * Get FOS (Field of Science and Technology) tag according the Subject tag id
      *
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getFOSTag()
     {
@@ -2655,7 +2655,7 @@ class Publication extends Obj
      *
      * @param   string  $name
      *
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function getCollaboratorByName($name)
     {

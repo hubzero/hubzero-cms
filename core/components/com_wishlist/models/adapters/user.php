@@ -17,6 +17,13 @@ use Hubzero\Facades\Lang;
 class User extends Base
 {
     /**
+     * The member the wish list belongs to
+     *
+     * @var  \Hubzero\User\User|null
+     */
+    protected $item = null;
+
+    /**
      * URL segments
      *
      * @var array<mixed>

@@ -211,7 +211,7 @@ class Book extends Obj
      * Set and get a specific page
      *
      * @param   mixed   $id  Integer or string of page to look up
-     * @return  object  WikiModelPage
+     * @return  Page
      */
     public function page($id = null)
     {
@@ -280,7 +280,7 @@ class Book extends Obj
     /**
      * Get the main page
      *
-     * @return  object
+     * @return  Page
      */
     public function main()
     {

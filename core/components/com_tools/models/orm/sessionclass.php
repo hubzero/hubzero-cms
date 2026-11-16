@@ -55,7 +55,7 @@ class SessionClass extends Relational
         $this->addRule('alias', function ($data) {
             $record = self::oneByAlias($data['alias']);
 
-            if ($record && $record->get('id')) {
+            if ($record->get('id')) {
                 return Lang::txt('COM_TOOLS_SESSIONS_CLASS_NON_UNIQUE_ALIAS');
             }
 
@@ -105,7 +105,7 @@ class SessionClass extends Relational
     {
         $record = self::oneByAlias('default');
 
-        if ($record && $record->get('id')) {
+        if ($record->get('id')) {
             return true;
         }
 

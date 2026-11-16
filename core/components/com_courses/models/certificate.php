@@ -293,7 +293,7 @@ class Certificate extends Base
     /**
      * Render a certificate
      *
-     * @param   object|null  $user  User
+     * @param   \Hubzero\User\User|null  $user  User
      * @param   string|null  $path  Path to store rendered file to
      * @return  boolean True on success, false on error
      */

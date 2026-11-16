@@ -76,7 +76,7 @@ class Instance extends Model
      *
      * @param      mixed $oid object ID
      * @param   int|null  $parent
-     * @return     object Todo
+     * @return     self
      */
     public static function &getInstance($oid = null, $parent = null)
     {

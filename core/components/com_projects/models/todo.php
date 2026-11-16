@@ -34,7 +34,7 @@ class Todo extends Model
     /**
      * Entry
      *
-     * @var object|null
+     * @var \Components\Projects\Models\Entry|null
      */
     private $entry = null;
 

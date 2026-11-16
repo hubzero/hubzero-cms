@@ -53,7 +53,7 @@ class Questions extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object  $model  Current model
+     * @param   \Components\Resources\Models\Entry  $model  Current model
      * @return  array<string, mixed>
      */
     public function &onResourcesAreas($model)
@@ -63,7 +63,6 @@ class Questions extends Plugin
         if (isset($model->toolpublished) || isset($model->revision)) {
             if (
                 isset($model->thistool)
-                && $model->thistool
                 && ($model->revision == 'dev' or !$model->toolpublished)
             ) {
                 $model->type->params->set('plg_questions', 0);
@@ -82,7 +81,7 @@ class Questions extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object  $model   Current model
+     * @param   \Components\Resources\Models\Entry  $model   Current model
      * @param   string  $option  Name of the component
      * @param   array|mixed   $areas   Active area(s)
      * @param   string  $rtrn    Data to be returned

@@ -18,6 +18,13 @@ use Hubzero\Facades\App;
 class Publication extends Base
 {
     /**
+     * The publication the wish list belongs to
+     *
+     * @var  \stdClass|null
+     */
+    protected $item = null;
+
+    /**
      * URL segments
      *
      * @var array<mixed>
@@ -48,7 +55,7 @@ class Publication extends Base
 
         $database = App::get('db');
         $objP = new \Components\Publications\Tables\Publication($database);
-        $this->item = $objP->getPublication($referenceid, 'default');
+        $this->item = $objP->getPublication($referenceid, 'default') ?: null;
 
         //$this->_segments['id']     = $this->_item->id;
         $this->segments['active'] = 'wishlist';

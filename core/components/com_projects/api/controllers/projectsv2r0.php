@@ -675,7 +675,7 @@ class Projectsv2r0 extends ApiController
         }
 
         // Project did not load?
-        if (!$row || $row->isNew()) {
+        if ($row->isNew()) {
             throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
         }
 
@@ -870,7 +870,7 @@ class Projectsv2r0 extends ApiController
             $row = Project::oneByAlias($id);
         }
 
-        if (!$row || $row->isNew()) {
+        if ($row->isNew()) {
             throw new Exception(Lang::txt('COM_PROJECTS_ERROR_MISSING_RECORD'), 404);
         }
 
@@ -913,9 +913,7 @@ class Projectsv2r0 extends ApiController
             $fields['access'] = Project::PRIVACY_PRIVATE;
         }
 
-        if (!$row->set($fields)) {
-            throw new Exception(Lang::txt('COM_PROJECTS_ERROR_BINDING_DATA'), 422);
-        }
+        $row->set($fields);
 
         $row->set('title', \Hubzero\Utility\Str::truncate($row->get('title'), 250));
 
@@ -930,7 +928,7 @@ class Projectsv2r0 extends ApiController
         if ($row->get('owned_by_group')) {
             $group = $row->group();
 
-            if (!$group || !$group->get('gidNumber')) {
+            if (!$group->get('gidNumber')) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ERROR_GROUP_NOT_FOUND'), 409);
             }
 
@@ -1178,7 +1176,7 @@ class Projectsv2r0 extends ApiController
                 $row = Project::oneByAlias($id);
             }
 
-            if (!$row || $row->isNew()) {
+            if ($row->isNew()) {
                 throw new Exception(Lang::txt('COM_PROJECTS_ERROR_MISSING_RECORD'), 404);
             }
 

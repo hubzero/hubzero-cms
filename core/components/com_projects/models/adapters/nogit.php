@@ -358,7 +358,7 @@ class Nogit extends Models\Adapter
     /**
      * Get file data and map to file object
      *
-     * @param   object  $file     Models\File
+     * @param   Models\File  $file
      * @param   string  $dirPath
      * @param   string|null  $property
      * @return  array<mixed>

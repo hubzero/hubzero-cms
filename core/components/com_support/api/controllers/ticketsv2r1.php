@@ -28,7 +28,7 @@ use Hubzero\Facades\App;
 class Ticketsv2r1 extends ApiController
 {
     /**
-     * @var  object  ACL instance
+     * @var  \Components\Support\Helpers\ACL|null  ACL instance
      */
     protected $acl;
 

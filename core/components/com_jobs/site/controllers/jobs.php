@@ -2113,7 +2113,7 @@ class Jobs extends SiteController
             return 0;
         } else {
             $this->getServiceParams($service);
-            $maxads      = $service->maxads > 0 ? $service->maxads : 1;
+            $maxads      = $service->get('maxads') > 0 ? $service->get('maxads') : 1;
             $activejobs  = $job->countMyActiveOpenings(User::get('id'), 1);
             $allowedAds = $maxads - $activejobs;
             return $allowedAds;
@@ -2191,13 +2191,12 @@ class Jobs extends SiteController
     /**
      * Get service params
      *
-     * @param   object  &$service  Service
+     * @param   \Components\Services\Models\Service  &$service  Service
      * @return  void
      */
     protected function getServiceParams(&$service)
     {
-        $params = new \Hubzero\Config\Registry($service->params);
-        $service->maxads = $params->get('maxads', '');
-        $service->maxads = intval(str_replace(' ', '', $service->maxads));
+        $maxads = $service->transformParams()->get('maxads', '');
+        $service->set('maxads', intval(str_replace(' ', '', $maxads)));
     }
 }

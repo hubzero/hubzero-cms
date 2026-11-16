@@ -131,7 +131,7 @@ class Offerings extends AdminController
     /**
      * Displays an edit form
      *
-     * @param   object|null  $model
+     * @param   \Components\Courses\Models\Offering|null  $model
      * @return  void
      */
     public function editTask($model = null)

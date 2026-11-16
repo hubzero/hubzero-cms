@@ -194,7 +194,7 @@ class Pipeline extends AdminController
 
             $resource = Entry::oneByAlias($row->toolname);
 
-            if ($resource && $resource->get('id')) {
+            if ($resource->get('id')) {
                 if ($row->state == 7 || $row->state == 8) { // published
                     $resource->set('published', Entry::STATE_PUBLISHED);
                 } elseif ($row->state == 9) { // abandoned

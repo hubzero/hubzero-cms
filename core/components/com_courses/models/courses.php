@@ -41,7 +41,7 @@ class Courses extends Obj
     /**
      * \Components\Courses\Models\Course
      *
-     * @var object|null
+     * @var Course|null
      */
     private $course = null;
 
@@ -64,7 +64,7 @@ class Courses extends Obj
      *     $offering = \Components\Courses\Models\Course::getInstance($alias);
      *
      * @param      mixed $oid Course ID (int) or alias (string)
-     * @return     object \Components\Courses\Models\Course
+     * @return     self
      */
     public static function &getInstance($oid = 0)
     {
@@ -85,7 +85,7 @@ class Courses extends Obj
      * Method to get/set the current unit
      *
      * @param     mixed $id ID or alias of specific unit
-     * @return    object \Components\Courses\Models\Unit
+     * @return    Course|null
      */
     public function course($id = null)
     {

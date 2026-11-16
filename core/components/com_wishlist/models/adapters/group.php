@@ -17,6 +17,13 @@ use Hubzero\Facades\Lang;
 class Group extends Base
 {
     /**
+     * The group the wish list belongs to
+     *
+     * @var  \Hubzero\User\Group|null
+     */
+    protected $item = null;
+
+    /**
      * URL segments
      *
      * @var array<mixed>

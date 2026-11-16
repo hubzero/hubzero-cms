@@ -289,7 +289,7 @@ class Offering extends SiteController
             $section_id = $offering->section()->get('id');
 
             // If enrollment is restricted, a coupon code was posted
-            if ($enrollment && $code) {
+            if ($enrollment) {
                 // Get the coupon
                 $coupon = $offering->section()->code($code);
                 // Is it a valid code?

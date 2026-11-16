@@ -61,7 +61,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Unit
      *
-     * @var object|null
+     * @var Unit|null
      */
     private $unit = null;
 
@@ -145,7 +145,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Section
      *
-     * @var object|null
+     * @var Section|null
      */
     private $section = null;
 
@@ -159,7 +159,7 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Permissions
      *
-     * @var object|null
+     * @var \Components\Courses\Models\Permissions|null
      */
     private $permissions = null;
 
@@ -266,7 +266,7 @@ class Offering extends Base
      * Method to get/set the current unit
      *
      * @param     mixed $id ID or alias of specific unit
-     * @return    object \Components\Courses\Models\Unit
+     * @return    Section
      */
     public function section($id = null)
     {
@@ -355,7 +355,7 @@ class Offering extends Base
      * Method to get/set the current unit
      *
      * @param     mixed $id ID or alias of specific unit
-     * @return    object \Components\Courses\Models\Unit
+     * @return    Unit
      */
     public function unit($id = null)
     {

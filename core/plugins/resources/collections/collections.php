@@ -41,7 +41,7 @@ class Collections extends Plugin
         $collectionType = $pparams->get('collection_alias');
         $allowPublished = $pparams->get('collection_afterpublished');
         $typeObj = \Components\Resources\Models\Type::oneByAlias($collectionType);
-        if (!($typeObj) || !($typeObj->get('collection'))) {
+        if (!$typeObj->get('collection')) {
             return false;
         }
         $parentIds = $resource->parents->fieldsByKey('id');

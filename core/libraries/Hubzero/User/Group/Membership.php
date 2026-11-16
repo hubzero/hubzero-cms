@@ -978,7 +978,7 @@ class Membership
     /**
      * When the reaper last ran, and what it did
      *
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public static function lastRun()
     {

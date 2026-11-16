@@ -212,7 +212,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 ->fieldsByKey('alias');*/
             $taken = self::oneByAlias($alias);
 
-            if ($taken && $taken->get('id') != $this->get('id')) {
+            if ($taken->get('id') != $this->get('id')) {
                 return Lang::txt('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE');
             }
 

@@ -18,7 +18,7 @@ class Node extends Obj
 {
     /**
      * Parent node
-     * @var    object|null
+     * @var    Node|null
      *
      * @since  2.1.13
      */
@@ -27,7 +27,7 @@ class Node extends Obj
     /**
      * Array of Children
      *
-     * @var    array<mixed>
+     * @var    array<string, Node>
      * @since  2.1.13
      */
     protected $children = [];
@@ -152,7 +152,7 @@ class Node extends Obj
     /**
      * Get the children of this node
      *
-     * @return  array<mixed>    The children
+     * @return  array<string, Node>  The children
      * @since   2.1.13
      */
     public function &getChildren()
@@ -163,7 +163,7 @@ class Node extends Obj
     /**
      * Get the parent of this node
      *
-     * @return  mixed   Node object with the parent or null for no parent
+     * @return  Node|null  The parent, or null for no parent
      * @since   2.1.13
      */
     public function &getParent()

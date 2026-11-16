@@ -126,7 +126,7 @@ class Entriesv1r0 extends ApiController
             if (!is_numeric($filters['type'])) {
                 $type = Type::oneByAlias($filters['type']);
 
-                $filters['type'] = ($type && $type->get('id')) ? (int) $type->get('id') : -1;
+                $filters['type'] = $type->get('id') ? (int) $type->get('id') : -1;
             }
 
             $query->whereEquals($r . '.type', (int) $filters['type']);

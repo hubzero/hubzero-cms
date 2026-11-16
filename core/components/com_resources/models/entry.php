@@ -70,6 +70,11 @@ use Hubzero\Facades\Route;
  * @property  \Hubzero\Database\Rows             $authors        The authors, through authors()
  * @property  string                             $tool           The tool instance, set by compileToolInfo()
  * @property  int                                $toolpublished  The tool version's state, set by compileToolInfo()
+ * @property  string                             $doi            The tool version's DOI, set by compileToolInfo()
+ * @property  int|string                         $doi_label      Its DOI label, set by compileToolInfo()
+ * @property  string                             $doi_shoulder   Its DOI shoulder, set by compileToolInfo()
+ * @property  string                             $date           The display date, through transformDate()
+ * @property  \Hubzero\Database\Rows             $parents        The parent resources, through parents()
  *
  * @method \Components\Resources\Models\Type type() Through __call(), from transformType()
  *
@@ -305,7 +310,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get owning group
      *
-     * @return  object
+     * @return  \Hubzero\User\Group
      */
     public function transformGroupOwner()
     {
@@ -1488,7 +1493,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   mixed   $id
      * @param   string|null  $revision
-     * @return  object
+     * @return  static
      */
     public static function getInstance($id, $revision = null)
     {
@@ -1496,10 +1501,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $result = self::oneOrNew($id);
         } else {
             $result = self::oneByAlias($id);
-
-            if (!$result) {
-                $result = self::blank();
-            }
         }
 
         if ($result->isTool()) {

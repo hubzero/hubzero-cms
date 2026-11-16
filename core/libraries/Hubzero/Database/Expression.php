@@ -862,7 +862,7 @@ final class Expression
     /**
      * Build the SQL string for this expression
      *
-     * @param object $syntax The syntax object (provides database-specific rendering)
+     * @param \Hubzero\Database\Drivers\Base\BaseSqlSyntax|null $syntax The database-specific syntax to render with
      * @return string
      */
     public function build($syntax): string

@@ -150,7 +150,7 @@ abstract class Model extends Obj
      * component, it will return the super group DB connection
      * instead of the site connection.
      *
-     * @return  object  Database
+     * @return  \Hubzero\Database\Driver
      */
     public function initDbo()
     {

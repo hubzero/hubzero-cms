@@ -73,11 +73,6 @@ class Enrollment extends AdminController
 
         $course->add($users);
 
-        // Save changes
-        if (!$course->update()) {
-            $this->setError($course->getError());
-        }
-
         // Push through to the hosts view
         $this->displayTask($course);
     }
@@ -128,11 +123,6 @@ class Enrollment extends AdminController
         } else {
             // Remove users from managers list
             $course->remove($users);
-        }
-
-        // Save changes
-        if (!$course->update()) {
-            $this->setError($course->getError());
         }
 
         // Push through to the hosts view

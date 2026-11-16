@@ -19,6 +19,13 @@ use Hubzero\Facades\App;
 class Resources extends Base
 {
     /**
+     * The resource the wish list belongs to
+     *
+     * @var  \Components\Resources\Models\Entry|null
+     */
+    protected $item = null;
+
+    /**
      * URL segments
      *
      * @var array<mixed>

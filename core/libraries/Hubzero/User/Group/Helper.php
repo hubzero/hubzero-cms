@@ -236,7 +236,7 @@ class Helper
     /**
      * Search group roles
      *
-     * @param   object  $group
+     * @param   \Hubzero\User\Group  $group
      * @param   string  $role
      * @return  array<mixed>|null|false
      */
@@ -251,13 +251,13 @@ class Helper
         $query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id="
             . $db->quote($role)
             . " AND r.id=m.roleid AND r.gidNumber="
-            . $db->quote($group->gidNumber);
+            . $db->quote($group->get('gidNumber'));
 
         $db->setQuery($query);
 
         $result = $db->loadColumn();
 
-        $result = array_intersect($result, $group->members);
+        $result = array_intersect($result, $group->get('members'));
 
         if (count($result) > 0) {
             return $result;

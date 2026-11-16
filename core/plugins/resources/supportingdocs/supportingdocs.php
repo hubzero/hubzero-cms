@@ -28,7 +28,7 @@ class Supportingdocs extends Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object   $model  Current model
+     * @param   \Components\Resources\Models\Entry   $model  Current model
      * @param   integer  $archive
      * @return  array<string, mixed>
      */
@@ -68,7 +68,7 @@ class Supportingdocs extends Plugin
     /**
      * Return data on a resource view (this will be some form of HTML)
      *
-     * @param   object  $model  Current resource
+     * @param   \Components\Resources\Models\Entry  $model  Current resource
      * @param   string  $option    Name of the component
      * @param   array|mixed   $areas     Active area(s)
      * @param   string  $rtrn      Data to be returned

@@ -47,7 +47,7 @@ class CurrentCart extends Cart
      */
     public $cartCoupons;
     /**
-     * @var  object|null
+     * @var  \stdClass|null
      */
     public $tInfo;
 
@@ -685,7 +685,7 @@ class CurrentCart extends Cart
     /**
      * Gets all transaction related info about current cart transaction
      *
-     * @return object|false  false on no results
+     * @return \stdClass|false  false on no results
      */
     public function getTransactionData()
     {

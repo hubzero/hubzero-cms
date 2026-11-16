@@ -76,7 +76,7 @@ class Code extends Base
      *
      * @param      mixed $oid ID (int) or alias (string)
      * @param   mixed  $section_id
-     * @return     object \Components\Courses\Models\Offering
+     * @return     self
      */
     public static function &getInstance($oid = null, $section_id = null)
     {

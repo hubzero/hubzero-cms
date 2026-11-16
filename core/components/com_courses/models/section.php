@@ -22,7 +22,7 @@ use Hubzero\Facades\User;
 class Section extends Base
 {
     /**
-     * @var  object|null
+     * @var  \Components\Courses\Models\Permissions|null
      */
     protected $permissions;
 
@@ -71,7 +71,7 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Section\Code
      *
-     * @var object|null
+     * @var Section\Code|null
      */
     private $code = null;
 
@@ -137,7 +137,7 @@ class Section extends Base
      *
      * @param      mixed $oid ID (int) or alias (string)
      * @param   mixed  $offering_id
-     * @return     object \Components\Courses\Models\Offering
+     * @return     self
      */
     public static function &getInstance($oid = null, $offering_id = null)
     {
@@ -604,10 +604,10 @@ class Section extends Base
     }
 
     /**
-     * Check if the current user is enrolled
+     * Get the coupon code with the given code, a new one when there is none
      *
      * @param   mixed  $code
-     * @return     boolean
+     * @return  Section\Code
      */
     public function code($code = null)
     {

@@ -742,7 +742,7 @@ abstract class Cart
      * Gets all transaction related info
      *
      * @param   int    $tId  Transaction ID
-     * @return  mixed  False on no results
+     * @return  \stdClass|false|null  False when there is no such transaction
      */
     public static function getTransactionInfo($tId)
     {

@@ -66,7 +66,7 @@ class Collection extends Base
     /**
      * Post
      *
-     * @var object|null
+     * @var Post|null
      */
     private $post = null;
 
@@ -275,7 +275,7 @@ class Collection extends Base
      * Set and get a specific post
      *
      * @param   integer|null $id Post ID
-     * @return  object  CollectionsModelPost
+     * @return  Post
      */
     public function post($id = null)
     {

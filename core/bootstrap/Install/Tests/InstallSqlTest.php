@@ -45,7 +45,7 @@ class InstallSqlTest extends Basic
      * The schema, and what a hub ends up holding
      *
      * @param   bool  $sample  With the sample content, or without
-     * @return  object  Sql
+     * @return  Sql
      */
     protected function hub($sample = true)
     {

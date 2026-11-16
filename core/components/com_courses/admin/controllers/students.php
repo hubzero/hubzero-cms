@@ -171,7 +171,7 @@ class Students extends AdminController
     /**
      * Displays an edit form
      *
-     * @param   object|null  $model
+     * @param   \Components\Courses\Models\Member|null  $model
      * @return  void
      */
     public function editTask($model = null)

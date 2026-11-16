@@ -338,7 +338,7 @@ class Ticket extends Relational
     /**
      * Get category
      *
-     * @return  object
+     * @return  \Components\Support\Models\Category
      */
     public function transformCategory()
     {

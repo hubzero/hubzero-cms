@@ -99,7 +99,7 @@ class Offering extends Relational
      * Retrieves one row loaded by an alias field
      *
      * @param   string  $alias  The alias to load by
-     * @return  mixed
+     * @return  static
      */
     public static function oneByAlias($alias)
     {

@@ -45,7 +45,7 @@ class Composer
     /**
      * Composer\Repository\WriteableRepositoryInterface object
      *
-     * @var object|null
+     * @var \Composer\Repository\InstalledRepositoryInterface|null
      */
     private static $localRepository = null;
 
@@ -172,7 +172,7 @@ class Composer
     /**
      * Return the repository manager
      *
-     * @return  object  Composer\Repository\RepositoryManager in use
+     * @return  \Composer\Repository\RepositoryManager  Composer\Repository\RepositoryManager in use
      */
     private static function getRepositoryManager()
     {
@@ -228,7 +228,7 @@ class Composer
     /**
      * Return the dispatcher in use by composer
      *
-     * @return  object  Composer\EventDispatcher\EventDispatcher in use
+     * @return  \Composer\EventDispatcher\EventDispatcher  Composer\EventDispatcher\EventDispatcher in use
      */
     private static function getDispatcher()
     {
