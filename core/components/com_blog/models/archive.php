@@ -55,7 +55,7 @@ class Archive extends Obj
      *
      * @param   string   $scope     Blog scope [site, group, member]
      * @param   integer  $scope_id  Scope ID if scope is member or group
-     * @return  object
+     * @return  static
      */
     public static function &getInstance($scope = 'site', $scope_id = 0)
     {

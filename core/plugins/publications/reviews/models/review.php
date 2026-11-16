@@ -71,7 +71,7 @@ class Review extends \Hubzero\Base\Model
      * Returns a reference to a blog comment model
      *
      * @param   mixed   $oid  ID (int) or alias (string)
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = 0)
     {

@@ -39,7 +39,7 @@ class Archive extends Obj
      * Get Instance of Page Archive
      *
      * @param   string|null  $key  Instance Key
-     * @return  object
+     * @return  static
      */
     public static function &getInstance($key = null)
     {

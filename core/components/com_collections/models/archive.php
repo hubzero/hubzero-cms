@@ -104,7 +104,7 @@ class Archive extends Obj
      *
      * @param   string   $object_type  The object type
      * @param   integer  $object_id    The object ID
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($object_type = '', $object_id = 0)
     {

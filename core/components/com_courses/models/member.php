@@ -89,7 +89,7 @@ class Member extends Base
      * @param   int|string|null $cid Course ID
      * @param   int|string|null $oid Offering ID
      * @param   int|string|null $sid Section ID
-     * @return  object \Components\Courses\Models\Member
+     * @return  self \Components\Courses\Models\Member
      */
     public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
     {

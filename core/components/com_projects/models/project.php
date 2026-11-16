@@ -189,7 +189,7 @@ class Project extends Model
      * Returns a reference to an article model
      *
      * @param   mixed  $oid  ID or alias
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null)
     {

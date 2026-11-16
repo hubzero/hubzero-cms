@@ -55,7 +55,7 @@ class Dumper
      * Returns a reference to a global object, only creating it
      * if it doesn't already exist.
      *
-     * @return  object
+     * @return  self
      */
     public static function &getInstance()
     {
@@ -201,7 +201,7 @@ class Dumper
     /**
      * Render
      *
-     * @param   object|null  $renderer
+     * @param   string|object|null  $renderer  A renderer, or its name (console, html)
      * @return  string
      */
     public function render($renderer = null)

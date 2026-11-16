@@ -54,7 +54,7 @@ class Announcement extends Base
      *     $offering = \Components\Courses\Models\Announcement::getInstance($alias);
      *
      * @param   integer $oid ID (int)
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = 0)
     {

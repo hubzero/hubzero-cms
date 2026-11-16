@@ -77,7 +77,7 @@ class Following extends Model
      * @param   string|null   $following_type  Type being followed [collection, member, group]
      * @param   integer  $follower_id     Follower ID [member, group]
      * @param   string   $follower_type   [member, group]
-     * @return  object
+     * @return  self
      */
     public static function &getInstance(
         $oid = null,
@@ -181,7 +181,9 @@ class Following extends Model
 
             case 'collections':
                 if ($value === null && $this->get('following_type') != 'collection') {
-                    $model = Collection::getInstance($this->get('following_type'), $this->get('following_id'));
+                    // The follower's archive, as for the other counts: Collection
+                    // has no collections(), and took the type for an id
+                    $model = Archive::getInstance($this->get('following_type'), $this->get('following_id'));
                     $value = $model->collections(['count']);
                     $this->set($what, $value);
                 }

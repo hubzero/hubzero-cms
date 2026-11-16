@@ -118,7 +118,7 @@ class Tool extends Model
      * @param   mixed    $oid
      * @param   integer|null  $projectid
      * @param   integer|null  $instance
-     * @return  object
+     * @return  static
      */
     public static function &getInstance($oid = null, $projectid = null, $instance = null)
     {

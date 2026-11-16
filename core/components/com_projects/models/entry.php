@@ -106,7 +106,7 @@ class Entry extends Model
      * Returns a reference to a todo entry model
      *
      * @param   mixed   $oid   ID (int) or alias (string)
-     * @return  object  Entry
+     * @return  self  Entry
      */
     public static function &getInstance($oid = null)
     {

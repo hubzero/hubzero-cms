@@ -63,7 +63,7 @@ class Comment extends Model
      * Returns a reference to a blog comment model
      *
      * @param   mixed   $oid  ID (int) or alias (string)
-     * @return  object  Comment
+     * @return  self  Comment
      */
     public static function &getInstance($oid = 0)
     {

@@ -217,7 +217,7 @@ class Offering extends Base
      *
      * @param   mixed  $oid  ID (int) or alias (string)
      * @param   mixed  $course_id
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null, $course_id = null)
     {

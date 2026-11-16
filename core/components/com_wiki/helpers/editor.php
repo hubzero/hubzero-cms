@@ -61,7 +61,7 @@ class Editor extends Obj
      *     $parser = WikiHelperParser::getInstance($parsername);
      *
      * @param   string  $editor  The name of the parser to use.
-     * @return  object  The Parser object.
+     * @return  self  The Parser object.
      */
     public static function &getInstance($editor = '')
     {
@@ -112,8 +112,8 @@ class Editor extends Obj
      * @param   string   $id      The control id
      * @param   string   $html    The contents of the text area
      * @param   string   $cls     The width of the text area (px or %)
-     * @param   integer  $col     The number of columns for the textarea
-     * @param   integer  $row     The number of rows for the textarea
+     * @param   int|string  $col     The number of columns for the textarea
+     * @param   int|string  $row     The number of rows for the textarea
      * @param   array<mixed>    $params  Associative array of editor parameters
      * @return  mixed
      */

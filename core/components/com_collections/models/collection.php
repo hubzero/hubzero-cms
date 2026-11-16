@@ -129,7 +129,7 @@ class Collection extends Base
      * @param   mixed    $oid          ID, array, or object
      * @param   integer  $object_id    ID
      * @param   string   $object_type  [member, group]
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null, $object_id = 0, $object_type = 'member')
     {

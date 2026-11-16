@@ -114,7 +114,7 @@ class Unit extends Base
      *
      * @param   mixed   $oid         Integer, string, array, or object
      * @param   integer|null $offering_id Offering the unit is linked to
-     * @return  object  \Components\Courses\Models\Unit
+     * @return  self  \Components\Courses\Models\Unit
      */
     public static function &getInstance($oid = null, $offering_id = null)
     {

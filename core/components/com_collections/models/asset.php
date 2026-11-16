@@ -73,7 +73,7 @@ class Asset extends Base
      *
      * @param   mixed    $oid      ID, string, array, or object
      * @param   integer|null  $item_id  ID of the item asset is attached
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null, $item_id = null)
     {

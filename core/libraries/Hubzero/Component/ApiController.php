@@ -651,9 +651,8 @@ class ApiController implements ControllerInterface
             }
         }
 
-        if (!$model->set($fields)) {
-            App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_BIND_FAILED', $model->getError()));
-        }
+        // set() gives the model back; binding cannot fail here
+        $model->set($fields);
 
         // Trigger before save event
         $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', [&$model, true]);
@@ -824,9 +823,8 @@ class ApiController implements ControllerInterface
             }
         }
 
-        if (!$model->set($fields)) {
-            App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_BIND_FAILED', $model->getError()));
-        }
+        // set() gives the model back; binding cannot fail here
+        $model->set($fields);
 
         // Trigger before save event
         $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', [&$model, true]);
@@ -1021,7 +1019,7 @@ class ApiController implements ControllerInterface
     /**
      * Get the model
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      * @throws  \Exception
      */
     protected function resolveModel()
@@ -1048,7 +1046,13 @@ class ApiController implements ControllerInterface
             App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
         }
 
-        return new $model();
+        // The generic tasks that use this read the table's structure and keys
+        $instance = new $model();
+        if (!($instance instanceof \Hubzero\Database\Relational)) {
+            App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
+        }
+
+        return $instance;
     }
 
     /**

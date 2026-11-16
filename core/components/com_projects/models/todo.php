@@ -63,7 +63,7 @@ class Todo extends Model
      * Returns a reference to a todo model
      *
      * @param   mixed   $oid  TODO ID
-     * @return  object  Todo
+     * @return  self  Todo
      */
     public static function &getInstance($oid = null)
     {

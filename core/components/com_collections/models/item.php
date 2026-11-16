@@ -117,7 +117,7 @@ class Item extends Base
      * Returns a reference to a collections item instance
      *
      * @param   mixed   $oid  Integer or string
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null)
     {

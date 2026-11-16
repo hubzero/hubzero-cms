@@ -50,7 +50,7 @@ class Manager extends Obj
      *
      * @param   string   $scope     Forum scope [site, group, course]
      * @param   integer  $scope_id  Forum scope ID (group ID, couse ID)
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($scope = 'site', $scope_id = 0)
     {

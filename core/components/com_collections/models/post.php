@@ -63,7 +63,7 @@ class Post extends Base
      * Returns a reference to this model
      *
      * @param   mixed   $oid  Integer, string, object or array
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null)
     {

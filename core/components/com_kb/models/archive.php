@@ -17,7 +17,7 @@ class Archive
      * Returns a reference to this model
      *
      * @param   string  $key
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($key = 'site')
     {

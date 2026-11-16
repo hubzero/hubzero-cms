@@ -48,7 +48,7 @@ class Archive extends Obj
      * Get Instance of Page Archive
      *
      * @param   string|null $key Instance Key
-     * @return  object \Components\Groups\Models\PageArchive
+     * @return  self \Components\Groups\Models\PageArchive
      */
     public static function &getInstance($key = null)
     {

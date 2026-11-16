@@ -62,7 +62,7 @@ class Parser extends Obj
      *     $parser = WikiHelperParser::getInstance($parsername);
      *
      * @param   string  $parser  The name of the parser to use.
-     * @return  object  The Parser object.
+     * @return  self  The Parser object.
      */
     public static function &getInstance($parser = '')
     {

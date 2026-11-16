@@ -89,7 +89,7 @@ class Session extends Base
      *
      * @param   mixed   $oid         Session ID or object
      * @param   string|null  $authorized  Authorization level
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null, $authorized = null)
     {

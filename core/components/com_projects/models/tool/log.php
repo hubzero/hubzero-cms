@@ -65,7 +65,7 @@ class Log extends Model
      * Returns a reference to a log model
      *
      * @param   mixed  $oid  object ID
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null)
     {

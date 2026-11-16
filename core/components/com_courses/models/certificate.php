@@ -102,7 +102,7 @@ class Certificate extends Base
      *
      * @param   mixed  $oid ID (int) or alias (string)
      * @param   mixed  $course_id
-     * @return  object \Components\Courses\Models\Certificate
+     * @return  self \Components\Courses\Models\Certificate
      */
     public static function &getInstance($oid = 0, $course_id = 0)
     {

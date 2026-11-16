@@ -59,7 +59,7 @@ class View extends Model
      * Returns a reference to the model
      *
      * @param   mixed  $oid  view ID
-     * @return  object
+     * @return  self
      */
     public static function &getInstance($oid = null)
     {

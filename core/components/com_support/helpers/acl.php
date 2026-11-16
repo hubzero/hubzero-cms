@@ -78,7 +78,7 @@ class ACL extends Obj
     /**
      * Get the support ACL, creating if not already exists
      *
-     * @return  object
+     * @return  self
      */
     public static function &getACL()
     {

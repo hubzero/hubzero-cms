@@ -764,7 +764,7 @@ class Profile extends Obj
      * Returns a reference to the global User object, only creating it if it doesn't already exist.
      *
      * @param   mixed  $id  The user to load - Can be an integer or string
-     * @return  mixed  Returns object if valid record found, false if not
+     * @return  static|false  The profile, or false when there is no such user
      */
     public static function getInstance($id = null)
     {

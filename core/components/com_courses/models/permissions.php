@@ -104,7 +104,7 @@ class Permissions extends Obj
      * @param   integer|null $course_id   Course ID or alias
      * @param   integer|null $offering_id Course offering ID or alias
      * @param   integer|null $section_id  Course section ID or alias
-     * @return  object \Components\Courses\Models\Permissions
+     * @return  Permissions \Components\Courses\Models\Permissions
      */
     public static function &getInstance(
         $course_id = null,
