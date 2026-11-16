@@ -25,14 +25,14 @@ class IdP
     /**
      * Component params (\Hubzero\Config\Registry)
      *
-     * @var  object
+     * @var  \Hubzero\Config\Registry
      */
     protected $params;
 
     /**
      * Constructor
      *
-     * @param   object|null  $params  Component params; defaults to com_saml's
+     * @param   \Hubzero\Config\Registry|null  $params  Component params; defaults to com_saml's
      * @return  void
      */
     public function __construct($params = null)

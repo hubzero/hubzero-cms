@@ -286,7 +286,7 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @param   int    $oId     Option ID
      * @param   array<mixed>  $fields  New info
-     * @return  object  the saved option
+     * @return  \Components\Storefront\Models\Option  the saved option
      */
     public function updateOption($oId, $fields)
     {

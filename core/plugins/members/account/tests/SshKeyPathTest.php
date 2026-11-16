@@ -94,7 +94,7 @@ class SshKeyPathTest extends Basic
         $plugin = new ReflectionClass(TestPlugin::class)->newInstanceWithoutConstructor();
 
         $plugin->base   = $this->base;
-        $plugin->member = new TestMember($username);
+        $plugin->member = \Components\Members\Models\Member::blank()->set('username', $username);
 
         return $plugin;
     }

@@ -39,7 +39,7 @@ class Helper extends \Hubzero\Base\Obj
      */
     public $myreview;
     /**
-     * @var  object|null
+     * @var  \Components\Publications\Models\Publication|null
      */
     public $publication;
     /**

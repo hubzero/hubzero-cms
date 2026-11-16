@@ -2762,7 +2762,7 @@ class Collections extends Plugin
      * Get the group's custom params
      *
      * @param   integer  $group_id
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     protected function params($group_id)
     {

@@ -117,7 +117,7 @@ class Detector implements DetectorInterface
     /**
      * Get the model
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function getModel()
     {

@@ -39,7 +39,7 @@ class Feed extends Plugin
      */
     protected $uid;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
 

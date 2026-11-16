@@ -664,7 +664,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Transform parameters into object
      *
-     * @return  object  \Hubzero\Config\Registry
+     * @return  \Hubzero\Config\Registry  \Hubzero\Config\Registry
      * @since   2.1.0
      */
     public function transformParams()
@@ -817,7 +817,7 @@ class User extends \Hubzero\Database\Relational
      * Finds a user by email
      *
      * @param   string  $email
-     * @return  object
+     * @return  static
      * @since   2.1.0
      */
     public static function oneByEmail($email)

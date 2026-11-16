@@ -54,7 +54,7 @@ class Import extends Relational
     /**
      * Current run object
      *
-     * @var  \Hubzero\Database\Relational|null
+     * @var  \Hubzero\Content\Import\Model\Run|null
      */
     protected $currentRun = null;
 
@@ -118,16 +118,18 @@ class Import extends Relational
     /**
      * Get most current run
      *
-     * @return  object
+     * @return  \Hubzero\Content\Import\Model\Run
      */
     public function currentRun()
     {
         if (!$this->currentRun) {
-            $this->currentRun = $this
+            /** @var \Hubzero\Content\Import\Model\Run $run The runs relationship holds Run rows */
+            $run = $this
                 ->runs()
                 ->whereEquals('import_id', $this->get('id'))
                 ->ordered()
                 ->row();
+            $this->currentRun = $run;
         }
 
         return $this->currentRun;

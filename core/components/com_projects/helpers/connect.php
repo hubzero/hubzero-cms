@@ -39,7 +39,7 @@ class Connect extends Obj
     /**
      * Project
      *
-     * @var object|null
+     * @var \Components\Projects\Models\Project|null
      */
     public $model = null;
 
@@ -103,7 +103,7 @@ class Connect extends Obj
     /**
      * Constructor
      *
-     * @param   object|null   $model   Project
+     * @param   \Components\Projects\Models\Project|null   $model   Project
      * @param   integer  $userid  User ID
      * @param   string   $zone    Default time zone
      * @return  void

@@ -1197,7 +1197,7 @@ class Resources extends SiteController
      * and a zero-padded id, which does not always agree with the path actually
      * stored on the attachment.
      *
-     * @param   object  $resource  HUB Resource
+     * @param   \Components\Resources\Models\Entry  $resource  HUB Resource
      * @return  string
      */
     private function getVideoPathForResource($resource)
@@ -1324,7 +1324,7 @@ class Resources extends SiteController
     /**
      * View a resource
      *
-     * @return  object|null
+     * @return  \Hubzero\Component\View|null
      */
     public function viewTask()
     {

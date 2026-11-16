@@ -91,7 +91,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Get the session store implementation.
      *
-     * @return  object
+     * @return  \Hubzero\Session\Manager
      */
     public function getSession()
     {

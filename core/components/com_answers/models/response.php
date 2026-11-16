@@ -157,7 +157,7 @@ class Response extends Relational
      *
      * @param   integer  $user_id  Optinal user ID to set as voter
      * @param   string|null   $ip       IP Address
-     * @return  object  The vote
+     * @return  \Components\Answers\Models\Vote  The vote
      */
     public function ballot($user_id = 0, $ip = null)
     {
@@ -183,6 +183,7 @@ class Response extends Relational
             $votes->whereEquals('ip', $ip);
         }
 
+        /** @var \Components\Answers\Models\Vote $vote The votes relationship holds Vote rows */
         $vote = $votes
             ->ordered()
             ->limit(1)

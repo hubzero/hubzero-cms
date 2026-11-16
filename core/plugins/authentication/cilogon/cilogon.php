@@ -40,7 +40,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      * Get the CILogon object, instantiating it if need be
      *
      * @param   mixed  $redirect
-     * @return  object
+     * @return  \CILogon\OAuth2\Client\Provider\CILogon
      */
     protected function cilogon($redirect = null)
     {
@@ -204,9 +204,12 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             );
             return;
         }
-        if (isset($token) && $token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 $cilogonResponse = $this->cilogon()->getResourceOwner($token);
+                if (!($cilogonResponse instanceof \CILogon\OAuth2\Client\Provider\CILogonResourceOwner)) {
+                    throw new \Exception('Unexpected resource owner');
+                }
                 $responseArr = $cilogonResponse->toArray();
                 $id       = $cilogonResponse->getId();
                 $firstname =  isset($responseArr['given_name']) ? $responseArr['given_name'] : '';
@@ -316,9 +319,12 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
         } catch (\Exception $ex) {
             // When validation fails or other local issues
         }
-        if (isset($session) && $session) {
+        if (isset($session) && $session instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 $cilogonResponse = $this->cilogon()->getResourceOwner($session);
+                if (!($cilogonResponse instanceof \CILogon\OAuth2\Client\Provider\CILogonResourceOwner)) {
+                    throw new \Exception('Unexpected resource owner');
+                }
                 $id       = $cilogonResponse->getId();
                 $email    = $cilogonResponse->getEmail();
             } catch (\Exception $e) {

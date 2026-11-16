@@ -50,7 +50,7 @@ class Citations extends Plugin
      */
     protected $importer;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
 

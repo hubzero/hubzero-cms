@@ -100,7 +100,7 @@ class Options extends AdminController
     /**
      * Edit a category
      *
-     * @param   object|null  $row
+     * @param   \Components\Storefront\Models\Option|null  $row
      * @return  void
      */
     public function editTask($row = null)

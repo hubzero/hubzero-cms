@@ -35,7 +35,7 @@ class Parserdefault extends Plugin
      *
      * @param   array<mixed>    $config  Options for initializing a parser
      * @param   boolean|mixed  $getnew  Init a new parser?
-     * @return  object
+     * @return  \Plugins\Wiki\Parserdefault\WikiParser
      */
     public function onGetWikiParser($config, $getnew = false)
     {

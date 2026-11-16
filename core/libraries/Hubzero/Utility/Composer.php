@@ -24,7 +24,7 @@ class Composer
     /**
      * Composer\Composer object
      *
-     * @var object|null
+     * @var \Composer\Composer|null
      */
     private static $composer = null;
 
@@ -120,7 +120,7 @@ class Composer
     /**
      * Return the factory, ensuring Composer was set up already
      *
-     * @return  object  Composer\Factory object in use
+     * @return  \Composer\Factory  Composer\Factory object in use
      */
     private static function getFactory()
     {
@@ -161,7 +161,7 @@ class Composer
     /**
      * Return the IO object to interact with composer
      *
-     * @return  object  Composer\IO object in use
+     * @return  \Composer\IO\NullIO  Composer\IO object in use
      */
     private static function getIO()
     {
@@ -214,7 +214,7 @@ class Composer
     /**
      * Return the installer after ensuring Composer is set up
      *
-     * @return  object  Composer\Installer object in use
+     * @return  \Composer\Installer  Composer\Installer object in use
      */
     private static function getInstaller()
     {
@@ -242,7 +242,7 @@ class Composer
     /**
      * Return the JSON file object representing the composer.json file in use
      *
-     * @return  object  Composer\Json\JsonFile in use
+     * @return  \Composer\Json\JsonFile  Composer\Json\JsonFile in use
      */
     private static function getComposerJson()
     {
@@ -263,7 +263,14 @@ class Composer
     private static function dispatch($command)
     {
         $dispatcher = self::getDispatcher();
-        $commandEvent = new CommandEvent(PluginEvents::COMMAND, $command, self::getIO(), self::getIO());
+        // The event takes console input and output, not the IO object this
+        // used to pass (a TypeError before anything was updated)
+        $commandEvent = new CommandEvent(
+            PluginEvents::COMMAND,
+            $command,
+            new \Symfony\Component\Console\Input\ArrayInput([]),
+            new \Symfony\Component\Console\Output\NullOutput(),
+        );
         $dispatcher->dispatch($commandEvent->getName(), $commandEvent);
     }
 
@@ -332,10 +339,13 @@ class Composer
             $package = $packageName;
         }
         $installer = self::getInstaller();
+        // Composer 2 renamed setUpdateWhitelist() to setUpdateAllowList()
         $installer
             ->setUpdate(true)
-            ->setUpdateWhitelist($package);
-        return $installer->run();
+            ->setUpdateAllowList($package);
+
+        // run() gives the exit code
+        return $installer->run() === 0;
     }
 
     /**

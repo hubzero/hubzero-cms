@@ -74,7 +74,7 @@ class Memcached extends None
      * Create a new Memcached connection.
      *
      * @param   array<mixed>   $servers
-     * @return  object  \Memcached
+     * @return  \Memcached  \Memcached
      * @throws  \RuntimeException
      */
     public function connect(array $servers)

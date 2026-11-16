@@ -102,7 +102,7 @@ class Doi extends Obj
     /**
      * Set DOI service configs
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function configs()
     {
@@ -252,7 +252,7 @@ class Doi extends Obj
     /**
      * Map publication object to DOI fields
      *
-     * @param   object|null  $pub  Instance of Components\Publications\Models\Publication
+     * @param   \Components\Publications\Models\Publication|mixed  $pub
      * @return  bool|null
      */
     public function mapPublication($pub = null)

@@ -40,7 +40,7 @@ class Logger extends Obj
     /**
      * Defines a one to many relationship between users and auth log entries
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToMany
+     * @return  \Hubzero\Database\Relationship\OneToMany  \Hubzero\Database\Relationship\OneToMany
      * @since   2.0.0
      */
     public function auth()

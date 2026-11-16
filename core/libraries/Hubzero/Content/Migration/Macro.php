@@ -58,7 +58,7 @@ abstract class Macro
     /**
      * Get the migration object
      *
-     * @return  object
+     * @return  \Hubzero\Content\Migration\Base
      */
     public function getMigration()
     {
@@ -70,10 +70,10 @@ abstract class Macro
      *
      * @param   string  $message
      * @param   string  $type
-     * @return  object
+     * @return  void
      */
     public function log($message, $type = 'info')
     {
-        return $this->getMigration()->log($message, $type);
+        $this->getMigration()->log($message, $type);
     }
 }

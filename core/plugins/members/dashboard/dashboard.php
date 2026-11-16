@@ -33,7 +33,7 @@ class Dashboard extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
 

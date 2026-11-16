@@ -400,7 +400,7 @@ class SiteController extends Obj implements ControllerInterface
      * Register the default task to perform if a mapping is not found.
      *
      * @param   string  $method  The name of the method in the derived class to perform if a named task is not found.
-     * @return  object  Supports chaining.
+     * @return  $this  Supports chaining.
      */
     public function registerDefaultTask($method)
     {
@@ -412,7 +412,7 @@ class SiteController extends Obj implements ControllerInterface
      *
      * When default task disabled the controller will give a 404 error if the method called doesn't exist
      *
-     * @return  object
+     * @return  $this
      */
     public function disableDefaultTask()
     {

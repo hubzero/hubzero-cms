@@ -123,7 +123,7 @@ class Permissions extends Obj
     /**
      * Get the component config
      *
-     * @return  object Registry
+     * @return  \Hubzero\Config\Registry Registry
      */
     public function config()
     {

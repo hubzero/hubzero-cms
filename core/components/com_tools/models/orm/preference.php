@@ -44,7 +44,7 @@ class Preference extends Relational
     /**
      * Transform params
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

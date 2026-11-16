@@ -170,7 +170,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of managers
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function managers()
     {
@@ -319,7 +319,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform params
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

@@ -65,7 +65,7 @@ class Helper
      * Generate Confirmation Token
      *
      * @param   string  $emailAddress        Confirmation Email Address
-     * @param   object|mixed   $mailinglistObject  Mailing list
+     * @param   \Components\Newsletter\Models\Mailinglist|mixed   $mailinglistObject  Mailing list
      * @return  string|false
      */
     public static function generateConfirmationToken($emailAddress, $mailinglistObject)

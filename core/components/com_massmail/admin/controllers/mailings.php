@@ -85,7 +85,7 @@ class Mailings extends AdminController
     /**
      * Compose / edit a draft mailing
      *
-     * @param   object|null  $row
+     * @param   \Components\Massmail\Models\Mailing|null  $row
      * @param   array<mixed>  $invalid
      * @return  void
      */

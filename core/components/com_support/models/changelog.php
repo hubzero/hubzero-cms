@@ -373,7 +373,7 @@ class Changelog extends Obj
      * @param   string  $field   Field name
      * @param   string  $before  Old value (if any)
      * @param   string  $after   New value (if any)
-     * @return  object
+     * @return  $this
      */
     public function add($to, $field, $before = '', $after = '')
     {

@@ -38,7 +38,7 @@ class Blog extends Plugin
     /** @var \Hubzero\Database\Driver|null */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
     /** @var \Components\Blog\Models\Archive|null */
@@ -48,7 +48,7 @@ class Blog extends Plugin
      */
     protected $task;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\User|null
      */
     protected $user;
 

@@ -1080,7 +1080,7 @@ class Entriesv1r0 extends ApiController
     /**
      * Refuse article values the site could not show
      *
-     * @param   object  $article
+     * @param   \Components\Kb\Models\Article  $article
      * @return  void
      * @throws  Exception
      */

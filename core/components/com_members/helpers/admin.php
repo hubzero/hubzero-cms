@@ -33,7 +33,7 @@ class Admin
     /**
      * Gets a list of the actions that can be performed.
      *
-     * @return  object  Object
+     * @return  \Hubzero\Base\Obj  Object
      */
     public static function getActions()
     {

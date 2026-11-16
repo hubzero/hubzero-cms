@@ -355,7 +355,7 @@ class Oauth extends Base implements CommandInterface
      * Resolve a username or numeric id to a user
      *
      * @param   mixed  $identifier
-     * @return  object
+     * @return  \Hubzero\User\User
      **/
     private function resolveUser($identifier)
     {

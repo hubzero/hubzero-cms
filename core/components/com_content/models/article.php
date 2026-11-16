@@ -844,7 +844,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * Build a query based on common filters
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  static
      */
     public static function allByFilters($filters = [])
     {
@@ -1252,7 +1252,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * Build a query based on common filters
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  static
      */
     public static function oneByFilters($filters = [])
     {

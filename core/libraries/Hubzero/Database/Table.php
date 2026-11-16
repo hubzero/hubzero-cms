@@ -543,7 +543,7 @@ abstract class Table extends \stdClass
     /**
      * Method to get the rules for the record.
      *
-     * @return  object
+     * @return  \Hubzero\Access\Rules
      */
     public function getRules()
     {

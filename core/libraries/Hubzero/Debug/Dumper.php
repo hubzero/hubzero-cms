@@ -71,7 +71,7 @@ class Dumper
     /**
      * Returns the renderer
      *
-     * @return  object  Renderer\Renderable
+     * @return  \Hubzero\Debug\Dumper\Renderable  Renderer\Renderable
      */
     public function getRenderer()
     {

@@ -55,7 +55,7 @@ class DoiService extends Obj
     /**
      * Set DOI service configs
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function configs()
     {

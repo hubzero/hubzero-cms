@@ -215,7 +215,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     public function inbox($database, $option, $member)
@@ -267,7 +267,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     public function archive($database, $option, $member)
@@ -371,7 +371,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     public function sent($database, $option, $member)
@@ -416,7 +416,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     public function settings($database, $option, $member)
@@ -489,7 +489,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return string
      */
     private function create($database, $option, $member)
@@ -520,7 +520,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver  $database Database
      * @param  string  $option   Name of the component
-     * @param  object  $member   Current member
+     * @param  \Components\Members\Models\Member  $member   Current member
      * @param  integer $mid      Message ID
      * @return string
      */
@@ -564,7 +564,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function sendtoarchive($database, $option, $member)
@@ -625,7 +625,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function sendtoinbox($database, $option, $member)
@@ -680,7 +680,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function sendtotrash($database, $option, $member)
@@ -742,7 +742,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  string
      */
     public function emptytrash($database, $option, $member)
@@ -761,7 +761,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function delete($database, $option, $member)
@@ -810,7 +810,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function markasread($database, $option, $member)
@@ -860,7 +860,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function markasunread($database, $option, $member)
@@ -906,7 +906,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return  void
      */
     public function savesettings($database, $option, $member)
@@ -1010,7 +1010,7 @@ class Messages extends Plugin
      *
      * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
-     * @param  object $member   Current member
+     * @param  \Components\Members\Models\Member $member   Current member
      * @return mixed
      */
     public function send($database, $option, $member)

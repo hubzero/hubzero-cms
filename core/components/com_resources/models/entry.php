@@ -294,7 +294,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get associated license
      *
-     * @return  object
+     * @return  \Components\Resources\Models\License
      */
     public function license()
     {
@@ -739,7 +739,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform attribs
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformAttribs()
     {
@@ -753,7 +753,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform params
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

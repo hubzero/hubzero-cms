@@ -289,7 +289,7 @@ class GradeBook extends Table
                             $resp = $dep->getRespondent($u);
 
                             // Form is active and they have completed it!
-                            if ($resp->getEndTime() && $resp->getEndTime() != '') {
+                            if ($resp && $resp->getEndTime()) {
                                 $score = (isset($results[$u]['score']))
                                     ? '\'' . $results[$u]['score'] . '\''
                                     : 'NULL';

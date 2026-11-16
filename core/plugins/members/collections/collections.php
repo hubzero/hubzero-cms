@@ -35,7 +35,7 @@ class Collections extends Plugin
      */
     protected $group;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
     /** @var \Components\Collections\Models\Archive|null */

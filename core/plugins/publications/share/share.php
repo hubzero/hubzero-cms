@@ -141,7 +141,7 @@ class Share extends Plugin
      * @param   string  $with
      * @param   string  $url
      * @param   string  $mediaUrl
-     * @param   object  $publication
+     * @param   \Components\Publications\Models\Publication  $publication
      * @param   string|int  $version
      *
      * @return  void

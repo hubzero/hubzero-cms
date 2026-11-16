@@ -198,8 +198,8 @@ class Blocks extends Obj
      * @param   string   $name
      * @param   string   $manifest
      * @param   \Components\Publications\Models\Publication   $pub
-     * @param   object   $old
-     * @param   object   $new
+     * @param   \Components\Publications\Tables\Version   $old
+     * @param   \Components\Publications\Tables\Version   $new
      * @return  boolean
      */
     public function transferData($name, $manifest, $pub, $old, $new)
@@ -220,7 +220,7 @@ class Blocks extends Obj
      * @param   string   $name      Name of block to render
      * @param   string   $viewname  Name of rendering view (edit / curation / admin / review)
      * @param   object|null  $manifest
-     * @param   object|null|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|null|mixed   $pub
      * @param   integer  $blockId
      * @return  string|false   HTML
      */
@@ -272,7 +272,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
-     * @param   object|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -308,7 +308,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
-     * @param   object|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -344,7 +344,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
-     * @param   object|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -380,7 +380,7 @@ class Blocks extends Obj
      * @param   string   $name    Name of block to save
      * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
-     * @param   object|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean
@@ -416,7 +416,7 @@ class Blocks extends Obj
      * @param   string   $name      Name of block to save
      * @param   array<mixed>|object   $manifest
      * @param   integer  $blockId
-     * @param   object|mixed   $pub
+     * @param   \Components\Publications\Models\Publication|mixed   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  boolean

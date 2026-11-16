@@ -200,7 +200,7 @@ class Writer
     /**
      * Get the underlying Monolog instance.
      *
-     * @return  object
+     * @return  \Monolog\Logger
      */
     public function getMonolog()
     {

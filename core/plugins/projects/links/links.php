@@ -49,7 +49,7 @@ class Links extends Plugin
      */
     protected $uid;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
 
@@ -1167,7 +1167,7 @@ class Links extends Plugin
      *
      * @param   \Components\Publications\Models\Metadata  $data
      * @param   array<mixed>  $metadata
-     * @return  object
+     * @return  \Components\Publications\Models\Metadata
      */
     public function parseDoiData($data, $metadata)
     {

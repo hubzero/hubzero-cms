@@ -114,7 +114,7 @@ class Element extends Obj
      *
      * @param   string  $name          Name attribute of the element
      * @param   string  $value         Value attribute of the element
-     * @param   object  &$xmlElement   Element object
+     * @param   \SimpleXMLElement  &$xmlElement   Element object
      * @param   string  $control_name  Control name of the element
      * @return   string
      */

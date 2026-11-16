@@ -47,7 +47,7 @@ class Filesystem
     /**
      * Get the Adapter.
      *
-     * @return  object  AdapterInterface
+     * @return  Adapter\Ftp|Adapter\Local|Adapter\None
      */
     public function getAdapter()
     {

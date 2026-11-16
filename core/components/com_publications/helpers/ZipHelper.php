@@ -66,7 +66,7 @@ class ZipHelper
     /**
      * Reads contents of a ZipArchive
      *
-     * @param   object  $archive  \ZipArchive
+     * @param   \ZipArchive|mixed  $archive  \ZipArchive
      * @return  array<int, mixed>
      */
     protected static function readArchive($archive)

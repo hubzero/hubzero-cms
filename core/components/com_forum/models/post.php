@@ -926,7 +926,7 @@ class Post extends Relational
     /**
      * Turn a list of rows into a tree
      *
-     * @param   object  $rows
+     * @param   \Hubzero\Database\Rows  $rows
      * @return  array<mixed>
      */
     public function toTree($rows)

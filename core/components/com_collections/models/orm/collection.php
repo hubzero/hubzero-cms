@@ -155,7 +155,7 @@ class Collection extends Relational
     /**
      * Get a list of likes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function votes()
     {

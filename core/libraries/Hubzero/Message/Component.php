@@ -81,7 +81,7 @@ class Component extends Relational
      * Defines a belongs to one relationship between newsletter and story
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public function getRecords($filters = [])
     {

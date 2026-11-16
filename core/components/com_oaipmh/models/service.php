@@ -126,7 +126,7 @@ class Service extends Obj
     /**
      * Get the database connection
      *
-     * @return  object
+     * @return  \Hubzero\Database\Driver
      */
     public function getDbo()
     {
@@ -165,7 +165,7 @@ class Service extends Obj
      * Set schema
      *
      * @param   mixed   $type
-     * @return  object
+     * @return  $this
      * @throws  Exception
      */
     public function setSchema($type)
@@ -219,7 +219,7 @@ class Service extends Obj
     /**
      * Get XML builder
      *
-     * @return  object
+     * @return  \Components\Oaipmh\Models\Xml\Response
      */
     public function getResponse()
     {
@@ -358,7 +358,7 @@ class Service extends Obj
     /**
      * List all sets
      *
-     * @return  object
+     * @return  $this
      */
     public function sets()
     {
@@ -482,7 +482,7 @@ class Service extends Obj
      * @param   string  $until  Timestamp
      * @param   string|null  $set    Set to filter by
      * @param   string  $verb
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function records($from, $until, $set = null, $verb = 'ListRecords')
     {
@@ -614,7 +614,7 @@ class Service extends Obj
      * Process a single record
      *
      * @param   string  $identifier
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function record($identifier)
     {

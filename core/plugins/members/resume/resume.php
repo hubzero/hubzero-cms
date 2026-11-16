@@ -76,8 +76,8 @@ class Resume extends Plugin
     /**
      * Check if a user has employer authorization
      *
-     * @param   object|null   $user    User
-     * @param   object|null   $member  Profile
+     * @param   \Hubzero\User\User|null   $user    User
+     * @param   \Components\Members\Models\Member|null   $member  Profile
      * @return  integer  1 = authorized, 0 = not
      */
     public function isEmployer($user = null, $member = null)
@@ -224,7 +224,7 @@ class Resume extends Plugin
      *
      * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
-     * @param   object   $member    Profile
+     * @param   \Components\Members\Models\Member   $member    Profile
      * @param   string   $task      Task to perform
      * @param   integer  $emp       Is user employer?
      * @return  string
@@ -285,7 +285,7 @@ class Resume extends Plugin
      *
      * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
-     * @param   object   $member    Profile
+     * @param   \Components\Members\Models\Member   $member    Profile
      * @param   integer  $emp       Is user employer?
      * @return  string
      */
@@ -431,7 +431,7 @@ class Resume extends Plugin
      *
      * @param   \Hubzero\Database\Driver  $database  Database
      * @param   string  $option    Component name
-     * @param   object  $member    Profile
+     * @param   \Components\Members\Models\Member  $member    Profile
      * @return  string
      */
     protected function upload($database, $option, $member)
@@ -557,7 +557,7 @@ class Resume extends Plugin
      *
      * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
-     * @param   object   $member    Profile
+     * @param   \Components\Members\Models\Member   $member    Profile
      * @param   integer  $emp       Is user employer?
      * @return  string
      */
@@ -737,7 +737,7 @@ class Resume extends Plugin
     /**
      * Download a file
      *
-     * @param   object  $member
+     * @param   \Components\Members\Models\Member  $member
      * @return  void
      */
     protected function download($member)

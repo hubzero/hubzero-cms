@@ -348,7 +348,7 @@ class SearchComponent extends Relational
     /**
      * Populate the Solr Indexer so that batch processing uses the same object.
      *
-     * @return  object  Hubzero\Search\Adapters\SolrIndexAdapter
+     * @return  \Hubzero\Search\Adapters\SolrIndexAdapter  Hubzero\Search\Adapters\SolrIndexAdapter
      */
     private function getSearchIndexer()
     {

@@ -31,7 +31,7 @@ class Maps extends Plugin
     /**
      * Connection to the usage database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $udb = null;
 

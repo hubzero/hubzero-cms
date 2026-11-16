@@ -25,13 +25,13 @@ class Profile extends Plugin
      */
     protected $areas;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
     /** @var string|null */
     protected $task;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\User|null
      */
     protected $user;
 

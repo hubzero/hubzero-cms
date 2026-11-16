@@ -577,7 +577,7 @@ class Offering extends Base
      * Get offering gradebook
      *
      * @param   mixed  $oid
-     * @return     object
+     * @return     \Components\Courses\Models\GradeBook
      */
     public function gradebook($oid = null)
     {

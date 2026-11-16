@@ -800,7 +800,7 @@ class Announcements extends Plugin
      *
      * @param   object   $group
      * @param   string   $active
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function onGroupsApiCreate($group, $active)
     {
@@ -878,7 +878,7 @@ class Announcements extends Plugin
      * @param   object   $group
      * @param   string   $active
      * @param   integer  $id
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function onGroupsApiRead($group, $active, $id)
     {
@@ -904,7 +904,7 @@ class Announcements extends Plugin
      * @param   object   $group
      * @param   string   $active
      * @param   integer  $id
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function onGroupsApiUpdate($group, $active, $id)
     {

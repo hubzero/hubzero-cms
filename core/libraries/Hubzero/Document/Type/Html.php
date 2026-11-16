@@ -329,7 +329,7 @@ class Html extends Base
      * Parses the template and populates the buffer
      *
      * @param   array<mixed>   $params  Parameters for fetching the template
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function parse($params = [])
     {

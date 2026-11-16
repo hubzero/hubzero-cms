@@ -217,7 +217,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
     /**
      * Get the inner queue with its cursor on top of the heap.
      *
-     * @return  object  The inner queue.
+     * @return  \SplPriorityQueue<array<int, int>, object>  The inner queue.
      */
 
     #[\ReturnTypeWillChange]

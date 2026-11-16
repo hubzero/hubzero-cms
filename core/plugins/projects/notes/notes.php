@@ -46,7 +46,7 @@ class Notes extends Plugin
      */
     protected $uid;
     /**
-     * @var  \Components\Projects\Models\Project|object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
     /**
@@ -547,7 +547,8 @@ class Notes extends Plugin
         $view->set('url', Route::url($this->model->link('notes')));
         $view->set('config', $this->model->config());
         $view->set('page', $page);
-        $view->set('revision', $page->revision('current'));
+        // The current version, as the wiki reads it; Page has no revision()
+        $view->set('revision', $page->version);
         $view->set('masterscope', 'projects' . DS . $this->model->get('alias') . DS . 'notes');
         $view->set('params', $this->params);
         $view->set('ajax', Request::getInt('ajax', 0));
@@ -761,7 +762,8 @@ class Notes extends Plugin
         $view->set('option', $this->componentOption);
         $view->set('model', $this->model);
         $view->set('page', $page);
-        $view->set('revision', $page->revision('current'));
+        // The current version, as the wiki reads it; Page has no revision()
+        $view->set('revision', $page->version);
         $view->set('masterscope', 'projects' . DS . $this->model->get('alias') . DS . 'notes');
 
         // Output HTML

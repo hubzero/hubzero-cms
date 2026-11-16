@@ -767,7 +767,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get project member
      *
-     * @return  object
+     * @return  \Components\Projects\Models\Orm\Owner
      */
     public function member()
     {

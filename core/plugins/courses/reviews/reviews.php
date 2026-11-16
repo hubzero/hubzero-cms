@@ -28,7 +28,7 @@ class Reviews extends Plugin
      */
     protected $database;
     /**
-     * @var  object|null
+     * @var  \Components\Courses\Models\Course|null
      */
     protected $obj;
     /**

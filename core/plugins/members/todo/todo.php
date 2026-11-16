@@ -29,7 +29,7 @@ class Todo extends Plugin
      */
     protected $filters;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
     /** @var \Components\Projects\Models\Project|null */
@@ -43,7 +43,7 @@ class Todo extends Plugin
     /** @var \Components\Projects\Models\Todo|null */
     protected $todo;
     /**
-     * @var  object|null
+     * @var  \Hubzero\User\User|null
      */
     protected $user;
 

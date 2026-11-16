@@ -275,7 +275,7 @@ class Conditions extends Obj
      * @param    string|int  $val   Operator value
      * @param    string  $label Operator label
      * @param    boolean $sel   Operator selected?
-     * @return   object
+     * @return   \stdClass
      */
     private function value($val = '=', $label = 'is', $sel = false)
     {

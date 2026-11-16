@@ -23,7 +23,7 @@ class Query
     /**
      * Set the adapter
      *
-     * @param   object  $config  Configuration object
+     * @param   \Hubzero\Config\Registry  $config  Configuration object
      * @return  void
      */
     public function __construct($config)

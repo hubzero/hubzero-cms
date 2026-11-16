@@ -24,7 +24,7 @@ use Hubzero\Facades\User;
 class Activity extends Plugin
 {
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $member;
 

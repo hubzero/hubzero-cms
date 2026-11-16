@@ -75,7 +75,7 @@ class Publications extends Plugin
      */
     protected $videoExt;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
 
@@ -2851,7 +2851,7 @@ class Publications extends Plugin
     /**
      * Get disk space
      *
-     * @param      object   $model
+     * @param      \Components\Projects\Models\Project   $model
      * @return     string
      */
     public function pubDiskSpace($model)

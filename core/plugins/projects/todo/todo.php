@@ -54,7 +54,7 @@ class Todo extends Plugin
      */
     protected $uid;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
     /** @var \Components\Projects\Models\Todo|null */

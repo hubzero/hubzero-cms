@@ -164,7 +164,7 @@ class Forks extends Plugin
     /**
      * Show fork form
      *
-     * @param   object  $publication
+     * @param   \Components\Publications\Models\Publication  $publication
      * @return  string  HTML
      */
     private function forks($publication)
@@ -227,7 +227,7 @@ class Forks extends Plugin
     /**
      * Show fork form
      *
-     * @param   object  $publication
+     * @param   \Components\Publications\Models\Publication  $publication
      * @return  string  HTML
      */
     private function fork($publication)

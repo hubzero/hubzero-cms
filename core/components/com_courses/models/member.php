@@ -117,7 +117,7 @@ class Member extends Base
      * Get courses prerequisites per member
      *
      * @param   object $gradebook
-     * @return  object \Components\Courses\Models\Prerequisite
+     * @return  \Components\Courses\Models\Prerequisite \Components\Courses\Models\Prerequisite
      */
     public function prerequisites($gradebook)
     {

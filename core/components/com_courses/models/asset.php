@@ -258,7 +258,7 @@ class Asset extends Base
     /**
      * Track asset views
      *
-     * @param   object|null|mixed $course \Components\Courses\Models\Course
+     * @param   \Components\Courses\Models\Course|null|mixed $course \Components\Courses\Models\Course
      * @return  mixed
      */
     public function logView($course = null)

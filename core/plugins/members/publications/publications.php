@@ -81,7 +81,7 @@ class Publications extends Plugin
     /**
      * Return either a count or an array of the member's contributions
      *
-     * @param  object  $member     Current member
+     * @param  \Components\Members\Models\Member|mixed  $member  Current member, or their id
      * @param  string  $option     Component name
      * @param  integer $limit      Number of record to return
      * @param  integer $limitstart Record return start

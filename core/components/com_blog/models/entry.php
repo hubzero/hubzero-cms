@@ -558,7 +558,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transform params
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -735,7 +735,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Transforms a namespace to an object
      *
-     * @return  object  An an object holding the namespace data
+     * @return  \stdClass  An an object holding the namespace data
      */
     public function toObject()
     {

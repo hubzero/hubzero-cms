@@ -1130,7 +1130,7 @@ class Html
     /**
      * Send email
      *
-     * @param   object   $publication  Models\Publication
+     * @param   \Components\Publications\Models\Publication|null   $publication  Models\Publication
      * @param   array<mixed>    $addressees
      * @param   string|null   $subject
      * @param   string|null   $message

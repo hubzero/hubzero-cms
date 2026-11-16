@@ -2209,7 +2209,7 @@ class Forum extends Plugin
      * @param   integer  $userId
      * @param   bool     $memberoptions
      * @param   bool     $categorySubscriptionsEnabled
-     * @param   object   $category
+     * @param   \Components\Forum\Models\Category   $category
      * @return  mixed  1 when the user is to be mailed
      */
     protected function shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)

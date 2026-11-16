@@ -313,7 +313,7 @@ class Dispatcher implements DispatcherInterface
      *
      * @param   object  $listener  The listener to remove.
      * @param   mixed   $event     The event object or name.
-     * @return  object  This method is chainable.
+     * @return  $this  This method is chainable.
      */
     public function forget($listener, $event = null)
     {

@@ -166,7 +166,7 @@ abstract class Model extends Obj
     /**
      * Method to get the Database connector object.
      *
-     * @return  object  The internal database connector object.
+     * @return  \Hubzero\Database\Driver  The internal database connector object.
      */
     public function getDbo()
     {

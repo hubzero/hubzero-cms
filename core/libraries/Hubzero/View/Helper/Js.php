@@ -66,7 +66,7 @@ class Js extends AbstractHelper
      * Modify paths if in a super group
      *
      * @param   \Hubzero\Document\Asset\Javascript  $asset  Asset
-     * @return  object
+     * @return  \Hubzero\Document\Asset\Javascript
      */
     protected function isSuperGroupAsset($asset)
     {

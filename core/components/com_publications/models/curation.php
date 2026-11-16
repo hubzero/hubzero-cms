@@ -1044,7 +1044,7 @@ class Curation extends Obj
      * Check block status (auto check)
      *
      * @param   string   $name     Block name
-     * @param   object|mixed   $pub      Publication object
+     * @param   \Components\Publications\Models\Publication|mixed|null   $pub      Publication object
      * @param   integer  $blockId  Numeric block ID
      * @return  object|false
      */
@@ -1111,7 +1111,7 @@ class Curation extends Obj
      * Get first element ID
      *
      * @param   string   $name     Block name
-     * @param   object|mixed   $pub      Publication object
+     * @param   \Components\Publications\Models\Publication|mixed|null   $pub      Publication object
      * @param   integer  $blockId  Numeric block ID
      * @return  integer
      */
@@ -1257,7 +1257,7 @@ class Curation extends Obj
      *
      * @param   string   $block    Block name
      * @param   integer  $blockId  Numeric block ID
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getReviewStatus($block, $blockId = 0)
     {
@@ -1758,7 +1758,7 @@ class Curation extends Obj
      * @param   \stdClass|null   $data       Data to save
      * @param   integer  $elementId  Element ID
      * @param   string   $name       Block name
-     * @param   object|mixed   $pub        Publication object
+     * @param   \Components\Publications\Models\Publication|mixed|null   $pub        Publication object
      * @param   integer  $blockId    Numeric block ID
      * @return  boolean
      */

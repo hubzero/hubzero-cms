@@ -78,7 +78,7 @@ class IdPBindingTest extends Basic
         $this->keypair('sp');
         $this->keypair('other');
 
-        $this->idp = new IdP(new StubParams([
+        $this->idp = new IdP(new \Hubzero\Config\Registry([
             'IdP_entityID'        => 'https://idp.example.org',
             'IdPCertificateFile'  => $this->dir . '/idp.crt',
             'IdPKeyFile'          => $this->dir . '/idp.pem',

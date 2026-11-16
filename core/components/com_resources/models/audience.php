@@ -142,7 +142,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 0
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level0()
     {
@@ -152,7 +152,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 1
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level1()
     {
@@ -162,7 +162,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 2
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level2()
     {
@@ -172,7 +172,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 3
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level3()
     {
@@ -182,7 +182,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 4
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level4()
     {
@@ -192,7 +192,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship to level 5
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Components\Resources\Models\Audience\Level  \Hubzero\Database\Relationship\OneToOne
      */
     public function level5()
     {

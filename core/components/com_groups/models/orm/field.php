@@ -244,7 +244,7 @@ class Field extends Relational
      * Get answers provided for specific group
      *
      * @param   integer  $group_id
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public function getGroupAnswers($group_id)
     {

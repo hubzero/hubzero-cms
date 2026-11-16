@@ -452,7 +452,7 @@ class Hubzero extends Plugin
      *
      * @param   array<mixed>   $user     Holds the user data.
      * @param   array<mixed>   $options  Array holding options (remember, autoregister, group).
-     * @return  object  A User object
+     * @return  \Hubzero\User\User|\Exception  A User object
      */
     protected function getUser($user, $options = [])
     {

@@ -121,7 +121,7 @@ class Template extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -135,7 +135,7 @@ class Template extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public function transformXml()
     {

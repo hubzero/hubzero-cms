@@ -213,7 +213,7 @@ class Log extends Relational
     /**
      * Transform details into object
      *
-     * @return  object  Hubzero\Config\Registry
+     * @return  \Hubzero\Config\Registry  Hubzero\Config\Registry
      */
     public function transformDetails()
     {

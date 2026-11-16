@@ -154,7 +154,7 @@ class Response extends BaseResponse
      * Sends HTTP headers and content.
      *
      * @param   boolean  $flush
-     * @return  object   Response
+     * @return  $this   Response
      */
     public function send($flush = false)
     {

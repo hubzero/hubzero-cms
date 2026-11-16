@@ -97,7 +97,7 @@ class Importer
     /**
      * Method to get adapater
      *
-     * @return  object
+     * @return  \Hubzero\Content\Import\Adapter
      */
     public function getAdapter()
     {
@@ -160,10 +160,10 @@ class Importer
     }
 
     /**
-     * Count import data
+     * The headers (field names) of the import's records
      *
      * @param   \Hubzero\Content\Import\Model\Import $import
-     * @return  integer
+     * @return  array<mixed>
      */
     public function headers(Import $import)
     {

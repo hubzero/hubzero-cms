@@ -60,7 +60,7 @@ class Note extends \Components\Wiki\Models\Book
      *
      * @param   mixed   $id     Integer or string of tag to look up
      * @param   string  $scope
-     * @return  object
+     * @return  \Components\Wiki\Models\Page
      */
     public function page($id = null, $scope = '')
     {

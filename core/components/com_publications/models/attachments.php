@@ -483,7 +483,7 @@ class Attachments extends Obj
      *
      * @param   \ZipArchive|null  $zip
      * @param   array<mixed>   $elements
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string  $readme
      * @param   string  $bundleDir
      * @return  mixed   object or bool
@@ -537,7 +537,7 @@ class Attachments extends Obj
      * Show bundle elements
      *
      * @param   array<mixed>|null   $elements
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @return  mixed   object or bool
      */
     public function showPackagedItems($elements = null, $pub = null)

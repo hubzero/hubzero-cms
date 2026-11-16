@@ -19,7 +19,7 @@ class Request
     /**
      * Description for 'terms'
      *
-     * @var object
+     * @var \Components\Search\Models\Basic\Terms|null
      */
     private $terms;
     /**
@@ -100,7 +100,7 @@ class Request
     /**
      * Constructor
      *
-     * @param      object $terms Parameter description (if any) ...
+     * @param      \Components\Search\Models\Basic\Terms|null $terms Parameter description (if any) ...
      * @return     void
      */
     public function __construct($terms)

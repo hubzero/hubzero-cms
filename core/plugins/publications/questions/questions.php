@@ -30,7 +30,7 @@ class Questions extends Plugin
      */
     protected $filters;
     /**
-     * @var  object|null
+     * @var  \Components\Publications\Models\Publication|null
      */
     protected $publication;
 

@@ -246,7 +246,7 @@ class Manager extends Obj
     /**
      * Method to get a pagination object for the cache
      *
-     * @return  object
+     * @return  \Hubzero\Pagination\Paginator
      */
     public function pagination()
     {

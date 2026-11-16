@@ -243,7 +243,7 @@ class PdfFormDeployment
      *
      * @param   mixed  $member_id
      * @param   int  $attempt
-     * @return object|false
+     * @return PdfFormRespondent|false  False past the allowed number of attempts
      **/
     public function getRespondent($member_id, $attempt = 1)
     {
@@ -266,7 +266,7 @@ class PdfFormDeployment
      *
      * @param   mixed  $id
      * @param   mixed  $section_id
-     * @return object
+     * @return \Components\Courses\Models\PdfFormDeployment
      **/
     public static function load($id, $section_id = null)
     {
@@ -278,7 +278,7 @@ class PdfFormDeployment
      *
      * @param   mixed  $crumb
      * @param   mixed  $section_id
-     * @return object
+     * @return \Components\Courses\Models\PdfFormDeployment
      **/
     public static function fromCrumb($crumb, $section_id = null)
     {
@@ -290,7 +290,7 @@ class PdfFormDeployment
      *
      * @param   int  $formId
      * @param   mixed  $section_id
-     * @return object
+     * @return \Components\Courses\Models\PdfFormDeployment
      **/
     public static function latestFromFormId($formId, $section_id = null)
     {

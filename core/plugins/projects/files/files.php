@@ -2659,7 +2659,7 @@ class Files extends Plugin
     /**
      * Optimize repository
      *
-     * @param   object  $model     Project model
+     * @param   \Components\Projects\Models\Project  $model     Project model
      * @param   string  $repoName
      * @return  string|bool
      */

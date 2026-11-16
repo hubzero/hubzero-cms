@@ -247,7 +247,7 @@ class Category extends Relational
     /**
      * Get a list of threads
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function threads()
     {
@@ -417,7 +417,7 @@ class Category extends Relational
     /**
      * Get the most recent post made in the thread
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function lastActivity()
     {

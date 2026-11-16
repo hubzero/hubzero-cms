@@ -80,7 +80,7 @@ class TraceableDispatcher implements DispatcherInterface
      *
      * @param   mixed  $listener
      * @param   mixed  $event
-     * @return  object  The wrapped dispatcher
+     * @return  \Hubzero\Events\Dispatcher  The wrapped dispatcher
      */
     public function removeListener($listener, $event = null)
     {

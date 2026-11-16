@@ -40,7 +40,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
      * Get the Globus object, instantiating it if need be
      *
      * @param   mixed  $redirect
-     * @return  object
+     * @return  \Plugins\Authentication\Globus\Provider\Globus
      */
     protected function globus($redirect = null)
     {
@@ -156,9 +156,12 @@ class Globus extends \Hubzero\Plugin\OauthClient
             );
             return;
         }
-        if (isset($token) && $token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 $globusResponse = $this->globus()->getResourceOwner($token);
+                if (!($globusResponse instanceof \Plugins\Authentication\Globus\Provider\GlobusResourceOwner)) {
+                    throw new \Exception('Unexpected resource owner');
+                }
                 $id       = $globusResponse->getId();
                 $firstname = $globusResponse->getGivenName();
                 $lastname = $globusResponse->getFamilyName();
@@ -247,9 +250,12 @@ class Globus extends \Hubzero\Plugin\OauthClient
         } catch (\Exception $ex) {
             // When validation fails or other local issues
         }
-        if (isset($session) && $session) {
+        if (isset($session) && $session instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 $globusResponse = $this->globus()->getResourceOwner($session);
+                if (!($globusResponse instanceof \Plugins\Authentication\Globus\Provider\GlobusResourceOwner)) {
+                    throw new \Exception('Unexpected resource owner');
+                }
                 $id       = $globusResponse->getId();
                 $email    = $globusResponse->getEmail();
             } catch (\Exception $e) {

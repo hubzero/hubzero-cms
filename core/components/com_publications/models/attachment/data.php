@@ -899,7 +899,7 @@ class Data extends Base
      * Publish supporting database files
      *
      * @param   \Components\Projects\Tables\Database   $objPD
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @return  boolean  or error
      */
     public function publishDataFiles($objPD, $configs)

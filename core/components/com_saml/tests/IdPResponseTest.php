@@ -72,7 +72,7 @@ class IdPResponseTest extends Basic
         openssl_x509_export_to_file($cert, $this->dir . '/saml.crt');
         openssl_pkey_export_to_file($key, $this->dir . '/saml.pem');
 
-        $this->idp = new IdP(new StubParams([
+        $this->idp = new IdP(new \Hubzero\Config\Registry([
             'IdP_entityID'        => 'https://idp.example.org',
             'IdPCertificateFile'  => $this->dir . '/saml.crt',
             'IdPKeyFile'          => $this->dir . '/saml.pem',

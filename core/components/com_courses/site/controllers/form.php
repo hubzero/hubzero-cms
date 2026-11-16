@@ -449,7 +449,7 @@ class Form extends SiteController
 
                 $resp = $dep->getRespondent($this->member, $attempt);
 
-                if ($resp->getEndTime()) {
+                if ($resp && $resp->getEndTime()) {
                     $this->setView('results', $dep->getResultsOpen());
 
                     // Set the title and pathway
@@ -501,7 +501,13 @@ class Form extends SiteController
 
         $attempt = Request::getInt('attempt', 1);
 
-        PdfFormDeployment::fromCrumb($crumb)->getRespondent($this->member, $attempt)->markStart();
+        // The attempt comes from the request; past the allowed number there is
+        // no respondent, and this used to call markStart() on false
+        $resp = PdfFormDeployment::fromCrumb($crumb)->getRespondent($this->member, $attempt);
+        if (!$resp) {
+            App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+        }
+        $resp->markStart();
 
         $tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=' . Request::getWord('tmpl') : '';
         $att  = ($attempt > 1) ? '&attempt=' . $attempt : '';
@@ -531,6 +537,10 @@ class Form extends SiteController
         $attempt = Request::getInt('attempt', 1);
 
         $resp = PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent($this->member, $attempt);
+        // The attempt comes from the request: past the allowed number there is none
+        if (!$resp) {
+            App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+        }
 
         if (!$resp->getEndTime()) {
             $resp->saveProgress($_POST['question'], $_POST['answer']);
@@ -569,11 +579,14 @@ class Form extends SiteController
         // Check to see if the time limit has been reached
         if ($limit = $dep->getTimeLimit()) {
             $resp = $dep->getRespondent($this->member, $attempt);
+            if (!$resp) {
+                App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+            }
 
             $now   = strtotime(Date::of('now'));
             $start = strtotime($resp->getStartTime());
             $end   = strtotime($dep->getEndTime() ?: '');
-            $dur   = $limit * 60;
+            $dur   = (int) $limit * 60;
 
             if ($now > ($start + $dur) || ($dep->getEndTime() && $end < $now)) {
                 $ended = true;
@@ -584,7 +597,7 @@ class Form extends SiteController
 
         if ($complete) {
             $resp = $dep->getRespondent($this->member, $attempt);
-            if (!$resp->getEndTime()) {
+            if ($resp && !$resp->getEndTime()) {
                 $resp->saveAnswers($_POST)->markEnd();
             }
 

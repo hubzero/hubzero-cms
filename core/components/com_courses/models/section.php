@@ -698,7 +698,7 @@ class Section extends Base
     /**
      * Get section badge
      *
-     * @return     object
+     * @return     \Components\Courses\Models\Section\Badge
   */
     public function badge()
     {

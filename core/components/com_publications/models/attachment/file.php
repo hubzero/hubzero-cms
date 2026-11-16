@@ -1624,7 +1624,7 @@ class File extends Base
      *
      * @param   \Components\Publications\Tables\Attachment   $objPA
      * @param   object   $pub
-     * @param   object   $configs
+     * @param   \stdClass   $configs
      * @param   integer  $update   force update of file
      * @return  boolean
      */

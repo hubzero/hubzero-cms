@@ -56,7 +56,7 @@ class Integrity
     }
 
     /**
-     * @param   \Components\Storefront\Models\Collection|object  $collection
+     * @param   \Components\Storefront\Models\Collection  $collection
      * @return  \stdClass
      */
     public static function collectionIntegrityCheck($collection)

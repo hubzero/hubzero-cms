@@ -32,6 +32,14 @@ interface Adapter
     public function count(Import $import);
 
     /**
+     * The headers (field names) of the import's records
+     *
+     * @param  \Hubzero\Content\Import\Model\Import $import
+     * @return array<mixed>
+     */
+    public function headers(Import $import);
+
+    /**
      * Process an import
      *
      * @param  \Hubzero\Content\Import\Model\Import $import

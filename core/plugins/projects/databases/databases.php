@@ -51,7 +51,7 @@ class Databases extends Plugin
      */
     protected $gitpath;
     /**
-     * @var  object|null
+     * @var  \Components\Projects\Models\Project|null
      */
     protected $model;
     /** @var \Components\Projects\Models\Repo|null */
@@ -1100,13 +1100,10 @@ class Databases extends Plugin
                     str_replace("'", "\'", $msg),
                     $objPD->id,
                     'databases',
-                    $objPD->id,
-                    'databases',
                     Route::url(
                         'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias')
                         . '&active=databases',
                     ),
-                    'databases',
                     'databases',
                     1,
                 );
@@ -1221,8 +1218,6 @@ class Databases extends Plugin
                 str_replace("'", "\'", $msg),
                 $file,
                 'files',
-                $file,
-                'files',
                 Route::url(
                     'index.php?option='
                         . $this->componentOption
@@ -1230,7 +1225,6 @@ class Databases extends Plugin
                         . $this->model->get('alias')
                         . '&active=files',
                 ),
-                'files',
                 'files',
                 1,
             );
@@ -1289,8 +1283,6 @@ class Databases extends Plugin
                 str_replace("'", "\'", $msg),
                 $id,
                 'databases',
-                $id,
-                'databases',
                 Route::url(
                     'index.php?option='
                         . $this->componentOption
@@ -1298,7 +1290,6 @@ class Databases extends Plugin
                         . $this->model->get('alias')
                         . '&active=databases',
                 ),
-                'databases',
                 'databases',
                 1,
             );

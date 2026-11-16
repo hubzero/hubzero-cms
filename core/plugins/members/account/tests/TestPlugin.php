@@ -27,7 +27,7 @@ class TestPlugin extends \Plugins\Members\Account\Account
      * Declared protected on the plugin; widened here so the test can set it
      * without a dispatcher, which is all newInstanceWithoutConstructor leaves.
      *
-     * @var  \Plugins\Members\Account\Tests\TestMember|null
+     * @var  \Components\Members\Models\Member|null
      */
     public $member = null;
 

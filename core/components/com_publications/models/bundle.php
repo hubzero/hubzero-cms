@@ -180,7 +180,7 @@ class Bundle
     /**
      * Getter for associated publication
      *
-     * @return  object  \Publication
+     * @return  \Components\Publications\Models\Publication  \Publication
      */
     public function publication()
     {

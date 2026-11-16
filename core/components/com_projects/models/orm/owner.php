@@ -20,6 +20,9 @@ use Hubzero\User\Group;
  * @property-read  mixed  $user  What user() gives
  *
  * @property-read  mixed  $params  What transformParams() gives
+ *
+ * @property  int|string|null  $role
+ * @property  int|string|null  $userid
  */
 class Owner extends Relational
 {
@@ -164,7 +167,7 @@ class Owner extends Relational
     /**
      * Get a param value
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

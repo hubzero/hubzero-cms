@@ -37,7 +37,7 @@ class Projects extends Plugin
      */
     protected $total;
     /**
-     * @var  object|null
+     * @var  \Components\Members\Models\Member|null
      */
     protected $user;
     /** @var \Components\Projects\Models\Project|null */

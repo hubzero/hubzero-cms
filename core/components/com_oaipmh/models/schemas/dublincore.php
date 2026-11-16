@@ -127,7 +127,7 @@ class DublinCore implements Schema
     /**
      * Get XML builder
      *
-     * @return  object
+     * @return  \Components\Oaipmh\Models\Service
      */
     public function getService()
     {
@@ -150,7 +150,7 @@ class DublinCore implements Schema
     /**
      * Get response
      *
-     * @return  object
+     * @return  \Components\Oaipmh\Models\Xml\Response
      */
     public function getResponse()
     {
