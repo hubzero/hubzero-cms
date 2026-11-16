@@ -24,7 +24,7 @@ class Reviews extends Plugin
     /** @var string|null */
     protected $controller;
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database;
     /**

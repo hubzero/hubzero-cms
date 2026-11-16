@@ -28,7 +28,7 @@ class Handler
     /**
      * Database object
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      **/
     protected $db;
 
@@ -77,7 +77,7 @@ class Handler
     /**
      * Constructor - sets the database object and initializes the file types
      *
-     * @param   mixed  $db
+     * @param   \Hubzero\Database\Driver  $db
      * @param   string|null  $fileType
      * @param   bool  $scanHandlers
      * @return void
@@ -96,7 +96,7 @@ class Handler
     /**
      * Constructs a new object without scanning for handlers
      *
-     * @param   mixed  $db
+     * @param   \Hubzero\Database\Driver  $db
      * @return static
      **/
     public static function newWithoutHandlers($db)

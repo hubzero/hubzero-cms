@@ -57,7 +57,7 @@ class ComponentRoute
     /**
      * Database connection
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 
@@ -71,7 +71,7 @@ class ComponentRoute
     /**
      * Constructor
      *
-     * @param   object    $db   Database connection
+     * @param   \Hubzero\Database\Driver    $db   Database connection
      * @param   callable|null  $log  Called with one string per thing done
      * @return  void
      */

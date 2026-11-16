@@ -1051,13 +1051,13 @@ class Offering extends Base
     private function userId($user)
     {
         if (is_numeric($user)) {
-            return $user;
+            return (int) $user;
         }
 
         $this->db->setQuery("SELECT id FROM `#__users` WHERE username=" . $this->db->quote($user));
 
         if (($result = $this->db->loadResult())) {
-            return $result;
+            return (int) $result;
         }
 
         return 0;
@@ -1101,9 +1101,6 @@ class Offering extends Base
      */
     public function store($validate = true)
     {
-        if (empty($this->db)) {
-            return false;
-        }
 
         $isNew = ($this->get('id') ? false : true);
 

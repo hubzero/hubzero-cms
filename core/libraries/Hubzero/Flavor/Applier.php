@@ -24,7 +24,7 @@ class Applier
     /**
      * The database
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 
@@ -55,7 +55,7 @@ class Applier
     /**
      * Constructor
      *
-     * @param   object         $db
+     * @param   \Hubzero\Database\Driver         $db
      * @param   callable|null  $log  Takes a message and a type (info, warning, success)
      */
     public function __construct($db, $log = null)

@@ -25,7 +25,7 @@ abstract class Cart
     /**
      * Database instance
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     public $db = null;
 

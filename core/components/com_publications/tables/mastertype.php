@@ -19,7 +19,7 @@ class MasterType extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -277,7 +277,7 @@ class MasterType extends Table
         $p = new \Components\Publications\Tables\Publication($this->db);
 
         $this->db->setQuery("SELECT count(*) FROM $p->tableName WHERE master_type=" . $this->db->quote($id));
-        return $this->db->loadResult();
+        return (int) $this->db->loadResult();
     }
 
     /**

@@ -39,7 +39,7 @@ class Curation extends Obj
     /**
      * Database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     public $db = null;
 

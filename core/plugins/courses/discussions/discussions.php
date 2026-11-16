@@ -91,7 +91,7 @@ class Discussions extends Plugin
     protected $instructors = null;
 
     /**
-     * @var object|null
+     * @var \Hubzero\Database\Driver|null
      */
     protected $database = null;
 

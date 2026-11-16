@@ -68,7 +68,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
     // Database instance
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     public $db = null;
 

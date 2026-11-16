@@ -317,10 +317,12 @@ class Pipeline extends AdminController
 						WHERE `rid`=" . $database->quote($row->rid) . "
 						AND `local_revision`=" . $database->quote($row->local_revision),
                     );
-                    if (!$database->query()) {
-                        $failed[] = $doiSuccess;
-                    } else {
+                    // A failed query throws rather than returning false
+                    try {
+                        $database->query();
                         $created[] = $doiSuccess;
+                    } catch (\Exception $e) {
+                        $failed[] = $doiSuccess;
                     }
                 } else {
                     $o = $objDOI->getError() . '<br />';

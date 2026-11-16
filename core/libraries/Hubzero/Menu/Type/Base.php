@@ -63,7 +63,7 @@ class Base extends Obj
     /**
      * Database connection
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver|null
      */
     protected $db = null;
 

@@ -24,7 +24,7 @@ class Note extends \Components\Wiki\Models\Book
      */
     protected $cache;
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
     /**
@@ -201,7 +201,7 @@ class Note extends \Components\Wiki\Models\Book
 				  AND p.pagename NOT LIKE 'Template:%'";
 
         $this->db->setQuery($query);
-        return $this->db->loadResult();
+        return (int) $this->db->loadResult();
     }
 
     /**
@@ -246,7 +246,7 @@ class Note extends \Components\Wiki\Models\Book
 				  ORDER BY p.times_rated DESC LIMIT 1";
 
         $this->db->setQuery($query);
-        return $this->db->loadResult();
+        return (int) $this->db->loadResult();
     }
 
     /**
@@ -263,10 +263,9 @@ class Note extends \Components\Wiki\Models\Book
             . $this->db->quote('/' . $newpagename) . ")
 				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id);
 
+        // A failed query throws
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 
@@ -283,10 +282,9 @@ class Note extends \Components\Wiki\Models\Book
 				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . "
 				  AND p.times_rated='0'";
 
+        // A failed query throws
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

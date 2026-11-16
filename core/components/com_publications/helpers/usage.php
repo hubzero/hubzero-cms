@@ -19,7 +19,7 @@ class Usage
     /**
      * Database
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     public $db = null;
 
@@ -82,7 +82,7 @@ class Usage
     /**
      * Constructor
      *
-     * @param   object   &$db       Database
+     * @param   \Hubzero\Database\Driver   &$db       Database
      * @param   integer  $pubid     Publication ID
      * @param   integer|string $type      Publication type
      * @param   integer  $rating    Publication rating

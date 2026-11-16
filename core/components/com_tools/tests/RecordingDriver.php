@@ -12,7 +12,7 @@ namespace Components\Tools\Tests;
  * A database driver that knows a table's columns and records the queries
  * it is given instead of running them
  */
-class RecordingDriver
+class RecordingDriver extends \Hubzero\Database\Drivers\Mock\MockDriver
 {
     /**
      * @var  array<mixed>
@@ -20,10 +20,22 @@ class RecordingDriver
     public $queries = [];
 
     /**
+     * @var  array<mixed>
+     */
+    private $columns;
+
+    /**
+     * A Driver, so the tables take it. The parent's constructor is not
+     * called: no database is opened, as the methods below answer everything
+     * the tables ask.
+     *
      * @param   array<mixed>  $columns
      * @return  void
      */
-    public function __construct(private array $columns) {}
+    public function __construct(array $columns)
+    {
+        $this->columns = $columns;
+    }
 
     /**
      * @param   mixed  $table
@@ -41,20 +53,22 @@ class RecordingDriver
 
     /**
      * @param   mixed  $name
+     * @param   mixed  $as
      * @return  string
      */
-    public function quoteName($name)
+    public function quoteName($name, $as = null)
     {
         return '`' . $name . '`';
     }
 
     /**
-     * @param   mixed  $value
+     * @param   mixed  $text
+     * @param   bool   $escape
      * @return  string
      */
-    public function quote($value)
+    public function quote($text, $escape = true)
     {
-        return "'" . $value . "'";
+        return "'" . $text . "'";
     }
 
     /**
@@ -68,18 +82,18 @@ class RecordingDriver
     }
 
     /**
-     * @return  true
+     * @return  $this
      */
     public function execute()
     {
-        return true;
+        return $this;
     }
 
     /**
-     * @return  true
+     * @return  $this
      */
     public function query()
     {
-        return true;
+        return $this;
     }
 }

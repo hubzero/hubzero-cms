@@ -21,7 +21,7 @@ class UserLocalizer
     /**
      * Database connection
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      */
     public $db;
 

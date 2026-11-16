@@ -22,7 +22,7 @@ class Archive extends \Hubzero\Base\Obj
      */
     protected $count;
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 

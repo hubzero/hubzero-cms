@@ -39,7 +39,7 @@ class Doi extends Obj
     /**
      * Database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     private $db = null;
 

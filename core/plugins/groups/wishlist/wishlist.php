@@ -35,7 +35,7 @@ class Wishlist extends Plugin
      */
     protected $config;
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database;
     /**

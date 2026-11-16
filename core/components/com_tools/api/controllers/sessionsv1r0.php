@@ -27,7 +27,7 @@ use Hubzero\Facades\Plugin;
 class Sessionsv1r0 extends ApiController
 {
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database;
     /** @var \Components\Resources\Helpers\Tags|null */

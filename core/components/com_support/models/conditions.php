@@ -28,7 +28,7 @@ class Conditions extends Obj
     /**
      * Database
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      */
     public $database;
 

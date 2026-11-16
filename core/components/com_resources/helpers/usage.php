@@ -18,7 +18,7 @@ class Usage
     /**
      * Database
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     public $db = null;
 
@@ -81,7 +81,7 @@ class Usage
     /**
      * Constructor
      *
-     * @param   object   &$db       Database
+     * @param   \Hubzero\Database\Driver   &$db       Database
      * @param   integer  $resid     Resource ID
      * @param   integer  $type      Resource type
      * @param   integer  $rating    Resource rating

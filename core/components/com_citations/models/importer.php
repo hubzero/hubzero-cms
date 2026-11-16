@@ -20,7 +20,7 @@ class Importer extends Obj
     /**
      * Database connection
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $database = null;
 

@@ -30,7 +30,7 @@ class WidenColumn extends Macro
      * @param   string       $column   Column name
      * @param   integer      $width    New width, in characters
      * @param   string|null  $charset  Character set to store it in instead, e.g. ascii
-     * @param   object|null  $db       Connection to use, if not the migration's own
+     * @param   \Hubzero\Database\Driver|null  $db       Connection to use, if not the migration's own
      * @return  bool  Whether the column was widened
      **/
     public function __invoke($table, $column, $width, $charset = null, $db = null)

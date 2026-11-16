@@ -30,7 +30,7 @@ class Style
      * that was installed without a style still works. Nothing is deleted: the
      * styles that were there stay, and only which of them is home changes.
      *
-     * @param   object    $db        The database
+     * @param   \Hubzero\Database\Driver    $db        The database
      * @param   string    $template  The template element, e.g. meridian
      * @param   integer   $client    0 for the site, 1 for the administrator
      * @param   callable|null  $log       Optional; takes a message and a type
@@ -92,7 +92,7 @@ class Style
     /**
      * The template a client wears, or an empty string
      *
-     * @param   object   $db      The database
+     * @param   \Hubzero\Database\Driver   $db      The database
      * @param   integer  $client  0 for the site, 1 for the administrator
      * @return  string
      */

@@ -22,7 +22,7 @@ class Group extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -170,7 +170,7 @@ class Group extends Table
      *
      * @param   array|mixed    $new       New members
      * @param   int|string  $id
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   &$err      Error message
      * @return  array<mixed>
      */
@@ -210,7 +210,7 @@ class Group extends Table
      *
      * @param   array|mixed    $new
      * @param   int|string  $id
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   &$err      Error message
      * @return  array<mixed>
      */

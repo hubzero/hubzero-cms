@@ -65,7 +65,7 @@ abstract class Model extends Obj
     /**
      * Database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $db = null;
 
@@ -176,7 +176,7 @@ abstract class Model extends Obj
     /**
      * Method to set the database connector object.
      *
-     * @param   object   &$db  A database connector object to be used by the table object.
+     * @param   \Hubzero\Database\Driver|mixed   &$db  A database connector object to be used by the table object.
      * @return  boolean  True on success.
      */
     public function setDbo(&$db)

@@ -41,7 +41,7 @@ class Domainclass extends Plugin
     /**
      * Build a table for the class list
      *
-     * @param   object  &$db      Database
+     * @param   \Hubzero\Database\Driver  &$db      Database
      * @param   int|string  $class    Class type
      * @param   mixed   $t
      * @param   mixed   $enddate  Timestamp
@@ -243,7 +243,7 @@ class Domainclass extends Plugin
      *
      * @param   string  $option         Component name
      * @param   string  $task           Component task
-     * @param   object  $db             Database
+     * @param   \Hubzero\Database\Driver  $db             Database
      * @param   array<mixed>   $months         Month names (Jan -> Dec)
      * @param   array<mixed>   $monthsReverse  Month names in reverse (Dec -> Jan)
      * @param   string  $enddate        Time period

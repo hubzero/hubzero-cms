@@ -16,14 +16,14 @@ class Database implements StorageInterface
     /**
      * Database object
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     private $db;
 
     /**
      * Create new storage object
      *
-     * @param   object  $db
+     * @param   \Hubzero\Database\Driver  $db
      * @return  void
      */
     public function __construct($db)

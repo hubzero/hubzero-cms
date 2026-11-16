@@ -50,7 +50,7 @@ class Maps extends Plugin
     /**
      * Get hosts data
      *
-     * @param      object &$db      Database
+     * @param      \Hubzero\Database\Driver &$db      Database
      * @param      array<mixed>  $location Longitude/latitude
      * @return     string
      */
@@ -74,7 +74,7 @@ class Maps extends Plugin
     /**
      * Get a record count
      *
-     * @param      object &$db      Database
+     * @param      \Hubzero\Database\Driver &$db      Database
      * @param      string $domain   Domain
      * @param      array<mixed>  $location Longitude/latitude
      * @return     string
@@ -129,7 +129,7 @@ class Maps extends Plugin
     /**
      * Check if the location is from a bot
      *
-     * @param      object &$db      Database
+     * @param      \Hubzero\Database\Driver &$db      Database
      * @param      array<mixed>  $location Longitude/latitude
      * @return     integer
      */
@@ -139,9 +139,7 @@ class Maps extends Plugin
                 . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
 
         $db->setQuery($query);
-        $bot = $db->loadResult();
-
-        return $bot;
+        return (int) $db->loadResult();
     }
 
     /**
@@ -267,7 +265,7 @@ class Maps extends Plugin
      *
      * @param      string $option        Component name
      * @param      string $task          Component task
-     * @param      object $db            Database
+     * @param      \Hubzero\Database\Driver $db            Database
      * @param      array<mixed>  $months        Month names (Jan -> Dec)
      * @param      array<mixed>  $monthsReverse Month names in reverse (Dec -> Jan)
      * @param      string $enddate       Time period

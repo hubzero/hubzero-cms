@@ -362,7 +362,7 @@ class Tags extends Cloud
         }
 
         $this->db->setQuery($query);
-        return $this->db->loadResult();
+        return (int) $this->db->loadResult();
     }
 
     /**

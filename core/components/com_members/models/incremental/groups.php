@@ -25,7 +25,7 @@ class Groups
     /**
      * Database connection
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     private static $dbh = null;
 
@@ -114,7 +114,7 @@ class Groups
         self::$dbh->setQuery(
             'SELECT coalesce((SELECT opted_out FROM `#__profile_completion_awards` WHERE user_id = ' . $uid . '), 0)',
         );
-        $times = self::$dbh->loadResult();
+        $times = (int) self::$dbh->loadResult();
         if ($times > 0) {
             // If configured to stop prompting once the recurrence list is
             // exhausted (repeat_type = 1), and this attempt is past the end of

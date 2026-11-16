@@ -21,7 +21,7 @@ class Version extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database connection
+     * @param   \Hubzero\Database\Driver  &$db  Database connection
      * @return  void
      */
     public function __construct(&$db)

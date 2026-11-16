@@ -21,7 +21,7 @@ class SectionDate extends Table
     /**
      * Contructor method for Table class
      *
-     * @param   object  &$db  Database object
+     * @param   \Hubzero\Database\Driver  &$db  Database object
      * @return  void
      */
     public function __construct(&$db)

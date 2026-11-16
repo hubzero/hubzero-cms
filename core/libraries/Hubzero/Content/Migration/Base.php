@@ -128,7 +128,7 @@ class Base
     /**
      * Constructor
      *
-     * @param   object  $db         Database object (primary)
+     * @param   \Hubzero\Database\Driver  $db         Database object (primary)
      * @param   array<mixed>   $callbacks  Callbacks
      * @param   object|null  $altDb      Alternate db
      * @return  void

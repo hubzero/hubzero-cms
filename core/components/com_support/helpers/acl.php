@@ -33,7 +33,7 @@ class ACL extends Obj
     /**
      * Database
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      */
     private $db;
 

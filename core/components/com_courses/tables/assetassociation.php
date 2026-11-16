@@ -19,7 +19,7 @@ class AssetAssociation extends Table
     /**
      * Contructor method for Table class
      *
-     * @param  object  $db  database object
+     * @param  \Hubzero\Database\Driver  $db  database object
      * @return void
      */
     public function __construct(&$db)

@@ -33,7 +33,7 @@ class Blacklist extends Field
     /**
      * Database
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $db;
 

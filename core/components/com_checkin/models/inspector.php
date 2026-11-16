@@ -25,7 +25,7 @@ class Inspector extends Obj
     /**
      * Database connection
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 

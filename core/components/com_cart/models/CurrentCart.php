@@ -387,7 +387,7 @@ class CurrentCart extends Cart
     /**
      * Get steps for a transaction
      *
-     * @return string method name
+     * @return array<int, mixed>|null  The transaction's steps, newest first
      */
     private function getCheckoutSteps()
     {
@@ -1711,7 +1711,7 @@ class CurrentCart extends Cart
             if ($this->debug) {
                 echo "<br>Setting a cookie";
             }
-            setcookie("cartId", $crtId, time() + $this->cookieTTL); // Set cookie life time
+            setcookie("cartId", (string) $crtId, time() + $this->cookieTTL); // Set cookie life time
         }
 
         // Update session cart

@@ -22,7 +22,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Database
      *
-     * @var mixed
+     * @var \Hubzero\Database\Driver
      */
     public $db  = null;
 
@@ -57,7 +57,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Constructor
      *
-     * @param      object $db     Database
+     * @param      \Hubzero\Database\Driver $db     Database
      * @return     void
      */
     public function __construct($db)
@@ -694,7 +694,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer  $limit
      * @param      integer  $tcount
      *
-     * @return     object
+     * @return     array<mixed>
      */
     public function getSuggestedTags(
         $pubtitle = '',

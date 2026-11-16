@@ -67,7 +67,7 @@ class Helper
     /**
      * Print Top X List from Database
      *
-     * @param   object   $db
+     * @param   \Hubzero\Database\Driver   $db
      * @param   mixed  $top
      * @param   mixed    $t
      * @param   mixed    $enddate
@@ -273,7 +273,7 @@ class Helper
     /**
      * Check for data for a date
      *
-     * @param      object $db        Database
+     * @param      \Hubzero\Database\Driver $db        Database
      * @param      string $yearmonth YYYY-MM
      * @param      string $period    Time period to check for
      * @return     boolean True if data is found
@@ -300,7 +300,7 @@ class Helper
     /**
      * Check for domain class data
      *
-     * @param      object $db        Database
+     * @param      \Hubzero\Database\Driver $db        Database
      * @param      string $yearmonth YYYY-MM
      * @return     boolean True if data is found
      */
@@ -325,7 +325,7 @@ class Helper
     /**
      * Check for region data for a date
      *
-     * @param      object $db        Database
+     * @param      \Hubzero\Database\Driver $db        Database
      * @param      string $yearmonth YYYY-MM
      * @return     boolean True if data is found
      */
@@ -707,7 +707,7 @@ class Helper
     /**
      * Build a list of select options
      *
-     * @param   object   $db             Database
+     * @param   \Hubzero\Database\Driver   $db             Database
      * @param   string   $enddate        Parameter description (if any) ...
      * @param   int|string  $thisyear       Current year
      * @param   array<mixed>    $monthsReverse  List of months (Dec -> Jan)

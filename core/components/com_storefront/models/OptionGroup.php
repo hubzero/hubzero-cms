@@ -24,7 +24,7 @@ class OptionGroup
      */
     public $data;
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver
      */
     private $db;
 

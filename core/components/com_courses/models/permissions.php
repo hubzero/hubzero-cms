@@ -20,7 +20,7 @@ use Hubzero\Facades\User;
 class Permissions extends Obj
 {
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $db;
 

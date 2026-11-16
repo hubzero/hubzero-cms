@@ -213,7 +213,7 @@ class Messages extends Plugin
     /**
      * Show inbox
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -265,7 +265,7 @@ class Messages extends Plugin
     /**
      * Show archived messages
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -317,7 +317,7 @@ class Messages extends Plugin
     /**
      * Show trashed messages
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -369,7 +369,7 @@ class Messages extends Plugin
     /**
      * Show sent messages
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -414,7 +414,7 @@ class Messages extends Plugin
     /**
      * Show a form for settings
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -487,7 +487,7 @@ class Messages extends Plugin
     /**
      * Create a message
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return string
@@ -518,7 +518,7 @@ class Messages extends Plugin
     /**
      * View a message
      *
-     * @param  object  $database Database
+     * @param  \Hubzero\Database\Driver  $database Database
      * @param  string  $option   Name of the component
      * @param  object  $member   Current member
      * @param  integer $mid      Message ID
@@ -562,7 +562,7 @@ class Messages extends Plugin
     /**
      * Move message to archive
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -623,7 +623,7 @@ class Messages extends Plugin
     /**
      * Move message to inbox
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -678,7 +678,7 @@ class Messages extends Plugin
     /**
      * Mark messages as "trashed"
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -740,7 +740,7 @@ class Messages extends Plugin
     /**
      * Delete "trashed" messages
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  string
@@ -759,7 +759,7 @@ class Messages extends Plugin
     /**
      * Delete a message
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -808,7 +808,7 @@ class Messages extends Plugin
     /**
      * Mark messages as read
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -858,7 +858,7 @@ class Messages extends Plugin
     /**
      * Mark messages as unread
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -904,7 +904,7 @@ class Messages extends Plugin
     /**
      * Save settings
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return  void
@@ -1008,7 +1008,7 @@ class Messages extends Plugin
     /**
      * Send a message
      *
-     * @param  object $database Database
+     * @param  \Hubzero\Database\Driver $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
      * @return mixed

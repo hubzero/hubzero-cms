@@ -20,7 +20,7 @@ class Coupons
 {
     // Database instance
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver
      */
     public $db = null;
 

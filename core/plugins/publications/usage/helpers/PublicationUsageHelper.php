@@ -15,7 +15,7 @@ class PublicationUsageHelper
     /**
      * Database connection
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      */
     protected $db;
 
@@ -36,14 +36,14 @@ class PublicationUsageHelper
     /**
      * Version ID
      *
-     * @var int|null
+     * @var string|null  The id, quoted for SQL
      */
     protected $versionId;
 
     /**
      * Publication ID
      *
-     * @var int|null
+     * @var string|null  The id, quoted for SQL
      */
     protected $publicationId;
 
@@ -118,7 +118,7 @@ class PublicationUsageHelper
     /**
      * Gets escaped publication's ID
      *
-     * @return   int
+     * @return   string  The id, quoted for SQL
      */
     protected function getPublicationId()
     {
@@ -133,7 +133,7 @@ class PublicationUsageHelper
     /**
      * Gets escaped publication's version's ID
      *
-     * @return   int
+     * @return   string  The id, quoted for SQL
      */
     protected function getVersionId()
     {

@@ -117,7 +117,7 @@ class Syncgroup extends Base implements CommandInterface
     /**
      * Usernames currently in the given group (via #__xgroups_members).
      *
-     * @param   object  $db
+     * @param   \Hubzero\Database\Driver  $db
      * @param   string  $cn
      * @return  array<int, mixed>
      **/

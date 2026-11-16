@@ -14,7 +14,7 @@ use Hubzero\Facades\Request;
 class Db
 {
     /**
-     * @param   mixed  $db
+     * @param   \Hubzero\Database\Driver|false  $db
      * @return  \Hubzero\Database\Driver
      */
     public static function getDb($db = false)

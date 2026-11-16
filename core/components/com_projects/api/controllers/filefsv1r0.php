@@ -54,7 +54,7 @@ class Filefsv1r0 extends ApiController
     /**
      * Database and acting user, set alongside the repository
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database = null;
 

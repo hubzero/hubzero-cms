@@ -21,7 +21,7 @@ class Attachments extends Obj
     /**
      * Database
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     public $db = null;
 
@@ -42,7 +42,7 @@ class Attachments extends Obj
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)

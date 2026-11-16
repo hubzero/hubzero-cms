@@ -292,7 +292,7 @@ abstract class Table extends \stdClass
      *
      * @param  string  $table  Name of the table to model.
      * @param  string  $key    Name of the primary key field in the table.
-     * @param  object  &$db    Database connector object.
+     * @param  \Hubzero\Database\Driver  &$db    Database connector object.
      */
     public function __construct($table, $key, $db)
     {
@@ -510,7 +510,7 @@ abstract class Table extends \stdClass
     /**
      * Method to set the Database connector object.
      *
-     * @param   object   &$db  A Database connector object to be used by the table object.
+     * @param   \Hubzero\Database\Driver|mixed   &$db  A Database connector object to be used by the table object.
      * @return  boolean  True on success.
      */
     public function setDBO(&$db)

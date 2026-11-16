@@ -20,7 +20,7 @@ class Stamp extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -160,11 +160,9 @@ class Stamp extends Table
             . "VALUES ('$stamp', '$projectid', '$listed', '$type', "
             . "'$reference', '$expires' , '$created', '$created_by')";
 
+        // A failed query throws; the driver has no getErrorMsg()
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
-            return false;
-        }
+        $this->db->query();
 
         return $stamp;
     }

@@ -22,7 +22,7 @@ use Hubzero\Facades\Component;
 class Middleware extends Obj
 {
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 
@@ -49,7 +49,7 @@ class Middleware extends Obj
     /**
      * Constructor
      *
-     * @param      mixed $db Integer (ID), string (alias), object or array
+     * @param      \Hubzero\Database\Driver|null $db Integer (ID), string (alias), object or array
      * @return     void
      */
     public function __construct($db = null)

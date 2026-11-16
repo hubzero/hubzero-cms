@@ -30,7 +30,7 @@ class BaseSubscription
     /**
      * Database connection
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver
      */
     protected $db;
 
@@ -52,7 +52,7 @@ class BaseSubscription
      * Get expiration info. Since this is a base class it gets the expiration from the default fallback place. Most
      * subscription model products will override this method to get the info from the right place
      *
-     * @return  Object
+     * @return  array<mixed>|null
      */
     public function getExpiration()
     {

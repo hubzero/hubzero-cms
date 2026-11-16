@@ -19,7 +19,7 @@ class Session extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -186,7 +186,7 @@ class Session extends Table
 				  ORDER BY s.start";
 
         $this->db->setQuery($query);
-        return $this->db->loadResult();
+        return (int) $this->db->loadResult();
     }
 
     /**
@@ -256,7 +256,9 @@ class Session extends Table
 			AND s.sessnum=" . $this->db->quote($sess);
 
         $this->db->setQuery($query);
-        return $this->db->loadResult();
+        $timeout = $this->db->loadResult();
+
+        return $timeout === null ? false : (int) $timeout;
     }
 
     /**

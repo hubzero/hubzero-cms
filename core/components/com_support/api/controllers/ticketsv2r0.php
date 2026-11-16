@@ -37,7 +37,7 @@ class Ticketsv2r0 extends ApiController
     /**
      * Database connection
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $database;
 

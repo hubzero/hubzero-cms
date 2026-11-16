@@ -26,14 +26,14 @@ class Economy extends Obj
     /**
      * Database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     private $db = null;
 
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -73,7 +73,9 @@ class Economy extends Obj
         $sql = "SELECT SUM(amount) FROM `#__users_transactions`"
             . " WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
         $this->db->setQuery($sql);
-        return $this->db->loadResult();
+        $total = $this->db->loadResult();
+
+        return $total === null ? null : (int) $total;
     }
 
     /**

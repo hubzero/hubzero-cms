@@ -499,7 +499,7 @@ class Format
      * Citation links and badges
      *
      * @param   object  $citation  Citation record
-     * @param   object  $database  Database
+     * @param   \Hubzero\Database\Driver  $database  Database
      * @param   object  $config    Registry
      * @param   array<mixed>   $openurl   Data to append
      * @return  string

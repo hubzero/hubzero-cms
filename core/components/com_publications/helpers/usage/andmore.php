@@ -41,7 +41,7 @@ class Andmore extends Base
     /**
      * Constructor
      *
-     * @param   object   &$db       Database
+     * @param   \Hubzero\Database\Driver   &$db       Database
      * @param   integer  $resid     Publication ID
      * @param   integer  $type      Publication type
      * @param   integer  $rating    Publication rating

@@ -55,7 +55,7 @@ class Tools extends Plugin
     /**
      * Get the top list for a tool
      *
-     * @param   object  $database      Database
+     * @param   \Hubzero\Database\Driver  $database      Database
      * @param   string  $period        Tiem period (quarterly, yearly, etc)
      * @param   string  $dthis         Time (YYYY-MM)
      * @param   string  $s_top         Top value
@@ -162,7 +162,7 @@ class Tools extends Plugin
      *
      * Description (if any) ...
      *
-     * @param   object $database Parameter description (if any) ...
+     * @param   \Hubzero\Database\Driver $database Parameter description (if any) ...
      * @return  string Return description (if any) ...
      */
     private function gettoprankTools($database)
@@ -227,7 +227,7 @@ class Tools extends Plugin
     /**
      * Gets top cited tools
      *
-     * @param   object $database Database
+     * @param   \Hubzero\Database\Driver $database Database
      * @return  string HTML
      */
     private function gettopcitedTools($database)
@@ -331,7 +331,7 @@ class Tools extends Plugin
     /**
      * Build date selectors
      *
-     * @param   object &$db    Database
+     * @param   \Hubzero\Database\Driver &$db    Database
      * @param   string $period Time period (quarterly, yearly, etc)
      * @param   string $s_top  Top value
      * @param   string $dthis  Time (YYYY-MM)
@@ -721,7 +721,7 @@ class Tools extends Plugin
      *
      * @param   string $option         Component name
      * @param   string $task           Component task
-     * @param   object $db             Database
+     * @param   \Hubzero\Database\Driver $db             Database
      * @param   array<mixed>  $months         Month names (Jan -> Dec)
      * @param   array<mixed>  $monthsReverse  Month names in reverse (Dec -> Jan)
      * @param   string $enddate        Time period

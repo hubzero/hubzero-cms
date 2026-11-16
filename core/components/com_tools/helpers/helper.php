@@ -70,7 +70,7 @@ class Helper
     /**
      * Get a list of licenses
      *
-     * @param   object  $database
+     * @param   \Hubzero\Database\Driver  $database
      * @return  array<int, \stdClass>
      */
     public static function getLicenses($database)
@@ -125,7 +125,7 @@ class Helper
     /**
      * Record a tool status view
      *
-     * @param   object   $database
+     * @param   \Hubzero\Database\Driver   $database
      * @param   integer  $ticketid
      * @return  mixed
      */
@@ -144,8 +144,10 @@ class Helper
                 . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid="
                 . $database->quote($ticketid) . " AND uid=" . $database->quote(User::get('id')),
             );
-            if (!$database->query()) {
-                return $database->getErrorMsg();
+            try {
+                $database->query();
+            } catch (\Exception $e) {
+                return $e->getMessage();
             }
         } else {
             $database->setQuery(
@@ -153,8 +155,10 @@ class Helper
                 . User::get('id') . ", " . $database->quote($ticketid) . ", "
                 . $database->quote($when) . ", " . $database->quote(500000) . ")",
             );
-            if (!$database->query()) {
-                return $database->getErrorMsg();
+            try {
+                $database->query();
+            } catch (\Exception $e) {
+                return $e->getMessage();
             }
         }
 

@@ -41,7 +41,7 @@ class Region extends Plugin
     /**
      * Print Region List from Database
      *
-     * @param      object &$db     Database
+     * @param      \Hubzero\Database\Driver &$db     Database
      * @param      int|string $region  Parameter description (if any) ...
      * @param      mixed  $t       Parameter description (if any) ...
      * @param      mixed  $enddate Parameter description (if any) ...
@@ -248,7 +248,7 @@ class Region extends Plugin
      *
      * @param      string $option        Component name
      * @param      string $task          Component task
-     * @param      object $db            Database
+     * @param      \Hubzero\Database\Driver $db            Database
      * @param      array<mixed>  $months        Month names (Jan -> Dec)
      * @param      array<mixed>  $monthsReverse Month names in reverse (Dec -> Jan)
      * @param      string $enddate       Time period

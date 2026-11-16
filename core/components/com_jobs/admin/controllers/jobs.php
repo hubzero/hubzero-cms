@@ -340,7 +340,7 @@ class Jobs extends AdminController
      *
      * @param    \Components\Jobs\Tables\Job  $job       Job entry
      * @param   integer  $uid       User ID
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @return  integer
      */
     private function checkQuota($job, $uid, $database)

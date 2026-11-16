@@ -22,14 +22,14 @@ class Economy extends Obj
     /**
      * Database
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     private $db = null;
 
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)

@@ -74,7 +74,7 @@ class Service extends Obj
      * Constructor
      *
      * @param   string|null  $stylesheet  Optional stylesheet to link to
-     * @param   object|null  $db          Optional database connection
+     * @param   \Hubzero\Database\Driver|null  $db          Optional database connection
      * @param   string  $version     XML Version
      * @param   string  $encoding    XML Encoding
      * @return  void

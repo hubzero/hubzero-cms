@@ -19,7 +19,7 @@ class Awards
     /**
      * Database connection, once looked up
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      */
     private static $dbh;
 

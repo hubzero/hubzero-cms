@@ -36,7 +36,7 @@ class Cloud extends \Hubzero\Base\Obj
     /**
      * Database
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver
      */
     protected $db = null;
 

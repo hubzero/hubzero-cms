@@ -48,7 +48,7 @@ class Macro
     /**
      * Database
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $db = null;
 

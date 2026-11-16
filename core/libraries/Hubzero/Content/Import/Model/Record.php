@@ -57,7 +57,7 @@ class Record extends Obj
     /**
      * Database
      *
-     * @var  object
+     * @var  \Hubzero\Database\Driver
      */
     protected $database;
 

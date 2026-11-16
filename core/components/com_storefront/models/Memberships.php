@@ -20,7 +20,7 @@ class Memberships
     /**
      * Database instance
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver
      */
     protected $db = null;
 

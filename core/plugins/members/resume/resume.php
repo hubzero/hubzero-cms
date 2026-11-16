@@ -222,7 +222,7 @@ class Resume extends Plugin
     /**
      * Save data
      *
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
      * @param   object   $member    Profile
      * @param   string   $task      Task to perform
@@ -283,7 +283,7 @@ class Resume extends Plugin
     /**
      * Set a user as being a 'job seeker'
      *
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
      * @param   object   $member    Profile
      * @param   integer  $emp       Is user employer?
@@ -322,7 +322,7 @@ class Resume extends Plugin
     /**
      * View user's resumes
      *
-     * @param   object   $database   Database
+     * @param   \Hubzero\Database\Driver   $database   Database
      * @param   string   $option     Component name
      * @param   object   $member     Profile
      * @param   integer  $emp        Is user employer?
@@ -429,7 +429,7 @@ class Resume extends Plugin
     /**
      * Upload a resume
      *
-     * @param   object  $database  Database
+     * @param   \Hubzero\Database\Driver  $database  Database
      * @param   string  $option    Component name
      * @param   object  $member    Profile
      * @return  string
@@ -555,7 +555,7 @@ class Resume extends Plugin
     /**
      * Delete a resume
      *
-     * @param   object   $database  Database
+     * @param   \Hubzero\Database\Driver   $database  Database
      * @param   string   $option    Component name
      * @param   object   $member    Profile
      * @param   integer  $emp       Is user employer?

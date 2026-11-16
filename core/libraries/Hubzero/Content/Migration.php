@@ -1716,7 +1716,7 @@ class Migration
     /**
      * Attempt to create needed migrations table
      *
-     * @param   object  $db  The database connection object
+     * @param   \Hubzero\Database\Driver  $db  The database connection object
      * @return  bool
      **/
     private function createMigrationsTable($db)

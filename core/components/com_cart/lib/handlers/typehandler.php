@@ -15,7 +15,7 @@ class TypeHandler
 {
     // Database instance
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     public $db = null;
 

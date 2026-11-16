@@ -75,7 +75,7 @@ class Supportactivity extends Module
      * - category (comment|change|ticket)
      *
      * @param   object  $query
-     * @param   object  $database
+     * @param   \Hubzero\Database\Driver  $database
      * @return  void
      */
     private function buildActivityUnionQuery($query, $database)

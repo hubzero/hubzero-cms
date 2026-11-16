@@ -22,7 +22,7 @@ use Hubzero\Facades\Date;
 class Unityv1r0 extends Base
 {
     /**
-     * @var  mixed
+     * @var  \Hubzero\Database\Driver|null
      */
     protected $db;
 

@@ -478,13 +478,10 @@ class Course extends Base
      * Return a list of user IDs for a list of usernames
      *
      * @param     array|mixed $users List of user IDs or usernames
-     * @return    array<mixed>|false List of user IDs
+     * @return    array<mixed> List of user IDs
      */
     private function userIds($users)
     {
-        if (empty($this->db)) {
-            return false;
-        }
 
         $usernames = [];
         $userids = [];
@@ -537,9 +534,6 @@ class Course extends Base
      */
     public function store($check = true)
     {
-        if (empty($this->db)) {
-            return false;
-        }
 
         $isNew = ($this->get('id') ? false : true);
 

@@ -19,7 +19,7 @@ class Attachment extends Table
     /**
      * Constructor
      *
-     * @param   object  &$db  Database
+     * @param   \Hubzero\Database\Driver  &$db  Database
      * @return  void
      */
     public function __construct(&$db)
@@ -471,12 +471,12 @@ class Attachment extends Table
         $query .= " AND " . $prop . "=" . $this->db->quote($identifier);
 
         $this->db->setQuery($query);
+        // No row is not an error; the getErrorMsg() this called does not exist
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
-        } else {
-            $this->setError($this->db->getErrorMsg());
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -542,11 +542,9 @@ class Attachment extends Table
         $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $query .= " AND " . $prop . "=" . $this->db->quote($identifier);
 
+        // A failed query throws; the driver has no getErrorMsg()
         $this->db->setQuery($query);
-        if (!$this->db->query()) {
-            $this->setError($this->db->getErrorMsg());
-            return false;
-        }
+        $this->db->query();
         return true;
     }
 

@@ -24,6 +24,8 @@ class HostUpdateTest extends TestCase
     public function testHostTypeUpdateNamesOnlyColumns(): void
     {
         $db = new RecordingDriver(['name', 'value', 'description']);
+        // The tables take the driver by reference, so keep the recorder's own type
+        $recorder = $db;
         $type = new Hosttype($db);
         $type->name = 'pbs';
         $type->value = 4;
@@ -33,7 +35,7 @@ class HostUpdateTest extends TestCase
 
         $this->assertSame(
             "UPDATE `hosttype` SET `name`='pbs',`value`='4',`description`='Batch' WHERE `name`='pbs'",
-            end($db->queries),
+            end($recorder->queries),
         );
     }
 
@@ -43,6 +45,8 @@ class HostUpdateTest extends TestCase
     public function testHostStoreNamesOnlyColumns(): void
     {
         $db = new RecordingDriver(['hostname', 'provisions', 'status']);
+        // The tables take the driver by reference, so keep the recorder's own type
+        $recorder = $db;
         $host = new Host($db);
         $host->hostname = 'exec1';
         $host->provisions = 3;
@@ -52,7 +56,7 @@ class HostUpdateTest extends TestCase
 
         $this->assertSame(
             "UPDATE host SET `hostname`='exec1',`provisions`='3',`status`='up' WHERE hostname='exec1'",
-            end($db->queries),
+            end($recorder->queries),
         );
     }
 }

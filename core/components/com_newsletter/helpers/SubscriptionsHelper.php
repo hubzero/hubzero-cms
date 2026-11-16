@@ -16,7 +16,7 @@ class SubscriptionsHelper
     /**
      * Database connection
      *
-     * @var object
+     * @var \Hubzero\Database\Driver
      */
     private $db;
 

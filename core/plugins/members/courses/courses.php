@@ -412,7 +412,7 @@ class Courses extends Plugin
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
      * @param  array<mixed>|null   $areas      Areas to return data for
-     * @return array<mixed>
+     * @return array<mixed>|int
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -451,7 +451,7 @@ class Courses extends Plugin
         // Build query
         if (!$limit) {
             $database->setQuery($this->onMembersContributionsCount($uidNumber));
-            return $database->loadResult();
+            return (int) $database->loadResult();
         } else {
             //$rows = $tbl->getUserCourses($uidNumber, $type='instructor', $limit, $limitstart);
             $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS "
