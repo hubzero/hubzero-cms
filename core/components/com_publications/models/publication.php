@@ -557,7 +557,7 @@ class Publication extends Obj
     /**
      * Get the home project of this entry
      *
-     * @return  object  Models\Project
+     * @return  \Components\Projects\Models\Project  Models\Project
      */
     public function project()
     {

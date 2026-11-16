@@ -55,7 +55,7 @@ class Recommendation extends Relational
      *
      * @param   integer  $id
      * @param   float    $threshold
-     * @return  object
+     * @return  static
      */
     public static function find($id, $threshold)
     {

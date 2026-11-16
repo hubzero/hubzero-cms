@@ -123,7 +123,7 @@ class Auditor
      * Register a test
      *
      * @param   \Hubzero\Content\Auditor\Test $test  TestInterface
-     * @return  object  Test
+     * @return  $this  Test
      * @throws  RuntimeException
      */
     public function registerTest(Test $test)
@@ -145,7 +145,7 @@ class Auditor
      * Unregister a test
      *
      * @param   string  $key
-     * @return  object
+     * @return  $this
      */
     public function unregisterTest($key)
     {

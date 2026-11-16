@@ -36,7 +36,7 @@ $notify   = [];
 if ($this->row->get('login')) {
     if ($this->row->get('name')) {
         $gids = [];
-        foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups() as $g) {
+        foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups()->rows() as $g) {
             $gids[] = $g->group_id;
         }
         $usertype = implode(', ', $gids);

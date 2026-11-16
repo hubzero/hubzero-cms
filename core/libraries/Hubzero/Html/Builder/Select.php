@@ -304,7 +304,7 @@ class Select
      * @param   string  $text     The text for the option
      * @param   string  $optKey   The returned object property name for the value
      * @param   string  $optText  The returned object property name for the text
-     * @return  object
+     * @return  \stdClass
      * @deprecated  Use self::groupedList()
      */
     public static function optgroup($text, $optKey = 'value', $optText = 'text')
@@ -354,7 +354,7 @@ class Select
      * @param   string   $optText  The property that will hold the the displayed text. This
      *                             parameter is ignored if an options array is passed.
      * @param   boolean  $disable  Not used.
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function option($value, $text = '', $optKey = 'value', $optText = 'text', $disable = false)
     {

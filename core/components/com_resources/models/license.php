@@ -16,6 +16,12 @@ use Hubzero\Database\Relational;
  * @uses  \Hubzero\Database\Relational
  *
  * @property  int|string|null  $ordering
+ *
+ * @property  int|string|null  $id
+ * @property  string|null  $name
+ * @property  string|null  $text
+ * @property  string|null  $title
+ * @property  string|null  $url
  */
 class License extends Relational
 {
@@ -202,7 +208,7 @@ class License extends Relational
      * Load a record by name
      *
      * @param   string  $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {

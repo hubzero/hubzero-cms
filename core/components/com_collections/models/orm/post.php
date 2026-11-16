@@ -126,7 +126,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     /**
      * Creator profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -136,7 +136,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get parent collection
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function collection()
     {
@@ -150,17 +150,20 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      * class $this->collection only reaches the relationship by falling
      * through to Relational::__get(). This asks for the relationship by name.
      *
-     * @return  object
+     * @return  Collection
      */
     private function parentCollection()
     {
-        return $this->makeRelationship('collection')->getRelationship('collection');
+        /** @var Collection $collection A belongs-to relationship holds one model */
+        $collection = $this->makeRelationship('collection')->getRelationship('collection');
+
+        return $collection;
     }
 
     /**
      * Get represented item
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function item()
     {
@@ -326,7 +329,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

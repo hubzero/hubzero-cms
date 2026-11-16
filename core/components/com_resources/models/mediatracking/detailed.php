@@ -67,7 +67,7 @@ class Detailed extends Relational
      * @param   integer  $user_id      User ID
      * @param   integer  $object_id    Object ID
      * @param   string   $object_type  Object type
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndResource($user_id, $object_id, $object_type = 'resource')
     {

@@ -12,6 +12,8 @@ use Hubzero\Base\Obj;
 
 /**
  * Publication status model class
+ *
+ * @property  string|null  $label  The element's label, set by curation for history tracking
  */
 class Status extends Obj
 {

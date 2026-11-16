@@ -106,7 +106,7 @@ class Location extends Relational
     /**
      * Defines a belongs to one relationship between location and zone
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function zone()
     {

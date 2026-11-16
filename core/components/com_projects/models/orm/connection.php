@@ -46,7 +46,7 @@ class Connection extends Relational
     /**
      * Defines a belongs to one relationship between connections and connection providers
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      **/
     public function provider()
     {
@@ -56,7 +56,7 @@ class Connection extends Relational
     /**
      * Defines a belongs to one relationship between connections and projects
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      **/
     public function project()
     {
@@ -66,7 +66,7 @@ class Connection extends Relational
     /**
      * Get owner
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function owner()
     {

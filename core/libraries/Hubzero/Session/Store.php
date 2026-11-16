@@ -159,7 +159,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * Get single session data as an object
      *
      * @param   string  $id  Session Id
-     * @return  object
+     * @return  object  An Obj here; each storage may return its own kind
      */
     public function session($id)
     {

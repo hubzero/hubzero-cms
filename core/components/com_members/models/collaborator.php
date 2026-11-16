@@ -52,7 +52,7 @@ class Collaborator extends Relational
      *
      * @param   string   $name
      *
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {

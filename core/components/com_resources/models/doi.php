@@ -15,6 +15,8 @@ use Hubzero\Facades\Component;
  * Resource DOI model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  string|null  $doi
  */
 class Doi extends Relational
 {
@@ -85,7 +87,7 @@ class Doi extends Relational
     /**
      * Get profile for author ID
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function resource()
     {
@@ -96,7 +98,7 @@ class Doi extends Relational
      * Get a record by its doi
      *
      * @param   string  $doi
-     * @return  object
+     * @return  static
      */
     public static function oneByDoi($doi)
     {
@@ -113,7 +115,7 @@ class Doi extends Relational
      * @param   integer  $rid
      * @param   string|null   $revision
      * @param   integer  $versionid
-     * @return  object
+     * @return  static
      */
     public static function oneByResource($rid, $revision = null, $versionid = 0)
     {

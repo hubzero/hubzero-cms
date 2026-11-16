@@ -322,7 +322,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -335,7 +335,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
     {
@@ -750,7 +750,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {
@@ -899,7 +899,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

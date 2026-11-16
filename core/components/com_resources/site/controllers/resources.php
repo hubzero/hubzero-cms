@@ -1235,7 +1235,7 @@ class Resources extends SiteController
      * Build a video manifest for a resource from the files in its filespace
      *
      * @param   object  $resource  HUB Resource
-     * @return  object
+     * @return  \stdClass
      */
     private function buildVideoManifestForResource($resource)
     {

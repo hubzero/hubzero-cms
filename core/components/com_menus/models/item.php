@@ -301,7 +301,7 @@ class Item extends Nested
     /**
      * Get params as Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -362,7 +362,7 @@ class Item extends Nested
     /**
      * Get parent
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {
@@ -372,7 +372,7 @@ class Item extends Nested
     /**
      * Get child entries
      *
-     * @return  object
+     * @return  static
      */
     public function children()
     {
@@ -919,7 +919,7 @@ class Item extends Nested
     /**
      * Generate a Form object and bind data to it
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {
@@ -1247,7 +1247,7 @@ class Item extends Nested
     /**
      * Get the root node
      *
-     * @return  object
+     * @return  static
      */
     public static function rootNode()
     {

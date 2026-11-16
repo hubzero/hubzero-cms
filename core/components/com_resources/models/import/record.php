@@ -116,7 +116,7 @@ class Record extends Obj
     /**
      * Bind all raw data
      *
-     * @return  object  $this  Current object
+     * @return  $this  $this  Current object
      */
     public function bind()
     {
@@ -152,7 +152,7 @@ class Record extends Obj
     /**
      * Check Data integrity
      *
-     * @return  object  $this  Current object
+     * @return  $this  $this  Current object
      */
     public function check()
     {
@@ -188,7 +188,7 @@ class Record extends Obj
      * Store Resource Data
      *
      * @param   integer  $dryRun  Dry Run mode
-     * @return  object   $this    Current object
+     * @return  $this   $this    Current object
      */
     public function store($dryRun = 1)
     {

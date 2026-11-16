@@ -60,7 +60,7 @@ class Description extends Relational
     /**
      * Get parent project
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function project()
     {
@@ -93,7 +93,7 @@ class Description extends Relational
      *
      * @param   string   $description_key
      * @param   integer  $project_id
-     * @return  object
+     * @return  static
      */
     public static function oneByKeyAndProject($description_key, $project_id)
     {

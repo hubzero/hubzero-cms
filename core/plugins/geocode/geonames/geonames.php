@@ -25,7 +25,7 @@ class Geonames extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Geocoder\Provider\Geonames\Geonames|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

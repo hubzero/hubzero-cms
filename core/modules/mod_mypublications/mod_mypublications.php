@@ -91,7 +91,7 @@ class Mypublications extends Module
      * Include needed libraries and push scripts and CSS to the document
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  \Components\Publications\Models\Orm\Version
      */
     public static function allWithFilters($filters = [])
     {

@@ -96,7 +96,7 @@ class Authorizationcode extends Relational
      * Load code details by code
      *
      * @param   string  $code
-     * @return  object
+     * @return  static
      */
     public static function oneByCode($code)
     {
@@ -110,7 +110,7 @@ class Authorizationcode extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -120,7 +120,7 @@ class Authorizationcode extends Relational
     /**
      * Return Instance of application for token
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function application()
     {

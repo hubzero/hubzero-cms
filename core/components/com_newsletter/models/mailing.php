@@ -52,7 +52,7 @@ class Mailing extends Relational
     /**
      * Defines a belongs to one relationship between newsletter and mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function newsletter()
     {
@@ -62,7 +62,7 @@ class Mailing extends Relational
     /**
      * Defines a belongs to one relationship between mailinglist and mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function mailinglist()
     {
@@ -72,7 +72,7 @@ class Mailing extends Relational
     /**
      * Get a list of recipients
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function recipients()
     {
@@ -82,7 +82,7 @@ class Mailing extends Relational
     /**
      * Get a list of actions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function actions()
     {

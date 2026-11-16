@@ -48,7 +48,7 @@ class Option extends Relational
 
     /**
      * children
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function filter()
     {

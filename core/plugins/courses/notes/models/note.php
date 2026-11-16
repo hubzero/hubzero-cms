@@ -73,7 +73,7 @@ class Note extends Relational
     /**
      * Get the parent user associated with this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

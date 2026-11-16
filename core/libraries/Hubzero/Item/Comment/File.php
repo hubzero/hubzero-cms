@@ -68,7 +68,7 @@ class File extends Relational
      * Set the upload path
      *
      * @param   string  $path  Path to set to
-     * @return  object
+     * @return  $this
      */
     public function setUploadDir($path)
     {

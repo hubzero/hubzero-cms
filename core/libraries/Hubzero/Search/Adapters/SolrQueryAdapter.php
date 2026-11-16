@@ -131,7 +131,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @access public
      * @param   mixed  $terms
-     * @return object  the result set
+     * @return \Solarium\QueryType\Select\Result\Result  the result set
      */
     public function getMoreLikeThis($terms)
     {

@@ -126,7 +126,7 @@ class Page extends Model
     /**
      * Load Page Category
      *
-     * @return  object  \Components\Groups\Models\Page\Category
+     * @return  \Components\Groups\Models\Page\Category  \Components\Groups\Models\Page\Category
      */
     public function category()
     {
@@ -312,7 +312,7 @@ class Page extends Model
     /**
      * Get Parent Parent
      *
-     * @return  object  \Components\Groups\Models\Page Object
+     * @return  \Components\Groups\Models\Page  \Components\Groups\Models\Page Object
      */
     public function getParent()
     {

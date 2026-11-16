@@ -1005,48 +1005,46 @@ class Threadsv1r0 extends ApiController
         } else {
             $rows = $forum->posts($filters)->rows();
 
-            if ($rows) {
-                if ($filters['start_id']) {
-                    $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
+            if ($filters['start_id']) {
+                $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 
-                    $children = [
-                        0 => [],
-                    ];
+                $children = [
+                    0 => [],
+                ];
 
-                    $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+                $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
 
-                    foreach ($rows as $v) {
-                        $v->set('created', with(new Date($v->get('created')))->format('Y-m-d\TH:i:s\Z'));
+                foreach ($rows as $v) {
+                    $v->set('created', with(new Date($v->get('created')))->format('Y-m-d\TH:i:s\Z'));
 
-                        $pt      = $v->get('parent');
-                        $list    = isset($children[$pt]) ? $children[$pt] : [];
-                        array_push($list, $v);
-                        $children[$pt] = $list;
-                    }
+                    $pt      = $v->get('parent');
+                    $list    = isset($children[$pt]) ? $children[$pt] : [];
+                    array_push($list, $v);
+                    $children[$pt] = $list;
+                }
 
-                    $post = Post::all()
-                        ->whereEquals('object_id', $filters['object_id'])
-                        ->whereEquals('scope_id', $filters['scope_id'])
-                        ->whereEquals('scope', $filters['scope'])
-                        ->whereEquals('parent', 0)
-                        ->row();
+                $post = Post::all()
+                    ->whereEquals('object_id', $filters['object_id'])
+                    ->whereEquals('scope_id', $filters['scope_id'])
+                    ->whereEquals('scope', $filters['scope'])
+                    ->whereEquals('parent', 0)
+                    ->row();
 
-                    $list = $this->treeRecurse($post->get('id'), '', [], $children, max(0, $levellimit - 1));
+                $list = $this->treeRecurse($post->get('id'), '', [], $children, max(0, $levellimit - 1));
 
-                    $inc = false;
-                    $newlist = [];
-                    foreach ($list as $l) {
-                        if ($l->id == $filters['start_id']) {
-                            $inc = true;
-                        } else {
-                            if ($inc) {
-                                $newlist[] = $l;
-                            }
+                $inc = false;
+                $newlist = [];
+                foreach ($list as $l) {
+                    if ($l->id == $filters['start_id']) {
+                        $inc = true;
+                    } else {
+                        if ($inc) {
+                            $newlist[] = $l;
                         }
                     }
-
-                    $rows = array_slice($newlist, $filters['start'], $filters['limit']);
                 }
+
+                $rows = array_slice($newlist, $filters['start'], $filters['limit']);
             }
             // Shape each post the way listTask() shapes a thread: a Rows object
             // serialises to {} (so the read returned nothing unless start_id

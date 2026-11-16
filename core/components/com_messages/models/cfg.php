@@ -84,7 +84,7 @@ class Cfg extends Relational
      *
      * @param   string  $user_id       The path to load by
      * @param   string  $name  The extnsion type
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndName($user_id, $name)
     {
@@ -116,7 +116,7 @@ class Cfg extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

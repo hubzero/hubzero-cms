@@ -43,7 +43,7 @@ class Rules implements Countable, Iterator
      * Wrap value in a Closure
      *
      * @param   mixed   $value
-     * @return  object
+     * @return  \Closure
      */
     public function close($value)
     {
@@ -64,7 +64,7 @@ class Rules implements Countable, Iterator
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function append($key, $value)
     {
@@ -80,7 +80,7 @@ class Rules implements Countable, Iterator
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function prepend($key, $value)
     {
@@ -101,7 +101,7 @@ class Rules implements Countable, Iterator
      * @param   string  $idx
      * @param   string  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function insertBefore($idx, $key, $value = null)
     {
@@ -133,7 +133,7 @@ class Rules implements Countable, Iterator
      * @param   string  $idx
      * @param   string  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function insertAfter($idx, $key, $value = null)
     {
@@ -234,7 +234,7 @@ class Rules implements Countable, Iterator
     /**
      * Clear all rules
      *
-     * @return  object
+     * @return  $this
      */
     public function clear()
     {
@@ -247,7 +247,7 @@ class Rules implements Countable, Iterator
      * Merge a new array of rules into the bag.
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  $this
      */
     public function merge(array $data)
     {

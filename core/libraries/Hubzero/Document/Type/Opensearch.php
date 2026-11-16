@@ -156,7 +156,7 @@ class Opensearch extends Base
      * Sets the short name
      *
      * @param   string  $name  The name.
-     * @return  object  Supports chaining
+     * @return  $this  Supports chaining
      */
     public function setShortName($name)
     {
@@ -169,7 +169,7 @@ class Opensearch extends Base
      * Adds an URL to the OpenSearch description.
      *
      * @param   \Hubzero\Document\Type\Opensearch\Url $url  The url to add to the description.
-     * @return  object  Supports chaining
+     * @return  $this  Supports chaining
      */
     public function addUrl(Url $url)
     {
@@ -182,7 +182,7 @@ class Opensearch extends Base
      * Adds an image to the OpenSearch description.
      *
      * @param   \Hubzero\Document\Type\Opensearch\Image $image  The image to add to the description.
-     * @return  object  Supports chaining
+     * @return  $this  Supports chaining
      */
     public function addImage(Image $image)
     {

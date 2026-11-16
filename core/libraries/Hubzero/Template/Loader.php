@@ -84,7 +84,7 @@ class Loader
      *
      * @param   string  $key
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function setPath($key, $path)
     {
@@ -147,7 +147,7 @@ class Loader
      * Set style
      *
      * @param   int|string  $style
-     * @return  object
+     * @return  $this
      */
     public function setStyle($style)
     {
@@ -170,7 +170,7 @@ class Loader
      * Set language
      *
      * @param   string  $lang
-     * @return  object
+     * @return  $this
      */
     public function setLang($lang)
     {
@@ -241,7 +241,7 @@ class Loader
      * directory first, then core.
      *
      * @param   integer  $client_id
-     * @return  object|null
+     * @return  \stdClass|null
      */
     public function getConfiguredTemplate($client_id = 0)
     {

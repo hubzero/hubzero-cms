@@ -80,7 +80,7 @@ class Activity extends Relational
     /**
      * Get parent project
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function project()
     {
@@ -90,7 +90,7 @@ class Activity extends Relational
     /**
      * Get parent user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

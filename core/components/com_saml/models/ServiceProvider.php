@@ -466,7 +466,7 @@ class ServiceProvider extends Relational
     /**
      * Sessions issued for this SP
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function sessions()
     {

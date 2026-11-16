@@ -47,7 +47,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Get profile fields
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function profiles()
     {
@@ -57,7 +57,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Get notes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function notes()
     {
@@ -67,7 +67,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Get quota
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function quota()
     {
@@ -77,7 +77,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     /**
      * Get hosts
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function hosts()
     {
@@ -500,7 +500,7 @@ class Member extends User implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

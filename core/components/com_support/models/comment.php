@@ -104,7 +104,7 @@ class Comment extends Relational
     /**
      * Get parent ticket
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function ticket()
     {
@@ -114,7 +114,7 @@ class Comment extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -124,7 +124,7 @@ class Comment extends Relational
     /**
      * Get a list of attachments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -282,7 +282,7 @@ class Comment extends Relational
     /**
      * Get the changelog
      *
-     * @return  object
+     * @return  \Components\Support\Models\Changelog
      */
     public function changelog()
     {
@@ -297,7 +297,7 @@ class Comment extends Relational
      *
      * @param   string|mixed  $to
      * @param   string  $role
-     * @return  object
+     * @return  $this
      */
     public function addTo($to, $role = '')
     {

@@ -142,7 +142,7 @@ class QueryFolder extends Relational
     /**
      * Defines relationship between folder and query
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function queries()
     {

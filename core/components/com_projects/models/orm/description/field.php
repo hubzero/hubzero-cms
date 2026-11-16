@@ -113,7 +113,7 @@ class Field extends Relational
     /**
      * Get field options
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function options()
     {
@@ -123,7 +123,7 @@ class Field extends Relational
     /**
      * Get child fields
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function children()
     {
@@ -133,7 +133,7 @@ class Field extends Relational
     /**
      * Get parent field
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {

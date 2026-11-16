@@ -381,7 +381,7 @@ class Tickets extends AdminController
                 ->start(0)
                 ->row();
 
-            if ($lastcomment && $lastcomment->get('created') >= $started) {
+            if ($lastcomment->get('created') >= $started) {
                 $comment->set('comment', $text);
 
                 Notify::error(

@@ -43,7 +43,7 @@ class Sponsor extends Relational
     /**
      * Establish relationship to citations
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      **/
     public function citations()
     {

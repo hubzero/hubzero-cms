@@ -57,7 +57,7 @@ class Filesystem
      * Set the Adapter.
      *
      * @param   \Hubzero\Filesystem\AdapterInterface $adapter  AdapterInterface
-     * @return  object
+     * @return  $this
      */
     public function setAdapter(AdapterInterface $adapter)
     {

@@ -2201,7 +2201,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     /**
      * Outputs attributes as object
      *
-     * @return  object
+     * @return  \stdClass
      **/
     public function toObject()
     {
@@ -3474,7 +3474,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Sets the current model's table alias
      *
      * @param   string  $alias
-     * @return  object
+     * @return  $this
      **/
     public function setTableAlias($alias)
     {

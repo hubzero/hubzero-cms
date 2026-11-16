@@ -190,7 +190,7 @@ abstract class Table extends \stdClass
      *
      * @param   string  $property  The name of the property.
      * @param   mixed   $value     The value of the property to set.
-     * @return  object
+     * @return  $this
      */
     public function set($property, $value)
     {
@@ -261,7 +261,7 @@ abstract class Table extends \stdClass
      *
      * @param   string  $error  Error message.
      * @param   string|null  $key    Specific key to set the value to
-     * @return  object
+     * @return  $this
      */
     public function setError($error, $key = null)
     {
@@ -277,7 +277,7 @@ abstract class Table extends \stdClass
      * Set the list of errors
      *
      * @param   array<mixed>   $errors  List of Error message.
-     * @return  object
+     * @return  $this
      */
     public function setErrors($errors)
     {
@@ -500,7 +500,7 @@ abstract class Table extends \stdClass
     /**
      * Method to get the Database connector object.
      *
-     * @return  object  The internal database connector object.
+     * @return  \Hubzero\Database\Driver  The internal database connector object.
      */
     public function getDbo()
     {
@@ -755,10 +755,10 @@ abstract class Table extends \stdClass
             return false;
         }
 
-        // Specify how a new or moved node asset is inserted into the tree.
-        if (empty($this->asset_id) || $asset->get('parent_id') != $parentId) {
-            $asset->setLocation($parentId, 'last-child');
-        }
+        // A new or moved node goes in as the parent's last child; this asks
+        // before the fields below are set, while the asset still holds its
+        // stored parent.
+        $place = empty($this->asset_id) || $asset->get('parent_id') != $parentId;
 
         // Prepare the asset to be stored.
         $asset->set('parent_id', $parentId);
@@ -769,7 +769,12 @@ abstract class Table extends \stdClass
             $asset->set('rules', (string) $this->assetRules);
         }
 
-        if (!$asset->save()) {
+        // Asset is a Relational nested set now: what used to be
+        // setLocation($parentId, 'last-child') is saveAsLastChildOf(), as
+        // the Relational asset helper does it
+        $saved = $place ? $asset->saveAsLastChildOf($parentId) : $asset->save();
+
+        if (!$saved) {
             $this->setError($asset->getError());
             return false;
         }

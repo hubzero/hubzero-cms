@@ -83,7 +83,7 @@ class Encrypter
      * Method to set the encryption key[/pair] object.
      *
      * @param   \Hubzero\Encryption\Key $key  The key object to set.
-     * @return  object
+     * @return  $this
      */
     public function setKey(Key $key)
     {

@@ -1695,7 +1695,7 @@ class Tickets extends SiteController
             ->start(0)
             ->row();
 
-        if ($lastcomment && $lastcomment->get('created') > $started) {
+        if ($lastcomment->get('created') > $started) {
             $rowc->set('comment', $comment);
             $this->setError(
                 Lang::txt(

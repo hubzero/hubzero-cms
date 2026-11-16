@@ -79,7 +79,7 @@ class Stat extends Relational
     /**
      * Defines a belongs to one relationship between resource and audience
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function resource()
     {

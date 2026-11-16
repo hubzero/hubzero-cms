@@ -28,7 +28,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      *
      * @param   string|int  $name  The name of the item.
      * @param   string  $link  The link to the item.
-     * @return  object
+     * @return  $this
      */
     public function append($name, $link = '')
     {
@@ -42,7 +42,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      *
      * @param   string  $name  The name of the item.
      * @param   string  $link  The link to the item.
-     * @return  object
+     * @return  $this
      */
     public function prepend($name, $link = '')
     {
@@ -128,7 +128,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Clear out the list of items
      *
-     * @return  object
+     * @return  $this
      */
     public function clear()
     {

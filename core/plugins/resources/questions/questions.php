@@ -166,7 +166,7 @@ class Questions extends Plugin
     /**
      * Parse a list of filters to return data for
      *
-     * @return  object
+     * @return  \Components\Answers\Models\Question
      */
     private function find()
     {

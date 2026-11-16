@@ -22,6 +22,8 @@ use Hubzero\Facades\Event;
  * @property  int|string|null  $deleted
  * @property  string|null  $name
  * @property  int|string|null  $published
+ *
+ * @property  int|string|null  $issue
  */
 class Newsletter extends Relational
 {
@@ -163,7 +165,7 @@ class Newsletter extends Relational
     /**
      * Defines a belongs to one relationship between newsletter and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -173,7 +175,7 @@ class Newsletter extends Relational
     /**
      * Defines a belongs to one relationship between newsletter and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -183,7 +185,7 @@ class Newsletter extends Relational
     /**
      * Defines a belongs to one relationship between template and newsletter
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function template()
     {
@@ -193,7 +195,7 @@ class Newsletter extends Relational
     /**
      * Get a list of primary stories
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function primary()
     {
@@ -203,7 +205,7 @@ class Newsletter extends Relational
     /**
      * Get a list of secondary stories
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function secondary()
     {
@@ -240,7 +242,7 @@ class Newsletter extends Relational
     /**
      * Get a list of secondary stories
      *
-     * @return  object
+     * @return  static
      */
     public static function current()
     {

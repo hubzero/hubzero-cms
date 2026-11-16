@@ -65,7 +65,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      *
      * @param   object   $listener  The listener.
      * @param   integer  $priority  The listener priority.
-     * @return  object   This method is chainable.
+     * @return  $this   This method is chainable.
      */
     public function add($listener, $priority)
     {
@@ -84,7 +84,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      * Remove a listener from the queue.
      *
      * @param   object  $listener  The listener.
-     * @return  object  This method is chainable.
+     * @return  $this  This method is chainable.
      */
     public function remove($listener)
     {

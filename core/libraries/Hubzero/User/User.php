@@ -32,6 +32,8 @@ use Hubzero\Facades\Request;
  *
  * @property  int|string|null  $id
  * @property  string|null  $name
+ *
+ * @property-read  mixed  $groups  What groups() gives
  */
 class User extends \Hubzero\Database\Relational
 {
@@ -399,7 +401,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Defines a one to many relationship between users and reset tokens
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToMany
+     * @return  \Hubzero\Database\Relationship\OneToMany  \Hubzero\Database\Relationship\OneToMany
      * @since   2.0.0
      */
     public function tokens()
@@ -410,7 +412,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Defines a one to one relationship between a user and their reputation
      *
-     * @return  object  \Hubzero\Database\Relationship\OneToOne
+     * @return  \Hubzero\Database\Relationship\OneToOne  \Hubzero\Database\Relationship\OneToOne
      * @since   2.0.0
      */
     public function reputation()
@@ -421,7 +423,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Get access groups
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function accessgroups()
     {
@@ -481,7 +483,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Defines a relationship with a generic user logging class (not a relational model itself)
      *
-     * @return  object  \Hubzero\User\Logger
+     * @return  \Hubzero\User\Logger  \Hubzero\User\Logger
      * @since   2.0.0
      */
     public function logger()
@@ -801,7 +803,7 @@ class User extends \Hubzero\Database\Relational
      * Finds a user by username
      *
      * @param   string  $username
-     * @return  object
+     * @return  static
      * @since   2.1.0
      */
     public static function oneByUsername($username)
@@ -833,7 +835,7 @@ class User extends \Hubzero\Database\Relational
      * Finds a user by activation token
      *
      * @param   string|int  $token
-     * @return  object
+     * @return  static
      * @since   2.1.0
      */
     public static function oneByActivationToken($token)

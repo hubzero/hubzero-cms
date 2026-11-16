@@ -61,7 +61,7 @@ class Diff
      *    $diff = new Diff($lines1, $lines2);
      *    $rev = $diff->reverse();
      *
-     * @return  object  A Diff object representing the inverse of the original diff.
+     * @return  $this  A Diff object representing the inverse of the original diff.
      */
     public function reverse()
     {

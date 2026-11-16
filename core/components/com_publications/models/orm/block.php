@@ -109,7 +109,7 @@ class Block extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

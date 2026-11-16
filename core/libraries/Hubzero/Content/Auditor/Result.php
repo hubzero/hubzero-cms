@@ -125,7 +125,7 @@ class Result extends Relational
      *
      * @param   string   $scope
      * @param   integer  $scope_id
-     * @return  object
+     * @return  static
      */
     public static function oneByScope($scope, $scope_id)
     {

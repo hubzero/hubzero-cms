@@ -170,7 +170,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to parent publication
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function publication()
     {
@@ -180,7 +180,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to authors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function authors()
     {
@@ -190,7 +190,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to attachments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -200,7 +200,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to license
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function license()
     {
@@ -210,7 +210,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -220,7 +220,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get the modifier of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -230,7 +230,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to curator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function curator()
     {
@@ -854,7 +854,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

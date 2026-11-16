@@ -48,7 +48,7 @@ class Address extends Relational
     /**
      * Get parent member
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -59,7 +59,7 @@ class Address extends Relational
      * Get addresses for a user
      *
      * @param   integer  $uidNumber
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function getAddressesForMember($uidNumber)
     {

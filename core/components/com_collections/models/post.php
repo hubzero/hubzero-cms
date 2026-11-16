@@ -147,7 +147,7 @@ class Post extends Base
      *
      * @param   integer|Item|object|null  $oid  An item's ID, the item itself to use in place of the stored
      *                                          one, or its fields
-     * @return  object
+     * @return  \Components\Collections\Models\Item
      */
     public function item($oid = null)
     {
@@ -172,7 +172,7 @@ class Post extends Base
      * Get the item for this post
      *
      * @param   integer|null $oid
-     * @return  object
+     * @return  \Components\Collections\Models\Collection
      */
     public function collection($oid = null)
     {

@@ -81,7 +81,7 @@ class Manager
      * Create a new client instance.
      *
      * @param   string  $client
-     * @return  object
+     * @return  \Hubzero\Routing\Router
      */
     protected function createRouter($client)
     {

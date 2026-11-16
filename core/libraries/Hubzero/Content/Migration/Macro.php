@@ -33,7 +33,7 @@ abstract class Macro
      * Set the database connection
      *
      * @param   \Hubzero\Database\Driver $database
-     * @return  object
+     * @return  $this
      */
     public function setDatabase(Driver $database)
     {
@@ -46,7 +46,7 @@ abstract class Macro
      * Set the migration object
      *
      * @param   \Hubzero\Content\Migration\Base $migration
-     * @return  object
+     * @return  $this
      */
     public function setMigration(Base $migration)
     {

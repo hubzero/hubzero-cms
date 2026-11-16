@@ -29,7 +29,7 @@ class Permissions
      *
      * @param   string   $assetType
      * @param   integer  $assetId
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function getActions($assetType = 'component', $assetId = 0)
     {

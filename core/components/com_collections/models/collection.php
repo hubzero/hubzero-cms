@@ -221,7 +221,7 @@ class Collection extends Base
     /**
      * Get the item entry for a collection
      *
-     * @return  object
+     * @return  \Components\Collections\Models\Item
      */
     public function item()
     {
@@ -651,7 +651,7 @@ class Collection extends Base
     /**
      * Transforms a namespace to an object
      *
-     * @return  object   An an object holding the namespace data
+     * @return  \stdClass   An an object holding the namespace data
      */
     public function toObject()
     {

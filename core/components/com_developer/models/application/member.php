@@ -50,7 +50,7 @@ class Member extends Relational
     /**
      * Get Profile Object from user id
      *
-     * @return  object  Profile object
+     * @return  \Hubzero\User\User  Profile object
      */
     public function getProfile()
     {

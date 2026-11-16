@@ -25,7 +25,7 @@ class Ipinfodb extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Geocoder\Provider\IpInfoDb\IpInfoDb|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

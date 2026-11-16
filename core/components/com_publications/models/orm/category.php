@@ -71,7 +71,7 @@ class Category extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -84,7 +84,7 @@ class Category extends Relational
     /**
      * Get contributable categories
      *
-     * @return  object
+     * @return  static
      */
     public static function contributable()
     {

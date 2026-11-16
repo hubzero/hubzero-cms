@@ -349,7 +349,7 @@ class Activity extends Plugin
      * Load a feed entry, which must belong to this group
      *
      * @param   integer  $id
-     * @return  object
+     * @return  \Hubzero\Activity\Recipient
      */
     protected function groupEntry($id)
     {

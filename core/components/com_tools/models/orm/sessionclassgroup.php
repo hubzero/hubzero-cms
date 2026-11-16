@@ -48,7 +48,7 @@ class SessionClassGroup extends Relational
     /**
      * Get relationship to sessionclass
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function sessionclass()
     {
@@ -58,7 +58,7 @@ class SessionClassGroup extends Relational
     /**
      * Get relationship to groups
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function group()
     {

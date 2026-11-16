@@ -49,7 +49,7 @@ class Date extends Relational
     /**
      * Defines a belongs to one relationship between option and poll
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function poll()
     {

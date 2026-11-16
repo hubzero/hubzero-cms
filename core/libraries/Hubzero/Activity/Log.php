@@ -118,7 +118,7 @@ class Log extends Relational
     /**
      * Get recipients
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function recipients()
     {
@@ -128,7 +128,7 @@ class Log extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -138,7 +138,7 @@ class Log extends Relational
     /**
      * Defines a belongs to one relationship between entry and another entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {
@@ -148,7 +148,7 @@ class Log extends Relational
     /**
      * Get children
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function children()
     {
@@ -359,7 +359,7 @@ class Log extends Relational
     /**
      * Modify query to only return published entries
      *
-     * @return  object
+     * @return  $this
      */
     public function wherePublished()
     {

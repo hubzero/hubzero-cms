@@ -139,6 +139,7 @@ class Media extends SiteController
         $filename = $this->page->stripNamespace($filename);
 
         // Instantiate an attachment object
+        /** @var Attachment $attachment */
         $attachment = $this->page
             ->attachments()
             ->whereEquals('filename', $filename)

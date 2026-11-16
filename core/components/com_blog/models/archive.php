@@ -78,7 +78,7 @@ class Archive extends Obj
      * Get a count of, model for, or list of entries
      *
      * @param   array<mixed>   $filters  Filters to apply to data retrieval
-     * @return  object
+     * @return  \Components\Blog\Models\Entry
      */
     public function entries($filters = [])
     {

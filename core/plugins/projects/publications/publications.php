@@ -1128,7 +1128,7 @@ class Publications extends Plugin
     /**
      * Provision a new publication draft
      *
-     * @return     object
+     * @return     \Components\Publications\Models\Publication
      */
     public function createDraft()
     {

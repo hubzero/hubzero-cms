@@ -56,7 +56,7 @@ class Format extends Relational
      * Defines a one to one relationship with citation
      *
      * @param   string  $fallbackDefault
-     * @return  object
+     * @return  static
      **/
     public static function getDefault($fallbackDefault = 'IEEE')
     {
@@ -72,7 +72,7 @@ class Format extends Relational
     /**
      * Defines a one to one relationship with citation
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      **/
     public function citations()
     {

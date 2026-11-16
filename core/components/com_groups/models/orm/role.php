@@ -49,7 +49,7 @@ class Role extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {

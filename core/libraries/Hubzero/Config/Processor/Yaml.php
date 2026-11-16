@@ -193,7 +193,7 @@ class Yaml extends Base
      * Convert an array to an object
      *
      * @param   array<mixed>   $data
-     * @return  object  Data object.
+     * @return  \stdClass  Data object.
      */
     protected function toObject($data)
     {

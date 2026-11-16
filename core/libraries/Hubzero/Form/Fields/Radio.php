@@ -238,10 +238,10 @@ class Radio extends Field
             }
 
             // Set some option attributes.
-            $tmp->class = (string) $option['class'];
+            $tmp->set('class', (string) $option['class']);
 
             // Set some JavaScript option attributes.
-            $tmp->onclick = (string) $option['onclick'];
+            $tmp->set('onclick', (string) $option['onclick']);
 
             // Add the option object to the result set.
             $options[] = $tmp;

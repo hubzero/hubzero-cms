@@ -599,33 +599,31 @@ class Resources extends Plugin
             // Did we get any results?
             $results = [];
 
-            if ($rows) {
-                // Loop through the results and set each item's HREF
-                foreach ($rows as $key => $row) {
-                    if ($this->group->type == '3') {
-                        if ($row->alias) {
-                            $href = Route::url(
-                                'index.php?option=com_groups&cn='
-                                    . $this->group->cn
-                                    . '&active=resources&alias='
-                                    . $row->alias,
-                            );
-                        } else {
-                            $href = Route::url(
-                                'index.php?option=com_groups&cn='
-                                    . $this->group->cn
-                                    . '&active=resources&id='
-                                    . $row->id,
-                            );
-                        }
+            // Loop through the results and set each item's HREF
+            foreach ($rows as $key => $row) {
+                if ($this->group->type == '3') {
+                    if ($row->alias) {
+                        $href = Route::url(
+                            'index.php?option=com_groups&cn='
+                                . $this->group->cn
+                                . '&active=resources&alias='
+                                . $row->alias,
+                        );
                     } else {
-                        $href = Route::url($row->link());
+                        $href = Route::url(
+                            'index.php?option=com_groups&cn='
+                                . $this->group->cn
+                                . '&active=resources&id='
+                                . $row->id,
+                        );
                     }
-
-                    $row->set('href', $href);
-
-                    $results[] = $row;
+                } else {
+                    $href = Route::url($row->link());
                 }
+
+                $row->set('href', $href);
+
+                $results[] = $row;
             }
 
             // Return the results
@@ -681,7 +679,7 @@ class Resources extends Plugin
      * Include needed libraries and push scripts and CSS to the document
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  \Components\Resources\Models\Entry
      */
     public static function allWithFilters($filters = [])
     {

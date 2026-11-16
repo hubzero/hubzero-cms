@@ -136,7 +136,7 @@ class Page extends Relational
     /**
      * Get parent course
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function course()
     {
@@ -146,7 +146,7 @@ class Page extends Relational
     /**
      * Get parent offering
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function offering()
     {
@@ -156,7 +156,7 @@ class Page extends Relational
     /**
      * Get parent section
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function section()
     {

@@ -55,10 +55,10 @@ class Groupedlist extends Field
                     );
 
                     // Set some option attributes.
-                    $tmp->class = (string) $element['class'];
+                    $tmp->set('class', (string) $element['class']);
 
                     // Set some JavaScript option attributes.
-                    $tmp->onclick = (string) $element['onclick'];
+                    $tmp->set('onclick', (string) $element['onclick']);
 
                     // Add the option.
                     $groups[$label][] = $tmp;
@@ -94,10 +94,10 @@ class Groupedlist extends Field
                         );
 
                         // Set some option attributes.
-                        $tmp->class = (string) $option['class'];
+                        $tmp->set('class', (string) $option['class']);
 
                         // Set some JavaScript option attributes.
-                        $tmp->onclick = (string) $option['onclick'];
+                        $tmp->set('onclick', (string) $option['onclick']);
 
                         // Add the option.
                         $groups[$label][] = $tmp;

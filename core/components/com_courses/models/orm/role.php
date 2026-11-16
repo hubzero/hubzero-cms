@@ -48,7 +48,7 @@ class Role extends Relational
     /**
      * Get parent course
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function course()
     {
@@ -58,7 +58,7 @@ class Role extends Relational
     /**
      * Get role
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function role()
     {

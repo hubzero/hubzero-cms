@@ -53,7 +53,7 @@ class Mailinglist extends Relational
     /**
      * Get a list of emails
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function emails()
     {

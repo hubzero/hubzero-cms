@@ -75,7 +75,7 @@ class Publication extends Relational
     /**
      * Establish relationship to type
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function type()
     {
@@ -85,7 +85,7 @@ class Publication extends Relational
     /**
      * Establish relationship to category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function category()
     {
@@ -95,7 +95,7 @@ class Publication extends Relational
     /**
      * Establish relationship to versions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function versions()
     {
@@ -105,7 +105,7 @@ class Publication extends Relational
     /**
      * Establish relationship to ratings
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function ratings()
     {
@@ -115,7 +115,7 @@ class Publication extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -125,7 +125,7 @@ class Publication extends Relational
     /**
      * Establish relationship to group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {
@@ -135,7 +135,7 @@ class Publication extends Relational
     /**
      * Establish relationship to project
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function project()
     {
@@ -146,7 +146,7 @@ class Publication extends Relational
     /**
      * Get the ancestor this was forked from
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function ancestor()
     {

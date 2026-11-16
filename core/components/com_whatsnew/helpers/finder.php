@@ -69,7 +69,7 @@ class Finder
      * of 1 month from "now"
      *
      * @param   string  $period  Time period
-     * @return  object
+     * @return  \Components\Whatsnew\Helpers\Period
      */
     public static function parseTimePeriod($period)
     {

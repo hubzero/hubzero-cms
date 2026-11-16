@@ -271,7 +271,7 @@ class License extends Relational
     /**
      * Get default license
      *
-     * @return  object
+     * @return  static
      */
     public static function main()
     {
@@ -284,7 +284,7 @@ class License extends Relational
      * Get license by name
      *
      * @param   string  $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {
@@ -297,7 +297,7 @@ class License extends Relational
      * Get license by title
      *
      * @param   string  $title
-     * @return  object
+     * @return  static
      */
     public static function oneByTitle($title)
     {

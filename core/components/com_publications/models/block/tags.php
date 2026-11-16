@@ -181,7 +181,7 @@ class Tags extends Base
      * @param   object|null   $pub
      * @param   object|null   $manifest
      * @param   integer|null  $elementId
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {

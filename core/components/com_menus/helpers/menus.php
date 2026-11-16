@@ -34,7 +34,7 @@ class Menus
      * Gets a list of the actions that can be performed.
      *
      * @param   integer  $parentId  The menu ID.
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function getActions($parentId = 0)
     {

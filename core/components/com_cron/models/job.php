@@ -187,7 +187,7 @@ class Job extends Relational
     /**
      * Defines a relationship to creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -197,7 +197,7 @@ class Job extends Relational
     /**
      * Defines a relationship to modifier
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -233,7 +233,7 @@ class Job extends Relational
     /**
      * Get a cron expression
      *
-     * @return  object
+     * @return  \Components\Cron\Helpers\CronExpression
      */
     public function expression()
     {
@@ -400,7 +400,7 @@ class Job extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

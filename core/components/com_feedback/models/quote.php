@@ -64,7 +64,7 @@ class Quote extends Relational
     /**
      * Return user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -74,7 +74,7 @@ class Quote extends Relational
     /**
      * Defines a belongs to one relationship
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

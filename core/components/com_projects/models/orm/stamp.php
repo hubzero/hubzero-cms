@@ -96,7 +96,7 @@ class Stamp extends Relational
      * Get a record by stamp
      *
      * @param   string  $stamp
-     * @return  object
+     * @return  static
      */
     public static function oneByStamp($stamp)
     {

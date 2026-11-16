@@ -95,7 +95,7 @@ class Attachment extends Relational
     /**
      * Get parent ticket
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function ticket()
     {
@@ -105,7 +105,7 @@ class Attachment extends Relational
     /**
      * Get parent comment
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function comment()
     {
@@ -115,7 +115,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -228,7 +228,7 @@ class Attachment extends Relational
      *
      * @param   integer  $comment_id
      * @param   string   $filename
-     * @return  object
+     * @return  static
      */
     public static function oneByComment($comment_id, $filename)
     {

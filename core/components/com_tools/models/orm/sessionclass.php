@@ -76,7 +76,7 @@ class SessionClass extends Relational
     /**
      * Get relationship to sessionclass groups
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function sessionclassgroups()
     {
@@ -87,7 +87,7 @@ class SessionClass extends Relational
      * Retrieves one row loaded by jobs field
      *
      * @param   integer  $jobs
-     * @return  object
+     * @return  static
      */
     public static function oneByJobs($jobs)
     {

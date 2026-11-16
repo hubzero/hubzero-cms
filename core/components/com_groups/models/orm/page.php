@@ -115,7 +115,7 @@ class Page extends Relational
     /**
      * Get parent entry
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {
@@ -125,7 +125,7 @@ class Page extends Relational
     /**
      * Get versions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function versions()
     {
@@ -135,7 +135,7 @@ class Page extends Relational
     /**
      * Get parent category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function category()
     {
@@ -145,7 +145,7 @@ class Page extends Relational
     /**
      * Get page hits
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function hits()
     {

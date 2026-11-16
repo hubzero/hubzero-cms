@@ -652,7 +652,7 @@ class Form extends SiteController
     /**
      * Check that form ID exists
      *
-     * @return  object
+     * @return  \Components\Courses\Models\PdfForm
      */
     public function assertExistentForm()
     {

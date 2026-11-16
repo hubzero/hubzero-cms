@@ -289,7 +289,7 @@ class Dispatcher implements DispatcherInterface
      *
      * @param   object  $listener  The listener to remove.
      * @param   mixed   $event     The event object or name.
-     * @return  object  This method is chainable.
+     * @return  $this  This method is chainable.
      */
     public function removeListener($listener, $event = null)
     {
@@ -325,7 +325,7 @@ class Dispatcher implements DispatcherInterface
      * If an event is specified, the listeners will be cleared only for that event.
      *
      * @param   mixed   $event  The event object or name.
-     * @return  object  This method is chainable.
+     * @return  $this  This method is chainable.
      */
     public function clearListeners($event = null)
     {

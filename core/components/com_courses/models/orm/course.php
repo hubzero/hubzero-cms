@@ -140,7 +140,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -150,7 +150,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of offerings
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function offerings()
     {
@@ -160,7 +160,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of members
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function members()
     {
@@ -180,7 +180,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of pages
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function pages()
     {

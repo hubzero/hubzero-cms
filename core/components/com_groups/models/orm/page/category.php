@@ -49,7 +49,7 @@ class Category extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {
@@ -59,7 +59,7 @@ class Category extends Relational
     /**
      * Get pages assigned to this category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function pages()
     {

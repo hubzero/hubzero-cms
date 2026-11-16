@@ -110,7 +110,7 @@ class Log extends Relational
     /**
      * Get parent tag
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function tag()
     {
@@ -120,7 +120,7 @@ class Log extends Relational
     /**
      * Actor profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function actor()
     {

@@ -100,7 +100,7 @@ class Option extends Relational
     /**
      * Get parent field
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function field()
     {

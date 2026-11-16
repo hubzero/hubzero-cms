@@ -84,7 +84,7 @@ class Detector implements DetectorInterface
      * before it is considered spam.
      *
      * @param   integer  $count
-     * @return  object
+     * @return  $this
      */
     public function setMaxLinkAllowed($count)
     {
@@ -107,7 +107,7 @@ class Detector implements DetectorInterface
      * Set the max ratio (of links to text)
      *
      * @param   integer  $ratio
-     * @return  object
+     * @return  $this
      */
     public function setMaxRatio($ratio)
     {
@@ -130,7 +130,7 @@ class Detector implements DetectorInterface
      * Set the link validation setting
      *
      * @param   integer  $validate
-     * @return  object
+     * @return  $this
      */
     public function setLinkValidation($validate)
     {

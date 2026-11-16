@@ -160,7 +160,7 @@ class Exception extends \Exception
      *
      * @param   string  $property  The name of the property
      * @param   mixed   $value     The value of the property to set
-     * @return  object
+     * @return  $this
      */
     public function set($property, $value = null)
     {

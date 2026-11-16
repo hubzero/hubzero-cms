@@ -78,7 +78,7 @@ class Tags extends Cloud
      * Append a tag to the internal cloud
      *
      * @param   mixed   $tag
-     * @return  object
+     * @return  $this
      */
     public function append($tag)
     {

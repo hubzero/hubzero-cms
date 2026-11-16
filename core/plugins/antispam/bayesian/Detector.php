@@ -69,7 +69,7 @@ class Detector implements DetectorInterface
      * Set the threshold
      *
      * @param   float   $threshold
-     * @return  object
+     * @return  $this
      */
     public function setThreshold($threshold)
     {
@@ -183,7 +183,7 @@ class Detector implements DetectorInterface
     /**
      * Get token count
      *
-     * @return  object
+     * @return  \Plugins\Antispam\Bayesian\Models\TokenCount
      */
     protected function getTokensCount()
     {

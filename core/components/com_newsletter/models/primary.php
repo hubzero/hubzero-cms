@@ -72,7 +72,7 @@ class Primary extends Relational
     /**
      * Defines a belongs to one relationship between newsletter and story
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function newsletter()
     {

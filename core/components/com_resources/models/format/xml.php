@@ -57,7 +57,7 @@ class XML extends Base
      *
      * @param   string  $data     XML formatted string to convert.
      * @param   array<mixed>   $options  Options used by the formatter.
-     * @return  object  Data object.
+     * @return  \stdClass  Data object.
      */
     public function stringToObject($data, $options = [])
     {

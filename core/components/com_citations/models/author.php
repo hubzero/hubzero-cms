@@ -89,7 +89,7 @@ class Author extends Relational
      * Filter by author
      *
      * @param   string  $authorString
-     * @return  object
+     * @return  $this
      **/
     public function filterByAuthor($authorString)
     {
@@ -107,7 +107,7 @@ class Author extends Relational
      *
      * @param   array<mixed>    $geoCodes
      * @param   integer  $totalOptions
-     * @return  object
+     * @return  $this
      **/
     public function filterByGeo($geoCodes, $totalOptions = 4)
     {
@@ -139,7 +139,7 @@ class Author extends Relational
      *
      * @param   array<mixed>    $types
      * @param   integer  $totalOptions
-     * @return  object
+     * @return  $this
      **/
     public function filterByAff($types, $totalOptions = 3)
     {

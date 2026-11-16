@@ -140,7 +140,7 @@ class Section extends Relational
     /**
      * Defines a belongs to one relationship between section and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -171,7 +171,7 @@ class Section extends Relational
     /**
      * Get a list of categories
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function categories()
     {
@@ -361,7 +361,7 @@ class Section extends Relational
      * Get a form
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm($data = [])
     {

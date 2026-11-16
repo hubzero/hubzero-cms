@@ -829,7 +829,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post
      * @param   array<mixed>   $filters  Filters to apply
-     * @return  object
+     * @return  \stdClass
      */
     protected function thread($post, $filters = [])
     {
@@ -907,7 +907,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
-     * @return  object
+     * @return  \stdClass
      */
     protected function threadsSearch($post, $filters = [])
     {
@@ -971,7 +971,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
-     * @return  object
+     * @return  \stdClass
      */
     protected function postThreads($post, $filters = [])
     {
@@ -1045,7 +1045,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array<mixed>   $filters  Filters to apply
-     * @return  object|array<mixed>
+     * @return  \stdClass|array<mixed>
      */
     protected function posts($post, $filters = [])
     {

@@ -74,7 +74,7 @@ class Refreshtoken extends Relational
      * Load code details by token
      *
      * @param   string  $token
-     * @return  object
+     * @return  static
      */
     public static function oneByToken($token)
     {
@@ -115,7 +115,7 @@ class Refreshtoken extends Relational
     /**
      * Return Instance of application for token
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function application()
     {

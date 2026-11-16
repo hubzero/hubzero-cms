@@ -97,7 +97,7 @@ class Coupons
      * @param   bool        $returnConditions flag whether to query/return  coupon conditions
      * @param   bool        $returnAction flag whether to query/return  coupon action
      * @param   bool        $returnInfo flag whether to query/return  coupon generic info
-     * @return  object      coupon info
+     * @return  \stdClass      coupon info
      */
     public function getCouponInfo(
         $cnId,

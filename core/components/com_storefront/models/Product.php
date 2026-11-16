@@ -1191,7 +1191,7 @@ class Product
     /**
      * Get product meta
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function getMeta()
     {

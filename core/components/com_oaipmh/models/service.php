@@ -114,7 +114,7 @@ class Service extends Obj
      * Set the database connection
      *
      * @param   \Hubzero\Database\Driver $db    Database connection
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setDbo(Driver $db)
     {
@@ -207,7 +207,7 @@ class Service extends Obj
      * Set the response object
      *
      * @param   \Components\Oaipmh\Models\Xml\Response $response
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setResponse(Response $response)
     {
@@ -233,7 +233,7 @@ class Service extends Obj
      * the event method where plugins can
      * register providers.
      *
-     * @return  object
+     * @return  $this
      */
     private function loadProviders()
     {
@@ -247,7 +247,7 @@ class Service extends Obj
      *
      * @param   string  $key
      * @param   \Components\Oaipmh\Models\Provider $provider
-     * @return  object
+     * @return  $this
      */
     public function register($key, Provider $provider)
     {
@@ -272,7 +272,7 @@ class Service extends Obj
      * @param   string  $error
      * @param   string|null  $message
      * @param   string|null  $verb
-     * @return  object
+     * @return  $this
      */
     public function error($error = '', $message = null, $verb = null)
     {
@@ -297,7 +297,7 @@ class Service extends Obj
     /**
      * Identify the service
      *
-     * @return  object
+     * @return  $this
      */
     public function identify()
     {
@@ -331,7 +331,7 @@ class Service extends Obj
     /**
      * List formats
      *
-     * @return  object
+     * @return  $this
      */
     public function formats()
     {

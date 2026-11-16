@@ -81,7 +81,7 @@ class Data extends Relational
     /**
      * Defines a belongs to one relationship between entry and Link
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function link()
     {

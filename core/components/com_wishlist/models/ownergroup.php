@@ -35,7 +35,7 @@ class Ownergroup extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\User\Group
      */
     public function group()
     {
@@ -47,7 +47,7 @@ class Ownergroup extends Relational
     /**
      * Get the owning wishlist
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wishlist()
     {
@@ -59,7 +59,7 @@ class Ownergroup extends Relational
      *
      * @param   integer  $wishlist
      * @param   integer  $groupid
-     * @return  object
+     * @return  static
      */
     public static function oneByWishlistAndGroup($wishlist, $groupid)
     {

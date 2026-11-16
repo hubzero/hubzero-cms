@@ -233,7 +233,7 @@ class Field extends Relational
     /**
      * Get answers
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function answers()
     {
@@ -255,7 +255,7 @@ class Field extends Relational
      * Get fields for group, including answers provided.
      *
      * @param   integer  $group_id
-     * @return  object    Hubzero\Database\Rows
+     * @return  static    Hubzero\Database\Rows
      */
     public static function getAllGroupFields($group_id)
     {
@@ -387,7 +387,7 @@ class Field extends Relational
     /**
      * Get field options
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function options()
     {
@@ -651,7 +651,7 @@ class Field extends Relational
      * Load a record by name
      *
      * @param   string  $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {

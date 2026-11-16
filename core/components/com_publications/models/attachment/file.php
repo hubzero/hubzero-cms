@@ -58,7 +58,7 @@ class File extends Base
      * @param   integer  $elementId
      * @param   object   $pub
      * @param   object   $blockParams
-     * @return  object
+     * @return  \stdClass
      */
     public function getConfigs($element, $elementId, $pub, $blockParams)
     {
@@ -1719,7 +1719,7 @@ class File extends Base
      *
      * @param   object  $element
      * @param   array<mixed>   $attachments
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($element, $attachments)
     {
@@ -1843,7 +1843,7 @@ class File extends Base
      * @param   object   $att
      * @param   object   $view
      * @param   integer  $i
-     * @return  object
+     * @return  \Components\Projects\Models\File
      */
     public function buildDataObject($att, $view, $i = 1)
     {

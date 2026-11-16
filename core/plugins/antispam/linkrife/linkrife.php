@@ -18,7 +18,7 @@ class Linkrife extends Plugin
     /**
      * Instantiate and return a spam detector.
      *
-     * @return  object  Hubzero\Spam\Detector\DetectorInterface
+     * @return  \Plugins\Antispam\LinkRife\Detector  Hubzero\Spam\Detector\DetectorInterface
      * @since   1.3.2
      */
     public function onAntispamDetector()

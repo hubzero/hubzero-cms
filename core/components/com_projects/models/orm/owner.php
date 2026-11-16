@@ -18,6 +18,8 @@ use Hubzero\User\Group;
  * @uses  \Hubzero\Database\Relational
  *
  * @property-read  mixed  $user  What user() gives
+ *
+ * @property-read  mixed  $params  What transformParams() gives
  */
 class Owner extends Relational
 {
@@ -58,7 +60,7 @@ class Owner extends Relational
     /**
      * Defines a belongs to one relationship between owner and project
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function project()
     {
@@ -68,7 +70,7 @@ class Owner extends Relational
     /**
      * Defines a belongs to one relationship between owner and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -94,7 +96,7 @@ class Owner extends Relational
      *
      * @param   integer  $projectid
      * @param   integer  $userid
-     * @return  object
+     * @return  static
      */
     public static function oneByProjectAndUser($projectid, $userid)
     {
@@ -108,7 +110,7 @@ class Owner extends Relational
      * Get managers for a project
      *
      * @param   integer  $projectid
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function getProjectManagers($projectid)
     {

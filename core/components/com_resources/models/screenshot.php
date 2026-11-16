@@ -183,7 +183,7 @@ class Screenshot extends Relational
      * @param   string   $filename
      * @param   integer  $resourceid
      * @param   integer  $versionid
-     * @return  object
+     * @return  static
      */
     public static function oneByFilename($filename, $resourceid = 0, $versionid = 0)
     {

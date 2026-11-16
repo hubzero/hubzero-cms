@@ -406,7 +406,7 @@ class Domainrestriction extends Plugin
      * Get user by username
      *
      * @param   string  $username
-     * @return  object
+     * @return  \Hubzero\User\User
      */
     private function getUser($username)
     {

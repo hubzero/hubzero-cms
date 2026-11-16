@@ -115,7 +115,7 @@ class Response extends Relational
     /**
      * Defines a belongs to one relationship between response and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -125,7 +125,7 @@ class Response extends Relational
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function replies()
     {
@@ -135,7 +135,7 @@ class Response extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {
@@ -145,7 +145,7 @@ class Response extends Relational
     /**
      * Defines a belongs to one relationship between question and response
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function question()
     {
@@ -188,7 +188,7 @@ class Response extends Relational
             ->limit(1)
             ->row();
 
-        if (!$vote || !$vote->get('id')) {
+        if (!$vote->get('id')) {
             $vote = new Vote();
             $vote->set('item_type', 'response');
             $vote->set('item_id', $this->get('id'));

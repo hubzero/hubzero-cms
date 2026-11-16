@@ -260,7 +260,7 @@ class Macro
      * Set all macro argument values
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  $this
      */
     protected function setArguments($data)
     {
@@ -274,7 +274,7 @@ class Macro
      *
      * @param   mixed   $key
      * @param   mixed   $val
-     * @return  object
+     * @return  $this
      */
     protected function setArgument($key, $val)
     {

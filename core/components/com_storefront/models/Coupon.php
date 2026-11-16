@@ -309,7 +309,7 @@ class Coupon
     /**
      * Add coupon to the warehouse
      *
-     * @return object|null   info
+     * @return \stdClass|null   info
      */
     public function add()
     {

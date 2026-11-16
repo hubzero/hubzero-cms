@@ -26,7 +26,7 @@ abstract class AbstractHelper implements HelperInterface
      * Set the View object
      *
      * @param   \Hubzero\View\View $view
-     * @return  object
+     * @return  $this
      */
     public function setView(View $view)
     {

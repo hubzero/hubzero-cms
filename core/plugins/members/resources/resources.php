@@ -116,7 +116,7 @@ class Resources extends Plugin
      * @param   integer  $limitstart  Record return start
      * @param   string   $sort        Field to sort records on
      * @param   array<mixed>|null    $areas       Areas to return data for
-     * @return  array<mixed>
+     * @return  array<mixed>|\Hubzero\Database\Rows
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -294,7 +294,7 @@ class Resources extends Plugin
      * Include needed libraries and push scripts and CSS to the document
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  \Components\Resources\Models\Entry
      */
     public static function allWithFilters($filters = [])
     {

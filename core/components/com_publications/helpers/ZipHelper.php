@@ -31,7 +31,7 @@ class ZipHelper
      * Load bundle archive
      *
      * @param    string  $path
-     * @return   object  \ZipArchive
+     * @return   \ZipArchive  \ZipArchive
      */
     protected static function getArchive($path)
     {

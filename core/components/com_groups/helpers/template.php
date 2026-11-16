@@ -46,7 +46,7 @@ class Template extends Document
     /**
      * Override parse template to get document content
      *
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function parse()
     {
@@ -88,7 +88,7 @@ class Template extends Document
      * Fetches Template File
      *
      * @param   string  $base
-     * @return  object  $this
+     * @return  $this  $this
      */
     private function fetch($base)
     {

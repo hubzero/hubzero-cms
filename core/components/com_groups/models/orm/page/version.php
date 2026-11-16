@@ -59,7 +59,7 @@ class Version extends Relational
     /**
      * Get parent page
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {
@@ -69,7 +69,7 @@ class Version extends Relational
     /**
      * Defines a belongs to one relationship between category and creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

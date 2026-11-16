@@ -16,6 +16,8 @@ use Hubzero\Facades\Date;
  *
  * @property  string|null  $title
  * @property  int|string|null  $voters
+ *
+ * @property  int|string|null  $id
  */
 class Poll extends Relational
 {
@@ -72,7 +74,7 @@ class Poll extends Relational
     /**
      * Get a list of options
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function options()
     {
@@ -82,7 +84,7 @@ class Poll extends Relational
     /**
      * Get a list of vote dates
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function dates()
     {
@@ -92,7 +94,7 @@ class Poll extends Relational
     /**
      * Defines a belongs to one relationship between poll and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -102,7 +104,7 @@ class Poll extends Relational
     /**
      * Get the latest poll
      *
-     * @return  object
+     * @return  static
      */
     public static function current()
     {

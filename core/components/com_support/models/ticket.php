@@ -242,7 +242,7 @@ class Ticket extends Relational
     /**
      * Get the owner object
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function assignee()
     {
@@ -252,7 +252,7 @@ class Ticket extends Relational
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function submitter()
     {
@@ -288,7 +288,7 @@ class Ticket extends Relational
     /**
      * Get the owner group object
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function group()
     {
@@ -298,7 +298,7 @@ class Ticket extends Relational
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
     {
@@ -308,7 +308,7 @@ class Ticket extends Relational
     /**
      * Get a list of attachments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function attachments()
     {
@@ -318,7 +318,7 @@ class Ticket extends Relational
     /**
      * Get a list of watchers
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function watchers()
     {
@@ -328,7 +328,7 @@ class Ticket extends Relational
     /**
      * Get status
      *
-     * @return  object
+     * @return  \Components\Support\Models\Status
      */
     public function transformStatus()
     {
@@ -521,7 +521,7 @@ class Ticket extends Relational
     /**
      * Mark a ticket as open
      *
-     * @return  object
+     * @return  $this
      */
     public function open()
     {
@@ -537,7 +537,7 @@ class Ticket extends Relational
      * Mark a ticket as closed
      *
      * @param   string  $resolution
-     * @return  object
+     * @return  $this
      */
     public function close($resolution = '')
     {

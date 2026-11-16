@@ -80,7 +80,7 @@ class Level extends Relational
      * Get field by label
      *
      * @param   string  $label
-     * @return  object
+     * @return  static
      */
     public static function oneByLabel($label)
     {

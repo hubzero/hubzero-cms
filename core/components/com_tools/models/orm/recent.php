@@ -58,7 +58,7 @@ class Recent extends Relational
     /**
      * Get relationship to user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function user()
     {
@@ -68,7 +68,7 @@ class Recent extends Relational
     /**
      * Get relationship to tool
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function tool()
     {

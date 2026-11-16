@@ -266,7 +266,7 @@ abstract class Cart
     /**
      * Get cart items from the database
      *
-     * @return  object  Object with two elements: array of SKU info in the cart and array of SKU IDs in the cart
+     * @return  \stdClass  Object with two elements: array of SKU info in the cart and array of SKU IDs in the cart
      */
     protected function getCartItems()
     {

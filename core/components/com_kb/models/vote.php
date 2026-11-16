@@ -92,7 +92,7 @@ class Vote extends Relational
     /**
      * Defines a belongs to one relationship between article and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function voter()
     {

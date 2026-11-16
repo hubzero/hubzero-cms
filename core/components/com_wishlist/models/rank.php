@@ -94,7 +94,7 @@ class Rank extends Relational
     /**
      * Get the owning wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wish()
     {
@@ -104,7 +104,7 @@ class Rank extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -137,7 +137,7 @@ class Rank extends Relational
      *
      * @param   integer  $userid
      * @param   integer  $wishid
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndWish($userid, $wishid)
     {

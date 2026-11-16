@@ -255,7 +255,7 @@ class Base extends Obj
      *
      * @param   string  $content  The content to be set in the buffer.
      * @param   array<mixed>   $options  Array of optional elements.
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setBuffer($content, $options = [])
     {
@@ -301,7 +301,7 @@ class Base extends Obj
      * @param   string   $content     Value of the content tag
      * @param   boolean  $http_equiv  META type "http-equiv" defaults to null
      * @param   boolean  $sync        Should http-equiv="content-type" by synced with HTTP-header?
-     * @return  object   Document instance of $this to allow chaining
+     * @return  $this   Document instance of $this to allow chaining
      */
     public function setMetaData($name, $content, $http_equiv = false, $sync = true)
     {
@@ -334,7 +334,7 @@ class Base extends Obj
      * @param   string   $type   Type of script. Defaults to 'text/javascript'
      * @param   boolean  $defer  Adds the defer attribute.
      * @param   boolean  $async  Adds the async attribute.
-     * @return  object   Document instance of $this to allow chaining
+     * @return  $this   Document instance of $this to allow chaining
      */
     public function addScript($url, $type = "text/javascript", $defer = false, $async = false)
     {
@@ -350,7 +350,7 @@ class Base extends Obj
      *
      * @param   string  $content  Script
      * @param   string  $type     Scripting mime (defaults to 'text/javascript')
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function addScriptDeclaration($content, $type = 'text/javascript')
     {
@@ -370,7 +370,7 @@ class Base extends Obj
      * @param   string  $type     Mime encoding type
      * @param   string|null  $media    Media type that this stylesheet applies to
      * @param   array<mixed>   $attribs  Array of attributes
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])
     {
@@ -386,7 +386,7 @@ class Base extends Obj
      *
      * @param   string  $content  Style declarations
      * @param   string  $type     Type of stylesheet (defaults to 'text/css')
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function addStyleDeclaration($content, $type = 'text/css')
     {
@@ -403,7 +403,7 @@ class Base extends Obj
      * Sets the document charset
      *
      * @param   string  $type  Charset encoding string
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setCharset($type = 'utf-8')
     {
@@ -426,7 +426,7 @@ class Base extends Obj
      * Sets the global document language declaration. Default is English (en-gb).
      *
      * @param   string  $lang  The language to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setLanguage($lang = 'en-gb')
     {
@@ -449,7 +449,7 @@ class Base extends Obj
      * Sets the global document direction declaration. Default is left-to-right (ltr).
      *
      * @param   string  $dir  The language direction to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setDirection($dir = 'ltr')
     {
@@ -537,7 +537,7 @@ class Base extends Obj
      * Sets the title of the document
      *
      * @param   string  $title  The title to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setTitle($title)
     {
@@ -560,7 +560,7 @@ class Base extends Obj
      * Sets the base URI of the document
      *
      * @param   string  $base  The base URI to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setBase($base)
     {
@@ -583,7 +583,7 @@ class Base extends Obj
      * Sets the description of the document
      *
      * @param   string  $description  The description to set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setDescription($description)
     {
@@ -606,7 +606,7 @@ class Base extends Obj
      * Sets the document link
      *
      * @param   string  $url  A url
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setLink($url)
     {
@@ -629,7 +629,7 @@ class Base extends Obj
      * Sets the document generator
      *
      * @param   string  $generator  The generator to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setGenerator($generator)
     {
@@ -652,7 +652,7 @@ class Base extends Obj
      * Sets the document modified date
      *
      * @param   string  $date  The date to be set
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setModifiedDate($date)
     {
@@ -676,7 +676,7 @@ class Base extends Obj
      *
      * @param   string   $type  The document type to be sent
      * @param   boolean  $sync  Should the type be synced with HTML?
-     * @return  object   Document instance of $this to allow chaining
+     * @return  $this   Document instance of $this to allow chaining
      */
     public function setMimeEncoding($type = 'text/html', $sync = true)
     {
@@ -704,7 +704,7 @@ class Base extends Obj
      * Sets the line end style to Windows, Mac, Unix or a custom string.
      *
      * @param   string  $style  "win", "mac", "unix" or custom string.
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setLineEnd($style)
     {
@@ -743,7 +743,7 @@ class Base extends Obj
      * Sets the string used to indent HTML
      *
      * @param   string  $string  String used to indent ("\11", "\t", '  ', etc.).
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function setTab($string)
     {
@@ -783,7 +783,7 @@ class Base extends Obj
      * Parses the document and prepares the buffers
      *
      * @param   array<mixed>   $params  The array of parameters
-     * @return  object  Document instance of $this to allow chaining
+     * @return  $this  Document instance of $this to allow chaining
      */
     public function parse($params = [])
     {

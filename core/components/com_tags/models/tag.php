@@ -464,7 +464,7 @@ class Tag extends Relational
     /**
      * Creator profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -474,7 +474,7 @@ class Tag extends Relational
     /**
      * Get a list of substitutes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function substitutes()
     {
@@ -500,7 +500,7 @@ class Tag extends Relational
     /**
      * Get a list of objects
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function objects()
     {
@@ -510,7 +510,7 @@ class Tag extends Relational
     /**
      * Get a list of logs
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function logs()
     {

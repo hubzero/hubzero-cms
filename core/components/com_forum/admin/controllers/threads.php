@@ -477,7 +477,9 @@ class Threads extends AdminController
             $form = $post->getForm($data);
             $data = $form->filter($data);
             if (!$form->validate($data)) {
-                Notify::error($form->getError());
+                foreach ($form->getErrors() as $error) {
+                    Notify::error($error instanceof \Exception ? $error->getMessage() : (string) $error);
+                }
             }
 
             $post->assetRules = new \Hubzero\Access\Rules($data['rules']);

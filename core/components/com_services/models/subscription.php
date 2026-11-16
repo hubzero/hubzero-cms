@@ -93,7 +93,7 @@ class Subscription extends Relational
     /**
      * Get the related service
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function service()
     {
@@ -103,7 +103,7 @@ class Subscription extends Relational
     /**
      * Generates a list of authors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function user()
     {

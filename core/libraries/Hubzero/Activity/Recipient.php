@@ -13,6 +13,8 @@ use Hubzero\Utility\Date;
 
 /**
  * Activity recipient
+ *
+ * @property-read  mixed  $log  What log() gives
  */
 class Recipient extends Relational
 {
@@ -60,7 +62,7 @@ class Recipient extends Relational
     /**
      * Defines a belongs to one relationship between recipient and log
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function log()
     {
@@ -161,7 +163,7 @@ class Recipient extends Relational
     /**
      * Modify query to only return published entries
      *
-     * @return  object
+     * @return  $this
      */
     public function wherePublished()
     {

@@ -99,7 +99,7 @@ class Domain extends Relational
     /**
      * Get associated links
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function links()
     {

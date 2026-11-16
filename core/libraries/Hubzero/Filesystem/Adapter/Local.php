@@ -462,7 +462,7 @@ class Local implements AdapterInterface
 
     /**
      * @param   string  $path
-     * @return  object  RecursiveIteratorIterator
+     * @return  \RecursiveIteratorIterator<\RecursiveDirectoryIterator>
      */
     protected function getRecursiveDirectoryIterator($path)
     {
@@ -474,7 +474,7 @@ class Local implements AdapterInterface
 
     /**
      * @param   string  $path
-     * @return  object  DirectoryIterator
+     * @return  \DirectoryIterator  DirectoryIterator
      */
     protected function getDirectoryIterator($path)
     {

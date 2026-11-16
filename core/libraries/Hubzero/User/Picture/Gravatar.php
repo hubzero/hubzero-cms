@@ -73,7 +73,7 @@ class Gravatar implements Resolver
      *
      * @param   string  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function set($key, $value)
     {

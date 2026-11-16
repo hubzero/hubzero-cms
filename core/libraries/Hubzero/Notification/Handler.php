@@ -37,7 +37,7 @@ class Handler
      *
      * @param   string  $message
      * @param   string|null  $domain
-     * @return  object
+     * @return  $this
      */
     public function info($message, $domain = null)
     {
@@ -51,7 +51,7 @@ class Handler
      *
      * @param   string  $message
      * @param   string|null  $domain
-     * @return  object
+     * @return  $this
      */
     public function success($message, $domain = null)
     {
@@ -65,7 +65,7 @@ class Handler
      *
      * @param   string  $message
      * @param   string|null  $domain
-     * @return  object
+     * @return  $this
      */
     public function error($message, $domain = null)
     {
@@ -79,7 +79,7 @@ class Handler
      *
      * @param   string  $message
      * @param   string|null  $domain
-     * @return  object
+     * @return  $this
      */
     public function warning($message, $domain = null)
     {
@@ -162,7 +162,7 @@ class Handler
      * Clear all messages
      *
      * @param   string|null  $domain
-     * @return  object
+     * @return  $this
      */
     public function clear($domain = null)
     {

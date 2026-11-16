@@ -44,7 +44,7 @@ class Attachment extends Relational
     /**
      * The mailing this attachment belongs to
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function mailing()
     {

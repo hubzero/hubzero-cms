@@ -181,7 +181,7 @@ class Question extends Relational
     /**
      * Defines a belongs to one relationship between question and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -191,7 +191,7 @@ class Question extends Relational
     /**
      * Get a list of responses
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function responses()
     {
@@ -332,7 +332,7 @@ class Question extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {
@@ -375,7 +375,7 @@ class Question extends Relational
             ->limit(1)
             ->row();
 
-        if (!$vote || !$vote->get('id')) {
+        if (!$vote->get('id')) {
             $vote = new Vote();
             $vote->set('item_type', 'question');
             $vote->set('item_id', $this->get('id'));

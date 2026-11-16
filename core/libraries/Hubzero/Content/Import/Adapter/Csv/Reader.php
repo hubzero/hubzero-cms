@@ -92,7 +92,7 @@ class Reader implements Iterator
     /**
      * Get the current row
      *
-     * @return  object|null  Row as a stdClass
+     * @return  \stdClass|null  Row as a stdClass
      */
 
     #[\ReturnTypeWillChange]

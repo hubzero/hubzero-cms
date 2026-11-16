@@ -458,7 +458,7 @@ class Tool extends Base
      *
      * @param   object  $element
      * @param   array<mixed>   $attachments
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($element, $attachments)
     {
@@ -501,7 +501,7 @@ class Tool extends Base
      * @param   object   $att
      * @param   object   $view
      * @param   integer  $i
-     * @return  object
+     * @return  \stdClass
      */
     public function buildDataObject($att, $view, $i = 1)
     {

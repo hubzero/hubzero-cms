@@ -22,7 +22,7 @@ class Massmail extends Plugin
     /**
      * Return a list of events
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function onCronEvents()
     {

@@ -122,7 +122,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship between audience and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -132,7 +132,7 @@ class Audience extends Relational
     /**
      * Defines a belongs to one relationship between resource and audience
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function resource()
     {

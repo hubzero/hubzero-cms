@@ -81,7 +81,7 @@ class Detector implements DetectorInterface
      *
      * @param   string|array<mixed>  $vars   List of blacklisted words
      * @param   bool    $regex  Flags word as regex pattern
-     * @return  object
+     * @return  $this
      */
     public function add($vars, $regex = false)
     {
@@ -100,7 +100,7 @@ class Detector implements DetectorInterface
      * Set model
      *
      * @param   object  $model
-     * @return  object
+     * @return  $this
      * @throws  Exception
      */
     public function setModel($model)
@@ -128,7 +128,7 @@ class Detector implements DetectorInterface
      * Set the flag for rebuilding the regex
      *
      * @param   boolean  $flag
-     * @return  object
+     * @return  $this
      */
     public function rebuildRegex($flag)
     {

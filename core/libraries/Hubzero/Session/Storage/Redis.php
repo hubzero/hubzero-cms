@@ -162,7 +162,7 @@ class Redis extends Store
      * Get single session data as an object
      *
      * @param   string  $id  Session Id
-     * @return  object
+     * @return  \stdClass
      */
     public function session($id)
     {

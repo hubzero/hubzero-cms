@@ -15,6 +15,10 @@ use Hubzero\Facades\App;
  * media tracking model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  int|string|null  $current_position
+ * @property  int|string|null  $farthest_position
+ * @property  int|string|null  $object_duration
  */
 class Mediatracking extends Relational
 {
@@ -47,7 +51,7 @@ class Mediatracking extends Relational
      * @param   int|string  $object_id    Object ID
      * @param   string  $object_type  Object type
      * @param   string|int $user_id      User ID
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndObject($object_id, $object_type, $user_id = 0)
     {

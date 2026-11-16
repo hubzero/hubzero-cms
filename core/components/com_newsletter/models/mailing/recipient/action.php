@@ -49,7 +49,7 @@ class Action extends Relational
     /**
      * Defines a belongs to one relationship between mailing and recipient
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function mailing()
     {
@@ -62,7 +62,7 @@ class Action extends Relational
      * @param   integer  $mailingid
      * @param   string   $email
      * @param   string   $action
-     * @return  object
+     * @return  static
      */
     public static function oneForMailingAndEmail($mailingid, $email, $action)
     {

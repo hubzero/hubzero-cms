@@ -55,7 +55,7 @@ class Cookie
      * Retrieve a cookie
      *
      * @param  string   $namespace - make sure the cookie name is unique
-     * @return object|false $cookie data
+     * @return \stdClass|false $cookie data
      **/
     public static function eat($namespace)
     {

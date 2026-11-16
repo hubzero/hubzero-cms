@@ -60,7 +60,7 @@ class Seen extends Relational
     /**
      * Defines a belongs to one relationship between entry and message
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function message()
     {
@@ -70,7 +70,7 @@ class Seen extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -82,7 +82,7 @@ class Seen extends Relational
      *
      * @param   integer  $mid  Message ID
      * @param   integer  $uid  User ID
-     * @return  object
+     * @return  static
      */
     public static function oneByMessageAndUser($mid, $uid)
     {

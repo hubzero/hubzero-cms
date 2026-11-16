@@ -149,7 +149,7 @@ class Asset extends Relational
     /**
      * Creator profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -159,7 +159,7 @@ class Asset extends Relational
     /**
      * Get represented item
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function item()
     {

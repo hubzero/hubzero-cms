@@ -48,7 +48,7 @@ class Response extends Element
 
     /**
      * @param   string  $styles
-     * @return  object
+     * @return  $this
      */
     public function stylesheet($styles)
     {

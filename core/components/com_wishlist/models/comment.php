@@ -32,7 +32,7 @@ class Comment extends ItemComment
     /**
      * Get the attachments on the wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {

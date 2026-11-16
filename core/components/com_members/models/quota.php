@@ -56,7 +56,7 @@ class Quota extends Relational
     /**
      * Get parent user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -66,7 +66,7 @@ class Quota extends Relational
     /**
      * Get parent quota category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function category()
     {

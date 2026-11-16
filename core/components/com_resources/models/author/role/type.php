@@ -51,7 +51,7 @@ class Type extends Relational
     /**
      * Get associated role
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function role()
     {
@@ -61,7 +61,7 @@ class Type extends Relational
     /**
      * Get associated type
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function type()
     {
@@ -73,7 +73,7 @@ class Type extends Relational
      *
      * @param   integer  $role_id
      * @param   integer  $type_id
-     * @return  object
+     * @return  static
      */
     public static function oneByRoleAndType($role_id, $type_id)
     {

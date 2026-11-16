@@ -182,7 +182,7 @@ class Module extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -195,7 +195,7 @@ class Module extends Relational
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {

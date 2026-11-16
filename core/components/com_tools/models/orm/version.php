@@ -49,7 +49,7 @@ class Version extends Relational
     /**
      * Get a list of versions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function tool()
     {

@@ -59,7 +59,7 @@ class Manager extends Relational
     /**
      * Defines a belongs to one relationship between user and entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -69,7 +69,7 @@ class Manager extends Relational
     /**
      * Defines a belongs to one relationship between group and entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {
@@ -81,7 +81,7 @@ class Manager extends Relational
      *
      * @param   integer  $gidNumber
      * @param   integer  $uidNumber
-     * @return  object
+     * @return  static
      */
     public static function oneByGroupAndUser($gidNumber, $uidNumber)
     {

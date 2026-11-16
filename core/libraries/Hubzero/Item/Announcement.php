@@ -126,7 +126,7 @@ class Announcement extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

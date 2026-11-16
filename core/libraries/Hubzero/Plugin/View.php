@@ -247,7 +247,7 @@ class View extends AbstractView
      *
      * @param   string|mixed  $layout  View layout
      * @param   string|null  $name    View name
-     * @return  object
+     * @return  \Hubzero\View\View|\Hubzero\Plugin\View
      */
     public function view($layout, $name = null)
     {

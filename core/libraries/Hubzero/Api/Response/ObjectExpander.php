@@ -179,7 +179,7 @@ class ObjectExpander extends Middleware
      * Function to return profile object
      *
      * @param   integer  $user_id  User identifier
-     * @return  object   User object
+     * @return  \Hubzero\User\User   User object
      */
     private function profileExpander($user_id)
     {

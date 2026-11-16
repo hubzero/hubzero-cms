@@ -197,7 +197,7 @@ class Page extends Relational
     /**
      * Get revision
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function version()
     {
@@ -207,7 +207,7 @@ class Page extends Relational
     /**
      * Get parent page
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {
@@ -241,7 +241,7 @@ class Page extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -251,7 +251,7 @@ class Page extends Relational
     /**
      * Get revisions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function versions()
     {
@@ -261,7 +261,7 @@ class Page extends Relational
     /**
      * Get comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
     {
@@ -271,7 +271,7 @@ class Page extends Relational
     /**
      * Get attachments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -281,7 +281,7 @@ class Page extends Relational
     /**
      * Get suthors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function authors()
     {
@@ -291,7 +291,7 @@ class Page extends Relational
     /**
      * Get links
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function links()
     {
@@ -365,7 +365,7 @@ class Page extends Relational
      * @param   string   $path
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
-     * @return  object
+     * @return  static
      */
     public static function oneByPath($path, $scope = null, $scope_id = null)
     {
@@ -394,7 +394,7 @@ class Page extends Relational
      * @param   string   $title
      * @param   string|null   $scope
      * @param   integer|null  $scope_id
-     * @return  object
+     * @return  static
      */
     public static function oneByTitle($title, $scope = null, $scope_id = null)
     {

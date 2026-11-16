@@ -62,7 +62,7 @@ class Archive extends Model
      * @param   string  $rtrn    What data to return
      * @param   array<mixed>   $filters Filters to apply to data retrieval
      * @param   boolean $clear Clear cached data?
-     * @return  object
+     * @return  \Hubzero\Base\Model\ItemList
      */
     public function logs($rtrn = 'list', $filters = [], $clear = false)
     {

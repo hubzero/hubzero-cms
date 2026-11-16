@@ -108,7 +108,7 @@ class Comment extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -195,7 +195,7 @@ class Comment extends Relational
      * Get either a count of or list of replies
      *
      * @param   array<mixed>   $filters  Filters to apply to query
-     * @return  object
+     * @return  static
      */
     public function replies($filters = [])
     {
@@ -222,7 +222,7 @@ class Comment extends Relational
     /**
      * Get parent comment
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {
@@ -232,7 +232,7 @@ class Comment extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {
@@ -242,7 +242,7 @@ class Comment extends Relational
     /**
      * Get a list of files
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function files()
     {
@@ -285,7 +285,7 @@ class Comment extends Relational
             ->limit(1)
             ->row();
 
-        if (!$vote || !$vote->get('id')) {
+        if (!$vote->get('id')) {
             $vote = new Vote();
             $vote->set('item_type', 'comment');
             $vote->set('item_id', $this->get('id'));

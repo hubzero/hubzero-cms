@@ -39,7 +39,7 @@ class Utilities
     /**
      * Gets a list of the actions that can be performed.
      *
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function getActions()
     {

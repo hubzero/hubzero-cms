@@ -63,7 +63,7 @@ class Action extends Relational
      * @param   string   $component  Component name
      * @param   int|string  $element    ID of element that needs action
      * @param   integer  $uid        User ID
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function getActionItems($type, $component, $element, $uid)
     {

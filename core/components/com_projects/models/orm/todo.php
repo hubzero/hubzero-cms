@@ -132,7 +132,7 @@ class Todo extends Relational
     /**
      * Get parent project
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function project()
     {
@@ -142,7 +142,7 @@ class Todo extends Relational
     /**
      * Get creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -152,7 +152,7 @@ class Todo extends Relational
     /**
      * Get user the item is assigned to
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function owner()
     {
@@ -162,7 +162,7 @@ class Todo extends Relational
     /**
      * Get user that closed the item
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function closer()
     {
@@ -172,7 +172,7 @@ class Todo extends Relational
     /**
      * Get comments
      *
-     * @return  object
+     * @return  \Hubzero\Activity\Log
      */
     public function comments()
     {
@@ -279,7 +279,7 @@ class Todo extends Relational
      * Get lists
      *
      * @param   integer  $projectid
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function listsByProject($projectid)
     {
@@ -298,7 +298,7 @@ class Todo extends Relational
      * Get entries by project ID
      *
      * @param   integer  $projectid
-     * @return  object
+     * @return  static
      */
     public static function allByProject($projectid)
     {

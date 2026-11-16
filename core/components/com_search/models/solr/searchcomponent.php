@@ -82,7 +82,7 @@ class SearchComponent extends Relational
     /**
      * Discover searchable components
      *
-     * @return  object  Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows  Hubzero\Database\Rows
      */
     public static function getNewComponents()
     {
@@ -233,7 +233,7 @@ class SearchComponent extends Relational
     /**
      * Get filters that help sort solr resuls found for this component
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function filters()
     {

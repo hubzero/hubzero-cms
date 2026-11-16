@@ -118,7 +118,7 @@ class Component extends Relational
      * The records query the list and its count share
      *
      * @param   array<mixed>   $filters
-     * @return  object
+     * @return  static
      */
     private function recordsQuery($filters = [])
     {

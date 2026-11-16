@@ -24,6 +24,9 @@ use Hubzero\Facades\Component;
  * @property  \Hubzero\Database\Rows                          $ownergroups  The owner groups, through ownergroups()
  *
  * @property  int|string|null  $referenceid
+ *
+ * @property  string|null  $category
+ * @property  int|string|null  $public
  */
 class Wishlist extends Relational
 {
@@ -108,7 +111,7 @@ class Wishlist extends Relational
      *
      * @param   integer  $referenceid
      * @param   string   $category
-     * @return  object
+     * @return  static
      */
     public static function oneByReference($referenceid, $category)
     {
@@ -251,7 +254,7 @@ class Wishlist extends Relational
     /**
      * Get a count or list of wishes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function wishes()
     {
@@ -261,7 +264,7 @@ class Wishlist extends Relational
     /**
      * Get a list of owners
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function owners()
     {
@@ -271,7 +274,7 @@ class Wishlist extends Relational
     /**
      * Get a list of owners
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function ownergroups()
     {
@@ -380,7 +383,7 @@ class Wishlist extends Relational
      *
      * @param   string  $what  Owner type to add
      * @param   mixed   $data  integer|string|array
-     * @return  object
+     * @return  $this
      */
     public function addOwner($what, $data)
     {

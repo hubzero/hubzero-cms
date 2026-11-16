@@ -73,7 +73,7 @@ class Style extends Relational
     /**
      * Get parent template
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {

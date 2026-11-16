@@ -135,7 +135,7 @@ class Plugin extends Relational
      * Get all records
      *
      * @param   array<mixed>|null  $columns
-     * @return  object
+     * @return  static
      */
     public static function all($columns = null)
     {
@@ -193,7 +193,7 @@ class Plugin extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -219,7 +219,7 @@ class Plugin extends Relational
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {

@@ -26,7 +26,7 @@ class Nominatim extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Geocoder\Provider\Nominatim\Nominatim|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

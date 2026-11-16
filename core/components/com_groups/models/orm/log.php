@@ -77,7 +77,7 @@ class Log extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {
@@ -87,7 +87,7 @@ class Log extends Relational
     /**
      * Defines a belongs to one relationship between category and creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

@@ -34,7 +34,7 @@ if (!$this->config->get('email_terse')) {
     $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
     if ($this->ticket->submitter->get('id')) {
         $gids = [];
-        foreach (User::getInstance($this->ticket->submitter->get('id'))->accessgroups() as $g) {
+        foreach (User::getInstance($this->ticket->submitter->get('id'))->accessgroups()->rows() as $g) {
             $gids[] = $g->group_id;
         }
         $usertype = implode(', ', $gids);

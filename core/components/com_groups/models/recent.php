@@ -61,7 +61,7 @@ class Recent extends Relational
      *
      * @param   integer  $user_id
      * @param   integer  $group_id
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndGroup($user_id, $group_id)
     {

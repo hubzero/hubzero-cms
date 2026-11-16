@@ -519,7 +519,7 @@ class Media extends Base
     /**
      * Do basic file upload  (ajax upload in another function)
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function doUpload()
     {

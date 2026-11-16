@@ -29,7 +29,7 @@ class Github extends Plugin
      * manager-initiated step -- see authorize().
      *
      * @param   array<mixed>   $params  Any connection params needed
-     * @return  object
+     * @return  \Plugins\Filesystem\Github\GithubAdapter
      **/
     public static function init($params = [])
     {

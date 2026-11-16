@@ -58,7 +58,7 @@ class Vote extends Relational
     /**
      * Get represented item
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function item()
     {
@@ -68,7 +68,7 @@ class Vote extends Relational
     /**
      * Get represented item
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

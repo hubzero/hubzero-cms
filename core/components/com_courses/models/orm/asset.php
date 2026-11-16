@@ -58,7 +58,7 @@ class Asset extends Relational
     /**
      * Get parent course
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function course()
     {

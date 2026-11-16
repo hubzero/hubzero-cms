@@ -115,7 +115,7 @@ class Answer extends Relational
     /**
      * Get creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -125,7 +125,7 @@ class Answer extends Relational
     /**
      * Get parent field
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function field()
     {
@@ -135,7 +135,7 @@ class Answer extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {

@@ -108,7 +108,7 @@ class Vote extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function voter()
     {
@@ -141,7 +141,7 @@ class Vote extends Relational
      *
      * @param   integer  $voter
      * @param   integer  $referenceid
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndPublication($voter, $referenceid)
     {

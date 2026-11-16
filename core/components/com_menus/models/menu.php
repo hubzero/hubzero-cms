@@ -112,7 +112,7 @@ class Menu extends Relational
     /**
      * Get a list of menu items
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function items()
     {
@@ -122,7 +122,7 @@ class Menu extends Relational
     /**
      * Get a list of menu items
      *
-     * @return  object
+     * @return  \Components\Menus\Models\Module
      */
     public function modules()
     {
@@ -344,7 +344,7 @@ class Menu extends Relational
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {
@@ -438,7 +438,7 @@ class Menu extends Relational
      * Load a record by menutype
      *
      * @param   string  $menutype
-     * @return  object
+     * @return  static
      */
     public static function oneByMenutype($menutype)
     {

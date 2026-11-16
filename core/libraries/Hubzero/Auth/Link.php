@@ -61,7 +61,7 @@ class Link extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -71,7 +71,7 @@ class Link extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function domain()
     {
@@ -81,7 +81,7 @@ class Link extends Relational
     /**
      * Get associated data
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function data()
     {

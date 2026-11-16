@@ -692,7 +692,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {
@@ -723,7 +723,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generate search document for Solr
      *
-     * @return  object|false
+     * @return  \stdClass|false
      */
     public function searchResult()
     {

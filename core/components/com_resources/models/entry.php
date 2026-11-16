@@ -272,7 +272,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get parent type
      *
-     * @return  object
+     * @return  \Components\Resources\Models\Type
      */
     public function transformType()
     {
@@ -283,7 +283,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get logical type
      *
-     * @return  object
+     * @return  \Components\Resources\Models\Type
      */
     public function transformLogicaltype()
     {
@@ -373,7 +373,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates a list of screenshots
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function screenshots()
     {
@@ -407,7 +407,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates a list of authors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function authors()
     {
@@ -456,7 +456,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Get a list of contributors on this resource by role
      *
      * @param   mixed  $idx  Index value
-     * @return  array<mixed>
+     * @return  array<mixed>|\Hubzero\Database\Rows  The authors' rows when no index is given
      */
     public function contributors($idx = null)
     {
@@ -531,7 +531,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates a list of parents
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      */
     public function parents()
     {
@@ -542,7 +542,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Generates a list of children
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      * @since   2.0.0
      */
     public function children()
@@ -1473,7 +1473,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * @param   integer  $limit
      * @param   string   $dateField
      * @param   string   $sort
-     * @return  object
+     * @return  static
      */
     public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
     {
@@ -1513,7 +1513,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * Build a query based on commonly used filters
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  static
      */
     public static function allWithFilters($filters = [])
     {
@@ -1863,7 +1863,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

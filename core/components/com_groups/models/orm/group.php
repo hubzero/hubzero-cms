@@ -167,7 +167,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a belongs to one relationship between article and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -198,7 +198,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of applicants
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function applicants()
     {
@@ -208,7 +208,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of invitees
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function invitees()
     {
@@ -218,7 +218,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of members
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function members()
     {
@@ -228,7 +228,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of managers
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function managers()
     {
@@ -238,7 +238,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of categories
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function categories()
     {
@@ -248,7 +248,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of pages
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function pages()
     {
@@ -258,7 +258,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of modules
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function modules()
     {
@@ -268,7 +268,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of roles
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function roles()
     {
@@ -278,7 +278,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of logs
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function logs()
     {
@@ -634,7 +634,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * Load a single record by CN
      *
      * @param   string  $cn
-     * @return  object
+     * @return  static
      */
     public static function oneByCn($cn)
     {
@@ -903,7 +903,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

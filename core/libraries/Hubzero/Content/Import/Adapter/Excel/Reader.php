@@ -121,7 +121,7 @@ class Reader implements Iterator
     /**
      * Get the current row
      *
-     * @return  object  Row node as a stdClass
+     * @return  \stdClass  Row node as a stdClass
      */
 
     #[\ReturnTypeWillChange]

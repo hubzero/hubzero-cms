@@ -106,7 +106,7 @@ class Tool extends Relational
     /**
      * Get a list of versions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function versions()
     {

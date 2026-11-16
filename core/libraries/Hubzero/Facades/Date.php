@@ -37,7 +37,7 @@ class Date extends Facade
     /**
      * Get the root object behind the facade.
      *
-     * @return  object
+     * @return  \Hubzero\Utility\Date
      */
     public static function getRoot()
     {

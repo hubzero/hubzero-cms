@@ -84,7 +84,7 @@ class Hit extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {
@@ -94,7 +94,7 @@ class Hit extends Relational
     /**
      * Get parent page
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {
@@ -104,7 +104,7 @@ class Hit extends Relational
     /**
      * Defines a belongs to one relationship between hit and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

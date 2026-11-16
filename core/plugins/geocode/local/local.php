@@ -22,7 +22,7 @@ class Local extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Plugins\Geocode\Local\LocalProvider|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

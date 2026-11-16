@@ -334,7 +334,7 @@ class Wishlist extends Plugin
                 $title = ($admin)
                     ? Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED')
                     : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
-                if ($wishlist->items && count($wishlist->items) > 0 && $items > $filters['limit']) {
+                if (count($rows) > 0 && $items > $filters['limit']) {
                     $title .= ' (<a href="'
                     . Route::url('index.php?option='
                     . $option

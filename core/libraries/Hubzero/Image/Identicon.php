@@ -63,7 +63,7 @@ class Identicon
      * Set the image size
      *
      * @param   integer  $size
-     * @return  object
+     * @return  $this
      */
     public function setSize($size)
     {
@@ -87,7 +87,7 @@ class Identicon
      * Generate a hash fron the original string
      *
      * @param   string|mixed  $string
-     * @return  object
+     * @return  $this
      */
     public function setString($string)
     {
@@ -115,7 +115,7 @@ class Identicon
     /**
      * Convert the hash into an multidimensionnal array of boolean
      *
-     * @return  object
+     * @return  $this
      */
     private function convertHashToArrayOfBoolean()
     {
@@ -209,7 +209,7 @@ class Identicon
      * Set the image color
      *
      * @param   mixed   $color  The color in hexa (6 chars) or rgb array
-     * @return  object
+     * @return  $this
      */
     public function setColor($color)
     {

@@ -150,7 +150,7 @@ class Answers extends Plugin
      * Retrieve parent element
      *
      * @param      integer $parentid ID of element to retrieve
-     * @return     object
+     * @return     \Hubzero\Item\Comment
      */
     public function parent($parentid)
     {

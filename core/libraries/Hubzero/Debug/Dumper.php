@@ -82,7 +82,7 @@ class Dumper
      * Sets the renderer
      *
      * @param   mixed  $renderer  string or Renderable
-     * @return  object
+     * @return  $this
      */
     public function setRenderer($renderer)
     {
@@ -130,7 +130,7 @@ class Dumper
      * Adds a message
      *
      * @param   mixed  $var
-     * @return  object
+     * @return  $this
      */
     public function addVar($var)
     {

@@ -49,7 +49,7 @@ class Csv implements \Iterator
     /**
      * Get the current XML node
      *
-     * @return  object|null  XML node as a stdClass
+     * @return  \stdClass|null  XML node as a stdClass
      */
 
     #[\ReturnTypeWillChange]

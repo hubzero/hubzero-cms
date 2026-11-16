@@ -25,7 +25,7 @@ class Geoplugin extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Geocoder\Provider\GeoPlugin\GeoPlugin|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

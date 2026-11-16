@@ -302,7 +302,7 @@ class PdfFormDeployment
      *
      * @param   string  $where
      * @param   mixed  $section_id
-     * @return object
+     * @return \Components\Courses\Models\PdfFormDeployment
      **/
     private static function find($where, $section_id = null)
     {
@@ -572,7 +572,7 @@ class PdfFormDeployment
      *
      * @param   mixed  $fid
      * @param   array<mixed>  $data
-     * @return object
+     * @return \Components\Courses\Models\PdfFormDeployment
      **/
     public static function fromFormData($fid, $data)
     {

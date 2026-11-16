@@ -20,7 +20,7 @@ class ItemListTest extends Basic
     /**
      * A list of three, to filter down to one
      *
-     * @return  object  ItemList
+     * @return  \Hubzero\Base\ItemList  ItemList
      **/
     protected function list()
     {

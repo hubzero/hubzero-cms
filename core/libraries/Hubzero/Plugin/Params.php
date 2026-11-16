@@ -91,7 +91,7 @@ class Params extends Relational
      * @param   integer|null  $oid      Object ID (eg, group ID)
      * @param   string|null   $folder   Plugin folder
      * @param   string|null   $element  Plugin name
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public static function getCustomParams($oid = null, $folder = null, $element = null)
     {
@@ -105,7 +105,7 @@ class Params extends Relational
      *
      * @param   string|null  $folder   Plugin folder
      * @param   string|null  $element  Plugin name
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public static function getDefaultParams($folder = null, $element = null)
     {

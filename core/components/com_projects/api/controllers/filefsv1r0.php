@@ -198,7 +198,7 @@ class Filefsv1r0 extends ApiController
 
         $response->results = $this->parseResults($files);
 
-        $response->count = is_array($files) ? count($files) : 0;
+        $response->count = count($files);
 
         if ($this->model->repo()->getError()) {
             $response->error = $this->model->repo()->getError();

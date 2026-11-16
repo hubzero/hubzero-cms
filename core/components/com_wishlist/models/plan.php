@@ -88,7 +88,7 @@ class Plan extends Relational
     /**
      * Get the owning wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wish()
     {
@@ -98,7 +98,7 @@ class Plan extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

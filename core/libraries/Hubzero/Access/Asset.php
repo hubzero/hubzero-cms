@@ -12,6 +12,8 @@ use Hubzero\Database\Nested;
 
 /**
  * Access asset
+ *
+ * @property  int|string|null  $parent_id
  */
 class Asset extends Nested
 {
@@ -132,7 +134,7 @@ class Asset extends Nested
      * Method to load an asset by it's name.
      *
      * @param   string  $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {

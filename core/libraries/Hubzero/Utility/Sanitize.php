@@ -331,7 +331,7 @@ class Sanitize
      * Builds HTML purification configuration
      *
      * @param    array<mixed>    $options   Custom purifier configuration options
-     * @return   object   $config    HTML purifier configuration
+     * @return   \HTMLPurifier_Config   $config    HTML purifier configuration
      */
     protected static function buildHtmlPurifierConfig($options)
     {

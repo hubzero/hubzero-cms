@@ -372,7 +372,7 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @param   string  $task    The task.
      * @param   string  $method  The name of the method in the derived class to perform for this task.
-     * @return  object  Supports chaining.
+     * @return  $this  Supports chaining.
      */
     public function registerTask($task, $method)
     {
@@ -387,7 +387,7 @@ class SiteController extends Obj implements ControllerInterface
      * Unregister (unmap) a task in the class.
      *
      * @param   string  $task  The task.
-     * @return  object  Supports chaining.
+     * @return  $this  Supports chaining.
      */
     public function unregisterTask($task)
     {
@@ -446,7 +446,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   string|null  $msg   Message to display on redirect. Optional, defaults to
      *                         value set internally by controller, if any.
      * @param   string|null  $type  Message type. Optional, defaults to 'message'.
-     * @return  object
+     * @return  $this
      * @deprecated
      */
     public function setRedirect($url, $msg = null, $type = null)
@@ -476,7 +476,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   string  $msg   Message to display on redirect. Optional, defaults to
      *                         value set internally by controller, if any.
      * @param   string  $type  Message type. Optional, defaults to 'message'.
-     * @return  object
+     * @return  $this
      * @deprecated
      */
     public function setMessage($msg, $type = 'message')

@@ -675,7 +675,7 @@ class Warehouse extends \Hubzero\Base\Obj
      *
      * @param   int $pId         Product ID
      * @param   bool $showInactive        Flag whether to show inactive product info
-     * @return  object|false      Product info
+     * @return  \stdClass|false      Product info
      */
     public function getProductInfo($pId, $showInactive = false)
     {

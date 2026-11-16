@@ -118,7 +118,7 @@ class PdfFormRespondent
      * Save answers
      *
      * @param   mixed  $answers
-     * @return object
+     * @return $this
      **/
     public function saveAnswers($answers)
     {
@@ -277,7 +277,7 @@ class PdfFormRespondent
      *
      * @param   mixed  $qid
      * @param   mixed  $aid
-     * @return object
+     * @return $this
      **/
     public function saveProgress($qid, $aid)
     {
@@ -387,7 +387,7 @@ class PdfFormRespondent
     /**
      * Mark time someone starts form
      *
-     * @return object
+     * @return $this
      **/
     public function markStart()
     {
@@ -405,7 +405,7 @@ class PdfFormRespondent
     /**
      * Mark time someone finishes form
      *
-     * @return object
+     * @return $this
      **/
     public function markEnd()
     {

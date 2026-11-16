@@ -173,7 +173,7 @@ class Migration20261110130000ComUsage extends Base
      *
      * Found the way Migration20150904235936ComUsage finds it.
      *
-     * @return  object|null
+     * @return  \Hubzero\Database\Driver|null
      */
     protected function metricsDatabase()
     {

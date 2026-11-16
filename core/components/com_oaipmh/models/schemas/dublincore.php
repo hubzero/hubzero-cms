@@ -138,7 +138,7 @@ class DublinCore implements Schema
      * Set service
      *
      * @param   \Components\Oaipmh\Models\Service $service
-     * @return  object
+     * @return  $this
      */
     public function setService(Service &$service)
     {
@@ -161,7 +161,7 @@ class DublinCore implements Schema
      * Set response
      *
      * @param   \Components\Oaipmh\Models\Xml\Response $response
-     * @return  object
+     * @return  $this
      */
     public function setResponse(Response &$response)
     {

@@ -40,7 +40,7 @@ class Facet extends Relational
     /**
      * children
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function children()
     {
@@ -82,7 +82,7 @@ class Facet extends Relational
     /**
      * Get parent facet
      *
-     * @return  object  Components\Search\Models\Solr\Facet
+     * @return  \Hubzero\Database\Relationship\OneToOne  Components\Search\Models\Solr\Facet
      */
     public function parentFacet()
     {

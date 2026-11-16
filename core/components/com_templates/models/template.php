@@ -203,7 +203,7 @@ class Template extends Relational
     /**
      * Generates a list of template styles
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function styles()
     {

@@ -73,7 +73,7 @@ class QualifiedDC extends DublinCore
      *
      * @param   object   $result
      * @param   boolean  $metadata
-     * @return  object   $this
+     * @return  $this   $this
      */
     public function record($result, $metadata = true)
     {

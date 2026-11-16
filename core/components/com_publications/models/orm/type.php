@@ -71,7 +71,7 @@ class Type extends Relational
      * Find one record by ordering
      *
      * @param   integer  $ordering
-     * @return  object
+     * @return  static
      */
     public static function oneByOrdering($ordering)
     {

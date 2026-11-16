@@ -334,7 +334,7 @@ class Oauth extends Base implements CommandInterface
      * Load an application or fail
      *
      * @param   int  $id
-     * @return  object
+     * @return  \Components\Developer\Models\Application
      **/
     private function requireApp($id)
     {

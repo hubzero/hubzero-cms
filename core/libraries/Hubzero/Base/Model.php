@@ -132,7 +132,7 @@ abstract class Model extends Obj
      *
      * @param   string  $property  The name of the property
      * @param   mixed   $value     The value of the property to set
-     * @return  object  This current model
+     * @return  $this  This current model
      */
     public function set($property, $value = null)
     {
@@ -436,7 +436,7 @@ abstract class Model extends Obj
      * Import a set of plugins
      *
      * @param   string  $type
-     * @return  object
+     * @return  $this
      */
     public function importPlugin($type = '')
     {

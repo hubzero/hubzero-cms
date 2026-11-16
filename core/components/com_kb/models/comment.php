@@ -109,7 +109,7 @@ class Comment extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -130,7 +130,7 @@ class Comment extends Relational
      * Get either a count of or list of replies
      *
      * @param   array<mixed>  $filters  Filters to apply to query
-     * @return  object
+     * @return  static
      */
     public function replies($filters = [])
     {
@@ -154,7 +154,7 @@ class Comment extends Relational
     /**
      * Get parent comment
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {
@@ -223,7 +223,7 @@ class Comment extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {

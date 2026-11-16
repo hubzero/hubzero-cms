@@ -110,7 +110,7 @@ class Role extends Relational
     /**
      * Get group permissions
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformPermissions()
     {
@@ -122,7 +122,7 @@ class Role extends Relational
     /**
      * Get a list of members
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function members()
     {

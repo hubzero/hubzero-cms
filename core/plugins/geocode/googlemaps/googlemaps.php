@@ -25,7 +25,7 @@ class Googlemaps extends Plugin
      * @param  string  $context
      * @param  object  $adapter
      * @param  boolean $ip
-     * @return object|null
+     * @return \Geocoder\Provider\GoogleMaps\GoogleMaps|null
      */
     public function onGeocodeProvider($context, $adapter, $ip = false)
     {

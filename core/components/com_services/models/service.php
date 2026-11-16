@@ -107,7 +107,7 @@ class Service extends Relational
      * @param   string   $category      Category
      * @param   integer  $active        Active?
      * @param   string   $specialgroup  Special group name
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public static function getServices($category = 'jobs', $active = 1, $specialgroup = '')
     {

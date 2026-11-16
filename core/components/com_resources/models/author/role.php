@@ -94,7 +94,7 @@ class Role extends Relational
     /**
      * Get associated types
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      */
     public function types()
     {
@@ -129,7 +129,7 @@ class Role extends Relational
     /**
      * Defines a belongs to one relationship between article and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

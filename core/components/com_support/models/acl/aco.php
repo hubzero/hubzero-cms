@@ -49,7 +49,7 @@ class Aco extends Relational
     /**
      * Get maps
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function maps()
     {

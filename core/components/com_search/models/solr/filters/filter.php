@@ -67,7 +67,7 @@ class Filter extends Relational
     /**
      * children
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function options()
     {
@@ -142,7 +142,7 @@ class Filter extends Relational
     /**
      * Overrides Relational method so that subclasses can be loaded depending on type
      *
-     * @return  object
+     * @return  \Hubzero\Database\Rows
      */
     public function rowsFromRaw($data)
     {

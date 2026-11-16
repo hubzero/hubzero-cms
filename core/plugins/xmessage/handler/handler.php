@@ -56,13 +56,18 @@ class Handler extends Plugin
                 // Check if the user has any action items
                 if (count($mids) > 0) {
                     foreach ($mids as $mid) {
-                        $xseen = \Hubzero\Message\Seen::oneByMessageAndUser($mid, $uid);
+                        // Each row holds just the message's id
+                        $messageId = (int) $mid->get('id');
+                        $xseen = \Hubzero\Message\Seen::oneByMessageAndUser($messageId, $uid);
 
                         if (
                             $xseen->get('whenseen') == ''
                             || $xseen->get('whenseen') == $database->getNullDate()
                             || $xseen->get('whenseen') == null
                         ) {
+                            // A new record knows neither until they are set
+                            $xseen->set('mid', $messageId);
+                            $xseen->set('uid', $uid);
                             $xseen->set('whenseen', Date::toSql());
                             $xseen->save();
                         }

@@ -58,7 +58,7 @@ class Preference extends Relational
     /**
      * Get relationship to sessionclass
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function sessionclass()
     {
@@ -83,7 +83,7 @@ class Preference extends Relational
      * Retrieves one row loaded by user_id field
      *
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByUser($user_id)
     {

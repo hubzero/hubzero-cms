@@ -279,7 +279,7 @@ class Date extends DateTime
      * @param   string  $date  String in a format accepted by strtotime(), defaults to "now".
      * @param   mixed   $tz    Time zone to be used for the date.
      * @param   bool  $ignoreDst
-     * @return  object
+     * @return  \Hubzero\Utility\Date
      */
     public static function of($date = 'now', $tz = null, $ignoreDst = false)
     {
@@ -400,7 +400,7 @@ class Date extends DateTime
      * time zone object.
      *
      * @param   DateTimeZone|string  $tz  The new time zone, or its name.
-     * @return  object  The old DateTimeZone object.
+     * @return  static  The old DateTimeZone object.
      */
     #[\ReturnTypeWillChange]
     public function setTimezone($tz)
@@ -418,7 +418,7 @@ class Date extends DateTime
      * Add to the date
      *
      * @param   \DateInterval|string  $modifier  An interval, or text such as "1 day"
-     * @return  object
+     * @return  static
      * @deprecated
      */
 
@@ -436,7 +436,7 @@ class Date extends DateTime
      * Subtract from the date
      *
      * @param   string  $modifier
-     * @return  object
+     * @return  static
      * @deprecated
      */
 

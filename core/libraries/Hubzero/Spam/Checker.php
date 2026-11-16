@@ -80,7 +80,7 @@ class Checker
      * Checks if a string is spam or not
      *
      * @param   string|array<mixed>  $data
-     * @return  object
+     * @return  \Hubzero\Spam\Result
      */
     public function check($data)
     {
@@ -125,7 +125,7 @@ class Checker
      * Registers a Spam Detector
      *
      * @param   \Hubzero\Spam\Detector\DetectorInterface $spamDetector  SpamDetectorInterface
-     * @return  object  SpamDetector
+     * @return  $this  SpamDetector
      * @throws  RuntimeException
      */
     public function registerDetector(DetectorInterface $spamDetector)

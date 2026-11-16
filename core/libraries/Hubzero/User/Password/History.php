@@ -23,7 +23,7 @@ class History
      * Get an instance of a user's password History
      *
      * @param   mixed  $instance  User ID (integer) or username (string)
-     * @return  object|false
+     * @return  \Hubzero\User\Password\History|false
      */
     public static function getInstance($instance)
     {

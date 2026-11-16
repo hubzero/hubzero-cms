@@ -123,7 +123,7 @@ class Handlers extends Obj
      * @param   object   $handler
      * @param   object   $pub
      * @param   integer  $elementId
-     * @return  object
+     * @return  \Components\Publications\Models\Editor
      */
     public function loadEditor($handler, $pub, $elementId = 0)
     {

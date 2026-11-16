@@ -50,7 +50,7 @@ class Handler
      * Set the logger for the handler.
      *
      * @param   object  $logger
-     * @return  object  Chainable.
+     * @return  $this  Chainable.
      */
     public function setLogger($logger)
     {
@@ -63,7 +63,7 @@ class Handler
      * Set the render,
      *
      * @param   \Hubzero\Error\RendererInterface $renderer
-     * @return  object  Chainable.
+     * @return  $this  Chainable.
      */
     public function setRenderer(RendererInterface $renderer)
     {

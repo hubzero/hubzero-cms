@@ -143,7 +143,7 @@ class Vote extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function voter()
     {
@@ -157,7 +157,7 @@ class Vote extends Relational
      * @param   string   $item_type   Item type
      * @param   integer  $created_by  User ID
      * @param   string|null   $ip          IP address
-     * @return  object
+     * @return  static
      */
     public static function oneByScope($item_id, $item_type, $created_by = 0, $ip = null)
     {

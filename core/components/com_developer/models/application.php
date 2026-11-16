@@ -68,7 +68,7 @@ class Application extends Relational
      * Load entry by client_id
      *
      * @param   string  $client_id
-     * @return  object
+     * @return  static
      */
     public static function oneByClientId($client_id)
     {
@@ -153,7 +153,7 @@ class Application extends Relational
     /**
      * Defines a belongs to one relationship between entry and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -232,7 +232,7 @@ class Application extends Relational
     /**
      * Get the team members
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function team()
     {
@@ -302,7 +302,7 @@ class Application extends Relational
     /**
      * Get a list of application access tokens
      *
-     * @return  object  List of AccessToken objects
+     * @return  \Hubzero\Database\Relationship\OneToMany  List of AccessToken objects
      */
     public function accessTokens()
     {
@@ -329,7 +329,7 @@ class Application extends Relational
     /**
      * Get a list of application refresh tokens
      *
-     * @return  object  List of Refreshtoken objects
+     * @return  \Hubzero\Database\Relationship\OneToMany  List of Refreshtoken objects
      */
     public function refreshTokens()
     {
@@ -356,7 +356,7 @@ class Application extends Relational
     /**
      * Get a list of application authorization codes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function authorizationCodes()
     {

@@ -20,7 +20,7 @@ class Helper
     /**
      * Get the encrypter utility
      *
-     * @return  object
+     * @return  \Hubzero\Encryption\Encrypter
      */
     protected static function getEncrypter()
     {

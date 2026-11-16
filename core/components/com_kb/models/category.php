@@ -84,7 +84,7 @@ class Category extends Relational
     /**
      * Get a list of articles
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function articles()
     {
@@ -95,7 +95,7 @@ class Category extends Relational
      * Get a list of responses
      *
      * @param   array<mixed>    $filters  Filters to apply to query
-     * @return  object
+     * @return  static
      */
     public function children($filters = [])
     {
@@ -115,7 +115,7 @@ class Category extends Relational
     /**
      * Get parent section
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {
@@ -193,7 +193,7 @@ class Category extends Relational
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {

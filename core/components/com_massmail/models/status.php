@@ -25,7 +25,7 @@ class Status extends Relational
     /**
      * Fetch (or create) the single status row.
      *
-     * @return  object
+     * @return  static
      */
     public static function instance()
     {

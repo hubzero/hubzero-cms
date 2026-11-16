@@ -43,7 +43,7 @@ class Author extends Relational
     /**
      * Establish relationship to parent version
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function version()
     {

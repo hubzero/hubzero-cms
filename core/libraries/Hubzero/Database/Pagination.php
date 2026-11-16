@@ -78,7 +78,7 @@ class Pagination
      * @param   int     $total      Total number of records
      * @param   string  $start      The variable name representing the pagination start number
      * @param   string  $limit      The variable name representing the pagination limit number
-     * @return  object
+     * @return  \Hubzero\Database\Pagination
      **/
     public static function init($namespace, $total, $start = 'start', $limit = 'limit')
     {

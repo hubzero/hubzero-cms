@@ -58,7 +58,7 @@ class Group extends Relational
     /**
      * Get parent class
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function category()
     {

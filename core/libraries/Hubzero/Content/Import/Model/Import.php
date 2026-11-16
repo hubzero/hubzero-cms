@@ -92,7 +92,7 @@ class Import extends Relational
     /**
      * Get a list of runs
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function runs()
     {

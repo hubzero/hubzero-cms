@@ -71,7 +71,7 @@ class Log extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -81,7 +81,7 @@ class Log extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {

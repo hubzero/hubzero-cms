@@ -183,7 +183,7 @@ class SeedRepairTest extends Basic
             /**
              * The test database stands in for the metrics one
              *
-             * @return  object
+             * @return  \Hubzero\Database\Driver
              */
             protected function metricsDatabase()
             {

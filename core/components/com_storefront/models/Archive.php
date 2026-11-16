@@ -271,7 +271,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of products
      *
      * @param   int     $oId
-     * @return  object
+     * @return  \Components\Storefront\Models\Option
      */
     public function option($oId)
     {
@@ -383,7 +383,7 @@ class Archive extends \Hubzero\Base\Obj
      * Get a count or list of categories
      *
      * @param   int    $ogId
-     * @return  object
+     * @return  \Components\Storefront\Models\OptionGroup
      */
     public function optionGroup($ogId)
     {

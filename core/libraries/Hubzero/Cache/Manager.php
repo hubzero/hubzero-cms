@@ -161,7 +161,7 @@ class Manager
      *
      * @param   string  $driver
      * @param   \Closure $callback
-     * @return  object
+     * @return  $this
      */
     public function extend($driver, Closure $callback)
     {

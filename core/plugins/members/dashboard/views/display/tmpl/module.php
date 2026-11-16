@@ -36,11 +36,11 @@ $fields->loadFile($manifest, true, 'config/fields');
 $module = Module::render($this->module, ['style' => 'none']);
 
 // create settings sub view
-$view = $this->view('parameters');
-$view->admin  = $this->admin;
-$view->module = $this->module;
-$view->params = $params->toArray();
-$view->fields = $fields->getFieldset('basic');
+$view = $this->view('parameters')
+    ->set('admin', $this->admin)
+    ->set('module', $this->module)
+    ->set('params', $params->toArray())
+    ->set('fields', $fields->getFieldset('basic'));
 $settingsHtml = trim($view->loadTemplate());
 
 $moduleClass = 'module '

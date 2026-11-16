@@ -47,7 +47,7 @@ class Calendar extends Relational
     /**
      * Defines a one to many relationship between calendar and events
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function events()
     {

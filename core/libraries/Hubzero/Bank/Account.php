@@ -64,7 +64,7 @@ class Account extends Relational
      * Load a record by user ID
      *
      * @param   integer  $user_id  User ID
-     * @return  object
+     * @return  static
      */
     public static function oneByUserId($user_id)
     {

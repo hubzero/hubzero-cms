@@ -102,7 +102,7 @@ class Parser
      *
      * @param   string  $property  The name of the property.
      * @param   mixed   $value     The value of the property to set.
-     * @return  object  Chainable
+     * @return  $this  Chainable
      */
     public function set($property, $value = null)
     {
@@ -129,7 +129,7 @@ class Parser
      * Add a macro path
      *
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function addMacroPath($path)
     {
@@ -166,7 +166,7 @@ class Parser
     /**
      * Clear set macro paths
      *
-     * @return  object
+     * @return  $this
      */
     public function clearMacroPaths()
     {

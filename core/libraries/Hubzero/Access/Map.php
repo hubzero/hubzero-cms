@@ -60,7 +60,7 @@ class Map extends Relational
     /**
      * Defines a relationship to the User/Group Map
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -70,7 +70,7 @@ class Map extends Relational
     /**
      * Defines a relationship to the User/Group Map
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {

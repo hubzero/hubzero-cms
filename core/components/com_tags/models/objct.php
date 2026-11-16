@@ -106,7 +106,7 @@ class Objct extends Relational
     /**
      * Get parent tag
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function tag()
     {
@@ -116,7 +116,7 @@ class Objct extends Relational
     /**
      * Creator profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

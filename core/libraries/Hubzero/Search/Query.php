@@ -76,7 +76,7 @@ class Query
      * Sets the query string
      *
      * @param   mixed   $terms
-     * @return  object
+     * @return  $this
      */
     public function query($terms)
     {
@@ -88,7 +88,7 @@ class Query
      * Sets the fields to be returned by the query.
      *
      * @param   array<mixed>  $fields
-     * @return  object
+     * @return  $this
      */
     public function fields($fields)
     {
@@ -100,9 +100,9 @@ class Query
      * Adds a filter to the query
      *
      * @param   mixed   $name
-     * @param   array<mixed>   $query
+     * @param   array<mixed>|string   $query  Clauses, or a query string as it is
      * @param   string  $tag
-     * @return  object
+     * @return  $this
      */
     public function addFilter($name, $query = [], $tag = 'root_type')
     {
@@ -115,7 +115,7 @@ class Query
      *
      * @param   string  $name   Used to identify facet when result is returned.
      * @param   array<mixed>   $query  The query array with a indexes of name, operator, and value
-     * @return  object
+     * @return  $this
      */
     public function addFacet($name, $query = [])
     {
@@ -138,7 +138,7 @@ class Query
      * limit - Set the number of results to be returned
      *
      * @param   int     $limit
-     * @return  object
+     * @return  $this
      */
     public function limit($limit)
     {
@@ -170,7 +170,7 @@ class Query
      * Offset of search index results. Warning: non-deterministic.
      *
      * @param   mixed   $start
-     * @return  object
+     * @return  $this
      */
     public function start($start)
     {
@@ -183,7 +183,7 @@ class Query
      *
      * @param   mixed  $field      name of a field
      * @param   mixed  $direction  (ASC or DESC)
-     * @return  object
+     * @return  $this
      */
     public function sortBy($field, $direction)
     {
@@ -204,7 +204,7 @@ class Query
     /**
      * Applies CMS permissions for the current user.
      *
-     * @return  object
+     * @return  $this
      */
     public function restrictAccess()
     {

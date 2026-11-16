@@ -154,7 +154,7 @@ class Paginator extends Obj
      *
      * @param   string  $key    The name of the URL parameter for which to set a value.
      * @param   mixed   $value  The value to set for the URL parameter.
-     * @return  object  Paginator
+     * @return  $this  Paginator
      */
     public function setAdditionalUrlParam($key, $value)
     {
@@ -216,7 +216,7 @@ class Paginator extends Obj
      * Set the list of limit options.
      *
      * @param   array|mixed   $limits  A list of limit options
-     * @return  object  Paginator
+     * @return  $this  Paginator
      */
     public function setLimits($limits)
     {
@@ -294,7 +294,7 @@ class Paginator extends Obj
     /**
      * Create and return the pagination data object.
      *
-     * @return  object  Pagination data object.
+     * @return  \stdClass  Pagination data object.
      */
     protected function buildDataObject()
     {

@@ -111,7 +111,7 @@ class Respondent extends Table
     /**
      * Create a pagination object
      *
-     * @return  object
+     * @return  \Hubzero\Pagination\Paginator
      */
     public function getPaginator()
     {

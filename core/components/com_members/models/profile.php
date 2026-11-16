@@ -61,7 +61,7 @@ class Profile extends Relational
     /**
      * Get parent member
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -109,7 +109,7 @@ class Profile extends Relational
      *
      * @param   string   $profile_key
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByKeyAndUser($profile_key, $user_id)
     {

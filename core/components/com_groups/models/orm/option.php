@@ -121,7 +121,7 @@ class Option extends Relational
     /**
      * Get parent field
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function field()
     {
@@ -133,7 +133,7 @@ class Option extends Relational
      *
      * @param   integer  $ordering
      * @param   integer  $field_id
-     * @return  object
+     * @return  static
      */
     public static function oneByOrdering($ordering, $field_id)
     {
@@ -152,7 +152,7 @@ class Option extends Relational
      *
      * @param   string   $value
      * @param   integer  $field_id
-     * @return  object
+     * @return  static
      */
     public static function oneByValue($value, $field_id)
     {

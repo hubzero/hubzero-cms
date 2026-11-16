@@ -18,7 +18,7 @@ class Akismet extends Plugin
     /**
      * Instantiate and return a spam detector.
      *
-     * @return  object|null  Hubzero\Spam\Detector\DetectorInterface
+     * @return  \Plugins\Antispam\Akismet\Service\Provider|null  Hubzero\Spam\Detector\DetectorInterface
      * @since   1.3.2
      */
     public function onAntispamDetector()

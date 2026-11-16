@@ -71,7 +71,7 @@ class Association extends Relational
      *
      * @param   integer  $parent_id
      * @param   integer  $child_id
-     * @return  object
+     * @return  static
      */
     public static function oneByRelationship($parent_id, $child_id)
     {
@@ -110,7 +110,7 @@ class Association extends Relational
     /**
      * Get the parent this resource is attached to
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {
@@ -120,7 +120,7 @@ class Association extends Relational
     /**
      * Get the resource this represents
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function resource()
     {

@@ -130,7 +130,7 @@ class Offering extends Relational
     /**
      * Get parent course
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function course()
     {
@@ -140,7 +140,7 @@ class Offering extends Relational
     /**
      * Get sections
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function sections()
     {
@@ -150,7 +150,7 @@ class Offering extends Relational
     /**
      * Get units
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function units()
     {

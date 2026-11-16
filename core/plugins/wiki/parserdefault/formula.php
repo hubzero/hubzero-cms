@@ -50,7 +50,7 @@ class Formula extends Relational
      * Load a record by inputhash and bind to $this
      *
      * @param   string  $inputhash  Hash to load
-     * @return  object
+     * @return  static
      */
     public static function oneByInputhash($inputhash)
     {

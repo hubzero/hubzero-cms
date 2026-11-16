@@ -57,7 +57,7 @@ class Message extends \Symfony\Component\Mime\Email
      * Modified version to also accept a string $message->setPriority('high');
      *
      * @param   mixed  $priority  integer|string
-     * @return  object
+     * @return  $this
      */
     public function setPriority($priority)
     {
@@ -231,7 +231,7 @@ class Message extends \Symfony\Component\Mime\Email
      *
      * @param   mixed   $attachment  File path (string) or object (Symfony\Component\Mime\Part\DataPart)
      * @param   string|null  $filename   Optional filename to set
-     * @return  object
+     * @return  $this
      */
     public function addAttachment($attachment, $filename = null)
     {

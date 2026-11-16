@@ -60,7 +60,7 @@ class Host extends Relational
     /**
      * Get parent member
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -145,7 +145,7 @@ class Host extends Relational
      *
      * @param   string   $host
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByHostAndUser($host, $user_id)
     {

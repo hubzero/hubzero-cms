@@ -26,7 +26,7 @@ class Response extends BaseResponse
      * Should data be compressed?
      *
      * @param   boolean  $value
-     * @return  object
+     * @return  $this
      */
     public function compress($value)
     {
@@ -116,7 +116,7 @@ class Response extends BaseResponse
      * @param   string  $key
      * @param   mixed   $values
      * @param   bool    $replace
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function header($key, $values, $replace = true)
     {
@@ -129,7 +129,7 @@ class Response extends BaseResponse
      * Sends HTTP headers and content.
      *
      * @param   bool  $flush
-     * @return  object  Response
+     * @return  $this  Response
      */
     public function send($flush = false)
     {

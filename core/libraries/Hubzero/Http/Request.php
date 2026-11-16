@@ -331,7 +331,7 @@ class Request extends BaseRequest
     /**
      * Return the Request instance.
      *
-     * @return  object
+     * @return  $this
      */
     public function instance()
     {
@@ -545,7 +545,7 @@ class Request extends BaseRequest
     /**
      * Get the input source for the request.
      *
-     * @return  object
+     * @return  \Symfony\Component\HttpFoundation\InputBag
      */
     protected function getInputSource()
     {

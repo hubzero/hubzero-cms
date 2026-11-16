@@ -90,7 +90,7 @@ class TokenProb extends Relational
      * Load an entry by token
      *
      * @param   string  $token
-     * @return  object
+     * @return  static
      */
     public static function oneByToken($token)
     {

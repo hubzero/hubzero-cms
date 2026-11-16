@@ -248,7 +248,7 @@ class Activity extends Plugin
      * Load a feed entry, which must be on this member's own feed
      *
      * @param   integer  $id
-     * @return  object
+     * @return  \Hubzero\Activity\Recipient
      */
     protected function ownEntry($id)
     {

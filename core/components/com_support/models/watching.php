@@ -60,7 +60,7 @@ class Watching extends Relational
     /**
      * Get user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function user()
     {
@@ -70,7 +70,7 @@ class Watching extends Relational
     /**
      * Get ticket
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function ticket()
     {
@@ -82,7 +82,7 @@ class Watching extends Relational
      *
      * @param   integer  $user_id
      * @param   integer  $ticket_id
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndTicket($user_id, $ticket_id)
     {

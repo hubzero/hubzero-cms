@@ -106,7 +106,7 @@ class DataStore extends Base
      * Check for changed selections etc
      *
      * @param   array<mixed>   $attachments
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($attachments)
     {

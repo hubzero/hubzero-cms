@@ -96,7 +96,7 @@ class Systemplate extends Plugin
      *
      * @param   string $label
      * @param   mixed  $value
-     * @return  object
+     * @return  \stdClass
      */
     private function obj($label, $value)
     {

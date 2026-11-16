@@ -108,7 +108,7 @@ class Type extends Relational
     /**
      * Get a list of roles for this type
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      */
     public function roles()
     {

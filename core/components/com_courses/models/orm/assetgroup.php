@@ -108,7 +108,7 @@ class Assetgroup extends Relational
     /**
      * Get parent unit
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function unit()
     {

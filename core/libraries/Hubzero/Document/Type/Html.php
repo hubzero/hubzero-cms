@@ -126,7 +126,7 @@ class Html extends Base
      * Set the HTML document head data
      *
      * @param   array|mixed   $data  The document head data in array form
-     * @return  object|null  instance of $this to allow chaining
+     * @return  $this|null  instance of $this to allow chaining
      */
     public function setHeadData($data)
     {
@@ -156,7 +156,7 @@ class Html extends Base
      * Merge the HTML document head data
      *
      * @param   array|mixed   $data  The document head data in array form
-     * @return  object|null  instance of $this to allow chaining
+     * @return  $this|null  instance of $this to allow chaining
      */
     public function mergeHeadData($data)
     {
@@ -230,7 +230,7 @@ class Html extends Base
      * @param   string  $relation  Relation of link.
      * @param   string  $relType   Relation type attribute.  Either rel or rev (default: 'rel').
      * @param   array<mixed>   $attribs   Associative array of remaining attributes.
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function addHeadLink($href, $relation, $relType = 'rel', $attribs = [])
     {
@@ -251,7 +251,7 @@ class Html extends Base
      * @param   string  $href      The link that is being related.
      * @param   string  $type      File type
      * @param   string  $relation  Relation of link
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function addFavicon($href, $type = 'image/vnd.microsoft.icon', $relation = 'shortcut icon')
     {
@@ -265,7 +265,7 @@ class Html extends Base
      * Adds a custom HTML string to the head block
      *
      * @param   string  $html  The HTML to add to the head
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function addCustomTag($html)
     {
@@ -306,7 +306,7 @@ class Html extends Base
      *
      * @param   string  $content  The content to be set in the buffer.
      * @param   array<mixed>   $options  Array of optional elements.
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function setBuffer($content, $options = [])
     {
@@ -362,7 +362,7 @@ class Html extends Base
      *
      * The sheet goes first, so component and template styles override it.
      *
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function addActionStyleSheet()
     {
@@ -529,7 +529,7 @@ class Html extends Base
      * Fetch the template, and initialise the params
      *
      * @param   array<mixed>   $params  Parameters to determine the template
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     protected function fetchTemplate($params = [])
     {
@@ -588,7 +588,7 @@ class Html extends Base
     /**
      * Parse a document template
      *
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     protected function parseTemplate()
     {

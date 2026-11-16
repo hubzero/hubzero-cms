@@ -94,7 +94,7 @@ class Item extends Relational
     /**
      * Creator profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -104,7 +104,7 @@ class Item extends Relational
     /**
      * Get a list of posts
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function posts()
     {
@@ -114,7 +114,7 @@ class Item extends Relational
     /**
      * Get a list of assets
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function assets()
     {
@@ -124,7 +124,7 @@ class Item extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function votes()
     {
@@ -134,7 +134,7 @@ class Item extends Relational
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Item\Comment
      */
     public function comments()
     {

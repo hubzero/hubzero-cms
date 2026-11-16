@@ -236,7 +236,7 @@ class ApiController implements ControllerInterface
      * Unregister (unmap) a task in the class.
      *
      * @param   string  $task  The task.
-     * @return  object  This object to support chaining.
+     * @return  $this  This object to support chaining.
      */
     public function unregisterTask($task)
     {

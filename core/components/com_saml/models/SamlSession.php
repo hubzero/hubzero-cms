@@ -99,7 +99,7 @@ class SamlSession extends Relational
      * @param   object  $user       \Hubzero\User\User
      * @param   object  $sp         ServiceProvider
      * @param   string  $requestId  The AuthnRequest this answers
-     * @return  object  SamlSession
+     * @return  static  SamlSession
      */
     public static function open($user, $sp, $requestId = '')
     {
@@ -184,7 +184,7 @@ class SamlSession extends Relational
     /**
      * The SP this session was issued for
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function sp()
     {
@@ -194,7 +194,7 @@ class SamlSession extends Relational
     /**
      * The user the session belongs to
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -230,7 +230,7 @@ class SamlSession extends Relational
      * Automatic lifecycle still only ever marks rows ended; deletion happens
      * solely when an admin asks for it.
      *
-     * @return  object
+     * @return  static
      */
     public static function allExpired()
     {

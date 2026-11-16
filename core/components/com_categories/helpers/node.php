@@ -448,7 +448,7 @@ class Node extends Obj
     /**
      * Returns the category parameters
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function getParams()
     {
@@ -464,7 +464,7 @@ class Node extends Obj
     /**
      * Returns the category metadata
      *
-     * @return  object  A Registry object containing the metadata
+     * @return  \Hubzero\Config\Registry  A Registry object containing the metadata
      */
     public function getMetadata()
     {
@@ -491,7 +491,7 @@ class Node extends Obj
      * Returns the user that created the category
      *
      * @param   boolean  $modified_user  Returns the modified_user when set to true
-     * @return  object   A User object containing a userid
+     * @return  \Hubzero\User\User   A User object containing a userid
      */
     public function getAuthor($modified_user = false)
     {

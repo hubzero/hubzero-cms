@@ -95,7 +95,7 @@ class Simple implements Cipher
      * Method to generate a new encryption key[/pair] object.
      *
      * @param   array<mixed>   $options  Key generation options.
-     * @return  object
+     * @return  \Hubzero\Encryption\Key
      */
     public function generateKey(array $options = [])
     {

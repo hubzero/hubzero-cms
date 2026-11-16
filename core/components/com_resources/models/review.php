@@ -144,7 +144,7 @@ class Review extends Relational
     /**
      * Defines a belongs to one relationship between response and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -154,7 +154,7 @@ class Review extends Relational
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function replies()
     {
@@ -164,7 +164,7 @@ class Review extends Relational
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {
@@ -207,7 +207,7 @@ class Review extends Relational
             ->limit(1)
             ->row();
 
-        if (!$vote || !$vote->get('id')) {
+        if (!$vote->get('id')) {
             $vote = new Vote();
             $vote->set('item_type', 'review');
             $vote->set('item_id', $this->get('id'));
@@ -278,7 +278,7 @@ class Review extends Relational
      *
      * @param   integer  $resource_id
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByUser($resource_id, $user_id)
     {

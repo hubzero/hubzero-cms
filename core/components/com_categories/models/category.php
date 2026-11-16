@@ -223,7 +223,7 @@ class Category extends Nested
     /**
      * Get params as Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -253,7 +253,7 @@ class Category extends Nested
     /**
      * Get metadata as Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformMetadata()
     {
@@ -350,7 +350,7 @@ class Category extends Nested
     /**
      * Generate a Form object and bind data to it
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {
@@ -377,7 +377,7 @@ class Category extends Nested
     /**
      * Establish relationship of user to checked_out
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function editor()
     {
@@ -387,7 +387,7 @@ class Category extends Nested
     /**
      * Get parent
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parent()
     {
@@ -685,7 +685,7 @@ class Category extends Nested
     /**
      * Retrieve parents
      *
-     * @return  object
+     * @return  static
      */
     public function parents()
     {

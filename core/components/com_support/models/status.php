@@ -79,7 +79,7 @@ class Status extends Relational
     /**
      * Get open statuses
      *
-     * @return  object
+     * @return  static
      */
     public static function allOpen()
     {
@@ -89,7 +89,7 @@ class Status extends Relational
     /**
      * Get closed statuses
      *
-     * @return  object
+     * @return  static
      */
     public static function allClosed()
     {

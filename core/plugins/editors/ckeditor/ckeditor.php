@@ -344,7 +344,7 @@ class Ckeditor extends Plugin
      * Build a config object
      *
      * @param   array<mixed>   $params
-     * @return  object  stdClass
+     * @return  \stdClass  stdClass
      */
     private function buildConfig($params = [])
     {

@@ -84,7 +84,7 @@ class Conditions extends Obj
     /**
      * Create a new record
      *
-     * @return    object
+     * @return    \stdClass
      */
     public function getConditions()
     {
@@ -240,7 +240,7 @@ class Conditions extends Obj
      *
      * @param    array<mixed> $operators List of operators
      * @param    mixed $values    Either a string or array
-     * @return   object
+     * @return   \stdClass
      */
     private function expression($operators, $values)
     {
@@ -257,7 +257,7 @@ class Conditions extends Obj
      * @param    string  $val   Operator value
      * @param    string  $label Operator label
      * @param    boolean $sel   Operator selected?
-     * @return   object
+     * @return   \stdClass
      */
     private function operator($val = '=', $label = 'is', $sel = false)
     {

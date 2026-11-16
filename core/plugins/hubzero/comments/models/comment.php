@@ -35,7 +35,7 @@ class Comment extends ItemComment
     /**
      * Get a list of files
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function files()
     {

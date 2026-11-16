@@ -50,7 +50,7 @@ class Race extends Relational
     /**
      * Defines a belongs to one relationship between page and event
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function respondent()
     {

@@ -184,7 +184,7 @@ class Access
      *
      * @param   mixed    $asset      Integer asset id or the name of the asset as a string.
      * @param   boolean  $recursive  True to return the rules object with inherited rules.
-     * @return  object   Rules object for the asset.
+     * @return  \Hubzero\Access\Rules   Rules object for the asset.
      */
     public static function getAssetRules($asset, $recursive = false)
     {

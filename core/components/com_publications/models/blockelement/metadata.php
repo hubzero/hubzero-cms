@@ -29,7 +29,7 @@ class Metadata extends Base
      *
      * @param   mixed  $manifest
      * @param   mixed  $pub
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getStatus($manifest, $pub = null)
     {

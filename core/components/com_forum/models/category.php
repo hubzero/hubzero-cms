@@ -165,7 +165,7 @@ class Category extends Relational
     /**
      * Defines a belongs to one relationship between category and creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -196,7 +196,7 @@ class Category extends Relational
     /**
      * Defines a belongs to one relationship between category and modifier
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -227,7 +227,7 @@ class Category extends Relational
     /**
      * Defines a belongs to one relationship between category and section
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function section()
     {
@@ -237,7 +237,7 @@ class Category extends Relational
     /**
      * Get a list of posts
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function posts()
     {
@@ -257,7 +257,7 @@ class Category extends Relational
     /**
      * Get a list of users' category subscriptions
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function usersCategories()
     {
@@ -436,7 +436,7 @@ class Category extends Relational
      * Get a form
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm($data = [])
     {

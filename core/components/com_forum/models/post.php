@@ -321,7 +321,7 @@ class Post extends Relational
     /**
      * Defines a belongs to one relationship between category and creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -352,7 +352,7 @@ class Post extends Relational
     /**
      * Defines a belongs to one relationship between category and modifier
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -393,17 +393,20 @@ class Post extends Relational
     /**
      * Defines a belongs to one relationship between category and post
      *
-     * @return  object
+     * @return  Category
      */
     public function category()
     {
-        return $this->belongsToOne('Category', 'category_id')->row();
+        /** @var Category $category */
+        $category = $this->belongsToOne('Category', 'category_id')->row();
+
+        return $category;
     }
 
     /**
      * Get a list of attachments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -413,7 +416,7 @@ class Post extends Relational
     /**
      * Get a list of replies
      *
-     * @return  object
+     * @return  static
      */
     public function replies()
     {
@@ -427,7 +430,7 @@ class Post extends Relational
     /**
      * Get a list of replies
      *
-     * @return  object
+     * @return  static
      */
     public function thread()
     {
@@ -593,7 +596,7 @@ class Post extends Relational
      * Get the most recent post made in the thread
      *
      * @param   array<mixed>  $filters
-     * @return  object
+     * @return  static
      */
     public function lastActivity($filters = [])
     {
@@ -902,7 +905,7 @@ class Post extends Relational
     /**
      * Get a list of participants from a thread
      *
-     * @return  object
+     * @return  static
      */
     public function participants()
     {
@@ -977,7 +980,7 @@ class Post extends Relational
      * Get a form
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm($data = [])
     {

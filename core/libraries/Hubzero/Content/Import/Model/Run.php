@@ -83,7 +83,7 @@ class Run extends Relational
     /**
      * Get parent import record
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function import()
     {

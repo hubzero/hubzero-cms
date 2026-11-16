@@ -76,7 +76,7 @@ class Comment extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -86,7 +86,7 @@ class Comment extends Relational
     /**
      * Defines a belongs to one relationship between comment and page
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {
@@ -132,7 +132,7 @@ class Comment extends Relational
      * Get a list of responses
      *
      * @param   array<mixed>   $filters  Filters to apply to query
-     * @return  object
+     * @return  static
      */
     public function replies($filters = [])
     {
@@ -170,7 +170,7 @@ class Comment extends Relational
     /**
      * Get parent section
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {

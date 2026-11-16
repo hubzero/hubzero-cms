@@ -70,7 +70,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between category and post
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function post()
     {
@@ -81,7 +81,7 @@ class Attachment extends Relational
      * Set the upload path
      *
      * @param   string  $path  Path to set to
-     * @return  object
+     * @return  $this
      */
     public function setUploadDir($path)
     {
@@ -331,7 +331,7 @@ class Attachment extends Relational
      *
      * @param   integer  $thread_id
      * @param   string   $filename
-     * @return  object
+     * @return  static
      */
     public static function oneByThread($thread_id, $filename)
     {
@@ -345,7 +345,7 @@ class Attachment extends Relational
      * Load a record by post ID
      *
      * @param   integer  $post_id
-     * @return  object
+     * @return  static
      */
     public static function oneByPost($post_id)
     {

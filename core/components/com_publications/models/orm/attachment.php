@@ -112,7 +112,7 @@ class Attachment extends Relational
     /**
      * Establish relationship to parent publication
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function publication()
     {
@@ -122,7 +122,7 @@ class Attachment extends Relational
     /**
      * Establish relationship to parent publication version
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function version()
     {

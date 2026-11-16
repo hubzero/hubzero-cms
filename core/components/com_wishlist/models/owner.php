@@ -35,7 +35,7 @@ class Owner extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -45,7 +45,7 @@ class Owner extends Relational
     /**
      * Get the owning wishlist
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wishlist()
     {
@@ -57,7 +57,7 @@ class Owner extends Relational
      *
      * @param   integer  $wishlist
      * @param   integer  $userid
-     * @return  object
+     * @return  static
      */
     public static function oneByWishlistAndUser($wishlist, $userid)
     {

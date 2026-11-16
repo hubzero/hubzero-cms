@@ -288,7 +288,7 @@ class Uri
      *
      * @param   string  $name   Name of the query variable to set.
      * @param   string  $value  Value of the query variable.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setUriVar($name, $value)
     {
@@ -330,7 +330,7 @@ class Uri
      * Removes an item from the query string variables if it exists.
      *
      * @param   string  $name  Name of variable to remove.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function delUriVar($name)
     {
@@ -348,7 +348,7 @@ class Uri
      * foo=bar&x=y
      *
      * @param   mixed   $query  The query string or array.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setQuery($query)
     {
@@ -418,7 +418,7 @@ class Uri
      * ie. http, https, ftp, etc...
      *
      * @param   string  $scheme  The URI scheme.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setScheme($scheme)
     {
@@ -442,7 +442,7 @@ class Uri
      * Set URI username.
      *
      * @param   string  $user  The URI username.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setUser($user)
     {
@@ -466,7 +466,7 @@ class Uri
      * Set URI password.
      *
      * @param   string  $pass  The URI password.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setPass($pass)
     {
@@ -490,7 +490,7 @@ class Uri
      * Set URI host.
      *
      * @param   string  $host  The URI host.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setHost($host)
     {
@@ -514,7 +514,7 @@ class Uri
      * Set URI port.
      *
      * @param   integer  $port  The URI port number.
-     * @return  object   $this
+     * @return  $this   $this
      */
     public function setPort($port)
     {
@@ -562,7 +562,7 @@ class Uri
      * everything after the "#".
      *
      * @param   string  $anchor  The URI anchor string.
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setFragment($anchor)
     {

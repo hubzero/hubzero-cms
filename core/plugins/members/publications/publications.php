@@ -87,7 +87,7 @@ class Publications extends Plugin
      * @param  integer $limitstart Record return start
      * @param  string  $sort       Field to sort records on
      * @param  array<mixed>|null   $areas      Areas to return data for
-     * @return array<mixed>
+     * @return array<mixed>|\Hubzero\Database\Rows|int  The rows, or their count when no limit is given
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -187,7 +187,7 @@ class Publications extends Plugin
      * Include needed libraries and push scripts and CSS to the document
      *
      * @param  array<mixed> $filters
-     * @return object
+     * @return \Components\Publications\Models\Orm\Version
      */
     public static function allWithFilters($filters = [])
     {

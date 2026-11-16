@@ -181,7 +181,7 @@ class Router
     /**
      * Clear any set rules
      *
-     * @return  object
+     * @return  $this
      */
     public function flush()
     {
@@ -200,7 +200,7 @@ class Router
      * @param   string   $key     The name of the variable
      * @param   mixed    $value   The value of the variable
      * @param   boolean  $create  If True, the variable will be created if it doesn't exist yet
-     * @return  object
+     * @return  $this
      */
     public function set($key, $value, $create = true)
     {
@@ -216,7 +216,7 @@ class Router
      *
      * @param   array<mixed>    $vars   An associative array with variables
      * @param   boolean  $merge  If True, the array will be merged instead of overwritten
-     * @return  object
+     * @return  $this
      */
     public function bind($vars = [], $merge = true)
     {
@@ -250,7 +250,7 @@ class Router
      * Unset a router variable
      *
      * @param   string  $key  The name of the variable
-     * @return  object
+     * @return  $this
      */
     public function forget($key)
     {
@@ -275,7 +275,7 @@ class Router
      * Create a uri based on a full or partial url string
      *
      * @param   string|mixed  $url  The URI
-     * @return  object
+     * @return  \Hubzero\Utility\Uri
      */
     protected function createUri($url)
     {

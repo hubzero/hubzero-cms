@@ -52,7 +52,7 @@ class Config extends Relational
      * Constructor
      * Loads points configuration
      *
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function values()
     {

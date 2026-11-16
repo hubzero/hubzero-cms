@@ -119,7 +119,7 @@ class Log extends Model
      *
      *
      * @param   array<mixed>   $filters
-     * @return  object  list
+     * @return  array<mixed>|false|null  The history rows
      */
     public function getHistory($filters = [])
     {

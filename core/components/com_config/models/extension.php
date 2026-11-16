@@ -74,7 +74,7 @@ class Extension extends Relational
      * Find a record by name
      *
      * @param   string  $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($name)
     {
@@ -87,7 +87,7 @@ class Extension extends Relational
      * Find a record by element
      *
      * @param   string  $element
-     * @return  object
+     * @return  static
      */
     public static function oneByElement($element)
     {
@@ -137,7 +137,7 @@ class Extension extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {
@@ -150,7 +150,7 @@ class Extension extends Relational
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {

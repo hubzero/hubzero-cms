@@ -187,7 +187,7 @@ class WikiParser
      *
      * @param   string  $property  The name of the property.
      * @param   mixed   $value     The value of the property to set.
-     * @return  object  Method chaining
+     * @return  $this  Method chaining
      */
     public function set($property, $value = null)
     {

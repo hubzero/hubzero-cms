@@ -91,7 +91,7 @@ class Module extends Relational
     /**
      * Defines a belongs to one relationship between category and creator
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -101,7 +101,7 @@ class Module extends Relational
     /**
      * Defines a belongs to one relationship between category and modifier
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function modifier()
     {
@@ -111,7 +111,7 @@ class Module extends Relational
     /**
      * Get parent group
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function group()
     {

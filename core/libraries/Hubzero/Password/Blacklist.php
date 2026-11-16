@@ -60,7 +60,7 @@ class Blacklist extends Relational
      * Load a record by word
      *
      * @param   string  $word
-     * @return  object
+     * @return  static
      */
     public static function oneByWord($word)
     {

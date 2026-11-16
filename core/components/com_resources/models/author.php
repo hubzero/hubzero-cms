@@ -23,6 +23,8 @@ use Components\Members\Models\Member;
  * @property-read  mixed  $name  What transformName() gives
  * @property  int|string|null  $ordering
  * @property-read  mixed  $organization  What transformOrganization() gives
+ *
+ * @property  int|string|null  $authorid
  */
 class Author extends Relational
 {
@@ -118,7 +120,7 @@ class Author extends Relational
     /**
      * Get profile for author ID
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function profile()
     {
@@ -294,7 +296,7 @@ class Author extends Relational
      *
      * @param   integer  $resource_id
      * @param   int|string  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByRelationship($resource_id, $user_id)
     {
@@ -313,7 +315,7 @@ class Author extends Relational
      *
      * @param   integer  $resource_id
      * @param   string   $name
-     * @return  object
+     * @return  static
      */
     public static function oneByName($resource_id, $name)
     {

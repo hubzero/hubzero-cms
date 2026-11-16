@@ -40,7 +40,7 @@ class RedirectResponse extends BaseRedirectResponse
      * @param   string  $key
      * @param   string  $value
      * @param   bool    $replace
-     * @return  object
+     * @return  $this
      */
     public function header($key, $value, $replace = true)
     {
@@ -54,7 +54,7 @@ class RedirectResponse extends BaseRedirectResponse
      *
      * @param   string|array<mixed>  $key
      * @param   mixed   $value
-     * @return  object
+     * @return  $this
      */
     public function with($key, $value = null)
     {
@@ -70,7 +70,7 @@ class RedirectResponse extends BaseRedirectResponse
     /**
      * Get the request instance.
      *
-     * @return  object
+     * @return  \Hubzero\Http\Request
      */
     public function getRequest()
     {
@@ -116,7 +116,7 @@ class RedirectResponse extends BaseRedirectResponse
      * compliant with RFC 2616. Most of the changes are based on
      * the Request that is "associated" with this Response.
      *
-     * @return  object  The current response.
+     * @return  $this  The current response.
      */
     public function send()
     {

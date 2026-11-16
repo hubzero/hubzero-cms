@@ -151,7 +151,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   array<mixed>    $filters  the string contaning the various applied filters.
      * @param   boolean  $admin
-     * @return  object   Citation
+     * @return  static   Citation
      */
     public static function getFilteredRecords($filters = [], $admin = false)
     {
@@ -447,7 +447,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Join association data
      *
-     * @return  object
+     * @return  $this
      */
     public function isOwner()
     {
@@ -547,7 +547,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a belongs to one relationship with format
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function assignedFormat()
     {
@@ -557,7 +557,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a many to many relationship with resources
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      */
     public function resources()
     {
@@ -567,7 +567,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with associations
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function associations()
     {
@@ -577,7 +577,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a many to many relationship with publications
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function publications()
     {
@@ -617,7 +617,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a many to many relationship with sponsors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyToMany
      */
     public function sponsors()
     {
@@ -627,7 +627,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with authors for search results
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function relatedAuthors()
     {
@@ -637,7 +637,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with authors for resource citations tab
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function relatedAuthorsByCitation()
     {
@@ -647,7 +647,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with authors
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function relatedType()
     {
@@ -657,7 +657,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with secondary citations
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function secondaries()
     {
@@ -677,7 +677,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a many to many relationship with tags
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\ManyShiftsToMany
      */
     public function tags()
     {
@@ -723,7 +723,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Separate tags and badges
      *
-     * @return  object
+     * @return  $this
      */
     public function separateTagsAndBadges()
     {
@@ -755,7 +755,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a one to many relationship with links
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function links()
     {
@@ -1297,6 +1297,23 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     }
 
     /**
+     * The citation's rows in the tag association table, each with its tag
+     *
+     * The clouds below need the association's label (badges are labelled
+     * "badge") as well as the tag. They used to loop over tags() itself, a
+     * relationship object rather than its rows, so they never showed anything.
+     *
+     * @return  \Hubzero\Database\Rows
+     */
+    private function tagAssociations()
+    {
+        return \Components\Tags\Models\Objct::all()
+            ->whereEquals('tbl', 'citations')
+            ->whereEquals('objectid', (int) $this->get('id'))
+            ->rows();
+    }
+
+    /**
      * Output a tagcloud of badges associated with a citation
      *
      * @return  string  HTML
@@ -1304,7 +1321,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     public function badgeCloud()
     {
         $html = '<ul class="tags badges">';
-        foreach ($this->tags() as $badge) {
+        foreach ($this->tagAssociations() as $badge) {
             if ($badge->label == "badge" && $badge->tbl == 'citations') {
                 $html .= '<li><a href="#" class="tag">' . stripslashes($badge->tag->tag) . '</a></li>';
             }
@@ -1324,9 +1341,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     {
         $html = '';
 
-        $tags = clone($this->tags());
+        $tags = $this->tagAssociations();
 
-        if ($this->tags()->count() > 0) {
+        if ($tags->count() > 0) {
             $isAdmin = (User::authorise('core.manage', 'com_citations') ? true : false);
 
             $html  = '<ol class="tags">';
@@ -1678,7 +1695,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

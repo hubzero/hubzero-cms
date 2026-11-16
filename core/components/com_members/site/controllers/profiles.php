@@ -716,7 +716,7 @@ class Profiles extends SiteController
     /**
      * Calculate stats
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function stats()
     {

@@ -24,7 +24,7 @@ class Css extends AbstractHelper
      * @param   string  $stylesheet  Stylesheet or styles to add
      * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
      * @param   string|null  $element     Plugin element. Only used for plugins and if first argument is folder name.
-     * @return  object
+     * @return  \Hubzero\View\View
      */
     public function __invoke($stylesheet = '', $extension = null, $element = null)
     {

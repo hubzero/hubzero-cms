@@ -50,7 +50,7 @@ class Topval extends Relational
     /**
      * Defines a one to one relationship between entry and Top
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\OneToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function top()
     {

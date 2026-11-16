@@ -50,7 +50,7 @@ class Element
      * Assigns $name to new XmlElement which holds pointer to current XML element
      *
      * @param   mixed   $name
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function reference(&$name)
     {
@@ -64,7 +64,7 @@ class Element
     /**
      * Close open element
      *
-     * @return  object  $this
+     * @return  $this  $this
      * @throws  LogicException
      */
     public function end()
@@ -84,7 +84,7 @@ class Element
      * @param   string  $name
      * @param   string|null  $value
      * @param   string|null  $namespace
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function element($name, $value = null, $namespace = null)
     {
@@ -104,7 +104,7 @@ class Element
      * Set some text content
      *
      * @param   string  $content
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function text($content)
     {
@@ -119,7 +119,7 @@ class Element
      * @param   string  $name
      * @param   string  $value
      * @param   string|null  $namespace
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function attr($name, $value, $namespace = null)
     {
@@ -140,7 +140,7 @@ class Element
      * Add a comment
      *
      * @param   string  $content
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function comment($content)
     {
@@ -153,7 +153,7 @@ class Element
      * Set content as CDATA
      *
      * @param   string  $content
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function cdata($content)
     {

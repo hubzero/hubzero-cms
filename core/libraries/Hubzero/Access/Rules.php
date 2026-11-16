@@ -141,7 +141,7 @@ class Rules
      * Get the allowed actions for an identity.
      *
      * @param   mixed   $identity  An integer representing the identity or an array of identities
-     * @return  object  Allowed actions for the identity or identities
+     * @return  \Hubzero\Base\Obj  Allowed actions for the identity or identities
      */
     public function getAllowed($identity)
     {

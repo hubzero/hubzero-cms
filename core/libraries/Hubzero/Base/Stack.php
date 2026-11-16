@@ -55,7 +55,7 @@ class Stack
      * Send request through stack
      *
      * @param   \Hubzero\Http\Request $request  Request object
-     * @return  object
+     * @return  $this
      */
     public function send(Request $request)
     {
@@ -68,7 +68,7 @@ class Stack
      * Set layers on stack
      *
      * @param   array<mixed>   $layers  Array of services
-     * @return  object
+     * @return  $this
      */
     public function through($layers)
     {
@@ -88,7 +88,7 @@ class Stack
      * Add something to the stack
      *
      * @param   mixed   $layer
-     * @return  object
+     * @return  $this
      */
     public function push($layer)
     {

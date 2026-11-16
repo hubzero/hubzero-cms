@@ -31,7 +31,7 @@ class Abstracts implements Test
      *
      * @param   array<mixed>  $data
      * @param   array<mixed>  $options
-     * @return  object
+     * @return  \Hubzero\Content\Auditor\Result
      */
     public function examine(array $data, array $options = [])
     {

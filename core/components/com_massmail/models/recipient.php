@@ -54,7 +54,7 @@ class Recipient extends Relational
     /**
      * The mailing this recipient belongs to
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function mailing()
     {

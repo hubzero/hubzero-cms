@@ -91,7 +91,7 @@ class Category extends Relational
     /**
      * Get a list of groups
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function groups()
     {
@@ -199,7 +199,7 @@ class Category extends Relational
     /**
      * Get the default entry
      *
-     * @return  object
+     * @return  static
      */
     public static function defaultEntry()
     {

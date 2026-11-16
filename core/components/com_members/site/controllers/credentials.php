@@ -369,7 +369,7 @@ class Credentials extends SiteController
         // requests in the same second (a double click, or a retry after the
         // mail failed) made the choice arbitrary and the mailed code could be
         // refused as "user not found"
-        $parts = explode(':', $user->tokens()->latest('id')->token);
+        $parts = explode(':', $user->tokens()->latest('id')->get('token'));
         $crypt = $parts[0];
 
         if (!isset($parts[1])) {
@@ -465,7 +465,7 @@ class Credentials extends SiteController
         $user = \Hubzero\User\User::oneOrFail($id);
 
         // Check for a user and that the tokens match
-        if ($user->tokens()->latest('id')->token !== $token) {
+        if ($user->tokens()->latest('id')->get('token') !== $token) {
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),

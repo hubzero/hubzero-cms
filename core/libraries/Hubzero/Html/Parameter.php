@@ -354,7 +354,7 @@ class Parameter extends Registry
      * Parameter/types.
      *
      * @param   mixed  $path  Directory (string) or directories (array) to search.
-     * @return  object
+     * @return  $this
      */
     public function addElementPath($path)
     {

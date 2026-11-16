@@ -97,7 +97,7 @@ class Ftp implements AdapterInterface
      * Set the config.
      *
      * @param   array<mixed>   $config
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setConfig(array $config)
     {
@@ -130,7 +130,7 @@ class Ftp implements AdapterInterface
      * Set the host.
      *
      * @param   string  $host
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setHost($host)
     {
@@ -153,7 +153,7 @@ class Ftp implements AdapterInterface
      * Set the ftp port.
      *
      * @param   mixed   $port
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setPort($port)
     {
@@ -176,7 +176,7 @@ class Ftp implements AdapterInterface
      * Set the root folder to work from.
      *
      * @param   string  $root
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setRoot($root)
     {
@@ -199,7 +199,7 @@ class Ftp implements AdapterInterface
      * Set ftp username.
      *
      * @param   string  $username
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setUsername($username)
     {
@@ -222,7 +222,7 @@ class Ftp implements AdapterInterface
      * Set the ftp password.
      *
      * @param   string  $password
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setPassword($password)
     {
@@ -245,7 +245,7 @@ class Ftp implements AdapterInterface
      * Set the amount of seconds before the connection should timeout.
      *
      * @param    int     $timeout
-     * @return   object  $this
+     * @return   $this  $this
      */
     public function setTimeout($timeout)
     {
@@ -268,7 +268,7 @@ class Ftp implements AdapterInterface
      * Set the transfer mode.
      *
      * @param   1|2  $mode  FTP_ASCII or FTP_BINARY
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setTransferMode($mode)
     {
@@ -291,7 +291,7 @@ class Ftp implements AdapterInterface
      * Set if Ssl is enabled.
      *
      * @param   bool    $ssl
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setSsl($ssl)
     {
@@ -304,7 +304,7 @@ class Ftp implements AdapterInterface
      * Set if passive mode should be used.
      *
      * @param   bool    $passive
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setPassive($passive = true)
     {

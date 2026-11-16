@@ -50,7 +50,7 @@ class Job extends Relational
     /**
      * Defines a one to many relationship between location and zone
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function logs()
     {

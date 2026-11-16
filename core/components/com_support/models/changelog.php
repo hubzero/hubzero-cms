@@ -293,7 +293,7 @@ class Changelog extends Obj
      * @param   string  $field   Field name
      * @param   string  $before  Old value (if any)
      * @param   string  $after   New value (if any)
-     * @return  object
+     * @return  $this
      */
     public function changed($field, $before = '', $after = '')
     {
@@ -311,7 +311,7 @@ class Changelog extends Obj
      * Add CC info to the log
      *
      * @param   string  $val  Value to log
-     * @return  object
+     * @return  $this
      */
     public function cced($val)
     {
@@ -352,7 +352,7 @@ class Changelog extends Obj
      * @param   string  $role     User role
      * @param   string  $name     User name
      * @param   string  $address  User email
-     * @return  object
+     * @return  $this
      */
     public function notified($role, $name, $address)
     {
@@ -400,7 +400,7 @@ class Changelog extends Obj
      *
      * @param   string  $from   Area to remove from
      * @param   string  $field  Field to remove
-     * @return  object
+     * @return  $this
      */
     public function remove($from, $field)
     {
@@ -424,7 +424,7 @@ class Changelog extends Obj
      *
      * @param   object  $before
      * @param   object  $after
-     * @return  object
+     * @return  $this
      */
     public function diff($before, $after)
     {

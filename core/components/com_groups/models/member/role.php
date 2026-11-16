@@ -49,7 +49,7 @@ class Role extends Relational
     /**
      * Get associated role
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function role()
     {
@@ -59,7 +59,7 @@ class Role extends Relational
     /**
      * Member profile
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -71,7 +71,7 @@ class Role extends Relational
      *
      * @param   int  $uidNumber
      * @param   int  $roleid
-     * @return  object
+     * @return  static
      */
     public static function oneByUserAndRole($uidNumber, $roleid)
     {

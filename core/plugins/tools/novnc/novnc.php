@@ -29,7 +29,7 @@ class Novnc extends Plugin
     /**
      * Return some info about this plugin
      *
-     * @return  object
+     * @return  \stdClass
      */
     public function onToolSessionIdentify()
     {

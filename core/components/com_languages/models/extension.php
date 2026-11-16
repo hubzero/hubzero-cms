@@ -144,7 +144,7 @@ class Extension extends Relational
      * Get all records
      *
      * @param   array<mixed>|null  $columns
-     * @return  object
+     * @return  static
      */
     public static function all($columns = null)
     {
@@ -154,7 +154,7 @@ class Extension extends Relational
     /**
      * Get extension entry for the component
      *
-     * @return  object
+     * @return  static
      */
     public static function component()
     {
@@ -164,7 +164,7 @@ class Extension extends Relational
     /**
      * Get params as a Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformParams()
     {

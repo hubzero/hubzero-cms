@@ -187,7 +187,7 @@ class Wish extends Relational
     /**
      * Get the creator of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function proposer()
     {
@@ -197,7 +197,7 @@ class Wish extends Relational
     /**
      * Get the owner of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function assignee()
     {
@@ -207,7 +207,7 @@ class Wish extends Relational
     /**
      * Get the owning wishlist of this entry
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wishlist()
     {
@@ -217,7 +217,7 @@ class Wish extends Relational
     /**
      * Get the attachments on the wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -227,7 +227,7 @@ class Wish extends Relational
     /**
      * Get the plan for this wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function plan()
     {
@@ -770,7 +770,7 @@ class Wish extends Relational
     /**
      * Get a list or count of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function votes()
     {
@@ -780,7 +780,7 @@ class Wish extends Relational
     /**
      * Get a list or count of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relational
      */
     public function comments()
     {

@@ -1195,7 +1195,7 @@ class Databases extends Plugin
             $db->setQuery($sql);
             $res = $db->query();
 
-            while ($row = $res->loadNextRow(MYSQLI_NUM)) {
+            while ($row = $res->loadNextRow()) {
                 fputcsv($fp, $row);
             }
 
@@ -1482,14 +1482,16 @@ class Databases extends Plugin
         $table_name = $objPD->database_name . '_' . $version;
         $sql = 'DROP TABLE ' . $table_name;
         $ds_db->setQuery($sql);
-        return $ds_db->query();
+        $ds_db->query();
+
+        return true;
     }
 
     /**
      * get_ds_db
      *
      * @param   string  $id
-     * @return  object
+     * @return  \Hubzero\Database\Driver
      */
     public function getDsDb($id)
     {

@@ -147,7 +147,7 @@ class Plugin
      *
      * @param   string  $name    Plugin name
      * @param   string  $folder  Plugin folder
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public static function getParams($name, $folder)
     {

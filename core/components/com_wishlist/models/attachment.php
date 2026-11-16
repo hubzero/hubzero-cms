@@ -79,7 +79,7 @@ class Attachment extends Relational
      *
      * @param   integer  $wish
      * @param   string   $filename
-     * @return  object
+     * @return  static
      */
     public static function oneByWishAndFile($wish, $filename)
     {
@@ -92,7 +92,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -102,7 +102,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between attachment and wish
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function wish()
     {

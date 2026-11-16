@@ -171,7 +171,8 @@ class Guard
      *
      * @param   array<mixed>   $credentials  Array holding the user credentials.
      * @param   array<mixed>   $options      Array holding user options.
-     * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
+     * @return  \Hubzero\Auth\Response  Response object with status variable filled in for last plugin or first
+     *                                  successful plugin.
      */
     public function authenticate($credentials, $options = [])
     {

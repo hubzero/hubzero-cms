@@ -222,7 +222,7 @@ class File extends Obj
      *
      * @param   string  $type  The type of path to add.
      * @param   mixed   $path  The directory or stream, or an array of either, to search.
-     * @return  object
+     * @return  $this
      */
     public function setPath($type, $path)
     {

@@ -30,7 +30,7 @@ class Application extends Obj
      * Method to get a form object.
      *
      * @param   array<mixed>   $data  Data for the form.
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm($data = [])
     {

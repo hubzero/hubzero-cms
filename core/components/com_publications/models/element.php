@@ -61,7 +61,7 @@ class Element extends Obj
      * @param   object  $element       Data Source Object.
      * @param   string  $value         Selected value for the element
      * @param   string  $control_name  Control name (eg, control[fieldname])
-     * @return  object  An object populated with all the data and HTML for an element
+     * @return  \stdClass  An object populated with all the data and HTML for an element
      */
     public function render(&$element, $value, $control_name = 'fields')
     {

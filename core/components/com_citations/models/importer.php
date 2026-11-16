@@ -129,7 +129,7 @@ class Importer extends Obj
      * Set if tags are allowed
      *
      * @param   boolean  $val
-     * @return  object
+     * @return  $this
      */
     public function setTags($val)
     {
@@ -142,7 +142,7 @@ class Importer extends Obj
      * Set if badges are allowed
      *
      * @param   boolean  $val
-     * @return  object
+     * @return  $this
      */
     public function setBadges($val)
     {
@@ -155,7 +155,7 @@ class Importer extends Obj
      * Set the path to temp files
      *
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function setTmpPath($path)
     {
@@ -172,7 +172,7 @@ class Importer extends Obj
      * Set a unique hash (for tmp file names)
      *
      * @param   string  $hash
-     * @return  object
+     * @return  $this
      */
     public function setHash($hash)
     {

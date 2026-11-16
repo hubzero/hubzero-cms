@@ -81,7 +81,7 @@ class Group extends Relational
     /**
      * Defines a relationship to the User/Group Map
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function maps()
     {
@@ -91,7 +91,7 @@ class Group extends Relational
     /**
      * Get parent
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function parent()
     {
@@ -102,7 +102,7 @@ class Group extends Relational
      * Load a record by title
      *
      * @param   string  $title
-     * @return  object
+     * @return  static
      */
     public static function oneByTitle($title)
     {

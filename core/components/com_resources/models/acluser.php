@@ -64,7 +64,7 @@ class AclUser extends Relational
     /**
      * Defines a belongs to one relationship between resource and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function resource()
     {
@@ -76,7 +76,7 @@ class AclUser extends Relational
      *
      * @param   integer  $resource_id  Resource ID
      * @param   integer  $user_id      User ID
-     * @return  object
+     * @return  static
      */
     public static function oneByResourceAndUser($resource_id, $user_id)
     {

@@ -241,7 +241,7 @@ class WikiMacro
      * Set all macro argument values
      *
      * @param   array<mixed>   $data
-     * @return  object
+     * @return  $this
      */
     protected function setArguments($data)
     {
@@ -255,7 +255,7 @@ class WikiMacro
      *
      * @param   mixed   $key
      * @param   mixed   $val
-     * @return  object
+     * @return  $this
      */
     protected function setArgument($key, $val)
     {

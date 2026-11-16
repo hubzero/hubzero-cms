@@ -111,7 +111,7 @@ class Watch extends Relational
     /**
      * Defines a belongs to one relationship between article and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -151,7 +151,7 @@ class Watch extends Relational
      * @param   string   $item_type
      * @param   integer  $created_by
      * @param   string|null   $email
-     * @return  object
+     * @return  static
      */
     public static function oneByScope($item_id, $item_type, $created_by = 0, $email = null)
     {

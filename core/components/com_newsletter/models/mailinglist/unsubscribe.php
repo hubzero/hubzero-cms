@@ -49,7 +49,7 @@ class Unsubscribe extends Relational
     /**
      * Defines a belongs to one relationship between mailinglist and mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function mailinglist()
     {
@@ -59,7 +59,7 @@ class Unsubscribe extends Relational
     /**
      * Defines a belongs to one relationship between email and unsubscribe
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function unsubscribe()
     {

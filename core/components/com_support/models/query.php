@@ -126,7 +126,7 @@ class Query extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function folder()
     {
@@ -136,7 +136,7 @@ class Query extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -146,7 +146,7 @@ class Query extends Relational
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {
@@ -156,7 +156,7 @@ class Query extends Relational
     /**
      * Get common queries
      *
-     * @return  object
+     * @return  static
      */
     public static function allCommonNotInACL()
     {
@@ -167,7 +167,7 @@ class Query extends Relational
     /**
      * Get common queries
      *
-     * @return  object
+     * @return  static
      */
     public static function allCommon()
     {
@@ -178,7 +178,7 @@ class Query extends Relational
     /**
      * Get my queries
      *
-     * @return  object
+     * @return  static
      */
     public static function allMine()
     {
@@ -190,7 +190,7 @@ class Query extends Relational
      * Get custom queries
      *
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function allCustom($user_id)
     {
@@ -519,7 +519,7 @@ class Query extends Relational
      *
      * @param   string   $type       Type of query to populate [common, mine]
      * @param   integer  $folder_id  Folder to add queries to
-     * @return  boolean  False if errors, True on success
+     * @return  \Hubzero\Database\Rows|false  The queries now in the folder, or false on errors
      */
     public static function populateDefaults($type = 'common', $folder_id = 0)
     {

@@ -1695,7 +1695,7 @@ class Calendar extends Plugin
      * event also has to belong to the group being viewed.
      *
      * @param   integer  $eventId  Event to load
-     * @return  object
+     * @return  \Components\Events\Tables\Event
      */
     private function registrantEvent($eventId)
     {

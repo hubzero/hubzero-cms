@@ -60,7 +60,7 @@ class MessageHash extends Relational
      * Load a record by hash
      *
      * @param   string  $hash
-     * @return  object
+     * @return  static
      */
     public static function oneByHash($hash)
     {

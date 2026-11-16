@@ -388,7 +388,7 @@ class PdfForm
      * Create PdfForm object from posted file
      *
      * @param   string  $name
-     * @return  object
+     * @return  \Components\Courses\Models\PdfForm
      **/
     public static function fromPostedFile($name)
     {
@@ -432,7 +432,7 @@ class PdfForm
      * Set form title
      *
      * @param   string  $title
-     * @return  object
+     * @return  $this
      **/
     public function setTitle($title)
     {
@@ -457,7 +457,7 @@ class PdfForm
      * Set asset id
      *
      * @param   integer  $asset_id
-     * @return  object
+     * @return  $this
      **/
     public function setAssetId($asset_id)
     {
@@ -506,7 +506,7 @@ class PdfForm
      * Save page layout
      *
      * @param   array<mixed>  $pages
-     * @return  object
+     * @return  $this
      **/
     public function setPageLayout($pages)
     {

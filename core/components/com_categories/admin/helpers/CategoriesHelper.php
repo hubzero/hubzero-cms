@@ -68,7 +68,7 @@ class CategoriesHelper
      * @param   string   $extension  The extension.
      * @param   string  $assetType
      * @param   integer  $assetId    The category ID.
-     * @return  object
+     * @return  \Hubzero\Base\Obj
      */
     public static function getActions($extension = 'com_categories', $assetType = 'component', $assetId = 0)
     {

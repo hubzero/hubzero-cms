@@ -103,7 +103,7 @@ class Mailing extends Relational
     /**
      * Recipients for this mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function recipients()
     {
@@ -113,7 +113,7 @@ class Mailing extends Relational
     /**
      * Attachments for this mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function attachments()
     {
@@ -123,7 +123,7 @@ class Mailing extends Relational
     /**
      * Creator of this mailing
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

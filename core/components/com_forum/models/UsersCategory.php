@@ -46,7 +46,7 @@ class UsersCategory extends Relational
     /**
      * Defines a belongs to one relationship to a category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function category()
     {
@@ -56,7 +56,7 @@ class UsersCategory extends Relational
     /**
      * Defines a belongs to one relationship to a user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function user()
     {

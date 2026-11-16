@@ -62,7 +62,7 @@ class Subscription extends Relational
      * @param   integer  $scope_id
      * @param   string   $scope
      * @param   integer  $user_id
-     * @return  object
+     * @return  static
      */
     public static function oneByScope($scope_id, $scope, $user_id = 0)
     {

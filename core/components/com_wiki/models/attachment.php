@@ -68,7 +68,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -78,7 +78,7 @@ class Attachment extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {
@@ -116,7 +116,7 @@ class Attachment extends Relational
      *
      * @param   string   $filename
      * @param   integer|null  $page_id
-     * @return  object
+     * @return  static
      */
     public static function oneByFilename($filename, $page_id = null)
     {

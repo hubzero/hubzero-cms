@@ -177,17 +177,15 @@ class Manager extends Obj
                 $this->data  = $data;
                 $this->total = count($data);
 
-                if ($this->total) {
-                    // Apply custom ordering
-                    $ordering  = $this->state('list.ordering');
-                    $direction = ($this->state('list.direction') == 'asc') ? 1 : -1;
+                // Apply custom ordering
+                $ordering  = $this->state('list.ordering');
+                $direction = ($this->state('list.direction') == 'asc') ? 1 : -1;
 
-                    $this->data = \Hubzero\Utility\Arr::sortObjects($data, $ordering, $direction);
+                $this->data = \Hubzero\Utility\Arr::sortObjects($data, $ordering, $direction);
 
-                    // Apply custom pagination
-                    if ($this->total > $this->state('list.limit') && $this->state('list.limit')) {
-                        $this->data = array_slice($this->data, $this->state('list.start'), $this->state('list.limit'));
-                    }
+                // Apply custom pagination
+                if ($this->total > $this->state('list.limit') && $this->state('list.limit')) {
+                    $this->data = array_slice($this->data, $this->state('list.start'), $this->state('list.limit'));
                 }
             }
         }
@@ -198,7 +196,7 @@ class Manager extends Obj
     /**
      * Method to get cache instance
      *
-     * @return  object
+     * @return  \Hubzero\Cache\Manager
      */
     public function cache()
     {

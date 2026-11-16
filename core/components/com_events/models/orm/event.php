@@ -77,7 +77,7 @@ class Event extends Relational
     /**
      * Defines a belongs to one relationship between event and calendar
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function calendar()
     {
@@ -87,7 +87,7 @@ class Event extends Relational
     /**
      * Get a list of pages
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function pages()
     {
@@ -97,7 +97,7 @@ class Event extends Relational
     /**
      * Get a list of pages
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function respondents()
     {
@@ -110,7 +110,7 @@ class Event extends Relational
      * @param   integer  $limit
      * @param   string   $dateField
      * @param   string   $sort
-     * @return  object
+     * @return  static
      */
     public static function getLatest($limit = 10, $dateField = 'created', $sort = 'DESC')
     {

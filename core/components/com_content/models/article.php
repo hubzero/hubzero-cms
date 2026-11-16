@@ -252,7 +252,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to featured
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function frontpage()
     {
@@ -282,7 +282,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to featured
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function rating()
     {
@@ -292,7 +292,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function category()
     {
@@ -302,7 +302,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to author
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function author()
     {
@@ -312,7 +312,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to editor
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function editor()
     {
@@ -322,7 +322,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of all categories
      *
-     * @return  object
+     * @return  \Components\Categories\Models\Category
      */
     public function categories()
     {
@@ -353,7 +353,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to access level
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function accessLevel()
     {
@@ -363,7 +363,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Establish relationship to asset
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function asset()
     {
@@ -495,7 +495,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get params as Registry object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformAttribs()
     {
@@ -524,7 +524,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get metadata as an object
      *
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function transformMetadata()
     {
@@ -579,7 +579,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * Build a Form object and bind data to it
      *
      * @param   string  $client
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm($client = '')
     {
@@ -728,7 +728,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {
@@ -1131,7 +1131,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         if (!empty($authorWhere) && !empty($authorAliasWhere)) {
             $query
-                ->where($authorWhere[0], $authorWhere[1], $authorWhere[2], 1)
+                ->where($authorWhere[0], $authorWhere[1], $authorWhere[2], 'and', 1)
                 ->orWhere($authorAliasWhere[0], $authorAliasWhere[1], $authorAliasWhere[2], 1)
                 ->resetDepth();
         } elseif (!empty($authorWhere)) {

@@ -41,7 +41,7 @@ class Manager
     /**
      * Get the default user
      *
-     * @return  object
+     * @return  \Hubzero\User\User
      */
     public function getCurrentUser()
     {

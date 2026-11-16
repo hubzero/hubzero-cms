@@ -62,7 +62,7 @@ class Mysql implements
         $token->set('expires', with(new Date($token->get('expires')))->toUnix());
 
         // return token
-        return $token->toArray(true);
+        return $token->toArray();
     }
 
     /**

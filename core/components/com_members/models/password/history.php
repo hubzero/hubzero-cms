@@ -59,7 +59,7 @@ class History extends Relational
     /**
      * Get parent user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {

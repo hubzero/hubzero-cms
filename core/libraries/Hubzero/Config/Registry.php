@@ -87,7 +87,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      *
      * This allows the data properties to be accessed via a foreach statement.
      *
-     * @return  object  This object represented as an ArrayIterator.
+     * @return  \ArrayIterator<string, mixed>  This object represented as an ArrayIterator.
      * @see     IteratorAggregate::getIterator()
      */
     #[\ReturnTypeWillChange]
@@ -201,7 +201,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * @param   string  $path       Registry Path (e.g. config.cache.file)
      * @param   mixed   $value      Value of entry
      * @param   string|null  $separator  The key separator
-     * @return  object  This method is chainable
+     * @return  $this  This method is chainable
      */
     public function set($path, $value, $separator = null)
     {

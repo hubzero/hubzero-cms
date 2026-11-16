@@ -116,7 +116,7 @@ class Manager extends Obj
      * Get a list of sections for a forum
      *
      * @param   array<mixed>    $filters  Filters to apply to data fetch
-     * @return  object
+     * @return  \Components\Forum\Models\Section
      */
     public function sections($filters = [])
     {
@@ -160,7 +160,7 @@ class Manager extends Obj
      * Get categories for this forum
      *
      * @param   array<mixed>    $filters  Filters to apply to the query
-     * @return  object
+     * @return  \Components\Forum\Models\Category
      */
     public function categories($filters = [])
     {
@@ -200,7 +200,7 @@ class Manager extends Obj
      * Get posts for a forum
      *
      * @param   array<mixed>    $filters  Filters to apply to the query
-     * @return  object
+     * @return  \Components\Forum\Models\Post
      */
     public function posts($filters = [])
     {
@@ -373,7 +373,7 @@ class Manager extends Obj
     /**
      * Get the most recent post made in the forum
      *
-     * @return  object
+     * @return  \Components\Forum\Models\Post
      */
     public function lastActivity()
     {

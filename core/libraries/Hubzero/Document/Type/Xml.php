@@ -78,7 +78,7 @@ class Xml extends Base
      * Sets the document name
      *
      * @param   string  $name  Document name
-     * @return  object  instance of $this to allow chaining
+     * @return  $this  instance of $this to allow chaining
      */
     public function setName($name)
     {

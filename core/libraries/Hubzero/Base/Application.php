@@ -162,7 +162,7 @@ class Application extends Container
      *
      * @param  mixed   $provider  \Hubzero\Base\ServiceProvider|string
      * @param  array<mixed>   $options
-     * @return object
+     * @return $this
      */
     public function register($provider, $options = []) //, $force = false)
     {

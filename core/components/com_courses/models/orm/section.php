@@ -87,7 +87,7 @@ class Section extends Relational
     /**
      * Get parent offering
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function offering()
     {

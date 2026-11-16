@@ -96,7 +96,7 @@ class Memcache extends None
             );
         }
 
-        if ($memcache->getVersion() === false) {
+        if (!$memcache->getVersion()) {
             throw new RuntimeException('Could not establish Memcached connection.');
         }
 
@@ -112,7 +112,7 @@ class Memcache extends None
     /**
      * Get a new Memcached instance.
      *
-     * @return  object  \Memcache
+     * @return  \Memcache  \Memcache
      */
     public function getEngine()
     {

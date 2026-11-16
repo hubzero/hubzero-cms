@@ -39,7 +39,7 @@ class Response extends BaseResponse
      * Set the content on the response.
      *
      * @param   mixed   $content
-     * @return  object  $this
+     * @return  $this  $this
      */
     public function setContent($content)
     {

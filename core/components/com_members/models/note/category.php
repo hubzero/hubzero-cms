@@ -51,7 +51,7 @@ class Category extends Relational
      * Get a list of responses
      *
      * @param   array<mixed>    $filters  Filters to apply to query
-     * @return  object
+     * @return  static
      */
     public function children($filters = [])
     {
@@ -72,7 +72,7 @@ class Category extends Relational
     /**
      * Get parent section
      *
-     * @return  object
+     * @return  static
      */
     public function parent()
     {

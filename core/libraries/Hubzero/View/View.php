@@ -338,7 +338,7 @@ class View extends Obj
      * Set the layout path.
      *
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function setBasePath($path)
     {
@@ -414,7 +414,7 @@ class View extends Obj
      * Set the name
      *
      * @param   string $name  The name to set
-     * @return  object
+     * @return  $this
      */
     public function setName($name)
     {
@@ -428,7 +428,7 @@ class View extends Obj
      * Sets the layout name to use
      *
      * @param   string  $layout  The layout name or a string in format <template>:<layout file>
-     * @return  object
+     * @return  $this
      */
     public function setLayout($layout)
     {
@@ -465,7 +465,7 @@ class View extends Obj
      * Set a path to the site template
      *
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function setOverridePath($path)
     {
@@ -477,7 +477,7 @@ class View extends Obj
      * Adds to the stack of view script paths in LIFO order.
      *
      * @param   mixed  $path  A directory path or an array of paths.
-     * @return  object
+     * @return  $this
      */
     public function addTemplatePath($path)
     {
@@ -489,7 +489,7 @@ class View extends Obj
      * Adds to the stack of helper script paths in LIFO order.
      *
      * @param   mixed  $path  A directory path or an array of paths.
-     * @return  object
+     * @return  $this
      */
     public function addHelperPath($path)
     {

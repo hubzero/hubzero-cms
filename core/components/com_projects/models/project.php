@@ -235,7 +235,7 @@ class Project extends Model
     /**
      * Get project local repo
      *
-     * @return  object
+     * @return  \Components\Projects\Models\Repo
      */
     public function repo()
     {
@@ -303,7 +303,7 @@ class Project extends Model
      * Get project member
      *
      * @param   boolean  $reload
-     * @return  object|false
+     * @return  \Components\Projects\Tables\Owner|false
      */
     public function member($reload = false)
     {
@@ -1053,7 +1053,7 @@ class Project extends Model
      * Get params
      *
      * @param   boolean  $refresh
-     * @return  object
+     * @return  \Hubzero\Config\Registry
      */
     public function getParams($refresh = true)
     {
@@ -1538,7 +1538,7 @@ class Project extends Model
     /**
      * Get the project type
      *
-     * @return  object
+     * @return  \Components\Projects\Tables\Type
      */
     public function type()
     {

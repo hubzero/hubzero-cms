@@ -71,7 +71,7 @@ class Note extends Relational
     /**
      * Get parent member
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function member()
     {
@@ -81,7 +81,7 @@ class Note extends Relational
     /**
      * Get parent category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function category()
     {

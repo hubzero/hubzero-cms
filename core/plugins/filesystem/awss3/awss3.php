@@ -21,7 +21,7 @@ class Awss3 extends Plugin
      * Initializes the AWS S3 connection
      *
      * @param   array<mixed>   $params  Any connection params needed
-     * @return  object
+     * @return  \League\Flysystem\AwsS3V3\AwsS3V3Adapter
      **/
     public static function init($params = [])
     {

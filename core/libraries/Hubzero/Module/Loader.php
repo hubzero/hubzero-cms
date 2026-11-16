@@ -542,7 +542,7 @@ class Loader
      * Get the parameters for a module
      *
      * @param   mixed   $id  Module ID
-     * @return  object  Hubzero\Config\Registry
+     * @return  \Hubzero\Config\Registry  Hubzero\Config\Registry
      */
     public function params($id)
     {

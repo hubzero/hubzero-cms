@@ -63,7 +63,7 @@ class Initialcon
      * Set the image size
      *
      * @param   integer  $size
-     * @return  object
+     * @return  $this
      */
     public function setSize($size)
     {
@@ -87,7 +87,7 @@ class Initialcon
      * Generate a hash fron the original string
      *
      * @param   string|mixed  $string
-     * @return  object
+     * @return  $this
      */
     public function setString($string)
     {
@@ -115,7 +115,7 @@ class Initialcon
     /**
      * Convert the hash into an multidimensionnal array of boolean
      *
-     * @return  object
+     * @return  $this
      */
     private function convertHash()
     {
@@ -210,7 +210,7 @@ class Initialcon
      * Set the image color
      *
      * @param   mixed   $color  The color in hexa (6 chars) or rgb array
-     * @return  object
+     * @return  $this
      */
     public function setColor($color)
     {
@@ -253,7 +253,7 @@ class Initialcon
      * Set the font path.
      *
      * @param   string  $path
-     * @return  object
+     * @return  $this
      */
     public function setFontPath($path)
     {

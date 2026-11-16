@@ -51,7 +51,7 @@ class Digest extends Relational
      *
      * @param   integer  $scope_id
      * @param   string   $scope
-     * @return  object
+     * @return  static
      */
     public static function oneByScope($scope_id, $scope)
     {

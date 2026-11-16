@@ -75,7 +75,7 @@ class Zone extends Relational
     /**
      * Get a list of locations
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function locations()
     {

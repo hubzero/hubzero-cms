@@ -87,7 +87,7 @@ class SshKeyPathTest extends Basic
      * params and a language file, none of which the path helpers touch.
      *
      * @param   string  $username
-     * @return  object
+     * @return  \Plugins\Members\Account\Tests\TestPlugin
      */
     private function plugin($username)
     {

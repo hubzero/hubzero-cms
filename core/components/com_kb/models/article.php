@@ -211,7 +211,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Defines a belongs to one relationship between comment and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -259,7 +259,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get parent category
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function parentCategory()
     {
@@ -269,7 +269,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of comments
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
     {
@@ -461,7 +461,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a list of votes
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneShiftsToMany
      */
     public function votes()
     {
@@ -652,7 +652,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Get a form
      *
-     * @return  object
+     * @return  \Hubzero\Form\Form
      */
     public function getForm()
     {
@@ -693,7 +693,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      *
      * @param   integer  $limit
      * @param   integer  $offset
-     * @return  object   Hubzero\Database\Rows
+     * @return  \Hubzero\Database\Rows   Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0)
     {

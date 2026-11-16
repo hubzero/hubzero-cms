@@ -22,7 +22,7 @@ class Pagination extends AbstractHelper
      * @param   integer  $total  Total number of records
      * @param   integer  $start  Where to start
      * @param   integer  $limit  Number of records per page
-     * @return  object
+     * @return  \Hubzero\Pagination\Paginator
      */
     public function __invoke($total, $start, $limit)
     {

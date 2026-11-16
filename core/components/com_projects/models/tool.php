@@ -195,7 +195,7 @@ class Tool extends Model
      *
      * @param   integer|null  $parent_id
      * @param   string|null   $parent_name
-     * @return  object
+     * @return  \Components\Projects\Models\Tool\Log
      */
     public function log($parent_id = null, $parent_name = null)
     {
@@ -227,7 +227,7 @@ class Tool extends Model
      * Get history
      *
      * @param   array<mixed>  $filters
-     * @return  array<mixed>
+     * @return  array<mixed>|false|null
      */
     public function history($filters = [])
     {

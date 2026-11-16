@@ -59,7 +59,7 @@ class AbstractRenderer implements Renderable
      * Set the list of messages
      *
      * @param   mixed  $messages
-     * @return  object
+     * @return  $this
      */
     public function setMessages($messages)
     {

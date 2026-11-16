@@ -361,7 +361,7 @@ class Import extends Base
      * @param   mixed   $raw      Raw data
      * @param   array<mixed>   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
-     * @return  object
+     * @return  \Components\Members\Models\Import\Record
      */
     public function getRecord($raw, $options = [], $mode = 'UPDATE')
     {

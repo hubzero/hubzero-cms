@@ -59,7 +59,7 @@ class Links implements Test
      *
      * @param   array<mixed>   $data     string|array
      * @param   array<mixed>   $options
-     * @return  object
+     * @return  \Hubzero\Content\Auditor\Result
      */
     public function examine(array $data, array $options = [])
     {

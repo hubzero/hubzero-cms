@@ -1335,7 +1335,7 @@ class Curation extends Obj
      *
      * @param   string|null  $props  Pointer to block/element in question
      * @param   array<mixed>|null   $items  Status array
-     * @return  object
+     * @return  \Components\Publications\Models\Status
      */
     public function getReviewItemStatus($props = null, $items = null)
     {
@@ -1392,7 +1392,7 @@ class Curation extends Obj
      * @param   integer  $step    Numeric block ID
      * @param   integer  $elId    Element ID in question
      * @param   string   $viewer  Author or curator
-     * @return  object
+     * @return  \stdClass
      */
     public function getCurationStatus($pub, $step, $elId = 0, $viewer = 'author')
     {
@@ -2545,7 +2545,7 @@ class Curation extends Obj
      * Get curation manifest version
      *
      * @param   integer  $id
-     * @return  object
+     * @return  \Components\Publications\Tables\CurationVersion
      */
     public function getCurationVersion($id = 0)
     {

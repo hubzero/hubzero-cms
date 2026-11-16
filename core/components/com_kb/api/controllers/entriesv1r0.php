@@ -1010,7 +1010,7 @@ class Entriesv1r0 extends ApiController
      * Load a knowledge base category
      *
      * @param   integer  $id
-     * @return  object
+     * @return  \Components\Kb\Models\Category
      * @throws  Exception
      */
     private function category($id)
@@ -1033,7 +1033,7 @@ class Entriesv1r0 extends ApiController
      * category belonging to another component.
      *
      * @param   integer  $id
-     * @return  object
+     * @return  \Components\Categories\Models\Category
      * @throws  Exception
      */
     private function resolveParent($id)
@@ -1159,7 +1159,7 @@ class Entriesv1r0 extends ApiController
      * @param   object   $article
      * @param   object   $category
      * @param   boolean  $detailed  Include the fields too costly to gather per row in a listing
-     * @return  object
+     * @return  \stdClass
      */
     private function format($article, $category, $detailed = false)
     {
@@ -1200,7 +1200,7 @@ class Entriesv1r0 extends ApiController
      *
      * @param   object   $category
      * @param   boolean  $detailed  Include the counts too costly to gather per row in a listing
-     * @return  object
+     * @return  \stdClass
      */
     private function formatCategory($category, $detailed = false)
     {

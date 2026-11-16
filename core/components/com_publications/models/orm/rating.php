@@ -45,7 +45,7 @@ class Rating extends Relational
     /**
      * Establish relationship to parent publication
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function publiation()
     {
@@ -55,7 +55,7 @@ class Rating extends Relational
     /**
      * Establish relationship to parent version
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function version()
     {
@@ -68,7 +68,7 @@ class Rating extends Relational
      * @param   integer  $publication_id
      * @param   integer  $created_by
      * @param   integer|null  $publication_version_id
-     * @return  object
+     * @return  static
      */
     public function oneByPublicationAndUser($publication_id, $created_by, $publication_version_id = null)
     {

@@ -119,7 +119,7 @@ class Version extends Relational
     /**
      * Defines a belongs to one relationship between task and liaison
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -129,7 +129,7 @@ class Version extends Relational
     /**
      * Defines a belongs to one relationship to the parent page
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function page()
     {

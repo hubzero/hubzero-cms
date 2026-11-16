@@ -47,7 +47,7 @@ class Markdown extends Plugin
      * Handles view events for files
      *
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
-     * @return  bool|object
+     * @return  bool|\Hubzero\Plugin\View
      **/
     public function onHandleView(\Hubzero\Filesystem\Collection $collection)
     {

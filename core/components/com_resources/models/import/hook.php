@@ -88,7 +88,7 @@ class Hook extends Relational
     /**
      * Defines a belongs to one relationship between audience and user
      *
-     * @return  object  \Hubzero\Database\Relationship\BelongsToOne
+     * @return  \Hubzero\Database\Relationship\BelongsToOne  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {

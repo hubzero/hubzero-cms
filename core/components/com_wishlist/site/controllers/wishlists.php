@@ -254,10 +254,10 @@ class Wishlists extends SiteController
         $model->set('admin', $this->_admin);
 
         // Set page title
-        $this->_list_title = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2))
+        $this->_list_title = ($model->isPublic() || $this->_admin == 2)
             ? $model->get('title')
             : '';
-        $this->_subtitle   = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2))
+        $this->_subtitle   = ($model->isPublic() || $this->_admin == 2)
             ? $model->get('title')
             : '';
         $this->buildTitle();

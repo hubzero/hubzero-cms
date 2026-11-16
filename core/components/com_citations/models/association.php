@@ -41,7 +41,7 @@ class Association extends Relational
     /**
      * Establish relationship to citation
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      **/
     public function citation()
     {

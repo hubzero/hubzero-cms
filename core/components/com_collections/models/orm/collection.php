@@ -15,6 +15,11 @@ use Hubzero\Facades\Date;
 
 /**
  * Collection model
+ *
+ * @property  int|string|null  $access
+ * @property  int|string|null  $object_id
+ * @property  string|null  $object_type
+ * @property  int|string|null  $state
  */
 class Collection extends Relational
 {
@@ -130,7 +135,7 @@ class Collection extends Relational
     /**
      * Defines a belongs to one relationship between article and user
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function creator()
     {
@@ -140,7 +145,7 @@ class Collection extends Relational
     /**
      * Get a list of responses
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function posts()
     {
@@ -160,7 +165,7 @@ class Collection extends Relational
     /**
      * Get a list of chosen responses
      *
-     * @return  object
+     * @return  \Components\Collections\Models\Orm\Item
      */
     public function item()
     {

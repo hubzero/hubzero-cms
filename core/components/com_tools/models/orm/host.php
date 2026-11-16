@@ -61,7 +61,7 @@ class Host extends Relational
     /**
      * Retrieves a one to one model relationship with zone
      *
-     * @return  object
+     * @return  \Hubzero\Database\Relationship\OneToOne
      */
     public function zone()
     {
