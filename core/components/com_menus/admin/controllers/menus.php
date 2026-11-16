@@ -97,7 +97,7 @@ class Menus extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $row
+     * @param   Menu|null  $row
      *
      * @return  void
      */

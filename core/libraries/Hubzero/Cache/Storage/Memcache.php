@@ -19,7 +19,7 @@ class Memcache extends None
     /**
      * Memcached engine
      *
-     * @var  object|null
+     * @var  \Memcache|null
      */
     protected $engine;
 
@@ -165,13 +165,12 @@ class Memcache extends None
      */
     public function get($key)
     {
+        // The memcache extension has no getResultCode() (memcached does;
+        // this was copied from that storage and failed on every read): a miss
+        // gives false
         $value = $this->engine->get($this->id($key));
 
-        if ($this->engine->getResultCode() == 0) {
-            return $value;
-        }
-
-        return null;
+        return $value === false ? null : $value;
     }
 
     /**
@@ -182,8 +181,7 @@ class Memcache extends None
      */
     public function has($key)
     {
-        return $this->engine->get($this->id($key)) !== false
-            || $this->engine->getResultCode() != \Memcached::RES_NOTFOUND;
+        return $this->engine->get($this->id($key)) !== false;
     }
 
     /**

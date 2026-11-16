@@ -17,7 +17,7 @@ use Hubzero\Search\Adapters;
 class Index
 {
     /**
-     * @var  object|null
+     * @var  \Hubzero\Search\Adapters\SolrIndexAdapter|null  Solr is the only engine there is
      */
     public $adapter = null;
 
@@ -91,11 +91,11 @@ class Index
      * @param   int  $commitWithin
      * @param   int  $buffer
      * @access public
-     * @return mixed
+     * @return void  The adapter returns nothing
      */
     public function index($document, $overwrite = null, $commitWithin = 3000, $buffer = 1500)
     {
-        return $this->adapter->index($document, $overwrite, $commitWithin, $buffer);
+        $this->adapter->index($document, $overwrite, $commitWithin, $buffer);
     }
 
     /**

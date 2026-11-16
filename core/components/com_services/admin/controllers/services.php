@@ -132,7 +132,7 @@ class Services extends AdminController
     /**
      * Edit an entry
      *
-     * @param   mixed  $row
+     * @param   Service|null  $row
      *
      * @return  void
      */

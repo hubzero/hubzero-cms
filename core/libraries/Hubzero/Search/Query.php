@@ -16,7 +16,7 @@ use Hubzero\Search\Adapters;
 class Query
 {
     /**
-     * @var  object|null
+     * @var  \Hubzero\Search\Adapters\SolrQueryAdapter|null  Solr is the only engine there is
      */
     public $adapter;
 
@@ -43,7 +43,7 @@ class Query
      * Get MoreLikeThis
      *
      * @param   mixed  $terms
-     * @return  array<mixed>
+     * @return  \Solarium\QueryType\Select\Result\Result
      */
     public function getMoreLikeThis($terms)
     {

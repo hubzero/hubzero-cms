@@ -37,7 +37,7 @@ class Database extends Store
     /**
      * Database connection
      *
-     * @var object|null
+     * @var \Hubzero\Database\Driver|null
      */
     private $connection = null;
 
@@ -49,7 +49,9 @@ class Database extends Store
      */
     public function __construct($options = [])
     {
-        if (!isset($options['database']) || !($options['database'] instanceof Database)) {
+        // Unqualified, Database here was this storage class, so a database
+        // given in the options was always replaced
+        if (!isset($options['database']) || !($options['database'] instanceof \Hubzero\Database\Driver)) {
             $options['database'] = App::get('db');
         }
 
@@ -130,11 +132,8 @@ class Database extends Store
                 // Try to update the session data in the database table.
                 $this->connection->setQuery($query->toString());
 
-                // execute() returns affected row count for UPDATE queries.
-                // Use !== false since 0 affected rows (identical data) is still success.
-                if ($this->connection->execute() === false) {
-                    return false;
-                }
+                // A failed query throws; execute() gives the driver back
+                $this->connection->execute();
 
                 if ($this->profiler) {
                     $this->profiler->mark('sessionStore');

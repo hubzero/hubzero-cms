@@ -127,7 +127,7 @@ class Articles extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $row
+     * @param   Article|null  $row
      *
      * @return  void
      */

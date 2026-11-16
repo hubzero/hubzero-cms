@@ -85,7 +85,7 @@ class Statuses extends AdminController
     /**
      * Display a form for adding/editing a record
      *
-     * @param   mixed  $row
+     * @param   Status|null  $row
      *
      * @return  void
      */

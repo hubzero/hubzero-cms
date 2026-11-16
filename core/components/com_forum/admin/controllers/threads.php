@@ -331,7 +331,7 @@ class Threads extends AdminController
     /**
      * Displays a question response for editing
      *
-     * @param   mixed  $post
+     * @param   Post|null  $post
      *
      * @return  void
      */

@@ -102,7 +102,7 @@ class Boosts extends AdminController
     }
 
     /**
-     * @param   mixed  $boost
+     * @param   Boost|null  $boost
      * @return void
      */
     public function editTask($boost = null)

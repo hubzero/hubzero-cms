@@ -260,6 +260,13 @@ abstract class Driver implements LoggerAwareInterface
     protected $initialPdoAttributesCaptured = false;
 
     /**
+     * The driver's name; each driver sets its own
+     *
+     * @var  string|null
+     */
+    protected $name = null;
+
+    /**
      * The database driver syntax
      *
      * @var string|null

@@ -264,7 +264,7 @@ class Threads extends SiteController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $post
+     * @param   Post|null  $post
      *
      * @return  void
      */

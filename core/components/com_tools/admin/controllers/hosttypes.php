@@ -102,7 +102,7 @@ class Hosttypes extends AdminController
     /**
      * Edit a record
      *
-     * @param   mixed  $row
+     * @param   Hosttype|null  $row
      *
      * @return  void
      */

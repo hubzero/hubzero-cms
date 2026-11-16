@@ -73,7 +73,7 @@ class Messages extends AdminController
     /**
      * Display a form for adding/editing a record
      *
-     * @param   mixed  $row
+     * @param   Message|null  $row
      *
      * @return  void
      */

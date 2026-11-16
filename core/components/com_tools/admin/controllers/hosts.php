@@ -137,7 +137,7 @@ class Hosts extends AdminController
     /**
      * Edit a record
      *
-     * @param   mixed  $row
+     * @param   Host|null  $row
      *
      * @return  void
      */

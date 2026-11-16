@@ -396,7 +396,7 @@ class Items extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $row
+     * @param   Item|null  $row
      *
      * @return  void
      */

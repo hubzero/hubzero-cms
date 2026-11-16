@@ -96,7 +96,7 @@ class Query
     /**
      * The actual database connection object
      *
-     * @var  object|null
+     * @var  \Hubzero\Database\Driver|null
      **/
     private $connection = null;
 
@@ -276,7 +276,7 @@ class Query
     /**
      * Constructs a new query instance
      *
-     * @param   object  $connection  The database connection to use in the query builder
+     * @param   \Hubzero\Database\Driver  $connection  The database connection to use in the query builder
      * @return  void
      **/
     public function __construct($connection)
@@ -1924,10 +1924,12 @@ class Query
         }
 
         // Check if driver supports native fulltext search (MySQL/MariaDB/Informix BTS)
-        $driverName = strtolower($this->connection->getName() ?? '');
+        // getDriverType(): this asked for a getName() the driver does not have,
+        // which its __call() answered with null, so MySQL never got MATCH
+        $driverName = strtolower($this->connection->getDriverType());
         $isInformix = $driverName === 'informix'
             || $this->connection instanceof \Hubzero\Database\Drivers\Informix\InformixDriver;
-        $supportsFulltext = in_array($driverName, ['mysql', 'mariadb']);
+        $supportsFulltext = in_array($driverName, ['mysql', 'mariadb', 'percona']);
 
         if ($supportsFulltext) {
             // Use native MATCH...AGAINST syntax

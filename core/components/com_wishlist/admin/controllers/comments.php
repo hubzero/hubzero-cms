@@ -160,7 +160,7 @@ class Comments extends AdminController
     /**
      * Edit an entry
      *
-     * @param   mixed  $row
+     * @param   Comment|null  $row
      *
      * @return  void
      */

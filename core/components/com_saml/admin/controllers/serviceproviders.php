@@ -96,7 +96,7 @@ class Serviceproviders extends AdminController
     /**
      * Show a form for editing an entry
      *
-     * @param   mixed  $row
+     * @param   ServiceProvider|null  $row
      * @return  void
      */
     public function editTask($row = null)

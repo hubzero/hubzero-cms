@@ -150,7 +150,7 @@ class Certificates extends AdminController
     /**
      * Displays an edit form
      *
-     * @param   mixed  $model
+     * @param   Certificate|null  $model
      * @return  void
      */
     public function editTask($model = null)

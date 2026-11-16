@@ -77,7 +77,7 @@ class Jobs extends AdminController
     /**
      * Displays a form for editing an entry
      *
-     * @param   mixed  $row
+     * @param   Job|null  $row
      *
      * @return  void
      */

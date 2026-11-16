@@ -111,7 +111,7 @@ class Courses extends AdminController
     /**
      * Displays an edit form
      *
-     * @param   mixed  $row
+     * @param   \Components\Courses\Models\Course|null  $row
      *
      * @return  void
      */
