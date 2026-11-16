@@ -13,27 +13,28 @@ namespace Hubzero\Search;
  */
 interface Searchable
 {
-    /*
+    /**
      * The hubtype of the searchable item.
-     * @param   mixed  $limit
-     * @param   mixed  $offset
-     * @return string
+     *
+     * @return  string
      */
     public static function searchNamespace();
 
-    /*
+    /**
      * Generate a unique Id for solr to use.
-     * @return string
+     *
+     * @return  string
      */
     public function searchId();
 
-    /*
+    /**
      * Convert object into solr searchable document.
-     * @return stdClass
+     *
+     * @return  \stdClass|false  False when the item is not to be indexed
      */
     public function searchResult();
 
-    /*
+    /**
      * Provide batch of solr documents to be indexed.
      *
      * The limit comes first. Every implementation in the tree and both
@@ -41,13 +42,16 @@ interface Searchable
      * opposite, which cost nothing while the arguments were positional and
      * would have indexed the wrong window the moment somebody named them.
      *
-     * @return array
+     * @param   int  $limit
+     * @param   int  $offset
+     * @return  \Hubzero\Database\Rows
      */
     public static function searchResults($limit, $offset = 0);
 
-    /*
+    /**
      * Grab total of objects that will be indexed during full index process
-     * @return int
+     *
+     * @return  int
      */
     public static function searchTotal();
 }

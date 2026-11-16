@@ -106,7 +106,7 @@ class Description extends Relational
     /**
      * Helper method to collect multi-value fields
      *
-     * @param   iterable  $data
+     * @param   iterable<\Hubzero\Database\Relational>  $data
      * @return  array<mixed>
      */
     public static function collect($data)

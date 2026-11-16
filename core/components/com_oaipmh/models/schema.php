@@ -17,6 +17,7 @@ interface Schema
      * Check if a schema format is handled
      *
      * @param  string  $type
+     * @return bool
      */
     public static function handles($type);
 
@@ -40,6 +41,7 @@ interface Schema
      * Output set data
      *
      * @param  array<mixed>  $set
+     * @return $this
      */
     public function set($set);
 
@@ -48,6 +50,7 @@ interface Schema
      *
      * @param  array<mixed>    $iterator
      * @param  boolean  $metadata
+     * @return $this
      */
     public function records($iterator, $metadata = true);
 
@@ -56,6 +59,7 @@ interface Schema
      *
      * @param  object   $result
      * @param  boolean  $metadata
+     * @return $this
      */
     public function record($result, $metadata = true);
 }

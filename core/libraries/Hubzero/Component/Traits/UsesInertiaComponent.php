@@ -68,7 +68,7 @@ trait UsesInertiaComponent
     /**
      * Override to provide global shared props.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function inertiaSharedProps(): array
     {

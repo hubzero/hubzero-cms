@@ -22,11 +22,8 @@ class Verb
     /**
      * Submit a Celery job via direct job request insertion into Redis.
      *
+     * @param   array<int, mixed>  $params  The metrics function, then its integer arguments
      * @return  void
-     */
-
-    /**
-     * @param   mixed  $params
      */
     public static function celerySubmit($params)
     {

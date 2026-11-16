@@ -19,8 +19,8 @@ class Blank extends SearchResult
     /**
      * Return results as associative array
      *
-     * @return  void
-     * @throws  Exception  Exception description (if any) ...
+     * @return  never
+     * @throws  Exception  An empty result has nothing to convert
      */
     public function toAssociative()
     {

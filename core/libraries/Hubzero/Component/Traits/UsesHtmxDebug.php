@@ -24,10 +24,10 @@ trait UsesHtmxDebug
     }
 
     /**
-     * @param   array   $params
+     * @param   array<mixed>   $params
      * @param   string  $name
      * @param   string  $value
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxDebugQuery(array $params, string $name = 'htmx_debug', string $value = '1'): array
     {
@@ -45,8 +45,8 @@ trait UsesHtmxDebug
     }
 
     /**
-     * @param   array  $snapshot
-     * @param   array  $options
+     * @param   array<mixed>  $snapshot
+     * @param   array<mixed>  $options
      * @return  string
      */
     protected function htmxDebugBar(array $snapshot = [], array $options = []): string

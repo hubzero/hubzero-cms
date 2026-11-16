@@ -73,22 +73,25 @@ class SingleSkuProduct extends Product
         return $skus[0];
     }
 
-    /*
+    /**
      * Set time to live
      *
-     * @param   mixed  $ttl
-     * @param   strng       expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
-     * @return  bool        SKU status
-    */
+     * @param   string  $ttl  A MySQL interval, like 1 DAY, 2 MONTH or 3 YEAR
+     * @return  void
+     */
     public function setTimeToLive($ttl)
     {
         $this->getSku()->setTimeToLive($ttl);
     }
 
-    /** @return void */
+    /**
+     * Get time to live
+     *
+     * @return  mixed  The SKU's interval, or false when it has none
+     */
     public function getTimeToLive()
     {
-        $this->getSku()->getTimeToLive();
+        return $this->getSku()->getTimeToLive();
     }
 
     /**

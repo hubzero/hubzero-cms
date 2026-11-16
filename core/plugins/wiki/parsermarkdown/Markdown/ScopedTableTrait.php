@@ -20,7 +20,7 @@ trait ScopedTableTrait
     /**
      * Render a table block, marking header cells as column headers
      *
-     * @param   array   $block
+     * @param   array<mixed>   $block
      * @return  string
      */
     protected function renderTable($block)

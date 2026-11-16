@@ -113,7 +113,7 @@ trait Orderable
      * For example, if orderingGroup is ['menu_id'], items are ordered
      * within each menu separately.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getOrderingGroup(): array
     {
@@ -361,7 +361,7 @@ trait Orderable
      *
      * This renumbers all records starting from 1 with no gaps.
      *
-     * @param   array  $where  Optional WHERE conditions for grouping
+     * @param   array<mixed>  $where  Optional WHERE conditions for grouping
      * @return  int    Number of records reordered
      */
     public static function reorderAll(array $where = []): int
@@ -409,8 +409,8 @@ trait Orderable
     /**
      * Reorder records based on an array of IDs
      *
-     * @param   array  $ids    Array of primary key values in desired order
-     * @param   array  $where  Optional WHERE conditions for scoping
+     * @param   array<mixed>  $ids    Array of primary key values in desired order
+     * @param   array<mixed>  $where  Optional WHERE conditions for scoping
      * @return  int    Number of records reordered
      */
     public static function reorderByIds(array $ids, array $where = []): int

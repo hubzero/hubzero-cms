@@ -14,9 +14,9 @@ namespace Hubzero\Tests\Concerns;
 trait InteractsWithDebugHeaders
 {
     /**
-     * @param   array   $headers
+     * @param   array<mixed>   $headers
      * @param   string  $header
-     * @param   array   $contains
+     * @param   array<mixed>   $contains
      * @return  void
      */
     protected function assertDebugHeaderContains(array $headers, string $header, array $contains): void

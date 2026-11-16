@@ -19,6 +19,7 @@ interface RendererInterface
      * Display the given exception to the user.
      *
      * @param  object  $error
+     * @return void
      */
     public function render($error);
 }

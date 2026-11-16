@@ -69,9 +69,24 @@ use Hubzero\System\Requirements;
         ],
     ];
 
+    /**
+     * @var  string
+     */
     private $corePath;
+
+    /**
+     * @var  array<string, mixed>
+     */
     private $checks = [];
+
+    /**
+     * @var  bool
+     */
     private $allPassed = true;
+
+    /**
+     * @var  SecurityGuard|null
+     */
     private $security = null;
 
     public function __construct()

@@ -768,13 +768,12 @@ class Sku
         return $this->data->meta;
     }
 
-    /*
+    /**
      * Set time to live
      *
-     * @param   mixed  $ttl
-     * @param   string      expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
-     * @return  bool        SKU status
-    */
+     * @param   string  $ttl  A MySQL interval, like 1 DAY, 2 MONTH or 3 YEAR
+     * @return  void
+     */
     public function setTimeToLive($ttl)
     {
         Memberships::checkTtl($ttl);

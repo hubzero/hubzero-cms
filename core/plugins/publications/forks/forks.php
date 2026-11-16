@@ -106,7 +106,7 @@ class Forks extends Plugin
      * @param   object   $publication  Current publication
      * @param   string   $option       Name of the component
      * @param   integer  $miniview     View style
-     * @return  array
+     * @return  array<string, mixed>
      */
     //public function onPublicationExtended($publication, $option, $miniview=0)
     public function onPublicationSub($publication, $option, $miniview = 0)

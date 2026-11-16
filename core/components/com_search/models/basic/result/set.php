@@ -768,7 +768,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array Return description (if any) ...
+     * @return     mixed
      */
 
     #[\ReturnTypeWillChange]
@@ -810,7 +810,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     array|bool Return description (if any) ...
+     * @return     bool
      */
 
     #[\ReturnTypeWillChange]

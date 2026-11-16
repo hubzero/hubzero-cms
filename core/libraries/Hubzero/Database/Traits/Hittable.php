@@ -303,7 +303,7 @@ trait Hittable
      * Get the most viewed records
      *
      * @param   int    $limit  Number of records to return
-     * @param   array  $where  Additional WHERE conditions
+     * @param   array<mixed>  $where  Additional WHERE conditions
      * @return  \Hubzero\Database\Rows
      */
     public static function mostViewed(int $limit = 10, array $where = [])
@@ -323,7 +323,7 @@ trait Hittable
     /**
      * Get total hits across all records
      *
-     * @param   array  $where  Optional WHERE conditions
+     * @param   array<mixed>  $where  Optional WHERE conditions
      * @return  int
      */
     public static function totalHits(array $where = []): int

@@ -15,6 +15,8 @@ interface Provider
 {
     /**
      * Return data for sets
+     *
+     * @return string  The query that lists the sets
      */
     public function sets();
 
@@ -22,6 +24,7 @@ interface Provider
      * Return data for records
      *
      * @param  array<mixed>  $filters
+     * @return string  The query that lists the records, or empty when the filters match none
      */
     public function records($filters = []);
 
@@ -29,6 +32,7 @@ interface Provider
      * Return a single record
      *
      * @param  integer  $id
+     * @return object|null
      */
     public function record($id);
 }

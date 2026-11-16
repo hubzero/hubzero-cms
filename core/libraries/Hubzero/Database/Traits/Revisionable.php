@@ -159,7 +159,7 @@ trait Revisionable
     /**
      * Get the fields that should be tracked in revisions
      *
-     * @return  array
+     * @return  array<mixed>
      */
     public function getRevisionableFields(): array
     {
@@ -245,7 +245,7 @@ trait Revisionable
      * Get all revisions for this record
      *
      * @param   string  $order  Sort order ('desc' or 'asc')
-     * @return  array
+     * @return  array<int, mixed>
      */
     public function revisions(string $order = 'desc'): array
     {
@@ -410,7 +410,7 @@ trait Revisionable
      *
      * @param   int  $fromRevision  The older revision number (-1 returns empty)
      * @param   int  $toRevision    The newer revision number (-1 returns empty)
-     * @return  array  Array of field => ['old' => value, 'new' => value]
+     * @return  array<array{old: mixed, new: mixed}>  Array of field => ['old' => value, 'new' => value]
      */
     public function diffRevisions(int $fromRevision = -1, int $toRevision = -1): array
     {
@@ -454,7 +454,7 @@ trait Revisionable
      * Note: Default parameter handles relationship discovery.
      *
      * @param   int  $revisionNumber  The revision number to compare (-1 returns empty)
-     * @return  array  Array of field => ['old' => value, 'new' => value]
+     * @return  array<array{old: mixed, new: mixed}>  Array of field => ['old' => value, 'new' => value]
      */
     public function diffFromRevision(int $revisionNumber = -1): array
     {
@@ -590,7 +590,7 @@ trait Revisionable
      * Prune revisions across all records, keeping the most recent N per record
      *
      * @param   int    $keep   Number of revisions to keep per record
-     * @param   array  $where  Optional WHERE conditions
+     * @param   array<mixed>  $where  Optional WHERE conditions
      * @return  int    Number of revisions deleted
      */
     public static function pruneRevisions(int $keep = 10, array $where = []): int

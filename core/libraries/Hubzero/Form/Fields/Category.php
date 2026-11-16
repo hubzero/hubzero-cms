@@ -48,7 +48,7 @@ class Category extends Select
 
      *
 
-     * @return  array  The field option objects.
+     * @return  array<int, mixed>  The field option objects.
 
      */
 

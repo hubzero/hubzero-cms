@@ -33,7 +33,8 @@ defined('_HZEXEC_') or die();
 
 if (!function_exists('stem')) {
     /**
-     * @return  array<string>|string|null
+     * @param   string  $str
+     * @return  string|null
      */
     function stem($str)
     {
@@ -86,6 +87,12 @@ $this
     $recommended = new \Components\Resources\Helpers\RecommendedTags($this->id, $this->existing);
 
     /**
+     * @param   int                                  $idx       Which focus area set this is
+     * @param   array<int, array<string, mixed>>     $fas       The focus area tags at this depth
+     * @param   array<string, array<string, mixed>>  $fa_props  Each focus area's properties, by label
+     * @param   array<string, mixed>                 $existing  The tags already applied, by lower-case raw tag
+     * @param   string|null                          $parent    The tag of the parent focus area
+     * @param   int                                  $depth
      * @return  void
      */
     function fa_controls($idx, $fas, $fa_props, $existing, $parent = null, $depth = 1)

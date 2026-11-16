@@ -537,7 +537,7 @@ class Member extends User implements \Hubzero\Search\Searchable
         return $searchNamespace;
     }
 
-    /*
+    /**
      * Generate solr search Id
      * @return string
      */
@@ -594,7 +594,7 @@ class Member extends User implements \Hubzero\Search\Searchable
         return $obj;
     }
 
-    /*
+    /**
      * Generate new user secret value
      * @return string
      */

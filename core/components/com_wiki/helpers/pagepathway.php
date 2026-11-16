@@ -18,7 +18,7 @@ trait PagePathway
     /**
      * Append the current page's ancestors and the page itself to the pathway
      *
-     * @return  array  The ancestors, root first, when the page views should list them as crumbs; otherwise empty
+     * @return  array<mixed>  The ancestors, root first, when the page views should list them as crumbs; otherwise empty
      */
     protected function appendPagePathway()
     {

@@ -61,6 +61,8 @@ class PrivilegeManager
 
     /**
      * User info for sudo user (from posix_getpwnam)
+     *
+     * @var  array<string, int|string>|null
      */
     private ?array $sudoUserInfo = null;
 

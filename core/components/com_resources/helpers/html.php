@@ -172,7 +172,7 @@ class Html
     /**
      * Generate a type select list
      *
-     * @param      iterable  $arr      Values to populate list
+     * @param      iterable<object>  $arr      Values to populate list
      * @param      string $name     Name of the field
      * @param      mixed  $value    Value to select
      * @param   string  $id

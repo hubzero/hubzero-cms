@@ -114,14 +114,22 @@ class Extension extends Base implements CommandInterface
         // messages, including why a helper refused, were simply dropped.
         $output = $this->output;
         $logger = new class ($output) {
+            /**
+             * @var  \Hubzero\Console\Output
+             */
             private $output;
 
+            /**
+             * @param   \Hubzero\Console\Output  $output
+             */
             public function __construct($output)
             {
                 $this->output = $output;
             }
 
             /**
+             * @param   string  $message
+             * @param   string  $type
              * @return  void
              */
             public function log($message, $type = 'info')

@@ -252,7 +252,7 @@ class Miner extends Obj implements Provider
      * Process a single record
      *
      * @param   integer|string  $id  ID, or ID:revision
-     * @return  object
+     * @return  \stdClass|null
      */
     public function record($id)
     {

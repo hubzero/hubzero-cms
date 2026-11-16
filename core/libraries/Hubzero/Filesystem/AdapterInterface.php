@@ -138,6 +138,7 @@ interface AdapterInterface
      * Delete a directory.
      *
      * @param   string  $path
+     * @param   bool    $preserve  Keep the directory itself, deleting only what is in it
      * @return  bool
      */
     public function deleteDirectory($path, $preserve);

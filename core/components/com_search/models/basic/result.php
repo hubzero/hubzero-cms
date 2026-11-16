@@ -627,6 +627,7 @@ abstract class Result
      *
      * Long description (if any) ...
      *
+     * @return  Result
      */
     abstract public function toAssociative();
 }

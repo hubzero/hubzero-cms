@@ -39,7 +39,7 @@ trait CanMock
      * Each entry is [fully qualified class, file to require relative to the
      * component root, or null when the class is autoloaded].
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected static $mockClassMap = [
         'App'                => ['Components\\Search\\Tests\\Doubles\\AppDouble', 'tests/doubles/AppDouble.php'],

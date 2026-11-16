@@ -10,6 +10,12 @@ namespace Components\Search\Traits;
 
 trait IsUnique
 {
+    /**
+     * Whether no saved record shares this one's values for any of the
+     * class's sets of unique keys
+     *
+     * @return  bool
+     */
     public function isUnique()
     {
         $isUnique = true;
@@ -24,6 +30,10 @@ trait IsUnique
         return $isUnique;
     }
 
+    /**
+     * @param   array<int, string>  $fields
+     * @return  bool
+     */
     protected function duplicatesExist($fields)
     {
         $duplicates = $this->findDuplicates($fields);
@@ -31,6 +41,10 @@ trait IsUnique
         return $duplicates->count() > 0;
     }
 
+    /**
+     * @param   array<int, string>  $fields
+     * @return  static  A query for the saved records with this one's values for the fields
+     */
     protected function findDuplicates($fields)
     {
         $savedRecords = self::all();

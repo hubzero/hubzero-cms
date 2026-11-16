@@ -344,7 +344,7 @@ class Rule extends Relational
      * Validate a password
      *
      * @param   string  $password
-     * @param   iterable  $rules
+     * @param   iterable<mixed>  $rules
      * @param   mixed   $user
      * @param   string|null  $name
      * @param   bool    $isNew

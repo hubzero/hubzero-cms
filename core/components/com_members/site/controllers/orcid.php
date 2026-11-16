@@ -610,11 +610,10 @@ class Orcid extends SiteController
         $curl_response = curl_exec($initedCurl);
         curl_close($initedCurl);
     }
-    /*
+    /**
      * Capture and exchange the 6-digit authorization code, then ORCID ID will be returned.
      * When deny button is hit, ORCID posts error code back but we do nothing here.
      *
-     * @param   null
      * @return  void
      */
     public function excAuth()
@@ -655,10 +654,10 @@ class Orcid extends SiteController
         }
     }
 
-    /*
+    /**
      * Update or save orcid to #_user_profiles
      *
-     * @param   string   $userID
+     * @param   int      $userID
      * @param   string   $key
      * @param   string   $value
      *
@@ -678,7 +677,7 @@ class Orcid extends SiteController
         }
     }
 
-    /*
+    /**
      * Save orcid information to #_publication_collaborators
      *
      * @param   string   $name

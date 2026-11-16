@@ -20,7 +20,7 @@ trait InteractsWithInertiaResponses
     use InteractsWithDebugHeaders;
 
     /**
-     * @param   array  $page
+     * @param   array<mixed>  $page
      * @return  void
      */
     protected function assertInertiaPageShape(array $page): void
@@ -33,7 +33,7 @@ trait InteractsWithInertiaResponses
     }
 
     /**
-     * @param   array   $page
+     * @param   array<mixed>   $page
      * @param   string  $component
      * @return  void
      */
@@ -44,7 +44,7 @@ trait InteractsWithInertiaResponses
     }
 
     /**
-     * @param   array   $page
+     * @param   array<mixed>   $page
      * @param   string  $key
      * @return  mixed
      */

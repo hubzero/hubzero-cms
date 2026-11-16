@@ -306,6 +306,7 @@ class Profile extends Plugin
      * Method to edit a user address
      *
      * @param  object|null $address
+     * @return string
      */
     public function editAddress($address = null)
     {

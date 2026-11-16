@@ -21,7 +21,7 @@ trait ErrorBag
     /**
      * An array of error messages or Exception objects.
      *
-     * @var  array
+     * @var  array<mixed>
      */
     protected $errors = [];
 
@@ -57,7 +57,7 @@ trait ErrorBag
     /**
      * Return all errors, if any.
      *
-     * @return  array  Array of error messages
+     * @return  array<mixed>  Array of error messages
      */
     public function getErrors()
     {
@@ -84,7 +84,7 @@ trait ErrorBag
     /**
      * Set the list of errors
      *
-     * @param   array   $errors  List of Error message.
+     * @param   array<mixed>   $errors  List of Error message.
      * @return  object
      */
     public function setErrors($errors)

@@ -16,14 +16,14 @@ trait ErrorBag
     /**
      * Errors that have been declared
      *
-     * @var  array
+     * @var  array<mixed>
      **/
     private $errors = [];
 
     /**
      * Sets all errors at once, overwritting any existing errors
      *
-     * @param   array  $errors  The errors to set
+     * @param   array<mixed>  $errors  The errors to set
      * @return  $this
      **/
     public function setErrors($errors)
@@ -47,7 +47,7 @@ trait ErrorBag
     /**
      * Returns all errors
      *
-     * @return  array
+     * @return  array<mixed>
      **/
     public function getErrors()
     {

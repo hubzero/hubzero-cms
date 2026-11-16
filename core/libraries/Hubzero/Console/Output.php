@@ -423,7 +423,7 @@ class Output
      * }, 'Importing: ', 'bar_eta');
      * ```
      *
-     * @param   iterable  $items     Items to iterate over
+     * @param   iterable<mixed>  $items     Items to iterate over
      * @param   callable  $callback  Function to call for each item, receives ($item, $key, $progress)
      * @param   string    $message   Optional message to display before progress
      * @param   string    $type      Progress type ('percentage', 'ratio', 'bar', 'bar_eta')
@@ -464,7 +464,7 @@ class Output
      *
      * Similar to withProgress() but doesn't clear the progress bar when done.
      *
-     * @param   iterable  $items          Items to iterate over
+     * @param   iterable<mixed>  $items          Items to iterate over
      * @param   callable  $callback       Function to call for each item
      * @param   string    $message        Optional message to display before progress
      * @param   string    $type           Progress type
@@ -532,14 +532,21 @@ class Output
 
         // Create a ticker object for the callback
         $ticker = new class ($progress) {
+            /**
+             * @var  \Hubzero\Console\Output\Progress
+             */
             private $progress;
 
+            /**
+             * @param   \Hubzero\Console\Output\Progress  $progress
+             */
             public function __construct($progress)
             {
                 $this->progress = $progress;
             }
 
             /**
+             * @param   string|null  $message
              * @return  void
              */
             public function tick($message = null)

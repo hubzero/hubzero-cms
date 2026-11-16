@@ -1210,12 +1210,12 @@ class Create extends SiteController
         $this->addNewTags($id, $resourceTagsDiff['added']);
     }
 
-    /*
+    /**
      * Calculate which tag associations need to be created & destroyed for a resource
      *
      * @param    integer   $resourceId        Resource record ID
-     * @param    array     $associationData   Tag association data
-     * @return   array
+     * @param    array<int, array<int, mixed>>     $associationData   Tag association data
+     * @return   array{removed: \Hubzero\Database\Rows, added: array<int, array<int, mixed>>}
      */
     protected function diffResourceTags($resourceId, $associationData)
     {
@@ -1231,12 +1231,12 @@ class Create extends SiteController
         return $diff;
     }
 
-    /*
+    /**
      * Determine which tags have been disassociated from a given resource based on list of tag names
      *
      * @param   integer   $resourceId   Resource record ID
-     * @param   array     $tagNames     Normalized tag names
-     * @return  HUBzero\Rows
+     * @param   array<int, string>     $tagNames     Normalized tag names
+     * @return  \Hubzero\Database\Rows
      */
     protected function calculateRemovedTagAssociations($resourceId, $tagNames)
     {
@@ -1254,13 +1254,13 @@ class Create extends SiteController
         return $removedTagAssociations;
     }
 
-    /*
+    /**
      * Determines which data should be used to create new tag associations
      *
      * @param   integer   $resourceId        Resource record ID
-     * @param   array     $tagNames          Normalized tag names
-     * @param   array     $associationData   Tag association data
-     * @return  array
+     * @param   array<int, string>     $tagNames          Normalized tag names
+     * @param   array<int, array<int, mixed>>     $associationData   Tag association data
+     * @return  array<int, array<int, mixed>>
      */
     protected function calculateNewTagAssociations($resourceId, $tagNames, $associationData)
     {
@@ -1284,10 +1284,10 @@ class Create extends SiteController
         return $newTags;
     }
 
-    /*
+    /**
      * Destroy tag associations removed from a resource's list of tags
      *
-     * @param    HUBzero\Rows  $removedTagAssociations   Removed tag association records
+     * @param    \Hubzero\Database\Rows  $removedTagAssociations   Removed tag association records
      * @return   void
      */
     protected function destroyRemovedTags($removedTagAssociations)
@@ -1295,11 +1295,11 @@ class Create extends SiteController
         $removedTagAssociations->destroyAll();
     }
 
-    /*
+    /**
      * Create tag associations for tags added to a resource's list of tags
      *
      * @param    integer   $resourceId   Resource record ID
-     * @param    array     $newTags      Data for new tag associations
+     * @param    array<int, array<int, mixed>>     $newTags      Data for new tag associations
      * @return   void
      */
     protected function addNewTags($resourceId, $newTags)

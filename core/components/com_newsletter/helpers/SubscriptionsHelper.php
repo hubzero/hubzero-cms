@@ -85,6 +85,7 @@ class SubscriptionsHelper
     // Added exception handling to provide feedback if database has not been set up correctly for com_reply features:
     /**
      * @param   mixed  $profileFieldId
+     * @return  array<int, mixed>
      */
     private function loadSubscriptionOptions($profileFieldId)
     {
@@ -228,6 +229,9 @@ class SubscriptionsHelper
         }
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     private function loadProfileFieldFks()
     {
         $this->db->setQuery("
@@ -235,7 +239,7 @@ class SubscriptionsHelper
 				from #__email_subscriptions es
 				left join #__user_profile_fields pf on es.profile_field_name = pf.name;");
 
-        return $this->db->loadColumn();
+        return $this->db->loadColumn() ?: [];
     }
 
     /**
@@ -251,6 +255,9 @@ class SubscriptionsHelper
         }
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     private function loadProfileOptionValues()
     {
         $this->db->setQuery("
@@ -259,6 +266,6 @@ class SubscriptionsHelper
 				left join #__user_profile_fields pf on es.profile_field_name = pf.name
 				left join #__user_profile_options po on pf.id = po.field_id;");
 
-        return $this->db->loadColumn();
+        return $this->db->loadColumn() ?: [];
     }
 }

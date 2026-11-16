@@ -10,9 +10,12 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 
-/*
+/**
  * none (output raw module content)
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_none($module, &$params, &$attribs)
@@ -20,9 +23,12 @@ function modChrome_none($module, &$params, &$attribs)
     echo $module->content;
 }
 
-/*
+/**
  * Module chrome that wraps the module in a table
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_table($module, &$params, &$attribs)
@@ -49,9 +55,12 @@ function modChrome_table($module, &$params, &$attribs)
     <?php
 }
 
-/*
+/**
  * xhtml (divs and font header tags)
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_xhtml($module, &$params, &$attribs)
@@ -67,9 +76,12 @@ function modChrome_xhtml($module, &$params, &$attribs)
     <?php endif;
 }
 
-/*
+/**
  * Module chrome that add preview information to the module
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_outline($module, &$params, &$attribs)
@@ -112,9 +124,12 @@ function modChrome_outline($module, &$params, &$attribs)
     <?php
 }
 
-/*
+/**
  * allows sliders
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_sliders($module, &$params, &$attribs)
@@ -134,9 +149,12 @@ function modChrome_sliders($module, &$params, &$attribs)
     }
 }
 
-/*
+/**
  * allows tabs
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_tabs($module, &$params, &$attribs)

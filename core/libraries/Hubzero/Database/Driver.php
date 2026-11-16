@@ -196,7 +196,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * In-memory table column metadata cache scoped to this driver instance.
      *
-     * @var array<string,array>
+     * @var array<string, array<mixed>>
      */
     protected $tableColumnsCache = [];
 
@@ -3497,6 +3497,7 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Gets the primary key of a table
      *
+     * @param   string  $table
      * @return  string
      **/
     abstract public function getPrimaryKey($table);

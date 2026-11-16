@@ -590,7 +590,7 @@ class Applications extends SiteController
             'passed',
         );
     }
-    /*
+    /**
      * Revoke all tokens for an application
      *
      * @return  void

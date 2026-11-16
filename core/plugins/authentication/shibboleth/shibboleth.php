@@ -352,7 +352,7 @@ class Shibboleth extends Plugin
      * Check login status
      *
      * @access  public
-     * @return  Array $status
+     * @return  array<mixed>  The stored session, or empty when there is none
      */
     public function status()
     {

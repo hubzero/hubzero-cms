@@ -318,7 +318,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
      * Append compiled inline index SQL fragments to a CREATE TABLE parts list.
      *
      * @param  array<mixed>     &$parts
-     * @param  iterable  $indexes
+     * @param  iterable<mixed>  $indexes
      * @param  callable  $compiler
      * @return void
      */

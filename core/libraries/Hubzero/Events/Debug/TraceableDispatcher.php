@@ -80,6 +80,7 @@ class TraceableDispatcher implements DispatcherInterface
      *
      * @param   mixed  $listener
      * @param   mixed  $event
+     * @return  object  The wrapped dispatcher
      */
     public function removeListener($listener, $event = null)
     {
@@ -90,6 +91,7 @@ class TraceableDispatcher implements DispatcherInterface
      * {@inheritdoc}
      *
      * @param   mixed  $event
+     * @return  array<mixed>
      */
     public function getListeners($event = null)
     {
@@ -101,6 +103,7 @@ class TraceableDispatcher implements DispatcherInterface
      *
      * @param   mixed  $listener
      * @param   mixed  $event
+     * @return  bool
      */
     public function hasListener($listener, $event)
     {

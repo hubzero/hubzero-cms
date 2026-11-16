@@ -19,6 +19,7 @@ interface Adapter
      * Check if a mime type is accepted
      *
      * @param  string  $mime
+     * @return bool
      */
     public static function accepts($mime);
 
@@ -26,6 +27,7 @@ interface Adapter
      * Count import records
      *
      * @param  \Hubzero\Content\Import\Model\Import $import
+     * @return int
      */
     public function count(Import $import);
 
@@ -35,6 +37,7 @@ interface Adapter
      * @param  \Hubzero\Content\Import\Model\Import $import
      * @param  array<mixed>    $callbacks
      * @param  bool     $dryRun
+     * @return array<mixed>
      */
     public function process(Import $import, array $callbacks, $dryRun);
 }

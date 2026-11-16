@@ -20,7 +20,7 @@ class Category
     /**
      * Cached array of the category items.
      *
-     * @var    array<mixed>
+     * @var    array<string, array<int, mixed>>
      */
     protected static $items = [];
 
@@ -30,7 +30,7 @@ class Category
      * @param   string  $extension  The extension option e.g. com_something.
      * @param   array<mixed>   $config     An array of configuration options. By default, only
      *                              published and unpublished categories are returned.
-     * @return  array<mixed>
+     * @return  array<int, mixed>
      */
     public static function options($extension, $config = ['filter.published' => [0, 1]])
     {
@@ -85,7 +85,7 @@ class Category
      * @param   string  $extension  The extension option.
      * @param   array<mixed>   $config     An array of configuration options. By default, only published
      *                              and unpublished categories are returned.
-     * @return  array<mixed>   Categories for the extension
+     * @return  array<int, mixed>   Categories for the extension
      */
     public static function categories($extension, $config = ['filter.published' => [0, 1]])
     {

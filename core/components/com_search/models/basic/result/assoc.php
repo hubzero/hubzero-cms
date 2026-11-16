@@ -18,6 +18,7 @@ abstract class Assoc extends SearchResult
     /**
      * Is the result a scalar?
      *
+     * @return  bool
      */
     abstract public function isScalar();
 }

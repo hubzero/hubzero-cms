@@ -525,6 +525,7 @@ class Discussions extends Plugin
      * @param   object  $course
      * @param   object  $unit
      * @param   object  $lecture
+     * @return  string
      */
     public function onCourseAfterLecture($course, $unit, $lecture)
     {

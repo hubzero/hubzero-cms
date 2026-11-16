@@ -28,7 +28,7 @@ trait AssetAware
      *
      * @param   string  $stylesheet  Stylesheet or styles to add
      * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
-     * @param   array   $attributes  Attributes
+     * @param   array<mixed>   $attributes  Attributes
      * @return  object
      */
     public function css($stylesheet = '', $extension = null, $attributes = [])
@@ -61,7 +61,7 @@ trait AssetAware
      *
      * @param   string  $asset       Script to add
      * @param   string|null  $extension   Extension name, e.g.: com_example, mod_example, plg_example_test
-     * @param   array   $attributes  Attributes
+     * @param   array<mixed>   $attributes  Attributes
      * @return  object
      */
     public function js($asset = '', $extension = null, $attributes = [])

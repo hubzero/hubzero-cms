@@ -2669,6 +2669,8 @@ class Collections extends Plugin
 
     /**
      * Display settings
+     *
+     * @return  string
      */
     private function settings()
     {

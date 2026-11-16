@@ -98,7 +98,7 @@ class AssocList extends Assoc implements Iterator, Countable
     /**
      * Get a list of items as an AssocList object
      *
-     * @return  object
+     * @return  $this
      */
     public function toAssociative()
     {

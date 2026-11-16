@@ -46,7 +46,7 @@ class Resources extends Plugin
     /**
      * Resource categories
      *
-     * @var iterable|null
+     * @var iterable<mixed>|null
      */
     private $cats  = null;
 

@@ -156,6 +156,8 @@ class Sponsors extends Plugin
 
     /**
      * Display a list of sponsors
+     *
+     * @return  string
      */
     public function defaultTask()
     {

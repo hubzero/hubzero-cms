@@ -27,6 +27,7 @@ $canDo = Components\Cron\Helpers\Permissions::getActions('component');
 Toolbar::title(Lang::txt('COM_CRON') . ': ' . Lang::txt('COM_CRON_RUN'), 'cron');
 
 /**
+ * @param   string  $json
  * @return  string
  */
 function prettyPrint($json)

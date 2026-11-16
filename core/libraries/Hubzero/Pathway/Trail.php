@@ -140,7 +140,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Rewind position
      *
-     * @return  array
+     * @return  mixed  The first item, or false when there are none
      */
 
     #[\ReturnTypeWillChange]

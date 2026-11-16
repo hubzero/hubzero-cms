@@ -37,14 +37,14 @@ trait ColumnDefinitionTrait
     /**
      * Type parameters (e.g., length for string, precision/scale for decimal)
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $typeParameters = [];
 
     /**
      * Column modifiers
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $columnModifiers = [];
 
@@ -570,7 +570,7 @@ trait ColumnDefinitionTrait
      * Delegates to the driver's getAbstractTypeMap() method.
      *
      * @param  Driver  $driver
-     * @return array
+     * @return array<mixed>
      */
     protected function getTypeMapForDriver(Driver $driver): array
     {
@@ -829,7 +829,7 @@ trait ColumnDefinitionTrait
     /**
      * Get the type parameters
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getTypeParameters(): array
     {
@@ -839,7 +839,7 @@ trait ColumnDefinitionTrait
     /**
      * Get the column modifiers
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getColumnModifiers(): array
     {

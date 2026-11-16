@@ -202,6 +202,7 @@ class Application extends AdminController
     /**
      * Update the Hub Secret in the database table.
      *
+     * @param   array<string, mixed>  $hubsecret  The submitted hubsecret form fields
      * @return  Boolean
      */
     private function saveHubSecret(array $hubsecret)

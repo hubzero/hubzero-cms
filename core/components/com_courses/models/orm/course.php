@@ -410,7 +410,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         return parent::destroy();
     }
 
-    /*
+    /**
      * Namespace used for solr Search
      * @return string
      */
@@ -420,7 +420,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         return $searchNamespace;
     }
 
-    /*
+    /**
      * Generate solr search Id
      * @return string
      */
@@ -450,9 +450,9 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         return self::all()->start($offset)->limit($limit)->rows();
     }
 
-    /*
+    /**
      * Generate search document for Solr
-     * @return array
+     * @return \stdClass|false
      */
     public function searchResult()
     {

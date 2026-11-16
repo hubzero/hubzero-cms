@@ -23,7 +23,8 @@ interface MacroInterface
     /**
      * Set the Filesystem object.
      *
-     * @param  $filesystem  Filesystem
+     * @param  Filesystem  $filesystem
+     * @return void
      */
     public function setFilesystem(Filesystem $filesystem);
 }

@@ -199,7 +199,7 @@ class OneToOneThrough extends Relationship
      *
      * For OneToOneThrough, we store single models instead of collections
      *
-     * @param   iterable|object  $relations  The relations to sort
+     * @param   iterable<mixed>|object  $relations  The relations to sort
      * @return  array<mixed>
      **/
     protected function getResultsByRelatedKey($relations)

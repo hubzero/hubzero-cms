@@ -30,7 +30,7 @@ class Pagedown extends Plugin
      */
     protected $editorCount = 1;
 
-    /*
+    /**
      *  Adds editor scripts & stylesheets to the HTML document
      *
      * @return  void
@@ -122,7 +122,7 @@ class Pagedown extends Plugin
         return $assetPaths;
     }
 
-    /*
+    /**
      * Display the editor area
      *
      * @param   string   $name     Control name
@@ -135,7 +135,7 @@ class Pagedown extends Plugin
      * @param   string   $id       Optional ID for the textarea
      * @param   string   $asset
      * @param   object   $author
-     * @param   array    $params  Associative array of editor state
+     * @param   array<string, mixed>  $params  Associative array of editor state
      * @return  string
      */
     public function onDisplay(
@@ -240,7 +240,7 @@ class Pagedown extends Plugin
         return $textarea;
     }
 
-    /*
+    /**
      * Not applicable in this editor
      *
      * @return  void
@@ -250,7 +250,7 @@ class Pagedown extends Plugin
         //stub
     }
 
-    /*
+    /**
      * Not applicable in this editor
      *
      * @return  void
@@ -260,7 +260,7 @@ class Pagedown extends Plugin
         //stub
     }
 
-    /*
+    /**
      * Not applicable in this editor
      *
      * @return  void

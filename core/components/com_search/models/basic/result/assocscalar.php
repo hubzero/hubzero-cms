@@ -144,7 +144,7 @@ class AssocScalar extends SearchResult
      *
      * Long description (if any) ...
      *
-     * @return     mixed Return description (if any) ...
+     * @return     $this
      */
     public function toAssociative()
     {

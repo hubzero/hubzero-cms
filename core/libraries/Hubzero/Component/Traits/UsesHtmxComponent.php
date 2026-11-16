@@ -38,7 +38,7 @@ trait UsesHtmxComponent
     /**
      * Override for component-global HTMX/Alpine shared state.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxState(): array
     {
@@ -50,7 +50,7 @@ trait UsesHtmxComponent
      *
      * Override in component entry class when a component needs a different policy.
      *
-     * @return  array
+     * @return  array<mixed>
      */
     protected function htmxSecurityConfig(): array
     {
@@ -64,8 +64,8 @@ trait UsesHtmxComponent
     /**
      * Merge security runtime config into shared HTMX state payload.
      *
-     * @param   array  $state
-     * @return  array
+     * @param   array<mixed>  $state
+     * @return  array<mixed>
      */
     protected function mergeHtmxConfigIntoState(array $state): array
     {

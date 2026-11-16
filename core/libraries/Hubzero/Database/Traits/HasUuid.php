@@ -248,7 +248,7 @@ trait HasUuid
      * Note: The default value allows this method to be called during
      * relationship introspection without causing ArgumentCountError.
      *
-     * @param   array|null  $uuids  Array of UUIDs to search for
+     * @param   array<mixed>|null  $uuids  Array of UUIDs to search for
      * @return  \Hubzero\Database\Rows
      */
     public static function findManyByUuid(?array $uuids = null)
@@ -286,7 +286,7 @@ trait HasUuid
      * Note: The default value allows this method to be called during
      * relationship introspection without causing ArgumentCountError.
      *
-     * @param   array|null  $uuids  Array of UUIDs to filter by
+     * @param   array<mixed>|null  $uuids  Array of UUIDs to filter by
      * @return  static
      */
     public function whereUuidIn(?array $uuids = null)
@@ -303,7 +303,7 @@ trait HasUuid
      * Note: The default value allows this method to be called during
      * relationship introspection without causing ArgumentCountError.
      *
-     * @param   array|null  $uuids  Array of UUIDs to exclude
+     * @param   array<mixed>|null  $uuids  Array of UUIDs to exclude
      * @return  static
      */
     public function whereUuidNotIn(?array $uuids = null)

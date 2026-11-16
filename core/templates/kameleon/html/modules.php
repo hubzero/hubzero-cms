@@ -20,9 +20,12 @@
  * two arguments.
  */
 
-/*
+/**
  * Module chrome for rendering the module in a submenu
  *
+ * @param   \stdClass  $module
+ * @param   \Hubzero\Config\Registry  $params
+ * @param   array<mixed>  $attribs
  * @return  void
  */
 function modChrome_cpanel($module, &$params, &$attribs)

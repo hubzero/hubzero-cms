@@ -22,6 +22,7 @@ interface ServiceProviderInterface
      * It should not get services.
      *
      * @param  \Hubzero\Container\Container $container  A Container instance
+     * @return void
      */
     public function register(Container $container);
 }
