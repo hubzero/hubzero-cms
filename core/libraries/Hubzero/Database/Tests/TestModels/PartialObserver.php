@@ -15,17 +15,26 @@ class PartialObserver
 {
     protected static $called = [];
 
+    /**
+     * @return  void
+     */
     public static function reset()
     {
         static::$called = [];
     }
 
+    /**
+     * @return  bool
+     */
     public static function wasCalled($event)
     {
         return isset(static::$called[$event]);
     }
 
     // Only implementing creating - other events should not cause errors
+    /**
+     * @return  void
+     */
     public function creating($model)
     {
         static::$called['creating'] = true;

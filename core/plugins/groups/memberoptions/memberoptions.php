@@ -129,6 +129,7 @@ class Memberoptions extends Plugin
      * @param   object   $user
      * @param   integer  $recvEmailOptionID
      * @param   integer  $recvEmailOptionValue
+     * @return   string|null
      */
     protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
     {

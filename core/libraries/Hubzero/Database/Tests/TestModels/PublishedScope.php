@@ -13,6 +13,9 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class PublishedScope
 {
+    /**
+     * @return  void
+     */
     public function apply($query, $model)
     {
         $query->whereEquals('status', 'published');

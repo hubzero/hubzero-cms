@@ -46,6 +46,7 @@ class Archive extends Model
      * Get Instance this Model
      *
      * @param   $key   Instance Key
+     * @return   mixed
      */
     public static function &getInstance($key = null)
     {

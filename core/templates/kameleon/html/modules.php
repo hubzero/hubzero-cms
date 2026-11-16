@@ -22,6 +22,8 @@
 
 /*
  * Module chrome for rendering the module in a submenu
+ *
+ * @return  void
  */
 function modChrome_cpanel($module, &$params, &$attribs)
 {

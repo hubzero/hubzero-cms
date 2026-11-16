@@ -157,6 +157,9 @@ class Request
         }
     }
 
+    /**
+     * @return  false|null
+     */
     public function import($what = ['all'], $where = '_SYSTEM')
     {
         if ($where != '_SYSTEM') {
@@ -220,8 +223,13 @@ class Request
                     break;
             }
         }
+
+        return null;
     }
 
+    /**
+     * @return  false|null
+     */
     public function export($what = 'all', $where = '_SYSTEM')
     {
         if ($where != '_SYSTEM') {
@@ -344,6 +352,8 @@ class Request
         }
 
         $GLOBALS['_REQUEST'] = [];
+
+        return null;
     }
 
     /**
@@ -399,6 +409,9 @@ class Request
         return '';
     }
 
+    /**
+     * @return  mixed
+     */
     public function get($key, $default = '')
     {
         switch ($key) {
@@ -483,6 +496,9 @@ class Request
         }
     }
 
+    /**
+     * @return  mixed
+     */
     public function getHeader($key, $default = '')
     {
         if (isset($this->headers[$key])) {
@@ -600,6 +616,9 @@ class Request
         }
     }
 
+    /**
+     * @return  false|null
+     */
     public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '', $method = '')
     {
         if (empty($method)) {
@@ -654,5 +673,7 @@ class Request
             default:
                 return false;
         }
+
+        return null;
     }
 }

@@ -92,6 +92,9 @@ class Version extends Relational implements \Hubzero\Search\Searchable
         'description',
     ];
 
+    /**
+     * @return  string
+     */
     public function transformStatusName()
     {
         $status = $this->get('state');

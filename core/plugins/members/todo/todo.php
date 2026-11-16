@@ -209,12 +209,14 @@ class Todo extends Plugin
 
     /**
      * Save item
+     *
+     * @return  string|null
      */
     protected function save()
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if (User::get('id') != $this->member->get('id')) {

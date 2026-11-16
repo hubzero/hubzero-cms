@@ -684,6 +684,7 @@ class Html
      * @param   string   $pop       Pop-up content
      * @param   string   $action    Link action
      * @param   boolean  $showArchive  Show the archive link too?
+     * @return   void
      */
     public static function drawLauncher(
         $icon,

@@ -143,11 +143,17 @@ class TransactionalMigrationTest extends TestCase
 
             public function __construct() {}
 
+            /**
+             * @return  true
+             */
             public function up()
             {
                 return true;
             }
 
+            /**
+             * @return  true
+             */
             public function down()
             {
                 return true;

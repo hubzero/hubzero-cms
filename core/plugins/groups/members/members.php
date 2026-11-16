@@ -1796,6 +1796,7 @@ class Members extends Plugin
      * Edit a member role
      *
      * @param   object|null  $role
+     * @return   false|null
      */
     public function editRole($role = null)
     {
@@ -1836,6 +1837,8 @@ class Members extends Plugin
         $view->setErrors($this->getErrors());
 
         $this->output = $view->loadTemplate();
+
+        return null;
     }
 
     /**

@@ -213,7 +213,7 @@ class Projects extends Plugin
                     $arr['html'] = $this->updates();
                     break;
                 case 'update':
-                    $arr['html'] = $this->update();
+                    $this->update();
                     break;
                 default:
                     $arr['html'] = $this->renderView('all');
@@ -400,6 +400,8 @@ class Projects extends Plugin
 
     /**
      * Update one or all projects
+     *
+     * @return  void
      */
     protected function update()
     {

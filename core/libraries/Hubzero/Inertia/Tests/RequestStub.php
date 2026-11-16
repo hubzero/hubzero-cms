@@ -37,11 +37,17 @@ class RequestStub
         return $this->method;
     }
 
+    /**
+     * @return  mixed
+     */
     public function server(string $key, $default = null)
     {
         return $this->server[$key] ?? $default;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $key, $default = null)
     {
         return $this->query[$key] ?? $default;

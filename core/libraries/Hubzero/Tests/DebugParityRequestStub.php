@@ -30,11 +30,17 @@ class DebugParityRequestStub
         return $this->headers[strtolower($name)] ?? $default;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $name, $default = null)
     {
         return $this->query[$name] ?? $default;
     }
 
+    /**
+     * @return  mixed
+     */
     public function server(string $name, $default = null)
     {
         return $this->server[$name] ?? $default;

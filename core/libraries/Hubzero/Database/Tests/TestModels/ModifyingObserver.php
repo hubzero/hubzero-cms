@@ -13,6 +13,9 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class ModifyingObserver
 {
+    /**
+     * @return  void
+     */
     public function creating($model)
     {
         // Generate a slug from the title

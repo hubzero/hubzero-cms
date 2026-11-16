@@ -372,6 +372,9 @@ class Db2Driver extends BaseSqlDriver
         }
     }
 
+    /**
+     * @return  mixed
+     */
     public function quoteName($name, $as = null)
     {
         // Uppercase each dot-separated part before delegating to base quoteName()

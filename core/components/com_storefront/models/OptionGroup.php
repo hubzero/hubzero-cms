@@ -232,6 +232,9 @@ class OptionGroup
         }
     }
 
+    /**
+     * @return  mixed
+     */
     public function getOptions()
     {
         if (!empty($this->data->options)) {
@@ -270,6 +273,9 @@ class OptionGroup
         $this->data->messages[] = $msg;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getMessages()
     {
         if (empty($this->data->messages)) {

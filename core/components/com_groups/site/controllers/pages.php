@@ -44,7 +44,6 @@ class Pages extends Base
         // Check if they're logged in
         if (User::isGuest()) {
             $this->loginTask(Lang::txt('COM_GROUPS_ERROR_MUST_BE_LOGGED_IN'));
-            return;
         }
 
         //check to make sure we have  cname

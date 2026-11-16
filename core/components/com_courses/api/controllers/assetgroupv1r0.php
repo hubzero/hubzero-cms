@@ -404,6 +404,8 @@ class Assetgroupv1r0 extends Base
     /**
      * This is a recursive function, needed to happen because levels can vary
      * with depth and location of nodes, it's a tree.
+     *
+     * @return  array<mixed>
      */
     public function convertToTree(
         $flat,

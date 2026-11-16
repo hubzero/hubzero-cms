@@ -285,6 +285,8 @@ class Profile extends Plugin
 
     /**
      * Method to add a user address
+     *
+     * @return  mixed
      */
     public function addAddress()
     {
@@ -328,6 +330,8 @@ class Profile extends Plugin
 
     /**
      * Method to save a user address
+     *
+     * @return  mixed
      */
     public function saveAddress()
     {
@@ -367,6 +371,8 @@ class Profile extends Plugin
 
     /**
      * Method to delete a user address
+     *
+     * @return  string|null
      */
     public function deleteAddress()
     {

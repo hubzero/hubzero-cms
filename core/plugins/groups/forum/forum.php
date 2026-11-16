@@ -298,10 +298,10 @@ class Forum extends Plugin
                     $arr['html'] .= $this->sections();
                     break;
                 case 'savesection':
-                    $arr['html'] .= $this->savesection();
+                    $this->savesection();
                     break;
                 case 'deletesection':
-                    $arr['html'] .= $this->deletesection();
+                    $this->deletesection();
                     break;
 
                 case 'categories':
@@ -317,7 +317,7 @@ class Forum extends Plugin
                     $arr['html'] .= $this->editcategory();
                     break;
                 case 'deletecategory':
-                    $arr['html'] .= $this->deletecategory();
+                    $this->deletecategory();
                     break;
 
                 case 'threads':
@@ -330,7 +330,7 @@ class Forum extends Plugin
                     $arr['html'] .= $this->editthread();
                     break;
                 case 'deletethread':
-                    $arr['html'] .= $this->deletethread();
+                    $this->deletethread();
                     break;
 
                 case 'orderup':
@@ -341,14 +341,14 @@ class Forum extends Plugin
                     break;
 
                 case 'download':
-                    $arr['html'] .= $this->download();
+                    $this->download();
                     break;
                 case 'search':
                     $arr['html'] .= $this->search();
                     break;
 
                 case 'unsubscribe':
-                    $arr['html'] .= $this->unsubscribe();
+                    $this->unsubscribe();
                     break;
 
                 default:
@@ -610,6 +610,8 @@ class Forum extends Plugin
 
     /**
      * Saves a section and redirects to main page afterward
+     *
+     * @return  void
      */
     public function savesection()
     {
@@ -714,6 +716,8 @@ class Forum extends Plugin
 
     /**
      * Deletes a section and redirects to main page afterwards
+     *
+     * @return  void
      */
     public function deletesection()
     {
@@ -1056,6 +1060,8 @@ class Forum extends Plugin
 
     /**
      * Save a category
+     *
+     * @return  string|null
      */
     public function savecategory()
     {
@@ -1182,6 +1188,8 @@ class Forum extends Plugin
 
     /**
      * Delete a category
+     *
+     * @return  void
      */
     public function deletecategory()
     {
@@ -1503,6 +1511,8 @@ class Forum extends Plugin
 
     /**
      * Saves posted data for a new/edited forum thread post
+     *
+     * @return  string|null
      */
     public function savethread()
     {
@@ -2202,6 +2212,8 @@ class Forum extends Plugin
 
     /**
      * Remove a thread
+     *
+     * @return  void
      */
     public function deletethread()
     {
@@ -2421,6 +2433,8 @@ class Forum extends Plugin
 
     /**
      * Serves up files only after passing access checks
+     *
+     * @return  void
      */
     public function download()
     {
@@ -2596,12 +2610,14 @@ class Forum extends Plugin
 
     /**
      * Save settings
+     *
+     * @return  string|null
      */
     private function savesettings()
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -2662,6 +2678,8 @@ class Forum extends Plugin
 
     /**
      * Unsubscribe user from forum emails
+     *
+     * @return  void
      */
     public function unsubscribe()
     {
@@ -2726,6 +2744,8 @@ class Forum extends Plugin
 
     /**
      * Reorder a record up
+     *
+     * @return  mixed
      */
     public function orderup()
     {
@@ -2734,6 +2754,8 @@ class Forum extends Plugin
 
     /**
      * Reorder a record up
+     *
+     * @return  mixed
      */
     public function orderdown()
     {
@@ -2744,12 +2766,13 @@ class Forum extends Plugin
      * Reorder a section
      *
      * @param   integer  $dir  Direction
+     * @return   string|null
      */
     public function reorder($dir = 1)
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {

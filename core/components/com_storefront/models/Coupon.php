@@ -49,6 +49,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCode()
     {
         if (!empty($this->data->code)) {
@@ -69,6 +72,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getDescription()
     {
         if (!empty($this->data->description)) {
@@ -93,6 +99,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getUseLimit()
     {
         if (!empty($this->data->useLimit)) {
@@ -117,6 +126,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getObjectLimit()
     {
         if (!empty($this->data->objectLimit)) {
@@ -172,6 +184,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getExpiration()
     {
         if (!empty($this->data->expires)) {
@@ -198,6 +213,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getObjectType()
     {
         if (!empty($this->data->objectType)) {
@@ -236,6 +254,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getAction()
     {
         if (!empty($this->data->action)) {
@@ -266,6 +287,9 @@ class Coupon
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getObjects()
     {
         if (!empty($this->data->objects)) {

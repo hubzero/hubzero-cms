@@ -16,6 +16,7 @@ class Content extends Renderer
     /**
      * Render content to group template
      *
+     * @return  mixed
      */
     public function render()
     {

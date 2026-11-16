@@ -18,6 +18,8 @@ class Migration20150330174214ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -33,10 +35,14 @@ class Migration20150330174214ComTools extends Base
                 $mwSchema->addColumn('zones', 'description')->text();
             }
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -52,5 +58,7 @@ class Migration20150330174214ComTools extends Base
                 $mwSchema->dropColumn('zones', 'description');
             }
         }
+
+        return null;
     }
 }

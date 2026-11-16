@@ -21,6 +21,9 @@ class ContainerStub implements ArrayAccess
         return array_key_exists($key, $this->values);
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $key)
     {
         return $this->offsetGet($key);

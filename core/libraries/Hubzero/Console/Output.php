@@ -538,6 +538,9 @@ class Output
                 $this->progress = $progress;
             }
 
+            /**
+             * @return  void
+             */
             public function tick($message = null)
             {
                 $this->progress->setSpinnerProgress($message);

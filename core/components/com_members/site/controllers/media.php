@@ -566,6 +566,9 @@ class Media extends SiteController
         }
     }
 
+    /**
+     * @return  false|string
+     */
     protected function authorize($assetType = 'component', $assetId = null)
     {
         // Check if they are logged in
@@ -699,6 +702,8 @@ class Media extends SiteController
 
     /**
      * Get file path
+     *
+     * @return  string
      */
     private function filespace()
     {

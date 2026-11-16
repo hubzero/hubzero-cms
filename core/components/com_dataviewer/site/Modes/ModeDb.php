@@ -17,6 +17,9 @@ use Hubzero\Facades\User;
 
 class ModeDb
 {
+    /**
+     * @return  array<mixed>
+     */
     public static function getConf($db_id)
     {
         $db_dv_conf = [];
@@ -60,6 +63,9 @@ class ModeDb
         return DvConfig::$dv_conf;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getDd($db_id)
     {
         $dd = false;
@@ -154,6 +160,9 @@ class ModeDb
         return $dd;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function ddPost($dd)
     {
         $id = Request::getString('id', false);

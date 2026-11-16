@@ -27,6 +27,9 @@ class UserFactory extends Factory
         ];
     }
 
+    /**
+     * @return  $this
+     */
     public function inactive()
     {
         return $this->state(['status' => 'inactive']);

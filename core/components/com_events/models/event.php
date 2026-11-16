@@ -68,6 +68,7 @@ class Event extends Model
      * Get Instance this Model
      *
      * @param   $key   Instance Key
+     * @return   mixed
      */
     public static function &getInstance($key = null)
     {
@@ -164,6 +165,8 @@ class Event extends Model
 
     /**
      * Generate Human Readable Repeating Info
+     *
+     * @return  string
      */
     public function humanReadableRepeatingRule()
     {

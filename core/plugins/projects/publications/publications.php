@@ -269,10 +269,10 @@ class Publications extends Plugin
                 break;
 
             case 'orderup':
-                $arr['html'] = $this->reorder('up');
+                $this->reorder('up');
                 break;
             case 'orderdown':
-                $arr['html'] = $this->reorder('down');
+                $this->reorder('down');
                 break;
 
                 // Individual items editing
@@ -923,6 +923,7 @@ class Publications extends Plugin
      * Move an item up in the list
      *
      * @param   string  $dir
+     * @return   void
      */
     public function reorder($dir = 'down')
     {
@@ -1832,6 +1833,8 @@ class Publications extends Plugin
 
     /**
      * Change publication status
+     *
+     * @return  string|null
      */
     public function publishDraft()
     {

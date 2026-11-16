@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20170322093811ComResources extends Base
 {
+    /**
+     * @return  string|null
+     */
     public function normalize($txt)
     {
         return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($txt));

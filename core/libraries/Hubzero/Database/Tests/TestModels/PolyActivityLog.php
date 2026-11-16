@@ -17,6 +17,9 @@ class PolyActivityLog extends Relational
 {
     protected $table = 'poly_activity_logs';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\MorphTo
+     */
     public function loggable()
     {
         return $this->morphTo('loggable');

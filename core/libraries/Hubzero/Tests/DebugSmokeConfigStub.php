@@ -17,6 +17,9 @@ class DebugSmokeConfigStub
         $this->values = $values;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $key, $default = null)
     {
         return $this->values[$key] ?? $default;

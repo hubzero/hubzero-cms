@@ -219,6 +219,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  array<string>|string|null
      */
     public function name($path)
     {
@@ -228,6 +230,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  string|null
      */
     public function extension($path)
     {
@@ -239,6 +243,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  string|false
      */
     public function type($path)
     {
@@ -247,6 +253,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  int|false|float
      */
     public function size($path)
     {
@@ -263,6 +271,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  int|false
      */
     public function lastModified($path)
     {
@@ -271,6 +281,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  mixed
      */
     public function mimetype($path)
     {
@@ -298,6 +310,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isDirectory($directory)
     {
@@ -306,6 +320,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isWritable($path)
     {
@@ -314,6 +330,8 @@ class Local implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isFile($file)
     {

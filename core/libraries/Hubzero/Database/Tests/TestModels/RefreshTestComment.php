@@ -20,6 +20,8 @@ class RefreshTestComment extends Relational
 
     /**
      * Belongs to item
+     *
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
      */
     public function item()
     {

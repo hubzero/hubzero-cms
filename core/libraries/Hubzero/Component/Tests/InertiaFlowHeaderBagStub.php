@@ -17,6 +17,9 @@ class InertiaFlowHeaderBagStub
         $this->headers[$name] = $value;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $name, $default = '')
     {
         return $this->headers[$name] ?? $default;

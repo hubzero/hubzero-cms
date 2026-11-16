@@ -404,6 +404,9 @@ class SolrQueryAdapter implements QueryInterface
         $this->addFilter('userPerms', $accessFilter, 'root_type');
     }
 
+    /**
+     * @return  string
+     */
     public function getAccessString()
     {
         $accessFilter = '';

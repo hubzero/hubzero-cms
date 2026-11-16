@@ -168,6 +168,8 @@ class Pages extends Plugin
 
     /**
      * Set layout and data for main page
+     *
+     * @return  null
      */
     public function list()
     {
@@ -217,12 +219,15 @@ class Pages extends Plugin
         }
         $this->view->pages = $pages;
         $this->view->page  = $page;
+
+        return null;
     }
 
     /**
      * Set layout to the edit form
      *
      * @param   mixed  $model
+     * @return   mixed
      */
     public function edit($model = null)
     {
@@ -802,6 +807,8 @@ class Pages extends Plugin
 
     /**
      * Display a list of files
+     *
+     * @return  never|null
      */
     public function fileList()
     {
@@ -860,6 +867,8 @@ class Pages extends Plugin
         }
 
         $this->view->setLayout('list');
+
+        return null;
     }
 
     /**

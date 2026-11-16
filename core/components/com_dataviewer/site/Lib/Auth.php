@@ -13,6 +13,9 @@ use Hubzero\Facades\User;
 
 class Auth
 {
+    /**
+     * @return  bool|null
+     */
     public static function dvAuth()
     {
         $dd = DvConfig::$dv_conf['dd'] ?? [];
@@ -38,7 +41,7 @@ class Auth
             $login_url = '/login';
             $url = $login_url . $redir_url;
             header('Location: ' . $url);
-            return;
+            return null;
         }
 
         // Guests were sent to log in above

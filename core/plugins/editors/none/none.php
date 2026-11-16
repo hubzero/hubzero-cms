@@ -175,6 +175,9 @@ class None extends Plugin
         return $editor;
     }
 
+    /**
+     * @return  string
+     */
     protected function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior

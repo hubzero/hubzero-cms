@@ -13,6 +13,9 @@ use Hubzero\Facades\Request;
 
 class Db
 {
+    /**
+     * @return  \Hubzero\Database\Driver
+     */
     public static function getDb($db = false)
     {
         if (!$db) {
@@ -38,6 +41,9 @@ class Db
         return $link;
     }
 
+    /**
+     * @return  array<string, mixed>
+     */
     public static function getResults($sql, &$dd)
     {
         $link = isset($dd['db']) ? static::getDb($dd['db']) : static::getDb();
@@ -70,6 +76,9 @@ class Db
         return $res;
     }
 
+    /**
+     * @return  string
+     */
     public static function queryGen(&$dd)
     {
         // The connection these request values are escaped against
@@ -726,6 +735,9 @@ class Db
         return $sql;
     }
 
+    /**
+     * @return  string
+     */
     public static function queryGenTotal($dd)
     {
 

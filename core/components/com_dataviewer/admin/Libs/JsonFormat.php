@@ -11,6 +11,9 @@ namespace Components\Dataviewer\Admin\Libs;
 // http://www.php.net/manual/en/function.json-encode.php#80339
 class JsonFormat
 {
+    /**
+     * @return  false|string
+     */
     public static function jsonFormat($json)
     {
         $tab = "\t";

@@ -20,6 +20,9 @@ class StubUser
         $this->id = $id;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get($key, $default = null)
     {
         return $key == 'id' ? $this->id : $default;

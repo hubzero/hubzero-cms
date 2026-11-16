@@ -93,14 +93,23 @@ class Environment
 
         $app['request'] = function () {
             return new class {
+                /**
+                 * @return  mixed
+                 */
                 public function getCmd($name, $default = '')
                 {
                     return $default;
                 }
+                /**
+                 * @return  string
+                 */
                 public function base($pathonly = false)
                 {
                     return '';
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function __call($name, $arguments)
                 {
                     return isset($arguments[1]) ? $arguments[1] : '';
@@ -115,14 +124,23 @@ class Environment
                 {
                     $this->container = $container;
                 }
+                /**
+                 * @return  false
+                 */
                 public function isAdmin()
                 {
                     return false;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function get($id)
                 {
                     return $this->container->get($id);
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function has($id)
                 {
                     return $this->container->has($id);

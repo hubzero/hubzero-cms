@@ -13,6 +13,9 @@ namespace Hubzero\Database\Tests\TestModels;
  */
 class LifecycleEventStub
 {
+    /**
+     * @return  array<mixed>
+     */
     public static function trigger($event, $args = [])
     {
         return [];

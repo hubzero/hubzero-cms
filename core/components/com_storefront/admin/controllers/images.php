@@ -425,6 +425,9 @@ class Images extends AdminController
         );
     }
 
+    /**
+     * @return  string
+     */
     protected function path($type, $id)
     {
         $config = Component::params('com_storefront');

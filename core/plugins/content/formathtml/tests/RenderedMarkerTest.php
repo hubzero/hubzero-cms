@@ -34,23 +34,35 @@ class RenderedMarkerTest extends TestCase
 
         $app = Facade::getApplication();
         $app['router'] = fn() => new class {
+            /**
+             * @return  string
+             */
             public function url($url, $xhtml = true, $ssl = null)
             {
                 return '/' . ltrim($url, '/');
             }
         };
         $app['request'] = fn() => new class {
+            /**
+             * @return  string
+             */
             public function root()
             {
                 return 'https://hub.example.org/';
             }
 
+            /**
+             * @return  mixed
+             */
             public function __call($method, $args)
             {
                 return $args[1] ?? null;
             }
         };
         $app['html.builder'] = fn() => new class {
+            /**
+             * @return  string
+             */
             public function __call($method, $args)
             {
                 return '';
@@ -60,6 +72,9 @@ class RenderedMarkerTest extends TestCase
         // to put them in it falls back to the system temporary directory
         $app['client'] = fn() => (object) ['name' => 'site', 'alias' => 'site'];
         $app['filesystem'] = fn() => new class {
+            /**
+             * @return  false
+             */
             public function makeDirectory($path)
             {
                 return false;

@@ -18,6 +18,8 @@ class Migration20140617153609ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -34,10 +36,14 @@ class Migration20140617153609ComTools extends Base
         if (!$mwSchema->hasColumn('joblog', 'zone_id')) {
             $mwSchema->addColumn('joblog', 'zone_id')->integer()->notNull()->default(0)->execute();
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -54,5 +60,7 @@ class Migration20140617153609ComTools extends Base
         if ($mwSchema->hasColumn('joblog', 'zone_id')) {
             $mwSchema->dropColumn('joblog', 'zone_id');
         }
+
+        return null;
     }
 }

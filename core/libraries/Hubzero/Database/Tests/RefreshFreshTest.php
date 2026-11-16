@@ -78,6 +78,8 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
     /**
      * Insert a test record and return its ID
+     *
+     * @return  int
      */
     protected function insertTestRecord(
         BaseSqlDriver $driver,
@@ -100,6 +102,8 @@ class RefreshFreshTest extends AbstractDriverTestCase
 
     /**
      * Insert a comment for an item
+     *
+     * @return  int
      */
     protected function insertComment(BaseSqlDriver $driver, $itemId, $body = 'Test comment')
     {

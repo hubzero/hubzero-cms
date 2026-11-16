@@ -5,6 +5,9 @@ namespace Hubzero\Config\Tests\Files;
 // @codeCoverageIgnoreStart
 class ConfigGetter
 {
+    /**
+     * @return  array<string, mixed>
+     */
     public function getConfig()
     {
         $config = [

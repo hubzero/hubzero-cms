@@ -527,6 +527,8 @@ class Hubzero extends Plugin
 
     /**
      * Event Trigger and different functions used to deidentify users
+     *
+     * @return  mixed
      */
     public function runSelectQuery($query)
     {
@@ -540,6 +542,9 @@ class Hubzero extends Plugin
         return json_decode($objString, true);
     }
 
+    /**
+     * @return  mixed
+     */
     public function runInsertQuery($query, $vars)
     {
         $db = App::get('db');
@@ -548,6 +553,9 @@ class Hubzero extends Plugin
         return $db->execute();
     }
 
+    /**
+     * @return  mixed
+     */
     public function runUpdateOrDeleteQuery($query)
     {
         $db = App::get('db');
@@ -556,6 +564,9 @@ class Hubzero extends Plugin
     }
 
     // Main function to deidentify users
+    /**
+     * @return  true
+     */
     public function onUserDeidentify($user_id)
     {
         $user_id = (int) $user_id;

@@ -21,6 +21,9 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20261101114458ComResources extends Base
 {
+    /**
+     * @return  void
+     */
     private function addIndex($table, $key, $fields)
     {
         if (is_array($fields)) {
@@ -42,6 +45,9 @@ class Migration20261101114458ComResources extends Base
         }
     }
 
+    /**
+     * @return  void
+     */
     private function dropIndex($table, $key)
     {
         if ($this->db->tableHasKey($table, $key)) {

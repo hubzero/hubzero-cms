@@ -210,6 +210,9 @@ class Warehouse extends \Hubzero\Base\Obj
         return $this->getAllCollections($rtrn, $filters);
     }
 
+    /**
+     * @return  array<mixed>|int
+     */
     public function getCollections($rtrn = 'list', $filters = [])
     {
         return $this->getAllCollections($rtrn, $filters);
@@ -845,6 +848,9 @@ class Warehouse extends \Hubzero\Base\Obj
     }
 
     // Get all option groups (for admin)
+    /**
+     * @return  int|array<mixed>
+     */
     public function getOptionGroups($rtrn = 'list', $filters = [])
     {
         $sql = "SELECT og.*

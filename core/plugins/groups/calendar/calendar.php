@@ -231,7 +231,7 @@ class Calendar extends Plugin
                     $arr['html'] = $this->save();
                     break;
                 case 'delete':
-                    $arr['html'] = $this->delete();
+                    $this->delete();
                     break;
                 case 'details':
                     $arr['html'] = $this->details();
@@ -274,7 +274,7 @@ class Calendar extends Plugin
                     $arr['html'] = $this->saveCalendar();
                     break;
                 case 'deletecalendar':
-                    $arr['html'] = $this->deleteCalendar();
+                    $this->deleteCalendar();
                     break;
                 case 'refreshcalendar':
                     $arr['html'] = $this->refreshCalendar();
@@ -689,6 +689,8 @@ class Calendar extends Plugin
     }
     /**
      * Save an entry
+     *
+     * @return  string
      */
     private function save()
     {
@@ -928,6 +930,8 @@ class Calendar extends Plugin
 
     /**
      * Delete an event
+     *
+     * @return  void
      */
     private function delete()
     {
@@ -1097,6 +1101,8 @@ class Calendar extends Plugin
 
     /**
      * Export Event Details
+     *
+     * @return  null
      */
     private function export()
     {
@@ -1116,10 +1122,14 @@ class Calendar extends Plugin
         }
 
         $eventsModelEvent->export();
+
+        return null;
     }
 
     /**
      * Subscribe to a calendar
+     *
+     * @return  null
      */
     private function subscribe()
     {
@@ -1164,6 +1174,8 @@ class Calendar extends Plugin
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
         $subscriptionName = '[' . Config::get('sitename') . '] Group Calendar: ' . $this->group->get('description');
         $eventsCalendarArchive->subscribe($subscriptionName, 'group', $this->group->get('gidNumber'));
+
+        return null;
     }
 
     /**
@@ -1421,6 +1433,8 @@ class Calendar extends Plugin
 
     /**
      * Process Registration
+     *
+     * @return  string
      */
     private function doRegister()
     {
@@ -1905,6 +1919,8 @@ class Calendar extends Plugin
 
     /**
      * Save Group Calendar
+     *
+     * @return  string
      */
     private function saveCalendar()
     {
@@ -1989,6 +2005,8 @@ class Calendar extends Plugin
 
     /**
      * Delete Group Calendar
+     *
+     * @return  void
      */
     private function deleteCalendar()
     {
@@ -2035,6 +2053,8 @@ class Calendar extends Plugin
 
     /**
      * Method to refresh Group Calendar
+     *
+     * @return  string
      */
     private function refreshCalendar()
     {

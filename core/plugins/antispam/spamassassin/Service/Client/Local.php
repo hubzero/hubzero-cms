@@ -67,6 +67,8 @@ class Local
 
     /**
      * Creates a new socket connection with data provided in the constructor
+     *
+     * @return  resource
      */
     protected function getSocket()
     {
@@ -92,6 +94,7 @@ class Local
      * @param string $cmd               Protocol command to be executed
      * @param string $message           Full email message
      * @param array<mixed>  $additionalHeaders Associative array with additional headers
+     * @return \Plugins\Antispam\SpamAssassin\Service\Client\Local\Result
      */
     protected function exec($cmd, $message, array $additionalHeaders = [])
     {
@@ -291,7 +294,7 @@ class Local
      * Returns a detailed report if the message is spam or null if it's ham
      *
      * @param string $message Email message
-     * @return string Detailed spam report
+     * @return Result The result, with the detailed report
      */
     public function getSpamReport($message)
     {
@@ -304,8 +307,8 @@ class Local
      * This will check if the message is spam or not and return all headers
      * for the modified processed message. Such as X-Spam-Flag and X-Spam-Status.
      *
-     * @param  string $message Headers for the modified message
-     * @return Result Object containing the
+     * @param  string $message The message
+     * @return string Headers for the modified message
      */
     public function headers($message)
     {

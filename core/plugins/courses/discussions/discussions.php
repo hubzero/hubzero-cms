@@ -486,7 +486,7 @@ class Discussions extends Plugin
                     $response->set('html', $this->orderdown());
                     break;
                 case 'download':
-                    $response->set('html', $this->download());
+                    $this->download();
                     break;
                 case 'search':
                     $response->set('html', $this->panel());
@@ -798,6 +798,8 @@ class Discussions extends Plugin
 
     /**
      * Get a list of instructors for this course
+     *
+     * @return  array<mixed>
      */
     protected function instructors()
     {
@@ -1115,6 +1117,7 @@ class Discussions extends Plugin
      * @param   array<mixed>    $list      List of records
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
+     * @return   array<mixed>
      */
     public function treeRecurse($children, $list, $maxlevel = 9999, $level = 0)
     {
@@ -1598,6 +1601,8 @@ class Discussions extends Plugin
 
     /**
      * Saves a section and redirects to main page afterward
+     *
+     * @return  string|null
      */
     public function savesection()
     {
@@ -2263,6 +2268,7 @@ class Discussions extends Plugin
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type
+     * @return   mixed
      */
     public function treeRecurseIndented($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {
@@ -2386,6 +2392,8 @@ class Discussions extends Plugin
 
     /**
      * Saves posted data for a new/edited forum thread post
+     *
+     * @return  mixed
      */
     public function savethread()
     {
@@ -2564,6 +2572,7 @@ class Discussions extends Plugin
      *
      * @param   integer  $id
      * @param   boolean  $redirect
+     * @return   null
      */
     public function deletethread($id = 0, $redirect = true)
     {
@@ -2656,6 +2665,8 @@ class Discussions extends Plugin
                 'passed',
             );
         }
+
+        return null;
     }
 
     /**
@@ -2730,6 +2741,8 @@ class Discussions extends Plugin
 
     /**
      * Serves up files only after passing access checks
+     *
+     * @return  void
      */
     public function download()
     {
@@ -2829,6 +2842,8 @@ class Discussions extends Plugin
 
     /**
      * Reorder a record up
+     *
+     * @return  string
      */
     public function orderup()
     {
@@ -2837,6 +2852,8 @@ class Discussions extends Plugin
 
     /**
      * Reorder a record up
+     *
+     * @return  string
      */
     public function orderdown()
     {

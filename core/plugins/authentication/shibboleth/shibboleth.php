@@ -254,6 +254,9 @@ class Shibboleth extends Plugin
         App::redirect($redirectUrl);
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     private static function htmlify()
     {
         return [
@@ -266,6 +269,9 @@ class Shibboleth extends Plugin
         ];
     }
 
+    /**
+     * @return  string|array<string>
+     */
     public static function onRenderOption($return = null, $title = 'With Institutional Credentials')
     {
         // Hide the login box if the plugin is in "debug mode" and the special key is not set in the request

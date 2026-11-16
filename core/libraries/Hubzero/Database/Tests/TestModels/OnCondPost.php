@@ -19,6 +19,8 @@ class OnCondPost extends Relational
 
     /**
      * All comments - no onCondition (BC test)
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function allComments()
     {
@@ -27,6 +29,8 @@ class OnCondPost extends Relational
 
     /**
      * Active comments only - simple onCondition
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function activeComments()
     {
@@ -37,6 +41,8 @@ class OnCondPost extends Relational
 
     /**
      * Active featured comments - multiple onConditions
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function activeFeatured()
     {
@@ -48,6 +54,8 @@ class OnCondPost extends Relational
 
     /**
      * Complex conditions with closure
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function complexComments()
     {

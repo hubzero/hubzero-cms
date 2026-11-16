@@ -16,6 +16,7 @@ class Menu extends Renderer
     /**
      * Render menu to group template
      *
+     * @return  string
      */
     public function render()
     {

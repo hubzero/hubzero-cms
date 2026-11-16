@@ -15,6 +15,9 @@ use Hubzero\Facades\User;
 
 class DataDefinitionNew
 {
+    /**
+     * @return  never
+     */
     public static function execute()
     {
         // Session-bound request check, as the other write tasks do
@@ -137,6 +140,9 @@ class DataDefinitionNew
     }
 
 
+    /**
+     * @return  array<string>|string
+     */
     public static function formatVar($var)
     {
         $var = str_replace("\n", '', $var);

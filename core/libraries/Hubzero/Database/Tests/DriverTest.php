@@ -549,8 +549,6 @@ class DriverTest extends AbstractDriverTestCase
             stripos($quoted, "test_table") !== false,
             'Quoted name should contain table name (case-insensitive)',
         );
-        // Engines differ in identifier quoting behavior (quoted vs bare names).
-        $this->assertIsString($quoted, 'quoteName should return a string');
     }
 
     // =========================================================================

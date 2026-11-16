@@ -124,6 +124,7 @@ class Filters
      * or by changing the display value (ex: '1' to 'yes', or '1000' to Sam Wilson)
      *
      * @param   array<mixed>  $q  Query arguments
+     * @return   array<int, mixed>
      */
     public static function filtersMap($q = [])
     {
@@ -223,6 +224,7 @@ class Filters
      * Translate operators from form value to database operator
      *
      * @param   string  $o  Operator of interest
+     * @return   string
      */
     public static function translateOperator($o)
     {

@@ -22,6 +22,9 @@ class TableInternalsTest extends TestCase
     private function driver()
     {
         return new class {
+            /**
+             * @return  array<mixed>
+             */
             public function getTableColumns($table, $typeOnly = true)
             {
                 return [

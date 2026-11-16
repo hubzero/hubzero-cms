@@ -2221,6 +2221,9 @@ class InformixDriver extends BaseSqlDriver
         }
     }
 
+    /**
+     * @return  bool
+     */
     public function dropForeignKey($table, $constraint)
     {
         $table = $this->replacePrefix($table);

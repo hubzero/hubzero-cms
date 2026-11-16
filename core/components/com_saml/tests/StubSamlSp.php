@@ -22,11 +22,17 @@ class StubSamlSp
         $this->map  = $map;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get($key, $default = null)
     {
         return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
     }
 
+    /**
+     * @return  mixed
+     */
     public function attributeMap()
     {
         return $this->map;

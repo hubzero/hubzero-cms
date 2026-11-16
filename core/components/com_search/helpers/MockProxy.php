@@ -17,6 +17,9 @@ class MockProxy
         $this->class = $args['class'];
     }
 
+    /**
+     * @return  mixed
+     */
     public function __call($name, $args)
     {
         $class = $this->class;

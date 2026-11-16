@@ -17,6 +17,8 @@ class Migration20140730153624ComUsers extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -42,5 +44,7 @@ class Migration20140730153624ComUsers extends Base
                 return false;
             }
         }
+
+        return null;
     }
 }

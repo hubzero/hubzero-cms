@@ -20,6 +20,9 @@ class StubSamlUser
         $this->data = $data;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get($key, $default = '')
     {
         return array_key_exists($key, $this->data) ? $this->data[$key] : $default;

@@ -1107,6 +1107,8 @@ class Members extends AdminController
 
     /**
      * Different SQL functions
+     *
+     * @return  mixed
      */
     public function runSelectQuery($query)
     {
@@ -1120,6 +1122,9 @@ class Members extends AdminController
         return json_decode($objString, true);
     }
 
+    /**
+     * @return  mixed
+     */
     public function runInsertQuery($query, $vars)
     {
         $db = App::get('db');
@@ -1128,6 +1133,9 @@ class Members extends AdminController
         return $db->execute();
     }
 
+    /**
+     * @return  mixed
+     */
     public function runUpdateOrDeleteQuery($query)
     {
         $db = App::get('db');

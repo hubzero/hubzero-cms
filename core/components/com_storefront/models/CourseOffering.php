@@ -39,6 +39,9 @@ class CourseOffering extends Sku
         $this->data->meta['offeringId'] = $offeringId;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCourseId()
     {
         return $this->data->meta['courseId'];

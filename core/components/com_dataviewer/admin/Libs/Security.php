@@ -12,6 +12,9 @@ use Components\Dataviewer\Admin\DvConfig;
 
 class Security
 {
+    /**
+     * @return  true
+     */
     public static function checkRid()
     {
         if (isset($_POST[DvConfig::$rid]) && $_POST[DvConfig::$rid] == DvConfig::$rid) {
@@ -21,6 +24,9 @@ class Security
         exit();
     }
 
+    /**
+     * @return  string
+     */
     public static function dvIdentifier($value, $label = 'identifier')
     {
         $value = (string) $value;

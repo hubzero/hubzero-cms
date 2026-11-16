@@ -38,6 +38,9 @@ class Migration20241218103500ComMembers extends Base
                 reset jos_xprofile fields to match.
     */
 
+    /**
+     * @return  void
+     */
     public function cleanUnicodeProperNames()
     {
         $query = 'SELECT id FROM #__users where surname REGEXP "\\\\p{C}" '
@@ -71,6 +74,9 @@ class Migration20241218103500ComMembers extends Base
         }
     }
 
+    /**
+     * @return  void
+     */
     public function cleanInvaldCharsProperNames()
     {
         foreach (['#__users', '#__xprofiles'] as $table) {
@@ -108,6 +114,9 @@ class Migration20241218103500ComMembers extends Base
         }
     }
 
+    /**
+     * @return  void
+     */
     public function rebuildName()
     {
         $query = "UPDATE #__users SET givenName='unknown' WHERE TRIM(name)='' "
@@ -124,6 +133,9 @@ class Migration20241218103500ComMembers extends Base
         $this->db->execute();
     }
 
+    /**
+     * @return  void
+     */
     public function rebuildNameParts()
     {
         $query = "SELECT id,name FROM #__users where TRIM(surname)='' AND TRIM(givenName)='' AND TRIM(middleName)=''";
@@ -174,6 +186,9 @@ class Migration20241218103500ComMembers extends Base
         }
     }
 
+    /**
+     * @return  void
+     */
     public function syncProfiles()
     {
 

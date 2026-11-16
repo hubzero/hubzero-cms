@@ -17,6 +17,9 @@ class PolyPostModel extends Relational
 {
     protected $table = 'poly_posts';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\MorphToMany
+     */
     public function tags()
     {
         return $this->morphToMany(

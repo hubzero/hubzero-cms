@@ -18,6 +18,8 @@ class Migration20140804153815Core extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -31,10 +33,14 @@ class Migration20140804153815Core extends Base
         if ($mwdb->schema()->tableExists('sessionlog')) {
             $mwdb->schema()->dropIndex('sessionlog', 'sessnum');
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -48,5 +54,7 @@ class Migration20140804153815Core extends Base
         if ($mwdb->schema()->tableExists('sessionlog')) {
             $mwdb->schema()->addUniqueIndex('sessionlog', 'sessnum', 'sessnum');
         }
+
+        return null;
     }
 }

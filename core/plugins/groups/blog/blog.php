@@ -712,6 +712,8 @@ class Blog extends Plugin
 
     /**
      * Save an entry
+     *
+     * @return  string
      */
     private function save()
     {
@@ -1187,12 +1189,14 @@ class Blog extends Plugin
 
     /**
      * Save blog settings
+     *
+     * @return  string|null
      */
     private function savesettings()
     {
         if (User::isGuest()) {
             $this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
-            return;
+            return null;
         }
 
         if ($this->group->published != 1 || ($this->authorized != 'manager' && $this->authorized != 'admin')) {

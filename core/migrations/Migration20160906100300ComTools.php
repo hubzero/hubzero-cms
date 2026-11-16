@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20160906100300ComTools extends Base
 {
+    /**
+     * @return  false|null
+     */
     public function up()
     {
         if (!$mwdb = $this->getMWDBO()) {
@@ -119,6 +122,8 @@ class Migration20160906100300ComTools extends Base
         $mwdb->schema()->dropIndex('domainclass', 'domain');
 
         $mwdb->schema()->dropIndex('display', 'hostname');
+
+        return null;
     }
 
     /**

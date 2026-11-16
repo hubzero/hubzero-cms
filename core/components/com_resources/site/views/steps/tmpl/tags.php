@@ -32,6 +32,9 @@ defined('_HZEXEC_') or die();
  */
 
 if (!function_exists('stem')) {
+    /**
+     * @return  array<string>|string|null
+     */
     function stem($str)
     {
         $suffixPattern = '/(?:e[dr]|ing|e?s|or|ator|able|ible|acious'
@@ -82,6 +85,9 @@ $this
 
     $recommended = new \Components\Resources\Helpers\RecommendedTags($this->id, $this->existing);
 
+    /**
+     * @return  void
+     */
     function fa_controls($idx, $fas, $fa_props, $existing, $parent = null, $depth = 1)
     {
         foreach ($fas as $fa) {
@@ -96,7 +102,7 @@ $this
             echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="'
             . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
             if ($fa['children']) {
-                echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
+                fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
             }
             echo '</div>';
         }

@@ -31,6 +31,9 @@ class BoostFactory
         );
     }
 
+    /**
+     * @return  \Components\Search\Models\Solr\Boost
+     */
     public function one($boostData)
     {
         $boost = Boost::blank();
@@ -41,6 +44,9 @@ class BoostFactory
         return $boost;
     }
 
+    /**
+     * @return  array<mixed>
+     */
     protected function formData($boostData)
     {
         $documentType = $boostData['document_type'];
@@ -52,6 +58,9 @@ class BoostFactory
         return $formedData;
     }
 
+    /**
+     * @return  array<string, mixed>
+     */
     protected function generateCreationProperties()
     {
         $userId = $this->userHelper->get('id');

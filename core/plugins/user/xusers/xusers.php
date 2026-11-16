@@ -289,6 +289,7 @@ class Xusers extends Plugin
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
+     * @return   \Exception|null
      */
     public function onAfterStoreUser($user, $isnew, $success, $msg)
     {
@@ -522,6 +523,8 @@ class Xusers extends Plugin
         if ($success) {
             Event::trigger('members.onMemberAfterSave', [$user, $isnew, $success, $msg]);
         }
+
+        return null;
     }
 
     /**

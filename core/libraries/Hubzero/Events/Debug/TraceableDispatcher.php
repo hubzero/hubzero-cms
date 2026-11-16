@@ -154,6 +154,8 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  array<string, array<mixed>>
      */
     public function getCalledListeners()
     {
@@ -171,6 +173,8 @@ class TraceableDispatcher implements DispatcherInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  array<mixed>
      */
     public function getNotCalledListeners()
     {

@@ -199,6 +199,7 @@ class Dispatcher implements DispatcherInterface
      *
      * @param   mixed  $listener
      * @param   array<mixed>|string  $events  Event names as keys, or one event name
+     * @return   \Hubzero\Events\Dispatcher
      * @throws  InvalidArgumentException
      */
     public function listen($listener, $events = [])

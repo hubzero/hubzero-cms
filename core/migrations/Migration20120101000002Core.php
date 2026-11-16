@@ -16,6 +16,9 @@ use Hubzero\Content\Migration\Base;
 **/
 class Migration20120101000002Core extends Base
 {
+    /**
+     * @return  false|null
+     */
     public function up()
     {
         if (!$mwdb = $this->getMWDBO()) {
@@ -148,5 +151,7 @@ class Migration20120101000002Core extends Base
         if ($mwSchema->tableExists('view') && $mwSchema->hasColumn('view', 'referrer')) {
             $mwSchema->dropColumn('view', 'referrer');
         }
+
+        return null;
     }
 }

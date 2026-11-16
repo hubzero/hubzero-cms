@@ -18,6 +18,8 @@ class Migration20140421112851ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -91,5 +93,7 @@ class Migration20140421112851ComTools extends Base
                 ->charset('utf8')
                 ->execute();
         }
+
+        return null;
     }
 }

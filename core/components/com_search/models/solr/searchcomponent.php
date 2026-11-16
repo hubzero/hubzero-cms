@@ -166,6 +166,9 @@ class SearchComponent extends Relational
         return false;
     }
 
+    /**
+     * @return  array<mixed>
+     */
     public function getSearchableFields()
     {
         $model = $this->getSearchableModel();

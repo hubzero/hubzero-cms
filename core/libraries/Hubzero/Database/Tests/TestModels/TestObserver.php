@@ -23,6 +23,9 @@ class TestObserver
     protected static $callSequence = 0;
     protected static $callOrder = [];
 
+    /**
+     * @return  void
+     */
     public static function reset()
     {
         static::$called = [];
@@ -33,31 +36,49 @@ class TestObserver
         static::$callOrder = [];
     }
 
+    /**
+     * @return  bool
+     */
     public static function wasCalled($event)
     {
         return isset(static::$called[$event]) && static::$called[$event];
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getModel($event)
     {
         return static::$models[$event] ?? null;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getCallTime($event)
     {
         return static::$callTimes[$event] ?? null;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getCallOrder($event)
     {
         return static::$callOrder[$event] ?? null;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getCallCount($event)
     {
         return static::$callCounts[$event] ?? 0;
     }
 
+    /**
+     * @return  void
+     */
     protected function recordCall($event, $model)
     {
         static::$called[$event] = true;
@@ -68,41 +89,65 @@ class TestObserver
         static::$callOrder[$event] = self::$callSequence;
     }
 
+    /**
+     * @return  void
+     */
     public function creating($model)
     {
         $this->recordCall('creating', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function created($model)
     {
         $this->recordCall('created', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function updating($model)
     {
         $this->recordCall('updating', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function updated($model)
     {
         $this->recordCall('updated', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function saving($model)
     {
         $this->recordCall('saving', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function saved($model)
     {
         $this->recordCall('saved', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function deleting($model)
     {
         $this->recordCall('deleting', $model);
     }
 
+    /**
+     * @return  void
+     */
     public function deleted($model)
     {
         $this->recordCall('deleted', $model);

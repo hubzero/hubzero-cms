@@ -17,6 +17,9 @@ use Hubzero\Facades\User;
 
 class ModeDs
 {
+    /**
+     * @return  mixed
+     */
     public static function getConf($db_id)
     {
         $params = Component::params('com_datastores');
@@ -37,6 +40,9 @@ class ModeDs
         return DvConfig::$dv_conf;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getDd($db_id)
     {
         $dd = false;
@@ -237,6 +243,9 @@ class ModeDs
         return $dd;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function ddPost($dd)
     {
         $id = Request::getString('id', false);

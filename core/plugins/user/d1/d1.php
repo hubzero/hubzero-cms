@@ -18,6 +18,9 @@ use Hubzero\Facades\User;
  */
 class D1 extends Plugin
 {
+    /**
+     * @return  bool
+     */
     public function onLoginUser($user, $options = [])
     {
         return $this->onUserLogin($user, $options);

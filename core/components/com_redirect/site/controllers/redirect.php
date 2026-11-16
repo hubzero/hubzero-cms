@@ -27,6 +27,9 @@ use Hubzero\Facades\App;
  */
 class Redirect extends SiteController
 {
+    /**
+     * @return  string|array<string>|null
+     */
     private function extractBaseDomain($host)
     {
         $host = preg_replace('/^www\./', '', $host);
@@ -46,6 +49,8 @@ class Redirect extends SiteController
      * A substring test would also accept "hub.org.evil.example", and on
      * PHP 8 an empty needle matches everything, so compare host names
      * exactly, ignoring case and any port in the Host header.
+     *
+     * @return  bool
      */
     private function isHubHost($host)
     {

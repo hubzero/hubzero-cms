@@ -163,6 +163,9 @@ class Repo extends Obj
         return $this->adapter;
     }
 
+    /**
+     * @return  string
+     */
     public function getAdapterName()
     {
         if (!$this->adapter) {

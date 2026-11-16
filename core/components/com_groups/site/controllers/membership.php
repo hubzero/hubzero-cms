@@ -65,7 +65,6 @@ class Membership extends Base
         // Check if they're logged in
         if (User::isGuest()) {
             $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN'));
-            return;
         }
 
         $this->buildTitle();
@@ -148,7 +147,6 @@ class Membership extends Base
         // Check if they're logged in
         if (User::isGuest()) {
             $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN'));
-            return;
         }
 
         Request::checkToken();
@@ -580,7 +578,6 @@ class Membership extends Base
             }
 
             $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_ACCEPT'), $link);
-            return;
         }
 
         //check to make sure we have  cname
@@ -804,7 +801,6 @@ class Membership extends Base
                 Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_CANCEL'),
                 'index.php?option=' . $this->option . '&cn=' . $this->cn,
             );
-            return;
         }
 
         // Require POST to prevent accidental cancellation by crawlers
@@ -964,7 +960,6 @@ class Membership extends Base
                 Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'),
                 'index.php?option=' . $this->option . '&cn=' . $this->cn . '&task=join',
             );
-            return;
         }
 
         //check to make sure we have  cname
@@ -1134,7 +1129,6 @@ class Membership extends Base
         // Check if they're logged in
         if (User::isGuest()) {
             $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_REQUEST'));
-            return;
         }
 
         Request::checkToken();

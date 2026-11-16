@@ -187,18 +187,27 @@ end',
 
         $app = Facade::getApplication();
         $app['router'] = fn() => new class {
+            /**
+             * @return  string
+             */
             public function url($url, $xhtml = true, $ssl = null)
             {
                 return '/' . ltrim($url, '/');
             }
         };
         $app['request'] = fn() => new class {
+            /**
+             * @return  mixed
+             */
             public function __call($method, $args)
             {
                 return $args[1] ?? null;
             }
         };
         $app['html.builder'] = fn() => new class {
+            /**
+             * @return  string
+             */
             public function __call($method, $args)
             {
                 return '';

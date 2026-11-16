@@ -10,6 +10,9 @@ namespace Components\Dataviewer\Site\Lib;
 
 class Dl
 {
+    /**
+     * @return  string
+     */
     public static function getDlHash($path, $type = 'file_download')
     {
         $salt = "Ju   st( in c4s3.........:-0()";

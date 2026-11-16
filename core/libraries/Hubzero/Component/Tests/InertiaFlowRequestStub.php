@@ -23,6 +23,9 @@ class InertiaFlowRequestStub
         $this->query = $query;
     }
 
+    /**
+     * @return  mixed
+     */
     public function header(string $name, $default = '')
     {
         foreach ($this->headers as $key => $value) {
@@ -39,11 +42,17 @@ class InertiaFlowRequestStub
         return $this->method;
     }
 
+    /**
+     * @return  mixed
+     */
     public function server(string $key, $default = null)
     {
         return $this->server[$key] ?? $default;
     }
 
+    /**
+     * @return  mixed
+     */
     public function get(string $key, $default = null)
     {
         return $this->query[$key] ?? $default;

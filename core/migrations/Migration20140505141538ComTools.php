@@ -18,6 +18,8 @@ class Migration20140505141538ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -39,10 +41,14 @@ class Migration20140505141538ComTools extends Base
                 ->nullable()
                 ->execute();
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -64,5 +70,7 @@ class Migration20140505141538ComTools extends Base
                 ->nullable()
                 ->execute();
         }
+
+        return null;
     }
 }

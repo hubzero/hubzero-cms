@@ -10,6 +10,9 @@ namespace Hubzero\Tests;
 
 class BehaviorAssetConfigStub
 {
+    /**
+     * @return  mixed
+     */
     public function get(string $key, $default = null)
     {
         if ($key === 'debug') {

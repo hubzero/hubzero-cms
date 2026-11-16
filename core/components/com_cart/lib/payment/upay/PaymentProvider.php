@@ -71,6 +71,7 @@ class PaymentProvider
     /**
      * Get HTML code for payment button
      *
+     * @return  string
      */
     public function getPaymentCode()
     {
@@ -119,6 +120,8 @@ class PaymentProvider
 
     /**
      * Get the post back action (payment, cancel transaction...)
+     *
+     * @return  mixed
      */
     public function getPostBackAction()
     {
@@ -167,6 +170,7 @@ class PaymentProvider
     /**
      * Get the Posting URL
      *
+     * @return  string
      */
     private function getPostURL()
     {
@@ -180,6 +184,7 @@ class PaymentProvider
     /**
      * Generate the validation key
      *
+     * @return  string
      */
     private function generateValidationKey()
     {

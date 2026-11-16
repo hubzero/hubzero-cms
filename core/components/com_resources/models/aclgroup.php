@@ -87,6 +87,9 @@ class AclGroup extends Relational
             ->row();
     }
 
+    /**
+     * @return  mixed
+     */
     public static function listGroups($resource_id)
     {
         $database = App::get('db');

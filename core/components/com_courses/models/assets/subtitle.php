@@ -268,6 +268,7 @@ class Subtitle extends Handler
     /**
      * [parseSubtitleFile description]
      * @param  mixed $file
+     * @return  array<int, \stdClass>
      */
     private function parseSubtitleFile($file)
     {

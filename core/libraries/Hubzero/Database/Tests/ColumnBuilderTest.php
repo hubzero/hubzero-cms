@@ -52,6 +52,8 @@ class ColumnBuilderTest extends AbstractDriverTestCase
 
     /**
      * Test class that uses the trait for isolated unit testing
+     *
+     * @return  object
      */
     protected function createTraitTester()
     {

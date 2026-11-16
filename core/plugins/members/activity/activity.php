@@ -100,13 +100,13 @@ class Activity extends Plugin
                     $arr['html'] = $this->savesettingsAction();
                     break;
                 case 'remove':
-                    $arr['html'] = $this->removeAction();
+                    $this->removeAction();
                     break;
                 case 'unstar':
-                    $arr['html'] = $this->starAction();
+                    $this->starAction();
                     break;
                 case 'star':
-                    $arr['html'] = $this->starAction();
+                    $this->starAction();
                     break;
                 case 'feed':
                 default:
@@ -260,13 +260,13 @@ class Activity extends Plugin
 
     /**
      * Unpublish an entry
+     *
+     * @return  void
      */
     protected function removeAction()
     {
         if (User::isGuest()) {
             $this->loginAction();
-
-            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -323,7 +323,7 @@ class Activity extends Plugin
     {
         if (User::isGuest())
         {
-            return $this->loginAction();
+            $this->loginAction();
         }
 
         if (User::get('id') != $this->member->get('id'))
@@ -392,13 +392,13 @@ class Activity extends Plugin
 
     /**
      * Star/unstar an entry
+     *
+     * @return  void
      */
     protected function starAction()
     {
         if (User::isGuest()) {
             $this->loginAction();
-
-            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -460,8 +460,6 @@ class Activity extends Plugin
     {
         if (User::isGuest()) {
             $this->loginAction();
-
-            return null;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -494,8 +492,6 @@ class Activity extends Plugin
     {
         if (User::isGuest()) {
             $this->loginAction();
-
-            return;
         }
 
         if (User::get('id') != $this->member->get('id')) {
@@ -548,7 +544,7 @@ class Activity extends Plugin
     /**
      * Redirect to the login page
      *
-     * @return  void
+     * @return  never
      */
     protected function loginAction()
     {

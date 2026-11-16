@@ -87,6 +87,9 @@ class AclUser extends Relational
             ->row();
     }
 
+    /**
+     * @return  mixed
+     */
     public static function listUsers($resource_id)
     {
         $database = App::get('db');

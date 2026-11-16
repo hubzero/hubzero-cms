@@ -61,10 +61,16 @@ class ViewLevelGateTest extends Basic
                     $this->guest = $guest;
                     $this->levels = $levels;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function isGuest()
                 {
                     return $this->guest;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function getAuthorisedViewLevels()
                 {
                     return $this->levels;
@@ -74,6 +80,9 @@ class ViewLevelGateTest extends Basic
 
         $app['router'] = function () {
             return new class {
+                /**
+                 * @return  mixed
+                 */
                 public function url($url, $xhtml = true)
                 {
                     return $url;
@@ -83,6 +92,9 @@ class ViewLevelGateTest extends Basic
 
         $app['request'] = function () {
             return new class {
+                /**
+                 * @return  string
+                 */
                 public function current($query = false)
                 {
                     return '/publications/browse?tag=data';
@@ -92,6 +104,9 @@ class ViewLevelGateTest extends Basic
 
         $app['language'] = function () {
             return new class {
+                /**
+                 * @return  mixed
+                 */
                 public function txt($key)
                 {
                     return $key;
@@ -108,20 +123,32 @@ class ViewLevelGateTest extends Basic
                     $this->container = $container;
                     $this->test = $test;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function get($id)
                 {
                     return $this->container->get($id);
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function has($id)
                 {
                     return $this->container->has($id);
                 }
+                /**
+                 * @return  never
+                 */
                 public function redirect($url, $message = null, $type = 'message')
                 {
                     $this->test->recordRedirect($url, $message, $type);
 
                     throw new \Hubzero\Test\Halted('redirect');
                 }
+                /**
+                 * @return  never
+                 */
                 public function abort($code, $message = '')
                 {
                     throw new \RuntimeException($message, $code);

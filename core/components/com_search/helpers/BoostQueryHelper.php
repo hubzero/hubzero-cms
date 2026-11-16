@@ -38,6 +38,9 @@ class BoostQueryHelper
         );
     }
 
+    /**
+     * @return  mixed
+     */
     public function getAllQueries()
     {
         $boosts = $this->boostOrm->all();

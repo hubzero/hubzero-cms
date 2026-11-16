@@ -12,6 +12,8 @@ use Hubzero\Facades\Lang;
 
 /*
  * none (output raw module content)
+ *
+ * @return  void
  */
 function modChrome_none($module, &$params, &$attribs)
 {
@@ -20,6 +22,8 @@ function modChrome_none($module, &$params, &$attribs)
 
 /*
  * Module chrome that wraps the module in a table
+ *
+ * @return  void
  */
 function modChrome_table($module, &$params, &$attribs)
 {
@@ -47,6 +51,8 @@ function modChrome_table($module, &$params, &$attribs)
 
 /*
  * xhtml (divs and font header tags)
+ *
+ * @return  void
  */
 function modChrome_xhtml($module, &$params, &$attribs)
 {
@@ -63,6 +69,8 @@ function modChrome_xhtml($module, &$params, &$attribs)
 
 /*
  * Module chrome that add preview information to the module
+ *
+ * @return  void
  */
 function modChrome_outline($module, &$params, &$attribs)
 {
@@ -106,6 +114,8 @@ function modChrome_outline($module, &$params, &$attribs)
 
 /*
  * allows sliders
+ *
+ * @return  void
  */
 function modChrome_sliders($module, &$params, &$attribs)
 {
@@ -126,6 +136,8 @@ function modChrome_sliders($module, &$params, &$attribs)
 
 /*
  * allows tabs
+ *
+ * @return  void
  */
 function modChrome_tabs($module, &$params, &$attribs)
 {

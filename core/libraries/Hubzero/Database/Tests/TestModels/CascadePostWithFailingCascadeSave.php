@@ -19,6 +19,9 @@ class CascadePostWithFailingCascadeSave extends Relational
     protected $namespace = '';
     protected $cascadeRelationships = true;
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToMany
+     */
     public function comments()
     {
         return $this

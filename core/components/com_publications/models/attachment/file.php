@@ -560,7 +560,7 @@ class File extends Base
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
-     * @return  boolean
+     * @return  string  HTML (the fancy launcher is printed directly)
      */
     public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
     {
@@ -635,7 +635,8 @@ class File extends Base
             }
 
             if ($configs->fancyLauncher) {
-                $html = \Components\Publications\Helpers\Html::drawLauncher(
+                // The helper prints the launcher itself
+                \Components\Publications\Helpers\Html::drawLauncher(
                     'ic-download',
                     $pub,
                     $url,

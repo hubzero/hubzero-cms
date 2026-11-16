@@ -309,6 +309,7 @@ class View
      * Display "Before" group content
      *
      * @param   object  $group
+     * @return   void
      */
     public static function displayBeforeSectionsContent($group)
     {

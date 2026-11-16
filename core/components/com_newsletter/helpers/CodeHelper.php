@@ -17,6 +17,9 @@ use Hubzero\Facades\Component;
 class CodeHelper
 {
     // Validate that the user-supplied URL and code are valid:
+    /**
+     * @return  bool
+     */
     public static function validateCode($username, $campaignId, $pageId, $code)
     {
         // acquire campaign info from database:
@@ -47,6 +50,9 @@ class CodeHelper
     }
 
     // Validate code obtained from user's URL, using email subscription page id
+    /**
+     * @return  mixed
+     */
     public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
     {
         $emailSubsPageId = PageCode::$emailSubscriptionsPageId;

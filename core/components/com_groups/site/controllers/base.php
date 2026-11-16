@@ -70,6 +70,7 @@ class Base extends SiteController
      *
      * @param   string  $message       User notification message
      * @param   string|null  $customReturn  Do we want to redirect someplace specific after login
+     * @return   never
      */
     public function loginTask($message = '', $customReturn = null)
     {

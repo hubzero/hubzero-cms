@@ -443,6 +443,8 @@ class Notes extends Plugin
 
     /**
      * List/unlist on public project page
+     *
+     * @return  never
      */
     protected function list()
     {

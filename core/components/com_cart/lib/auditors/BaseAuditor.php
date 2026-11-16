@@ -41,6 +41,9 @@ class BaseAuditor
         $this->sId = $sId;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getSku()
     {
         if (!empty($this->sId)) {
@@ -49,6 +52,9 @@ class BaseAuditor
         return false;
     }
 
+    /**
+     * @return  mixed
+     */
     public function audit()
     {
         return $this->getResponse();
@@ -79,6 +85,9 @@ class BaseAuditor
         $this->response->errors[] = $msg;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getResponseError()
     {
         if (count($this->response->errors) > 0) {
@@ -87,6 +96,9 @@ class BaseAuditor
         return false;
     }
 
+    /**
+     * @return  \stdClass|null
+     */
     protected function getResponse()
     {
         return $this->response;

@@ -217,6 +217,9 @@ class Middleware extends Plugin
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function runSelectQuery($query)
     {
         $db = App::get('db');
@@ -229,6 +232,9 @@ class Middleware extends Plugin
         return json_decode($objString, true);
     }
 
+    /**
+     * @return  mixed
+     */
     public function runUpdateOrDeleteQueryMiddlewareDb($query)
     {
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();

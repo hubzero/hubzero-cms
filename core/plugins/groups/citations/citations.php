@@ -241,10 +241,10 @@ class Citations extends Plugin
                     $arr['html'] .= $this->edit();
                     break;
                 case 'delete':
-                    $arr['html'] .= $this->delete();
+                    $this->delete();
                     break;
                 case 'publish':
-                    $arr['html'] .= $this->publish();
+                    $this->publish();
                     break;
                 case 'browse':
                     $arr['html'] .= $this->browse();
@@ -259,7 +259,7 @@ class Citations extends Plugin
                     $arr['html'] .= $this->settings();
                     break;
                 case 'process':
-                    $arr['html'] .= $this->process();
+                    $this->process();
                     break;
                 default:
                     $arr['html'] .= $this->browse();
@@ -592,6 +592,8 @@ class Citations extends Plugin
 
     /**
      * Save an entry
+     *
+     * @return  string
      */
     private function save()
     {
@@ -770,6 +772,8 @@ class Citations extends Plugin
 
     /**
      * Publish method for group citations
+     *
+     * @return  void
      */
     private function publish()
     {
@@ -902,6 +906,8 @@ class Citations extends Plugin
 
     /**
      * Delete method for group citations
+     *
+     * @return  void
      */
     private function delete()
     {
@@ -1020,6 +1026,8 @@ class Citations extends Plugin
 
     /**
      * Settings for group citations
+     *
+     * @return  string
      */
     private function settings()
     {
@@ -1295,6 +1303,8 @@ class Citations extends Plugin
 
     /**
      * Upload task
+     *
+     * @return  void
      */
     private function process()
     {

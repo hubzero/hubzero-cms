@@ -17,6 +17,9 @@ class HtmxFlowRequestStub
         $this->headers = $headers;
     }
 
+    /**
+     * @return  mixed
+     */
     public function header(string $name, $default = '')
     {
         foreach ($this->headers as $key => $value) {

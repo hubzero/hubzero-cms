@@ -79,6 +79,9 @@ class FinderTest extends Basic
                 {
                     $this->root = $root;
                 }
+                /**
+                 * @return  string
+                 */
                 public function path($option)
                 {
                     return $this->root . '/components/' . substr($option, 4);
@@ -93,6 +96,9 @@ class FinderTest extends Basic
                 {
                     $this->root = $root;
                 }
+                /**
+                 * @return  string
+                 */
                 public function path($type, $plugin = null)
                 {
                     $dir = $this->root . '/plugins/' . $type . ($plugin ? '/' . $plugin : '');
@@ -103,10 +109,16 @@ class FinderTest extends Basic
 
         $app['language'] = function () {
             return new class {
+                /**
+                 * @return  string
+                 */
                 public function getTag()
                 {
                     return 'en-GB';
                 }
+                /**
+                 * @return  string
+                 */
                 public function getLanguage()
                 {
                     return 'en-GB';
@@ -123,14 +135,23 @@ class FinderTest extends Basic
                 {
                     $this->container = $container;
                 }
+                /**
+                 * @return  false
+                 */
                 public function isAdmin()
                 {
                     return false;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function get($id)
                 {
                     return $this->container->get($id);
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function has($id)
                 {
                     return $this->container->has($id);

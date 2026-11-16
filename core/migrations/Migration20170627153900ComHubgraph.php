@@ -18,6 +18,8 @@ class Migration20170627153900ComHubgraph extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -190,5 +192,7 @@ class Migration20170627153900ComHubgraph extends Base
                 return false;
             }
         }
+
+        return null;
     }
 }

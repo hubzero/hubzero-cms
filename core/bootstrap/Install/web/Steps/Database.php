@@ -159,6 +159,8 @@ class Database implements StepInterface
 
     /**
      * Test database connection
+     *
+     * @return  mixed
      */
     private function testConnection($config)
     {
@@ -228,6 +230,8 @@ class Database implements StepInterface
 
     /**
      * Save database configuration
+     *
+     * @return  bool
      */
     private function saveConfig($config)
     {

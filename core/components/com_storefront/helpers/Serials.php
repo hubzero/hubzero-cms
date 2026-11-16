@@ -151,6 +151,9 @@ class Serials
         return $users;
     }
 
+    /**
+     * @return  \stdClass
+     */
     public static function delete($ids)
     {
         // The controller hands over a single id; the list view posts srId[]
@@ -193,6 +196,9 @@ class Serials
         return $msg;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function add($serial, $sId)
     {
         $serial = trim($serial);

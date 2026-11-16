@@ -159,10 +159,10 @@ class Feed extends Plugin
 
         switch ($this->task) {
             case 'delete':
-                $arr['html'] = $this->delete();
+                $this->delete();
                 break;
             case 'save':
-                $arr['html'] = $this->save();
+                $this->save();
                 break;
                 // comments are activity entries: _save()/_delete() handle them
                 // (_saveComment()/_deleteComment() were never defined). The
@@ -170,11 +170,11 @@ class Feed extends Plugin
                 // handlers read the entry as 'activity'.
             case 'savecomment':
                 Request::setVar('activity', Request::getInt('cid', 0));
-                $arr['html'] = $this->save();
+                $this->save();
                 break;
             case 'deletecomment':
                 Request::setVar('activity', Request::getInt('cid', 0));
-                $arr['html'] = $this->delete();
+                $this->delete();
                 break;
             case 'update':
                 $arr['html'] = $this->updateFeed();
@@ -337,6 +337,8 @@ class Feed extends Plugin
 
     /**
      * Save new blog entry
+     *
+     * @return  void
      */
     protected function save()
     {
@@ -464,6 +466,8 @@ class Feed extends Plugin
 
     /**
      * Delete entry
+     *
+     * @return  void
      */
     protected function delete()
     {

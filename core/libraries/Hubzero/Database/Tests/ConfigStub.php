@@ -15,6 +15,9 @@ class ConfigStub
 {
     public static array $values = [];
 
+    /**
+     * @return  mixed
+     */
     public static function get($key, $default = null)
     {
         return self::$values[$key] ?? $default;

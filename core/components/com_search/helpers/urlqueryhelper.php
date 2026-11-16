@@ -16,6 +16,9 @@ use Hubzero\Search\Searchable;
  */
 class UrlQueryHelper
 {
+    /**
+     * @return  string
+     */
     public static function buildQueryString($url, $values, $excludes = [])
     {
         $queryString = '';

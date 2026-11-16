@@ -12,6 +12,9 @@ use Components\Dataviewer\Site\DvConfig;
 
 class Json
 {
+    /**
+     * @return  string|false
+     */
     public static function filter($res, $dd)
     {
         /* URLs */
@@ -722,6 +725,9 @@ class Json
         return json_encode($table);
     }
 
+    /**
+     * @return  string
+     */
     public static function dvToLink($rec, $key, $dd, $val, $preview)
     {
         $nowarp = isset($dd['cols'][$key]['nowrap']) ? 'style="white-space: nowrap;"' : '';
@@ -844,6 +850,9 @@ class Json
 
 
     // HTML data output modifires
+    /**
+     * @return  string
+     */
     public static function dvOpmodSetColor($param)
     {
         return "color: $param;";

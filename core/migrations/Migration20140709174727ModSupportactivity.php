@@ -18,6 +18,8 @@ class Migration20140709174727ModSupportactivity extends Base
 {
     /**
      * Up
+     *
+     * @return  true|null
      **/
     public function up()
     {
@@ -67,6 +69,8 @@ class Migration20140709174727ModSupportactivity extends Base
                 ])
                 ->execute();
         }
+
+        return null;
     }
 
     /**

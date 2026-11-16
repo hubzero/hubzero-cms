@@ -128,6 +128,8 @@ class Watch extends Plugin
 
     /**
      * Subscribe
+     *
+     * @return  string|null
      */
     private function subscribe()
     {
@@ -149,7 +151,7 @@ class Watch extends Plugin
 
         // Save subscription
         if (!$confirm) {
-            return;
+            return null;
         }
 
         // A link followed from an email, or the return from logging in,

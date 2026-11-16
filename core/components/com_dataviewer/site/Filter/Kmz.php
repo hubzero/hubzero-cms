@@ -82,6 +82,9 @@ class Kmz
         exit();
     }
 
+    /**
+     * @return  float
+     */
     public static function dms2dc($cood)
     {
         $cood = explode('° ', $cood);

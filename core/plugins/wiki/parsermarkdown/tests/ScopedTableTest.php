@@ -76,6 +76,9 @@ class ScopedTableTest extends TestCase
         $this->assertNotNull($app, 'the test bootstrap wires the facades');
 
         Html::swap(new class {
+            /**
+             * @return  string
+             */
             public function __call($method, $args)
             {
                 return '';

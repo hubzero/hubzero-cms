@@ -183,6 +183,8 @@ class Settings implements StepInterface
 
     /**
      * Save application config
+     *
+     * @return  bool
      */
     private function saveAppConfig($settings)
     {
@@ -265,6 +267,8 @@ class Settings implements StepInterface
 
     /**
      * Save mail config
+     *
+     * @return  bool
      */
     private function saveMailConfig($settings)
     {
@@ -293,6 +297,8 @@ class Settings implements StepInterface
 
     /**
      * Save meta config
+     *
+     * @return  bool
      */
     private function saveMetaConfig($settings)
     {

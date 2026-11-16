@@ -272,6 +272,9 @@ class Option
         $this->data->messages[] = $msg;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getMessages()
     {
         if (empty($this->data->messages)) {

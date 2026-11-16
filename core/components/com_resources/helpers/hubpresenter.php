@@ -21,12 +21,13 @@ class Hubpresenter extends Obj
      *
      * @param   string  $resource_path  Path to resources files
      * @param   string  $xml_path       Path to XML doc
+     * @return   string
      */
     public static function createJsonManifest($resource_path, $xml_path)
     {
         // Verify once again the file exists
         if (!file_exists($xml_path)) {
-            return;
+            return '';
         }
         $manifest = simplexml_load_file($xml_path);
 
@@ -108,5 +109,7 @@ class Hubpresenter extends Obj
         $errorMsg = "An Error Occurred While Trying to Create the Presentation Manifest.";
         $file_handle = fopen($new_file, 'w') or die($errorMsg);
         fwrite($file_handle, $json);
+
+        return '';
     }
 }

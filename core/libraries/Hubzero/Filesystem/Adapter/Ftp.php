@@ -610,6 +610,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  mixed
      */
     public function mimetype($path)
     {
@@ -622,6 +624,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isDirectory($directory)
     {
@@ -633,6 +637,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isWritable($path)
     {
@@ -641,6 +647,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  bool
      */
     public function isFile($file)
     {
@@ -677,6 +685,8 @@ class Ftp implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  false|array<string, mixed>
      */
     public function readStream($path)
     {

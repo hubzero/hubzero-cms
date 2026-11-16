@@ -16,6 +16,7 @@ class Toolbar extends Renderer
     /**
      * Render toolbar to group template
      *
+     * @return  string
      */
     public function render()
     {

@@ -28,6 +28,9 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     // isAssociativeArray Tests
     // =========================================================================
 
+    /**
+     * @return  \ReflectionMethod
+     */
     private function getIsAssociativeArrayMethod()
     {
         $reflection = new ReflectionClass(Relational::class);
@@ -75,6 +78,9 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
     // buildEagerConstraint Tests
     // =========================================================================
 
+    /**
+     * @return  \ReflectionMethod
+     */
     private function getBuildEagerConstraintMethod()
     {
         $reflection = new ReflectionClass(Relational::class);

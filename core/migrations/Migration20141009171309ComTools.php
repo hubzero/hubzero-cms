@@ -18,6 +18,8 @@ class Migration20141009171309ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -54,5 +56,7 @@ class Migration20141009171309ComTools extends Base
                 ->after('zone')
                 ->execute();
         }
+
+        return null;
     }
 }

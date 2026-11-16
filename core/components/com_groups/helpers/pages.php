@@ -117,6 +117,8 @@ class Pages
 
     /**
      * Get Current Route Segments
+     *
+     * @return  array<mixed>
      */
     private static function getCurrentPathSegments()
     {
@@ -392,6 +394,8 @@ class Pages
 
     /**
      * Get code flags
+     *
+     * @return  array<string, mixed>
      */
     public static function getCodeFlags()
     {

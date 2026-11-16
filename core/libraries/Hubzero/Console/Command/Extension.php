@@ -121,6 +121,9 @@ class Extension extends Base implements CommandInterface
                 $this->output = $output;
             }
 
+            /**
+             * @return  void
+             */
             public function log($message, $type = 'info')
             {
                 $this->output->addLine($message, $type ?: 'info');

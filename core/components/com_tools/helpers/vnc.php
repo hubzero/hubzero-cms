@@ -48,6 +48,9 @@ namespace Components\Tools\Helpers;
 
 class Vnc
 {
+    /**
+     * @return  mixed
+     */
     public static function encrypt($data, $return_string = true)
     {
         $vnckey = [23,82,107,6,35,78,88,7];
@@ -75,6 +78,9 @@ class Vnc
         }
     }
 
+    /**
+     * @return  mixed
+     */
     public static function decrypt($data, $return_string = true)
     {
         $vnckey = [23,82,107,6,35,78,88,7];
@@ -102,6 +108,9 @@ class Vnc
         }
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     private static function crypt($block, $key, $edf)
     {
         $block = array_pad($block, 8, 0);
@@ -1006,6 +1015,9 @@ class Vnc
      **********************************************************************/
 }
 
+/**
+ * @return  string
+ */
 function genrandpassword()
 {
     $len = random_int(0, 8);

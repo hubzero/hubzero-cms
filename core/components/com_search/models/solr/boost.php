@@ -51,16 +51,25 @@ class Boost extends Relational
         parent::__construct();
     }
 
+    /**
+     * @return  mixed
+     */
     public function getId()
     {
         return $this->get('id');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getField()
     {
         return $this->get('field');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getFormattedFieldValue()
     {
         $fieldValue = $this->getFieldValue();
@@ -68,26 +77,41 @@ class Boost extends Relational
         return $this->map->getFormattedFieldValue($fieldValue);
     }
 
+    /**
+     * @return  mixed
+     */
     public function getFieldValue()
     {
         return $this->get('field_value');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getStrength()
     {
         return $this->get('strength');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCreated()
     {
         return $this->get('created');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCreatedBy()
     {
         return $this->get('created_by');
     }
 
+    /**
+     * @return  mixed
+     */
     public function getAuthor()
     {
         $createdBy = $this->getCreatedBy();

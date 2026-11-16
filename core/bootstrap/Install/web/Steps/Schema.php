@@ -243,6 +243,8 @@ class Schema implements StepInterface
 
     /**
      * Count migration files in the codebase
+     *
+     * @return  int
      */
     private function countMigrationFiles()
     {
@@ -308,6 +310,8 @@ class Schema implements StepInterface
 
     /**
      * Load schema
+     *
+     * @return  bool
      */
     private function loadSchema()
     {
@@ -331,6 +335,8 @@ class Schema implements StepInterface
 
     /**
      * Load base data
+     *
+     * @return  bool
      */
     private function loadData()
     {
@@ -354,6 +360,8 @@ class Schema implements StepInterface
 
     /**
      * Load sample data
+     *
+     * @return  bool
      */
     private function loadSampleData()
     {

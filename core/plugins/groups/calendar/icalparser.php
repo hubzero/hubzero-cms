@@ -153,6 +153,7 @@ class IcalParser
      *
      * @param  mixed $file
      * @param  mixed $callback
+     * @return  mixed
      */
     public function parseFile($file, $callback = null)
     {
@@ -168,6 +169,7 @@ class IcalParser
      *
      * @param  mixed $string
      * @param  mixed $callback
+     * @return  array<mixed>|null
      */
     public function parseString($string, $callback = null)
     {
@@ -235,6 +237,7 @@ class IcalParser
      * Parse each row of ical file
      *
      * @param  mixed $row
+     * @return  array<int, mixed>
      */
     private function parseRow($row)
     {

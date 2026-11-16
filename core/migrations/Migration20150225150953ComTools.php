@@ -18,6 +18,8 @@ class Migration20150225150953ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -45,5 +47,7 @@ class Migration20150225150953ComTools extends Base
         ) {
             $mwdb->schema()->modifyColumn('host', 'uses')->integer()->notNull()->default(0)->execute();
         }
+
+        return null;
     }
 }

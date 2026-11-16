@@ -19,6 +19,9 @@ class GitlabClient
      */
     public $requests = [];
 
+    /**
+     * @return  object
+     */
     public function request($method, $url, $options = [])
     {
         $this->requests[] = [$method, $url];

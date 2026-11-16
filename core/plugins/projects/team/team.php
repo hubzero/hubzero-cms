@@ -162,7 +162,7 @@ class Team extends Plugin
                 break;
 
             case 'sync':
-                $arr['html'] = $this->sync();
+                $this->sync();
                 break;
 
             case 'choose':
@@ -487,6 +487,8 @@ class Team extends Plugin
 
     /**
      * Save member
+     *
+     * @return  null
      */
     protected function save()
     {
@@ -532,7 +534,7 @@ class Team extends Plugin
                 // @TODO: Better error handling? Completely new UI?
                 //$this->setError(Lang::txt('PLG_PROJECTS_TEAM_NO_NAMES_SUPPLIED'));
             } else {
-                return;
+                return null;
             }
         } else {
             // Do we have new authors?
@@ -740,6 +742,8 @@ class Team extends Plugin
 
     /**
      * Sync group members
+     *
+     * @return  void
      */
     protected function sync()
     {

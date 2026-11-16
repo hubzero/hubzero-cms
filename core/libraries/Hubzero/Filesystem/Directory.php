@@ -57,6 +57,9 @@ class Directory extends Entity
         return $this->hasAdapterOrFail()->adapter->deleteDir($this->getPath());
     }
 
+    /**
+     * @return  bool
+     */
     public function hasSubDirs()
     {
         return count($this->getSubDirs()) > 0;

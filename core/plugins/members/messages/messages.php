@@ -97,34 +97,37 @@ class Messages extends Plugin
                 $task = 'view';
             }
 
+            // Set by the tasks that show a page; the others redirect
+            $body = '';
+
             if (!$task) {
                 $task = "inbox";
             }
 
             switch ($task) {
                 case 'sendtoarchive':
-                    $body = $this->sendtoarchive($database, $option, $member);
+                    $this->sendtoarchive($database, $option, $member);
                     break;
                 case 'sendtotrash':
-                    $body = $this->sendtotrash($database, $option, $member);
+                    $this->sendtotrash($database, $option, $member);
                     break;
                 case 'sendtoinbox':
-                    $body = $this->sendtoinbox($database, $option, $member);
+                    $this->sendtoinbox($database, $option, $member);
                     break;
                 case 'markasread':
-                    $body = $this->markasread($database, $option, $member);
+                    $this->markasread($database, $option, $member);
                     break;
                 case 'markasunread':
-                    $body = $this->markasunread($database, $option, $member);
+                    $this->markasunread($database, $option, $member);
                     break;
                 case 'savesettings':
-                    $body = $this->savesettings($database, $option, $member);
+                    $this->savesettings($database, $option, $member);
                     break;
                 case 'emptytrash':
                     $body = $this->emptytrash($database, $option, $member);
                     break;
                 case 'delete':
-                    $body = $this->delete($database, $option, $member);
+                    $this->delete($database, $option, $member);
                     break;
 
                 case 'send':
@@ -562,6 +565,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function sendtoarchive($database, $option, $member)
     {
@@ -622,6 +626,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function sendtoinbox($database, $option, $member)
     {
@@ -676,6 +681,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function sendtotrash($database, $option, $member)
     {
@@ -737,6 +743,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  string
      */
     public function emptytrash($database, $option, $member)
     {
@@ -755,6 +762,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function delete($database, $option, $member)
     {
@@ -803,6 +811,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function markasread($database, $option, $member)
     {
@@ -852,6 +861,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function markasunread($database, $option, $member)
     {
@@ -897,6 +907,7 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
+     * @return  void
      */
     public function savesettings($database, $option, $member)
     {

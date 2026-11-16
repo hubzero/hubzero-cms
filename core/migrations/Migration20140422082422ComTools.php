@@ -18,6 +18,8 @@ class Migration20140422082422ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -36,10 +38,14 @@ class Migration20140422082422ComTools extends Base
                 $mwSchema->addColumn('session', 'zone_id')->integer()->notNull()->default(0);
             }
         }
+
+        return null;
     }
 
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -58,5 +64,7 @@ class Migration20140422082422ComTools extends Base
                 $mwSchema->dropColumn('session', 'zone_id');
             }
         }
+
+        return null;
     }
 }

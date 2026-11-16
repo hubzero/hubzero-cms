@@ -16,6 +16,9 @@ use Hubzero\Facades\Route;
  */
 class Converter
 {
+    /**
+     * @return  array<string>|string|null
+     */
     public static function convert($html)
     {
         $params = Component::params('com_redirect');
@@ -59,6 +62,9 @@ class Converter
         );
     }
 
+    /**
+     * @return  string
+     */
     public static function encode($originalUrl)
     {
         $encoded = urlencode(base64_encode($originalUrl));

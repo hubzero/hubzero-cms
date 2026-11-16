@@ -29,6 +29,7 @@ class ToolStatus extends Table
     /**
      * Get statuses
      *
+     * @return  array<mixed>
      */
     public function getItems()
     {

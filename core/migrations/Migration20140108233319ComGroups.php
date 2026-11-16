@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
 **/
 class Migration20140108233319ComGroups extends Base
 {
+    /**
+     * @return  false|null
+     */
     public function up()
     {
         $old = umask(0);
@@ -26,7 +29,7 @@ class Migration20140108233319ComGroups extends Base
 
         // make sure we have a directory
         if (!is_dir($base)) {
-            return;
+            return null;
         }
 
         // get group folders
@@ -34,7 +37,7 @@ class Migration20140108233319ComGroups extends Base
 
         // make sure we have one!
         if (count($groupFolders) < 1) {
-            return;
+            return null;
         }
 
         // loop through group folders
@@ -71,5 +74,7 @@ class Migration20140108233319ComGroups extends Base
         }
 
         umask($old);
+
+        return null;
     }
 }

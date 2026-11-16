@@ -289,6 +289,9 @@ class Domainrestriction extends Plugin
         }
     }
 
+    /**
+     * @return  string
+     */
     private static function clean($val)
     {
         return trim($val, " \t\n\r\0\x0B.");

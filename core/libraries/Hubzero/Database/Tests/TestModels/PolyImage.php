@@ -19,6 +19,9 @@ class PolyImage extends Relational
 {
     protected $table = 'poly_images';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\MorphTo
+     */
     public function imageable()
     {
         return $this->morphTo('imageable');

@@ -25,6 +25,9 @@ class RecordingDriver
      */
     public function __construct(private array $columns) {}
 
+    /**
+     * @return  array<object>
+     */
     public function getTableColumns($table, $typeOnly = true)
     {
         $fields = [];
@@ -34,27 +37,42 @@ class RecordingDriver
         return $fields;
     }
 
+    /**
+     * @return  string
+     */
     public function quoteName($name)
     {
         return '`' . $name . '`';
     }
 
+    /**
+     * @return  string
+     */
     public function quote($value)
     {
         return "'" . $value . "'";
     }
 
+    /**
+     * @return  $this
+     */
     public function setQuery($query)
     {
         $this->queries[] = (string) $query;
         return $this;
     }
 
+    /**
+     * @return  true
+     */
     public function execute()
     {
         return true;
     }
 
+    /**
+     * @return  true
+     */
     public function query()
     {
         return true;

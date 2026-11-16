@@ -31,6 +31,9 @@ class SolariumBoostQueries
         );
     }
 
+    /**
+     * @return  array<mixed>
+     */
     public function toArray()
     {
         $this->setQueriesIfNeeded();
@@ -51,6 +54,9 @@ class SolariumBoostQueries
         }
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     protected function instantiateQueries()
     {
         $queries = [];
@@ -69,6 +75,9 @@ class SolariumBoostQueries
         $this->queries = $queries;
     }
 
+    /**
+     * @return  \Components\Search\Helpers\SolariumBoostQueries
+     */
     public static function one($args = [])
     {
         return new self($args);

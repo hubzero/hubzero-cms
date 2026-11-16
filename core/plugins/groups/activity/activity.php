@@ -115,7 +115,6 @@ class Activity extends Plugin
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
                 $this->loginRedirect();
-                return null;
             }
 
             $siteAdmin = User::authorise('core.admin', 'com_groups');
@@ -145,16 +144,16 @@ class Activity extends Plugin
 
             switch ($action) {
                 case 'post':
-                    $arr['html'] = $this->postAction();
+                    $this->postAction();
                     break;
                 case 'remove':
-                    $arr['html'] = $this->removeAction();
+                    $this->removeAction();
                     break;
                 case 'unstar':
-                    $arr['html'] = $this->starAction();
+                    $this->starAction();
                     break;
                 case 'star':
-                    $arr['html'] = $this->starAction();
+                    $this->starAction();
                     break;
                 case 'feed':
                 default:
@@ -363,7 +362,7 @@ class Activity extends Plugin
     /**
      * Send a guest to log in, returning to the group's activity feed
      *
-     * @return  void
+     * @return  never
      */
     protected function loginRedirect()
     {
@@ -378,12 +377,13 @@ class Activity extends Plugin
 
     /**
      * Unpublish an entry
+     *
+     * @return  void
      */
     protected function removeAction()
     {
         if (User::isGuest()) {
             $this->loginRedirect();
-            return;
         }
 
         // Check for request forgeries
@@ -434,12 +434,13 @@ class Activity extends Plugin
 
     /**
      * Star/unstar an entry
+     *
+     * @return  void
      */
     protected function starAction()
     {
         if (User::isGuest()) {
             $this->loginRedirect();
-            return;
         }
 
         if (!$this->canStar) {
@@ -500,12 +501,13 @@ class Activity extends Plugin
 
     /**
      * Save a comment
+     *
+     * @return  void
      */
     protected function postAction()
     {
         if (User::isGuest()) {
             $this->loginRedirect();
-            return;
         }
 
         // Check for request forgeries

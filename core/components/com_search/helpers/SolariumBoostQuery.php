@@ -19,6 +19,9 @@ class SolariumBoostQuery
         $this->boost = $args['boost'];
     }
 
+    /**
+     * @return  array<string, mixed>
+     */
     public function toArray()
     {
         $query = $this->getQuery();
@@ -26,6 +29,9 @@ class SolariumBoostQuery
         return ['query' => $query];
     }
 
+    /**
+     * @return  mixed
+     */
     protected function getQuery()
     {
         if (!$this->query) {
@@ -35,6 +41,9 @@ class SolariumBoostQuery
         return $this->query;
     }
 
+    /**
+     * @return  string
+     */
     protected function generateQuery()
     {
         $field = $this->boost->getField();
@@ -44,6 +53,9 @@ class SolariumBoostQuery
         return "$field:$fieldValue^$strength";
     }
 
+    /**
+     * @return  \Components\Search\Helpers\SolariumBoostQuery
+     */
     public static function one($args)
     {
         return new self($args);

@@ -346,10 +346,10 @@ class Files extends Plugin
                 $arr['html'] = $this->newDir();
                 break;
             case 'deletedir':
-                $arr['html'] = $this->deleteDir();
+                $this->deleteDir();
                 break;
             case 'savedir':
-                $arr['html'] = $this->saveDir();
+                $this->saveDir();
                 break;
 
                 // Manage deleted
@@ -357,7 +357,7 @@ class Files extends Plugin
                 $arr['html'] = $this->showTrash();
                 break;
             case 'restore':
-                $arr['html'] = $this->restore();
+                $this->restore();
                 break;
 
                 // Disk space management
@@ -838,6 +838,8 @@ class Files extends Plugin
     }
     /**
      * Upload view
+     *
+     * @return  string
      */
     protected function upload()
     {
@@ -878,6 +880,8 @@ class Files extends Plugin
 
     /**
      * Upload file(s) and add to repository
+     *
+     * @return  string|false|null
      */
     protected function save()
     {
@@ -971,6 +975,8 @@ class Files extends Plugin
 
     /**
      * New directory form
+     *
+     * @return  string
      */
     protected function newDir()
     {
@@ -1000,6 +1006,8 @@ class Files extends Plugin
 
     /**
      * Save new directory
+     *
+     * @return  void
      */
     protected function saveDir()
     {
@@ -1048,6 +1056,8 @@ class Files extends Plugin
 
     /**
      * Delete directory
+     *
+     * @return  void
      */
     protected function deleteDir()
     {
@@ -1097,6 +1107,8 @@ class Files extends Plugin
 
     /**
      * Delete items
+     *
+     * @return  string|null
      */
     protected function delete()
     {
@@ -1224,6 +1236,8 @@ class Files extends Plugin
 
     /**
      * Rename
+     *
+     * @return  string|null
      */
     protected function rename()
     {
@@ -1306,6 +1320,8 @@ class Files extends Plugin
 
     /**
      * Move file(s)
+     *
+     * @return  string|null
      */
     protected function move()
     {
@@ -1441,6 +1457,8 @@ class Files extends Plugin
 
     /**
      * Show file history
+     *
+     * @return  string
      */
     protected function history()
     {
@@ -1574,6 +1592,8 @@ class Files extends Plugin
 
     /**
      * Show revision diffs
+     *
+     * @return  string
      */
     protected function diff()
     {
@@ -1648,6 +1668,7 @@ class Files extends Plugin
      * @param   string   $type
      * @param   integer  $projectid
      * @param   string   $query
+     * @return   false|null
      */
     public function serve($type = '', $projectid = 0, $query = '')
     {
@@ -1726,6 +1747,8 @@ class Files extends Plugin
 
     /**
      * Restore deleted files
+     *
+     * @return  void
      */
     protected function restore()
     {
@@ -1773,6 +1796,8 @@ class Files extends Plugin
 
     /**
      * Download file(s)
+     *
+     * @return  string|null
      */
     protected function download()
     {
@@ -2319,6 +2344,8 @@ class Files extends Plugin
     /**
      * Send file back or from to remote service for remote editing
      * Local repo only
+     *
+     * @return  string|null
      */
     protected function share()
     {
@@ -2856,6 +2883,8 @@ class Files extends Plugin
 
     /**
      * Initiate sync
+     *
+     * @return  string|false
      */
     protected function iniSync()
     {
@@ -2917,6 +2946,8 @@ class Files extends Plugin
 
     /**
      * Sync error
+     *
+     * @return  null
      */
     public function syncError()
     {
@@ -2926,6 +2957,8 @@ class Files extends Plugin
         $this->rSync->writeToFile('');
         $this->rSync->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR'));
         $this->rSync->lockSync($service, true);
+
+        return null;
     }
 
     /**

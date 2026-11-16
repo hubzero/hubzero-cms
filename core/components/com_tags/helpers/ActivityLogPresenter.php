@@ -13,6 +13,9 @@ use Hubzero\Facades\Lang;
 
 class ActivityLogPresenter
 {
+    /**
+     * @return  \stdClass
+     */
     public function parse($log)
     {
         $action = $log->get('action');

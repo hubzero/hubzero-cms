@@ -22,6 +22,9 @@ class BehaviorAssetAppStub
         return array_key_exists($key, self::$state);
     }
 
+    /**
+     * @return  mixed
+     */
     public static function get(string $key)
     {
         if (array_key_exists($key, self::$state)) {

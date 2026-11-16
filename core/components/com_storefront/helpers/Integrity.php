@@ -13,6 +13,9 @@ namespace Components\Storefront\Helpers;
  */
 class Integrity
 {
+    /**
+     * @return  \stdClass
+     */
     public static function skuIntegrityCheck($sku)
     {
         $return = new \stdClass();
@@ -51,6 +54,9 @@ class Integrity
         return $return;
     }
 
+    /**
+     * @return  \stdClass
+     */
     public static function collectionIntegrityCheck($collection)
     {
         $return = new \stdClass();

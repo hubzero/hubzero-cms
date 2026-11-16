@@ -49,6 +49,9 @@ class ArticleSnippetTest extends Basic
         $app = new Container();
         $app['component'] = function () {
             return new class {
+                /**
+                 * @return  \Hubzero\Config\Registry
+                 */
                 public function params($option)
                 {
                     return new Registry();
@@ -62,10 +65,16 @@ class ArticleSnippetTest extends Basic
                 {
                     $this->container = $container;
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function get($id)
                 {
                     return $this->container->get($id);
                 }
+                /**
+                 * @return  mixed
+                 */
                 public function has($id)
                 {
                     return $this->container->has($id);

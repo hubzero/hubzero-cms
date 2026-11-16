@@ -129,6 +129,9 @@ class Handler
         register_shutdown_function([$this, 'handleShutdown']);
     }
 
+    /**
+     * @return  string|null
+     */
     private function loglevel($error_level)
     {
 
@@ -152,6 +155,8 @@ class Handler
             case E_NOTICE:
                 return("notice");
         }
+
+        return null;
     }
 
     /**

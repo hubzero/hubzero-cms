@@ -29,7 +29,7 @@ $no_html = Request::getInt('no_html', 0);
 ?>
 
 <?php if (!$no_html) : ?>
-    <?php echo \Components\Groups\Helpers\View::displayBeforeSectionsContent($this->group); ?>
+    <?php \Components\Groups\Helpers\View::displayBeforeSectionsContent($this->group); ?>
 
     <div class="innerwrap">
     <div id="page_container">

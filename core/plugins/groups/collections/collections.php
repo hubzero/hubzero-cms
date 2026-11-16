@@ -439,7 +439,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->post();
                     break;
                 case 'vote':
-                    $arr['html'] = $this->vote();
+                    $this->vote();
                     break;
                 case 'collect':
                     $arr['html'] = $this->repost();
@@ -509,7 +509,7 @@ class Collections extends Plugin
     /**
      * Redirect to the login form
      *
-     * @return  void
+     * @return  never
      */
     private function login()
     {
@@ -590,6 +590,9 @@ class Collections extends Plugin
         return $view->loadTemplate();
     }
 
+    /**
+     * @return  string
+     */
     private function followers()
     {
         // Filters for returning results
@@ -810,15 +813,13 @@ class Collections extends Plugin
      * Start following something
      *
      * @param   string  $what
-     * @return  string|null
+     * @return  string
      */
     private function follow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Require POST
@@ -878,15 +879,13 @@ class Collections extends Plugin
      * Stop following soemthing
      *
      * @param   string  $what
-     * @return  string|null
+     * @return  string
      */
     private function unfollow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Require POST
@@ -1085,14 +1084,12 @@ class Collections extends Plugin
      * Display a form for editing an entry
      *
      * @param   object|null  $entry
-     * @return  string|null
+     * @return  string
      */
     private function edit($entry = null)
     {
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
@@ -1206,6 +1203,8 @@ class Collections extends Plugin
 
     /**
      * Save an entry
+     *
+     * @return  string
      */
     private function save()
     {
@@ -1215,8 +1214,6 @@ class Collections extends Plugin
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Access check
@@ -1449,14 +1446,12 @@ class Collections extends Plugin
     /**
      * Repost an entry
      *
-     * @return  string|null
+     * @return  string
      */
     private function repost()
     {
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Deliberately not gated on access-create-item: a repost writes into a
@@ -1654,14 +1649,14 @@ class Collections extends Plugin
 
     /**
      * Remove an entry
+     *
+     * @return  string
      */
     private function remove()
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Check for request forgeries
@@ -1768,14 +1763,14 @@ class Collections extends Plugin
 
     /**
      * Move a post to another collection
+     *
+     * @return  string
      */
     private function move()
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Access check
@@ -1830,14 +1825,14 @@ class Collections extends Plugin
 
     /**
      * Delete an entry
+     *
+     * @return  string
      */
     private function delete()
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Access check
@@ -2002,7 +1997,7 @@ class Collections extends Plugin
     /**
      * Save a comment
      *
-     * @return  string|null
+     * @return  string
      */
     private function savecomment()
     {
@@ -2012,8 +2007,6 @@ class Collections extends Plugin
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Incoming
@@ -2140,15 +2133,13 @@ class Collections extends Plugin
     /**
      * Delete a comment
      *
-     * @return  string|null
+     * @return  string
      */
     private function deletecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Require POST
@@ -2246,6 +2237,8 @@ class Collections extends Plugin
 
     /**
      * Vote for an item
+     *
+     * @return  void
      */
     private function vote()
     {
@@ -2255,8 +2248,6 @@ class Collections extends Plugin
         // guest would share one row and toggle it against the others.
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Require POST
@@ -2367,15 +2358,13 @@ class Collections extends Plugin
      * Display a form for editing a collection
      *
      * @param   object|null  $row
-     * @return  string|null
+     * @return  string
      */
     private function editcollection($row = null)
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return null;
         }
 
         // Access check
@@ -2426,6 +2415,8 @@ class Collections extends Plugin
 
     /**
      * Save a collection
+     *
+     * @return  string
      */
     private function savecollection()
     {
@@ -2434,8 +2425,6 @@ class Collections extends Plugin
 
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) {
@@ -2541,14 +2530,14 @@ class Collections extends Plugin
 
     /**
      * Delete a collection
+     *
+     * @return  string
      */
     private function deletecollection()
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         // Access check
@@ -2668,8 +2657,6 @@ class Collections extends Plugin
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -2693,14 +2680,14 @@ class Collections extends Plugin
 
     /**
      * Save blog settings
+     *
+     * @return  mixed
      */
     private function savesettings()
     {
         // Login check
         if (User::isGuest()) {
             $this->login();
-
-            return;
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {

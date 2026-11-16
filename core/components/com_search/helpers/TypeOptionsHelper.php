@@ -28,6 +28,9 @@ class TypeOptionsHelper
         );
     }
 
+    /**
+     * @return  array<int, mixed>
+     */
     public function getAllSorted()
     {
         $allTypes = $this->getAll();
@@ -37,6 +40,9 @@ class TypeOptionsHelper
         return $allTypes;
     }
 
+    /**
+     * @return  array<mixed>
+     */
     public function getAll()
     {
         $resourceTypes = $this->typeHelper

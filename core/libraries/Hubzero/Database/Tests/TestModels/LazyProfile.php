@@ -18,6 +18,9 @@ class LazyProfile extends Relational
     protected $table = 'lazy_profiles';
     protected $namespace = '';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\BelongsToOne
+     */
     public function user()
     {
         return $this->belongsToOne(LazyUser::class, 'user_id');

@@ -17,6 +17,8 @@ class Migration20140925213032ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -47,10 +49,14 @@ class Migration20140925213032ComTools extends Base
         ) {
             $mwSchema->addIndex('job', 'idx_username_jobtoken', ['username', 'jobtoken']);
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -68,5 +74,7 @@ class Migration20140925213032ComTools extends Base
         if ($mwSchema->tableExists('job') && $mwSchema->hasColumn('job', 'jobtoken')) {
             $mwSchema->dropColumn('job', 'jobtoken');
         }
+
+        return null;
     }
 }

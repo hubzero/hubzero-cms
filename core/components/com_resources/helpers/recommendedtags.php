@@ -148,6 +148,9 @@ class RecommendedTags
         $this->tags = array_slice($freq, 0, $opts['count']);
     }
 
+    /**
+     * @return  bool
+     */
     private static function isStopWord($word, $word_min_len)
     {
         static $stop_words = [
@@ -297,18 +300,30 @@ class RecommendedTags
         return isset($stop_words[$word]) || strlen($word) < $word_min_len;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getTags()
     {
         return $this->tags;
     }
+    /**
+     * @return  mixed
+     */
     public function getExistingTags()
     {
         return $this->existing_tags;
     }
+    /**
+     * @return  mixed
+     */
     public function getExistingTagsMap()
     {
         return $this->existing_map;
     }
+    /**
+     * @return  string
+     */
     public function getExistingTagsValueList()
     {
         static $val_list = [];
@@ -319,18 +334,30 @@ class RecommendedTags
         }
         return implode(',', $val_list);
     }
+    /**
+     * @return  mixed
+     */
     public function getFocusAreas()
     {
         return $this->focus_areas;
     }
+    /**
+     * @return  mixed
+     */
     public function getFocusAreasMap()
     {
         return $this->focus_areas_map;
     }
+    /**
+     * @return  mixed
+     */
     public function getExistingFocusAreasMap()
     {
         return $this->existing_fa_map;
     }
+    /**
+     * @return  mixed
+     */
     public function getFocusAreaProperties()
     {
         return $this->fa_properties;

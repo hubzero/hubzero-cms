@@ -177,6 +177,9 @@ class Post extends Relational implements \Hubzero\Search\Searchable
         return ($this->get('original') == 1);
     }
 
+    /**
+     * @return  string
+     */
     public function transformDescription()
     {
         $description = $this->get('description');

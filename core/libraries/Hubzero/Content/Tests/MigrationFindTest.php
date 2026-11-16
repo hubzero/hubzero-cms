@@ -46,14 +46,23 @@ class MigrationFindTest extends TestCase
             $app->forget('db');
         }
         $app['db'] = fn() => new class {
+            /**
+             * @return  true
+             */
             public function connected()
             {
                 return true;
             }
+            /**
+             * @return  array<int, mixed>
+             */
             public function getTableList()
             {
                 return ['migrations'];
             }
+            /**
+             * @return  string
+             */
             public function getPrefix()
             {
                 return 'jos_';

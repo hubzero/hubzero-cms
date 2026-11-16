@@ -95,6 +95,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getPrice()
     {
         if (empty($this->data->price)) {
@@ -110,6 +113,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getName()
     {
         if (empty($this->data->name)) {
@@ -129,6 +135,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getWeight()
     {
         if (empty($this->data->weight)) {
@@ -179,6 +188,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCheckoutNotes()
     {
         if (empty($this->data->checkoutNotes)) {
@@ -198,6 +210,9 @@ class Sku
         $this->data->checkoutNotesRequired = $checkoutNotesRequired;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getCheckoutNotesRequired()
     {
         if (!isset($this->data->checkoutNotesRequired)) {
@@ -221,6 +236,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getId()
     {
         if (empty($this->data->id)) {
@@ -239,6 +257,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getProductId()
     {
         if (empty($this->data->pId)) {
@@ -303,6 +324,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  mixed
+     */
     public function save()
     {
         $db = App::get('db');
@@ -372,6 +396,9 @@ class Sku
         return $sId;
     }
 
+    /**
+     * @return  mixed
+     */
     private function saveBase()
     {
         $db = App::get('db');
@@ -483,6 +510,9 @@ class Sku
         return true;
     }
 
+    /**
+     * @return  int
+     */
     public function setAllowMultiple($allowMultiple)
     {
         if (!$allowMultiple) {
@@ -493,6 +523,9 @@ class Sku
         return $this->data->allowMultiple = $allowMultiple;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getAllowMultiple()
     {
         if (!isset($this->data->allowMultiple)) {
@@ -513,6 +546,9 @@ class Sku
         $this->data->trackInventory = $trackInventory;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getTrackInventory()
     {
         if (!isset($this->data->trackInventory)) {
@@ -570,6 +606,9 @@ class Sku
         $this->data->inventoryLevel = $inventoryLevel;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getInventoryLevel()
     {
         if (!isset($this->data->inventoryLevel)) {
@@ -590,6 +629,9 @@ class Sku
         $this->data->enumerable = $enumerable;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getEnumerable()
     {
         if (!isset($this->data->enumerable)) {
@@ -670,6 +712,9 @@ class Sku
         $this->data->meta[$key] = $val;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getMeta($key = false)
     {
         if (!isset($this->data->meta)) {
@@ -696,6 +741,9 @@ class Sku
         $this->data->meta['ttl'] = $ttl;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getTimeToLive()
     {
         if (isset($this->data->meta['ttl'])) {
@@ -705,6 +753,9 @@ class Sku
         return false;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getOptions()
     {
         $db = App::get('db');
@@ -727,6 +778,9 @@ class Sku
 
     // Static ----------------------------
 
+    /**
+     * @return  mixed
+     */
     public static function getInstance($sId)
     {
         $warehouse = new Warehouse();
@@ -743,6 +797,9 @@ class Sku
         return $sku;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function newInstance($pId)
     {
         $warehouse = new Warehouse();
@@ -755,6 +812,9 @@ class Sku
         return $sku;
     }
 
+    /**
+     * @return  CourseOffering|Sku|SoftwareSku
+     */
     private static function getProperInstance($productType, $sId = false)
     {
         // Initialize the correct SKU based on the product type

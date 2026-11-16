@@ -85,6 +85,9 @@ class Verb
         $redis->lpush('celery', [json_encode($bodyTask)]);
     }
 
+    /**
+     * @return  mixed
+     */
     public static function metricsVerb($params)
     {
         // grab the arguments. this function has variable arguments.
@@ -186,6 +189,9 @@ class Verb
         return $result['value'];
     }
 
+    /**
+     * @return  int|array<int, mixed>
+     */
     public static function getDateRange($verbName)
     {
         \Predis\Autoloader::register();

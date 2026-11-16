@@ -19,6 +19,9 @@ use Hubzero\Facades\User;
 
 class ModeDsl
 {
+    /**
+     * @return  mixed
+     */
     public static function getConf($db_id)
     {
         $params = Plugin::params('projects', 'databases');
@@ -30,6 +33,9 @@ class ModeDsl
         return DvConfig::$dv_conf;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function getDd($db_id, $dv_id = false, $version = false)
     {
         $dd = false;
@@ -172,6 +178,9 @@ class ModeDsl
         return $dd;
     }
 
+    /**
+     * @return  mixed
+     */
     public static function ddPost($dd)
     {
         $id = Request::getString('id', false);

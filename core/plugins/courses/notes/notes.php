@@ -117,7 +117,7 @@ class Notes extends Plugin
                         $result = $this->delete();
                         break;
                     case 'download':
-                        $result = $this->download();
+                        $this->download();
                         break;
 
                     default:
@@ -173,16 +173,22 @@ class Notes extends Plugin
 
     /**
      * Set layout to the listing
+     *
+     * @return  null
      */
     public function list()
     {
         if (!$this->view->no_html) {
             $this->view->setLayout('default');
         }
+
+        return null;
     }
 
     /**
      * Download
+     *
+     * @return  void
      */
     public function download()
     {
@@ -210,6 +216,7 @@ class Notes extends Plugin
      * Set layout to the edit view
      *
      * @param   mixed  $model
+     * @return   null
      */
     public function edit($model = null)
     {
@@ -224,6 +231,8 @@ class Notes extends Plugin
         if (!$this->view->no_html) {
             $this->view->setLayout('edit');
         }
+
+        return null;
     }
 
     /**

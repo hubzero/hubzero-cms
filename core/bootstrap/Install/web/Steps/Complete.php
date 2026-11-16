@@ -48,6 +48,8 @@ class Complete implements StepInterface
 
     /**
      * Get the site URL
+     *
+     * @return  mixed
      */
     private function getSiteUrl()
     {

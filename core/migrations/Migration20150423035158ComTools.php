@@ -18,6 +18,8 @@ class Migration20150423035158ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -35,10 +37,14 @@ class Migration20150423035158ComTools extends Base
         ) {
             $mwSchema->addColumn('zones', 'params')->text()->nullable();
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -52,5 +58,7 @@ class Migration20150423035158ComTools extends Base
         if ($mwSchema->tableExists('zones') && $mwSchema->hasColumn('zones', 'params')) {
             $mwSchema->dropColumn('zones', 'params');
         }
+
+        return null;
     }
 }

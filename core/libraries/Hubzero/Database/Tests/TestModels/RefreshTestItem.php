@@ -22,6 +22,8 @@ class RefreshTestItem extends Relational
 
     /**
      * Has many comments relationship
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
      */
     public function comments()
     {

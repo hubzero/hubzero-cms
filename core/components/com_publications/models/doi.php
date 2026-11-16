@@ -1525,6 +1525,7 @@ class Doi extends Obj
      * @param   string    $doi
      * @param   integer   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from
      *                                   draft to published
+     * @return   bool|null
      */
     public function revert($doi, $stateSwitch)
     {
@@ -1558,5 +1559,7 @@ class Doi extends Obj
             $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
             return false;
         }
+
+        return null;
     }
 }

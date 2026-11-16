@@ -18,6 +18,9 @@ class CascadePost extends Relational
     protected $table = 'cascade_posts';
     protected $namespace = '';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToMany
+     */
     public function comments()
     {
         return $this->oneToMany(CascadeComment::class, 'post_id');

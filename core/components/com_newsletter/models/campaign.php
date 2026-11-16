@@ -125,6 +125,9 @@ class Campaign extends Relational
         return \Hubzero\User\Password::genRandomPassword($secretLength);
     }
 
+    /**
+     * @return  bool
+     */
     public function isExpired()
     {
         $expiration = $this->get('expire_date');

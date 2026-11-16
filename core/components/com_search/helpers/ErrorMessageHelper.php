@@ -18,6 +18,9 @@ class ErrorMessageHelper
         $this->breaks = '<br/><br/>';
     }
 
+    /**
+     * @return  string
+     */
     public function generateErrorMessage($errors)
     {
         $errorList = implode($this->breaks . '• ', $errors);

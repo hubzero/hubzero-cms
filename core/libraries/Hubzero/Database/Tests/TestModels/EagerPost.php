@@ -17,6 +17,9 @@ class EagerPost extends Relational
 {
     protected $table = 'eager_posts';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToMany
+     */
     public function comments()
     {
         return $this->oneToMany(EagerComment::class);

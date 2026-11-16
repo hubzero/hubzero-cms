@@ -17,6 +17,8 @@ class Migration20181211161919ComTools extends Base
 {
     /**
      * Up;
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -32,10 +34,14 @@ class Migration20181211161919ComTools extends Base
                 $mwdb->query();
             }
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -51,5 +57,7 @@ class Migration20181211161919ComTools extends Base
                 $mwdb->query();
             }
         }
+
+        return null;
     }
 }

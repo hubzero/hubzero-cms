@@ -81,6 +81,8 @@ class Admin implements StepInterface
 
     /**
      * Process existing admin - update name, email, and optionally password
+     *
+     * @return  bool
      */
     private function processExistingAdmin($data)
     {
@@ -164,6 +166,8 @@ class Admin implements StepInterface
 
     /**
      * Process new admin creation
+     *
+     * @return  bool
      */
     private function processNewAdmin($data)
     {

@@ -18,6 +18,8 @@ class Migration20150626201931Core extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -61,10 +63,14 @@ class Migration20150626201931Core extends Base
         } elseif (!is_dir($old) && is_dir($new)) {
             /* Migration has already been handled by some other means */
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -108,5 +114,7 @@ class Migration20150626201931Core extends Base
         } elseif (!is_dir($old) && is_dir($new)) {
             /* Migration has already been handled by some other means */
         }
+
+        return null;
     }
 }

@@ -18,6 +18,8 @@ class Migration20140305142845Core extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -35,7 +37,7 @@ class Migration20140305142845Core extends Base
         // Nothing to judge by means nothing to convert: a hub with no content
         // yet, or one whose content arrived already in UTC.
         if (!$results) {
-            return;
+            return null;
         }
 
         $need_to_run = false;
@@ -82,6 +84,8 @@ class Migration20140305142845Core extends Base
             $configuration,
         );
         file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
+
+        return null;
     }
 
     /**

@@ -18,6 +18,8 @@ class Migration20140808195514ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -35,10 +37,14 @@ class Migration20140808195514ComTools extends Base
         if ($schema->tableExists('host') && $schema->hasColumn('host', 'uses')) {
             $schema->modifyColumn('host', 'uses')->integer()->notNull()->default(0)->execute();
         }
+
+        return null;
     }
 
     /**
      * Down
+     *
+     * @return  false|null
      **/
     public function down()
     {
@@ -56,5 +62,7 @@ class Migration20140808195514ComTools extends Base
         if ($schema->tableExists('host') && $schema->hasColumn('host', 'uses')) {
             $schema->modifyColumn('host', 'uses')->smallInteger()->notNull()->default(0)->execute();
         }
+
+        return null;
     }
 }

@@ -17,6 +17,8 @@ class Migration20140813200031ComTools extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -37,5 +39,7 @@ class Migration20140813200031ComTools extends Base
                     ->execute();
             }
         }
+
+        return null;
     }
 }

@@ -109,6 +109,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  array<string>|string|null
      */
     public function name($path)
     {
@@ -117,6 +119,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  string
      */
     public function extension($path)
     {
@@ -136,6 +140,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  int
      */
     public function size($path)
     {
@@ -144,6 +150,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  int
      */
     public function lastModified($path)
     {
@@ -152,6 +160,8 @@ class None implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return  null
      */
     public function mimetype($path)
     {

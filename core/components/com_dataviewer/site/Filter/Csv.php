@@ -10,6 +10,9 @@ namespace Components\Dataviewer\Site\Filter;
 
 class Csv
 {
+    /**
+     * @return  string|null
+     */
     public static function filter($res, &$dd, $ob_mode = false)
     {
         $data = $res['data'];
@@ -34,7 +37,7 @@ class Csv
         $h_arr = $data[0] ?? null;
         if (!$h_arr) {
             print 'No data available';
-            return;
+            return null;
         }
 
         foreach ($h_arr as $key => $val) {
@@ -78,6 +81,9 @@ class Csv
         return '';
     }
 
+    /**
+     * @return  string
+     */
     public static function columnsMetadata($dd)
     {
         $w = '"';
@@ -94,6 +100,9 @@ class Csv
         return $columnsMetadata . '"""' . $dataSeparator;
     }
 
+    /**
+     * @return  string
+     */
     public static function columnMetadata($metadata)
     {
         unset($metadata['label']);

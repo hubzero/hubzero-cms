@@ -67,6 +67,9 @@ class EntryTest extends Basic
         // The cached copy is stamped with a date in the database's format
         $app['db'] = function () {
             return new class {
+                /**
+                 * @return  string
+                 */
                 public function getDateFormat()
                 {
                     return 'Y-m-d H:i:s';
@@ -123,6 +126,9 @@ class EntryTest extends Basic
         $app = \Hubzero\Facades\Facade::getApplication();
         $app['language'] = function () {
             return new class {
+                /**
+                 * @return  true
+                 */
                 public function load()
                 {
                     return true;

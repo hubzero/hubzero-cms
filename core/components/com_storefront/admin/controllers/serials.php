@@ -114,11 +114,8 @@ class Serials extends AdminController
         $type = 'message';
 
         $deletedMessage = SerialsHelper::delete($ids);
-
-        if ($deletedMessage) {
-            $msg = $deletedMessage->message;
-            $type = $deletedMessage->type;
-        }
+        $msg = $deletedMessage->message;
+        $type = $deletedMessage->type;
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
             . '&task=display&sId=' . $sId;

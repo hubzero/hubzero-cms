@@ -46,6 +46,9 @@ class SubscriptionsHelper
         $this->db = App::get('db');
     }
 
+    /**
+     * @return  array<mixed>
+     */
     public function loadSubscriptions($userId)
     {
         $userId = (int) $userId;
@@ -63,6 +66,9 @@ class SubscriptionsHelper
         }, $this->db->loadObjectList());
     }
 
+    /**
+     * @return  array<mixed>
+     */
     private function subToMap($sub)
     {
         $activeRef = self::$activeReferenceField;
@@ -114,6 +120,9 @@ class SubscriptionsHelper
         $this->db->execute();
     }
 
+    /**
+     * @return  mixed
+     */
     private function buildUpdateQuery($userId, $updatedSubscription)
     {
         $preference = $updatedSubscription['preference'];
@@ -130,6 +139,9 @@ class SubscriptionsHelper
         return $query;
     }
 
+    /**
+     * @return  bool
+     */
     private function subscriptionExists($userId, $subscription)
     {
         $profileFieldFk = $subscription['foreign_key'];
@@ -145,6 +157,9 @@ class SubscriptionsHelper
         return $count > 0;
     }
 
+    /**
+     * @return  string
+     */
     private function generateUpdateQuery($userId, $subscription)
     {
         $preference = $subscription['preference'];
@@ -155,6 +170,9 @@ class SubscriptionsHelper
 		        where profile_key = " . $this->db->quote($profileFieldFk) . " and user_id = $userId;";
     }
 
+    /**
+     * @return  string
+     */
     private function generateInsertQuery($userId, $subscription)
     {
         $preference = $subscription['preference'];

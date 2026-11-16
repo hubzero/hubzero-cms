@@ -574,6 +574,8 @@ class Git
 
     /**
      * Stash local changes
+     *
+     * @return  string|false|null
      **/
     public function stash()
     {

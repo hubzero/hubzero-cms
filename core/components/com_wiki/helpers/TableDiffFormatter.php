@@ -157,10 +157,12 @@ class TableDiffFormatter extends DiffFormatter
      *
      * Long description (if any) ...
      *
+     * @return  string
      */
     public function emptyLine()
     {
         //return "\t\t\t".'<td colspan="2">&nbsp;</td>'."\n";
+        return '';
     }
 
     /**

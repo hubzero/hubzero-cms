@@ -19,6 +19,9 @@ class CascadePostWithBulkCascadeDelete extends Relational
     protected $namespace = '';
     protected $cascadeRelationships = true;
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToMany|null
+     */
     public function comments()
     {
         return $this

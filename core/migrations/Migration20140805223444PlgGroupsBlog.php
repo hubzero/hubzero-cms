@@ -19,6 +19,8 @@ class Migration20140805223444PlgGroupsBlog extends Base
 {
     /**
      * Up
+     *
+     * @return  false|null
      **/
     public function up()
     {
@@ -29,7 +31,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
 
         // Nake sure we have a directory
         if (!is_dir($base)) {
-            return;
+            return null;
         }
 
         // Get group folders
@@ -37,7 +39,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
 
         // Make sure we have one!
         if (count($groupFolders) < 1) {
-            return;
+            return null;
         }
 
         // Loop through group folders
@@ -96,5 +98,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
         }
 
         umask($old);
+
+        return null;
     }
 }

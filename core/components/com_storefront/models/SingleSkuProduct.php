@@ -61,6 +61,9 @@ class SingleSkuProduct extends Product
         return $this->defaultSku->getPrice();
     }
 
+    /**
+     * @return  mixed
+     */
     public function getSku()
     {
         $skus = $this->getSkus();

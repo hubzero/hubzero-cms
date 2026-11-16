@@ -25,6 +25,9 @@ class BoostDocumentTypeMap
         );
     }
 
+    /**
+     * @return  array<string, mixed>
+     */
     public function documentTypeToFieldData($documentType)
     {
         switch ($documentType) {
@@ -44,6 +47,9 @@ class BoostDocumentTypeMap
         ];
     }
 
+    /**
+     * @return  mixed
+     */
     public function getFormattedFieldValue($fieldValue)
     {
         switch ($fieldValue) {
@@ -58,6 +64,9 @@ class BoostDocumentTypeMap
         return $formattedValue;
     }
 
+    /**
+     * @return  mixed
+     */
     public function getFormattedCitationType()
     {
         $langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';

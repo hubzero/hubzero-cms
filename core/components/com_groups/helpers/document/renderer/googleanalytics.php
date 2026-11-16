@@ -15,6 +15,7 @@ class GoogleAnalytics extends Renderer
     /**
      * Render content to group template
      *
+     * @return  string
      */
     public function render()
     {

@@ -14,6 +14,9 @@ namespace Components\Cart\Helpers;
  */
 class Helper
 {
+    /**
+     * @return  array<string, mixed>
+     */
     public static function getUsStates()
     {
         $states = [

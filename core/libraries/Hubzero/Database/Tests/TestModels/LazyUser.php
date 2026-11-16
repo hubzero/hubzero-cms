@@ -18,11 +18,17 @@ class LazyUser extends Relational
     protected $table = 'lazy_users';
     protected $namespace = '';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToMany
+     */
     public function posts()
     {
         return $this->oneToMany(LazyPost::class, 'user_id');
     }
 
+    /**
+     * @return  \Hubzero\Database\Relationship\OneToOne
+     */
     public function profile()
     {
         return $this->oneToOne(LazyProfile::class, 'user_id');

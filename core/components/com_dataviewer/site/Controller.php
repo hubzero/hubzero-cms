@@ -125,6 +125,9 @@ class Controller
         }
     }
 
+    /**
+     * @return  bool|null
+     */
     public static function authorize($dd)
     {
         $allowedUsers = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : null;
@@ -147,7 +150,7 @@ class Controller
             $login_url = '/login';
             $url = $login_url . $redir_url;
             header('Location: ' . $url);
-            return;
+            return null;
         }
 
         // Guests were sent to log in above

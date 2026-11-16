@@ -20,6 +20,9 @@ class PolyTagModel extends Relational
 {
     protected $table = 'poly_tags';
 
+    /**
+     * @return  \Hubzero\Database\Relationship\MorphToMany
+     */
     public function posts()
     {
         return $this->morphedByMany(
@@ -32,6 +35,9 @@ class PolyTagModel extends Relational
         );
     }
 
+    /**
+     * @return  \Hubzero\Database\Relationship\MorphToMany
+     */
     public function videos()
     {
         return $this->morphedByMany(

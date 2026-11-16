@@ -19,6 +19,8 @@ class Migration20131112130740ComUsage extends Base
 {
     /**
      * Up
+     *
+     * @return  bool|null
      **/
     public function up()
     {
@@ -747,5 +749,7 @@ class Migration20131112130740ComUsage extends Base
                 return false;
             }
         }
+
+        return null;
     }
 }

@@ -1391,6 +1391,9 @@ abstract class Driver implements LoggerAwareInterface
         return str_replace($close, $close . $close, (string) $part);
     }
 
+    /**
+     * @return  string
+     */
     public function quoteName($name, $as = null)
     {
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array) $name;
