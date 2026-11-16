@@ -41,7 +41,7 @@ class Helper extends \Hubzero\Base\Obj
      */
     public $myreview;
     /**
-     * @var  \Components\Resources\Models\Entry|object|null
+     * @var  \Components\Resources\Models\Entry|null
      */
     public $resource;
     /**

@@ -42,7 +42,7 @@ class Tool extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  \stdClass
      */
@@ -99,7 +99,7 @@ class Tool extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
@@ -140,7 +140,7 @@ class Tool extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
@@ -232,7 +232,7 @@ class Tool extends Base
      *
      * @param   object   $elementparams
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
@@ -258,7 +258,7 @@ class Tool extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   integer  $itemId
      * @return  boolean
@@ -324,7 +324,7 @@ class Tool extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
@@ -384,7 +384,7 @@ class Tool extends Base
      * Add/edit attachment
      *
      * @param   mixed  $toolObject
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
@@ -404,7 +404,7 @@ class Tool extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -420,7 +420,7 @@ class Tool extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -548,7 +548,7 @@ class Tool extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
@@ -565,7 +565,7 @@ class Tool extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  boolean

@@ -82,7 +82,7 @@ use Hubzero\Facades\Request;
  * @property  object|null                          $_lastPublicRelease       By lastPublicRelease()
  * @property  object|null                          $_prevPublication         By prevPublication()
  * @property  object|null                          $_nextPublication         By nextPublication()
- * @property  \Hubzero\Database\Rows               $_citations               By getCitations()
+ * @property  \Hubzero\Database\Rows|null          $_citations               By getCitations()
  * @property  string|null                          $_lastCitationDate        By getLastCitationDate()
  * @property  \Hubzero\Database\Rows               $citationsForMetadataSet  By getCitationsForMetadataSet()
  * @property  array<mixed>                                $_tags                    By getTags()

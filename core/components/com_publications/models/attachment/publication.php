@@ -41,7 +41,7 @@ class Publication extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @return  \stdClass
      */
@@ -92,7 +92,7 @@ class Publication extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
@@ -157,7 +157,7 @@ class Publication extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
@@ -246,7 +246,7 @@ class Publication extends Base
      *
      * @param   object   $elementparams
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
@@ -271,7 +271,7 @@ class Publication extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   integer  $itemId
      * @return  boolean
@@ -318,7 +318,7 @@ class Publication extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
@@ -399,7 +399,7 @@ class Publication extends Base
      *
      * @param   integer  $id
      * @param   string   $title
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
@@ -480,7 +480,7 @@ class Publication extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -515,7 +515,7 @@ class Publication extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -673,7 +673,7 @@ class Publication extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   object   $readme
      * @param   string   $bundleDir
@@ -690,7 +690,7 @@ class Publication extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   boolean  $authorized
      * @return  boolean

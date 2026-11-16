@@ -679,7 +679,7 @@ class Batchcreate extends AdminController
      * Process file data
      *
      * @param   array<mixed>   $fileRecord
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass  $version
      * @return  bool|null
      */

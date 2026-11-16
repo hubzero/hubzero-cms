@@ -56,7 +56,7 @@ class File extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @return  \stdClass
      */
@@ -173,7 +173,7 @@ class File extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   string   $readme
      * @param   boolean  $bundleDir
@@ -281,7 +281,7 @@ class File extends Base
      * @param   array|mixed    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   boolean  $authorized
      * @return  mixed    False on failure, string on success
@@ -373,7 +373,7 @@ class File extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string
@@ -508,7 +508,7 @@ class File extends Base
      * single try-guarded status query (no model load), and a missing table
      * reads as "not active" — so the button is unchanged while async is off.
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  string|false
      */
     private function bundleDisplayState($pub)
@@ -556,7 +556,7 @@ class File extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
@@ -774,7 +774,7 @@ class File extends Base
      *
      * @param   object   $elementparams
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
@@ -907,7 +907,7 @@ class File extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   integer  $itemId
      * @return  boolean
@@ -1276,7 +1276,7 @@ class File extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
@@ -1400,7 +1400,7 @@ class File extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @return  boolean
      */
@@ -1439,7 +1439,7 @@ class File extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @return  boolean
      */
@@ -1502,7 +1502,7 @@ class File extends Base
      * Add/edit file attachment
      *
      * @param   string   $filePath
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
@@ -1621,7 +1621,7 @@ class File extends Base
      * Publish file attachment
      *
      * @param   \Components\Publications\Tables\Attachment   $objPA
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $update   force update of file
      * @return  boolean
@@ -1678,7 +1678,7 @@ class File extends Base
      * Unpublish file attachment
      *
      * @param   object   $row
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @return  boolean
      */

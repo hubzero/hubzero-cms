@@ -1384,7 +1384,7 @@ class Curation extends Obj
     /**
      * Parse curation status for display
      *
-     * @param   object   $pub     Publication object
+     * @param   \Components\Publications\Models\Publication  $pub     Publication object
      * @param   integer  $step    Numeric block ID
      * @param   integer  $elId    Element ID in question
      * @param   string   $viewer  Author or curator

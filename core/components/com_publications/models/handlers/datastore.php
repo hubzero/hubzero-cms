@@ -79,7 +79,7 @@ class DataStore extends Base
      *
      * @param   array<mixed>    $attachments
      * @param   object   $attConfigs
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   boolean  $authorized
      * @return  void
      */

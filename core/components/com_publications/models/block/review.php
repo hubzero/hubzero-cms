@@ -200,7 +200,7 @@ class Review extends Base
      *
      * @param   object   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $aid

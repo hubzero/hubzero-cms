@@ -50,7 +50,7 @@ class Data extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @return  \stdClass
      */
@@ -97,7 +97,7 @@ class Data extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
@@ -152,7 +152,7 @@ class Data extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
@@ -257,7 +257,7 @@ class Data extends Base
      *
      * @param   object   $elementparams
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
@@ -355,7 +355,7 @@ class Data extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   integer  $itemId
      * @return  boolean
@@ -401,7 +401,7 @@ class Data extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
@@ -464,7 +464,7 @@ class Data extends Base
      * Add/edit attachment
      *
      * @param   mixed  $database_name
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
@@ -574,7 +574,7 @@ class Data extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -616,7 +616,7 @@ class Data extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -745,7 +745,7 @@ class Data extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   string   $readme
      * @param   string   $bundleDir
@@ -839,7 +839,7 @@ class Data extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   boolean  $authorized
      * @return  bool|string

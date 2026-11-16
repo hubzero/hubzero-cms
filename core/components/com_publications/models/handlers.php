@@ -68,7 +68,7 @@ class Handlers extends Obj
     /**
      * Show handler selection
      *
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementid
      * @param   array<mixed>    $handlers
      * @param   object|mixed   $handler
@@ -103,7 +103,7 @@ class Handlers extends Obj
      * Update handler status / perform handler action
      *
      * @param   object   $handler
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementId
      * @param   string   $action
      * @return  bool|null
@@ -121,7 +121,7 @@ class Handlers extends Obj
      * Load content editor for handler
      *
      * @param   object   $handler
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $elementId
      * @return  \Components\Publications\Models\Editor
      */

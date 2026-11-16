@@ -40,7 +40,7 @@ class Link extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  \stdClass
      */
@@ -89,7 +89,7 @@ class Link extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @param   boolean|mixed  $authorized
      * @return  string   HTML
@@ -133,7 +133,7 @@ class Link extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $elements
      * @param   boolean  $authorized
@@ -219,7 +219,7 @@ class Link extends Base
      *
      * @param   object   $elementparams
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $attachments
      * @param   object   $oldVersion
@@ -243,7 +243,7 @@ class Link extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   integer  $itemId
      * @return  boolean
@@ -289,7 +289,7 @@ class Link extends Base
      *
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   array<mixed>    $toAttach
      * @return  boolean
@@ -389,7 +389,7 @@ class Link extends Base
      *
      * @param   integer  $path
      * @param   string   $title
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   \stdClass   $configs
      * @param   integer  $uid
      * @param   integer  $elementId
@@ -451,7 +451,7 @@ class Link extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -485,7 +485,7 @@ class Link extends Base
      * @param   object   $row
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object    $blockParams
      * @return  boolean
      */
@@ -638,7 +638,7 @@ class Link extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   object   $readme
      * @param   string   $bundleDir
@@ -655,7 +655,7 @@ class Link extends Base
      * @param   array<mixed>    $attachments
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $blockParams
      * @param   boolean  $authorized
      * @return  boolean

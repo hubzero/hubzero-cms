@@ -251,7 +251,7 @@ class Blocks extends Obj
      * Check if changes are allowed
      *
      * @param   object   $blockParams
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  boolean
      */
     public function checkFreeze($blockParams, $pub)

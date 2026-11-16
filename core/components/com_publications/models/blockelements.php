@@ -55,7 +55,7 @@ class BlockElements extends Obj
      *
      * @param   string  $name
      * @param   object|null  $manifest
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @return  object
      */
     public function getStatus($name, $manifest = null, $pub = null)
@@ -80,7 +80,7 @@ class BlockElements extends Obj
      * @param   integer  $elementId
      * @param   string|null   $manifest
      * @param   \stdClass|null   $master
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $status
      * @param   string   $viewname
      * @param   integer  $order

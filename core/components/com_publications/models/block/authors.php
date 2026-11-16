@@ -53,7 +53,7 @@ class Authors extends Base
     /**
      * Display block content
      *
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $manifest
      * @param   string   $viewname
      * @param   integer  $blockId
@@ -106,7 +106,7 @@ class Authors extends Base
      *
      * @param   object|null   $manifest
      * @param   integer  $blockId
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  string|bool   HTML
@@ -202,7 +202,7 @@ class Authors extends Base
     /**
      * Save group owner
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  void
      */
     public function saveGroupOwner($pub)
@@ -222,7 +222,7 @@ class Authors extends Base
      * Transfer data from one version to another
      *
      * @param   object   $manifest
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $oldVersion
      * @param   object   $newVersion
      * @return  boolean
@@ -266,7 +266,7 @@ class Authors extends Base
      *
      * @param   object|null   $manifest
      * @param   integer  $blockId
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  string|bool   HTML
@@ -309,7 +309,7 @@ class Authors extends Base
      *
      * @param   object   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  bool
@@ -482,7 +482,7 @@ class Authors extends Base
      *
      * @param   object   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $aid
@@ -633,7 +633,7 @@ class Authors extends Base
      *
      * @param   object   $manifest
      * @param   integer  $blockId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   integer  $aid
@@ -666,7 +666,7 @@ class Authors extends Base
     /**
      * Build panel content
      *
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string  $viewname
      * @return  string  HTML
      */
@@ -712,7 +712,7 @@ class Authors extends Base
     /**
      * Check completion status
      *
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $manifest
      * @param   integer|null  $elementId
      * @return  \Components\Publications\Models\Status

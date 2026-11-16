@@ -131,7 +131,7 @@ class ImageViewer extends Base
      * Make image default for publication
      *
      * @param   object  $row
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $configs
      * @return  bool
      */
@@ -198,7 +198,7 @@ class ImageViewer extends Base
     /**
      * Show attachments in an image band (gallery)
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @return  bool|string|null
      */
     public function showImageBand($pub)
@@ -296,7 +296,7 @@ class ImageViewer extends Base
      *
      * @param   array<mixed>    $attachments
      * @param   object   $attConfigs
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   boolean|mixed  $authorized
      * @param   integer  $elementId
      * @return  bool|string
@@ -384,7 +384,7 @@ class ImageViewer extends Base
      * Make thumb
      *
      * @param   object  $row
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object  $configs
      * @return  bool|null
      */

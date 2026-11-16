@@ -103,7 +103,7 @@ class Attachments extends Obj
      * @param   string   $name
      * @param   object   $element
      * @param   integer  $elementId
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   object   $params
      * @param   object   $oldVersion
      * @param   object   $newVersion
@@ -142,7 +142,7 @@ class Attachments extends Obj
      * @param   string   $name
      * @param   object|null   $element
      * @param   integer  $elementId
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $params
      * @return  boolean
      */
@@ -207,7 +207,7 @@ class Attachments extends Obj
      * Draw list of element items
      *
      * @param   array<mixed>|null    $elements
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   bool|string  $authorized
      * @param   string|null   $append
      * @return  mixed    string or bool
@@ -258,7 +258,7 @@ class Attachments extends Obj
      * Draw launching button/link for element
      *
      * @param   string|null   $name
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $element
      * @param   array<mixed>|null    $elements
      * @param   boolean  $authorized
@@ -333,7 +333,7 @@ class Attachments extends Obj
      *
      * @param   string   $name
      * @param   \Components\Publications\Tables\Attachment|mixed   $row
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   object   $element
@@ -371,7 +371,7 @@ class Attachments extends Obj
      *
      * @param   string   $name
      * @param   \Components\Publications\Tables\Attachment|mixed   $row
-     * @param   object   $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @param   object   $element

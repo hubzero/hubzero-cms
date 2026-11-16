@@ -298,7 +298,7 @@ class Html
      * Generate a citation for a publication
      *
      * @param   \stdClass|mixed|null  $cite       Citation data
-     * @param   object  $pub        Publication model
+     * @param   \Components\Publications\Models\Publication  $pub        Publication model
      * @param   string  $citations  Citations to prepend
      * @return  string  HTML
      */
@@ -670,7 +670,7 @@ class Html
      * Generate the primary resources button
      *
      * @param   string   $icon     Class to add
-     * @param   object   $pub      The publication
+     * @param   \Components\Publications\Models\Publication  $pub      The publication
      * @param   string   $url       Link text
      * @param   string   $title     Link title
      * @param   boolean  $disabled  Is the button disable?
@@ -760,7 +760,7 @@ class Html
     /**
      * Show publication title in draft flow
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   string  $tabtitle
      * @param   string  $append
      * @return  mixed
@@ -797,7 +797,7 @@ class Html
     /**
      * Show pub title for provisioned projects
      *
-     * @param   object  $pub
+     * @param   \Components\Publications\Models\Publication  $pub
      * @param   string  $append
      *
      * @return  void

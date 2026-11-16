@@ -49,7 +49,7 @@ class Tags extends Base
     /**
      * Display block content
      *
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $manifest
      * @param   string   $viewname
      * @param   integer  $blockId
@@ -99,7 +99,7 @@ class Tags extends Base
     /**
      * Build panel content
      *
-     * @param   object|null  $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   string  $viewname
      * @return  string  HTML
      */
@@ -133,7 +133,7 @@ class Tags extends Base
      *
      * @param   object|null   $manifest
      * @param   integer  $blockId
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   integer  $actor
      * @param   integer  $elementId
      * @return  string|bool   HTML
@@ -178,7 +178,7 @@ class Tags extends Base
     /**
      * Check completion status
      *
-     * @param   object|null   $pub
+     * @param   \Components\Publications\Models\Publication|null  $pub
      * @param   object|null   $manifest
      * @param   integer|null  $elementId
      * @return  \Components\Publications\Models\Status
