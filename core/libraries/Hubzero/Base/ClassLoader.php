@@ -94,8 +94,11 @@ class ClassLoader
         // Migrations namespace
         self::addPrefix('Migrations\\', 'migrations', 'psr4');
 
-        // Register autoloader
-        static::$registered = spl_autoload_register([static::class, 'load']);
+        // Register autoloader (autoloaders return nothing; load() reports
+        // whether it found the class for its other callers)
+        static::$registered = spl_autoload_register(static function (string $class): void {
+            static::load($class);
+        });
     }
 
     /**

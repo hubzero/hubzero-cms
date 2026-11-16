@@ -264,7 +264,7 @@ class Container implements ArrayAccess
      * without necessarily loading that object.
      *
      * @param   string    $id        The unique identifier for the object
-     * @param   callable  $callable  A service definition to extend the original
+     * @param   callable|mixed  $callable  A service definition to extend the original (anything else throws)
      * @return  callable  The wrapped callable
      * @throws  \InvalidArgumentException if the identifier is not defined or not a service definition
      */

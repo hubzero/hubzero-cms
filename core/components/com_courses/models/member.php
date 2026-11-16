@@ -60,7 +60,7 @@ class Member extends Base
         $this->table = new Tables\Member($this->db);
 
         if (is_numeric($uid) || is_string($uid)) {
-            $this->table->load($uid, $cid, $oid, $sid);
+            $this->table->loadForCourse($uid, $cid, $oid, $sid);
         } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }

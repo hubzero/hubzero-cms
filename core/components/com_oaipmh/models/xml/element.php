@@ -54,7 +54,9 @@ class Element
      */
     public function reference(&$name)
     {
-        $name = new self($this->current);
+        // At the top the current node is the document; reference its root element
+        $element = $this->current instanceof \DOMElement ? $this->current : $this->dom->documentElement;
+        $name = new self($element);
 
         return $this;
     }

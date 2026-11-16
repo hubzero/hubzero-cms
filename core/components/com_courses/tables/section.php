@@ -49,7 +49,7 @@ class Section extends Table
         if (!isset($instances[$alias . '_' . $offering_id])) {
             $db = App::get('db');
             $inst = new self($db);
-            $inst->load($alias, $offering_id);
+            $inst->loadForOffering($alias, $offering_id);
 
             $instances[$alias . '_' . $offering_id] = $inst;
         }
@@ -58,12 +58,25 @@ class Section extends Table
     }
 
     /**
-     * Load a record and bind to $this
+     * Load a record and bind it to this object
      *
-     * @param   int|string|null   $oid  Record ID or alias
+     * @param   mixed    $keys   Record ID, or whatever loadForOffering() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
      * @return  boolean  True on success
      */
-    public function load($oid = null, $offering_id = null)
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForOffering($keys);
+    }
+
+    /**
+     * Load a record by ID, or by alias within an offering, and bind it to this object
+     *
+     * @param   int|string|null  $oid          Record ID or alias
+     * @param   int|string|null  $offering_id  Offering the alias belongs to
+     * @return  boolean  True on success
+     */
+    public function loadForOffering($oid = null, $offering_id = null)
     {
         if ($oid === null) {
             return false;

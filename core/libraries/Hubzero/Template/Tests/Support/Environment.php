@@ -150,7 +150,7 @@ class Environment
     {
         $base = str_repeat('/..', count(array_filter(explode('/', PATH_APP)))) . $this->groupBase;
 
-        Overrides::setSuperGroup(new class ($base) {
+        Overrides::setSuperGroup(new class ($base) extends \Hubzero\User\Group {
             private $base;
             public function __construct($base)
             {

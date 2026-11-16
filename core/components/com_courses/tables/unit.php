@@ -30,13 +30,25 @@ class Unit extends Table
     }
 
     /**
-     * Populate the current object with a database record if found
-     * Accepts either an alias or an ID
+     * Load a record and bind it to this object
      *
-     * @param      mixed $oid Unique ID or alias of object to retrieve
-     * @return     boolean True on success
+     * @param   mixed    $keys   Record ID, or whatever loadForOffering() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
      */
-    public function load($oid = null, $offering_id = null)
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForOffering($keys);
+    }
+
+    /**
+     * Load a record by ID, or by alias within an offering, and bind it to this object
+     *
+     * @param   int|string|null  $oid          Record ID or alias
+     * @param   int|string|null  $offering_id  Offering the alias belongs to
+     * @return  boolean  True on success
+     */
+    public function loadForOffering($oid = null, $offering_id = null)
     {
         if (empty($oid)) {
             return false;

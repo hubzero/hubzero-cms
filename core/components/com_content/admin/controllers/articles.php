@@ -159,7 +159,7 @@ class Articles extends AdminController
             ),
             'author_id' => Request::getState(
                 $this->option . '.' . $this->controller . '.author_id',
-                'author_id',
+                'filter_author_id',
             ),
             'published' => Request::getState(
                 $this->option . '.' . $this->controller . '.published',
@@ -231,6 +231,22 @@ class Articles extends AdminController
             }
         }
 
+        if (!empty($filters['author_id'])) {
+            $articles->whereEquals('created_by', (int) $filters['author_id']);
+        }
+
+        if (!empty($filters['language'])) {
+            $articles->whereEquals('language', $filters['language']);
+        }
+
+        // Articles in categories no deeper than the chosen level
+        if (!empty($filters['level'])) {
+            $articles->whereRaw(
+                '`#__content`.`catid` IN (SELECT `id` FROM `#__categories` WHERE `level` <= ?)',
+                [(int) $filters['level']],
+            );
+        }
+
         $searchableFields = ['title', 'alias'];
         if (!empty($filters['search'])) {
             $firstSearch = array_shift($searchableFields);
@@ -271,12 +287,48 @@ class Articles extends AdminController
 
         $this->view
             ->set('pagination', $items->pagination)
-            ->set('authors', [])
-            ->set('f_levels', [])
+            ->set('authors', $this->authorOptions())
+            ->set('f_levels', $this->levelOptions())
             ->set('filters', $filters)
             ->set('items', $itemsArray)
             ->setLayout($layout)
             ->display();
+    }
+
+    /**
+     * The authors the article list can be filtered by: everyone who has written one
+     *
+     * @return  array
+     */
+    private function authorOptions()
+    {
+        $db = App::get('db');
+        $query = $db->getQuery()
+            ->select('u.id', 'value')
+            ->select('u.name', 'text')
+            ->from('#__users', 'u')
+            ->joinRaw('#__content AS c', 'c.created_by = u.id', 'inner')
+            ->group('u.id')
+            ->group('u.name')
+            ->order('u.name', 'asc');
+        $db->setQuery($query->toString());
+
+        return $db->loadObjectList();
+    }
+
+    /**
+     * The category depths the article list can be limited to
+     *
+     * @return  array
+     */
+    private function levelOptions()
+    {
+        $options = [];
+        for ($level = 1; $level <= 10; $level++) {
+            $options[] = \Hubzero\Html\Builder\Select::option((string) $level, Lang::txt('J' . $level));
+        }
+
+        return $options;
     }
 
     /**
@@ -299,7 +351,7 @@ class Articles extends AdminController
             ),
             'author_id' => Request::getState(
                 $this->option . '.featured.author_id',
-                'author_id',
+                'filter_author_id',
             ),
             'published' => Request::getState(
                 $this->option . '.featured.published',
@@ -392,7 +444,7 @@ class Articles extends AdminController
             $query->whereEquals($a . '.language', $filters['language']);
         }
 
-        if (isset($filters['access'])) {
+        if (!empty($filters['access'])) {
             $query->whereEquals($a . '.access', $filters['access']);
         }
 

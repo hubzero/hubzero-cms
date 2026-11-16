@@ -29,15 +29,28 @@ class Member extends Table
     }
 
     /**
-     * Load a record and bind to $this
+     * Load a record and bind it to this object
      *
-     * @param      mixed                $uid      User ID, or a record ID when no course is given
-     * @param      int|string|null      $oid      Offering ID
-     * @param      int|string|null      $sid      Section ID
-     * @param      int|bool|null        $student  Only students (1) or only managers (0)
-     * @return     boolean True on success
+     * @param   mixed    $keys   Record ID, or whatever loadForCourse() takes first
+     * @param   boolean  $reset  Unused; the record is always loaded afresh
+     * @return  boolean  True on success
      */
-    public function load($uid = null, $cid = null, $oid = null, $sid = null, $student = null)
+    public function load($keys = null, $reset = true)
+    {
+        return $this->loadForCourse($keys);
+    }
+
+    /**
+     * Load a member's record in a course, offering and section, and bind it to this object
+     *
+     * @param   mixed                $uid      User ID, or a record ID when no course is given
+     * @param   int|string|null      $cid      Course ID
+     * @param   int|string|null      $oid      Offering ID
+     * @param   int|string|null      $sid      Section ID
+     * @param   int|bool|null        $student  Only students (1) or only managers (0)
+     * @return  boolean  True on success
+     */
+    public function loadForCourse($uid = null, $cid = null, $oid = null, $sid = null, $student = null)
     {
         if ($uid === null) {
             return false;

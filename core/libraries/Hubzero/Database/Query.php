@@ -777,7 +777,8 @@ class Query
      * - SQLite: INSERT OR IGNORE INTO ... SELECT ...
      * - SQL Server/Oracle/DB2: Uses appropriate INSERT ... SELECT syntax
      *
-     * @param   Query|callable  $source  Query object or closure that builds the SELECT query
+     * @param   Query|callable|mixed  $source  Query object or closure that builds the SELECT query
+     *                                         (anything else throws)
      * @return  $this
      **/
     public function fromSelect($source)

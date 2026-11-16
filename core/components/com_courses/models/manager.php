@@ -39,7 +39,7 @@ class Manager extends Member
         $this->table = new Tables\Member($this->db);
 
         if (is_numeric($uid) || is_string($uid)) {
-            $this->table->load($uid, $cid, $oid, $sid, 0);
+            $this->table->loadForCourse($uid, $cid, $oid, $sid, 0);
         } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }

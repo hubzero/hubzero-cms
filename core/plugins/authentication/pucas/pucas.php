@@ -65,7 +65,8 @@ class Pucas extends Plugin
         }
 
         if ($this->casAuthenticated()) {
-            phpCAS::logout(['service' => $service . $return, 'url' => $service . $return]);
+            // The client takes the parameters as the array phpCAS::logout() documents as a string
+            phpCAS::getCasClient()->logout(['service' => $service . $return, 'url' => $service . $return]);
         }
     }
 

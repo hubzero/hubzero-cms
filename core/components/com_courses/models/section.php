@@ -106,7 +106,7 @@ class Section extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             if ($oid) {
-                $this->table->load($oid, $offering_id);
+                $this->table->loadForOffering($oid, $offering_id);
             }
         } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);

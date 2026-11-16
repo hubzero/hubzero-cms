@@ -186,23 +186,40 @@ class Passport implements ProviderInterface
             unset($data);
         }
 
-        $assertionsData = json_encode($assertions);
+        $assertionsData = (string) json_encode($assertions);
 
         if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
+            $url = self::PASSPORT_API_ENDPOINT . 'assertions/';
+
+            // OAuth signs the request; curl sends it, as OAuth::fetch() takes
+            // only form parameters and the API wants a JSON body
             $this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
             try {
-                $this->request->fetch(
-                    self::PASSPORT_API_ENDPOINT
-                    . "assertions/",
-                    $assertionsData,
-                    OAUTH_HTTP_METHOD_POST,
-                    ['Content-Type' => 'application/json'],
-                );
+                $authorization = $this->request->getRequestHeader(OAUTH_HTTP_METHOD_POST, $url);
             } catch (Exception $e) {
                 throw new Exception('Badge grant request failed.');
             }
+            if ($authorization === false) {
+                throw new Exception('Badge grant request failed.');
+            }
 
-            $assertion = json_decode($this->request->getLastResponse());
+            $curl = curl_init($url);
+            curl_setopt_array($curl, [
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $assertionsData,
+                CURLOPT_HTTPHEADER     => ['Authorization: ' . $authorization, 'Content-Type: application/json'],
+                CURLOPT_RETURNTRANSFER => true,
+            ]);
+            $response = curl_exec($curl);
+            $status   = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+
+            // OAuth::fetch() failed on anything but a success, and so does this
+            if (!is_string($response) || $status < 200 || $status >= 300) {
+                throw new Exception('Badge grant request failed.');
+            }
+
+            $assertion = json_decode($response);
         } else {
             throw new Exception('Unsupported request type');
         }

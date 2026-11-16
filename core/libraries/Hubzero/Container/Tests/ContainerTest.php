@@ -222,12 +222,16 @@ class ContainerTest extends Basic
     public function testExtendThrowsExceptionWithUncallableExtension()
     {
         $container = new Container();
-        $container['param'] = 'value';
+        // An object definition, so extend() gets as far as checking the extension
+        $container['service'] = function () {
+            return new \stdClass();
+        };
 
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Extension service definition is not a Closure or invokable object.');
 
         $container->extend(
-            'param',
+            'service',
             'ipsum',
         );
     }

@@ -202,7 +202,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
 
-        if ($token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 /** @var \Smolblog\OAuth2\Client\Provider\TwitterUser $owner */
                 $owner = $this->provider->getResourceOwner($token);
@@ -322,7 +322,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
 
-        if ($token) {
+        if ($token instanceof \League\OAuth2\Client\Token\AccessToken) {
             try {
                 /** @var \Smolblog\OAuth2\Client\Provider\TwitterUser $owner */
                 $owner = $this->provider->getResourceOwner($token);
